@@ -3,8 +3,8 @@
 
 const i18n = {
     zh: {
-        title: '🛡️ DNS广告过滤清单生成器',
-        subtitle: '从域名清单生成 Hosts 或 Dnsmasq 格式的路由器过滤规则',
+        title: '🛡️ DNS Shield',
+        subtitle: '路由器级广告过滤规则生成工具',
         domainCount: '域名总数',
         validCount: '有效域名',
         commentCount: '注释行',
@@ -109,8 +109,8 @@ const i18n = {
         inputPlaceholder: '# 输入域名，每行一个\nad.example.com\nads.example.com\n# + 开头为白名单\n# @domain=ip 为自定义DNS'
     },
     en: {
-        title: '🛡️ DNS Ad Blocklist Generator',
-        subtitle: 'Convert domain lists into Hosts or Dnsmasq format router filter rules',
+        title: '🛡️ DNS Shield',
+        subtitle: 'Router-level DNS ad block filter rule generator',
         domainCount: 'Total Domains',
         validCount: 'Valid Domains',
         commentCount: 'Comment Lines',

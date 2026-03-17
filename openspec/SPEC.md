@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/dns-shield |
 | 当前版本 | v1.0.6 |
-| 拦截域名 | 422+ (本地) / 6766+ (含预设源) |
+| 拦截域名 | 448+ (本地) / 6766+ (含预设源) |
 
 ## 2. 文件结构
 
@@ -18,6 +18,7 @@
 dns-shield/
 ├── README.md                      # 中文说明文档（默认）
 ├── README.en.md                   # 英文说明文档
+├── README.zh-CN.md                # 简体中文说明文档
 ├── domains.txt                    # 原始域名清单（唯一数据源）
 ├── dnsmasq.conf                  # Dnsmasq 过滤列表
 ├── hosts.txt                      # Hosts 文件
