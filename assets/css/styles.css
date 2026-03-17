@@ -1,0 +1,128 @@
+/* assets/css/styles.css v1.0.6 */
+/* Main CSS Entry Point */
+
+.app-footer {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+}
+
+.usage-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 16px;
+    margin-bottom: 12px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.usage-toggle:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent-color);
+}
+
+.toggle-arrow {
+    transition: transform 0.3s ease;
+}
+
+.usage-toggle.expanded .toggle-arrow {
+    transform: rotate(180deg);
+}
+
+.usage-guide {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-bottom: 0;
+    padding: 0 16px;
+    transition: all 0.3s ease;
+}
+
+.usage-guide.visible {
+    max-height: 500px;
+    opacity: 1;
+    margin-bottom: 16px;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.usage-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.usage-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.step-number {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--accent-color);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.step-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.step-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.step-desc {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+.usage-tip {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 6px;
+    border-left: 3px solid var(--accent-color);
+}
+
+.tip-label {
+    flex-shrink: 0;
+    font-weight: 600;
+    color: var(--accent-color);
+}
+
+.tip-content {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    line-height: 1.5;
+}

@@ -1,0 +1,106 @@
+/* assets/css/utilities.css v1.0.6 */
+/* Utility Classes - Buttons, Toast, Helpers */
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(white, transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.btn:hover::after {
+    opacity: 0.1;
+}
+
+.btn-sm {
+    padding: 10px 18px;
+    font-size: 0.85rem;
+    min-height: 44px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+    color: white;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+    color: white;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.btn-success:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-outline:hover {
+    background: var(--bg-secondary);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.btn { flex: 1; justify-content: center; }
+
+@media (max-width: 768px) {
+    .btn { flex: 1; justify-content: center; }
+    .btn-sm { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+    .btn-sm { width: 100%; justify-content: center; }
+}
+
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    padding: 14px 28px;
+    background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+    color: white;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.error { 
+    background: linear-gradient(135deg, var(--error-color) 0%, #dc2626 100%);
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+}

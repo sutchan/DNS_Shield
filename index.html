@@ -1,0 +1,240 @@
+<!-- index.html v1.0.6 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DNS广告过滤清单生成器 - 从域名列表生成 Dnsmasq 和 Hosts 格式的路由器广告过滤规则。支持梅林固件、小米路由器、OpenWrt 等设备。">
+    <meta name="keywords" content="DNS广告过滤,dnsmasq,hosts,广告拦截,路由器,梅林固件,小米路由器,OpenWrt,广告过滤规则">
+    <meta name="author" content="sutchan">
+    <meta name="robots" content="index, follow">
+    <meta name="geo.region" content="CN">
+    <meta name="geo.placename" content="China">
+    <meta property="og:title" content="DNS广告过滤清单生成器">
+    <meta property="og:description" content="从域名列表生成多种格式的路由器广告过滤规则">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/sutchan/dns-shield">
+    <meta property="og:image" content="https://raw.githubusercontent.com/sutchan/dns-shield/main/preview.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>DNS广告过滤清单生成器 v1.0.6</title>
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/editor.css">
+    <link rel="stylesheet" href="assets/css/utilities.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/i18n.js" defer></script>
+    <script src="assets/js/utils.js" defer></script>
+    <script src="assets/js/core.js" defer></script>
+    <script src="assets/js/parser.js" defer></script>
+    <script src="assets/js/generator.js" defer></script>
+    <script src="assets/js/ui-urls.js" defer></script>
+    <script src="assets/js/ui-editor.js" defer></script>
+    <script src="assets/js/ui-controls.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+    <div class="container" id="app-container">
+        <header class="app-header">
+            <div class="header-main">
+                <h1>🛡️ DNS广告过滤清单生成器</h1>
+                <div class="header-actions">
+                    <button class="lang-switch" onclick="switchLang()" title="切换语言">
+                        <span class="lang-zh">中</span>
+                        <span class="lang-divider">/</span>
+                        <span class="lang-en">EN</span>
+                    </button>
+                    <button class="icon-btn" onclick="toggleTheme()" title="切换主题">
+                        <span class="theme-btn">🌙</span>
+                    </button>
+                </div>
+            </div>
+            <p class="subtitle" data-i18n="subtitle">从域名清单生成 Hosts 或 Dnsmasq 格式的路由器过滤规则</p>
+        </header>
+
+        <main class="main-content">
+            <section class="panel input-section" id="input-panel">
+                <div class="section-header">
+                    <h2 data-i18n="inputTitle">📥 输入域名清单</h2>
+                    <button class="collapse-btn" onclick="toggleSection('url-section')">
+                        <span class="collapse-icon">▼</span>
+                        <span data-i18n="advanced">高级选项</span>
+                    </button>
+                </div>
+
+                <div class="stats-compact" id="stats-bar">
+                    <div class="stat-badge">
+                        <span class="stat-value" id="domainCount">0</span>
+                        <span class="stat-label" data-i18n="domainCount">域名</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="stat-value" id="validCount">0</span>
+                        <span class="stat-label" data-i18n="validCount">有效</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="stat-value" id="commentCount">0</span>
+                        <span class="stat-label" data-i18n="commentCount">注释</span>
+                    </div>
+                </div>
+
+                <div class="url-section collapsed" id="url-section">
+                    <div class="url-input-row">
+                        <input type="text" class="url-input" id="urlInput" data-i18n-placeholder="urlPlaceholder" placeholder="输入 URL 导入域名列表..." value="https://raw.githubusercontent.com/sutchan/dns-shield/main/domains.txt">
+                        <button class="btn btn-primary" onclick="fetchFromUrl()" data-i18n="fetchBtn">获取</button>
+                    </div>
+                    <div class="url-actions">
+                        <button class="btn btn-sm" onclick="addUrl()" data-i18n="addUrl">➕ 添加URL</button>
+                        <button class="btn btn-sm" onclick="sortUrls()" data-i18n="sortUrlBtn">⇅ 前缀优先</button>
+                        <button class="btn btn-sm" onclick="fetchAllUrls()" data-i18n="fetchAllUrls">🌐 获取全部</button>
+                    </div>
+                    <div class="url-list" id="urlList"></div>
+
+                    <div class="preset-section">
+                        <span class="preset-label" data-i18n="presetLabel">预设源:</span>
+                        <div class="preset-tags">
+                            <span class="preset-tag active" onclick="loadPreset('builtin', event)" data-i18n="builtinAd">内置数据</span>
+                            <span class="preset-tag" onclick="loadPreset('adguard', event)" data-i18n="adguard">AdGuard</span>
+                            <span class="preset-tag" onclick="loadPreset('easylist', event)" data-i18n="easylist">EasyList</span>
+                            <span class="preset-tag" onclick="loadPreset('neohosts', event)" data-i18n="neohosts">NeoHosts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="editor-container">
+                    <div class="line-numbers" id="lineNumbers"></div>
+                    <textarea id="sourceInput" data-i18n-placeholder="inputPlaceholder" placeholder="# 输入域名，每行一个&#10;ad.example.com&#10;ads.example.com&#10;# + 开头为白名单&#10;# @domain=ip 为自定义DNS" oninput="handleSourceInput()"></textarea>
+                </div>
+
+                <div class="editor-actions">
+                    <button class="btn btn-outline" onclick="clearAll()" data-i18n="clearBtn">🗑️ 清空</button>
+                    <button class="btn btn-outline" onclick="sortDomains()" data-i18n="sortBtn">↕️ 排序</button>
+                    <button class="btn btn-primary" onclick="parseSource()" data-i18n="parseBtn">解析域名</button>
+                    <button class="btn btn-outline" onclick="dedupeDomains()" data-i18n="dedupeBtn">🔄 去重</button>
+                    <button class="btn btn-outline" onclick="saveDomains()" data-i18n="saveBtn">💾 保存</button>
+                </div>
+            </section>
+
+            <section class="panel output-section" id="output-panel">
+                <div class="section-header">
+                    <h2 data-i18n="outputTitle">📤 生成过滤规则</h2>
+                    <div class="header-actions">
+                        <div class="format-tabs">
+                            <button class="format-tab active" onclick="setFormat('hosts')">Hosts</button>
+                            <button class="format-tab" onclick="setFormat('dnsmasq')">Dnsmasq</button>
+                        </div>
+                        <button class="settings-btn" onclick="toggleSettings()" data-i18n-title="settingsTitle" title="设置">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-panel collapsed" id="settings-panel">
+                    <div class="settings-grid">
+                        <div class="settings-item">
+                            <label data-i18n="projectName">项目名称</label>
+                            <input type="text" id="projectNameInput" value="DNS Shield" onchange="updateSettings()">
+                        </div>
+                        <div class="settings-item">
+                            <label data-i18n="version">版本号</label>
+                            <input type="text" id="versionInput" value="1.0.6" onchange="updateSettings()">
+                        </div>
+                        <div class="settings-item">
+                            <label data-i18n="ipV4">IPv4</label>
+                            <input type="text" id="ipv4Input" value="127.0.0.1" onchange="updateSettings()">
+                        </div>
+                        <div class="settings-item">
+                            <label data-i18n="ipV6">IPv6</label>
+                            <input type="text" id="ipv6Input" value="::" onchange="updateSettings()">
+                        </div>
+                    </div>
+                    <div class="options-row">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="addHeader" checked onchange="generateRules()">
+                            <span data-i18n="headerComment">头部注释</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="blockIPv6" onchange="generateRules()">
+                            <span data-i18n="blockIPv6">阻止 IPv6</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="dedupDomains" checked onchange="generateRules()">
+                            <span data-i18n="dedup">自动去重</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="removeWildcard" checked onchange="generateRules()">
+                            <span data-i18n="removeWildcard">移除通配符</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="merge-info" id="mergeInfo" data-i18n="mergeInfo">点击"生成规则"查看输出</div>
+
+                <div class="output-container">
+                    <div class="line-numbers" id="outputLineNumbers"></div>
+                    <div class="output-preview" id="outputPreview" data-i18n="previewPlaceholder">// 生成的规则将显示在这里</div>
+                </div>
+
+                <div class="output-actions">
+                    <button class="btn btn-success" onclick="generateRules()" data-i18n="generateBtn">🔄 生成规则</button>
+                    <button class="btn btn-primary" onclick="downloadOutput()" data-i18n="downloadBtn">📥 下载</button>
+                    <button class="btn btn-outline" onclick="copyOutput()" data-i18n="copyBtn">📋 复制</button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="app-footer" id="about-panel">
+            <button class="usage-toggle" id="usageToggle" onclick="toggleUsage()">
+                <span id="usageToggleText">📖 使用说明</span>
+                <svg class="toggle-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
+            <div class="usage-guide" id="usageGuide">
+                <div class="usage-steps">
+                    <div class="usage-step">
+                        <span class="step-number">1</span>
+                        <div class="step-content">
+                            <span class="step-title" data-i18n="usageStep1">1. 输入或导入域名</span>
+                            <span class="step-desc" data-i18n="usageStep1Desc">在左侧文本框输入域名列表，或从预设源（AdGuard、EasyList等）导入，或直接粘贴 URL 获取域名</span>
+                        </div>
+                    </div>
+                    <div class="usage-step">
+                        <span class="step-number">2</span>
+                        <div class="step-content">
+                            <span class="step-title" data-i18n="usageStep2">2. 配置生成选项</span>
+                            <span class="step-desc" data-i18n="usageStep2Desc">选择输出格式（Dnsmasq/Hosts），设置目标 IP 地址，可选去重、排序、添加注释等</span>
+                        </div>
+                    </div>
+                    <div class="usage-step">
+                        <span class="step-number">3</span>
+                        <div class="step-content">
+                            <span class="step-title" data-i18n="usageStep3">3. 生成并下载规则</span>
+                            <span class="step-desc" data-i18n="usageStep3Desc">点击"生成规则"按钮，预览效果后下载到本地，或复制到剪贴板</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="usage-tip">
+                    <span class="tip-label" data-i18n="usageTip">💡 提示</span>
+                    <span class="tip-content" data-i18n="usageTipContent">生成的规则可直接用于路由器广告过滤，支持华硕、梅林、OpenWrt 等固件</span>
+                </div>
+            </div>
+            <div class="footer-content">
+                <a href="https://github.com/sutchan/dns-shield" target="_blank" class="footer-link">
+                    DNS Shield
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                </a>
+                <span class="footer-version">v1.0.6</span>
+            </div>
+        </footer>
+    </div>
+
+    <div class="toast" id="toast"></div>
+</body>
+</html>

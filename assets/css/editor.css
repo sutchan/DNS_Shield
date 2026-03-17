@@ -1,0 +1,181 @@
+/* assets/css/editor.css v1.0.6 */
+/* Editor and Code Display Styles */
+
+.subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.stats-compact {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.stat-badge {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--bg-panel) 0%, var(--bg-secondary) 100%);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-badge:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+}
+
+.stat-value {
+    font-weight: 600;
+    color: var(--accent-color);
+    font-size: 1.1rem;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+}
+
+.editor-container {
+    display: flex;
+    position: relative;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-secondary);
+    height: 320px;
+    margin-bottom: 16px;
+}
+
+.editor-container:focus-within {
+    border-color: var(--accent-color);
+}
+
+.editor-container .line-numbers {
+    padding: 12px 8px;
+    background: var(--bg-panel);
+    color: var(--text-secondary);
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: right;
+    user-select: none;
+    min-width: 40px;
+    border-right: 1px solid var(--border-color);
+    overflow: hidden;
+    white-space: pre;
+}
+
+.editor-container textarea {
+    border: none;
+    border-radius: 0;
+    flex: 1;
+    overflow: auto;
+    line-height: 1.5;
+    padding: 12px;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: 'Monaco', 'Menlo', monospace;
+    font-size: 13px;
+    resize: none;
+}
+
+.editor-container textarea:focus {
+    outline: none;
+}
+
+.editor-container textarea::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+.editor-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.output-container {
+    display: flex;
+    position: relative;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--bg-secondary);
+    margin-bottom: 16px;
+    height: 280px;
+}
+
+[data-theme="dark"] .output-container {
+    background: #0f172a;
+}
+
+.output-container .line-numbers {
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    padding: 14px 8px;
+    color: var(--text-secondary);
+    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: right;
+    user-select: none;
+    min-width: 36px;
+    overflow: hidden;
+    white-space: pre;
+}
+
+[data-theme="dark"] .output-container .line-numbers {
+    background: #0f172a;
+    border-right-color: #334155;
+    color: #64748b;
+}
+
+.output-preview {
+    flex: 1;
+    background: transparent;
+    color: var(--text-primary);
+    padding: 14px;
+    border-radius: 0;
+    font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+[data-theme="dark"] .output-preview {
+    background: #0f172a;
+}
+
+.output-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.merge-info {
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .stats-compact { flex-wrap: wrap; }
+    .stat-badge { padding: 6px 12px; }
+    .editor-actions, .output-actions { flex-wrap: wrap; }
+    .line-numbers { display: none; }
+    textarea { min-height: 200px; }
+}

@@ -1,0 +1,35 @@
+# Backup files
+*.bak
+*.tmp
+.trae
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Node modules (if any)
+node_modules/
+
+# Log files
+*.log
+logs/
+
+# Test output
+coverage/
+.nyc_output/
+
+# Build output
+dist/
+build/
