@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Save button now uses File System Access API to save directly to project directory
 
+### Fixed
+- Renamed `manager.html` to `index.html` for consistency with web standards
+
 ## [1.0.5]
 
 ### Changed

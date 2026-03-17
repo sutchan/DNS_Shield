@@ -96,12 +96,12 @@ curl -sL https://raw.githubusercontent.com/sutchan/dns-shield/main/hosts.txt >> 
 |------|------|
 | `dnsmasq.conf` | 主 dnsmasq 过滤列表（`address=/domain/0.0.0.0` 格式） |
 | `hosts.txt` | 路由器 hosts 文件（`0.0.0.0 domain` 格式） |
-| `manager.html` | Web 管理界面，用于管理和生成过滤清单 |
+| `index.html` | Web 管理界面，用于管理和生成过滤清单 |
 | `domains.txt` | 统一域名列表（每行一个域名，数据源） |
 
 ## Web 管理界面
 
-在浏览器中打开 `manager.html` 可以：
+在浏览器中打开 `index.html` 可以：
 
 - 从 URL 或本地文件加载域名列表
 - 选择预设源（AdGuard、EasyList、NeoHosts、小米广告）
@@ -115,7 +115,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/dns-shield/main/hosts.txt >> 
 ```
 domains.txt (唯一数据源)
         ↓
-  manager.html (Web 工具)
+  index.html (Web 工具)
         ↓
    ┌────────────┴────────────┐
    ↓                         ↓
@@ -134,7 +134,7 @@ dnsmasq.conf              hosts.txt
 ## 贡献
 
 1. 编辑 `domains.txt` 添加或删除域名
-2. 打开 `manager.html` 生成更新的文件
+2. 打开 `index.html` 生成更新的文件
 3. 提交 Pull Request
 
 ## 许可证

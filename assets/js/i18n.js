@@ -1,4 +1,4 @@
-// assets/js/i18n.js v1.0.5
+// assets/js/i18n.js v1.0.6
 // Internationalization (i18n) translations for DNS Ad Block List Generator
 
 const i18n = {
@@ -56,9 +56,6 @@ const i18n = {
         easylist: 'EasyList',
         xiaomiAd: '小米广告',
         builtinAd: '内置数据',
-        adguard: 'AdGuard',
-        easylist: 'EasyList',
-        neohosts: 'NeoHosts',
         toastFetching: '正在获取域名列表...',
         toastFetchSuccess: '成功获取域名列表！',
         toastFetchFailed: '获取失败: ',

@@ -22,7 +22,7 @@
 
 - [ ] 根目录文件结构符合 SPEC.md 定义
 - [ ] `domains.txt` 存在且格式正确
-- [ ] `manager.html` 存在且功能完整
+- [ ] `index.html` 存在且功能完整
 - [ ] `assets/js/i18n.js` 存在且翻译完整
 - [ ] `assets/js/utils.js` 存在且工具函数完整
 - [ ] `assets/js/core.js` 存在且状态管理完整

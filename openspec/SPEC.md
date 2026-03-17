@@ -21,7 +21,7 @@ dns-shield/
 ├── domains.txt                    # 原始域名清单（唯一数据源）
 ├── dnsmasq.conf                  # Dnsmasq 过滤列表
 ├── hosts.txt                      # Hosts 文件
-├── manager.html                   # Web 管理界面
+├── index.html                     # Web 管理界面
 ├── CHANGELOG.md                  # 变更日志
 ├── .gitignore                    # Git 忽略配置
 ├── assets/                       # 资源目录
@@ -63,7 +63,7 @@ dns-shield/
                            │
                            ▼
                    ┌───────────────┐
-                   │ manager.html  │
+                   │ index.html  │
                    │ (Web 管理工具)│
                    └───────────────┘
                            │
@@ -140,7 +140,7 @@ address=/domain/::
 ### 6.1 新增规则
 
 1. 编辑 `domains.txt`，添加新域名
-2. 打开 `manager.html`
+2. 打开 `index.html`
 3. 加载 `domains.txt` 或手动输入
 4. 配置输出选项
 5. 点击"生成规则"
@@ -191,7 +191,7 @@ refactor: 优化规则生成逻辑
 ## 10. 依赖关系
 
 ```
-manager.html (纯静态，无需服务器)
+index.html (纯静态，无需服务器)
     │
     ├── domains.txt                ← 数据源
     │

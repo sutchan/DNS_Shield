@@ -1,4 +1,4 @@
-// assets/js/app.js v1.0.5
+// assets/js/app.js v1.0.6
 // Main entry point for DNS Ad Block List Generator
 
 (function init() {

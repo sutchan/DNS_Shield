@@ -75,12 +75,12 @@ Most routers with custom hosts support can use the same method:
 |------|-------------|
 | `dnsmasq.conf` | Main dnsmasq filter list (`address=/domain/0.0.0.0` format) |
 | `hosts.txt` | Hosts file for routers (`0.0.0.0 domain` format) |
-| `manager.html` | Web interface for managing and generating filter lists |
+| `index.html` | Web interface for managing and generating filter lists |
 | `domains.txt` | Unified domain list (one domain per line, source of truth) |
 
 ## Web Manager
 
-Open `manager.html` in your browser to:
+Open `index.html` in your browser to:
 
 - Load and parse domain lists from URL or local file
 - Choose preset sources (AdGuard, EasyList, NeoHosts, Xiaomi)
@@ -94,7 +94,7 @@ Open `manager.html` in your browser to:
 ```
 domains.txt (Source of Truth)
         ↓
-    manager.html (Web Tool)
+    index.html (Web Tool)
         ↓
    ┌────────────┴────────────┐
    ↓                         ↓
@@ -104,7 +104,7 @@ dnsmasq.conf              hosts.txt
 ## Contribution
 
 1. Edit `domains.txt` to add/remove domains
-2. Open `manager.html` to generate updated files
+2. Open `index.html` to generate updated files
 3. Submit Pull Request
 
 ## License
