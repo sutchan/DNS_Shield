@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7]
+
+### Added
+- PWA support with manifest.json
+- Service worker for offline caching
+- App icons in multiple sizes (72x72 to 512x512)
+- Apple touch icon and mobile web app meta tags
+- Visual distinction between input/output panels (colored left borders)
+- Statistics bar visualization with animated progress indicators
+- Loading spinner animation for URL fetch operations
+- Empty state styling for better user guidance
+- Ripple effect on button clicks
+- Keyboard shortcuts (Ctrl+Enter to generate, Ctrl+S to save)
+- Auto-save functionality with localStorage (every 30 seconds)
+- Auto-restore of unsaved content on page load
+- Enhanced focus states for accessibility (`:focus-visible`)
+- Improved mobile responsive design
+
+### Changed
+- Input panel now has accent color (purple) left border
+- Output panel now has success color (green) left border
+- Statistics badges show visual feedback when data is present
+- Loading states added to fetch buttons during network requests
+- Mobile breakpoints optimized for better touch experience
+
 ## [1.0.6]
 
 ### Changed

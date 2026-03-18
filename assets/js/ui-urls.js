@@ -1,4 +1,4 @@
-// assets/js/ui-urls.js v1.0.5
+// assets/js/ui-urls.js v1.0.7
 // URL management functions for DNS Ad Block List Generator
 
 function addUrl() {
@@ -113,6 +113,13 @@ async function fetchAllUrls() {
     }
 
     let allContent = [];
+    const btn = document.querySelector('[onclick="fetchAllUrls()"]');
+    const originalText = btn ? btn.innerHTML : '';
+    if (btn) {
+        btn.innerHTML = '<span class="spinner"></span>' + (isLangZh ? '获取中...' : 'Fetching...');
+        btn.classList.add('btn-loading');
+        btn.disabled = true;
+    }
 
     for (const item of validUrls) {
         try {
@@ -130,6 +137,12 @@ async function fetchAllUrls() {
         document.getElementById('sourceInput').value = allContent.join('\n');
         parseSource();
         showToast(t('toastFetchSuccess') + ` (${allContent.length} ${t('toastFiles')})`);
+    }
+
+    if (btn) {
+        btn.innerHTML = originalText;
+        btn.classList.remove('btn-loading');
+        btn.disabled = false;
     }
 }
 
@@ -205,6 +218,12 @@ async function fetchFromUrl() {
         return;
     }
 
+    const btn = document.querySelector('#urlInput + .btn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner"></span>' + (isLangZh ? '获取中...' : 'Fetching...');
+    btn.classList.add('btn-loading');
+    btn.disabled = true;
+
     try {
         showToast(t('toastFetching'));
         const response = await fetch(url);
@@ -215,6 +234,10 @@ async function fetchFromUrl() {
         showToast(t('toastFetchSuccess'));
     } catch (e) {
         showToast(t('toastFetchFailed') + e.message, true);
+    } finally {
+        btn.innerHTML = originalText;
+        btn.classList.remove('btn-loading');
+        btn.disabled = false;
     }
 }
 

@@ -1,4 +1,4 @@
-<!-- index.html v1.0.6 -->
+<!-- index.html v1.0.7 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -10,13 +10,27 @@
     <meta name="robots" content="index, follow">
     <meta name="geo.region" content="CN">
     <meta name="geo.placename" content="China">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="DNS Shield">
     <meta property="og:title" content="DNS Shield - 路由器广告过滤">
     <meta property="og:description" content="路由器级广告过滤规则生成工具，支持 Dnsmasq 和 Hosts 格式">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://github.com/sutchan/dns-shield">
     <meta property="og:image" content="https://raw.githubusercontent.com/sutchan/dns-shield/main/preview.png">
     <meta name="twitter:card" content="summary_large_image">
-    <title>DNS Shield v1.0.6</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="72x72" href="assets/icons/icon-72x72.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/icons/icon-96x96.png">
+    <link rel="icon" type="image/png" sizes="128x128" href="assets/icons/icon-128x128.png">
+    <link rel="icon" type="image/png" sizes="144x144" href="assets/icons/icon-144x144.png">
+    <link rel="icon" type="image/png" sizes="152x152" href="assets/icons/icon-152x152.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="384x384" href="assets/icons/icon-384x384.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="assets/icons/icon-512x512.png">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+    <title>DNS Shield v1.0.7</title>
     <link rel="stylesheet" href="assets/css/variables.css">
     <link rel="stylesheet" href="assets/css/layout.css">
     <link rel="stylesheet" href="assets/css/components.css">
@@ -121,6 +135,7 @@
                         <div class="format-tabs">
                             <button class="format-tab active" onclick="setFormat('hosts')">Hosts</button>
                             <button class="format-tab" onclick="setFormat('dnsmasq')">Dnsmasq</button>
+                            <button class="format-tab" onclick="setFormat('adguard')">AdGuard</button>
                         </div>
                         <button class="settings-btn" onclick="toggleSettings()" data-i18n-title="settingsTitle" title="设置">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -139,7 +154,7 @@
                         </div>
                         <div class="settings-item">
                             <label data-i18n="version">版本号</label>
-                            <input type="text" id="versionInput" value="1.0.6" onchange="updateSettings()">
+                            <input type="text" id="versionInput" value="1.0.7" onchange="updateSettings()">
                         </div>
                         <div class="settings-item">
                             <label data-i18n="ipV4">IPv4</label>
@@ -230,11 +245,25 @@
                         <line x1="10" y1="14" x2="21" y2="3"></line>
                     </svg>
                 </a>
-                <span class="footer-version">v1.0.6</span>
+                <span class="footer-version">v1.0.7</span>
             </div>
         </footer>
     </div>
 
     <div class="toast" id="toast"></div>
+
+    <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('SW registered:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('SW registration failed:', error);
+          });
+      });
+    }
+    </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-// assets/js/i18n.js v1.0.6
+// assets/js/i18n.js v1.0.7
 // Internationalization (i18n) translations for DNS Ad Block List Generator
 
 const i18n = {
@@ -19,6 +19,7 @@ const i18n = {
         format: '选择输出格式',
         dnsmasq: 'Dnsmasq 格式',
         hosts: 'Hosts 格式',
+        adguard: 'AdGuard 格式',
         both: '混合输出',
         settings: '⚙️ 生成设置',
         ip: '目标 IP',
@@ -26,6 +27,7 @@ const i18n = {
         ipV6: '目标 IP (IPv6)',
         dnsmasqFile: 'Dnsmasq 文件名',
         hostsFile: 'Hosts 文件名',
+        adguardFile: 'AdGuard 文件名',
         includeComments: '包含注释',
         addTimestamp: '添加时间戳',
         options: '选项',
@@ -36,6 +38,7 @@ const i18n = {
         download: '下载',
         downloadDnsmasq: '下载 dnsmasq 格式',
         downloadHosts: '下载 Hosts 格式',
+        downloadAdguard: '下载 AdGuard 格式',
         downloadBtn: '📥 下载文件',
         copyBtn: '📋 复制到剪贴板',
         copyAll: '复制全部',
@@ -125,6 +128,7 @@ const i18n = {
         format: 'Select Output Format',
         dnsmasq: 'Dnsmasq',
         hosts: 'Hosts',
+        adguard: 'AdGuard',
         both: 'Both',
         settings: '⚙️ Generation Settings',
         ip: 'Target IP',
@@ -132,6 +136,7 @@ const i18n = {
         ipV6: 'IPv6 Address',
         dnsmasqFile: 'Dnsmasq Filename',
         hostsFile: 'Hosts Filename',
+        adguardFile: 'AdGuard Filename',
         includeComments: 'Include Comments',
         addTimestamp: 'Add Timestamp',
         options: 'Options',
@@ -142,6 +147,7 @@ const i18n = {
         download: 'Download',
         downloadDnsmasq: 'Download Dnsmasq',
         downloadHosts: 'Download Hosts',
+        downloadAdguard: 'Download AdGuard',
         downloadBtn: '📥 Download File',
         copyBtn: '📋 Copy to Clipboard',
         copyAll: 'Copy All',

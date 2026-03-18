@@ -1,4 +1,4 @@
-/* assets/css/layout.css v1.0.6 */
+/* assets/css/layout.css v1.0.7 */
 /* Layout and Container Styles */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -385,6 +385,7 @@ body {
     .format-tabs { flex-wrap: wrap; }
     .header-main { flex-direction: column; gap: 12px; align-items: flex-start; }
     .header-actions { width: 100%; justify-content: flex-end; }
+    .input-section, .output-section { border-left-width: 3px; }
 }
 
 @media (max-width: 480px) {
@@ -394,4 +395,8 @@ body {
     .preset-tags { gap: 6px; }
     .preset-tag { padding: 5px 10px; font-size: 0.8rem; }
     .section-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .header-main { gap: 8px; }
+    .header-actions { gap: 8px; }
+    .icon-btn, .lang-switch { padding: 6px 10px; font-size: 0.75rem; }
+    .input-section, .output-section { border-left-width: 2px; }
 }

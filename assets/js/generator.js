@@ -1,4 +1,4 @@
-// assets/js/generator.js v1.0.6
+// assets/js/generator.js v1.0.7
 // Rule generation logic for DNS Ad Block List Generator
 
 function generateRules() {
@@ -28,6 +28,7 @@ function generateRules() {
 
     let dnsmasqContent = '';
     let hostsContent = '';
+    let adguardContent = '';
 
     if (addHeader) {
         const totalDomains = processedDomains.length + customDns.length;
@@ -70,11 +71,29 @@ function generateRules() {
         hostsContent += `# Project: ${projectUrl}\n`;
         hostsContent += `#\n`;
         hostsContent += `# =====================================\n\n`;
+
+        adguardContent += `! ====================================\n`;
+        adguardContent += `! ${settings.projectName} - AdGuard Ad Block Filter\n`;
+        adguardContent += `! ====================================\n`;
+        adguardContent += `!\n`;
+        adguardContent += `! Description: AdGuard-compatible ad blocking filter\n`;
+        adguardContent += `!\n`;
+        adguardContent += `! Version: ${settings.version}\n`;
+        adguardContent += `! Update: ${dateStr}\n`;
+        adguardContent += `! Domains: ${totalDomains} unique domains\n`;
+        if (processedWhitelist.length > 0) {
+            adguardContent += `! Whitelist: ${processedWhitelist.length} domains\n`;
+        }
+        adguardContent += `!\n`;
+        adguardContent += `! Project: ${projectUrl}\n`;
+        adguardContent += `!\n`;
+        adguardContent += `! ====================================\n\n`;
     }
 
     processedDomains.forEach(domain => {
         dnsmasqContent += `address=/${domain}/${settings.ipv4}\n`;
         hostsContent += `${settings.ipv4} ${domain}\n`;
+        adguardContent += `||${domain}^\n`;
 
         if (blockIPv6) {
             dnsmasqContent += `address=/${domain}/${settings.ipv6}\n`;
@@ -85,6 +104,7 @@ function generateRules() {
     customDns.forEach(item => {
         dnsmasqContent += `address=/${item.domain}/${item.ip}\n`;
         hostsContent += `${item.ip} ${item.domain}\n`;
+        adguardContent += `||${item.domain}^\n`;
 
         if (blockIPv6) {
             dnsmasqContent += `address=/${item.domain}/::\n`;
@@ -95,28 +115,33 @@ function generateRules() {
         if (addHeader) {
             dnsmasqContent += `\n# Whitelist (allow these domains)\n`;
             hostsContent += `\n# Whitelist (allow these domains)\n`;
+            adguardContent += `\n! Whitelist (allow these domains)\n`;
         }
         processedWhitelist.forEach(domain => {
             dnsmasqContent += `server=/${domain}/\n`;
             hostsContent += `# Whitelisted: ${domain}\n`;
+            adguardContent += `@@||${domain}^\n`;
         });
     }
 
     outputContent.dnsmasq = dnsmasqContent;
     outputContent.hosts = hostsContent;
+    outputContent.adguard = adguardContent;
 
     let preview = '';
     if (currentFormat === 'dnsmasq') {
         preview = dnsmasqContent;
     } else if (currentFormat === 'hosts') {
         preview = hostsContent;
+    } else if (currentFormat === 'adguard') {
+        preview = adguardContent;
     } else {
         preview = '=== Dnsmasq 格式 ===\n' + dnsmasqContent + '\n\n=== Hosts 格式 ===\n' + hostsContent;
     }
 
     document.getElementById('outputPreview').textContent = preview;
     updateOutputLineNumbers();
-    document.getElementById('mergeInfo').textContent = `黑名单: ${processedDomains.length} | 白名单: ${processedWhitelist.length} | 自定义DNS: ${customDns.length} | Dnsmasq: ${dnsmasqContent.split('\n').length} 行 | Hosts: ${hostsContent.split('\n').length} 行`;
+    document.getElementById('mergeInfo').textContent = `黑名单: ${processedDomains.length} | 白名单: ${processedWhitelist.length} | 自定义DNS: ${customDns.length} | Dnsmasq: ${dnsmasqContent.split('\n').length} 行 | Hosts: ${hostsContent.split('\n').length} 行 | AdGuard: ${adguardContent.split('\n').length} 行`;
 }
 
 function downloadOutput() {
@@ -125,6 +150,8 @@ function downloadOutput() {
         downloadFile(outputContent.dnsmasq, settings.dnsmasqFilename);
     } else if (format === 'hosts') {
         downloadFile(outputContent.hosts, settings.hostsFilename);
+    } else if (format === 'adguard') {
+        downloadFile(outputContent.adguard, settings.adguardFilename);
     } else {
         downloadFile(outputContent.dnsmasq, settings.dnsmasqFilename);
         setTimeout(() => downloadFile(outputContent.hosts, settings.hostsFilename), 500);
@@ -143,11 +170,18 @@ function downloadHosts() {
     showToast('已下载 ' + settings.hostsFilename);
 }
 
+function downloadAdguard() {
+    if (!outputContent.adguard) generateRules();
+    downloadFile(outputContent.adguard, settings.adguardFilename);
+    showToast('已下载 ' + settings.adguardFilename);
+}
+
 function copyOutput() {
     const format = currentFormat;
     let text = '';
     if (format === 'dnsmasq') text = outputContent.dnsmasq;
     else if (format === 'hosts') text = outputContent.hosts;
+    else if (format === 'adguard') text = outputContent.adguard;
     else text = outputContent.dnsmasq + '\n\n' + outputContent.hosts;
 
     navigator.clipboard.writeText(text).then(() => {

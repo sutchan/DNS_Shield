@@ -1,4 +1,4 @@
-// assets/js/parser.js v1.0.6
+// assets/js/parser.js v1.0.7
 // Domain parsing logic for DNS Ad Block List Generator
 
 function parseSource() {
@@ -242,5 +242,6 @@ function updateSettings() {
     settings.ipv6 = document.getElementById('ipv6Input').value || '::';
     settings.dnsmasqFilename = document.getElementById('dnsmasqFilename').value || 'dnsmasq.conf';
     settings.hostsFilename = document.getElementById('hostsFilename').value || 'hosts.txt';
+    settings.adguardFilename = document.getElementById('adguardFilename').value || 'adguard.txt';
     if (domains.length > 0) generateRules();
 }

@@ -1,4 +1,4 @@
-// assets/js/ui-editor.js v1.0.5
+// assets/js/ui-editor.js v1.0.7
 // Editor functions for DNS Ad Block List Generator
 
 function handleSourceInput() {
@@ -65,9 +65,37 @@ function clearAll() {
     domains = [];
     whitelist = [];
     customDns = [];
+    localStorage.removeItem('dnsShield_autosave');
+    localStorage.removeItem('dnsShield_autosave_time');
     parseSource();
     updateLineNumbers();
+    updateStatsBar();
     document.getElementById('outputPreview').textContent = '// 生成的规则将显示在这里';
     updateOutputLineNumbers();
     document.getElementById('mergeInfo').textContent = getTranslations().mergeInfo;
+}
+
+function showEmptyState() {
+    const statsBar = document.getElementById('stats-bar');
+    const hasData = domains.length > 0 || whitelist.length > 0 || customDns.length > 0;
+
+    document.querySelectorAll('.stat-badge').forEach(badge => {
+        if (hasData) {
+            badge.classList.add('has-data');
+        } else {
+            badge.classList.remove('has-data');
+        }
+    });
+}
+
+function updateStatsBar() {
+    const domainCount = document.getElementById('domainCount');
+    const validCount = document.getElementById('validCount');
+    const commentCount = document.getElementById('commentCount');
+
+    if (domainCount) domainCount.textContent = domains.length;
+    if (validCount) validCount.textContent = whitelist.length;
+    if (commentCount) commentCount.textContent = customDns.length;
+
+    showEmptyState();
 }
