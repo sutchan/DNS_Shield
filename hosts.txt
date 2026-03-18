@@ -4,9 +4,9 @@
 #
 # Description: Router-level ad blocking hosts file
 #
-# Version: 1.0.6
-# Update: 2026.03.17
-# Domains: 445 unique domains
+# Version: 1.0.7
+# Update: 2026.03.18
+# Domains: 442 unique domains
 # Whitelist: 4 domains
 #
 # Usage: Import to router ad blocking settings
@@ -78,8 +78,7 @@
 127.0.0.1 adl.xiaomi.com
 127.0.0.1 admaster.com
 127.0.0.1 admaster.com.cn
-127.0.0.1 adobe-dns-2.adobe.com
-127.0.0.1 adobe-dns-3.adobe.com
+127.0.0.1 admp.weixin.qq.com
 127.0.0.1 adping.qq.com
 127.0.0.1 adplay.tudou.com
 127.0.0.1 ads-union.jd.com
@@ -89,7 +88,6 @@
 127.0.0.1 ads.cn.miaozhen.com
 127.0.0.1 ads.mgtv.com
 127.0.0.1 ads.migu.cn
-127.0.0.1 ads.serving-sys.cn
 127.0.0.1 ads.union.jd.com
 127.0.0.1 adsclick.qq.com
 127.0.0.1 adsfile.qq.com
@@ -139,7 +137,6 @@
 127.0.0.1 apps.corel.com
 127.0.0.1 appsflyer.com
 127.0.0.1 as.weixin.qq.com
-127.0.0.1 assistant.pandora.xiaomi.com
 127.0.0.1 at-img1.tdimg.com
 127.0.0.1 at-img2.tdimg.com
 127.0.0.1 at-img3.tdimg.com
@@ -212,7 +209,6 @@
 127.0.0.1 g.dtv.cn.miaozhen.com
 127.0.0.1 g.pandora.xiaomi.com
 127.0.0.1 galaxy.ad.iqiyi.com
-127.0.0.1 gallery.pandora.xiaomi.com
 127.0.0.1 game.weixin.qq.com
 127.0.0.1 gdt.qq.com
 127.0.0.1 gifshow.com
@@ -282,6 +278,7 @@
 127.0.0.1 mon.ad.xelements.cn
 127.0.0.1 monitor.bnc66.com
 127.0.0.1 mopub.com
+127.0.0.1 mpad.qq.com
 127.0.0.1 mpad.weixin.qq.com
 127.0.0.1 mpush-api.aliyun.com
 127.0.0.1 ms.applvn.com
@@ -361,7 +358,6 @@
 127.0.0.1 qr.sohu.com
 127.0.0.1 qr.tv.qq.com
 127.0.0.1 qr.youku.com
-127.0.0.1 qrcode.youku.com
 127.0.0.1 qtsftl.m.cn.miaozhen.com
 127.0.0.1 r.browser.miui.com
 127.0.0.1 regist.tv.kuyun.com
@@ -454,6 +450,7 @@
 127.0.0.1 wq.123789.net.cn
 127.0.0.1 ws.mmstat.com
 127.0.0.1 wxa.wxs.qq.com
+127.0.0.1 wxad.qq.com
 127.0.0.1 wxapp.tc.qq.com
 127.0.0.1 wxsnsdy.tc.qq.com
 127.0.0.1 xiaomi-dtv.m.cn.miaozhen.com
