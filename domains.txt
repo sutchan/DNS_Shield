@@ -16,11 +16,6 @@
 # !ad.example.com      # 注释域名：显示用
 # @example.com=0.0.0.0 # 自定义 DNS 指向
 #
-+api.io.mi.com #影响米家互联的使用。
-+connectivitycheck.gstatic.com #影响 GooglePlay
-+XX.market.mi-img.com #影响MIUI小部件
-+XX.market.xiaomi.com #影响MIUI小部件
-
 3dns-2.adobe.com # Adobe 更新
 3dns-3.adobe.com # Adobe 更新
 4009997658.com # 广告/推广
@@ -84,6 +79,7 @@ adjust.com # 移动归因平台
 adl.xiaomi.com # 小米广告
 admaster.com # 广告主
 admaster.com.cn # 广告主
+admp.weixin.qq.com
 adping.qq.com # 腾讯广告
 adplay.tudou.com # 土豆广告
 ads-union.jd.com # 京东广告联盟
@@ -144,7 +140,6 @@ applvn.com # 应用链接
 apps.corel.com # Corel
 appsflyer.com # 归因平台
 as.weixin.qq.com # 微信
-assistant.pandora.xiaomi.com # 小米小爱
 at-img1.tdimg.com # 图片CDN
 at-img2.tdimg.com # 图片CDN
 at-img3.tdimg.com # 图片CDN
@@ -217,7 +212,6 @@ g.dtv.cn.miaozhan.com # 电视广告
 g.dtv.cn.miaozhen.com # 电视广告
 g.pandora.xiaomi.com # 小米
 galaxy.ad.iqiyi.com # 爱奇艺银河广告
-gallery.pandora.xiaomi.com # 小米
 game.weixin.qq.com # 微信游戏
 gdt.qq.com # 腾讯广告
 gdt.qq.com/getads # 腾讯广告
@@ -288,6 +282,9 @@ mobads.baidu.com # 百度广告
 mon.ad.xelements.cn # 广告
 monitor.bnc66.com # 监控
 mopub.com # 广告平台
+mp.weixin.qq.com/ad
+mp.weixin.qq.com/spread
+mpad.qq.com
 mpad.weixin.qq.com # 微信广告
 mpush-api.aliyun.com # 阿里云推送
 ms.applvn.com # 应用链接
@@ -459,9 +456,14 @@ wgo.mmstat.com # 统计
 wq.123789.net.cn # 小游戏跳转
 ws.mmstat.com # 统计
 wxa.wxs.qq.com # 微信小程序
+wxad.qq.com
 wxapp.tc.qq.com # 微信小程序
 wxsnsdy.tc.qq.com # 腾讯视频
 xiaomi-dtv.m.cn.miaozhen.com # 小米电视-秒针
 yhqdashi.com # 广告
 yk-ssp-ad.cp31.ott.cibntv.net # 优酷广告
 yximgs.com # 阿里图片
++api.io.mi.com #影响米家互联的使用。
++connectivitycheck.gstatic.com #影响 GooglePlay
++XX.market.mi-img.com #影响MIUI小部件
++XX.market.xiaomi.com #影响MIUI小部件
