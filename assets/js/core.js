@@ -1,4 +1,4 @@
-// assets/js/core.js v1.0.6
+// assets/js/core.js v1.0.7
 // Core variables and configuration for DNS Ad Block List Generator
 
 let domains = [];
@@ -9,7 +9,8 @@ let currentFormat = 'hosts';
 let outputContent = { dnsmasq: '', hosts: '', adguard: '' };
 let isLangZh = true;
 
-const projectUrl = 'https://github.com/sutchan/dns-shield';
+const projectUrl = 'https://github.com/sutchan/DNS_Shield';
+const demoUrl = 'https://dns.ewuse.com/';
 
 let settings = {
     projectName: 'DNS Shield',

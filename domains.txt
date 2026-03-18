@@ -1,4 +1,5 @@
-# 项目地址：https://github.com/sutchan/dns-shield
+# 项目地址：https://github.com/sutchan/DNS_Shield
+# 演示地址：https://dns.ewuse.com/
 # 原始域名清单
 # 格式：每行一个域名，# 开头为注释
 # 此文件为唯一数据源，通过 index.html 生成其他格式

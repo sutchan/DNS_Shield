@@ -1,6 +1,6 @@
 # DNS Shield
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-1.0.6-green)](https://github.com/sutchan/dns-shield)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-1.0.7-green)](https://github.com/sutchan/DNS_Shield)
 
 Router-level DNS-based ad blocking filter list with web management tool.
 
@@ -29,7 +29,7 @@ Copy all content from `dnsmasq.conf` and paste into the custom dnsmasq configura
 #### OpenWrt
 
 ```bash
-curl -sL https://raw.githubusercontent.com/sutchan/dns-shield/main/dnsmasq.conf >> /etc/dnsmasq.conf
+curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf >> /etc/dnsmasq.conf
 ```
 
 ### Method 2: Hosts Format
@@ -57,7 +57,7 @@ Import `hosts.txt` into your router's ad blocking settings.
 # Services → DNS and DHCP → Extra hosts fields
 
 # Method 2: Via CLI
-curl -sL https://raw.githubusercontent.com/sutchan/dns-shield/main/hosts.txt >> /etc/hosts
+curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt >> /etc/hosts
 ```
 
 #### Other Routers

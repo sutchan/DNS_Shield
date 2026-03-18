@@ -9,7 +9,8 @@
 ! Domains: 441 unique domains
 ! Whitelist: 4 domains
 !
-! Project: https://github.com/sutchan/dns-shield
+! Project: https://github.com/sutchan/DNS_Shield
+! Demo: https://dns.ewuse.com/
 !
 ! ====================================
 

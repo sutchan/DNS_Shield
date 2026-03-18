@@ -11,7 +11,8 @@
 #
 # Usage: Import to router ad blocking settings
 #
-# Project: https://github.com/sutchan/dns-shield
+# Project: https://github.com/sutchan/DNS_Shield
+# Demo: https://dns.ewuse.com/
 #
 # =====================================
 

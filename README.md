@@ -1,6 +1,6 @@
 # DNS Shield - 路由器级广告防护
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-1.0.6-green)](https://github.com/sutchan/dns-shield)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-1.0.7-green)](https://github.com/sutchan/DNS_Shield)
 
 基于 DNS 的路由器广告过滤规则库，提供 Web 管理界面。
 
@@ -50,7 +50,7 @@
 #### OpenWrt
 
 ```bash
-curl -sL https://raw.githubusercontent.com/sutchan/dns-shield/main/dnsmasq.conf >> /etc/dnsmasq.conf
+curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf >> /etc/dnsmasq.conf
 ```
 
 ### 方式二：Hosts 格式
@@ -78,7 +78,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/dns-shield/main/dnsmasq.conf 
 # 服务 → DNS 和 DHCP → 额外 hosts 字段
 
 # 方式二：通过命令行
-curl -sL https://raw.githubusercontent.com/sutchan/dns-shield/main/hosts.txt >> /etc/hosts
+curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt >> /etc/hosts
 ```
 
 #### 其他路由器

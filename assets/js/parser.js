@@ -11,77 +11,46 @@ function parseSource() {
     let commentCount = 0;
 
     for (const line of lines) {
-        let rawLine = line.trim();
+        const parsed = parseDomainLine(line);
         
-        if (!rawLine) {
-            commentCount++;
-            continue;
-        }
-
-        const hashIndex = rawLine.indexOf('#');
-        if (hashIndex === 0) {
+        if (parsed.type === 'empty') {
             commentCount++;
             continue;
         }
         
-        if (hashIndex > 0) {
-            rawLine = rawLine.substring(0, hashIndex).trim();
-        }
-        
-        if (!rawLine) {
+        if (parsed.type === 'comment') {
             commentCount++;
             continue;
         }
-
-        if (rawLine.startsWith('+')) {
-            let domain = rawLine.substring(1).trim().toLowerCase().replace(/^\*\./, '');
-            if (domain && isValidDomain(domain)) {
-                whitelist.push(domain);
+        
+        if (parsed.type === 'whitelist') {
+            if (parsed.isValid) {
+                whitelist.push(parsed.domain);
             } else {
                 commentCount++;
             }
             continue;
         }
-
-        if (rawLine.startsWith('!')) {
-            commentCount++;
-            continue;
-        }
-
-        if (rawLine.startsWith('@')) {
-            const match = rawLine.substring(1).trim().match(/^([^=]+)=(.+)$/);
-            if (match) {
-                const dnsDomain = match[1].toLowerCase().replace(/^\*\./, '');
-                const dnsIp = match[2].trim();
-                if (dnsDomain && isValidDomain(dnsDomain)) {
-                    customDns.push({ domain: dnsDomain, ip: dnsIp });
-                } else {
-                    commentCount++;
-                }
+        
+        if (parsed.type === 'customDns') {
+            if (parsed.isValid) {
+                customDns.push({ domain: parsed.domain, ip: parsed.ip });
             } else {
                 commentCount++;
             }
             continue;
         }
-
-        let domain = rawLine;
-
-        if (rawLine.startsWith('0.0.0.0 ') || rawLine.startsWith('127.0.0.1 ')) {
-            domain = rawLine.replace(/^(0\.0\.0\.0|127\.0\.0\.1)\s+/, '');
+        
+        if (parsed.type === 'hosts' || parsed.type === 'dnsmasq' || parsed.type === 'domain') {
+            if (parsed.isValid) {
+                domains.push(parsed.domain);
+            } else {
+                commentCount++;
+            }
+            continue;
         }
-
-        if (rawLine.startsWith('address=/')) {
-            const match = rawLine.match(/address=\/([^\/]+)\//);
-            if (match) domain = match[1];
-        }
-
-        domain = domain.toLowerCase().replace(/^\*\./, '');
-
-        if (domain && isValidDomain(domain)) {
-            domains.push(domain);
-        } else {
-            commentCount++;
-        }
+        
+        commentCount++;
     }
 
     const whitelistSet = new Set(whitelist.map(w => w.replace(/^\*\./, '')));
@@ -111,59 +80,37 @@ function dedupeDomains() {
     let removedCount = 0;
     
     for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed) {
+        const parsed = parseDomainLine(line);
+        
+        if (parsed.type === 'empty') {
             uniqueLines.push(line);
             continue;
         }
         
-        let domain = trimmed;
-        const hashIndex = domain.indexOf('#');
-        if (hashIndex > 0) {
-            domain = domain.substring(0, hashIndex).trim();
+        if (parsed.type === 'comment') {
+            uniqueLines.push(line);
+            continue;
         }
         
-        if (domain.startsWith('+') || domain.startsWith('!') || domain.startsWith('@')) {
-            const prefix = domain[0];
-            const value = domain.substring(1).trim().split('#')[0].trim();
-            const key = prefix + value.toLowerCase();
-            if (!seen.has(key)) {
-                seen.add(key);
-                uniqueLines.push(line);
-            } else {
-                removedCount++;
-            }
-        } else if (domain.startsWith('#')) {
+        if (!parsed.isValid) {
             uniqueLines.push(line);
-        } else if (domain.startsWith('0.0.0.0 ') || domain.startsWith('127.0.0.1 ')) {
-            const d = domain.replace(/^(0\.0\.0\.0|127\.0\.0\.1)\s+/, '').toLowerCase();
-            if (!seen.has(d)) {
-                seen.add(d);
-                uniqueLines.push(line);
-            } else {
-                removedCount++;
-            }
-        } else if (domain.startsWith('address=/')) {
-            const match = domain.match(/address=\/([^\/]+)\//);
-            if (match) {
-                const d = match[1].toLowerCase();
-                if (!seen.has(d)) {
-                    seen.add(d);
-                    uniqueLines.push(line);
-                } else {
-                    removedCount++;
-                }
-            } else {
-                uniqueLines.push(line);
-            }
+            continue;
+        }
+        
+        let key;
+        if (parsed.type === 'whitelist') {
+            key = '+' + parsed.domain;
+        } else if (parsed.type === 'customDns') {
+            key = '@' + parsed.domain + '=' + parsed.ip;
         } else {
-            const d = domain.toLowerCase();
-            if (!seen.has(d)) {
-                seen.add(d);
-                uniqueLines.push(line);
-            } else {
-                removedCount++;
-            }
+            key = parsed.domain;
+        }
+        
+        if (!seen.has(key)) {
+            seen.add(key);
+            uniqueLines.push(line);
+        } else {
+            removedCount++;
         }
     }
     
@@ -183,18 +130,19 @@ function sortDomains() {
     let inHeader = true;
     
     for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed) {
+        const parsed = parseDomainLine(line);
+        
+        if (parsed.type === 'empty') {
             bodyLines.push(line);
             continue;
         }
         
-        if (trimmed.startsWith('+') || trimmed.startsWith('!') || trimmed.startsWith('@')) {
+        if (parsed.type === 'whitelist' || parsed.type === 'customDns') {
             specialLines.push(line);
             continue;
         }
         
-        if (trimmed.startsWith('#')) {
+        if (parsed.type === 'comment') {
             if (inHeader) {
                 headerComments.push(line);
             } else {
@@ -208,19 +156,19 @@ function sortDomains() {
     }
     
     const plainDomains = bodyLines.filter(line => {
-        const trimmed = line.trim();
-        return trimmed && !trimmed.startsWith('#');
+        const parsed = parseDomainLine(line);
+        return parsed.type === 'domain' || parsed.type === 'hosts' || parsed.type === 'dnsmasq';
     });
     
     const comments = bodyLines.filter(line => {
-        const trimmed = line.trim();
-        return trimmed && trimmed.startsWith('#');
+        const parsed = parseDomainLine(line);
+        return parsed.type === 'comment';
     });
     
     const sortedDomains = [...plainDomains].sort((a, b) => {
-        const aClean = a.trim().replace(/^(0\.0\.0\.0|127\.0\.0\.1|address=\/)/, '').toLowerCase();
-        const bClean = b.trim().replace(/^(0\.0\.0\.0|127\.0\.0\.1|address=\/)/, '').toLowerCase();
-        return aClean.localeCompare(bClean);
+        const aParsed = parseDomainLine(a);
+        const bParsed = parseDomainLine(b);
+        return aParsed.domain.localeCompare(bParsed.domain);
     });
     
     const result = [
