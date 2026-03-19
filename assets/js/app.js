@@ -27,7 +27,10 @@
     }
 
     fetch('domains.txt')
-        .then(r => r.text())
+        .then(r => {
+            if (!r.ok) throw new Error('Failed to load domains.txt');
+            return r.text();
+        })
         .then(t => {
             if (t.trim()) {
                 document.getElementById('sourceInput').value = t;
@@ -36,7 +39,10 @@
                 document.querySelector('.preset-tag[onclick*="builtin"]')?.classList.add('active');
             }
         })
-        .catch(() => {});
+        .catch(err => {
+            console.warn('Could not load domains.txt:', err);
+            // Continue with empty input - not critical
+        });
 
     document.addEventListener('keydown', handleKeyboardShortcuts);
     setInterval(autoSave, 30000);

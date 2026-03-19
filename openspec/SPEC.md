@@ -102,6 +102,26 @@ address=/domain/::
 :: domain
 ```
 
+### 4.4 AdGuard 格式 (adguard.txt)
+
+```adguard
+! DNS Shield - AdGuard Ad Block Filter
+! Version: 1.0.7
+! Description: AdGuard-compatible ad blocking filter
+!
+||example.com^
+||advertising.com^
+! 注释行以 ! 开头
+||ad.doubleclick.net^
+```
+
+| 语法 | 说明 |
+|------|------|
+| `\|\|example.com^` | 阻止 `example.com` 及其所有子域名 |
+| `\|\|example.com^$important` | 重要规则，优先级更高 |
+| `@@\|\|example.com^` | 白名单，允许通过 |
+| `!` 开头 | 注释行 |
+
 ## 5. Web 管理工具功能
 
 ### 5.1 输入功能
@@ -119,7 +139,8 @@ address=/domain/::
 |------|------|
 | Dnsmasq 格式 | `address=/domain/IP` |
 | Hosts 格式 | `IP domain` |
-| 混合输出 | 同时输出两种格式 |
+| AdGuard 格式 | `\|\|domain^` |
+| 混合输出 | 同时输出多种格式 |
 | 头部注释 | 自动生成项目信息头 |
 | 一键下载 | 下载生成的文件 |
 | 剪贴板复制 | 复制生成的内容 |

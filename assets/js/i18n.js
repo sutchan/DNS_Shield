@@ -168,8 +168,6 @@ const i18n = {
         easylist: 'EasyList',
         xiaomiAd: 'Xiaomi Ads',
         builtinAd: 'Built-in Data',
-        adguard: 'AdGuard',
-        easylist: 'EasyList',
         neohosts: 'NeoHosts',
         toastFetching: 'Fetching domain list...',
         toastFetchSuccess: 'Domain list fetched successfully!',

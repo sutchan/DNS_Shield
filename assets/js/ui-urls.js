@@ -55,7 +55,7 @@ function renderUrlList() {
     const container = document.getElementById('urlList');
     container.innerHTML = urlList.map((item, index) => `
         <div class="url-item ${item.status}">
-            <span class="url-text" title="${item.url}">${item.url}</span>
+            <span class="url-text" title="${escapeHtml(item.url)}">${escapeHtml(item.url)}</span>
             <span class="url-remove" onclick="removeUrl(${index})">✕</span>
         </div>
     `).join('');
@@ -106,7 +106,7 @@ async function validateAllUrls() {
 
 async function fetchAllUrls() {
     const validUrls = urlList.filter(u => u.valid !== false);
-
+    
     if (validUrls.length === 0) {
         showToast(t('toastNoValidUrls'), true);
         return;
@@ -123,13 +123,13 @@ async function fetchAllUrls() {
 
     for (const item of validUrls) {
         try {
-            showToast(t('toastFetching') + ' ' + item.url);
+            showToast(t('toastFetching') + ' ' + escapeHtml(item.url));
             const response = await fetch(item.url);
             if (!response.ok) throw new Error('HTTP ' + response.status);
             const content = await response.text();
             allContent.push(content);
         } catch (e) {
-            showToast(t('toastFetchFailed') + item.url, true);
+            showToast(t('toastFetchFailed') + escapeHtml(item.url), true);
         }
     }
 
@@ -270,4 +270,17 @@ function loadPreset(name, evt) {
     }
     
     showToast(t('toastLoadPreset'));
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    
+    return text.replace(/[&<>"']/g, m => map[m]);
 }

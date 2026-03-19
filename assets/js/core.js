@@ -1,58 +1,65 @@
 // assets/js/core.js v1.0.7
 // Core variables and configuration for DNS Ad Block List Generator
+// Using namespace pattern to reduce global pollution
 
-let domains = [];
-let urlList = [];
-let whitelist = [];
-let customDns = [];
-let currentFormat = 'hosts';
-let outputContent = { dnsmasq: '', hosts: '', adguard: '' };
-let isLangZh = true;
-
-const projectUrl = 'https://github.com/sutchan/DNS_Shield';
-const demoUrl = 'https://dns.ewuse.com/';
-
-let settings = {
-    projectName: 'DNS Shield',
-    version: '1.0.7',
-    ipv4: '127.0.0.1',
-    ipv6: '::',
-    dnsmasqFilename: 'dnsmasq.conf',
-    hostsFilename: 'hosts.txt',
-    adguardFilename: 'adguard.txt'
+window.DNSShield = window.DNSShield || {};
+const state = window.DNSShield.state = {
+    domains: [],
+    urlList: [],
+    whitelist: [],
+    customDns: [],
+    currentFormat: 'hosts',
+    outputContent: { dnsmasq: '', hosts: '', adguard: '' },
+    isLangZh: true,
+    projectUrl: 'https://github.com/sutchan/DNS_Shield',
+    demoUrl: 'https://dns.ewuse.com/',
+    settings: {
+        projectName: 'DNS Shield',
+        version: '1.0.7',
+        ipv4: '127.0.0.1',
+        ipv6: '::',
+        dnsmasqFilename: 'dnsmasq.conf',
+        hostsFilename: 'hosts.txt',
+        adguardFilename: 'adguard.txt'
+    },
+    presets: {
+        adguard: 'https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt',
+        easylist: 'https://easylist.to/easylist/easylist.txt',
+        xiaomi: '',
+        neohosts: 'https://raw.githubusercontent.com/neo-forte/neo-forte.github.io/main/hosts/AdGameHosts/hosts'
+    }
 };
 
-const presets = {
-    adguard: 'https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt',
-    easylist: 'https://easylist.to/easylist/easylist.txt',
-    xiaomi: '',
-    neohosts: 'https://raw.githubusercontent.com/neo-forte/neo-forte.github.io/main/hosts/AdGameHosts/hosts'
-};
-
+// Getter/setter functions for backward compatibility
 function getSettings() {
-    return settings;
+    return state.settings;
 }
 
 function getDomains() {
-    return domains;
+    return state.domains;
 }
 
 function getWhitelist() {
-    return whitelist;
+    return state.whitelist;
 }
 
 function getCustomDns() {
-    return customDns;
+    return state.customDns;
 }
 
 function getOutputContent() {
-    return outputContent;
+    return state.outputContent;
 }
 
 function setOutputContent(content) {
-    outputContent = content;
+    state.outputContent = content;
 }
 
 function isLangChinese() {
-    return isLangZh;
+    return state.isLangZh;
+}
+
+// Expose state for direct access when needed
+function getState() {
+    return state;
 }
