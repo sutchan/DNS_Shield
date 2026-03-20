@@ -300,6 +300,7 @@ norma-external-collect.meizu.com # 魅族
 nstat.tudou.com # 土豆统计
 o2o.api.xiaomi.com # 小米O2O
 oauth-login-drcn.platform.dbankcloud.com # 华为登录
+official-t.720static.com #720yun banner
 omgmta.play.aiseet.atianqi.com # 电视
 open.e.kuaishou.cn # 快手
 open.e.kuaishou.com # 快手

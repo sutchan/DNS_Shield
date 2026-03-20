@@ -2,25 +2,32 @@
 // Rule generation logic for DNS Ad Block List Generator
 
 function generateRules() {
-    const addHeader = document.getElementById('addHeader').checked;
-    const blockIPv6 = document.getElementById('blockIPv6').checked;
-    const dedupDomains = document.getElementById('dedupDomains').checked;
-    const removeWildcard = document.getElementById('removeWildcard').checked;
+    const addHeader = document.getElementById('addHeader')?.checked ?? true;
+    const blockIPv6 = document.getElementById('blockIPv6')?.checked ?? false;
+    const dedupDomains = document.getElementById('dedupDomains')?.checked ?? true;
+    const removeWildcard = document.getElementById('removeWildcard')?.checked ?? true;
 
-    let processedDomains = [...domains];
+    const domainList = domains || [];
+    const whitelistList = whitelist || [];
+    const customDnsList = customDns || [];
+
+    const processedDomains = [...domainList];
+    const processedWhitelist = [...whitelistList];
+
+    let filteredDomains = processedDomains;
     if (removeWildcard) {
-        processedDomains = processedDomains.map(d => d.replace(/^\*\./, ''));
+        filteredDomains = filteredDomains.map(d => d.replace(/^\*\./, ''));
     }
     if (dedupDomains) {
-        processedDomains = [...new Set(processedDomains)].sort();
+        filteredDomains = [...new Set(filteredDomains)].sort();
     }
 
-    let processedWhitelist = [...whitelist];
+    let filteredWhitelist = processedWhitelist;
     if (removeWildcard) {
-        processedWhitelist = processedWhitelist.map(d => d.replace(/^\*\./, ''));
+        filteredWhitelist = filteredWhitelist.map(d => d.replace(/^\*\./, ''));
     }
     if (dedupDomains) {
-        processedWhitelist = [...new Set(processedWhitelist)].sort();
+        filteredWhitelist = [...new Set(filteredWhitelist)].sort();
     }
 
     const now = new Date();
@@ -31,7 +38,7 @@ function generateRules() {
     let adguardContent = '';
 
     if (addHeader) {
-        const totalDomains = processedDomains.length + customDns.length;
+        const totalDomains = filteredDomains.length + customDnsList.length;
         dnsmasqContent += `# =====================================\n`;
         dnsmasqContent += `# ${settings.projectName} - Dnsmasq Ad Block List\n`;
         dnsmasqContent += `# =====================================\n`;
@@ -41,8 +48,8 @@ function generateRules() {
         dnsmasqContent += `# Version: ${settings.version}\n`;
         dnsmasqContent += `# Update: ${dateStr}\n`;
         dnsmasqContent += `# Domains: ${totalDomains} unique domains\n`;
-        if (processedWhitelist.length > 0) {
-            dnsmasqContent += `# Whitelist: ${processedWhitelist.length} domains\n`;
+        if (filteredWhitelist.length > 0) {
+            dnsmasqContent += `# Whitelist: ${filteredWhitelist.length} domains\n`;
         }
         dnsmasqContent += `#\n`;
         dnsmasqContent += `# Usage:\n`;
@@ -50,6 +57,9 @@ function generateRules() {
         dnsmasqContent += `#   - OpenWrt: Services -> DHCP and DNS\n`;
         dnsmasqContent += `#\n`;
         dnsmasqContent += `# Project: ${projectUrl}\n`;
+        if (typeof demoUrl !== 'undefined') {
+            dnsmasqContent += `# Demo: ${demoUrl}\n`;
+        }
         dnsmasqContent += `#\n`;
         dnsmasqContent += `# =====================================\n\n`;
 
@@ -62,13 +72,16 @@ function generateRules() {
         hostsContent += `# Version: ${settings.version}\n`;
         hostsContent += `# Update: ${dateStr}\n`;
         hostsContent += `# Domains: ${totalDomains} unique domains\n`;
-        if (processedWhitelist.length > 0) {
-            hostsContent += `# Whitelist: ${processedWhitelist.length} domains\n`;
+        if (filteredWhitelist.length > 0) {
+            hostsContent += `# Whitelist: ${filteredWhitelist.length} domains\n`;
         }
         hostsContent += `#\n`;
         hostsContent += `# Usage: Import to router ad blocking settings\n`;
         hostsContent += `#\n`;
         hostsContent += `# Project: ${projectUrl}\n`;
+        if (typeof demoUrl !== 'undefined') {
+            hostsContent += `# Demo: ${demoUrl}\n`;
+        }
         hostsContent += `#\n`;
         hostsContent += `# =====================================\n\n`;
 
@@ -81,16 +94,19 @@ function generateRules() {
         adguardContent += `! Version: ${settings.version}\n`;
         adguardContent += `! Update: ${dateStr}\n`;
         adguardContent += `! Domains: ${totalDomains} unique domains\n`;
-        if (processedWhitelist.length > 0) {
-            adguardContent += `! Whitelist: ${processedWhitelist.length} domains\n`;
+        if (filteredWhitelist.length > 0) {
+            adguardContent += `! Whitelist: ${filteredWhitelist.length} domains\n`;
         }
         adguardContent += `!\n`;
         adguardContent += `! Project: ${projectUrl}\n`;
+        if (typeof demoUrl !== 'undefined') {
+            adguardContent += `! Demo: ${demoUrl}\n`;
+        }
         adguardContent += `!\n`;
         adguardContent += `! ====================================\n\n`;
     }
 
-    processedDomains.forEach(domain => {
+    filteredDomains.forEach(domain => {
         dnsmasqContent += `address=/${domain}/${settings.ipv4}\n`;
         hostsContent += `${settings.ipv4} ${domain}\n`;
         adguardContent += `||${domain}^\n`;
@@ -101,7 +117,7 @@ function generateRules() {
         }
     });
 
-    customDns.forEach(item => {
+    customDnsList.forEach(item => {
         dnsmasqContent += `address=/${item.domain}/${item.ip}\n`;
         hostsContent += `${item.ip} ${item.domain}\n`;
         adguardContent += `||${item.domain}^\n`;
@@ -111,13 +127,13 @@ function generateRules() {
         }
     });
 
-    if (processedWhitelist.length > 0) {
+    if (filteredWhitelist.length > 0) {
         if (addHeader) {
             dnsmasqContent += `\n# Whitelist (allow these domains)\n`;
             hostsContent += `\n# Whitelist (allow these domains)\n`;
             adguardContent += `\n! Whitelist (allow these domains)\n`;
         }
-        processedWhitelist.forEach(domain => {
+        filteredWhitelist.forEach(domain => {
             dnsmasqContent += `server=/${domain}/\n`;
             hostsContent += `# Whitelisted: ${domain}\n`;
             adguardContent += `@@||${domain}^\n`;
@@ -141,7 +157,7 @@ function generateRules() {
 
     document.getElementById('outputPreview').textContent = preview;
     updateOutputLineNumbers();
-    document.getElementById('mergeInfo').textContent = `黑名单: ${processedDomains.length} | 白名单: ${processedWhitelist.length} | 自定义DNS: ${customDns.length} | Dnsmasq: ${dnsmasqContent.split('\n').length} 行 | Hosts: ${hostsContent.split('\n').length} 行 | AdGuard: ${adguardContent.split('\n').length} 行`;
+    document.getElementById('mergeInfo').textContent = `黑名单: ${filteredDomains.length} | 白名单: ${filteredWhitelist.length} | 自定义DNS: ${customDnsList.length} | Dnsmasq: ${dnsmasqContent.split('\n').length} 行 | Hosts: ${hostsContent.split('\n').length} 行 | AdGuard: ${adguardContent.split('\n').length} 行`;
 }
 
 function downloadOutput() {

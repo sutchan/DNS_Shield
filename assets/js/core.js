@@ -63,3 +63,15 @@ function isLangChinese() {
 function getState() {
     return state;
 }
+
+// Legacy global variables for backward compatibility
+// These reference the state arrays directly
+var domains = state.domains;
+var whitelist = state.whitelist;
+var customDns = state.customDns;
+var currentFormat = state.currentFormat;
+var outputContent = state.outputContent;
+var isLangZh = state.isLangZh;
+var projectUrl = state.projectUrl;
+var demoUrl = state.demoUrl;
+var settings = state.settings;
