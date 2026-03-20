@@ -1,4 +1,4 @@
-// assets/js/core.js v1.0.7
+// assets/js/core.js v1.1.0
 // Core variables and configuration for DNS Ad Block List Generator
 // Using namespace pattern to reduce global pollution
 

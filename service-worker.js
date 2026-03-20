@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dns-shield-v1.0.7';
+const CACHE_NAME = 'dns-shield-v1.1.0';
 const ASSETS = [
   '/',
   '/index.html',

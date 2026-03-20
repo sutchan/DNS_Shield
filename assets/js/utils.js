@@ -1,4 +1,4 @@
-// assets/js/utils.js v1.0.7
+// assets/js/utils.js v1.1.0
 // Utility functions - debounce, validation, download, toast
 
 function debounce(fn, delay) {

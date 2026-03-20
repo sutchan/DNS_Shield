@@ -1,4 +1,4 @@
-// assets/js/generator.js v1.0.7
+// assets/js/generator.js v1.1.0
 // Rule generation logic for DNS Ad Block List Generator
 
 function generateRules() {

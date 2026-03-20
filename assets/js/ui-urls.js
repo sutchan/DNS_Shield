@@ -1,4 +1,4 @@
-// assets/js/ui-urls.js v1.0.7
+// assets/js/ui-urls.js v1.1.0
 // URL management functions for DNS Ad Block List Generator
 
 function addUrl() {

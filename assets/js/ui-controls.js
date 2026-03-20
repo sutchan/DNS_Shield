@@ -1,4 +1,4 @@
-// assets/js/ui-controls.js v1.0.7
+// assets/js/ui-controls.js v1.1.0
 // UI control functions for DNS Ad Block List Generator
 
 function toggleTheme() {

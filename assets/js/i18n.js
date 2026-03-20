@@ -1,4 +1,4 @@
-// assets/js/i18n.js v1.0.7
+// assets/js/i18n.js v1.1.0
 // Internationalization (i18n) translations for DNS Ad Block List Generator
 
 const i18n = {

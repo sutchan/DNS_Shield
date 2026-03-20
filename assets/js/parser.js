@@ -1,4 +1,4 @@
-// assets/js/parser.js v1.0.7
+// assets/js/parser.js v1.1.0
 // Domain parsing logic for DNS Ad Block List Generator
 
 function parseSource() {
