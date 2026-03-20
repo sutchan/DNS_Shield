@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v1.0.7 |
+| 当前版本 | v1.1.0 |
 | 拦截域名 | 448+ (本地) / 6766+ (含预设源) |
 
 ## 2. 文件结构
@@ -203,7 +203,7 @@ refactor: 优化规则生成逻辑
 
 ## 9. 版本管理
 
-使用 [SemVer](https://semver.org/) 格式: `v1.0.7`
+使用 [SemVer](https://semver.org/) 格式: `v1.1.0`
 
 | 版本类型 | 说明 |
 |----------|------|
