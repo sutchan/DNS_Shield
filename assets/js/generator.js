@@ -1,6 +1,64 @@
 // assets/js/generator.js v1.1.0
 // Rule generation logic for DNS Ad Block List Generator
 
+function generateHeader(formatType, totalDomains, whitelistCount, dateStr) {
+    const formatConfigs = {
+        dnsmasq: {
+            commentChar: '#',
+            separator: '=====================================',
+            title: 'Dnsmasq Ad Block List',
+            description: 'Router-level ad blocking filter',
+            usage: `# Usage:\n#   - Merlin: Software Center -> DNS Settings\n#   - OpenWrt: Services -> DHCP and DNS`
+        },
+        hosts: {
+            commentChar: '#',
+            separator: '=====================================',
+            title: 'Hosts Ad Block List',
+            description: 'Router-level ad blocking hosts file',
+            usage: '# Usage: Import to router ad blocking settings'
+        },
+        adguard: {
+            commentChar: '!',
+            separator: '====================================',
+            title: 'AdGuard Ad Block Filter',
+            description: 'AdGuard-compatible ad blocking filter',
+            usage: ''
+        }
+    };
+
+    const config = formatConfigs[formatType];
+    if (!config) return '';
+
+    const { commentChar, separator, title, description, usage } = config;
+    const lines = [];
+
+    lines.push(`${commentChar} ${separator}`);
+    lines.push(`${commentChar} ${settings.projectName} - ${title}`);
+    lines.push(`${commentChar} ${separator}`);
+    lines.push(`${commentChar}`);
+    lines.push(`${commentChar} Description: ${description}`);
+    lines.push(`${commentChar}`);
+    lines.push(`${commentChar} Version: ${settings.version}`);
+    lines.push(`${commentChar} Update: ${dateStr}`);
+    lines.push(`${commentChar} Domains: ${totalDomains} unique domains`);
+    if (whitelistCount > 0) {
+        lines.push(`${commentChar} Whitelist: ${whitelistCount} domains`);
+    }
+    lines.push(`${commentChar}`);
+    if (usage) {
+        lines.push(usage);
+        lines.push(`${commentChar}`);
+    }
+    lines.push(`${commentChar} Project: ${projectUrl}`);
+    if (typeof demoUrl !== 'undefined') {
+        lines.push(`${commentChar} Demo: ${demoUrl}`);
+    }
+    lines.push(`${commentChar}`);
+    lines.push(`${commentChar} ${separator}`);
+
+    return lines.join('\n') + '\n\n';
+}
+
 function generateRules() {
     const addHeader = document.getElementById('addHeader')?.checked ?? true;
     const blockIPv6 = document.getElementById('blockIPv6')?.checked ?? false;
@@ -39,71 +97,11 @@ function generateRules() {
 
     if (addHeader) {
         const totalDomains = filteredDomains.length + customDnsList.length;
-        dnsmasqContent += `# =====================================\n`;
-        dnsmasqContent += `# ${settings.projectName} - Dnsmasq Ad Block List\n`;
-        dnsmasqContent += `# =====================================\n`;
-        dnsmasqContent += `#\n`;
-        dnsmasqContent += `# Description: Router-level ad blocking filter\n`;
-        dnsmasqContent += `#\n`;
-        dnsmasqContent += `# Version: ${settings.version}\n`;
-        dnsmasqContent += `# Update: ${dateStr}\n`;
-        dnsmasqContent += `# Domains: ${totalDomains} unique domains\n`;
-        if (filteredWhitelist.length > 0) {
-            dnsmasqContent += `# Whitelist: ${filteredWhitelist.length} domains\n`;
-        }
-        dnsmasqContent += `#\n`;
-        dnsmasqContent += `# Usage:\n`;
-        dnsmasqContent += `#   - Merlin: Software Center -> DNS Settings\n`;
-        dnsmasqContent += `#   - OpenWrt: Services -> DHCP and DNS\n`;
-        dnsmasqContent += `#\n`;
-        dnsmasqContent += `# Project: ${projectUrl}\n`;
-        if (typeof demoUrl !== 'undefined') {
-            dnsmasqContent += `# Demo: ${demoUrl}\n`;
-        }
-        dnsmasqContent += `#\n`;
-        dnsmasqContent += `# =====================================\n\n`;
+        const whitelistCount = filteredWhitelist.length;
 
-        hostsContent += `# =====================================\n`;
-        hostsContent += `# ${settings.projectName} - Hosts Ad Block List\n`;
-        hostsContent += `# =====================================\n`;
-        hostsContent += `#\n`;
-        hostsContent += `# Description: Router-level ad blocking hosts file\n`;
-        hostsContent += `#\n`;
-        hostsContent += `# Version: ${settings.version}\n`;
-        hostsContent += `# Update: ${dateStr}\n`;
-        hostsContent += `# Domains: ${totalDomains} unique domains\n`;
-        if (filteredWhitelist.length > 0) {
-            hostsContent += `# Whitelist: ${filteredWhitelist.length} domains\n`;
-        }
-        hostsContent += `#\n`;
-        hostsContent += `# Usage: Import to router ad blocking settings\n`;
-        hostsContent += `#\n`;
-        hostsContent += `# Project: ${projectUrl}\n`;
-        if (typeof demoUrl !== 'undefined') {
-            hostsContent += `# Demo: ${demoUrl}\n`;
-        }
-        hostsContent += `#\n`;
-        hostsContent += `# =====================================\n\n`;
-
-        adguardContent += `! ====================================\n`;
-        adguardContent += `! ${settings.projectName} - AdGuard Ad Block Filter\n`;
-        adguardContent += `! ====================================\n`;
-        adguardContent += `!\n`;
-        adguardContent += `! Description: AdGuard-compatible ad blocking filter\n`;
-        adguardContent += `!\n`;
-        adguardContent += `! Version: ${settings.version}\n`;
-        adguardContent += `! Update: ${dateStr}\n`;
-        adguardContent += `! Domains: ${totalDomains} unique domains\n`;
-        if (filteredWhitelist.length > 0) {
-            adguardContent += `! Whitelist: ${filteredWhitelist.length} domains\n`;
-        }
-        adguardContent += `!\n`;
-        adguardContent += `! Project: ${projectUrl}\n`;
-        if (typeof demoUrl !== 'undefined') {
-            adguardContent += `! Demo: ${demoUrl}\n`;
-        }
-        adguardContent += `!\n`;
-        adguardContent += `! ====================================\n\n`;
+        dnsmasqContent += generateHeader('dnsmasq', totalDomains, whitelistCount, dateStr);
+        hostsContent += generateHeader('hosts', totalDomains, whitelistCount, dateStr);
+        adguardContent += generateHeader('adguard', totalDomains, whitelistCount, dateStr);
     }
 
     filteredDomains.forEach(domain => {

@@ -17,6 +17,11 @@
 # !ad.example.com      # 注释域名：显示用
 # @example.com=0.0.0.0 # 自定义 DNS 指向
 #
++api.io.mi.com #影响米家互联的使用。
++connectivitycheck.gstatic.com #影响 GooglePlay
++XX.market.mi-img.com #影响MIUI小部件
++XX.market.xiaomi.com #影响MIUI小部件
+#
 3dns-2.adobe.com # Adobe 更新
 3dns-3.adobe.com # Adobe 更新
 4009997658.com # 广告/推广
@@ -52,6 +57,7 @@ ad.ihuman.com # 广告
 ad.iqiyi.com # 爱奇艺广告
 ad.m.taobao.com # 阿里妈妈（部分 BesTV 使用）
 ad.mgtv.com # 芒果TV广告
+ad.mi.com
 ad.mi.com # 小米广告
 ad.miguvideo.com # 咪咕视频广告
 ad.qq.com # 腾讯广告
@@ -84,10 +90,12 @@ admp.weixin.qq.com
 adping.qq.com # 腾讯广告
 adplay.tudou.com # 土豆广告
 ads-union.jd.com # 京东广告联盟
+ads-vp5.xhscdn.com
 ads.95516.com # 银联广告
 ads.api.vungle.com # Vungle广告
 ads.bestv.com.cn # 百视达广告
 ads.cn.miaozhen.com # 秒针广告
+ads.cup.com.cn
 ads.mgtv.com # 芒果TV广告
 ads.migu.cn # 咪咕广告
 ads.union.jd.com # 京东广告联盟
@@ -175,6 +183,7 @@ cctv.adsunion.com # 央视广告联盟
 cdn.hpplay.com.cn # 投屏CDN
 centertime.ksyun.com # 金山
 chartboost.com # 游戏广告
+chaturbate.com
 cm.bilibili.com # B站商业接口
 cm.cn.miaozhen.com # 秒针
 cm.ipinyou.com # 品友
@@ -190,6 +199,7 @@ cpro.baidu.com # 百度网盟
 cupid.ptqy.gitv.tv # 银河平台
 d.cntv.cn # 央视
 data.mistat.xiaomi.com # 小米数据统计
+datahub.zhihu.com
 daup.map.baidu.com # 百度地图
 de.pandora.xiaomi.com # 小米
 df.tanx.com # 淘宝联盟
@@ -201,6 +211,7 @@ dm.bytedance.com # 字节跳动
 dm.pstatp.com # 字节跳动
 dm.toutiao.com # 字节跳动
 dnkeeper.platform.dbankcloud.com # 华为云
+duga.zhihu.com
 dvb.pandora.xiaomi.com # 小米
 ef-dongfeng.tanx.com # 淘宝联盟
 errlog.umeng.com # 友盟错误日志
@@ -221,6 +232,7 @@ googleads.g.doubleclick.net # Google广告
 grs.dbankcloud.com # 华为云
 gs.getui.com # 个推
 gslb.hpplay.cn # 投屏负载均衡
+gsnuoyou.cn
 gvod.aiseejapp.atianqi.com # 电视应用
 h-adashx.ut.taobao.com # 阿里妈妈
 h5.hpplay.com.cn # 投屏H5
@@ -245,6 +257,7 @@ js-ad.a.yximgs.com # 阿里广告
 kuyun.com # 酷云
 kwimgs.com # 图片
 leboapi.hpplay.com.cn # 投屏
+live.vzuu.com
 log-api.pangolin-sdk-toutiao.com # 字节跳动日志
 log.ad.xiaomi.com # 小米广告日志
 log.bestv.com.cn # 百视达日志
@@ -298,6 +311,7 @@ news-l.play.aiseet.atianqi.com # 电视内容
 nielsen.com # 尼尔森
 norma-external-collect.meizu.com # 魅族
 nstat.tudou.com # 土豆统计
+o1098464.ingest.sentry.io
 o2o.api.xiaomi.com # 小米O2O
 oauth-login-drcn.platform.dbankcloud.com # 华为登录
 official-t.720static.com #720yun banner
@@ -348,6 +362,7 @@ payment.youku.com # 优酷支付
 pd.ads.cn.miaozhen.com # 秒针广告
 pgdt.gtimg.cn # 腾讯广告
 pglstatp-toutiao.com # 字节跳动
+phncdn.com
 pic1.iqiyi.com # 爱奇艺图片
 pic2.iqiyi.com # 爱奇艺图片
 pic7.iqiyipic.com # 爱奇艺图片
@@ -389,6 +404,7 @@ sdkauth.hpplay.cn # 投屏SDK认证
 sdkconfig.ad.xiaomi.com # 小米广告SDK配置
 search.weixin.qq.com # 微信搜一搜广告
 secure.chn.imrworldwide.com # Nielsen
+sentry.in.zhihu.com
 si.ptqy.gitv.tv # 银河
 sisulizer.com # 思速
 sl.hpplay.cn # 投屏
@@ -402,6 +418,8 @@ staticsns.cdn.bcebos.com # 百度静态资源
 stats.g.doubleclick.net # Google统计
 stats.tudou.com # 土豆统计
 store.log.ksyun.com # 金山
+stun.counterpath.com
+stun.voipbuster.com
 supcm.suning.com # 苏宁
 supersonicads.com # 广告平台
 t.track.ad.xiaomi.com # 小米追踪
@@ -409,6 +427,7 @@ t7z.cupid.iqiyi.com # 爱奇艺
 t7z.cupid.ptqy.gitv.tv # 银河
 tapjoy.com # 游戏广告
 tat.pandora.xiaomi.com # 小米
+theqoo.net
 time.video.ptqy.gitv.tv # 银河
 toblog.ctobsnssdk.com # 统计
 tosv.boe.byted.org # 字节跳动
@@ -465,7 +484,4 @@ xiaomi-dtv.m.cn.miaozhen.com # 小米电视-秒针
 yhqdashi.com # 广告
 yk-ssp-ad.cp31.ott.cibntv.net # 优酷广告
 yximgs.com # 阿里图片
-+api.io.mi.com #影响米家互联的使用。
-+connectivitycheck.gstatic.com #影响 GooglePlay
-+XX.market.mi-img.com #影响MIUI小部件
-+XX.market.xiaomi.com #影响MIUI小部件
+zeus-api.vemarsdev.com

@@ -6,8 +6,8 @@
 #
 # Version: 1.0.7
 # Update: 2026.03.20
-# Domains: 442 unique domains
-# Whitelist: 4 domains
+# Domains: 457 unique domains
+# Whitelist: 18 domains
 #
 # Usage: Import to router ad blocking settings
 #
@@ -83,10 +83,12 @@
 127.0.0.1 adping.qq.com
 127.0.0.1 adplay.tudou.com
 127.0.0.1 ads-union.jd.com
+127.0.0.1 ads-vp5.xhscdn.com
 127.0.0.1 ads.95516.com
 127.0.0.1 ads.api.vungle.com
 127.0.0.1 ads.bestv.com.cn
 127.0.0.1 ads.cn.miaozhen.com
+127.0.0.1 ads.cup.com.cn
 127.0.0.1 ads.mgtv.com
 127.0.0.1 ads.migu.cn
 127.0.0.1 ads.union.jd.com
@@ -172,6 +174,7 @@
 127.0.0.1 cdn.hpplay.com.cn
 127.0.0.1 centertime.ksyun.com
 127.0.0.1 chartboost.com
+127.0.0.1 chaturbate.com
 127.0.0.1 cm.bilibili.com
 127.0.0.1 cm.cn.miaozhen.com
 127.0.0.1 cm.ipinyou.com
@@ -187,6 +190,7 @@
 127.0.0.1 cupid.ptqy.gitv.tv
 127.0.0.1 d.cntv.cn
 127.0.0.1 data.mistat.xiaomi.com
+127.0.0.1 datahub.zhihu.com
 127.0.0.1 daup.map.baidu.com
 127.0.0.1 de.pandora.xiaomi.com
 127.0.0.1 df.tanx.com
@@ -198,6 +202,7 @@
 127.0.0.1 dm.pstatp.com
 127.0.0.1 dm.toutiao.com
 127.0.0.1 dnkeeper.platform.dbankcloud.com
+127.0.0.1 duga.zhihu.com
 127.0.0.1 dvb.pandora.xiaomi.com
 127.0.0.1 ef-dongfeng.tanx.com
 127.0.0.1 errlog.umeng.com
@@ -217,6 +222,7 @@
 127.0.0.1 grs.dbankcloud.com
 127.0.0.1 gs.getui.com
 127.0.0.1 gslb.hpplay.cn
+127.0.0.1 gsnuoyou.cn
 127.0.0.1 gvod.aiseejapp.atianqi.com
 127.0.0.1 h-adashx.ut.taobao.com
 127.0.0.1 h5.hpplay.com.cn
@@ -241,6 +247,7 @@
 127.0.0.1 kuyun.com
 127.0.0.1 kwimgs.com
 127.0.0.1 leboapi.hpplay.com.cn
+127.0.0.1 live.vzuu.com
 127.0.0.1 log-api.pangolin-sdk-toutiao.com
 127.0.0.1 log.ad.xiaomi.com
 127.0.0.1 log.bestv.com.cn
@@ -292,8 +299,10 @@
 127.0.0.1 nielsen.com
 127.0.0.1 norma-external-collect.meizu.com
 127.0.0.1 nstat.tudou.com
+127.0.0.1 o1098464.ingest.sentry.io
 127.0.0.1 o2o.api.xiaomi.com
 127.0.0.1 oauth-login-drcn.platform.dbankcloud.com
+127.0.0.1 official-t.720static.com
 127.0.0.1 omgmta.play.aiseet.atianqi.com
 127.0.0.1 open.e.kuaishou.cn
 127.0.0.1 open.e.kuaishou.com
@@ -341,6 +350,7 @@
 127.0.0.1 pd.ads.cn.miaozhen.com
 127.0.0.1 pgdt.gtimg.cn
 127.0.0.1 pglstatp-toutiao.com
+127.0.0.1 phncdn.com
 127.0.0.1 pic1.iqiyi.com
 127.0.0.1 pic2.iqiyi.com
 127.0.0.1 pic7.iqiyipic.com
@@ -382,6 +392,7 @@
 127.0.0.1 sdkconfig.ad.xiaomi.com
 127.0.0.1 search.weixin.qq.com
 127.0.0.1 secure.chn.imrworldwide.com
+127.0.0.1 sentry.in.zhihu.com
 127.0.0.1 si.ptqy.gitv.tv
 127.0.0.1 sisulizer.com
 127.0.0.1 sl.hpplay.cn
@@ -395,6 +406,8 @@
 127.0.0.1 stats.g.doubleclick.net
 127.0.0.1 stats.tudou.com
 127.0.0.1 store.log.ksyun.com
+127.0.0.1 stun.counterpath.com
+127.0.0.1 stun.voipbuster.com
 127.0.0.1 supcm.suning.com
 127.0.0.1 supersonicads.com
 127.0.0.1 t.track.ad.xiaomi.com
@@ -402,6 +415,7 @@
 127.0.0.1 t7z.cupid.ptqy.gitv.tv
 127.0.0.1 tapjoy.com
 127.0.0.1 tat.pandora.xiaomi.com
+127.0.0.1 theqoo.net
 127.0.0.1 time.video.ptqy.gitv.tv
 127.0.0.1 toblog.ctobsnssdk.com
 127.0.0.1 tosv.boe.byted.org
@@ -458,9 +472,24 @@
 127.0.0.1 yhqdashi.com
 127.0.0.1 yk-ssp-ad.cp31.ott.cibntv.net
 127.0.0.1 yximgs.com
+127.0.0.1 zeus-api.vemarsdev.com
 
 # Whitelist (allow these domains)
+# Whitelisted: access.speech.ai.xiaomi.com
+# Whitelisted: account-dcm.ai.xiaomi.com
+# Whitelisted: account.xiaomi.com
+# Whitelisted: ai.xiaomi.com
+# Whitelisted: ak.lp.account.xiaomi.com
+# Whitelisted: api.ai.xiaomi.com
+# Whitelisted: api.hybrid.xiaomi.com
 # Whitelisted: api.io.mi.com
+# Whitelisted: api2.mina.mi.com
+# Whitelisted: auth.be.sec.miui.com
 # Whitelisted: connectivitycheck.gstatic.com
+# Whitelisted: galleryapi.micloud.xiaomi.net
+# Whitelisted: lbs.mina.mi.com
+# Whitelisted: resolver.mi.xiaomi.com
+# Whitelisted: sts.api.io.mi.com
+# Whitelisted: tracker.ai.xiaomi.com
 # Whitelisted: xx.market.mi-img.com
 # Whitelisted: xx.market.xiaomi.com
