@@ -5,9 +5,9 @@
 # Description: Router-level ad blocking hosts file
 #
 # Version: 1.0.7
-# Update: 2026.03.20
+# Update: 2026.03.26
 # Domains: 457 unique domains
-# Whitelist: 18 domains
+# Whitelist: 4 domains
 #
 # Usage: Import to router ad blocking settings
 #
@@ -475,21 +475,7 @@
 127.0.0.1 zeus-api.vemarsdev.com
 
 # Whitelist (allow these domains)
-# Whitelisted: access.speech.ai.xiaomi.com
-# Whitelisted: account-dcm.ai.xiaomi.com
-# Whitelisted: account.xiaomi.com
-# Whitelisted: ai.xiaomi.com
-# Whitelisted: ak.lp.account.xiaomi.com
-# Whitelisted: api.ai.xiaomi.com
-# Whitelisted: api.hybrid.xiaomi.com
 # Whitelisted: api.io.mi.com
-# Whitelisted: api2.mina.mi.com
-# Whitelisted: auth.be.sec.miui.com
 # Whitelisted: connectivitycheck.gstatic.com
-# Whitelisted: galleryapi.micloud.xiaomi.net
-# Whitelisted: lbs.mina.mi.com
-# Whitelisted: resolver.mi.xiaomi.com
-# Whitelisted: sts.api.io.mi.com
-# Whitelisted: tracker.ai.xiaomi.com
 # Whitelisted: xx.market.mi-img.com
 # Whitelisted: xx.market.xiaomi.com

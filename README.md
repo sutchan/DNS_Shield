@@ -96,8 +96,21 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt >> 
 |------|------|
 | `dnsmasq.conf` | 主 dnsmasq 过滤列表（`address=/domain/0.0.0.0` 格式） |
 | `hosts.txt` | 路由器 hosts 文件（`0.0.0.0 domain` 格式） |
+| `adguard.txt` | AdGuard 浏览器扩展/软件格式（`\|\|domain^`） |
 | `index.html` | Web 管理界面，用于管理和生成过滤清单 |
 | `domains.txt` | 统一域名列表（每行一个域名，数据源） |
+
+### 直接使用已生成的文件
+
+本项目已提供预生成的过滤规则文件，可直接下载使用：
+
+| 文件 | 适用场景 | 下载链接 |
+|------|----------|----------|
+| [dnsmasq.conf](dnsmasq.conf) | 梅林/OpenWrt 等支持 dnsmasq 的路由器 | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf) |
+| [hosts.txt](hosts.txt) | 小米/华硕/TP-Link 等支持 hosts 的路由器 | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt) |
+| [adguard.txt](adguard.txt) | AdGuard 浏览器扩展/AdGuard Home | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/adguard.txt) |
+
+> **提示**：这些文件会定期更新，建议收藏本仓库或 Watch 获取更新通知。
 
 ## Web 管理界面
 

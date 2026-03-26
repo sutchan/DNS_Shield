@@ -5,8 +5,8 @@
 ! Description: AdGuard-compatible ad blocking filter
 !
 ! Version: 1.0.7
-! Update: 2026.03.18
-! Domains: 441 unique domains
+! Update: 2026.03.26
+! Domains: 457 unique domains
 ! Whitelist: 4 domains
 !
 ! Project: https://github.com/sutchan/DNS_Shield
@@ -77,13 +77,16 @@
 ||adl.xiaomi.com^
 ||admaster.com^
 ||admaster.com.cn^
+||admp.weixin.qq.com^
 ||adping.qq.com^
 ||adplay.tudou.com^
 ||ads-union.jd.com^
+||ads-vp5.xhscdn.com^
 ||ads.95516.com^
 ||ads.api.vungle.com^
 ||ads.bestv.com.cn^
 ||ads.cn.miaozhen.com^
+||ads.cup.com.cn^
 ||ads.mgtv.com^
 ||ads.migu.cn^
 ||ads.union.jd.com^
@@ -135,7 +138,6 @@
 ||apps.corel.com^
 ||appsflyer.com^
 ||as.weixin.qq.com^
-||assistant.pandora.xiaomi.com^
 ||at-img1.tdimg.com^
 ||at-img2.tdimg.com^
 ||at-img3.tdimg.com^
@@ -170,6 +172,7 @@
 ||cdn.hpplay.com.cn^
 ||centertime.ksyun.com^
 ||chartboost.com^
+||chaturbate.com^
 ||cm.bilibili.com^
 ||cm.cn.miaozhen.com^
 ||cm.ipinyou.com^
@@ -185,6 +188,7 @@
 ||cupid.ptqy.gitv.tv^
 ||d.cntv.cn^
 ||data.mistat.xiaomi.com^
+||datahub.zhihu.com^
 ||daup.map.baidu.com^
 ||de.pandora.xiaomi.com^
 ||df.tanx.com^
@@ -196,6 +200,7 @@
 ||dm.pstatp.com^
 ||dm.toutiao.com^
 ||dnkeeper.platform.dbankcloud.com^
+||duga.zhihu.com^
 ||dvb.pandora.xiaomi.com^
 ||ef-dongfeng.tanx.com^
 ||errlog.umeng.com^
@@ -208,7 +213,6 @@
 ||g.dtv.cn.miaozhen.com^
 ||g.pandora.xiaomi.com^
 ||galaxy.ad.iqiyi.com^
-||gallery.pandora.xiaomi.com^
 ||game.weixin.qq.com^
 ||gdt.qq.com^
 ||gifshow.com^
@@ -216,6 +220,7 @@
 ||grs.dbankcloud.com^
 ||gs.getui.com^
 ||gslb.hpplay.cn^
+||gsnuoyou.cn^
 ||gvod.aiseejapp.atianqi.com^
 ||h-adashx.ut.taobao.com^
 ||h5.hpplay.com.cn^
@@ -240,6 +245,7 @@
 ||kuyun.com^
 ||kwimgs.com^
 ||leboapi.hpplay.com.cn^
+||live.vzuu.com^
 ||log-api.pangolin-sdk-toutiao.com^
 ||log.ad.xiaomi.com^
 ||log.bestv.com.cn^
@@ -278,6 +284,7 @@
 ||mon.ad.xelements.cn^
 ||monitor.bnc66.com^
 ||mopub.com^
+||mpad.qq.com^
 ||mpad.weixin.qq.com^
 ||mpush-api.aliyun.com^
 ||ms.applvn.com^
@@ -290,8 +297,10 @@
 ||nielsen.com^
 ||norma-external-collect.meizu.com^
 ||nstat.tudou.com^
+||o1098464.ingest.sentry.io^
 ||o2o.api.xiaomi.com^
 ||oauth-login-drcn.platform.dbankcloud.com^
+||official-t.720static.com^
 ||omgmta.play.aiseet.atianqi.com^
 ||open.e.kuaishou.cn^
 ||open.e.kuaishou.com^
@@ -339,6 +348,7 @@
 ||pd.ads.cn.miaozhen.com^
 ||pgdt.gtimg.cn^
 ||pglstatp-toutiao.com^
+||phncdn.com^
 ||pic1.iqiyi.com^
 ||pic2.iqiyi.com^
 ||pic7.iqiyipic.com^
@@ -380,6 +390,7 @@
 ||sdkconfig.ad.xiaomi.com^
 ||search.weixin.qq.com^
 ||secure.chn.imrworldwide.com^
+||sentry.in.zhihu.com^
 ||si.ptqy.gitv.tv^
 ||sisulizer.com^
 ||sl.hpplay.cn^
@@ -393,6 +404,8 @@
 ||stats.g.doubleclick.net^
 ||stats.tudou.com^
 ||store.log.ksyun.com^
+||stun.counterpath.com^
+||stun.voipbuster.com^
 ||supcm.suning.com^
 ||supersonicads.com^
 ||t.track.ad.xiaomi.com^
@@ -400,6 +413,7 @@
 ||t7z.cupid.ptqy.gitv.tv^
 ||tapjoy.com^
 ||tat.pandora.xiaomi.com^
+||theqoo.net^
 ||time.video.ptqy.gitv.tv^
 ||toblog.ctobsnssdk.com^
 ||tosv.boe.byted.org^
@@ -449,12 +463,14 @@
 ||wq.123789.net.cn^
 ||ws.mmstat.com^
 ||wxa.wxs.qq.com^
+||wxad.qq.com^
 ||wxapp.tc.qq.com^
 ||wxsnsdy.tc.qq.com^
 ||xiaomi-dtv.m.cn.miaozhen.com^
 ||yhqdashi.com^
 ||yk-ssp-ad.cp31.ott.cibntv.net^
 ||yximgs.com^
+||zeus-api.vemarsdev.com^
 
 ! Whitelist (allow these domains)
 @@||api.io.mi.com^
