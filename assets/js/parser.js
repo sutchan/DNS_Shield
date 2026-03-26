@@ -191,5 +191,10 @@ function updateSettings() {
     settings.dnsmasqFilename = document.getElementById('dnsmasqFilename').value || 'dnsmasq.conf';
     settings.hostsFilename = document.getElementById('hostsFilename').value || 'hosts.txt';
     settings.adguardFilename = document.getElementById('adguardFilename').value || 'adguard.txt';
+    
+    // 同步更新页面版本号显示
+    document.querySelector('.footer-version').textContent = 'v' + settings.version;
+    document.title = 'DNS Shield v' + settings.version;
+    
     if (domains.length > 0) generateRules();
 }
