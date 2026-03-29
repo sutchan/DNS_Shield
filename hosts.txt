@@ -5,9 +5,9 @@
 # Description: Router-level ad blocking hosts file
 #
 # Version: 1.0.7
-# Update: 2026.03.26
-# Domains: 457 unique domains
-# Whitelist: 4 domains
+# Update: 2026.03.29
+# Domains: 453 unique domains
+# Whitelist: 7 domains
 #
 # Usage: Import to router ad blocking settings
 #
@@ -76,7 +76,6 @@
 127.0.0.1 adguanggao.eee114.com
 127.0.0.1 adiu.amap.com
 127.0.0.1 adjust.com
-127.0.0.1 adl.xiaomi.com
 127.0.0.1 admaster.com
 127.0.0.1 admaster.com.cn
 127.0.0.1 admp.weixin.qq.com
@@ -208,7 +207,6 @@
 127.0.0.1 errlog.umeng.com
 127.0.0.1 et.tanx.com
 127.0.0.1 extlog.snssdk.com
-127.0.0.1 file.xmpush.xiaomi.com
 127.0.0.1 finder.video.qq.com
 127.0.0.1 fix.hpplay.cn
 127.0.0.1 g.dtv.cn.miaozhan.com
@@ -276,7 +274,6 @@
 127.0.0.1 metok.sys.miui.com
 127.0.0.1 mgtv-ad.cdn.mgtv.com
 127.0.0.1 miaozhen.com
-127.0.0.1 milink.pandora.xiaomi.com
 127.0.0.1 minigame.qq.com
 127.0.0.1 misc.in.duokanbox.com
 127.0.0.1 misc.pandora.xiaomi.com
@@ -300,7 +297,6 @@
 127.0.0.1 norma-external-collect.meizu.com
 127.0.0.1 nstat.tudou.com
 127.0.0.1 o1098464.ingest.sentry.io
-127.0.0.1 o2o.api.xiaomi.com
 127.0.0.1 oauth-login-drcn.platform.dbankcloud.com
 127.0.0.1 official-t.720static.com
 127.0.0.1 omgmta.play.aiseet.atianqi.com
@@ -477,5 +473,8 @@
 # Whitelist (allow these domains)
 # Whitelisted: api.io.mi.com
 # Whitelisted: connectivitycheck.gstatic.com
+# Whitelisted: file.xmpush.xiaomi.com
+# Whitelisted: milink.pandora.xiaomi.com
+# Whitelisted: o2o.api.xiaomi.com
 # Whitelisted: xx.market.mi-img.com
 # Whitelisted: xx.market.xiaomi.com

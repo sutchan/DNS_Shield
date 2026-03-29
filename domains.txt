@@ -21,6 +21,9 @@
 +connectivitycheck.gstatic.com #影响 GooglePlay
 +XX.market.mi-img.com #影响MIUI小部件
 +XX.market.xiaomi.com #影响MIUI小部件
++file.xmpush.xiaomi.com # 小米推送
++milink.pandora.xiaomi.com # 小米
++o2o.api.xiaomi.com # 小米O2O
 #
 3dns-2.adobe.com # Adobe 更新
 3dns-3.adobe.com # Adobe 更新
@@ -57,7 +60,6 @@ ad.ihuman.com # 广告
 ad.iqiyi.com # 爱奇艺广告
 ad.m.taobao.com # 阿里妈妈（部分 BesTV 使用）
 ad.mgtv.com # 芒果TV广告
-ad.mi.com
 ad.mi.com # 小米广告
 ad.miguvideo.com # 咪咕视频广告
 ad.qq.com # 腾讯广告
@@ -83,7 +85,6 @@ adextensioncontrol.tudou.com # 土豆
 adguanggao.eee114.com # 广告
 adiu.amap.com # 高德统计
 adjust.com # 移动归因平台
-adl.xiaomi.com # 小米广告
 admaster.com # 广告主
 admaster.com.cn # 广告主
 admp.weixin.qq.com
@@ -217,7 +218,6 @@ ef-dongfeng.tanx.com # 淘宝联盟
 errlog.umeng.com # 友盟错误日志
 et.tanx.com # 淘宝联盟
 extlog.snssdk.com # 字节跳动日志
-file.xmpush.xiaomi.com # 小米推送
 finder.video.qq.com # 视频号广告
 fix.hpplay.cn # 投屏修复
 g.dtv.cn.miaozhan.com # 电视广告
@@ -286,7 +286,6 @@ mc.corel.com # Corel
 metok.sys.miui.com # 小米系统
 mgtv-ad.cdn.mgtv.com # 芒果TV广告CDN
 miaozhen.com # 秒针
-milink.pandora.xiaomi.com # 小米
 minigame.qq.com # 微信小游戏
 misc.in.duokanbox.com # 多看
 misc.pandora.xiaomi.com # 小米
@@ -312,7 +311,6 @@ nielsen.com # 尼尔森
 norma-external-collect.meizu.com # 魅族
 nstat.tudou.com # 土豆统计
 o1098464.ingest.sentry.io
-o2o.api.xiaomi.com # 小米O2O
 oauth-login-drcn.platform.dbankcloud.com # 华为登录
 official-t.720static.com #720yun banner
 omgmta.play.aiseet.atianqi.com # 电视
