@@ -1,5 +1,5 @@
 // src/app/Home.tsx v2.0.0
-import { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './globals.css';
 
 export default function Home() {
@@ -165,7 +165,7 @@ export default function Home() {
       usageStep3Desc: '点击"生成规则"按钮，预览效果后下载到本地，或复制到剪贴板',
       usageTip: '💡 提示',
       usageTipContent: '生成的规则可直接用于路由器广告过滤，支持华硕、梅林、OpenWrt 等固件',
-      adguard: 'AdGuard 格式',
+      adguardFormat: 'AdGuard 格式',
       adguardFile: 'AdGuard 文件名',
       downloadAdguard: '下载 AdGuard 格式'
     },
@@ -216,7 +216,7 @@ export default function Home() {
       usageStep3Desc: 'Click "Generate Rules" button, preview the result, then download to local or copy to clipboard',
       usageTip: '💡 Tip',
       usageTipContent: 'Generated rules can be directly used for router ad filtering, supporting Asus, Merlin, OpenWrt and other firmware',
-      adguard: 'AdGuard',
+      adguardFormat: 'AdGuard',
       adguardFile: 'AdGuard Filename',
       downloadAdguard: 'Download AdGuard Format'
     }
@@ -525,15 +525,15 @@ export default function Home() {
       }
     });
 
-    customDns.forEach(item => {
-      dnsmasqContent += `address=/${item.domain}/${item.ip}\n`;
-      hostsContent += `${item.ip} ${item.domain}\n`;
-      adguardContent += `||${item.domain}^\n`;
+    customDns.forEach((item: CustomDnsEntry) => {
+    dnsmasqContent += `address=/${item.domain}/${item.ip}\n`;
+    hostsContent += `${item.ip} ${item.domain}\n`;
+    adguardContent += `||${item.domain}^\n`;
 
-      if (blockIPv6) {
-        dnsmasqContent += `address=/${item.domain}/::\n`;
-      }
-    });
+    if (blockIPv6) {
+      dnsmasqContent += `address=/${item.domain}/::\n`;
+    }
+  });
 
     if (filteredWhitelist.length > 0) {
       if (addHeader) {
@@ -645,7 +645,7 @@ export default function Home() {
       const bParsed = parseDomainLine(b);
       const aDomain = 'domain' in aParsed ? aParsed.domain : '';
       const bDomain = 'domain' in bParsed ? bParsed.domain : '';
-      return aDomain.localeCompare(bDomain);
+      return (aDomain || '').localeCompare(bDomain || '');
     });
     
     const result = [
@@ -917,11 +917,11 @@ export default function Home() {
             <div className="preset-section">
               <span className="preset-label">{t.presetLabel}</span>
               <div className="preset-tags">
-                <span className="preset-tag active" onClick={(e) => loadPreset('builtin', e)}>{t.builtinAd}</span>
-                <span className="preset-tag" onClick={(e) => loadPreset('adguard', e)}>{t.adguard}</span>
-                <span className="preset-tag" onClick={(e) => loadPreset('easylist', e)}>{t.easylist}</span>
-                <span className="preset-tag" onClick={(e) => loadPreset('neohosts', e)}>{t.neohosts}</span>
-              </div>
+          <span className="preset-tag active" onClick={(e: React.MouseEvent) => loadPreset('builtin', e)}>{t.builtinAd}</span>
+          <span className="preset-tag" onClick={(e: React.MouseEvent) => loadPreset('adguard', e)}>{t.adguard}</span>
+          <span className="preset-tag" onClick={(e: React.MouseEvent) => loadPreset('easylist', e)}>{t.easylist}</span>
+          <span className="preset-tag" onClick={(e: React.MouseEvent) => loadPreset('neohosts', e)}>{t.neohosts}</span>
+        </div>
             </div>
           </div>
 
@@ -967,7 +967,7 @@ export default function Home() {
                   className={`format-tab ${currentFormat === 'adguard' ? 'active' : ''}`} 
                   onClick={() => setFormat('adguard')}
                 >
-                  {t.adguard}
+                  {t.adguardFormat}
                 </button>
               </div>
               <button className="settings-btn" onClick={() => toggleSection('settings-panel')} title={t.settingsTitle}>
