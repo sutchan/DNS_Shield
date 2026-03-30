@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNS Shield v1.1.1</title>
+    <meta name="description" content="DNS Shield - 强大的DNS广告过滤工具，支持自定义规则和多平台导出">
+    <meta name="theme-color" content="#0070f3">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/public/assets/icons/icon-192x192.png">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #0070f3, #00b4ff);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .header p {
+            margin: 10px 0 0;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .main-content {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #0070f3;
+            padding-bottom: 10px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .feature-card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .feature-card h3 {
+            color: #0070f3;
+            margin-top: 0;
+        }
+        .btn {
+            display: inline-block;
+            background: #0070f3;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px 0;
+            color: #666;
+            border-top: 1px solid #eaeaea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app-container">
+        <div class="header">
+            <h1>DNS Shield</h1>
+            <p>强大的DNS广告过滤工具</p>
+        </div>
+        <div class="main-content">
+            <div class="section">
+                <h2>功能特性</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>多平台支持</h3>
+                        <p>支持导出为DNSmasq、AdGuard、Hosts等多种格式，适用于不同设备和系统。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>自定义规则</h3>
+                        <p>可添加、编辑和管理自定义过滤规则，满足个性化需求。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>实时预览</h3>
+                        <p>实时查看生成的规则内容，确保规则正确性。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>自动更新</h3>
+                        <p>定期更新默认规则库，保持最佳过滤效果。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>智能合并</h3>
+                        <p>自动去重和优化规则，提高过滤效率。</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>PWA支持</h3>
+                        <p>支持离线使用，可添加到主屏幕，提供原生应用体验。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <h2>快速开始</h2>
+                <p>1. 选择您需要的过滤规则类型</p>
+                <p>2. 配置自定义规则（可选）</p>
+                <p>3. 生成并下载配置文件</p>
+                <p>4. 应用到您的设备或路由器</p>
+                <a href="#" class="btn">立即开始</a>
+            </div>
+        </div>
+        <div class="footer">
+            <p>&copy; 2026 DNS Shield. 版本 v1.1.1</p>
+        </div>
+    </div>
+    <script>
+        // 注册Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker 注册成功:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker 注册失败:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
