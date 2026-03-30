@@ -1,4 +1,4 @@
-# DNS Shield - 路由器级广告防护
+# DNS Shield - 路由器级全局广告防护
 
 [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-1.0.7-green)](https://github.com/sutchan/DNS_Shield)
 
