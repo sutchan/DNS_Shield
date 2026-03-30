@@ -88,29 +88,32 @@ export default function Home() {
         console.warn('Could not load domains.txt:', err);
       });
     
-    // 加载自动保存
-    const autosave = localStorage.getItem('dnsShield_autosave');
-    if (autosave && !sourceInput.trim()) {
-      setSourceInput(autosave);
-      parseSource(autosave);
-      const autoSaveTime = localStorage.getItem('dnsShield_autosave_time');
-      if (autoSaveTime) {
-        const timeAgo = Math.floor((Date.now() - parseInt(autoSaveTime)) / 60000);
-        if (timeAgo > 0) {
-          showToast(isLangZh ? `已恢复上次自动保存的内容 (${timeAgo}分钟前)` : `Restored auto-saved content (${timeAgo} min ago)`);
+    // 确保在客户端环境中使用localStorage
+    if (typeof window !== 'undefined') {
+      // 加载自动保存
+      const autosave = localStorage.getItem('dnsShield_autosave');
+      if (autosave && !sourceInput.trim()) {
+        setSourceInput(autosave);
+        parseSource(autosave);
+        const autoSaveTime = localStorage.getItem('dnsShield_autosave_time');
+        if (autoSaveTime) {
+          const timeAgo = Math.floor((Date.now() - parseInt(autoSaveTime)) / 60000);
+          if (timeAgo > 0) {
+            showToast(isLangZh ? `已恢复上次自动保存的内容 (${timeAgo}分钟前)` : `Restored auto-saved content (${timeAgo} min ago)`);
+          }
         }
       }
+      
+      // 自动保存
+      const autoSaveInterval = setInterval(() => {
+        if (sourceInput.trim()) {
+          localStorage.setItem('dnsShield_autosave', sourceInput);
+          localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
+        }
+      }, 30000);
+      
+      return () => clearInterval(autoSaveInterval);
     }
-    
-    // 自动保存
-    const autoSaveInterval = setInterval(() => {
-      if (sourceInput.trim()) {
-        localStorage.setItem('dnsShield_autosave', sourceInput);
-        localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
-      }
-    }, 30000);
-    
-    return () => clearInterval(autoSaveInterval);
   }, []);
   
   // 语言翻译
