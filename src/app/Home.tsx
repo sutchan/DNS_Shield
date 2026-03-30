@@ -225,14 +225,20 @@ export default function Home() {
   const switchLang = () => {
     const newLang = isLangZh ? 'en' : 'zh';
     setIsLangZh(!isLangZh);
-    localStorage.setItem('lang', newLang);
+    // 确保在客户端环境中使用localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('lang', newLang);
+    }
   };
   
   // 切换主题
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
+    // 确保在客户端环境中使用localStorage
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', newTheme);
+    }
   };
   
   // 显示提示
