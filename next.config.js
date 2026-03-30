@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   trailingSlash: true,
-  publicRuntimeConfig: {
+  env: {
     version: '1.1.1'
   }
 }

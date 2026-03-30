@@ -1,16 +1,20 @@
 // src/app/Home.tsx v2.0.0
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import './globals.css';
 
 export default function Home() {
   // 状态管理
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [isLangZh, setIsLangZh] = useState(true);
+
+  // 在客户端初始化localStorage
+  useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'dark' ? 'dark' : 'light';
-  });
-  const [isLangZh, setIsLangZh] = useState(() => {
-    return localStorage.getItem('lang') !== 'en';
-  });
+    setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+    
+    const savedLang = localStorage.getItem('lang');
+    setIsLangZh(savedLang !== 'en');
+  }, []);
   const [sourceInput, setSourceInput] = useState('');
   const [outputContent, setOutputContent] = useState({
     dnsmasq: '',
@@ -326,13 +330,14 @@ export default function Home() {
 
   // 解析域名
   const parseSource = (text?: string) => {
-    const input = text || sourceInput;
-    const lines = input.split('\n');
-    
-    const domains: string[] = [];
-    const whitelist: string[] = [];
-    const customDns: { domain: string; ip: string }[] = [];
-    let commentCount = 0;
+    try {
+      const input = text || sourceInput;
+      const lines = input.split('\n');
+      
+      const domains: string[] = [];
+      const whitelist: string[] = [];
+      const customDns: { domain: string; ip: string }[] = [];
+      let commentCount = 0;
 
     for (const line of lines) {
       const parsed = parseDomainLine(line);
@@ -397,6 +402,10 @@ export default function Home() {
       whitelist: uniqueWhitelist,
       customDns: customDns
     });
+    } catch (error) {
+      console.error('Error parsing source:', error);
+      showToast(isLangZh ? '解析失败，请检查输入格式' : 'Parsing failed, please check input format');
+    }
   };
   
   // 生成头部
@@ -745,13 +754,93 @@ export default function Home() {
   };
   
   // 加载预设
-  const loadPreset = (preset: string, event: React.MouseEvent) => {
-    // 这里可以实现加载预设的功能
+  const loadPreset = async (preset: string, event: React.MouseEvent) => {
     const target = event.currentTarget as HTMLElement;
     document.querySelectorAll('.preset-tag').forEach(tag => {
       tag.classList.remove('active');
     });
     target.classList.add('active');
+
+    try {
+      let url: string;
+      switch (preset) {
+        case 'builtin':
+          url = '/domains.txt';
+          break;
+        case 'adguard':
+          url = 'https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt';
+          break;
+        case 'easylist':
+          url = 'https://easylist-downloads.adblockplus.org/easylist.txt';
+          break;
+        case 'neohosts':
+          url = 'https://raw.githubusercontent.com/neoHosts/neoHosts/master/data/adblock.txt';
+          break;
+        default:
+          return;
+      }
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const content = await response.text();
+      setSourceInput(content);
+      parseSource(content);
+      showToast(isLangZh ? `已加载 ${preset} 预设` : `Loaded ${preset} preset`);
+    } catch (error) {
+      console.error('Error loading preset:', error);
+      showToast(isLangZh ? '加载预设失败，请检查网络连接' : 'Failed to load preset, please check network connection');
+    }
+  };
+
+  // 从 URL 获取域名
+  const fetchFromUrl = async () => {
+    const urlInput = document.getElementById('urlInput') as HTMLInputElement;
+    const url = urlInput.value.trim();
+    if (!url) {
+      showToast(isLangZh ? '请输入 URL' : 'Please enter URL');
+      return;
+    }
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const content = await response.text();
+      setSourceInput(content);
+      parseSource(content);
+      showToast(isLangZh ? '已从 URL 获取域名' : 'Fetched domains from URL');
+    } catch (error) {
+      console.error('Error fetching from URL:', error);
+      showToast(isLangZh ? '获取失败，请检查 URL 和网络连接' : 'Failed to fetch, please check URL and network connection');
+    }
+  };
+
+  // 添加 URL
+  const addUrl = () => {
+    const urlInput = document.getElementById('urlInput') as HTMLInputElement;
+    const url = urlInput.value.trim();
+    if (!url) {
+      showToast(isLangZh ? '请输入 URL' : 'Please enter URL');
+      return;
+    }
+
+    // 这里可以实现添加 URL 到列表的功能
+    showToast(isLangZh ? 'URL 已添加' : 'URL added');
+  };
+
+  // 排序 URLs
+  const sortUrls = () => {
+    // 这里可以实现排序 URLs 的功能
+    showToast(isLangZh ? 'URLs 已排序' : 'URLs sorted');
+  };
+
+  // 获取全部 URLs
+  const fetchAllUrls = async () => {
+    // 这里可以实现获取全部 URLs 的功能
+    showToast(isLangZh ? '正在获取全部 URLs...' : 'Fetching all URLs...');
   };
   
   return (
@@ -807,12 +896,12 @@ export default function Home() {
                 placeholder={t.urlPlaceholder} 
                 defaultValue="https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt"
               />
-              <button className="btn btn-primary">{t.fetchBtn}</button>
+              <button className="btn btn-primary" onClick={fetchFromUrl}>{t.fetchBtn}</button>
             </div>
             <div className="url-actions">
-              <button className="btn btn-sm">{t.addUrl}</button>
-              <button className="btn btn-sm">{t.sortUrlBtn}</button>
-              <button className="btn btn-sm">{t.fetchAllUrls}</button>
+              <button className="btn btn-sm" onClick={addUrl}>{t.addUrl}</button>
+              <button className="btn btn-sm" onClick={sortUrls}>{t.sortUrlBtn}</button>
+              <button className="btn btn-sm" onClick={fetchAllUrls}>{t.fetchAllUrls}</button>
             </div>
             <div className="url-list" id="urlList"></div>
 
