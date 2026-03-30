@@ -1,4 +1,4 @@
-// src/app/page.tsx v1.1.1
+// src/app/page.tsx v2.0.0
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Home from './Home';
@@ -7,7 +7,7 @@ export default function Page() {
   return (
     <>
       <Head>
-        <title>DNS Shield v1.1.1</title>
+        <title>DNS Shield v2.0.0</title>
         <meta name="description" content="DNS Shield - 路由器级广告过滤规则生成工具。基于 dnsmasq/hosts 的路由器广告过滤，支持梅林固件、小米路由器、OpenWrt 等设备。" />
         <meta name="keywords" content="DNS广告过滤,dnsmasq,hosts,广告拦截,路由器,梅林固件,小米路由器,OpenWrt,广告过滤规则,DNS Shield" />
         <meta name="author" content="sutchan" />

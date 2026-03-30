@@ -1,4 +1,4 @@
-// src/app/Home.tsx v1.1.1
+// src/app/Home.tsx v2.0.0
 import { useState, useEffect, useRef } from 'react';
 import './globals.css';
 
@@ -20,7 +20,7 @@ export default function Home() {
   const [currentFormat, setCurrentFormat] = useState<'hosts' | 'dnsmasq' | 'adguard'>('hosts');
   const [settings, setSettings] = useState({
     projectName: 'DNS Shield',
-    version: '1.1.1',
+    version: '2.0.0',
     ipv4: '127.0.0.1',
     ipv6: '::',
     addHeader: true,

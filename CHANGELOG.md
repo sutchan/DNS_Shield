@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0]
+
+### Changed
+- Updated all file version numbers to v2.0.0
+- Synchronized version consistency across project files
+- Migrated to Next.js framework
+- Updated project structure and components
+
+## [1.1.2]
+
+### Changed
+- Updated README.md title to "路由器级全局广告防护"
+- Updated domain count from 422+ to 463+
+- Updated version numbers in README files to v1.1.2
+- Updated SPEC.md version to v1.1.2
+
 ## [1.1.1]
 
 ### Changed

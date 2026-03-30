@@ -10,8 +10,8 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v1.1.1 |
-| 拦截域名 | 448+ (本地) / 6766+ (含预设源) |
+| 当前版本 | v2.0.0 |
+| 拦截域名 | 463+ (本地) / 6766+ (含预设源) |
 
 ## 2. 文件结构
 
@@ -19,31 +19,24 @@
 dns-shield/
 ├── README.md                      # 中文说明文档（默认）
 ├── README.en.md                   # 英文说明文档
-├── README.zh-CN.md                # 简体中文说明文档
 ├── domains.txt                    # 原始域名清单（唯一数据源）
 ├── dnsmasq.conf                  # Dnsmasq 过滤列表
 ├── hosts.txt                      # Hosts 文件
-├── index.html                     # Web 管理界面
+├── adguard.txt                    # AdGuard 过滤列表
 ├── CHANGELOG.md                  # 变更日志
 ├── .gitignore                    # Git 忽略配置
+├── package.json                  # 项目配置和依赖
+├── next.config.js                # Next.js 配置
+├── tsconfig.json                 # TypeScript 配置
+├── tailwind.config.js            # Tailwind CSS 配置
+├── postcss.config.js             # PostCSS 配置
+├── src/                          # Next.js 源代码
+│   ├── app/                      # App Router 目录
+│   │   ├── page.tsx              # 主页面
+│   │   ├── Home.tsx              # 主组件
+│   │   └── globals.css           # 全局样式
 ├── assets/                       # 资源目录
-│   ├── js/
-│   │   ├── app.js               # 主逻辑（入口）
-│   │   ├── i18n.js              # 国际化模块
-│   │   ├── utils.js             # 工具函数
-│   │   ├── core.js              # 核心状态管理
-│   │   ├── parser.js            # 域名解析
-│   │   ├── generator.js         # 规则生成
-│   │   ├── ui-urls.js           # URL 管理交互
-│   │   ├── ui-editor.js         # 编辑器交互
-│   │   └── ui-controls.js       # 控件交互
-│   └── css/
-│       ├── styles.css            # 样式入口
-│       ├── variables.css         # CSS 变量
-│       ├── layout.css            # 布局样式
-│       ├── components.css        # 组件样式
-│       ├── editor.css            # 编辑器样式
-│       └── utilities.css         # 工具类
+│   └── icons/                    # 应用图标
 └── openspec/                     # 项目规范文档
     ├── SPEC.md                   # 项目规范（本文件）
     ├── TASKS.md                  # 任务清单
@@ -65,16 +58,16 @@ dns-shield/
                            │
                            ▼
                    ┌───────────────┐
-                   │ index.html  │
+                   │ Next.js App  │
                    │ (Web 管理工具)│
                    └───────────────┘
                            │
             ┌──────────────┴──────────────┐
-            ▼                                 ▼
-   ┌─────────────────┐           ┌─────────────────┐
-   │   dnsmasq.conf  │           │    hosts.txt    │
-   │  (Dnsmasq 格式) │           │   (Hosts 格式)  │
-   └─────────────────┘           └─────────────────┘
+            ▼           ▼           ▼
+   ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+   │   dnsmasq.conf  │ │    hosts.txt    │ │   adguard.txt   │
+   │  (Dnsmasq 格式) │ │   (Hosts 格式)  │ │ (AdGuard 格式)  │
+   └─────────────────┘ └─────────────────┘ └─────────────────┘
 ```
 
 ## 4. 域名格式规范
@@ -150,7 +143,7 @@ address=/domain/::
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 1.1.1 |
+| 版本号 | 2.0.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -203,7 +196,7 @@ refactor: 优化规则生成逻辑
 
 ## 9. 版本管理
 
-使用 [SemVer](https://semver.org/) 格式: `v1.1.0`
+使用 [SemVer](https://semver.org/) 格式: `v1.1.2`
 
 | 版本类型 | 说明 |
 |----------|------|
@@ -214,28 +207,22 @@ refactor: 优化规则生成逻辑
 ## 10. 依赖关系
 
 ```
-index.html (纯静态，无需服务器)
+Next.js App (现代前端框架)
     │
     ├── domains.txt                ← 数据源
     │
-    ├── assets/js/
-    │   ├── i18n.js              ← 国际化
-    │   ├── utils.js              ← 工具函数
-    │   ├── core.js               ← 状态管理
-    │   ├── parser.js             ← 域名解析
-    │   ├── generator.js          ← 规则生成
-    │   ├── ui-urls.js           ← URL 管理交互
-    │   ├── ui-editor.js         ← 编辑器交互
-    │   ├── ui-controls.js       ← 控件交互
-    │   └── app.js               ← 主逻辑入口
+    ├── src/app/
+    │   ├── page.tsx              ← 主页面
+    │   ├── Home.tsx              ← 主组件（包含所有功能逻辑）
+    │   └── globals.css           ← 全局样式
     │
-    ├── assets/css/
-    │   ├── styles.css            ← 样式入口
-    │   ├── variables.css         ← CSS 变量
-    │   ├── layout.css            ← 布局样式
-    │   ├── components.css        ← 组件样式
-    │   ├── editor.css            ← 编辑器样式
-    │   └── utilities.css         ← 工具类
+    ├── package.json 依赖
+    │   ├── react                  ← React 核心
+    │   ├── react-dom              ← React DOM
+    │   ├── next                   ← Next.js 框架
+    │   ├── typescript             ← TypeScript 支持
+    │   ├── tailwindcss            ← Tailwind CSS
+    │   └── 其他开发依赖
     │
     └── 预设源 URL
         ├── AdGuard DNS Filter (https://adguardteam.github.io/AdGuardSDNSFilter/)
