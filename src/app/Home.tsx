@@ -1,4 +1,5 @@
 // src/app/Home.tsx v2.0.0
+'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import './globals.css';
 
@@ -60,12 +61,16 @@ export default function Home() {
   const [isSettingsPanelCollapsed, setIsSettingsPanelCollapsed] = useState(true);
   const [isUsageGuideCollapsed, setIsUsageGuideCollapsed] = useState(true);
   const [toastMessage, setToastMessage] = useState('');
+  const [urls, setUrls] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [activePreset, setActivePreset] = useState('builtin');
   
   // 引用
   const sourceTextareaRef = useRef<HTMLTextAreaElement>(null);
   const outputPreviewRef = useRef<HTMLDivElement>(null);
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const outputLineNumbersRef = useRef<HTMLDivElement>(null);
+  const urlInputRef = useRef<HTMLInputElement>(null);
   
   // 初始化
   useEffect(() => {
@@ -327,6 +332,17 @@ export default function Home() {
       return { type: 'comment' as const, originalLine: line };
     }
     
+    if (content.startsWith('||') && content.endsWith('^')) {
+      const domain = content.substring(2, content.length - 1).toLowerCase().replace(/^\*\./, '');
+      const isValid = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(domain);
+      return {
+        type: 'adguard' as const,
+        domain: domain,
+        isValid: isValid,
+        originalLine: line
+      };
+    }
+    
     const domain = content.toLowerCase().replace(/^\*\./, '');
     const isValid = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(domain);
     return {
@@ -348,69 +364,69 @@ export default function Home() {
       const customDns: { domain: string; ip: string }[] = [];
       let commentCount = 0;
 
-    for (const line of lines) {
-      const parsed = parseDomainLine(line);
-      
-      if (parsed.type === 'empty') {
+      for (const line of lines) {
+        const parsed = parseDomainLine(line);
+        
+        if (parsed.type === 'empty') {
+          commentCount++;
+          continue;
+        }
+        
+        if (parsed.type === 'comment') {
+          commentCount++;
+          continue;
+        }
+        
+        if (parsed.type === 'whitelist') {
+          if (parsed.isValid) {
+            whitelist.push(parsed.domain);
+          } else {
+            commentCount++;
+          }
+          continue;
+        }
+        
+        if (parsed.type === 'customDns') {
+          if (parsed.isValid) {
+            customDns.push({ domain: parsed.domain, ip: parsed.ip });
+          } else {
+            commentCount++;
+          }
+          continue;
+        }
+        
+        if (parsed.type === 'hosts' || parsed.type === 'dnsmasq' || parsed.type === 'adguard' || parsed.type === 'domain') {
+          if (parsed.isValid) {
+            domains.push(parsed.domain);
+          } else {
+            commentCount++;
+          }
+          continue;
+        }
+        
         commentCount++;
-        continue;
       }
-      
-      if (parsed.type === 'comment') {
-        commentCount++;
-        continue;
-      }
-      
-      if (parsed.type === 'whitelist') {
-        if (parsed.isValid) {
-          whitelist.push(parsed.domain);
-        } else {
-          commentCount++;
-        }
-        continue;
-      }
-      
-      if (parsed.type === 'customDns') {
-        if (parsed.isValid) {
-          customDns.push({ domain: parsed.domain, ip: parsed.ip });
-        } else {
-          commentCount++;
-        }
-        continue;
-      }
-      
-      if (parsed.type === 'hosts' || parsed.type === 'dnsmasq' || parsed.type === 'domain') {
-        if (parsed.isValid) {
-          domains.push(parsed.domain);
-        } else {
-          commentCount++;
-        }
-        continue;
-      }
-      
-      commentCount++;
-    }
 
-    // 去重和处理冲突
-    const whitelistSet = new Set(whitelist.map(w => w.replace(/^\*\./, '')));
-    const customDnsSet = new Set(customDns.map(c => c.domain.replace(/^\*\./, '')));
-    const excludeSet = new Set([...whitelistSet, ...customDnsSet]);
+      // 去重和处理冲突
+      const whitelistSet = new Set(whitelist.map(w => w.replace(/^\*\./, '')));
+      const customDnsSet = new Set(customDns.map(c => c.domain.replace(/^\*\./, '')));
+      const excludeSet = new Set([...whitelistSet, ...customDnsSet]);
 
-    const filteredDomains = domains.filter(d => !excludeSet.has(d.replace(/^\*\./, '')));
-    const uniqueWhitelist = [...new Set(whitelist)];
+      const filteredDomains = domains.filter(d => !excludeSet.has(d.replace(/^\*\./, '')));
+      const uniqueWhitelist = [...new Set(whitelist)];
 
-    setStats({
-      domainCount: filteredDomains.length,
-      validCount: filteredDomains.length + uniqueWhitelist.length,
-      commentCount: commentCount
-    });
+      setStats({
+        domainCount: filteredDomains.length,
+        validCount: filteredDomains.length + uniqueWhitelist.length,
+        commentCount: commentCount
+      });
 
-    // 保存解析结果
-    setParsedData({
-      domains: filteredDomains,
-      whitelist: uniqueWhitelist,
-      customDns: customDns
-    });
+      // 保存解析结果
+      setParsedData({
+        domains: filteredDomains,
+        whitelist: uniqueWhitelist,
+        customDns: customDns
+      });
     } catch (error) {
       console.error('Error parsing source:', error);
       showToast(isLangZh ? '解析失败，请检查输入格式' : 'Parsing failed, please check input format');
@@ -525,15 +541,15 @@ export default function Home() {
       }
     });
 
-    customDns.forEach((item: CustomDnsEntry) => {
-      dnsmasqContent += `address=/${item.domain}/${item.ip}\n`;
-      hostsContent += `${item.ip} ${item.domain}\n`;
-      adguardContent += `||${item.domain}^\n`;
+  customDns.forEach((item: CustomDnsEntry) => {
+    dnsmasqContent += `address=/${item.domain}/${item.ip}\n`;
+    hostsContent += `${item.ip} ${item.domain}\n`;
+    adguardContent += `||${item.domain}^\n`;
 
-      if (blockIPv6) {
-        dnsmasqContent += `address=/${item.domain}/::\n`;
-      }
-    });
+    if (blockIPv6) {
+      dnsmasqContent += `address=/${item.domain}/::\n`;
+    }
+  });
 
     if (filteredWhitelist.length > 0) {
       if (addHeader) {
@@ -738,8 +754,12 @@ export default function Home() {
   };
   
   // 更新设置
-  const updateSettings = () => {
-    // 这里可以实现设置更新逻辑
+  const updateSettings = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setSettings((prev: typeof settings) => ({
+      ...prev,
+      [id.replace('Input', '')]: value
+    }));
   };
   
   // 切换区域
@@ -764,11 +784,8 @@ export default function Home() {
   
   // 加载预设
   const loadPreset = async (preset: string, event: React.MouseEvent) => {
-    const target = event.currentTarget as HTMLElement;
-    document.querySelectorAll('.preset-tag').forEach(tag => {
-      tag.classList.remove('active');
-    });
-    target.classList.add('active');
+    setIsLoading(true);
+    setActivePreset(preset);
 
     try {
       let url: string;
@@ -800,18 +817,20 @@ export default function Home() {
     } catch (error) {
       console.error('Error loading preset:', error);
       showToast(isLangZh ? '加载预设失败，请检查网络连接' : 'Failed to load preset, please check network connection');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // 从 URL 获取域名
   const fetchFromUrl = async () => {
-    const urlInput = document.getElementById('urlInput') as HTMLInputElement;
-    const url = urlInput.value.trim();
+    const url = urlInputRef.current?.value.trim();
     if (!url) {
       showToast(isLangZh ? '请输入 URL' : 'Please enter URL');
       return;
     }
 
+    setIsLoading(true);
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -824,32 +843,58 @@ export default function Home() {
     } catch (error) {
       console.error('Error fetching from URL:', error);
       showToast(isLangZh ? '获取失败，请检查 URL 和网络连接' : 'Failed to fetch, please check URL and network connection');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // 添加 URL
   const addUrl = () => {
-    const urlInput = document.getElementById('urlInput') as HTMLInputElement;
-    const url = urlInput.value.trim();
+    const url = urlInputRef.current?.value.trim();
     if (!url) {
       showToast(isLangZh ? '请输入 URL' : 'Please enter URL');
       return;
     }
 
-    // 这里可以实现添加 URL 到列表的功能
+    setUrls((prev: string[]) => [...prev, url]);
+    urlInputRef.current!.value = '';
     showToast(isLangZh ? 'URL 已添加' : 'URL added');
   };
 
   // 排序 URLs
   const sortUrls = () => {
-    // 这里可以实现排序 URLs 的功能
+    setUrls((prev: string[]) => [...prev].sort());
     showToast(isLangZh ? 'URLs 已排序' : 'URLs sorted');
   };
 
   // 获取全部 URLs
   const fetchAllUrls = async () => {
-    // 这里可以实现获取全部 URLs 的功能
+    if (urls.length === 0) {
+      showToast(isLangZh ? 'URL 列表为空' : 'URL list is empty');
+      return;
+    }
+
+    setIsLoading(true);
     showToast(isLangZh ? '正在获取全部 URLs...' : 'Fetching all URLs...');
+    
+    try {
+      let allContent = '';
+      for (const url of urls) {
+        const response = await fetch(url);
+        if (response.ok) {
+          allContent += await response.text() + '\n';
+        }
+      }
+      
+      setSourceInput(allContent);
+      parseSource(allContent);
+      showToast(isLangZh ? '已获取全部 URLs' : 'Fetched all URLs');
+    } catch (error) {
+      console.error('Error fetching all URLs:', error);
+      showToast(isLangZh ? '获取失败，请检查网络连接' : 'Failed to fetch, please check network connection');
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   return (
@@ -902,6 +947,7 @@ export default function Home() {
                 type="text" 
                 className="url-input" 
                 id="urlInput" 
+                ref={urlInputRef}
                 placeholder={t.urlPlaceholder} 
                 defaultValue="https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt"
               />
@@ -912,16 +958,28 @@ export default function Home() {
               <button className="btn btn-sm" onClick={sortUrls}>{t.sortUrlBtn}</button>
               <button className="btn btn-sm" onClick={fetchAllUrls}>{t.fetchAllUrls}</button>
             </div>
-            <div className="url-list" id="urlList"></div>
+            <div className="url-list" id="urlList">
+              {urls.map((url: string, index: number) => (
+                <div key={index} className="url-item">
+                  <span>{url}</span>
+                  <button 
+                    className="url-remove-btn"
+                    onClick={() => setUrls((prev: string[]) => prev.filter((_: string, i: number) => i !== index))}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
 
             <div className="preset-section">
               <span className="preset-label">{t.presetLabel}</span>
               <div className="preset-tags">
-          <span className="preset-tag active" onClick={(e: React.MouseEvent) => loadPreset('builtin', e)}>{t.builtinAd}</span>
-          <span className="preset-tag" onClick={(e: React.MouseEvent) => loadPreset('adguard', e)}>{t.adguard}</span>
-          <span className="preset-tag" onClick={(e: React.MouseEvent) => loadPreset('easylist', e)}>{t.easylist}</span>
-          <span className="preset-tag" onClick={(e: React.MouseEvent) => loadPreset('neohosts', e)}>{t.neohosts}</span>
-        </div>
+                <span className={`preset-tag ${activePreset === 'builtin' ? 'active' : ''}`} onClick={(e: React.MouseEvent) => loadPreset('builtin', e)}>{t.builtinAd}</span>
+                <span className={`preset-tag ${activePreset === 'adguard' ? 'active' : ''}`} onClick={(e: React.MouseEvent) => loadPreset('adguard', e)}>{t.adguard}</span>
+                <span className={`preset-tag ${activePreset === 'easylist' ? 'active' : ''}`} onClick={(e: React.MouseEvent) => loadPreset('easylist', e)}>{t.easylist}</span>
+                <span className={`preset-tag ${activePreset === 'neohosts' ? 'active' : ''}`} onClick={(e: React.MouseEvent) => loadPreset('neohosts', e)}>{t.neohosts}</span>
+              </div>
             </div>
           </div>
 
@@ -1061,8 +1119,8 @@ export default function Home() {
           <div className="merge-info" id="mergeInfo">
             {outputContent[currentFormat] ? (
               <span>{isLangZh ? 
-                `黑名单: ${parsedData.domains.length} | 白名单: ${parsedData.whitelist.length} | 自定义DNS: ${parsedData.customDns.length} | 生成: ${outputContent[currentFormat].split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('!')).length} 行` : 
-                `Blacklist: ${parsedData.domains.length} | Whitelist: ${parsedData.whitelist.length} | Custom DNS: ${parsedData.customDns.length} | Generated: ${outputContent[currentFormat].split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('!')).length} lines`}
+                `黑名单: ${parsedData.domains.length} | 白名单: ${parsedData.whitelist.length} | 自定义DNS: ${parsedData.customDns.length} | Dnsmasq: ${outputContent.dnsmasq.split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('!')).length} 行 | Hosts: ${outputContent.hosts.split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('!')).length} 行 | AdGuard: ${outputContent.adguard.split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('!')).length} 行` : 
+                `Blacklist: ${parsedData.domains.length} | Whitelist: ${parsedData.whitelist.length} | Custom DNS: ${parsedData.customDns.length} | Dnsmasq: ${outputContent.dnsmasq.split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('!')).length} lines | Hosts: ${outputContent.hosts.split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('!')).length} lines | AdGuard: ${outputContent.adguard.split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('!')).length} lines`}
               </span>
             ) : (
               t.mergeInfo
@@ -1145,6 +1203,15 @@ export default function Home() {
           <span className="footer-version">v{settings.version}</span>
         </div>
       </footer>
+
+      {isLoading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner">
+            <div className="spinner"></div>
+            <span>{isLangZh ? '加载中...' : 'Loading...'}</span>
+          </div>
+        </div>
+      )}
 
       {toastMessage && (
         <div className="toast" id="toast">

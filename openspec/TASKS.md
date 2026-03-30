@@ -8,6 +8,7 @@
 - [ ] 通过 `index.html` 生成新规则
 - [ ] 更新 `dnsmasq.conf`
 - [ ] 更新 `hosts.txt`
+- [ ] 更新 `adguard.txt`
 
 ## 定期任务
 

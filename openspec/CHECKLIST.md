@@ -22,6 +22,7 @@
 
 - [ ] 根目录文件结构符合 SPEC.md 定义
 - [ ] `domains.txt` 存在且格式正确
+- [ ] `adguard.txt` 存在且格式正确
 - [ ] `index.html` 存在且功能完整
 - [ ] `assets/js/i18n.js` 存在且翻译完整
 - [ ] `assets/js/utils.js` 存在且工具函数完整
@@ -44,6 +45,7 @@
 
 - [ ] Dnsmasq 规则格式正确 (`address=/domain/IP`)
 - [ ] Hosts 文件格式正确 (`IP domain`)
+- [ ] AdGuard 规则格式正确 (`||domain^`)
 - [ ] IPv4 阻止功能正常
 - [ ] IPv6 阻止功能正常
 - [ ] 自动去重功能正常

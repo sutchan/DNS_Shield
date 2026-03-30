@@ -8,7 +8,7 @@ Router-level DNS-based ad blocking filter list with web management tool.
 
 This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 
-- **463+ blocked domains** - Local ad and tracking domain filter (can expand to 6766+ with preset sources)
+- **453+ blocked domains** - Local ad and tracking domain filter (can expand to 6766+ with preset sources)
 - **Web management tool** - Generate custom filter lists via browser
 - **Multiple output formats** - Supports Dnsmasq, Hosts, and AdGuard formats
 - **Single source workflow** - One domain list generates all output formats

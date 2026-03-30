@@ -6,12 +6,12 @@
 |------|-----|
 | 项目名称 | DNS Shield |
 | 项目类型 | DNS 广告过滤规则库 |
-| 核心功能 | 基于 dnsmasq/hosts 的路由器广告过滤 |
+| 核心功能 | 基于 dnsmasq/hosts 的路由器全局广告过滤 |
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
 | 当前版本 | v2.0.0 |
-| 拦截域名 | 463+ (本地) / 6766+ (含预设源) |
+| 拦截域名 | 453+ (本地) / 6766+ (含预设源) |
 
 ## 2. 文件结构
 
