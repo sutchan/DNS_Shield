@@ -72,23 +72,64 @@ export default function Home() {
   const outputLineNumbersRef = useRef<HTMLDivElement>(null);
   const urlInputRef = useRef<HTMLInputElement>(null);
   
+  // 配置URLs
+  const config = {
+    domainsUrl: process.env.NEXT_PUBLIC_DOMAINS_URL || 'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt',
+    presets: {
+      builtin: process.env.NEXT_PUBLIC_PRESET_BUILTIN || 'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt',
+      adguard: process.env.NEXT_PUBLIC_PRESET_ADGUARD || 'https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt',
+      easylist: process.env.NEXT_PUBLIC_PRESET_EASYLIST || 'https://easylist-downloads.adblockplus.org/easylist.txt',
+      neohosts: process.env.NEXT_PUBLIC_PRESET_NEOHOSTS || 'https://raw.githubusercontent.com/neoHosts/neoHosts/master/data/adblock.txt'
+    }
+  };
+
+  // 加载域名数据的函数
+  const loadDomainData = async () => {
+    try {
+      // 尝试从配置的URL加载
+      const response = await fetch(config.domainsUrl);
+      if (response.ok) {
+        const text = await response.text();
+        if (text.trim()) {
+          setSourceInput(text);
+          parseSource(text);
+          return;
+        }
+      }
+      
+      // 回退到本地文件
+      console.warn('Falling back to local domains.txt');
+      const localResponse = await fetch('/domains.txt');
+      if (localResponse.ok) {
+        const text = await localResponse.text();
+        if (text.trim()) {
+          setSourceInput(text);
+          parseSource(text);
+        }
+      }
+    } catch (error) {
+      console.warn('Could not load domains.txt:', error);
+      
+      // 发生错误时回退到本地文件
+      try {
+        const localResponse = await fetch('/domains.txt');
+        if (localResponse.ok) {
+          const text = await localResponse.text();
+          if (text.trim()) {
+            setSourceInput(text);
+            parseSource(text);
+          }
+        }
+      } catch (localError) {
+        console.warn('Could not load local domains.txt:', localError);
+      }
+    }
+  };
+
   // 初始化
   useEffect(() => {
     // 加载域名数据
-    fetch('https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt')
-      .then(r => {
-        if (!r.ok) throw new Error('Failed to load domains.txt');
-        return r.text();
-      })
-      .then(t => {
-        if (t.trim()) {
-          setSourceInput(t);
-          parseSource(t);
-        }
-      })
-      .catch(err => {
-        console.warn('Could not load domains.txt:', err);
-      });
+    loadDomainData();
     
     // 确保在客户端环境中使用localStorage
     if (typeof window !== 'undefined') {
@@ -807,22 +848,9 @@ export default function Home() {
     setActivePreset(preset);
 
     try {
-      let url: string;
-      switch (preset) {
-        case 'builtin':
-          url = 'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt';
-          break;
-        case 'adguard':
-          url = 'https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt';
-          break;
-        case 'easylist':
-          url = 'https://easylist-downloads.adblockplus.org/easylist.txt';
-          break;
-        case 'neohosts':
-          url = 'https://raw.githubusercontent.com/neoHosts/neoHosts/master/data/adblock.txt';
-          break;
-        default:
-          return;
+      const url = config.presets[preset as keyof typeof config.presets];
+      if (!url) {
+        return;
       }
 
       const response = await fetch(url);
