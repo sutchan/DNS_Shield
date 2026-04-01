@@ -74,11 +74,8 @@ export default function Home() {
   
   // 初始化
   useEffect(() => {
-    // 设置主题
-    document.documentElement.setAttribute('data-theme', theme);
-    
     // 加载域名数据
-    fetch('/domains.txt')
+    fetch('https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt')
       .then(r => {
         if (!r.ok) throw new Error('Failed to load domains.txt');
         return r.text();
@@ -120,6 +117,13 @@ export default function Home() {
       return () => clearInterval(autoSaveInterval);
     }
   }, []);
+
+  // 监听主题变化并更新data-theme属性
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  }, [theme]);
   
   // 语言翻译
   const translations = {
@@ -570,6 +574,11 @@ export default function Home() {
       adguard: adguardContent
     });
 
+    // 生成输出行号
+    setTimeout(() => {
+      generateLineNumbers(outputContent[currentFormat], outputLineNumbersRef);
+    }, 0);
+
     showToast(isLangZh ? '规则生成成功！' : 'Rules generated successfully!');
   };
   
@@ -734,6 +743,15 @@ export default function Home() {
     showToast(isLangZh ? '域名已保存' : 'Domains saved');
   };
   
+  // 生成行号
+  const generateLineNumbers = (text: string, ref: React.RefObject<HTMLDivElement>) => {
+    if (ref.current) {
+      const lines = text.split('\n').length;
+      const lineNumbersHtml = Array.from({ length: lines }, (_, i) => i + 1).join('\n');
+      ref.current.textContent = lineNumbersHtml;
+    }
+  };
+  
   // 同步滚动
   const syncScroll = () => {
     if (sourceTextareaRef.current && lineNumbersRef.current) {
@@ -751,6 +769,7 @@ export default function Home() {
   const handleSourceInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setSourceInput(e.target.value);
     parseSource(e.target.value);
+    generateLineNumbers(e.target.value, lineNumbersRef);
   };
   
   // 更新设置
@@ -791,7 +810,7 @@ export default function Home() {
       let url: string;
       switch (preset) {
         case 'builtin':
-          url = '/domains.txt';
+          url = 'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt';
           break;
         case 'adguard':
           url = 'https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt';

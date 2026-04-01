@@ -7,11 +7,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -48,6 +43,12 @@ build
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
+
+
 .next/
 .next/*
 .next/cache/*
+node_modules/
+dist/
+dist-ssr/
+*.local
