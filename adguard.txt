@@ -5,9 +5,9 @@
 ! Description: AdGuard-compatible ad blocking filter
 !
 ! Version: 1.0.7
-! Update: 2026.03.30
-! Domains: 457 unique domains
-! Whitelist: 10 domains
+! Update: 2026.04.01
+! Domains: 453 unique domains
+! Whitelist: 9 domains
 !
 ! Project: https://github.com/sutchan/DNS_Shield
 ! Demo: https://dns.ewuse.com/
@@ -72,7 +72,6 @@
 ||adeng.hpplay.cn^
 ||adextensioncontrol.tudou.com^
 ||adguanggao.eee114.com^
-||adhpplay.cn^
 ||adiu.amap.com^
 ||adjust.com^
 ||admaster.com^
@@ -164,7 +163,6 @@
 ||beacon.mgtv.com^
 ||beacon.migu.cn^
 ||blackhole.m.jd.com^
-||broker.mqtt.pandora.xiaomi.com^
 ||bss.pandora.xiaomi.com^
 ||c.l.qq.com^
 ||callback.ad.xiaomi.com^
@@ -274,7 +272,6 @@
 ||metok.sys.miui.com^
 ||mgtv-ad.cdn.mgtv.com^
 ||miaozhen.com^
-||milink.pandora.xiaomi.com^
 ||minigame.qq.com^
 ||misc.in.duokanbox.com^
 ||misc.pandora.xiaomi.com^
@@ -412,7 +409,6 @@
 ||t7z.cupid.ptqy.gitv.tv^
 ||tapjoy.com^
 ||tat.pandora.xiaomi.com^
-||tatv.mi.com^
 ||theqoo.net^
 ||time.video.ptqy.gitv.tv^
 ||toblog.ctobsnssdk.com^
@@ -474,12 +470,11 @@
 
 ! Whitelist (allow these domains)
 @@||api.io.mi.com^
-@@||api.xmpush.xiaomi.com^
-@@||appstore.pandora.xiaomi.com^
 @@||connectivitycheck.gstatic.com^
 @@||file.xmpush.xiaomi.com^
-@@||home.mi.com^
-@@||market.mi-img.com^
-@@||market.xiaomi.com^
+@@||idm.iot.mi.com^
+@@||milink.pandora.xiaomi.com^
 @@||o2o.api.xiaomi.com^
-@@||ota.n.miui.com^
+@@||tracker.xiaomixiaoai.com^
+@@||xx.market.mi-img.com^
+@@||xx.market.xiaomi.com^
