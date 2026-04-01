@@ -221,16 +221,12 @@ body {
 
 .main-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: var(--spacing-6);
   margin-bottom: var(--spacing-8);
 }
 
-@media (max-width: 768px) {
-  .main-content {
-    grid-template-columns: 1fr;
-  }
-}
+
 
 .panel {
   background-color: var(--bg-secondary);

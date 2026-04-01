@@ -50,3 +50,4 @@ yarn.lock
 pnpm-lock.yaml
 .next/
 .next/*
+.next/cache/*
