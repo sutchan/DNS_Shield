@@ -93,6 +93,8 @@ export default function Home() {
         if (text.trim()) {
           setSourceInput(text);
           parseSource(text);
+          // 生成行号
+          generateLineNumbers(text, lineNumbersRef);
           return;
         }
       }
@@ -105,6 +107,8 @@ export default function Home() {
         if (text.trim()) {
           setSourceInput(text);
           parseSource(text);
+          // 生成行号
+          generateLineNumbers(text, lineNumbersRef);
         }
       }
     } catch (error) {
@@ -118,6 +122,8 @@ export default function Home() {
           if (text.trim()) {
             setSourceInput(text);
             parseSource(text);
+            // 生成行号
+            generateLineNumbers(text, lineNumbersRef);
           }
         }
       } catch (localError) {
@@ -138,6 +144,8 @@ export default function Home() {
       if (autosave && !sourceInput.trim()) {
         setSourceInput(autosave);
         parseSource(autosave);
+        // 生成自动保存内容的行号
+        generateLineNumbers(autosave, lineNumbersRef);
         const autoSaveTime = localStorage.getItem('dnsShield_autosave_time');
         if (autoSaveTime) {
           const timeAgo = Math.floor((Date.now() - parseInt(autoSaveTime)) / 60000);
@@ -158,6 +166,16 @@ export default function Home() {
       return () => clearInterval(autoSaveInterval);
     }
   }, []);
+
+  // 监听sourceInput变化，更新输入行号
+  useEffect(() => {
+    generateLineNumbers(sourceInput, lineNumbersRef);
+  }, [sourceInput]);
+
+  // 监听outputContent变化，更新输出行号
+  useEffect(() => {
+    generateLineNumbers(outputContent[currentFormat] || '', outputLineNumbersRef);
+  }, [outputContent, currentFormat]);
 
   // 监听主题变化并更新data-theme属性
   useEffect(() => {
@@ -860,6 +878,8 @@ export default function Home() {
       const content = await response.text();
       setSourceInput(content);
       parseSource(content);
+      // 生成行号
+      generateLineNumbers(content, lineNumbersRef);
       showToast(isLangZh ? `已加载 ${preset} 预设` : `Loaded ${preset} preset`);
     } catch (error) {
       console.error('Error loading preset:', error);
@@ -886,6 +906,8 @@ export default function Home() {
       const content = await response.text();
       setSourceInput(content);
       parseSource(content);
+      // 生成行号
+      generateLineNumbers(content, lineNumbersRef);
       showToast(isLangZh ? '已从 URL 获取域名' : 'Fetched domains from URL');
     } catch (error) {
       console.error('Error fetching from URL:', error);
@@ -935,6 +957,8 @@ export default function Home() {
       
       setSourceInput(allContent);
       parseSource(allContent);
+      // 生成行号
+      generateLineNumbers(allContent, lineNumbersRef);
       showToast(isLangZh ? '已获取全部 URLs' : 'Fetched all URLs');
     } catch (error) {
       console.error('Error fetching all URLs:', error);
