@@ -23,22 +23,14 @@
 - [ ] 根目录文件结构符合 SPEC.md 定义
 - [ ] `domains.txt` 存在且格式正确
 - [ ] `adguard.txt` 存在且格式正确
-- [ ] `index.html` 存在且功能完整
-- [ ] `assets/js/i18n.js` 存在且翻译完整
-- [ ] `assets/js/utils.js` 存在且工具函数完整
-- [ ] `assets/js/core.js` 存在且状态管理完整
-- [ ] `assets/js/parser.js` 存在且域名解析完整
-- [ ] `assets/js/generator.js` 存在且规则生成完整
-- [ ] `assets/js/app.js` 存在且入口逻辑完整
-- [ ] `assets/js/ui-urls.js` 存在且 URL 管理交互完整
-- [ ] `assets/js/ui-editor.js` 存在且编辑器交互完整
-- [ ] `assets/js/ui-controls.js` 存在且控件交互完整
-- [ ] `assets/css/styles.css` 存在（样式入口）
-- [ ] `assets/css/variables.css` 存在（CSS 变量）
-- [ ] `assets/css/layout.css` 存在（布局样式）
-- [ ] `assets/css/components.css` 存在（组件样式）
-- [ ] `assets/css/editor.css` 存在（编辑器样式）
-- [ ] `assets/css/utilities.css` 存在（工具类）
+- [ ] `src/app/page.tsx` 存在且功能完整
+- [ ] `src/app/Home.tsx` 存在且逻辑完整
+- [ ] `src/app/globals.css` 存在且样式完整
+- [ ] `package.json` 配置正确且依赖完整
+- [ ] `next.config.js` 配置正确
+- [ ] `tsconfig.json` 配置正确
+- [ ] `tailwind.config.js` 配置正确
+- [ ] `postcss.config.js` 配置正确
 - [ ] 生成的文件格式正确
 
 ## 功能验证

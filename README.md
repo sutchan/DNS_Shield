@@ -147,9 +147,19 @@ dnsmasq.conf              hosts.txt
 
 ## 贡献
 
-1. 编辑 `domains.txt` 添加或删除域名
-2. 打开 `index.html` 生成更新的文件
-3. 提交 Pull Request
+请参考 [贡献指南](CONTRIBUTING.md) 了解如何为项目做出贡献。
+
+## 测试
+
+请参考 [测试指南](TESTING.md) 了解如何测试项目。
+
+## 部署
+
+请参考 [部署指南](DEPLOYMENT.md) 了解如何部署 Web 管理工具。
+
+## 安全
+
+请参考 [安全指南](SECURITY.md) 了解项目的安全最佳实践。
 
 ## 许可证
 

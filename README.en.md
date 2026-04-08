@@ -117,9 +117,19 @@ dnsmasq.conf              hosts.txt
 
 ## Contribution
 
-1. Edit `domains.txt` to add/remove domains
-2. Open `index.html` to generate updated files
-3. Submit Pull Request
+Please refer to [Contribution Guide](CONTRIBUTING.md) to learn how to contribute to the project.
+
+## Testing
+
+Please refer to [Testing Guide](TESTING.md) to learn how to test the project.
+
+## Deployment
+
+Please refer to [Deployment Guide](DEPLOYMENT.md) to learn how to deploy the web management tool.
+
+## Security
+
+Please refer to [Security Guide](SECURITY.md) to learn about the project's security best practices.
 
 ## License
 
