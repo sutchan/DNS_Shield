@@ -1,4 +1,5 @@
 // src/app/Home.test.tsx v2.0.0
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Home from './Home';
 
@@ -63,7 +64,7 @@ describe('Home Component', () => {
 
   test('generates rules', () => {
     render(<Home />);
-    const sourceInput = screen.getByPlaceholderText('# 输入域名，每行一个');
+    const sourceInput = screen.getByRole('textbox');
     fireEvent.change(sourceInput, { target: { value: 'ad.example.com' } });
     
     const generateBtn = screen.getByText('🔄 生成规则');
@@ -104,7 +105,7 @@ describe('Home Component', () => {
 
   test('sorts domains', () => {
     render(<Home />);
-    const sourceInput = screen.getByPlaceholderText('# 输入域名，每行一个');
+    const sourceInput = screen.getByRole('textbox');
     fireEvent.change(sourceInput, { target: { value: 'z.example.com\na.example.com' } });
     
     const sortBtn = screen.getByText('↕️ 排序');
@@ -112,10 +113,10 @@ describe('Home Component', () => {
     
     expect(sourceInput).toHaveValue('a.example.com\nz.example.com');
   });
-
+  
   test('dedupes domains', () => {
     render(<Home />);
-    const sourceInput = screen.getByPlaceholderText('# 输入域名，每行一个');
+    const sourceInput = screen.getByRole('textbox');
     fireEvent.change(sourceInput, { target: { value: 'ad.example.com\nad.example.com' } });
     
     const dedupeBtn = screen.getByText('🔄 去重');
@@ -123,10 +124,10 @@ describe('Home Component', () => {
     
     expect(sourceInput).toHaveValue('ad.example.com');
   });
-
+  
   test('clears input', () => {
     render(<Home />);
-    const sourceInput = screen.getByPlaceholderText('# 输入域名，每行一个');
+    const sourceInput = screen.getByRole('textbox');
     fireEvent.change(sourceInput, { target: { value: 'ad.example.com' } });
     
     const clearBtn = screen.getByText('🗑️ 清空');

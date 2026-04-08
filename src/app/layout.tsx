@@ -12,7 +12,6 @@ export const metadata: Metadata = {
   keywords: 'DNS广告过滤,dnsmasq,hosts,广告拦截,路由器,梅林固件,小米路由器,OpenWrt,广告过滤规则,DNS Shield',
   authors: { name: 'sutchan' },
   robots: 'index, follow',
-  themeColor: '#4f46e5',
   openGraph: {
     title: 'DNS Shield - 路由器广告过滤',
     description: '路由器级广告过滤规则生成工具，支持 Dnsmasq 和 Hosts 格式',
@@ -85,6 +84,10 @@ export const metadata: Metadata = {
     },
   ],
   manifest: '/manifest.json',
+}
+
+export const viewport = {
+  themeColor: '#4f46e5',
 }
 
 export default function RootLayout({
