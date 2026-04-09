@@ -52,7 +52,7 @@ describe('Home Component', () => {
     render(<Home />);
     const langSwitch = screen.getByText('中');
     fireEvent.click(langSwitch);
-    expect(screen.getByText('Input Domain List')).toBeInTheDocument();
+    expect(screen.getByText('📥 Input Domain List')).toBeInTheDocument();
   });
 
   test('switches theme', () => {
@@ -64,13 +64,14 @@ describe('Home Component', () => {
 
   test('generates rules', () => {
     render(<Home />);
-    const sourceInput = screen.getByRole('textbox');
+    const sourceInput = document.getElementById('sourceInput') as HTMLTextAreaElement;
     fireEvent.change(sourceInput, { target: { value: 'ad.example.com' } });
     
     const generateBtn = screen.getByText('🔄 生成规则');
     fireEvent.click(generateBtn);
     
-    const outputPreview = screen.getByText('// 生成的规则将显示在这里');
+    // 检查生成的规则内容
+    const outputPreview = screen.getByText('ad.example.com');
     expect(outputPreview).toBeInTheDocument();
   });
 
@@ -105,7 +106,7 @@ describe('Home Component', () => {
 
   test('sorts domains', () => {
     render(<Home />);
-    const sourceInput = screen.getByRole('textbox');
+    const sourceInput = document.getElementById('sourceInput') as HTMLTextAreaElement;
     fireEvent.change(sourceInput, { target: { value: 'z.example.com\na.example.com' } });
     
     const sortBtn = screen.getByText('↕️ 排序');
@@ -116,7 +117,7 @@ describe('Home Component', () => {
   
   test('dedupes domains', () => {
     render(<Home />);
-    const sourceInput = screen.getByRole('textbox');
+    const sourceInput = document.getElementById('sourceInput') as HTMLTextAreaElement;
     fireEvent.change(sourceInput, { target: { value: 'ad.example.com\nad.example.com' } });
     
     const dedupeBtn = screen.getByText('🔄 去重');
@@ -127,7 +128,7 @@ describe('Home Component', () => {
   
   test('clears input', () => {
     render(<Home />);
-    const sourceInput = screen.getByRole('textbox');
+    const sourceInput = document.getElementById('sourceInput') as HTMLTextAreaElement;
     fireEvent.change(sourceInput, { target: { value: 'ad.example.com' } });
     
     const clearBtn = screen.getByText('🗑️ 清空');
