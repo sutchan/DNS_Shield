@@ -33,8 +33,11 @@ dns-shield/
 ├── src/                          # Next.js 源代码
 │   ├── app/                      # App Router 目录
 │   │   ├── page.tsx              # 主页面
-│   │   ├── Home.tsx              # 主组件
-│   │   └── globals.css           # 全局样式
+│   │   ├── Home.tsx              # 主组件（包含所有功能逻辑）
+│   │   ├── Home.test.tsx         # 主组件测试
+│   │   ├── globals.css           # 全局样式
+│   │   └── layout.tsx            # 布局组件
+│   └── setupTests.ts             # 测试设置
 ├── assets/                       # 资源目录
 │   └── icons/                    # 应用图标
 └── openspec/                     # 项目规范文档
@@ -214,7 +217,9 @@ Next.js App (现代前端框架)
     ├── src/app/
     │   ├── page.tsx              ← 主页面
     │   ├── Home.tsx              ← 主组件（包含所有功能逻辑）
-    │   └── globals.css           ← 全局样式
+    │   ├── Home.test.tsx         ← 主组件测试
+    │   ├── globals.css           ← 全局样式
+    │   └── layout.tsx            ← 布局组件
     │
     ├── package.json 依赖
     │   ├── react                  ← React 核心
@@ -222,6 +227,10 @@ Next.js App (现代前端框架)
     │   ├── next                   ← Next.js 框架
     │   ├── typescript             ← TypeScript 支持
     │   ├── tailwindcss            ← Tailwind CSS
+    │   ├── postcss                ← PostCSS
+    │   ├── autoprefixer           ← Autoprefixer
+    │   ├── jest                   ← 测试框架
+    │   ├── @testing-library/react ← React 测试库
     │   └── 其他开发依赖
     │
     └── 预设源 URL
