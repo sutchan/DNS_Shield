@@ -633,10 +633,13 @@ export default function Home() {
       adguard: adguardContent
     });
 
-    // 生成输出行号
-    setTimeout(() => {
-      generateLineNumbers(outputContent[currentFormat], outputLineNumbersRef);
-    }, 0);
+    // 生成输出行号 - 使用当前生成的内容
+    const content = {
+      dnsmasq: dnsmasqContent,
+      hosts: hostsContent,
+      adguard: adguardContent
+    }[currentFormat];
+    generateLineNumbers(content || '', outputLineNumbersRef);
 
     showToast(isLangZh ? '规则生成成功！' : 'Rules generated successfully!');
   };
