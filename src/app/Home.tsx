@@ -646,7 +646,7 @@ export default function Home() {
   
   // 下载输出
   const downloadOutput = () => {
-    const content = outputContent[currentFormat];
+    const content = outputContent[currentFormat] || '';
     const filename = settings[`${currentFormat}Filename` as keyof typeof settings] as string;
     
     const blob = new Blob([content], { type: 'text/plain' });
@@ -664,7 +664,7 @@ export default function Home() {
   
   // 复制到剪贴板
   const copyOutput = () => {
-    const content = outputContent[currentFormat];
+    const content = outputContent[currentFormat] || '';
     navigator.clipboard.writeText(content)
       .then(() => {
         showToast(isLangZh ? '已复制到剪贴板' : 'Copied to clipboard');
