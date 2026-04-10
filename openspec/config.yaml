@@ -1,20 +1,30 @@
 schema: spec-driven
 
-# Project context (optional)
+# Project context
 # This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Tech stack: TypeScript, React, Next.js, Tailwind CSS, Jest
+  We use conventional commits
+  Domain: DNS-based ad blocking
+  Project structure follows Next.js App Router conventions
+  We use SemVer for versioning
+  We maintain a single source of truth in domains.txt
+  We support multiple output formats: dnsmasq, hosts, and AdGuard
+  We follow strict file header format: <root_relative_path> <version>
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+# Per-artifact rules
+rules:
+  proposal:
+    - Keep proposals under 500 words
+    - Always include a "Non-goals" section
+  tasks:
+    - Break tasks into chunks of max 2 hours
+    - Include testing tasks for all functionality changes
+  spec:
+    - Maintain consistency with actual project structure
+    - Update dependency versions to match package.json
+    - Include all supported router platforms
+  checklist:
+    - Include all required files and configurations
+    - Verify all generated file formats
+    - Ensure router compatibility testing

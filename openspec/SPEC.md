@@ -19,6 +19,10 @@
 dns-shield/
 ├── README.md                      # 中文说明文档（默认）
 ├── README.en.md                   # 英文说明文档
+├── CONTRIBUTING.md                # 贡献指南
+├── DEPLOYMENT.md                  # 部署指南
+├── SECURITY.md                    # 安全指南
+├── TESTING.md                     # 测试指南
 ├── domains.txt                    # 原始域名清单（唯一数据源）
 ├── dnsmasq.conf                  # Dnsmasq 过滤列表
 ├── hosts.txt                      # Hosts 文件
@@ -38,12 +42,15 @@ dns-shield/
 │   │   ├── globals.css           # 全局样式
 │   │   └── layout.tsx            # 布局组件
 │   └── setupTests.ts             # 测试设置
-├── assets/                       # 资源目录
-│   └── icons/                    # 应用图标
+├── public/                        # 公共静态资源
+│   ├── assets/                    # 资源目录
+│   │   └── icons/                # 应用图标
+│   └── domains.txt               # 公共域名清单（用于 Web 访问）
 └── openspec/                     # 项目规范文档
     ├── SPEC.md                   # 项目规范（本文件）
     ├── TASKS.md                  # 任务清单
-    └── CHECKLIST.md              # 质量检查清单
+    ├── CHECKLIST.md              # 质量检查清单
+    └── config.yaml               # 项目配置
 ```
 
 ## 3. 核心工作流程
@@ -159,11 +166,12 @@ address=/domain/::
 ### 6.1 新增规则
 
 1. 编辑 `domains.txt`，添加新域名
-2. 打开 `index.html`
-3. 加载 `domains.txt` 或手动输入
-4. 配置输出选项
-5. 点击"生成规则"
-6. 下载更新后的文件
+2. 启动开发服务器：`npm run dev` 或 `pnpm dev`
+3. 访问本地开发地址（通常为 http://localhost:3000）
+4. 加载 `domains.txt` 或手动输入
+5. 配置输出选项
+6. 点击"生成规则"
+7. 下载更新后的文件
 
 ### 6.2 同步更新
 
@@ -209,35 +217,47 @@ refactor: 优化规则生成逻辑
 
 ## 10. 依赖关系
 
-```
-Next.js App (现代前端框架)
-    │
-    ├── domains.txt                ← 数据源
-    │
-    ├── src/app/
-    │   ├── page.tsx              ← 主页面
-    │   ├── Home.tsx              ← 主组件（包含所有功能逻辑）
-    │   ├── Home.test.tsx         ← 主组件测试
-    │   ├── globals.css           ← 全局样式
-    │   └── layout.tsx            ← 布局组件
-    │
-    ├── package.json 依赖
-    │   ├── react                  ← React 核心
-    │   ├── react-dom              ← React DOM
-    │   ├── next                   ← Next.js 框架
-    │   ├── typescript             ← TypeScript 支持
-    │   ├── tailwindcss            ← Tailwind CSS
-    │   ├── postcss                ← PostCSS
-    │   ├── autoprefixer           ← Autoprefixer
-    │   ├── jest                   ← 测试框架
-    │   ├── @testing-library/react ← React 测试库
-    │   └── 其他开发依赖
-    │
-    └── 预设源 URL
-        ├── AdGuard DNS Filter (https://adguardteam.github.io/AdGuardSDNSFilter/)
-        ├── EasyList (https://easylist.to/easylist/)
-        └── NeoHosts (https://github.com/neo-forte/neo-forte)
-```
+### 10.1 核心依赖
+
+| 依赖 | 版本 | 用途 |
+|------|------|------|
+| next | ^14 | Next.js 框架 |
+| react | ^18 | React 核心库 |
+| react-dom | ^18 | React DOM 库 |
+
+### 10.2 开发依赖
+
+| 依赖 | 版本 | 用途 |
+|------|------|------|
+| @babel/preset-env | ^7.29.2 | Babel 环境预设 |
+| @babel/preset-react | ^7.28.5 | React Babel 预设 |
+| @babel/preset-typescript | ^7.28.5 | TypeScript Babel 预设 |
+| @testing-library/jest-dom | ^6.9.1 | Jest DOM 测试库 |
+| @testing-library/react | ^16.3.2 | React 测试库 |
+| @testing-library/user-event | ^14.6.1 | 用户事件测试库 |
+| @types/jest | ^30.0.0 | Jest 类型定义 |
+| @types/node | ^25.5.0 | Node.js 类型定义 |
+| @types/react | ^18 | React 类型定义 |
+| @types/react-dom | ^18 | React DOM 类型定义 |
+| autoprefixer | ^10.4.19 | CSS 自动前缀 |
+| babel-jest | ^30.3.0 | Babel Jest 集成 |
+| eslint | ^8 | 代码质量检查 |
+| eslint-config-next | ^14 | Next.js ESLint 配置 |
+| identity-obj-proxy | ^3.0.0 | Jest 模块代理 |
+| jest | ^30.3.0 | 测试框架 |
+| jest-environment-jsdom | ^30.3.0 | JSDOM 测试环境 |
+| postcss | ^8.4.38 | CSS 处理工具 |
+| tailwindcss | ^3.4.3 | 实用优先 CSS 框架 |
+| ts-jest | ^29.4.9 | TypeScript Jest 集成 |
+| typescript | ^5 | TypeScript 语言 |
+
+### 10.3 预设源 URL
+
+| 预设源 | URL |
+|--------|-----|
+| AdGuard DNS Filter | https://adguardteam.github.io/AdGuardSDNSFilter/ |
+| EasyList | https://easylist.to/easylist/ |
+| NeoHosts | https://github.com/neo-forte/neo-forte |
 
 ## 11. 浏览器兼容性
 

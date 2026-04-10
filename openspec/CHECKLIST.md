@@ -14,23 +14,35 @@
 - [ ] `README.en.md` 存在且英文内容完整
 - [ ] `README.md` 与 `README.en.md` 互相链接正确
 - [ ] `CHANGELOG.md` 变更记录完整
+- [ ] `CONTRIBUTING.md` 贡献指南完整
+- [ ] `DEPLOYMENT.md` 部署指南完整
+- [ ] `SECURITY.md` 安全指南完整
+- [ ] `TESTING.md` 测试指南完整
 - [ ] `openspec/SPEC.md` 规范文档完整
 - [ ] `openspec/TASKS.md` 任务清单完整
 - [ ] `openspec/CHECKLIST.md` 检查清单完整
+- [ ] `openspec/config.yaml` 配置文件完整
 
 ## 文件结构
 
 - [ ] 根目录文件结构符合 SPEC.md 定义
 - [ ] `domains.txt` 存在且格式正确
 - [ ] `adguard.txt` 存在且格式正确
+- [ ] `dnsmasq.conf` 存在且格式正确
+- [ ] `hosts.txt` 存在且格式正确
+- [ ] `public/domains.txt` 存在且格式正确
 - [ ] `src/app/page.tsx` 存在且功能完整
 - [ ] `src/app/Home.tsx` 存在且逻辑完整
+- [ ] `src/app/Home.test.tsx` 存在且测试完整
 - [ ] `src/app/globals.css` 存在且样式完整
+- [ ] `src/app/layout.tsx` 存在且布局完整
+- [ ] `src/setupTests.ts` 存在且配置完整
 - [ ] `package.json` 配置正确且依赖完整
 - [ ] `next.config.js` 配置正确
 - [ ] `tsconfig.json` 配置正确
 - [ ] `tailwind.config.js` 配置正确
 - [ ] `postcss.config.js` 配置正确
+- [ ] `jest.config.js` 配置正确
 - [ ] 生成的文件格式正确
 
 ## 功能验证
