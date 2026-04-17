@@ -1,0 +1,9 @@
+idm.iot.mi.com
+api.io.mi.com
+connectivitycheck.gstatic.com
+XX.market.mi-img.com
+XX.market.xiaomi.com
+tracker.xiaomixiaoai.com
+file.xmpush.xiaomi.com
+milink.pandora.xiaomi.com
+o2o.api.xiaomi.com
