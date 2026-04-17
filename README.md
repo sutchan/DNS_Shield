@@ -98,7 +98,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt >> 
 | `dnsmasq.conf` | 主 dnsmasq 过滤列表（`address=/domain/0.0.0.0` 格式） |
 | `hosts.txt` | 路由器 hosts 文件（`0.0.0.0 domain` 格式） |
 | `adguard.txt` | AdGuard 浏览器扩展/软件格式（`\|\|domain^`） |
-| `index.html` | Web 管理界面，用于管理和生成过滤清单 |
+| `src/app/` | Next.js 源代码目录，包含管理界面逻辑 |
 | `domains.txt` | 统一域名列表（每行一个域名，数据源） |
 
 ### 直接使用已生成的文件
@@ -115,7 +115,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt >> 
 
 ## Web 管理界面
 
-在浏览器中打开 `index.html` 可以：
+项目现在基于 Next.js 开发，你可以：
 
 - 从 URL 或本地文件加载域名列表
 - 选择预设源（AdGuard、EasyList、NeoHosts、小米广告）
@@ -129,7 +129,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt >> 
 ```
 domains.txt (唯一数据源)
         ↓
-  index.html (Web 工具)
+  Next.js App (Web 工具)
         ↓
    ┌────────────┴────────────┐
    ↓                         ↓

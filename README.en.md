@@ -77,7 +77,7 @@ Most routers with custom hosts support can use the same method:
 | `dnsmasq.conf` | Main dnsmasq filter list (`address=/domain/0.0.0.0` format) |
 | `hosts.txt` | Hosts file for routers (`0.0.0.0 domain` format) |
 | `adguard.txt` | AdGuard browser extension/software format (`\|\|domain^`) |
-| `index.html` | Web interface for managing and generating filter lists |
+| `src/app/` | Next.js source code directory with management interface logic |
 | `domains.txt` | Unified domain list (one domain per line, source of truth) |
 
 ### Using Pre-generated Files
@@ -94,7 +94,7 @@ This project provides pre-generated filter rule files that can be downloaded and
 
 ## Web Manager
 
-Open `index.html` in your browser to:
+The project is now based on Next.js. You can:
 
 - Load and parse domain lists from URL or local file
 - Choose preset sources (AdGuard, EasyList, NeoHosts, Xiaomi)
@@ -108,7 +108,7 @@ Open `index.html` in your browser to:
 ```
 domains.txt (Source of Truth)
         ↓
-    index.html (Web Tool)
+    Next.js App (Web Tool)
         ↓
    ┌────────────┴────────────┐
    ↓                         ↓

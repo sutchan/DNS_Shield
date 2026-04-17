@@ -600,15 +600,15 @@ export default function Home() {
       }
     });
 
-  customDns.forEach((item: CustomDnsEntry) => {
-    dnsmasqContent += `address=/${item.domain}/${item.ip}\n`;
-    hostsContent += `${item.ip} ${item.domain}\n`;
-    adguardContent += `||${item.domain}^\n`;
+    customDns.forEach((item: CustomDnsEntry) => {
+      dnsmasqContent += `address=/${item.domain}/${item.ip}\n`;
+      hostsContent += `${item.ip} ${item.domain}\n`;
+      adguardContent += `||${item.domain}^\n`;
 
-    if (blockIPv6) {
-      dnsmasqContent += `address=/${item.domain}/::\n`;
-    }
-  });
+      if (blockIPv6) {
+        dnsmasqContent += `address=/${item.domain}/::\n`;
+      }
+    });
 
     if (filteredWhitelist.length > 0) {
       if (addHeader) {

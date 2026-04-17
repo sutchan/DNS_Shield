@@ -8,6 +8,7 @@
 
 - **操作系统**：Linux、macOS 或 Windows
 - **Node.js**：18.0 或更高版本
+- **pnpm**：8.0 或更高版本（推荐）
 - **npm**：9.0 或更高版本
 - **Git**：用于版本控制
 
@@ -40,6 +41,8 @@ cd DNS_Shield
 
 ```bash
 # 安装依赖
+pnpm install
+# 或
 npm install
 ```
 
@@ -47,6 +50,8 @@ npm install
 
 ```bash
 # 构建生产版本
+pnpm build
+# 或
 npm run build
 ```
 
@@ -54,6 +59,8 @@ npm run build
 
 ```bash
 # 运行生产服务器
+pnpm start
+# 或
 npm start
 
 # 或使用 PM2 管理进程
@@ -89,6 +96,8 @@ cd DNS_Shield
 
 ```bash
 # 安装依赖
+pnpm install
+# 或
 npm install
 ```
 
@@ -96,6 +105,8 @@ npm install
 
 ```bash
 # 构建生产版本
+pnpm build
+# 或
 npm run build
 ```
 
@@ -108,7 +119,9 @@ npm run build
 npm install -g pm2
 
 # 启动应用
-pm2 start npm --name "dns-shield" -- start
+pm2 start pnpm --name "dns-shield" -- start
+# 或使用 npm
+# pm2 start npm --name "dns-shield" -- start
 
 # 设置 PM2 开机自启
 pm2 startup
@@ -299,9 +312,13 @@ cd DNS_Shield
 git pull origin main
 
 # 安装依赖
+pnpm install
+# 或
 npm install
 
 # 构建项目
+pnpm build
+# 或
 npm run build
 
 # 重启应用
