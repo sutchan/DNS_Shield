@@ -1,9 +1,21 @@
-idm.iot.mi.com
-api.io.mi.com
-connectivitycheck.gstatic.com
-XX.market.mi-img.com
-XX.market.xiaomi.com
-tracker.xiaomixiaoai.com
-file.xmpush.xiaomi.com
-milink.pandora.xiaomi.com
-o2o.api.xiaomi.com
+@@||idm.iot.mi.com^
+@@||api.io.mi.com^ #影响米家互联的使用。
+@@||connectivitycheck.gstatic.com^ #影响 GooglePlay
+@@||market.mi-img.com^ #影响MIUI小部件
+@@||market.xiaomi.com^ #影响MIUI小部件
+@@||tracker.xiaomixiaoai.com^
+@@||file.xmpush.xiaomi.com^ # 小米推送
+@@||milink.pandora.xiaomi.com^ # 小米
+@@||o2o.api.xiaomi.com^ # 小米O2O
+@@||bss.pandora.xiaomi.com^ # 小米
+@@||de.pandora.xiaomi.com^ # 小米
+@@||dvb.pandora.xiaomi.com^ # 小米
+@@||g.pandora.xiaomi.com^ # 小米
+@@||jellyfish.pandora.xiaomi.com^ # 小米
+@@||misc.pandora.xiaomi.com^ # 小米
+@@||mishop.pandora.xiaomi.com^ # 小米
+@@||pandora.mi.com^ # 小米
+@@||pandora.xiaomi.com^ # 小米
+@@||starfish.pandora.xiaomi.com^ # 小米
+@@||stat.pandora.xiaomi.com^ # 小米统计
+@@||upgrade.mishop.pandora.xiaomi.com^ # 小米升级

@@ -83,6 +83,27 @@ export default function Home() {
     }
   };
 
+  // 加载本地域名数据
+  const loadLocalDomains = async () => {
+    try {
+      console.warn('Loading from local domains.txt');
+      const localResponse = await fetch('/domains.txt');
+      if (localResponse.ok) {
+        const text = await localResponse.text();
+        if (text.trim()) {
+          setSourceInput(text);
+          parseSource(text);
+          generateLineNumbers(text, lineNumbersRef);
+          return true;
+        }
+      }
+      return false;
+    } catch (localError) {
+      console.warn('Could not load local domains.txt:', localError);
+      return false;
+    }
+  };
+
   // 加载域名数据的函数
   const loadDomainData = async () => {
     try {
@@ -93,42 +114,17 @@ export default function Home() {
         if (text.trim()) {
           setSourceInput(text);
           parseSource(text);
-          // 生成行号
           generateLineNumbers(text, lineNumbersRef);
           return;
         }
       }
       
-      // 回退到本地文件
-      console.warn('Falling back to local domains.txt');
-      const localResponse = await fetch('/domains.txt');
-      if (localResponse.ok) {
-        const text = await localResponse.text();
-        if (text.trim()) {
-          setSourceInput(text);
-          parseSource(text);
-          // 生成行号
-          generateLineNumbers(text, lineNumbersRef);
-        }
-      }
+      // 如果远程加载失败，回退到本地文件
+      await loadLocalDomains();
     } catch (error) {
       console.warn('Could not load domains.txt:', error);
-      
       // 发生错误时回退到本地文件
-      try {
-        const localResponse = await fetch('/domains.txt');
-        if (localResponse.ok) {
-          const text = await localResponse.text();
-          if (text.trim()) {
-            setSourceInput(text);
-            parseSource(text);
-            // 生成行号
-            generateLineNumbers(text, lineNumbersRef);
-          }
-        }
-      } catch (localError) {
-        console.warn('Could not load local domains.txt:', localError);
-      }
+      await loadLocalDomains();
     }
   };
 
