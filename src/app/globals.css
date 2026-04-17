@@ -414,8 +414,8 @@ body {
   color: var(--text-secondary);
   text-align: right;
   user-select: none;
-  overflow: hidden;
-  min-height: 26.25rem; /* 20 lines */
+  overflow-y: auto;
+  line-height: 1.5;
 }
 
 #sourceInput {
