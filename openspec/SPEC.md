@@ -22,7 +22,6 @@ dns-shield/
 ├── CONTRIBUTING.md                # 贡献指南
 ├── DEPLOYMENT.md                  # 部署指南
 ├── SECURITY.md                    # 安全指南
-├── TESTING.md                     # 测试指南
 ├── domains.txt                    # 原始域名清单（唯一数据源）
 ├── dnsmasq.conf                  # Dnsmasq 过滤列表
 ├── hosts.txt                      # Hosts 文件
