@@ -28,6 +28,7 @@
 - [ ] 根目录文件结构符合 SPEC.md 定义
 - [ ] `domains.txt` 存在且格式正确
 - [ ] `adguard.txt` 存在且格式正确
+- [ ] `adguard_whitelist.txt` 存在且格式正确
 - [ ] `dnsmasq.conf` 存在且格式正确
 - [ ] `hosts.txt` 存在且格式正确
 - [ ] `public/domains.txt` 存在且格式正确
@@ -39,10 +40,14 @@
 - [ ] `src/setupTests.ts` 存在且配置完整
 - [ ] `package.json` 配置正确且依赖完整
 - [ ] `next.config.js` 配置正确
+- [ ] `next-env.d.ts` 配置正确
 - [ ] `tsconfig.json` 配置正确
 - [ ] `tailwind.config.js` 配置正确
 - [ ] `postcss.config.js` 配置正确
 - [ ] `jest.config.js` 配置正确
+- [ ] `.babelrc` 配置正确
+- [ ] `manifest.json` 配置正确
+- [ ] `service-worker.js` 配置正确
 - [ ] 生成的文件格式正确
 
 ## 功能验证

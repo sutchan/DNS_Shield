@@ -11,6 +11,8 @@ context: |
   We maintain a single source of truth in domains.txt
   We support multiple output formats: dnsmasq, hosts, and AdGuard
   We follow strict file header format: <root_relative_path> <version>
+  We also maintain adguard_whitelist.txt for whitelist rules
+  We have additional configuration files for deployment and testing
 
 # Per-artifact rules
 rules:

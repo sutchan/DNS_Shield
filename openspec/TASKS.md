@@ -10,6 +10,7 @@
 - [ ] 更新 `dnsmasq.conf`
 - [ ] 更新 `hosts.txt`
 - [ ] 更新 `adguard.txt`
+- [ ] 更新 `adguard_whitelist.txt`
 - [ ] 同步更新 `public/domains.txt`
 
 ## 定期任务
