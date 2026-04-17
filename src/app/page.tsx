@@ -1,4 +1,4 @@
-// src/app/page.tsx v2.0.0
+// src/app/page.tsx v2.0.1
 import React, { useState, useEffect } from 'react';
 import Home from './Home';
 
