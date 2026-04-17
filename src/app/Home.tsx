@@ -15,6 +15,19 @@ export default function Home() {
     
     const savedLang = localStorage.getItem('lang');
     setIsLangZh(savedLang !== 'en');
+    
+    // 注册 Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            // 注册成功
+          })
+          .catch(error => {
+            // 注册失败
+          });
+      });
+    }
   }, []);
   const [sourceInput, setSourceInput] = useState('');
   const [outputContent, setOutputContent] = useState({
@@ -805,8 +818,8 @@ export default function Home() {
   const generateLineNumbers = (text: string, ref: React.RefObject<HTMLDivElement>) => {
     if (ref.current) {
       const lines = text.split('\n').length;
-      const lineNumbersHtml = Array.from({ length: lines }, (_, i) => i + 1).join('\n');
-      ref.current.textContent = lineNumbersHtml;
+      const lineNumbersHtml = Array.from({ length: lines }, (_, i) => i + 1).join('<br>');
+      ref.current.innerHTML = lineNumbersHtml;
     }
   };
   

@@ -4,10 +4,9 @@
 #
 # Description: Router-level ad blocking hosts file
 #
-# Version: 1.0.7
-# Update: 2026.04.01
-# Domains: 453 unique domains
-# Whitelist: 9 domains
+# Version: 2.0.0
+# Update: 2026.04.17
+# Domains: 424 unique domains
 #
 # Usage: Import to router ad blocking settings
 #
@@ -165,7 +164,6 @@
 127.0.0.1 beacon.mgtv.com
 127.0.0.1 beacon.migu.cn
 127.0.0.1 blackhole.m.jd.com
-127.0.0.1 bss.pandora.xiaomi.com
 127.0.0.1 c.l.qq.com
 127.0.0.1 callback.ad.xiaomi.com
 127.0.0.1 cctv-ad.cdn.cctv.cn
@@ -191,7 +189,6 @@
 127.0.0.1 data.mistat.xiaomi.com
 127.0.0.1 datahub.zhihu.com
 127.0.0.1 daup.map.baidu.com
-127.0.0.1 de.pandora.xiaomi.com
 127.0.0.1 df.tanx.com
 127.0.0.1 diagnosis.ad.xiaomi.com
 127.0.0.1 dig.bdurl.net
@@ -202,16 +199,13 @@
 127.0.0.1 dm.toutiao.com
 127.0.0.1 dnkeeper.platform.dbankcloud.com
 127.0.0.1 duga.zhihu.com
-127.0.0.1 dvb.pandora.xiaomi.com
 127.0.0.1 ef-dongfeng.tanx.com
 127.0.0.1 errlog.umeng.com
 127.0.0.1 et.tanx.com
-127.0.0.1 extlog.snssdk.com
 127.0.0.1 finder.video.qq.com
 127.0.0.1 fix.hpplay.cn
 127.0.0.1 g.dtv.cn.miaozhan.com
 127.0.0.1 g.dtv.cn.miaozhen.com
-127.0.0.1 g.pandora.xiaomi.com
 127.0.0.1 galaxy.ad.iqiyi.com
 127.0.0.1 game.weixin.qq.com
 127.0.0.1 gdt.qq.com
@@ -240,7 +234,6 @@
 127.0.0.1 iws.corel.com
 127.0.0.1 iwstat.tudou.com
 127.0.0.1 iyes.youku.com
-127.0.0.1 jellyfish.pandora.xiaomi.com
 127.0.0.1 js-ad.a.yximgs.com
 127.0.0.1 kuyun.com
 127.0.0.1 kwimgs.com
@@ -276,8 +269,6 @@
 127.0.0.1 miaozhen.com
 127.0.0.1 minigame.qq.com
 127.0.0.1 misc.in.duokanbox.com
-127.0.0.1 misc.pandora.xiaomi.com
-127.0.0.1 mishop.pandora.xiaomi.com
 127.0.0.1 mitv.tracking.miui.com
 127.0.0.1 mobads.baidu.com
 127.0.0.1 mon.ad.xelements.cn
@@ -317,8 +308,6 @@
 127.0.0.1 p2.migupic.com
 127.0.0.1 p2v.tudou.com
 127.0.0.1 pagead2.googleadservices.com
-127.0.0.1 pandora.mi.com
-127.0.0.1 pandora.xiaomi.com
 127.0.0.1 pangolin-sdk-toutiao-b.com
 127.0.0.1 pangolin.snssdk.com
 127.0.0.1 pay.ad.xiaomi.com
@@ -389,28 +378,10 @@
 127.0.0.1 search.weixin.qq.com
 127.0.0.1 secure.chn.imrworldwide.com
 127.0.0.1 sentry.in.zhihu.com
-127.0.0.1 si.ptqy.gitv.tv
-127.0.0.1 sisulizer.com
-127.0.0.1 sl.hpplay.cn
-127.0.0.1 spcode.baidu.com
-127.0.0.1 starfish.pandora.xiaomi.com
-127.0.0.1 stat.pandora.xiaomi.com
-127.0.0.1 stat.tudou.com
-127.0.0.1 stat.youku.com
-127.0.0.1 static.ptqy.gitv.tv
-127.0.0.1 staticsns.cdn.bcebos.com
-127.0.0.1 stats.g.doubleclick.net
-127.0.0.1 stats.tudou.com
-127.0.0.1 store.log.ksyun.com
-127.0.0.1 stun.counterpath.com
-127.0.0.1 stun.voipbuster.com
-127.0.0.1 supcm.suning.com
-127.0.0.1 supersonicads.com
 127.0.0.1 t.track.ad.xiaomi.com
 127.0.0.1 t7z.cupid.iqiyi.com
 127.0.0.1 t7z.cupid.ptqy.gitv.tv
 127.0.0.1 tapjoy.com
-127.0.0.1 tat.pandora.xiaomi.com
 127.0.0.1 theqoo.net
 127.0.0.1 time.video.ptqy.gitv.tv
 127.0.0.1 toblog.ctobsnssdk.com
@@ -432,7 +403,6 @@
 127.0.0.1 unityads.unity3d.com
 127.0.0.1 unityads.unitychina.cn
 127.0.0.1 upfile-drcn.platform.hicloud.com
-127.0.0.1 upgrade.mishop.pandora.xiaomi.com
 127.0.0.1 utk.baidu.com
 127.0.0.1 v.admaster.com.cn
 127.0.0.1 v2.reachmax.cn
@@ -469,14 +439,3 @@
 127.0.0.1 yk-ssp-ad.cp31.ott.cibntv.net
 127.0.0.1 yximgs.com
 127.0.0.1 zeus-api.vemarsdev.com
-
-# Whitelist (allow these domains)
-# Whitelisted: api.io.mi.com
-# Whitelisted: connectivitycheck.gstatic.com
-# Whitelisted: file.xmpush.xiaomi.com
-# Whitelisted: idm.iot.mi.com
-# Whitelisted: milink.pandora.xiaomi.com
-# Whitelisted: o2o.api.xiaomi.com
-# Whitelisted: tracker.xiaomixiaoai.com
-# Whitelisted: xx.market.mi-img.com
-# Whitelisted: xx.market.xiaomi.com

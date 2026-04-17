@@ -416,6 +416,8 @@ body {
   user-select: none;
   overflow-y: auto;
   line-height: 1.5;
+  min-height: 26.25rem;
+  max-height: 26.25rem;
 }
 
 #sourceInput {
