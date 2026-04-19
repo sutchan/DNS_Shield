@@ -13,7 +13,7 @@ This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 - **Multiple output formats** - Supports Dnsmasq, Hosts, and AdGuard formats
 - **Single source workflow** - One domain list generates all output formats
 - **Router compatible** - Works with Merlin, OpenWrt, Xiaomi, ASUS, TP-Link, and more
-- **Next.js framework** - v2.0.0 version has migrated to modern Next.js framework
+- **Next.js framework** - v2.0.1 version has migrated to modern Next.js framework
 
 ## Usage
 
