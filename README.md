@@ -1,6 +1,6 @@
 # DNS Shield - 路由器级全局广告防护
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-2.0.1-green)](https://github.com/sutchan/DNS_Shield)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-2.0.2-green)](https://github.com/sutchan/DNS_Shield)
 
 基于 DNS 的路由器广告过滤规则库，提供 Web 管理界面。
 
@@ -16,7 +16,7 @@
 - **多种输出格式** - 支持 Dnsmasq、Hosts 和 AdGuard 格式
 - **单一数据源工作流** - 一个域名清单生成所有输出格式
 - **路由器兼容** - 支持梅林、OpenWrt、小米、华硕、TP-Link 等
-- **Next.js 框架** - v2.0.1 版本已迁移到现代化的 Next.js 框架
+- **Next.js 框架** - v2.0.2 版本已迁移到现代化的 Next.js 框架
 
 ## 功能特性
 
