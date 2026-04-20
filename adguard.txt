@@ -1,22 +1,23 @@
-! ====================================
+! =====================================
 ! DNS Shield - AdGuard Ad Block Filter
-! ====================================
+! =====================================
 !
 ! Description: AdGuard-compatible ad blocking filter
 !
-! Version: 2.0.0
-! Update: 2026.04.17
-! Domains: 424 unique domains
+! Version: 2.0.1
+! Update: 2026.04.20
+! Domains: 459 unique domains
+! Whitelist: 9 domains
 !
 ! Project: https://github.com/sutchan/DNS_Shield
 ! Demo: https://dns.ewuse.com/
 !
-! ====================================
+! =====================================
 
 ||3dns-2.adobe.com^
 ||3dns-3.adobe.com^
 ||4009997658.com^
-||519332da.rtc.youme.im^
+||519332DA.rtc.youme.im^
 ||86file.megajoy.com^
 ||86get.joy.cn^
 ||a.applvn.com^
@@ -67,7 +68,7 @@
 ||adc.hpplay.cn^
 ||adcdn.hpplay.cn^
 ||adcolony.com^
-||adcontrol.tudou.com^
+||adcontroL.tudou.com^
 ||adeng.hpplay.cn^
 ||adextensioncontrol.tudou.com^
 ||adguanggao.eee114.com^
@@ -120,8 +121,10 @@
 ||api-ad.miguvideo.com^
 ||api-pay.mgtv.com^
 ||api.ad.xiaomi.com^
+||api.bestv.com.cn/payment/qrcode^
 ||api.cloud.huawei.com^
 ||api.cupid.ptqy.gitv.tv^
+||api.dangbei.net/payment/qrcode^
 ||api.fd.mob.com^
 ||api.hpplay.com.cn^
 ||api.kingdata.ksyun.com^
@@ -162,6 +165,7 @@
 ||beacon.mgtv.com^
 ||beacon.migu.cn^
 ||blackhole.m.jd.com^
+||bss.pandora.xiaomi.com^
 ||c.l.qq.com^
 ||callback.ad.xiaomi.com^
 ||cctv-ad.cdn.cctv.cn^
@@ -187,6 +191,7 @@
 ||data.mistat.xiaomi.com^
 ||datahub.zhihu.com^
 ||daup.map.baidu.com^
+||de.pandora.xiaomi.com^
 ||df.tanx.com^
 ||diagnosis.ad.xiaomi.com^
 ||dig.bdurl.net^
@@ -197,16 +202,20 @@
 ||dm.toutiao.com^
 ||dnkeeper.platform.dbankcloud.com^
 ||duga.zhihu.com^
+||dvb.pandora.xiaomi.com^
 ||ef-dongfeng.tanx.com^
 ||errlog.umeng.com^
-||et.tanx.com^
+||ets.tanx.com^
+||extlog.snssdk.com^
 ||finder.video.qq.com^
 ||fix.hpplay.cn^
 ||g.dtv.cn.miaozhan.com^
 ||g.dtv.cn.miaozhen.com^
+||g.pandora.xiaomi.com^
 ||galaxy.ad.iqiyi.com^
 ||game.weixin.qq.com^
 ||gdt.qq.com^
+||gdt.qq.com/getads^
 ||gifshow.com^
 ||googleads.g.doubleclick.net^
 ||grs.dbankcloud.com^
@@ -232,6 +241,7 @@
 ||iws.corel.com^
 ||iwstat.tudou.com^
 ||iyes.youku.com^
+||jellyfish.pandora.xiaomi.com^
 ||js-ad.a.yximgs.com^
 ||kuyun.com^
 ||kwimgs.com^
@@ -267,11 +277,15 @@
 ||miaozhen.com^
 ||minigame.qq.com^
 ||misc.in.duokanbox.com^
+||misc.pandora.xiaomi.com^
+||mishop.pandora.xiaomi.com^
 ||mitv.tracking.miui.com^
 ||mobads.baidu.com^
 ||mon.ad.xelements.cn^
 ||monitor.bnc66.com^
 ||mopub.com^
+||mp.weixin.qq.com/ad^
+||mp.weixin.qq.com/spread^
 ||mpad.qq.com^
 ||mpad.weixin.qq.com^
 ||mpush-api.aliyun.com^
@@ -306,6 +320,8 @@
 ||p2.migupic.com^
 ||p2v.tudou.com^
 ||pagead2.googleadservices.com^
+||pandora.mi.com^
+||pandora.xiaomi.com^
 ||pangolin-sdk-toutiao-b.com^
 ||pangolin.snssdk.com^
 ||pay.ad.xiaomi.com^
@@ -407,33 +423,4 @@
 ||videocontent-dra.himovie.hicloud.com^
 ||view.adjust.com^
 ||vip.api.youku.com^
-||vip.bz.mgtv.com^
-||vip.iqiyi.com^
-||vip.ktcp.icntv.cn^
-||vip.ktcp.icntv.top^
-||vip.log.mgtv.com^
-||vip.tv.qq.com^
-||vip.video.xiaomi.com^
-||vip.youku.com^
-||vip.zmengzhu.com^
-||vipauth.hpplay.cn^
-||vlive.qqvideo.tc.qq.com^
-||vpay.video.qq.com^
-||vt.ipinyou.com^
-||vungle.com^
-||vv.play.aiseet.atianqi.com^
-||webapp.skysrt.com^
-||wechatad.com^
-||weixinbridge.com^
-||wgo.mmstat.com^
-||wq.123789.net.cn^
-||ws.mmstat.com^
-||wxa.wxs.qq.com^
-||wxad.qq.com^
-||wxapp.tc.qq.com^
-||wxsnsdy.tc.qq.com^
-||xiaomi-dtv.m.cn.miaozhen.com^
-||yhqdashi.com^
-||yk-ssp-ad.cp31.ott.cibntv.net^
-||yximgs.com^
-||zeus-api.vemarsdev.com^
+||

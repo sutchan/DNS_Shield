@@ -17,6 +17,16 @@
 # !ad.example.com      # 注释域名：显示用
 # @example.com=0.0.0.0 # 自定义 DNS 指向
 #
++idm.iot.mi.com
++api.io.mi.com #影响米家互联的使用。
++connectivitycheck.gstatic.com #影响 GooglePlay
++XX.market.mi-img.com #影响MIUI小部件
++XX.market.xiaomi.com #影响MIUI小部件
++tracker.xiaomixiaoai.com
++file.xmpush.xiaomi.com # 小米推送
++milink.pandora.xiaomi.com # 小米
++o2o.api.xiaomi.com # 小米O2O
+#
 3dns-2.adobe.com # Adobe 更新
 3dns-3.adobe.com # Adobe 更新
 4009997658.com # 广告/推广
@@ -43,7 +53,7 @@ ad.bilibili.com # B站广告
 ad.cctv.com # 央视广告
 ad.cmvideo.cn # 中国移动广告+支付共用
 ad.cntv.cn # 央视广告
-ad.coocaa.com # 酷云广告
+ad.coocaa.com # 酷开广告
 ad.doubleclick.net # Google 广告
 ad.ffalcon.com # 飞利浦电视广告
 ad.hisense.com # 海信广告
@@ -168,6 +178,7 @@ beacon.iqiyi.com # 爱奇艺统计
 beacon.mgtv.com # 芒果TV统计
 beacon.migu.cn # 咪咕统计
 blackhole.m.jd.com # 京东
+bss.pandora.xiaomi.com # 小米
 c.l.qq.com # 腾讯
 callback.ad.xiaomi.com # 小米广告回调
 cctv-ad.cdn.cctv.cn # 央视广告CDN
@@ -193,6 +204,7 @@ d.cntv.cn # 央视
 data.mistat.xiaomi.com # 小米数据统计
 datahub.zhihu.com
 daup.map.baidu.com # 百度地图
+de.pandora.xiaomi.com # 小米
 df.tanx.com # 淘宝联盟
 diagnosis.ad.xiaomi.com # 小米广告诊断
 dig.bdurl.net # 百度
@@ -203,13 +215,16 @@ dm.pstatp.com # 字节跳动
 dm.toutiao.com # 字节跳动
 dnkeeper.platform.dbankcloud.com # 华为云
 duga.zhihu.com
+dvb.pandora.xiaomi.com # 小米
 ef-dongfeng.tanx.com # 淘宝联盟
 errlog.umeng.com # 友盟错误日志
-et.tanx.com # 淘宝联盟	extlog.snssdk.com # 字节跳动日志
+ets.tanx.com # 淘宝联盟
+extlog.snssdk.com # 字节跳动日志
 finder.video.qq.com # 视频号广告
 fix.hpplay.cn # 投屏修复
 g.dtv.cn.miaozhan.com # 电视广告
 g.dtv.cn.miaozhen.com # 电视广告
+g.pandora.xiaomi.com # 小米
 galaxy.ad.iqiyi.com # 爱奇艺银河广告
 game.weixin.qq.com # 微信游戏
 gdt.qq.com # 腾讯广告
@@ -239,6 +254,7 @@ is-gateway.supersonicads.com # SuperSonic
 iws.corel.com # Corel
 iwstat.tudou.com # 土豆统计
 iyes.youku.com # 优酷
+jellyfish.pandora.xiaomi.com # 小米
 js-ad.a.yximgs.com # 阿里广告
 kuyun.com # 酷云
 kwimgs.com # 图片
@@ -274,6 +290,8 @@ mgtv-ad.cdn.mgtv.com # 芒果TV广告CDN
 miaozhen.com # 秒针
 minigame.qq.com # 微信小游戏
 misc.in.duokanbox.com # 多看
+misc.pandora.xiaomi.com # 小米
+mishop.pandora.xiaomi.com # 小米
 mitv.tracking.miui.com # 小米电视追踪
 mobads.baidu.com # 百度广告
 mon.ad.xelements.cn # 广告
@@ -315,6 +333,8 @@ p2.mgtvimg.com # 芒果TV图片
 p2.migupic.com # 咪咕图片
 p2v.tudou.com # 土豆
 pagead2.googleadservices.com # Google广告
+pandora.mi.com # 小米
+pandora.xiaomi.com # 小米
 pangolin-sdk-toutiao-b.com # 字节跳动SDK
 pangolin.snssdk.com # 字节跳动
 pay.ad.xiaomi.com # 小米广告支付
