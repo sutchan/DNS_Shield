@@ -1,4 +1,4 @@
-// src/app/Home.tsx v2.0.2
+// src/app/Home.tsx v2.1.0
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import './globals.css';
@@ -15,19 +15,6 @@ export default function Home() {
     
     const savedLang = localStorage.getItem('lang');
     setIsLangZh(savedLang !== 'en');
-    
-    // 注册 Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(registration => {
-            // 注册成功
-          })
-          .catch(error => {
-            // 注册失败
-          });
-      });
-    }
   }, []);
   const [sourceInput, setSourceInput] = useState('');
   const [outputContent, setOutputContent] = useState({
@@ -38,7 +25,7 @@ export default function Home() {
   const [currentFormat, setCurrentFormat] = useState<'hosts' | 'dnsmasq' | 'adguard'>('hosts');
   const [settings, setSettings] = useState({
     projectName: 'DNS Shield',
-    version: '2.0.2',
+    version: '2.1.0',
     ipv4: '127.0.0.1',
     ipv6: '::',
     addHeader: true,

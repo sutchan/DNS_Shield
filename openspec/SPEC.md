@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v2.0.2 |
+| 当前版本 | v2.1.0 |
 | 拦截域名 | 372+ (本地) / 6766+ (含预设源) |
 
 ## 2. 文件结构
@@ -164,7 +164,7 @@ address=/domain/::
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 2.0.2 |
+| 版本号 | 2.1.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -266,9 +266,9 @@ refactor: 优化规则生成逻辑
 
 | 预设源 | URL |
 |--------|-----|
-| AdGuard DNS Filter | https://adguardteam.github.io/AdGuardSDNSFilter/ |
-| EasyList | https://easylist.to/easylist/ |
-| NeoHosts | https://github.com/neo-forte/neo-forte |
+| AdGuard DNS Filter | https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt |
+| EasyList | https://easylist-downloads.adblockplus.org/easylist.txt |
+| NeoHosts | https://raw.githubusercontent.com/neoHosts/neoHosts/master/data/adblock.txt |
 
 ## 11. 浏览器兼容性
 
