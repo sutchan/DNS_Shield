@@ -24,7 +24,8 @@ export default function Home() {
             // 注册成功
           })
           .catch(error => {
-            // 注册失败
+            console.error('Service Worker注册失败:', error);
+            // 可选：向用户显示提示信息
           });
       });
     }
