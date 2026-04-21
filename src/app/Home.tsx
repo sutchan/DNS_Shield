@@ -25,7 +25,8 @@ export default function Home() {
           })
           .catch(error => {
             console.error('Service Worker注册失败:', error);
-            // 可选：向用户显示提示信息
+            // 显示用户友好的错误提示
+            showToast(isLangZh ? 'Service Worker 注册失败，部分功能可能无法使用' : 'Service Worker registration failed, some features may not work');
           });
       });
     }
