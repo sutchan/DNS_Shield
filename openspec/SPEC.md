@@ -29,6 +29,7 @@ dns-shield/
 ├── adguard_whitelist.txt          # AdGuard 白名单
 ├── CHANGELOG.md                   # 变更日志
 ├── .gitignore                     # Git 忽略配置
+├── .babelrc                       # Babel 配置
 ├── package.json                   # 项目配置和依赖
 ├── next.config.js                 # Next.js 配置
 ├── next-env.d.ts                  # Next.js 环境类型定义
