@@ -13,6 +13,7 @@ context: |
   We follow strict file header format: <root_relative_path> <version>
   We also maintain adguard_whitelist.txt for whitelist rules
   We have additional configuration files for deployment and testing
+  We use Next.js App Router with page.tsx, layout.tsx, and Home.tsx components
 
 # Per-artifact rules
 rules:

@@ -11,7 +11,7 @@
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
 | 当前版本 | v2.0.2 |
-| 拦截域名 | 372+ (本地) / 6766+ (含预设源) |
+| 拦截域名 | 388+ (本地) / 6766+ (含预设源) |
 
 ## 2. 文件结构
 
@@ -23,28 +23,22 @@ dns-shield/
 ├── DEPLOYMENT.md                  # 部署指南
 ├── SECURITY.md                    # 安全指南
 ├── domains.txt                    # 原始域名清单（唯一数据源）
-├── dnsmasq.conf                  # Dnsmasq 过滤列表
+├── dnsmasq.conf                   # Dnsmasq 过滤列表
 ├── hosts.txt                      # Hosts 文件
 ├── adguard.txt                    # AdGuard 过滤列表
-├── adguard_whitelist.txt         # AdGuard 白名单
-├── CHANGELOG.md                  # 变更日志
-├── .gitignore                    # Git 忽略配置
-├── .babelrc                       # Babel 配置
-├── package.json                  # 项目配置和依赖
-├── next.config.js                # Next.js 配置
-├── next-env.d.ts                 # Next.js 环境类型定义
-├── tsconfig.json                 # TypeScript 配置
-├── tailwind.config.js            # Tailwind CSS 配置
-├── postcss.config.js             # PostCSS 配置
-├── jest.config.js                # Jest 测试配置
-├── manifest.json                 # Web 应用清单
-├── service-worker.js             # Service Worker
-├── server.js                     # 服务器配置
-├── preview.html                  # 预览页面
-├── create-icons.ps1              # 图标创建脚本
-├── start-server.ps1              # 服务器启动脚本
-├── test-react.tsx                # React 测试文件
-├── DNS_Shield.code-workspace     # VS Code 工作区配置
+├── adguard_whitelist.txt          # AdGuard 白名单
+├── CHANGELOG.md                   # 变更日志
+├── .gitignore                     # Git 忽略配置
+├── package.json                   # 项目配置和依赖
+├── next.config.js                 # Next.js 配置
+├── next-env.d.ts                  # Next.js 环境类型定义
+├── tsconfig.json                  # TypeScript 配置
+├── tailwind.config.js             # Tailwind CSS 配置
+├── postcss.config.js              # PostCSS 配置
+├── jest.config.js                 # Jest 测试配置
+├── manifest.json                  # Web 应用清单
+├── create-icons.ps1               # 图标创建脚本
+├── DNS_Shield.code-workspace      # VS Code 工作区配置
 ├── src/                          # Next.js 源代码
 │   ├── app/                      # App Router 目录
 │   │   ├── page.tsx              # 主页面
@@ -56,7 +50,8 @@ dns-shield/
 ├── public/                        # 公共静态资源
 │   ├── assets/                    # 资源目录
 │   │   └── icons/                # 应用图标
-│   └── domains.txt               # 公共域名清单（用于 Web 访问）
+│   ├── manifest.json              # Web 应用清单
+│   └── service-worker.js          # Service Worker
 └── openspec/                     # 项目规范文档
     ├── SPEC.md                   # 项目规范（本文件）
     ├── TASKS.md                  # 任务清单

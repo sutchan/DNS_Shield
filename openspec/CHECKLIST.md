@@ -30,7 +30,6 @@
 - [ ] `adguard_whitelist.txt` 存在且格式正确
 - [ ] `dnsmasq.conf` 存在且格式正确
 - [ ] `hosts.txt` 存在且格式正确
-- [ ] `public/domains.txt` 存在且格式正确
 - [ ] `src/app/page.tsx` 存在且功能完整
 - [ ] `src/app/Home.tsx` 存在且逻辑完整
 - [ ] `src/app/Home.test.tsx` 存在且测试完整
@@ -44,9 +43,7 @@
 - [ ] `tailwind.config.js` 配置正确
 - [ ] `postcss.config.js` 配置正确
 - [ ] `jest.config.js` 配置正确
-- [ ] `.babelrc` 配置正确
 - [ ] `manifest.json` 配置正确
-- [ ] `service-worker.js` 配置正确
 - [ ] 生成的文件格式正确
 
 ## 功能验证

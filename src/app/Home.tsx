@@ -15,19 +15,6 @@ export default function Home() {
     
     const savedLang = localStorage.getItem('lang');
     setIsLangZh(savedLang !== 'en');
-    
-    // 注册 Service Worker
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(registration => {
-            // 注册成功
-          })
-          .catch(error => {
-            // 注册失败
-          });
-      });
-    }
   }, []);
   const [sourceInput, setSourceInput] = useState('');
   const [outputContent, setOutputContent] = useState({
