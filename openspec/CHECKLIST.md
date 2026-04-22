@@ -17,6 +17,7 @@
 - [ ] `CONTRIBUTING.md` 贡献指南完整
 - [ ] `DEPLOYMENT.md` 部署指南完整
 - [ ] `SECURITY.md` 安全指南完整
+- [ ] `SUPPORT.md` 支持指南完整
 - [ ] `openspec/SPEC.md` 规范文档完整
 - [ ] `openspec/TASKS.md` 任务清单完整
 - [ ] `openspec/CHECKLIST.md` 检查清单完整
