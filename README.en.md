@@ -137,6 +137,10 @@ Please refer to [Security Guide](SECURITY.md) to learn about the project's secur
 
 MIT License
 
+## Changelog
+
+Please refer to [Changelog](CHANGELOG.md) for the project's version history and changes.
+
 ---
 
 [中文版本](README.md)

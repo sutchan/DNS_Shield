@@ -1,0 +1,19 @@
+# Navigation bar configuration
+
+# The navigation bar at the top of the repository
+
+# Add links to the navigation bar
+
+# The first item is the default link
+
+- name: README
+  href: README.md
+
+- name: Contributing
+  href: CONTRIBUTING.md
+
+- name: Security
+  href: SECURITY.md
+
+- name: Changelog
+  href: CHANGELOG.md

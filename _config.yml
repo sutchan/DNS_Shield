@@ -1,0 +1,15 @@
+# Jekyll configuration
+
+# Navigation bar links
+
+# For external links add external: true
+
+nav:
+  - title: README
+    url: /README.md
+  - title: Contributing
+    url: /CONTRIBUTING.md
+  - title: Security
+    url: /SECURITY.md
+  - title: Changelog
+    url: /CHANGELOG.md

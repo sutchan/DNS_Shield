@@ -167,6 +167,10 @@ dnsmasq.conf              hosts.txt
 
 MIT License
 
+## 变更日志
+
+请参考 [变更日志](CHANGELOG.md) 了解项目的版本历史和变更内容。
+
 ---
 
 [English Version](README.en.md)
