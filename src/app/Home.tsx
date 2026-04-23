@@ -43,22 +43,22 @@ const translations: Record<string, any> = {
 
 // 支持的语言列表
 export const supportedLanguages = [
-  { code: 'en', name: 'English' },
-  { code: 'zh-cn', name: '中文简体' },
-  { code: 'zh-tw', name: '中文繁體' },
-  { code: 'ar', name: 'العربية' },
-  { code: 'cs', name: 'Čeština' },
-  { code: 'es', name: 'Español' },
-  { code: 'hi', name: 'हिन्दी' },
-  { code: 'id', name: 'Bahasa Indonesia' },
-  { code: 'it', name: 'Italiano' },
-  { code: 'nl', name: 'Nederlands' },
-  { code: 'pl', name: 'Polski' },
-  { code: 'sv', name: 'Svenska' },
-  { code: 'th', name: 'ไทย' },
-  { code: 'tr', name: 'Türkçe' },
-  { code: 'ru', name: 'Русский' },
-  { code: 'vi', name: 'Tiếng Việt' }
+  { code: 'en', name: 'English', icon: '🇺🇸' },
+  { code: 'zh-cn', name: '中文简体', icon: '🇨🇳' },
+  { code: 'zh-tw', name: '中文繁體', icon: '🇹🇼' },
+  { code: 'ar', name: 'العربية', icon: '🇸🇦' },
+  { code: 'cs', name: 'Čeština', icon: '🇨🇿' },
+  { code: 'es', name: 'Español', icon: '🇪🇸' },
+  { code: 'hi', name: 'हिन्दी', icon: '🇮🇳' },
+  { code: 'id', name: 'Bahasa Indonesia', icon: '🇮🇩' },
+  { code: 'it', name: 'Italiano', icon: '🇮🇹' },
+  { code: 'nl', name: 'Nederlands', icon: '🇳🇱' },
+  { code: 'pl', name: 'Polski', icon: '🇵🇱' },
+  { code: 'sv', name: 'Svenska', icon: '🇸🇪' },
+  { code: 'th', name: 'ไทย', icon: '🇹🇭' },
+  { code: 'tr', name: 'Türkçe', icon: '🇹🇷' },
+  { code: 'ru', name: 'Русский', icon: '🇷🇺' },
+  { code: 'vi', name: 'Tiếng Việt', icon: '🇻🇳' }
 ];
 
 // 类型定义
@@ -980,7 +980,8 @@ export default function Home() {
                 title={t.settingsTitle}
                 onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
               >
-                {supportedLanguages.find(lang => lang.code === currentLang)?.name || currentLang}
+                <span className="lang-icon">{supportedLanguages.find(lang => lang.code === currentLang)?.icon || ''}</span>
+                <span className="lang-name">{supportedLanguages.find(lang => lang.code === currentLang)?.name || currentLang}</span>
               </button>
               {isLangDropdownOpen && (
                 <div className="lang-selector-dropdown">
@@ -993,7 +994,8 @@ export default function Home() {
                         setIsLangDropdownOpen(false);
                       }}
                     >
-                      {lang.name}
+                      <span className="lang-icon">{lang.icon || ''}</span>
+                      <span className="lang-name">{lang.name}</span>
                     </button>
                   ))}
                 </div>

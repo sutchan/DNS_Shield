@@ -8,7 +8,7 @@ Router-level DNS-based ad blocking filter list with web management tool.
 
 This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 
-- **453+ blocked domains** - Local ad and tracking domain filter (can expand to 6766+ with preset sources)
+- **473+ blocked domains** - Local ad and tracking domain filter (can expand to 6766+ with preset sources)
 - **Web management tool** - Generate custom filter lists via browser
 - **Multiple output formats** - Supports Dnsmasq, Hosts, AdGuard, and whitelist formats
 - **Single source workflow** - One domain list generates all output formats
@@ -93,6 +93,22 @@ This project provides pre-generated filter rule files that can be downloaded and
 | [hosts.txt](hosts.txt) | Routers with hosts support (Xiaomi/ASUS/TP-Link) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt) |
 | [adguard.txt](adguard.txt) | AdGuard browser extension/AdGuard Home | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/adguard.txt) |
 | [adguard_whitelist.txt](adguard_whitelist.txt) | AdGuard whitelist (domains that need to be allowed) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/adguard_whitelist.txt) |
+
+### Whitelist Usage Instructions
+
+The `adguard_whitelist.txt` file contains domains that need to be allowed access, suitable for the following scenarios:
+
+1. **AdGuard Browser Extension/AdGuard Home**:
+   - Import the whitelist file into AdGuard's whitelist settings
+   - Or copy the file content into AdGuard's custom whitelist rules
+
+2. **Router Configuration**:
+   - For routers that support whitelist functionality, add whitelist domains to the corresponding settings
+   - Ensure whitelist rules have higher priority than blacklist rules
+
+3. **Custom Filtering**:
+   - When some websites cannot be accessed normally due to filtering rules, add the relevant domains to the whitelist
+   - Whitelist format is `+domain`, for example: `+api.example.com`
 
 > **Tip**: These files are updated regularly. Star or Watch this repository to get update notifications.
 

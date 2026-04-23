@@ -8,7 +8,7 @@
 
 本项目提供基于 dnsmasq/hosts 的广告过滤解决方案，包含：
 
-- **453+ 拦截域名** - 本地广告和追踪域名过滤（使用预设源可扩展至 6766+）
+- **473+ 拦截域名** - 本地广告和追踪域名过滤（使用预设源可扩展至 6766+）
 - **广告屏蔽** - 过滤主流广告域名、App 广告、网页广告
 - **支付二维码屏蔽** - 屏蔽微信/支付宝等支付二维码跳转链接
 - **追踪防护** - 阻止数据采集和用户追踪
@@ -114,6 +114,22 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt >> 
 | [hosts.txt](hosts.txt) | 小米/华硕/TP-Link 等支持 hosts 的路由器 | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt) |
 | [adguard.txt](adguard.txt) | AdGuard 浏览器扩展/AdGuard Home | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/adguard.txt) |
 | [adguard_whitelist.txt](adguard_whitelist.txt) | AdGuard 白名单（需要允许的域名） | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/adguard_whitelist.txt) |
+
+### 白名单使用说明
+
+`adguard_whitelist.txt` 文件包含需要允许访问的域名，适用于以下场景：
+
+1. **AdGuard 浏览器扩展/AdGuard Home**：
+   - 将白名单文件导入 AdGuard 的白名单设置
+   - 或复制文件内容到 AdGuard 的自定义白名单规则中
+
+2. **路由器配置**：
+   - 对于支持白名单功能的路由器，可将白名单域名添加到对应设置中
+   - 确保白名单规则优先级高于黑名单规则
+
+3. **自定义过滤**：
+   - 当某些网站因过滤规则无法正常访问时，可将相关域名添加到白名单
+   - 白名单格式为 `+域名`，例如：`+api.example.com`
 
 > **提示**：这些文件会定期更新，建议收藏本仓库或 Watch 获取更新通知。
 
