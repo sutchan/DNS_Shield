@@ -1,5 +1,5 @@
 // Test file to verify TypeScript compiler
-import { CustomDnsEntry, ParsedData } from './src/types';
+import { CustomDnsEntry, ParsedData, FormatType } from './src/types';
 
 // Test the types
 const testCustomDns: CustomDnsEntry = {
@@ -12,5 +12,8 @@ const testParsedData: ParsedData = {
   whitelist: ['test.com'],
   customDns: [testCustomDns]
 };
+
+// Test FormatType
+const testFormat: FormatType = 'hosts';
 
 console.log('Test completed successfully');

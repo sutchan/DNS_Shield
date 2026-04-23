@@ -1,6 +1,6 @@
 // src/components/ExportOptions.tsx v2.2.1
 import React, { useRef } from 'react';
-import { OutputContent, ParsedData, Settings, FormatType } from '../types';
+import { OutputContent, ParsedData, Settings, FormatType } from '@/types';
 
 interface ExportOptionsProps {
   outputContent: OutputContent;

@@ -1,5 +1,7 @@
 // src/types/index.ts v2.2.2
 
+export type FormatType = 'hosts' | 'dnsmasq' | 'adguard' | 'whitelist';
+
 export interface OutputContent {
   dnsmasq: string;
   hosts: string;
