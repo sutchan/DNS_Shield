@@ -42,9 +42,29 @@ dns-shield/
 ├── src/                          # Next.js 源代码
 │   ├── app/                      # App Router 目录
 │   │   ├── page.tsx              # 主页面
-│   │   ├── Home.tsx              # 主组件（包含所有功能逻辑）
+│   │   ├── Home.tsx              # 主组件
 │   │   ├── globals.css           # 全局样式
 │   │   └── layout.tsx            # 布局组件
+│   ├── components/               # 组件目录
+│   │   ├── ui/                   # UI 组件
+│   │   │   ├── Loading.tsx       # 加载组件
+│   │   │   └── Toast.tsx         # 提示组件
+│   │   ├── DomainList.tsx        # 域名列表组件
+│   │   ├── ExportOptions.tsx     # 导出选项组件
+│   │   ├── FilterControls.tsx    # 过滤控制组件
+│   │   ├── Footer.tsx            # 页脚组件
+│   │   ├── Header.tsx            # 头部组件
+│   │   ├── InputPanel.tsx        # 输入面板组件
+│   │   ├── OutputPanel.tsx       # 输出面板组件
+│   │   └── WhiteListControls.tsx # 白名单控制组件
+│   ├── config/                   # 配置目录
+│   │   └── index.ts              # 应用配置
+│   ├── hooks/                    # 自定义钩子
+│   │   ├── useDomainData.ts      # 域名数据钩子
+│   │   ├── useLanguage.ts        # 语言钩子
+│   │   ├── useRules.ts           # 规则生成钩子
+│   │   ├── useTheme.ts           # 主题钩子
+│   │   └── useUrlManager.ts      # URL 管理钩子
 │   ├── locales/                   # 语言翻译文件
 │   │   ├── ar.json               # 阿拉伯文
 │   │   ├── cs.json               # 捷克文
@@ -62,6 +82,14 @@ dns-shield/
 │   │   ├── vi.json               # 越南文
 │   │   ├── zh-cn.json            # 中文简体
 │   │   └── zh-tw.json            # 中文繁體
+│   ├── types/                    # 类型定义
+│   │   └── index.ts              # 类型定义文件
+│   ├── utils/                    # 工具函数
+│   │   ├── fileUtils.ts          # 文件工具
+│   │   ├── i18n.ts               # 国际化工具
+│   │   ├── parser.ts             # 域名解析工具
+│   │   ├── rulesGenerator.ts     # 规则生成工具
+│   │   └── uiUtils.ts            # UI 工具
 │   └── setupTests.ts             # 测试设置
 ├── public/                        # 公共静态资源
 │   ├── assets/                    # 资源目录
@@ -161,7 +189,14 @@ address=/domain/::
 
 ## 5. Web 管理工具功能
 
-### 5.1 输入功能
+### 5.1 架构设计
+
+- **组件化架构**：将功能拆分为多个独立组件，如 Header、DomainList、ExportOptions 等
+- **自定义钩子**：使用 React Hooks 管理状态和逻辑，如 useDomainData、useRules、useUrlManager 等
+- **工具函数**：将域名解析、规则生成等逻辑提取为独立工具函数
+- **配置管理**：集中管理应用配置和预设源 URL
+
+### 5.2 输入功能
 
 | 功能 | 说明 |
 |------|------|
@@ -171,8 +206,9 @@ address=/domain/::
 | 本地加载 | 加载本地 domains.txt 文件 |
 | 白名单管理 | 独立的白名单编辑界面，支持导入/导出白名单 |
 | 多语言支持 | 支持 16 种语言，可在界面上切换 |
+| URL 管理 | 支持添加、排序、批量获取多个 URL |
 
-### 5.2 输出功能
+### 5.3 输出功能
 
 | 功能 | 说明 |
 |------|------|
@@ -184,8 +220,9 @@ address=/domain/::
 | 头部注释 | 自动生成项目信息头 |
 | 一键下载 | 下载生成的文件 |
 | 剪贴板复制 | 复制生成的内容 |
+| 实时预览 | 生成规则后实时预览输出结果 |
 
-### 5.3 选项设置
+### 5.4 选项设置
 
 | 设置项 | 默认值 |
 |--------|--------|
@@ -217,7 +254,15 @@ address=/domain/::
 3. 合并去重
 4. 下载更新后的文件
 
-### 6.3 更新周期
+### 6.3 代码维护
+
+1. **组件维护**：修改对应组件文件，如 `src/components/` 目录下的组件
+2. **逻辑维护**：更新对应的钩子函数，如 `src/hooks/` 目录下的钩子
+3. **工具函数**：修改 `src/utils/` 目录下的工具函数
+4. **配置更新**：修改 `src/config/index.ts` 中的配置
+5. **测试**：运行 `npm test` 确保功能正常
+
+### 6.4 更新周期
 
 - 每2周检查一次规则有效性
 - 重要广告域名应及时更新
