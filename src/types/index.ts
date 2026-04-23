@@ -1,4 +1,4 @@
-// src/types/index.ts v2.2.1
+// src/types/index.ts v2.2.2
 
 export interface OutputContent {
   dnsmasq: string;

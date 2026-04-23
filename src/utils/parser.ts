@@ -1,4 +1,4 @@
-// src/utils/parser.ts v2.2.1
+// src/utils/parser.ts v2.2.2
 import { CustomDnsEntry, ParsedData } from '../types';
 
 interface ParseResult {

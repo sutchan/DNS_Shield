@@ -1,4 +1,4 @@
-// src/config/index.ts v2.2.1
+// src/config/index.ts v2.2.2
 
 // 应用配置
 export const config = {
