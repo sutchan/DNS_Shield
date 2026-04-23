@@ -3,24 +3,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './globals.css';
 
-interface OutputContent {
-  dnsmasq: string;
-  hosts: string;
-  adguard: string;
-  whitelist: string;
-}
-
-interface CustomDnsEntry {
-  domain: string;
-  ip: string;
-}
-
-interface ParsedData {
-  domains: string[];
-  whitelist: string[];
-  customDns: CustomDnsEntry[];
-}
-
 // 导入所有语言翻译文件
 import ar from '../locales/ar.json';
 import cs from '../locales/cs.json';
@@ -79,6 +61,25 @@ export const supportedLanguages = [
   { code: 'vi', name: 'Tiếng Việt' }
 ];
 
+// 类型定义
+interface OutputContent {
+  dnsmasq: string;
+  hosts: string;
+  adguard: string;
+  whitelist: string;
+}
+
+interface CustomDnsEntry {
+  domain: string;
+  ip: string;
+}
+
+interface ParsedData {
+  domains: string[];
+  whitelist: string[];
+  customDns: CustomDnsEntry[];
+}
+
 export default function Home() {
   // 状态管理
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -93,13 +94,7 @@ export default function Home() {
     const savedLang = localStorage.getItem('lang');
     setCurrentLang(savedLang || 'zh-cn');
   }, []);
-  // 类型定义
-  interface OutputContent {
-    dnsmasq: string;
-    hosts: string;
-    adguard: string;
-    whitelist: string;
-  }
+
 
   const [sourceInput, setSourceInput] = useState('');
   const [outputContent, setOutputContent] = useState<OutputContent>({

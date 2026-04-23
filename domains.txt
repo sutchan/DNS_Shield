@@ -176,6 +176,27 @@ vip.tv.qq.com # 腾讯视频 VIP
 vpay.video.qq.com # 腾讯视频支付
 wxad.qq.com # 微信广告
 
+# 抖音 (TikTok)
+ad.toutiao.com # 抖音/头条广告
+ad.douyin.com # 抖音广告
+api.amemv.com # 抖音 API
+api-tx.douyin.com # 抖音广告 API
+bm.snssdk.com # 字节跳动营销
+bytedance.com # 字节跳动
+bytedance.net # 字节跳动
+collector.amemv.com # 抖音数据收集
+dm.bytedance.com # 字节跳动
+fm.tiktok.com # TikTok
+mon.snssdk.com # 字节跳动监控
+pangle.io # 字节跳动广告平台
+pangolin-sdk-toutiao.com # 字节跳动 SDK
+reflow.amemv.com # 抖音回流
+router.amemv.com # 抖音路由
+snssdk.com # 字节跳动
+stats.amemv.com # 抖音统计
+toutiao.com # 头条
+ugc.amemv.com # 抖音 UGC
+
 # 咪咕视频
 ad.miguvideo.com # 咪咕视频广告
 ads.migu.cn # 咪咕广告
