@@ -1137,3 +1137,77 @@ input:disabled {
   color: var(--text-primary);
   font-weight: 500;
 }
+
+/* 语言选择器样式 */
+.lang-selector {
+  position: relative;
+  display: inline-block;
+}
+
+.lang-selector-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition);
+  min-width: 80px;
+  justify-content: space-between;
+}
+
+.lang-selector-btn:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--primary);
+}
+
+.lang-selector-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: var(--spacing-1);
+  padding: var(--spacing-1);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  z-index: 1000;
+  min-width: 120px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.lang-option {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: none;
+  background: none;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: var(--radius-sm);
+}
+
+.lang-option:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.lang-option.active {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .lang-selector-dropdown {
+    left: 0;
+    right: auto;
+  }
+}

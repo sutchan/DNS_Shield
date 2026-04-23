@@ -3,10 +3,87 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './globals.css';
 
+interface OutputContent {
+  dnsmasq: string;
+  hosts: string;
+  adguard: string;
+  whitelist: string;
+}
+
+interface CustomDnsEntry {
+  domain: string;
+  ip: string;
+}
+
+interface ParsedData {
+  domains: string[];
+  whitelist: string[];
+  customDns: CustomDnsEntry[];
+}
+
+// 导入所有语言翻译文件
+import ar from '../locales/ar.json';
+import cs from '../locales/cs.json';
+import en from '../locales/en.json';
+import es from '../locales/es.json';
+import hi from '../locales/hi.json';
+import id from '../locales/id.json';
+import it from '../locales/it.json';
+import nl from '../locales/nl.json';
+import pl from '../locales/pl.json';
+import sv from '../locales/sv.json';
+import th from '../locales/th.json';
+import tr from '../locales/tr.json';
+import ru from '../locales/ru.json';
+import vi from '../locales/vi.json';
+import zhCN from '../locales/zh-cn.json';
+import zhTW from '../locales/zh-tw.json';
+
+// 语言映射
+const translations: Record<string, any> = {
+  ar,
+  cs,
+  en,
+  es,
+  hi,
+  id,
+  it,
+  nl,
+  pl,
+  sv,
+  th,
+  tr,
+  ru,
+  vi,
+  'zh-cn': zhCN,
+  'zh-tw': zhTW
+};
+
+// 支持的语言列表
+export const supportedLanguages = [
+  { code: 'en', name: 'English' },
+  { code: 'zh-cn', name: '中文简体' },
+  { code: 'zh-tw', name: '中文繁體' },
+  { code: 'ar', name: 'العربية' },
+  { code: 'cs', name: 'Čeština' },
+  { code: 'es', name: 'Español' },
+  { code: 'hi', name: 'हिन्दी' },
+  { code: 'id', name: 'Bahasa Indonesia' },
+  { code: 'it', name: 'Italiano' },
+  { code: 'nl', name: 'Nederlands' },
+  { code: 'pl', name: 'Polski' },
+  { code: 'sv', name: 'Svenska' },
+  { code: 'th', name: 'ไทย' },
+  { code: 'tr', name: 'Türkçe' },
+  { code: 'ru', name: 'Русский' },
+  { code: 'vi', name: 'Tiếng Việt' }
+];
+
 export default function Home() {
   // 状态管理
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-  const [isLangZh, setIsLangZh] = useState(true);
+  const [currentLang, setCurrentLang] = useState('zh-cn');
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
 
   // 在客户端初始化localStorage
   useEffect(() => {
@@ -14,8 +91,16 @@ export default function Home() {
     setTheme(savedTheme === 'dark' ? 'dark' : 'light');
     
     const savedLang = localStorage.getItem('lang');
-    setIsLangZh(savedLang !== 'en');
+    setCurrentLang(savedLang || 'zh-cn');
   }, []);
+  // 类型定义
+  interface OutputContent {
+    dnsmasq: string;
+    hosts: string;
+    adguard: string;
+    whitelist: string;
+  }
+
   const [sourceInput, setSourceInput] = useState('');
   const [outputContent, setOutputContent] = useState<OutputContent>({
     dnsmasq: '',
@@ -38,23 +123,6 @@ export default function Home() {
     adguardFilename: 'adguard.txt',
     whitelistFilename: 'whitelist.txt'
   });
-  interface OutputContent {
-    dnsmasq: string;
-    hosts: string;
-    adguard: string;
-    whitelist: string;
-  }
-
-  interface CustomDnsEntry {
-    domain: string;
-    ip: string;
-  }
-
-  interface ParsedData {
-    domains: string[];
-    whitelist: string[];
-    customDns: CustomDnsEntry[];
-  }
 
   const [parsedData, setParsedData] = useState<ParsedData>({
     domains: [],
@@ -157,7 +225,7 @@ export default function Home() {
         if (autoSaveTime) {
           const timeAgo = Math.floor((Date.now() - parseInt(autoSaveTime)) / 60000);
           if (timeAgo > 0) {
-            showToast(isLangZh ? `已恢复上次自动保存的内容 (${timeAgo}分钟前)` : `Restored auto-saved content (${timeAgo} min ago)`);
+            showToast('autosaveRestored', { time: timeAgo });
           }
         }
       }
@@ -190,128 +258,33 @@ export default function Home() {
       document.documentElement.setAttribute('data-theme', theme);
     }
   }, [theme]);
-  
-  // 语言翻译
-  const translations = {
-    zh: {
-      subtitle: '路由器级全局广告过滤规则生成工具',
-      inputTitle: '📥 输入域名清单',
-      advanced: '高级选项',
-      domainCount: '域名',
-      validCount: '有效',
-      commentCount: '注释',
-      blacklistCount: '黑名单',
-      whitelistCount: '白名单',
-      urlPlaceholder: '输入 URL 导入域名列表...',
-      fetchBtn: '获取',
-      addUrl: '➕ 添加URL',
-      sortUrlBtn: '⇅ 前缀优先',
-      fetchAllUrls: '🌐 获取全部',
-      presetLabel: '预设源:',
-      builtinAd: '内置数据',
-      adguard: 'AdGuard',
-      easylist: 'EasyList',
-      neohosts: 'NeoHosts',
-      inputPlaceholder: '# 输入域名，每行一个\nad.example.com\nads.example.com\n# + 开头为白名单\n# @domain=ip 为自定义DNS',
-      clearBtn: '🗑️ 清空',
-      sortBtn: '↕️ 排序',
-      parseBtn: '解析域名',
-      dedupeBtn: '🔄 去重',
-      saveBtn: '💾 保存',
-      outputTitle: '📤 生成过滤规则',
-      settingsTitle: '设置',
-      projectName: '项目名称',
-      version: '版本号',
-      ipV4: 'IPv4',
-      ipV6: 'IPv6',
-      headerComment: '头部注释',
-      blockIPv6: '阻止 IPv6',
-      dedup: '自动去重',
-      removeWildcard: '移除通配符',
-      mergeInfo: '点击"生成规则"查看输出',
-      previewPlaceholder: '// 生成的规则将显示在这里',
-      generateBtn: '🔄 生成规则',
-      downloadBtn: '📥 下载',
-      copyBtn: '📋 复制',
-      usageToggle: '📖 使用说明',
-      usageStep1: '1. 输入或导入域名',
-      usageStep1Desc: '在左侧文本框输入域名列表，或从预设源（AdGuard、EasyList等）导入，或直接粘贴 URL 获取域名',
-      usageStep2: '2. 配置生成选项',
-      usageStep2Desc: '选择输出格式（Dnsmasq/Hosts），设置目标 IP 地址，可选去重、排序、添加注释等',
-      usageStep3: '3. 生成并下载规则',
-      usageStep3Desc: '点击"生成规则"按钮，预览效果后下载到本地，或复制到剪贴板',
-      usageTip: '💡 提示',
-      usageTipContent: '生成的规则可直接用于路由器广告过滤，支持华硕、梅林、OpenWrt 等固件',
-      adguardFormat: 'AdGuard 格式',
-      adguardFile: 'AdGuard 文件名',
-      downloadAdguard: '下载 AdGuard 格式',
-      whitelistFormat: '白名单'
-    },
-    en: {
-      subtitle: 'Router-level ad filtering rule generator',
-      inputTitle: '📥 Input Domain List',
-      advanced: 'Advanced',
-      domainCount: 'Domains',
-      validCount: 'Valid',
-      commentCount: 'Comments',
-      blacklistCount: 'Blacklist',
-      whitelistCount: 'Whitelist',
-      urlPlaceholder: 'Enter URL to import domain list...',
-      fetchBtn: 'Fetch',
-      addUrl: '➕ Add URL',
-      sortUrlBtn: '⇅ Prefix First',
-      fetchAllUrls: '🌐 Fetch All',
-      presetLabel: 'Presets:',
-      builtinAd: 'Built-in',
-      adguard: 'AdGuard',
-      easylist: 'EasyList',
-      neohosts: 'NeoHosts',
-      inputPlaceholder: '# Enter domains, one per line\nad.example.com\nads.example.com\n# + prefix for whitelist\n# @domain=ip for custom DNS',
-      clearBtn: '🗑️ Clear',
-      sortBtn: '↕️ Sort',
-      parseBtn: 'Parse Domains',
-      dedupeBtn: '🔄 Deduplicate',
-      saveBtn: '💾 Save',
-      outputTitle: '📤 Generate Filter Rules',
-      settingsTitle: 'Settings',
-      projectName: 'Project Name',
-      version: 'Version',
-      ipV4: 'IPv4',
-      ipV6: 'IPv6',
-      headerComment: 'Header Comments',
-      blockIPv6: 'Block IPv6',
-      dedup: 'Auto Deduplicate',
-      removeWildcard: 'Remove Wildcards',
-      mergeInfo: 'Click "Generate Rules" to view output',
-      previewPlaceholder: '// Generated rules will appear here',
-      generateBtn: '🔄 Generate Rules',
-      downloadBtn: '📥 Download',
-      copyBtn: '📋 Copy',
-      usageToggle: '📖 Usage Guide',
-      usageStep1: '1. Input or Import Domains',
-      usageStep1Desc: 'Enter domain list in the left text box, or import from presets (AdGuard, EasyList, etc.), or paste URL to fetch domains',
-      usageStep2: '2. Configure Generation Options',
-      usageStep2Desc: 'Select output format (Dnsmasq/Hosts), set target IP address, optional deduplication, sorting, add comments, etc.',
-      usageStep3: '3. Generate and Download Rules',
-      usageStep3Desc: 'Click "Generate Rules" button, preview the result, then download to local or copy to clipboard',
-      usageTip: '💡 Tip',
-      usageTipContent: 'Generated rules can be directly used for router ad filtering, supporting Asus, Merlin, OpenWrt and other firmware',
-      adguardFormat: 'AdGuard',
-      adguardFile: 'AdGuard Filename',
-      downloadAdguard: 'Download AdGuard Format',
-      whitelistFormat: 'Whitelist'
+
+  // 监听点击事件，点击其他地方关闭语言选择器下拉菜单
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const langSelector = document.querySelector('.lang-selector');
+      if (langSelector && !langSelector.contains(event.target as Node)) {
+        setIsLangDropdownOpen(false);
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
     }
-  };
+  }, []);
   
-  const t = isLangZh ? translations.zh : translations.en;
+  // 获取当前语言的翻译
+  const t = translations[currentLang] || translations['zh-cn'];
   
   // 切换语言
-  const switchLang = () => {
-    const newLang = isLangZh ? 'en' : 'zh';
-    setIsLangZh(!isLangZh);
+  const switchLang = (lang: string) => {
+    setCurrentLang(lang);
     // 确保在客户端环境中使用localStorage
     if (typeof window !== 'undefined') {
-      localStorage.setItem('lang', newLang);
+      localStorage.setItem('lang', lang);
     }
   };
   
@@ -326,7 +299,13 @@ export default function Home() {
   };
   
   // 显示提示
-  const showToast = (message: string) => {
+  const showToast = (key: string, params?: { [key: string]: string | number }) => {
+    let message = t.toast[key] || key;
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        message = message.replace(`{${k}}`, String(v));
+      });
+    }
     setToastMessage(message);
     setTimeout(() => setToastMessage(''), 3000);
   };
@@ -507,7 +486,7 @@ export default function Home() {
       });
     } catch (error) {
       console.error('Error parsing source:', error);
-      showToast(isLangZh ? '解析失败，请检查输入格式' : 'Parsing failed, please check input format');
+      showToast('parseFailed');
     }
   };
   
@@ -517,22 +496,22 @@ export default function Home() {
       dnsmasq: {
         commentChar: '#',
         separator: '=====================================',
-        title: isLangZh ? 'Dnsmasq 广告过滤列表' : 'Dnsmasq Ad Block List',
-        description: isLangZh ? '路由器级广告过滤规则' : 'Router-level ad blocking filter',
-        usage: isLangZh ? `# 使用方法:\n#   - 梅林: 软件中心 -> DNS 设置\n#   - OpenWrt: 服务 -> DHCP 和 DNS` : `# Usage:\n#   - Merlin: Software Center -> DNS Settings\n#   - OpenWrt: Services -> DHCP and DNS`
+        title: t.header.dnsmasqTitle,
+        description: t.header.description,
+        usage: `${t.header.usage}\n${t.header.merlinUsage}\n${t.header.openwrtUsage}`
       },
       hosts: {
         commentChar: '#',
         separator: '=====================================',
-        title: isLangZh ? 'Hosts 广告过滤列表' : 'Hosts Ad Block List',
-        description: isLangZh ? '路由器级广告过滤 hosts 文件' : 'Router-level ad blocking hosts file',
-        usage: isLangZh ? '# 使用方法: 导入到路由器广告过滤设置' : '# Usage: Import to router ad blocking settings'
+        title: t.header.hostsTitle,
+        description: t.header.hostsDescription,
+        usage: t.header.hostsUsage
       },
       adguard: {
         commentChar: '!',
         separator: '====================================',
-        title: isLangZh ? 'AdGuard 广告过滤规则' : 'AdGuard Ad Block Filter',
-        description: isLangZh ? '兼容 AdGuard 的广告过滤规则' : 'AdGuard-compatible ad blocking filter',
+        title: t.header.adguardTitle,
+        description: t.header.adguardDescription,
         usage: ''
       }
     };
@@ -547,21 +526,21 @@ export default function Home() {
     lines.push(`${commentChar} ${settings.projectName} - ${title}`);
     lines.push(`${commentChar} ${separator}`);
     lines.push(`${commentChar}`);
-    lines.push(`${commentChar} ${isLangZh ? '描述: ' : 'Description: '}${description}`);
+    lines.push(`${commentChar} ${t.header.description}: ${description}`);
     lines.push(`${commentChar}`);
-    lines.push(`${commentChar} ${isLangZh ? '版本: ' : 'Version: '}${settings.version}`);
-    lines.push(`${commentChar} ${isLangZh ? '更新: ' : 'Update: '}${dateStr}`);
-    lines.push(`${commentChar} ${isLangZh ? '域名: ' : 'Domains: '}${totalDomains} ${isLangZh ? '个唯一域名' : 'unique domains'}`);
+    lines.push(`${commentChar} ${t.header.version}: ${settings.version}`);
+    lines.push(`${commentChar} ${t.header.update}: ${dateStr}`);
+    lines.push(`${commentChar} ${t.header.domains}: ${totalDomains} ${t.header.uniqueDomains}`);
     if (whitelistCount > 0) {
-      lines.push(`${commentChar} ${isLangZh ? '白名单: ' : 'Whitelist: '}${whitelistCount} ${isLangZh ? '个域名' : 'domains'}`);
+      lines.push(`${commentChar} ${t.header.whitelist}: ${whitelistCount} ${t.header.domainsCount}`);
     }
     lines.push(`${commentChar}`);
     if (usage) {
       lines.push(usage);
       lines.push(`${commentChar}`);
     }
-    lines.push(`${commentChar} ${isLangZh ? '项目: ' : 'Project: '}https://github.com/sutchan/DNS_Shield`);
-    lines.push(`${commentChar} ${isLangZh ? '演示: ' : 'Demo: '}https://dns.ewuse.com/`);
+    lines.push(`${commentChar} ${t.header.project}https://github.com/sutchan/DNS_Shield`);
+    lines.push(`${commentChar} ${t.header.demo}https://dns.ewuse.com/`);
     lines.push(`${commentChar}`);
     lines.push(`${commentChar} ${separator}`);
 
@@ -632,14 +611,14 @@ export default function Home() {
 
     if (filteredWhitelist.length > 0) {
       if (addHeader) {
-        dnsmasqContent += `\n# ${isLangZh ? '白名单 (允许这些域名)' : 'Whitelist (allow these domains)'}\n`;
-        hostsContent += `\n# ${isLangZh ? '白名单 (允许这些域名)' : 'Whitelist (allow these domains)'}\n`;
-        adguardContent += `\n! ${isLangZh ? '白名单 (允许这些域名)' : 'Whitelist (allow these domains)'}\n`;
-        whitelistContent += `# ${isLangZh ? '白名单 (允许这些域名)' : 'Whitelist (allow these domains)'}\n`;
+        dnsmasqContent += `\n# ${t.whitelist.title}\n`;
+        hostsContent += `\n# ${t.whitelist.title}\n`;
+        adguardContent += `\n! ${t.whitelist.title}\n`;
+        whitelistContent += `# ${t.whitelist.title}\n`;
       }
       filteredWhitelist.forEach(domain => {
         dnsmasqContent += `server=/${domain}/\n`;
-        hostsContent += `# ${isLangZh ? '已白名单: ' : 'Whitelisted: '}${domain}\n`;
+        hostsContent += `# ${t.whitelist.label} ${domain}\n`;
         adguardContent += `@@||${domain}^\n`;
         whitelistContent += `@@||${domain}^\n`;
       });
@@ -661,7 +640,7 @@ export default function Home() {
     }[currentFormat];
     generateLineNumbers(content || '', outputLineNumbersRef);
 
-    showToast(isLangZh ? '规则生成成功！' : 'Rules generated successfully!');
+    showToast('rulesGenerated');
   };
   
   // 下载输出
@@ -679,7 +658,7 @@ export default function Home() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    showToast(isLangZh ? `已下载 ${filename}` : `Downloaded ${filename}`);
+    showToast('downloaded', { filename });
   };
   
   // 复制到剪贴板
@@ -687,11 +666,11 @@ export default function Home() {
     const content = outputContent[currentFormat] || '';
     navigator.clipboard.writeText(content)
       .then(() => {
-        showToast(isLangZh ? '已复制到剪贴板' : 'Copied to clipboard');
+        showToast('copied');
       })
       .catch(err => {
         console.error('Failed to copy:', err);
-        showToast(isLangZh ? '复制失败，请手动复制' : 'Copy failed, please copy manually');
+        showToast('copyFailed');
       });
   };
   
@@ -765,7 +744,7 @@ export default function Home() {
     const sortedContent = result.join('\n');
     setSourceInput(sortedContent);
     parseSource(sortedContent);
-    showToast(isLangZh ? '域名已排序' : 'Domains sorted');
+    showToast('domainsSorted');
   };
   
   // 去重域名
@@ -816,13 +795,13 @@ export default function Home() {
     const deduplicatedContent = uniqueLines.join('\n');
     setSourceInput(deduplicatedContent);
     parseSource(deduplicatedContent);
-    showToast(isLangZh ? `已去除 ${removedCount} 个重复项` : `Removed ${removedCount} duplicates`);
+    showToast('duplicatesRemoved', { count: removedCount });
   };
   
   // 保存域名
   const saveDomains = () => {
     // 这里可以实现保存到本地文件的功能
-    showToast(isLangZh ? '域名已保存' : 'Domains saved');
+    showToast('domainsSaved');
   };
   
   // 生成行号
@@ -903,10 +882,10 @@ export default function Home() {
       parseSource(content);
       // 生成行号
       generateLineNumbers(content, lineNumbersRef);
-      showToast(isLangZh ? `已加载 ${preset} 预设` : `Loaded ${preset} preset`);
+      showToast('presetLoaded', { preset });
     } catch (error) {
       console.error('Error loading preset:', error);
-      showToast(isLangZh ? '加载预设失败，请检查网络连接' : 'Failed to load preset, please check network connection');
+      showToast('presetFailed');
     } finally {
       setIsLoading(false);
     }
@@ -916,7 +895,7 @@ export default function Home() {
   const fetchFromUrl = async () => {
     const url = urlInputRef.current?.value.trim();
     if (!url) {
-      showToast(isLangZh ? '请输入 URL' : 'Please enter URL');
+      showToast('urlEnter');
       return;
     }
 
@@ -931,10 +910,10 @@ export default function Home() {
       parseSource(content);
       // 生成行号
       generateLineNumbers(content, lineNumbersRef);
-      showToast(isLangZh ? '已从 URL 获取域名' : 'Fetched domains from URL');
+      showToast('domainsFetched');
     } catch (error) {
       console.error('Error fetching from URL:', error);
-      showToast(isLangZh ? '获取失败，请检查 URL 和网络连接' : 'Failed to fetch, please check URL and network connection');
+      showToast('fetchFailed');
     } finally {
       setIsLoading(false);
     }
@@ -950,24 +929,24 @@ export default function Home() {
 
     setUrls((prev: string[]) => [...prev, url]);
     urlInputRef.current!.value = '';
-    showToast(isLangZh ? 'URL 已添加' : 'URL added');
+    showToast('urlAdded');
   };
 
   // 排序 URLs
   const sortUrls = () => {
     setUrls((prev: string[]) => [...prev].sort());
-    showToast(isLangZh ? 'URLs 已排序' : 'URLs sorted');
+    showToast('urlsSorted');
   };
 
   // 获取全部 URLs
   const fetchAllUrls = async () => {
     if (urls.length === 0) {
-      showToast(isLangZh ? 'URL 列表为空' : 'URL list is empty');
+      showToast('urlListEmpty');
       return;
     }
 
     setIsLoading(true);
-    showToast(isLangZh ? '正在获取全部 URLs...' : 'Fetching all URLs...');
+    showToast('loading');
     
     try {
       let allContent = '';
@@ -982,10 +961,10 @@ export default function Home() {
       parseSource(allContent);
       // 生成行号
       generateLineNumbers(allContent, lineNumbersRef);
-      showToast(isLangZh ? '已获取全部 URLs' : 'Fetched all URLs');
+      showToast('urlsFetched');
     } catch (error) {
       console.error('Error fetching all URLs:', error);
-      showToast(isLangZh ? '获取失败，请检查网络连接' : 'Failed to fetch, please check network connection');
+      showToast('fetchFailed');
     } finally {
       setIsLoading(false);
     }
@@ -997,11 +976,31 @@ export default function Home() {
         <div className="header-main">
           <h1>🛡️ DNS Shield</h1>
           <div className="header-actions">
-            <button className="lang-switch" onClick={switchLang} title="切换语言">
-              <span className="lang-zh">中</span>
-              <span className="lang-divider">/</span>
-              <span className="lang-en">EN</span>
-            </button>
+            <div className="lang-selector">
+              <button 
+                className="lang-selector-btn" 
+                title={t.settingsTitle}
+                onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+              >
+                {supportedLanguages.find(lang => lang.code === currentLang)?.name || currentLang}
+              </button>
+              {isLangDropdownOpen && (
+                <div className="lang-selector-dropdown">
+                  {supportedLanguages.map(lang => (
+                    <button
+                      key={lang.code}
+                      className={`lang-option ${currentLang === lang.code ? 'active' : ''}`}
+                      onClick={() => {
+                        switchLang(lang.code);
+                        setIsLangDropdownOpen(false);
+                      }}
+                    >
+                      {lang.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <button className="icon-btn" onClick={toggleTheme} title="切换主题">
               <span className="theme-btn">{theme === 'dark' ? '☀️' : '🌙'}</span>
             </button>
