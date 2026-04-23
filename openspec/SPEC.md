@@ -43,7 +43,6 @@ dns-shield/
 │   ├── app/                      # App Router 目录
 │   │   ├── page.tsx              # 主页面
 │   │   ├── Home.tsx              # 主组件（包含所有功能逻辑）
-│   │   ├── Home.test.tsx         # 主组件测试
 │   │   ├── globals.css           # 全局样式
 │   │   └── layout.tsx            # 布局组件
 │   ├── locales/                   # 语言翻译文件

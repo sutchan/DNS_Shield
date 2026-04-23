@@ -1,4 +1,5 @@
 // src/utils/parser.ts v2.2.1
+import { CustomDnsEntry, ParsedData } from '../types';
 
 interface ParseResult {
   type: 'empty' | 'comment' | 'whitelist' | 'customDns' | 'hosts' | 'dnsmasq' | 'adguard' | 'domain';
@@ -6,17 +7,6 @@ interface ParseResult {
   ip?: string;
   isValid?: boolean;
   originalLine: string;
-}
-
-interface CustomDnsEntry {
-  domain: string;
-  ip: string;
-}
-
-interface ParsedData {
-  domains: string[];
-  whitelist: string[];
-  customDns: CustomDnsEntry[];
 }
 
 interface ParseStats {
@@ -131,7 +121,7 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
   
   const domains: string[] = [];
   const whitelist: string[] = [];
-  const customDns: { domain: string; ip: string }[] = [];
+  const customDns: CustomDnsEntry[] = [];
   let commentCount = 0;
 
   for (const line of lines) {

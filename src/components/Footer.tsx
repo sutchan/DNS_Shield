@@ -1,19 +1,18 @@
 // src/components/Footer.tsx v2.2.1
 import React from 'react';
-import { Settings } from '../types';
 
 interface FooterProps {
   isUsageGuideCollapsed: boolean;
-  settings: Settings;
   t: any;
   toggleSection: (section: string) => void;
+  version: string;
 }
 
 const Footer: React.FC<FooterProps> = ({
   isUsageGuideCollapsed,
-  settings,
   t,
-  toggleSection
+  toggleSection,
+  version
 }) => {
   return (
     <footer className="app-footer" id="about-panel">
@@ -69,7 +68,7 @@ const Footer: React.FC<FooterProps> = ({
             <line x1="10" y1="14" x2="21" y2="3"></line>
           </svg>
         </a>
-        <span className="footer-version">v{settings.version}</span>
+        <span className="footer-version">v{version}</span>
       </div>
     </footer>
   );

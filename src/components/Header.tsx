@@ -1,12 +1,11 @@
 // src/components/Header.tsx v2.2.1
 import React from 'react';
-import { Language } from '../types';
 
 interface HeaderProps {
   theme: 'light' | 'dark';
   currentLang: string;
   isLangDropdownOpen: boolean;
-  supportedLanguages: Language[];
+  supportedLanguages: Array<{ code: string; name: string; icon: string }>;
   t: any;
   toggleTheme: () => void;
   switchLang: (lang: string) => void;

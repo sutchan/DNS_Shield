@@ -1,10 +1,16 @@
-// test.ts
-interface Test {
-  name: string;
-}
+// Test file to verify TypeScript compiler
+import { CustomDnsEntry, ParsedData } from './src/types';
 
-const test: Test = {
-  name: "test"
+// Test the types
+const testCustomDns: CustomDnsEntry = {
+  domain: 'example.com',
+  ip: '127.0.0.1'
 };
 
-console.log(test.name);
+const testParsedData: ParsedData = {
+  domains: ['example.com'],
+  whitelist: ['test.com'],
+  customDns: [testCustomDns]
+};
+
+console.log('Test completed successfully');

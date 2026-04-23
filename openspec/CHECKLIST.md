@@ -34,7 +34,6 @@
 - [ ] `public/domains.txt` 存在且格式正确
 - [ ] `src/app/page.tsx` 存在且功能完整
 - [ ] `src/app/Home.tsx` 存在且逻辑完整
-- [ ] `src/app/Home.test.tsx` 存在且测试完整
 - [ ] `src/app/globals.css` 存在且样式完整
 - [ ] `src/app/layout.tsx` 存在且布局完整
 - [ ] `src/setupTests.ts` 存在且配置完整
