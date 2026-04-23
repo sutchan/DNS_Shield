@@ -27,6 +27,30 @@
 +milink.pandora.xiaomi.com # 小米
 +o2o.api.xiaomi.com # 小米O2O
 #
+ad.cdntv.com
+log1.cntv.cn
+vdn.cdntv.com
+newzone.cctv.com # 央视新区域
+spns.cctv.com # 央视广告系统
+mb.cctv.com # 央视移动端
+mb.cdntv.com # CDN移动端
+recommend.cctv.com # 推荐系统
+push.cctv.com # 央视推送
+cm.m.cn.miaozhen.com # 秒针移动端
+t.m.cn.miaozhen.com # 秒针追踪
+ad.coocaa.com
+beacon.coocaa.com
+log.coocaa.com
+ad.ffalcon.com
+beacon.ffalcon.com
+log.ffalcon.com
+p1.ffalconimg.com
+ad.hisense.com
+api-ad.hisense.com
+log.hisense.com
+p1.hisensead.com
+api.dangbei.net/payment/qrcode
+pay.dangbei.net
 3dns-2.adobe.com # Adobe 更新
 3dns-3.adobe.com # Adobe 更新
 4009997658.com # 广告/推广

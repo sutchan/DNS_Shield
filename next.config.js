@@ -5,6 +5,13 @@ const nextConfig = {
   trailingSlash: true,
   env: {
     version: '2.1.0'
+  },
+  devIndicators: {
+    buildActivity: false
+  },
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2
   }
 }
 
