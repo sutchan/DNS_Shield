@@ -274,6 +274,9 @@ export default function Home() {
   // 获取当前语言的翻译
   const t = translations[currentLang] || translations['zh-cn'];
   
+  // 检查是否为中文语言
+  const isLangZh = currentLang === 'zh-cn' || currentLang === 'zh-tw';
+  
   // 切换语言
   const switchLang = (lang: string) => {
     setCurrentLang(lang);
