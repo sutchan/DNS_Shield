@@ -3,82 +3,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './globals.css';
 
-// 导入所有语言翻译文件
-import ar from '../locales/ar.json';
-import cs from '../locales/cs.json';
-import en from '../locales/en.json';
-import es from '../locales/es.json';
-import hi from '../locales/hi.json';
-import id from '../locales/id.json';
-import it from '../locales/it.json';
-import nl from '../locales/nl.json';
-import pl from '../locales/pl.json';
-import sv from '../locales/sv.json';
-import th from '../locales/th.json';
-import tr from '../locales/tr.json';
-import ru from '../locales/ru.json';
-import vi from '../locales/vi.json';
-import zhCN from '../locales/zh-cn.json';
-import zhTW from '../locales/zh-tw.json';
+// 导入工具函数
+import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
+import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
+import { downloadOutput as downloadOutputUtil, copyToClipboard, fetchFromUrl as fetchFromUrlUtil, fetchFromUrls } from '../utils/fileUtils';
+import { generateLineNumbers, syncScroll as syncScrollUtil, syncOutputScroll as syncOutputScrollUtil } from '../utils/uiUtils';
+import { supportedLanguages, getTranslation, isChineseLanguage } from '../utils/i18n';
 
-// 语言映射
-const translations: Record<string, any> = {
-  ar,
-  cs,
-  en,
-  es,
-  hi,
-  id,
-  it,
-  nl,
-  pl,
-  sv,
-  th,
-  tr,
-  ru,
-  vi,
-  'zh-cn': zhCN,
-  'zh-tw': zhTW
-};
-
-// 支持的语言列表
-export const supportedLanguages = [
-  { code: 'en', name: 'English', icon: '🇺🇸' },
-  { code: 'zh-cn', name: '中文简体', icon: '🇨🇳' },
-  { code: 'zh-tw', name: '中文繁體', icon: '🇹🇼' },
-  { code: 'ar', name: 'العربية', icon: '🇸🇦' },
-  { code: 'cs', name: 'Čeština', icon: '🇨🇿' },
-  { code: 'es', name: 'Español', icon: '🇪🇸' },
-  { code: 'hi', name: 'हिन्दी', icon: '🇮🇳' },
-  { code: 'id', name: 'Bahasa Indonesia', icon: '🇮🇩' },
-  { code: 'it', name: 'Italiano', icon: '🇮🇹' },
-  { code: 'nl', name: 'Nederlands', icon: '🇳🇱' },
-  { code: 'pl', name: 'Polski', icon: '🇵🇱' },
-  { code: 'sv', name: 'Svenska', icon: '🇸🇪' },
-  { code: 'th', name: 'ไทย', icon: '🇹🇭' },
-  { code: 'tr', name: 'Türkçe', icon: '🇹🇷' },
-  { code: 'ru', name: 'Русский', icon: '🇷🇺' },
-  { code: 'vi', name: 'Tiếng Việt', icon: '🇻🇳' }
-];
-
-// 类型定义
-interface OutputContent {
-  dnsmasq: string;
-  hosts: string;
-  adguard: string;
-  whitelist: string;
-}
-
-interface CustomDnsEntry {
-  domain: string;
-  ip: string;
-}
-
-interface ParsedData {
-  domains: string[];
-  whitelist: string[];
-  customDns: CustomDnsEntry[];
-}
+// 导入类型
+import { OutputContent, ParsedData, Stats, Settings } from '../types';
 
 export default function Home() {
   // 状态管理
@@ -104,7 +37,7 @@ export default function Home() {
     whitelist: ''
   });
   const [currentFormat, setCurrentFormat] = useState<'hosts' | 'dnsmasq' | 'adguard' | 'whitelist'>('hosts');
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<Settings>({
     projectName: 'DNS Shield',
     version: '2.2.1',
     ipv4: '127.0.0.1',
@@ -124,7 +57,7 @@ export default function Home() {
     whitelist: [],
     customDns: []
   });
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<Stats>({
     domainCount: 0,
     validCount: 0,
     commentCount: 0,
@@ -166,7 +99,7 @@ export default function Home() {
         const text = await localResponse.text();
         if (text.trim()) {
           setSourceInput(text);
-          parseSource(text);
+          parseSourceData(text);
           generateLineNumbers(text, lineNumbersRef);
           return true;
         }
@@ -187,7 +120,7 @@ export default function Home() {
         const text = await response.text();
         if (text.trim()) {
           setSourceInput(text);
-          parseSource(text);
+          parseSourceData(text);
           generateLineNumbers(text, lineNumbersRef);
           return;
         }
@@ -213,7 +146,7 @@ export default function Home() {
       const autosave = localStorage.getItem('dnsShield_autosave');
       if (autosave && !sourceInput.trim()) {
         setSourceInput(autosave);
-        parseSource(autosave);
+        parseSourceData(autosave);
         // 生成自动保存内容的行号
         generateLineNumbers(autosave, lineNumbersRef);
         const autoSaveTime = localStorage.getItem('dnsShield_autosave_time');
@@ -272,10 +205,10 @@ export default function Home() {
   }, []);
   
   // 获取当前语言的翻译
-  const t = translations[currentLang] || translations['zh-cn'];
+  const t = getTranslation(currentLang);
   
   // 检查是否为中文语言
-  const isLangZh = currentLang === 'zh-cn' || currentLang === 'zh-tw';
+  const isLangZh = isChineseLanguage(currentLang);
   
   // 切换语言
   const switchLang = (lang: string) => {
@@ -308,334 +241,27 @@ export default function Home() {
     setTimeout(() => setToastMessage(''), 3000);
   };
   
-  // 解析域名
-  const parseDomainLine = (line: string) => {
-    const trimmed = line.trim();
-    
-    if (!trimmed) {
-      return { type: 'empty' as const, originalLine: line };
-    }
-    
-    const hashIndex = trimmed.indexOf('#');
-    if (hashIndex === 0) {
-      return { type: 'comment' as const, originalLine: line };
-    }
-    
-    let content = hashIndex >= 0 ? trimmed.substring(0, hashIndex).trim() : trimmed;
-    
-    if (!content) {
-      return { type: 'comment' as const, originalLine: line };
-    }
-    
-    if (content.startsWith('!')) {
-      return { type: 'comment' as const, originalLine: line };
-    }
-    
-    if (content.startsWith('+')) {
-      const domain = content.substring(1).trim().toLowerCase().replace(/^\*\./, '');
-      const isValid = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(domain);
-      return {
-        type: 'whitelist' as const,
-        domain: domain,
-        isValid: isValid,
-        originalLine: line
-      };
-    }
-    
-    if (content.startsWith('@')) {
-      const match = content.substring(1).trim().match(/^([^=]+)=(.+)$/);
-      if (match) {
-        const domain = match[1].toLowerCase().replace(/^\*\./, '');
-        const ip = match[2].trim();
-        const isValid = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(domain);
-        return {
-          type: 'customDns' as const,
-          domain: domain,
-          ip: ip,
-          isValid: isValid,
-          originalLine: line
-        };
-      }
-      return { type: 'comment' as const, originalLine: line };
-    }
-    
-    if (content.startsWith('0.0.0.0 ') || content.startsWith('127.0.0.1 ')) {
-      const domain = content.replace(/^(0\.0\.0\.0|127\.0\.0\.1)\s+/, '').toLowerCase().replace(/^\*\./, '');
-      const isValid = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(domain);
-      return {
-        type: 'hosts' as const,
-        domain: domain,
-        isValid: isValid,
-        originalLine: line
-      };
-    }
-    
-    if (content.startsWith('address=/')) {
-      const match = content.match(/address=\/([^\/]+)\//);
-      if (match) {
-        const domain = match[1].toLowerCase().replace(/^\*\./, '');
-        const isValid = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(domain);
-        return {
-          type: 'dnsmasq' as const,
-          domain: domain,
-          isValid: isValid,
-          originalLine: line
-        };
-      }
-      return { type: 'comment' as const, originalLine: line };
-    }
-    
-    if (content.startsWith('||') && content.endsWith('^')) {
-      const domain = content.substring(2, content.length - 1).toLowerCase().replace(/^\*\./, '');
-      const isValid = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(domain);
-      return {
-        type: 'adguard' as const,
-        domain: domain,
-        isValid: isValid,
-        originalLine: line
-      };
-    }
-    
-    const domain = content.toLowerCase().replace(/^\*\./, '');
-    const isValid = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(domain);
-    return {
-      type: 'domain' as const,
-      domain: domain,
-      isValid: isValid,
-      originalLine: line
-    };
-  };
-
-  // 解析域名
-  const parseSource = (text?: string) => {
+  // 解析域名数据
+  const parseSourceData = (text?: string) => {
     try {
       const input = text || sourceInput;
-      const lines = input.split('\n');
-      
-      const domains: string[] = [];
-      const whitelist: string[] = [];
-      const customDns: { domain: string; ip: string }[] = [];
-      let commentCount = 0;
-
-      for (const line of lines) {
-        const parsed = parseDomainLine(line);
-        
-        if (parsed.type === 'empty') {
-          commentCount++;
-          continue;
-        }
-        
-        if (parsed.type === 'comment') {
-          commentCount++;
-          continue;
-        }
-        
-        if (parsed.type === 'whitelist') {
-          if (parsed.isValid) {
-            whitelist.push(parsed.domain);
-          } else {
-            commentCount++;
-          }
-          continue;
-        }
-        
-        if (parsed.type === 'customDns') {
-          if (parsed.isValid) {
-            customDns.push({ domain: parsed.domain, ip: parsed.ip });
-          } else {
-            commentCount++;
-          }
-          continue;
-        }
-        
-        if (parsed.type === 'hosts' || parsed.type === 'dnsmasq' || parsed.type === 'adguard' || parsed.type === 'domain') {
-          if (parsed.isValid) {
-            domains.push(parsed.domain);
-          } else {
-            commentCount++;
-          }
-          continue;
-        }
-        
-        commentCount++;
-      }
-
-      // 去重和处理冲突
-      const whitelistSet = new Set(whitelist.map(w => w.replace(/^\*\./, '')));
-      const customDnsSet = new Set(customDns.map(c => c.domain.replace(/^\*\./, '')));
-      const excludeSet = new Set([...whitelistSet, ...customDnsSet]);
-
-      const filteredDomains = domains.filter(d => !excludeSet.has(d.replace(/^\*\./, '')));
-      const uniqueWhitelist = [...new Set(whitelist)];
-
-      setStats({
-        domainCount: filteredDomains.length,
-        validCount: filteredDomains.length + uniqueWhitelist.length,
-        commentCount: commentCount,
-        blacklistCount: filteredDomains.length,
-        whitelistCount: uniqueWhitelist.length
-      });
-
-      // 保存解析结果
-      setParsedData({
-        domains: filteredDomains,
-        whitelist: uniqueWhitelist,
-        customDns: customDns
-      });
+      const { data, stats: newStats } = parseSource(input);
+      setParsedData(data);
+      setStats(newStats);
     } catch (error) {
       console.error('Error parsing source:', error);
       showToast('parseFailed');
     }
   };
   
-  // 生成头部
-  const generateHeader = (formatType: 'dnsmasq' | 'hosts' | 'adguard', totalDomains: number, whitelistCount: number, dateStr: string) => {
-    const formatConfigs = {
-      dnsmasq: {
-        commentChar: '#',
-        separator: '=====================================',
-        title: t.header.dnsmasqTitle,
-        description: t.header.description,
-        usage: `${t.header.usage}\n${t.header.merlinUsage}\n${t.header.openwrtUsage}`
-      },
-      hosts: {
-        commentChar: '#',
-        separator: '=====================================',
-        title: t.header.hostsTitle,
-        description: t.header.hostsDescription,
-        usage: t.header.hostsUsage
-      },
-      adguard: {
-        commentChar: '!',
-        separator: '====================================',
-        title: t.header.adguardTitle,
-        description: t.header.adguardDescription,
-        usage: ''
-      }
-    };
-
-    const config = formatConfigs[formatType];
-    if (!config) return '';
-
-    const { commentChar, separator, title, description, usage } = config;
-    const lines: string[] = [];
-
-    lines.push(`${commentChar} ${separator}`);
-    lines.push(`${commentChar} ${settings.projectName} - ${title}`);
-    lines.push(`${commentChar} ${separator}`);
-    lines.push(`${commentChar}`);
-    lines.push(`${commentChar} ${t.header.description}: ${description}`);
-    lines.push(`${commentChar}`);
-    lines.push(`${commentChar} ${t.header.version}: ${settings.version}`);
-    lines.push(`${commentChar} ${t.header.update}: ${dateStr}`);
-    lines.push(`${commentChar} ${t.header.domains}: ${totalDomains} ${t.header.uniqueDomains}`);
-    if (whitelistCount > 0) {
-      lines.push(`${commentChar} ${t.header.whitelist}: ${whitelistCount} ${t.header.domainsCount}`);
-    }
-    lines.push(`${commentChar}`);
-    if (usage) {
-      lines.push(usage);
-      lines.push(`${commentChar}`);
-    }
-    lines.push(`${commentChar} ${t.header.project}https://github.com/sutchan/DNS_Shield`);
-    lines.push(`${commentChar} ${t.header.demo}https://dns.ewuse.com/`);
-    lines.push(`${commentChar}`);
-    lines.push(`${commentChar} ${separator}`);
-
-    return lines.join('\n') + '\n\n';
-  };
-
   // 生成规则
   const generateRules = () => {
     const { domains, whitelist, customDns } = parsedData;
-    const addHeader = settings.addHeader;
-    const blockIPv6 = settings.blockIPv6;
-    const dedupDomains = settings.dedupDomains;
-    const removeWildcard = settings.removeWildcard;
-
-    let filteredDomains = [...domains];
-    if (removeWildcard) {
-      filteredDomains = filteredDomains.map(d => d.replace(/^\*\./, ''));
-    }
-    if (dedupDomains) {
-      filteredDomains = [...new Set(filteredDomains)].sort();
-    }
-
-    let filteredWhitelist = [...whitelist];
-    if (removeWildcard) {
-      filteredWhitelist = filteredWhitelist.map(d => d.replace(/^\*\./, ''));
-    }
-    if (dedupDomains) {
-      filteredWhitelist = [...new Set(filteredWhitelist)].sort();
-    }
-
-    const now = new Date();
-    const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
-
-    let dnsmasqContent = '';
-    let hostsContent = '';
-    let adguardContent = '';
-    let whitelistContent = '';
-
-    if (addHeader) {
-      const totalDomains = filteredDomains.length + customDns.length;
-      const whitelistCount = filteredWhitelist.length;
-
-      dnsmasqContent += generateHeader('dnsmasq', totalDomains, whitelistCount, dateStr);
-      hostsContent += generateHeader('hosts', totalDomains, whitelistCount, dateStr);
-      adguardContent += generateHeader('adguard', totalDomains, whitelistCount, dateStr);
-    }
-
-    filteredDomains.forEach(domain => {
-      dnsmasqContent += `address=/${domain}/${settings.ipv4}\n`;
-      hostsContent += `${settings.ipv4} ${domain}\n`;
-      adguardContent += `||${domain}^\n`;
-
-      if (blockIPv6) {
-        dnsmasqContent += `address=/${domain}/${settings.ipv6}\n`;
-        hostsContent += `${settings.ipv6} ${domain}\n`;
-      }
-    });
-
-    customDns.forEach((item: CustomDnsEntry) => {
-      dnsmasqContent += `address=/${item.domain}/${item.ip}\n`;
-      hostsContent += `${item.ip} ${item.domain}\n`;
-      adguardContent += `||${item.domain}^\n`;
-
-      if (blockIPv6) {
-        dnsmasqContent += `address=/${item.domain}/::\n`;
-      }
-    });
-
-    if (filteredWhitelist.length > 0) {
-      if (addHeader) {
-        dnsmasqContent += `\n# ${t.whitelist.title}\n`;
-        hostsContent += `\n# ${t.whitelist.title}\n`;
-        adguardContent += `\n! ${t.whitelist.title}\n`;
-        whitelistContent += `# ${t.whitelist.title}\n`;
-      }
-      filteredWhitelist.forEach(domain => {
-        dnsmasqContent += `server=/${domain}/\n`;
-        hostsContent += `# ${t.whitelist.label} ${domain}\n`;
-        adguardContent += `@@||${domain}^\n`;
-        whitelistContent += `@@||${domain}^\n`;
-      });
-    }
-
-    setOutputContent({
-      dnsmasq: dnsmasqContent,
-      hosts: hostsContent,
-      adguard: adguardContent,
-      whitelist: whitelistContent
-    });
-
+    const newOutputContent = generateRulesUtil(domains, whitelist, customDns, settings, t);
+    setOutputContent(newOutputContent);
+    
     // 生成输出行号 - 使用当前生成的内容
-    const content = {
-      dnsmasq: dnsmasqContent,
-      hosts: hostsContent,
-      adguard: adguardContent,
-      whitelist: whitelistContent
-    }[currentFormat];
+    const content = newOutputContent[currentFormat];
     generateLineNumbers(content || '', outputLineNumbersRef);
 
     showToast('rulesGenerated');
@@ -644,32 +270,20 @@ export default function Home() {
   // 下载输出
   const downloadOutput = () => {
     const content = outputContent[currentFormat] || '';
-    const filename = settings[`${currentFormat}Filename` as keyof typeof settings] as string;
-    
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
+    const filename = settings[`${currentFormat}Filename` as keyof Settings] as string;
+    downloadOutputUtil(content, filename);
     showToast('downloaded', { filename });
   };
   
   // 复制到剪贴板
-  const copyOutput = () => {
+  const copyOutput = async () => {
     const content = outputContent[currentFormat] || '';
-    navigator.clipboard.writeText(content)
-      .then(() => {
-        showToast('copied');
-      })
-      .catch(err => {
-        console.error('Failed to copy:', err);
-        showToast('copyFailed');
-      });
+    const success = await copyToClipboard(content);
+    if (success) {
+      showToast('copied');
+    } else {
+      showToast('copyFailed');
+    }
   };
   
   // 清空输入
@@ -680,119 +294,17 @@ export default function Home() {
   
   // 排序域名
   const sortDomains = () => {
-    const lines = sourceInput.split('\n');
-    
-    const headerComments: string[] = [];
-    const bodyLines: string[] = [];
-    const specialLines: string[] = [];
-    
-    let inHeader = true;
-    
-    for (const line of lines) {
-      const parsed = parseDomainLine(line);
-      
-      if (parsed.type === 'empty') {
-        bodyLines.push(line);
-        continue;
-      }
-      
-      if (parsed.type === 'whitelist' || parsed.type === 'customDns') {
-        specialLines.push(line);
-        continue;
-      }
-      
-      if (parsed.type === 'comment') {
-        if (inHeader) {
-          headerComments.push(line);
-        } else {
-          bodyLines.push(line);
-        }
-        continue;
-      }
-      
-      inHeader = false;
-      bodyLines.push(line);
-    }
-    
-    const plainDomains = bodyLines.filter(line => {
-      const parsed = parseDomainLine(line);
-      return parsed.type === 'domain' || parsed.type === 'hosts' || parsed.type === 'dnsmasq';
-    });
-    
-    const comments = bodyLines.filter(line => {
-      const parsed = parseDomainLine(line);
-      return parsed.type === 'comment';
-    });
-    
-    const sortedDomains = [...plainDomains].sort((a, b) => {
-      const aParsed = parseDomainLine(a);
-      const bParsed = parseDomainLine(b);
-      const aDomain = 'domain' in aParsed ? aParsed.domain : '';
-      const bDomain = 'domain' in bParsed ? bParsed.domain : '';
-      return (aDomain || '').localeCompare(bDomain || '');
-    });
-    
-    const result = [
-      ...headerComments,
-      ...sortedDomains,
-      ...specialLines,
-      ...comments
-    ];
-    
-    const sortedContent = result.join('\n');
+    const sortedContent = sortDomainsUtil(sourceInput);
     setSourceInput(sortedContent);
-    parseSource(sortedContent);
+    parseSourceData(sortedContent);
     showToast('domainsSorted');
   };
   
   // 去重域名
   const dedupeDomains = () => {
-    const lines = sourceInput.split('\n');
-    
-    const seen = new Set<string>();
-    const uniqueLines: string[] = [];
-    let removedCount = 0;
-    
-    for (const line of lines) {
-      const parsed = parseDomainLine(line);
-      
-      if (parsed.type === 'empty') {
-        uniqueLines.push(line);
-        continue;
-      }
-      
-      if (parsed.type === 'comment') {
-        uniqueLines.push(line);
-        continue;
-      }
-      
-      if (!parsed.isValid) {
-        uniqueLines.push(line);
-        continue;
-      }
-      
-      let key: string;
-      if (parsed.type === 'whitelist' && 'domain' in parsed) {
-        key = '+' + parsed.domain;
-      } else if (parsed.type === 'customDns' && 'domain' in parsed && 'ip' in parsed) {
-        key = '@' + parsed.domain + '=' + parsed.ip;
-      } else if ('domain' in parsed) {
-        key = parsed.domain;
-      } else {
-        key = line;
-      }
-      
-      if (!seen.has(key)) {
-        seen.add(key);
-        uniqueLines.push(line);
-      } else {
-        removedCount++;
-      }
-    }
-    
-    const deduplicatedContent = uniqueLines.join('\n');
-    setSourceInput(deduplicatedContent);
-    parseSource(deduplicatedContent);
+    const { content, removedCount } = dedupeDomainsUtil(sourceInput);
+    setSourceInput(content);
+    parseSourceData(content);
     showToast('duplicatesRemoved', { count: removedCount });
   };
   
@@ -802,39 +314,26 @@ export default function Home() {
     showToast('domainsSaved');
   };
   
-  // 生成行号
-  const generateLineNumbers = (text: string, ref: React.RefObject<HTMLDivElement>) => {
-    if (ref.current) {
-      const lines = text.split('\n').length;
-      const lineNumbersHtml = Array.from({ length: lines }, (_, i) => i + 1).join('<br>');
-      ref.current.innerHTML = lineNumbersHtml;
-    }
-  };
-  
   // 同步滚动
   const syncScroll = () => {
-    if (sourceTextareaRef.current && lineNumbersRef.current) {
-      lineNumbersRef.current.scrollTop = sourceTextareaRef.current.scrollTop;
-    }
+    syncScrollUtil(sourceTextareaRef, lineNumbersRef);
   };
   
   const syncOutputScroll = () => {
-    if (outputPreviewRef.current && outputLineNumbersRef.current) {
-      outputLineNumbersRef.current.scrollTop = outputPreviewRef.current.scrollTop;
-    }
+    syncOutputScrollUtil(outputPreviewRef, outputLineNumbersRef);
   };
   
   // 处理输入变化
   const handleSourceInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setSourceInput(e.target.value);
-    parseSource(e.target.value);
+    parseSourceData(e.target.value);
     generateLineNumbers(e.target.value, lineNumbersRef);
   };
   
   // 更新设置
   const updateSettings = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
-    setSettings((prev: typeof settings) => ({
+    setSettings((prev: Settings) => ({
       ...prev,
       [id.replace('Input', '')]: value
     }));
@@ -871,13 +370,9 @@ export default function Home() {
         return;
       }
 
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const content = await response.text();
+      const content = await fetchFromUrlUtil(url);
       setSourceInput(content);
-      parseSource(content);
+      parseSourceData(content);
       // 生成行号
       generateLineNumbers(content, lineNumbersRef);
       showToast('presetLoaded', { preset });
@@ -899,13 +394,9 @@ export default function Home() {
 
     setIsLoading(true);
     try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const content = await response.text();
+      const content = await fetchFromUrlUtil(url);
       setSourceInput(content);
-      parseSource(content);
+      parseSourceData(content);
       // 生成行号
       generateLineNumbers(content, lineNumbersRef);
       showToast('domainsFetched');
@@ -947,16 +438,9 @@ export default function Home() {
     showToast('loading');
     
     try {
-      let allContent = '';
-      for (const url of urls) {
-        const response = await fetch(url);
-        if (response.ok) {
-          allContent += await response.text() + '\n';
-        }
-      }
-      
+      const allContent = await fetchFromUrls(urls);
       setSourceInput(allContent);
-      parseSource(allContent);
+      parseSourceData(allContent);
       // 生成行号
       generateLineNumbers(allContent, lineNumbersRef);
       showToast('urlsFetched');
