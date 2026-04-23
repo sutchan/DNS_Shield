@@ -17,7 +17,7 @@ export default function Home() {
     setIsLangZh(savedLang !== 'en');
   }, []);
   const [sourceInput, setSourceInput] = useState('');
-  const [outputContent, setOutputContent] = useState({
+  const [outputContent, setOutputContent] = useState<OutputContent>({
     dnsmasq: '',
     hosts: '',
     adguard: '',
@@ -38,6 +38,13 @@ export default function Home() {
     adguardFilename: 'adguard.txt',
     whitelistFilename: 'whitelist.txt'
   });
+  interface OutputContent {
+    dnsmasq: string;
+    hosts: string;
+    adguard: string;
+    whitelist: string;
+  }
+
   interface CustomDnsEntry {
     domain: string;
     ip: string;
