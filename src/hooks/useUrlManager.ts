@@ -71,7 +71,7 @@ export const useUrlManager = (
   const addUrl = () => {
     const url = urlInputRef.current?.value.trim();
     if (!url) {
-      showToast(isLangZh ? '请输入 URL' : 'Please enter URL');
+      showToast('urlEnter');
       return;
     }
 

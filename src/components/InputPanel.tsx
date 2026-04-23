@@ -1,5 +1,6 @@
 // src/components/InputPanel.tsx v2.2.1
 import React from 'react';
+import { Translation } from '../types';
 
 interface InputPanelProps {
   sourceInput: string;
@@ -13,7 +14,7 @@ interface InputPanelProps {
     whitelistCount: number;
   };
   activePreset: string;
-  t: any;
+  t: Translation;
   lineNumbersRef: React.RefObject<HTMLDivElement>;
   sourceTextareaRef: React.RefObject<HTMLTextAreaElement>;
   urlInputRef: React.RefObject<HTMLInputElement>;

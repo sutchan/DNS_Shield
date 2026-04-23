@@ -84,7 +84,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
         // 生成自动保存内容的行号
         generateLineNumbers(autosave, lineNumbersRef);
         const autoSaveTime = localStorage.getItem('dnsShield_autosave_time');
-        if (autoSaveTime) {
+        if (autoSaveTime && !isNaN(parseInt(autoSaveTime))) {
           const timeAgo = Math.floor((Date.now() - parseInt(autoSaveTime)) / 60000);
           if (timeAgo > 0) {
             showToast('autosaveRestored', { time: timeAgo });

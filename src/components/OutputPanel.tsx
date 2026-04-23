@@ -1,6 +1,6 @@
 // src/components/OutputPanel.tsx v2.2.1
 import React from 'react';
-import { Settings } from '../types';
+import { Settings, Translation } from '../types';
 
 interface OutputPanelProps {
   outputContent: {
@@ -17,7 +17,7 @@ interface OutputPanelProps {
     whitelist: string[];
     customDns: Array<{ domain: string; ip: string }>;
   };
-  t: any;
+  t: Translation;
   isLangZh: boolean;
   outputPreviewRef: React.RefObject<HTMLDivElement>;
   outputLineNumbersRef: React.RefObject<HTMLDivElement>;
