@@ -1,8 +1,8 @@
-// src/hooks/useUrlManager.ts v2.2.1
+// src/hooks/useUrlManager.ts v2.2.2
 import { useState, useRef } from 'react';
 import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls } from '../utils/fileUtils';
 import { generateLineNumbers } from '../utils/uiUtils';
-import { config } from '../config';
+import { config } from '../config/index';
 
 export const useUrlManager = (
   setSourceInput: (value: string) => void,

@@ -1,4 +1,4 @@
-// src/app/layout.tsx v2.2.1
+// src/app/layout.tsx v2.2.2
 import React from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'

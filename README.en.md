@@ -1,6 +1,6 @@
 # DNS Shield
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-2.2.1-green)](https://github.com/sutchan/DNS_Shield)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-2.2.2-green)](https://github.com/sutchan/DNS_Shield)
 
 Router-level DNS-based ad blocking filter list with web management tool.
 
@@ -15,7 +15,7 @@ This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 - **Router compatible** - Works with Merlin, OpenWrt, Xiaomi, ASUS, TP-Link, and more
 - **Whitelist management** - Independent whitelist editing interface with import/export support
 - **Multi-language support** - Supports 16 languages, can be switched on the interface
-- **Next.js framework** - v2.2.1 version has migrated to modern Next.js framework
+- **Next.js framework** - v2.2.2 version has migrated to modern Next.js framework
 
 ## Usage
 
