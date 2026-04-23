@@ -14,7 +14,8 @@ This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 - **Single source workflow** - One domain list generates all output formats
 - **Router compatible** - Works with Merlin, OpenWrt, Xiaomi, ASUS, TP-Link, and more
 - **Whitelist management** - Independent whitelist editing interface with import/export support
-- **Next.js framework** - v2.2.0 version has migrated to modern Next.js framework
+- **Multi-language support** - Supports 16 languages, can be switched on the interface
+- **Next.js framework** - v2.2.1 version has migrated to modern Next.js framework
 
 ## Usage
 
@@ -105,6 +106,7 @@ The project is now based on Next.js. You can:
 - Configure IP addresses (IPv4/IPv6)
 - Auto deduplicate and sort domains
 - Independent whitelist editing interface with import/export support
+- Multi-language support, can switch between 16 languages on the interface
 - Download generated files
 
 ## Single Source Workflow

@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
   trailingSlash: true,
   env: {
-    version: '2.1.0'
+    version: '2.2.1'
   },
   devIndicators: {
     buildActivity: false

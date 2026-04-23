@@ -1,4 +1,4 @@
-// src/app/Home.test.tsx v2.2.0
+// src/app/Home.test.tsx v2.2.1
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Home from './Home';
