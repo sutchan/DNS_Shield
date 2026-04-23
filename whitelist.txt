@@ -1,0 +1,10 @@
+# 白名单 (允许这些域名)
+@@||api.io.mi.com^
+@@||connectivitycheck.gstatic.com^
+@@||file.xmpush.xiaomi.com^
+@@||idm.iot.mi.com^
+@@||milink.pandora.xiaomi.com^
+@@||o2o.api.xiaomi.com^
+@@||tracker.xiaomixiaoai.com^
+@@||xx.market.mi-img.com^
+@@||xx.market.xiaomi.com^

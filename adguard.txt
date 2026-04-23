@@ -1,23 +1,23 @@
-! =====================================
-! DNS Shield - AdGuard Ad Block Filter
-! =====================================
+! ====================================
+! DNS Shield - AdGuard 广告过滤规则
+! ====================================
 !
-! Description: AdGuard-compatible ad blocking filter
+! 路由器级广告过滤规则: 兼容 AdGuard 的广告过滤规则
 !
-! Version: 2.0.1
-! Update: 2026.04.20
-! Domains: 459 unique domains
-! Whitelist: 9 domains
+! 版本:: 2.2.1
+! 更新:: 2026.04.23
+! 域名:: 497 个唯一域名
+! 白名单:: 9 个域名
 !
-! Project: https://github.com/sutchan/DNS_Shield
-! Demo: https://dns.ewuse.com/
+! 项目:https://github.com/sutchan/DNS_Shield
+! 演示:https://dns.ewuse.com/
 !
-! =====================================
+! ====================================
 
 ||3dns-2.adobe.com^
 ||3dns-3.adobe.com^
 ||4009997658.com^
-||519332DA.rtc.youme.im^
+||519332da.rtc.youme.im^
 ||86file.megajoy.com^
 ||86get.joy.cn^
 ||a.applvn.com^
@@ -38,25 +38,36 @@
 ||ad.bestv.com.cn^
 ||ad.bilibili.com^
 ||ad.cctv.com^
+||ad.cdntv.com^
 ||ad.cmvideo.cn^
 ||ad.cntv.cn^
 ||ad.coocaa.com^
 ||ad.doubleclick.net^
+||ad.douyin.com^
 ||ad.ffalcon.com^
+||ad.fun.tv^
+||ad.haokan.com^
 ||ad.hisense.com^
 ||ad.hpplay.cn^
-||ad.ihuman.com^
+||ad.huoshan.com^
 ||ad.iqiyi.com^
+||ad.ixigua.com^
+||ad.kuaishou.com^
+||ad.letv.com^
 ||ad.m.taobao.com^
 ||ad.mgtv.com^
 ||ad.mi.com^
 ||ad.miguvideo.com^
+||ad.pptv.com^
 ||ad.qq.com^
+||ad.sohu.com^
 ||ad.tencentmusic.com^
 ||ad.toutiao.com^
+||ad.tv.sohu.com^
 ||ad.video.qq.com^
 ||ad.weixin.qq.com^
 ||ad.xelements.cn^
+||ad.xiaohongshu.com^
 ||ad.xiaomi.com^
 ||ad.xunkids.com^
 ||ad.youku.com^
@@ -68,7 +79,7 @@
 ||adc.hpplay.cn^
 ||adcdn.hpplay.cn^
 ||adcolony.com^
-||adcontroL.tudou.com^
+||adcontrol.tudou.com^
 ||adeng.hpplay.cn^
 ||adextensioncontrol.tudou.com^
 ||adguanggao.eee114.com^
@@ -84,14 +95,17 @@
 ||ads.95516.com^
 ||ads.api.vungle.com^
 ||ads.bestv.com.cn^
-||ads.cn.miaozhen.com^
 ||ads.cup.com.cn^
+||ads.fun.tv^
+||ads.kuaishou.com^
+||ads.letv.com^
 ||ads.mgtv.com^
 ||ads.migu.cn^
-||ads.union.jd.com^
+||ads.pptv.com^
+||ads.sohu.com^
+||ads.xiaohongshu.com^
 ||adsclick.qq.com^
 ||adsfile.qq.com^
-||adsh.wagbridge.taobao.alimama.com^
 ||adshmct.qq.com^
 ||adshmmsg.qq.com^
 ||adslvfile.qq.com^
@@ -105,7 +119,6 @@
 ||adv.sec.miui.com^
 ||advertising.com^
 ||adx.tv.mi.com^
-||adx.youku.com^
 ||affise.com^
 ||afp.iqiyi.com^
 ||afp.qiyi.com^
@@ -116,18 +129,26 @@
 ||analytics.rayjump.com^
 ||android.bugly.qq.com^
 ||api-ad.bestv.cn^
+||api-ad.fun.tv^
 ||api-ad.hisense.com^
+||api-ad.letv.com^
 ||api-ad.mgtv.com^
 ||api-ad.miguvideo.com^
+||api-ad.pptv.com^
+||api-ad.xiaohongshu.com^
 ||api-pay.mgtv.com^
-||api.ad.xiaomi.com^
-||api.bestv.com.cn/payment/qrcode^
+||api-tx.douyin.com^
+||api.ad.kuaishou.com^
+||api.amemv.com^
 ||api.cloud.huawei.com^
 ||api.cupid.ptqy.gitv.tv^
-||api.dangbei.net/payment/qrcode^
 ||api.fd.mob.com^
+||api.haokan.com^
 ||api.hpplay.com.cn^
+||api.huoshan.com^
+||api.ixigua.com^
 ||api.kingdata.ksyun.com^
+||api.kuaishou.com^
 ||api.onesignal.com^
 ||api.ts.feedback.qy.net^
 ||api.vc.bilibili.com^
@@ -161,11 +182,17 @@
 ||beacon.cctv.cn^
 ||beacon.coocaa.com^
 ||beacon.ffalcon.com^
-||beacon.iqiyi.com^
-||beacon.mgtv.com^
+||beacon.fun.tv^
+||beacon.kuaishou.com^
+||beacon.letv.com^
 ||beacon.migu.cn^
+||beacon.pptv.com^
+||beacon.xiaohongshu.com^
 ||blackhole.m.jd.com^
+||bm.snssdk.com^
 ||bss.pandora.xiaomi.com^
+||bytedance.com^
+||bytedance.net^
 ||c.l.qq.com^
 ||callback.ad.xiaomi.com^
 ||cctv-ad.cdn.cctv.cn^
@@ -179,6 +206,10 @@
 ||cm.ipinyou.com^
 ||cmonitor.iqiyi.com^
 ||collect.data.qq.com^
+||collector.amemv.com^
+||collector.haokan.com^
+||collector.huoshan.com^
+||collector.ixigua.com^
 ||com.hisense.service.ad^
 ||conf.hpplay.cn^
 ||config.kuyun.com^
@@ -209,18 +240,18 @@
 ||extlog.snssdk.com^
 ||finder.video.qq.com^
 ||fix.hpplay.cn^
+||fm.tiktok.com^
 ||g.dtv.cn.miaozhan.com^
 ||g.dtv.cn.miaozhen.com^
 ||g.pandora.xiaomi.com^
+||g.rs.dbankcloud.com^
 ||galaxy.ad.iqiyi.com^
 ||game.weixin.qq.com^
 ||gdt.qq.com^
-||gdt.qq.com/getads^
 ||gifshow.com^
+||glb.hpplay.cn^
 ||googleads.g.doubleclick.net^
-||grs.dbankcloud.com^
 ||gs.getui.com^
-||gslb.hpplay.cn^
 ||gsnuoyou.cn^
 ||gvod.aiseejapp.atianqi.com^
 ||h-adashx.ut.taobao.com^
@@ -231,6 +262,8 @@
 ||hpplay.cdn.cibn.cc^
 ||hwid-drcn.platform.hicloud.com^
 ||i0.hdslb.com^
+||iad.ihuman.com^
+||ihuman.com^
 ||image.hpplay.cn^
 ||imdns.hpplay.cn^
 ||imp.ad.xelements.cn^
@@ -254,14 +287,24 @@
 ||log.cctv.cn^
 ||log.coocaa.com^
 ||log.ffalcon.com^
+||log.fun.tv^
+||log.haokan.com^
 ||log.hisense.com^
+||log.huoshan.com^
 ||log.iqiyi.com^
+||log.ixigua.com^
+||log.kuaishou.com^
+||log.letv.com^
 ||log.mgtv.com^
 ||log.migu.cn^
 ||log.mmstat.com^
+||log.pptv.com^
 ||log.snssdk.com^
+||log.sohu.com^
 ||log.tbs.qq.com^
 ||log.umsns.com^
+||log.xiaohongshu.com^
+||log1.cntv.cn^
 ||logbak.hicloud.com^
 ||logonext.tv.kuyun.com^
 ||logs.ironsrc.mobi^
@@ -271,6 +314,8 @@
 ||ma.baidu.com^
 ||mairuanwang.com^
 ||makeding.com^
+||mb.cctv.com^
+||mb.cdntv.com^
 ||mc.corel.com^
 ||metok.sys.miui.com^
 ||mgtv-ad.cdn.mgtv.com^
@@ -280,12 +325,8 @@
 ||misc.pandora.xiaomi.com^
 ||mishop.pandora.xiaomi.com^
 ||mitv.tracking.miui.com^
-||mobads.baidu.com^
-||mon.ad.xelements.cn^
-||monitor.bnc66.com^
+||mon.snssdk.com^
 ||mopub.com^
-||mp.weixin.qq.com/ad^
-||mp.weixin.qq.com/spread^
 ||mpad.qq.com^
 ||mpad.weixin.qq.com^
 ||mpush-api.aliyun.com^
@@ -295,7 +336,7 @@
 ||mtt.taobao.com^
 ||networksdk.ssacdn.com^
 ||new.api.ad.xiaomi.com^
-||news-l.play.aiseet.atianqi.com^
+||newzone.cctv.com^
 ||nielsen.com^
 ||norma-external-collect.meizu.com^
 ||nstat.tudou.com^
@@ -322,29 +363,36 @@
 ||pagead2.googleadservices.com^
 ||pandora.mi.com^
 ||pandora.xiaomi.com^
+||pangle.io^
 ||pangolin-sdk-toutiao-b.com^
+||pangolin-sdk-toutiao.com^
 ||pangolin.snssdk.com^
 ||pay.ad.xiaomi.com^
 ||pay.api.youku.com^
 ||pay.bestv.com.cn^
 ||pay.bilibili.com^
 ||pay.dangbei.net^
+||pay.fun.tv^
 ||pay.hd.sohu.com^
 ||pay.huawei.com^
 ||pay.icntv.help^
 ||pay.icntv.xyz^
 ||pay.iqiyi.com^
+||pay.kuaishou.com^
+||pay.letv.com^
 ||pay.mgtv.com^
 ||pay.migu.cn^
 ||pay.mobile.youku.com^
+||pay.pptv.com^
+||pay.sohu.com^
 ||pay.tv.qq.com^
 ||pay.tv.sohu.com^
 ||pay.video.qq.com^
+||pay.xiaohongshu.com^
 ||pay.zmengzhu.com^
 ||paycallback.iqiyi.com^
 ||paycode.iqiyi.com^
 ||payment.callback.youku.com^
-||payment.dbankcloud.cn^
 ||payment.youku.com^
 ||pd.ads.cn.miaozhen.com^
 ||pgdt.gtimg.cn^
@@ -358,6 +406,7 @@
 ||ptgy.gitv.tv^
 ||ptmi.gitv.tv^
 ||puma-api.ptqy.gitv.tv^
+||push.cctv.com^
 ||px.ucweb.com^
 ||pyk.cr-nielsen.com^
 ||qr.api.youku.com^
@@ -370,10 +419,13 @@
 ||qr.youku.com^
 ||qtsftl.m.cn.miaozhen.com^
 ||r.browser.miui.com^
+||recommend.cctv.com^
+||reflow.amemv.com^
 ||regist.tv.kuyun.com^
 ||res-ga.smzdm.com^
 ||resstatic.servicewechat.com^
 ||reward.ad.xiaomi.com^
+||router.amemv.com^
 ||rp.hpplay.cn^
 ||rp.mobile.youku.com^
 ||rt.applovin.com^
@@ -392,6 +444,9 @@
 ||search.weixin.qq.com^
 ||secure.chn.imrworldwide.com^
 ||sentry.in.zhihu.com^
+||snssdk.com^
+||spns.cctv.com^
+||stats.amemv.com^
 ||t.track.ad.xiaomi.com^
 ||t7z.cupid.iqiyi.com^
 ||t7z.cupid.ptqy.gitv.tv^
@@ -401,6 +456,7 @@
 ||toblog.ctobsnssdk.com^
 ||tosv.boe.byted.org^
 ||tosv.byted.org^
+||toutiao.com^
 ||trace.rtbasia.com^
 ||tracking.miui.com^
 ||tv.aiseet.atianqi.com^
@@ -409,6 +465,7 @@
 ||tvapp.hpplay.cn^
 ||tx-ad.a.yximgs.com^
 ||tyaqy.m.cn.miaozhen.com^
+||ugc.amemv.com^
 ||ulogs.umeng.com^
 ||ulogs.umengcloud.com^
 ||umeng.com^
@@ -420,6 +477,7 @@
 ||utk.baidu.com^
 ||v.admaster.com.cn^
 ||v2.reachmax.cn^
+||vdn.cdntv.com^
 ||videocontent-dra.himovie.hicloud.com^
 ||view.adjust.com^
 ||vip.api.youku.com^
@@ -454,13 +512,13 @@
 ||yximgs.com^
 ||zeus-api.vemarsdev.com^
 
-! Whitelist (allow these domains)
-@@||idm.iot.mi.com^
+! 白名单 (允许这些域名)
 @@||api.io.mi.com^
 @@||connectivitycheck.gstatic.com^
-@@||XX.market.mi-img.com^
-@@||XX.market.xiaomi.com^
-@@||tracker.xiaomixiaoai.com^
 @@||file.xmpush.xiaomi.com^
+@@||idm.iot.mi.com^
 @@||milink.pandora.xiaomi.com^
 @@||o2o.api.xiaomi.com^
+@@||tracker.xiaomixiaoai.com^
+@@||xx.market.mi-img.com^
+@@||xx.market.xiaomi.com^
