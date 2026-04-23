@@ -7,7 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest"
+    "test": "jest",
+    "global:install": "npm install -g next react react-dom @babel/preset-env @babel/preset-react @babel/preset-typescript @testing-library/jest-dom @testing-library/react @testing-library/user-event @types/jest @types/node @types/react @types/react-dom autoprefixer babel-jest eslint eslint-config-next identity-obj-proxy jest jest-environment-jsdom postcss tailwindcss ts-jest typescript",
+    "global:dev": "set NODE_PATH=%APPDATA%\\npm\\node_modules && next dev --port 8081",
+    "global:build": "set NODE_PATH=%APPDATA%\\npm\\node_modules && next build",
+    "global:start": "set NODE_PATH=%APPDATA%\\npm\\node_modules && next start",
+    "global:lint": "set NODE_PATH=%APPDATA%\\npm\\node_modules && next lint",
+    "global:test": "set NODE_PATH=%APPDATA%\\npm\\node_modules && jest"
   },
   "dependencies": {
     "next": "^14",

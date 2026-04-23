@@ -44,12 +44,17 @@ package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
-
+# Next.js
 .next/
 .next/*
 .next/cache/*
-node_modules/
 dist/
 dist-ssr/
 *.local
 .next/trace
+
+# Node.js
+node_modules/
+
+# Global cache directory (should be in user home)
+.dns-shield/
