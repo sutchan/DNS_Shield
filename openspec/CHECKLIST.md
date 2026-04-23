@@ -45,7 +45,6 @@
 - [ ] `tailwind.config.js` 配置正确
 - [ ] `postcss.config.js` 配置正确
 - [ ] `jest.config.js` 配置正确
-- [ ] `.babelrc` 配置正确
 - [ ] `manifest.json` 配置正确
 - [ ] `service-worker.js` 配置正确
 - [ ] 生成的文件格式正确

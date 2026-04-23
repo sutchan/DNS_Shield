@@ -1,6 +1,6 @@
 # DNS Shield - 路由器级全局广告防护
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-2.2.0-green)](https://github.com/sutchan/DNS_Shield)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-2.2.1-green)](https://github.com/sutchan/DNS_Shield)
 
 基于 DNS 的路由器广告过滤规则库，提供 Web 管理界面。
 
@@ -161,7 +161,11 @@ adguard_whitelist.txt
 
 ## 测试
 
-请参考 [测试指南](TESTING.md) 了解如何测试项目。
+运行测试：
+
+```bash
+pnpm test
+```
 
 ## 部署
 

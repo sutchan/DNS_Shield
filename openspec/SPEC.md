@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v2.2.0 |
+| 当前版本 | v2.2.1 |
 | 拦截域名 | 372+ (本地) / 6766+ (含预设源) |
 
 ## 2. 文件结构
@@ -30,7 +30,6 @@ dns-shield/
 ├── adguard_whitelist.txt         # AdGuard 白名单
 ├── CHANGELOG.md                  # 变更日志
 ├── .gitignore                    # Git 忽略配置
-├── .babelrc                       # Babel 配置
 ├── package.json                  # 项目配置和依赖
 ├── next.config.js                # Next.js 配置
 ├── next-env.d.ts                 # Next.js 环境类型定义
@@ -38,13 +37,6 @@ dns-shield/
 ├── tailwind.config.js            # Tailwind CSS 配置
 ├── postcss.config.js             # PostCSS 配置
 ├── jest.config.js                # Jest 测试配置
-├── manifest.json                 # Web 应用清单
-├── service-worker.js             # Service Worker
-├── server.js                     # 服务器配置
-├── preview.html                  # 预览页面
-├── create-icons.ps1              # 图标创建脚本
-├── start-server.ps1              # 服务器启动脚本
-├── test-react.tsx                # React 测试文件
 ├── DNS_Shield.code-workspace     # VS Code 工作区配置
 ├── src/                          # Next.js 源代码
 │   ├── app/                      # App Router 目录
@@ -57,7 +49,9 @@ dns-shield/
 ├── public/                        # 公共静态资源
 │   ├── assets/                    # 资源目录
 │   │   └── icons/                # 应用图标
-│   └── domains.txt               # 公共域名清单（用于 Web 访问）
+│   ├── domains.txt               # 公共域名清单（用于 Web 访问）
+│   ├── manifest.json             # Web 应用清单
+│   └── service-worker.js         # Service Worker
 └── openspec/                     # 项目规范文档
     ├── SPEC.md                   # 项目规范（本文件）
     ├── TASKS.md                  # 任务清单
@@ -178,7 +172,7 @@ address=/domain/::
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 2.2.0 |
+| 版本号 | 2.2.1 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

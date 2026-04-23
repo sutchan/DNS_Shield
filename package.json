@@ -1,9 +1,9 @@
 {
   "name": "dns-shield",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 8080",
+    "dev": "next dev --port 8081",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

@@ -1,6 +1,6 @@
 # DNS Shield
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-2.2.0-green)](https://github.com/sutchan/DNS_Shield)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-2.2.1-green)](https://github.com/sutchan/DNS_Shield)
 
 Router-level DNS-based ad blocking filter list with web management tool.
 
@@ -112,11 +112,17 @@ The project is now based on Next.js. You can:
 ```
 domains.txt (Source of Truth)
         ↓
-    Next.js App (Web Tool)
+  Next.js App (Web Tool)
         ↓
    ┌────────────┴────────────┐
-   ↓                         ↓
-dnsmasq.conf              hosts.txt
+   ↓            ↓            ↓
+dnsmasq.conf  hosts.txt  adguard.txt
+        ↓            ↓            ↓
+  (Router)     (Router)   (AdGuard)
+        ↓
+  Whitelist Output
+        ↓
+adguard_whitelist.txt
 ```
 
 ## Contribution
@@ -125,7 +131,11 @@ Please refer to [Contribution Guide](CONTRIBUTING.md) to learn how to contribute
 
 ## Testing
 
-Please refer to [Testing Guide](TESTING.md) to learn how to test the project.
+Run tests using:
+
+```bash
+pnpm test
+```
 
 ## Deployment
 

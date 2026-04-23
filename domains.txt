@@ -197,6 +197,72 @@ stats.amemv.com # 抖音统计
 toutiao.com # 头条
 ugc.amemv.com # 抖音 UGC
 
+# 快手
+ad.kuaishou.com # 快手广告
+ads.kuaishou.com # 快手广告
+api.ad.kuaishou.com # 快手广告 API
+api.kuaishou.com # 快手 API
+beacon.kuaishou.com # 快手统计
+log.kuaishou.com # 快手日志
+pay.kuaishou.com # 快手支付
+
+# 搜狐视频
+ad.sohu.com # 搜狐广告
+ad.tv.sohu.com # 搜狐视频广告
+ads.sohu.com # 搜狐广告
+log.sohu.com # 搜狐日志
+pay.sohu.com # 搜狐支付
+
+# 乐视视频
+ad.letv.com # 乐视广告
+ads.letv.com # 乐视广告
+api-ad.letv.com # 乐视广告 API
+beacon.letv.com # 乐视统计
+log.letv.com # 乐视日志
+pay.letv.com # 乐视支付
+
+# 风行视频
+ad.fun.tv # 风行广告
+ads.fun.tv # 风行广告
+api-ad.fun.tv # 风行广告 API
+beacon.fun.tv # 风行统计
+log.fun.tv # 风行日志
+pay.fun.tv # 风行支付
+
+# PPTV
+ad.pptv.com # PPTV 广告
+ads.pptv.com # PPTV 广告
+api-ad.pptv.com # PPTV 广告 API
+beacon.pptv.com # PPTV 统计
+log.pptv.com # PPTV 日志
+pay.pptv.com # PPTV 支付
+
+# 西瓜视频
+ad.ixigua.com # 西瓜视频广告
+api.ixigua.com # 西瓜视频 API
+collector.ixigua.com # 西瓜视频数据收集
+log.ixigua.com # 西瓜视频日志
+
+# 火山小视频
+ad.huoshan.com # 火山小视频广告
+api.huoshan.com # 火山小视频 API
+collector.huoshan.com # 火山小视频数据收集
+log.huoshan.com # 火山小视频日志
+
+# 好看视频
+ad.haokan.com # 好看视频广告
+api.haokan.com # 好看视频 API
+collector.haokan.com # 好看视频数据收集
+log.haokan.com # 好看视频日志
+
+# 小红书
+ad.xiaohongshu.com # 小红书广告
+ads.xiaohongshu.com # 小红书广告
+api-ad.xiaohongshu.com # 小红书广告 API
+beacon.xiaohongshu.com # 小红书统计
+log.xiaohongshu.com # 小红书日志
+pay.xiaohongshu.com # 小红书支付
+
 # 咪咕视频
 ad.miguvideo.com # 咪咕视频广告
 ads.migu.cn # 咪咕广告
