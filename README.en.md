@@ -1,6 +1,6 @@
 # DNS Shield
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-2.1.0-green)](https://github.com/sutchan/DNS_Shield)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-2.2.0-green)](https://github.com/sutchan/DNS_Shield)
 
 Router-level DNS-based ad blocking filter list with web management tool.
 
@@ -10,10 +10,11 @@ This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 
 - **453+ blocked domains** - Local ad and tracking domain filter (can expand to 6766+ with preset sources)
 - **Web management tool** - Generate custom filter lists via browser
-- **Multiple output formats** - Supports Dnsmasq, Hosts, and AdGuard formats
+- **Multiple output formats** - Supports Dnsmasq, Hosts, AdGuard, and whitelist formats
 - **Single source workflow** - One domain list generates all output formats
 - **Router compatible** - Works with Merlin, OpenWrt, Xiaomi, ASUS, TP-Link, and more
-- **Next.js framework** - v2.1.0 version has migrated to modern Next.js framework
+- **Whitelist management** - Independent whitelist editing interface with import/export support
+- **Next.js framework** - v2.2.0 version has migrated to modern Next.js framework
 
 ## Usage
 
@@ -100,9 +101,10 @@ The project is now based on Next.js. You can:
 
 - Load and parse domain lists from URL or local file
 - Choose preset sources (AdGuard, EasyList, NeoHosts, Xiaomi)
-- Generate Dnsmasq or Hosts format output
+- Generate Dnsmasq, Hosts, AdGuard, and whitelist format output
 - Configure IP addresses (IPv4/IPv6)
 - Auto deduplicate and sort domains
+- Independent whitelist editing interface with import/export support
 - Download generated files
 
 ## Single Source Workflow

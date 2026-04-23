@@ -17,40 +17,212 @@
 # !ad.example.com      # 注释域名：显示用
 # @example.com=0.0.0.0 # 自定义 DNS 指向
 #
+
+# === 白名单 ===
 +idm.iot.mi.com
-+api.io.mi.com #影响米家互联的使用。
-+connectivitycheck.gstatic.com #影响 GooglePlay
-+XX.market.mi-img.com #影响MIUI小部件
-+XX.market.xiaomi.com #影响MIUI小部件
++api.io.mi.com # 影响米家互联的使用
++connectivitycheck.gstatic.com # 影响 GooglePlay
++XX.market.mi-img.com # 影响 MIUI 小部件
++XX.market.xiaomi.com # 影响 MIUI 小部件
 +tracker.xiaomixiaoai.com
 +file.xmpush.xiaomi.com # 小米推送
 +milink.pandora.xiaomi.com # 小米
-+o2o.api.xiaomi.com # 小米O2O
-#
-ad.cdntv.com
-log1.cntv.cn
-vdn.cdntv.com
++o2o.api.xiaomi.com # 小米 O2O
+
+# === 央视频相关 ===
+ad.cctv.com # 央视广告
+ad.cntv.cn # 央视广告
+cctv-ad.cdn.cctv.cn # 央视广告 CDN
+cctv.adsunion.com # 央视广告联盟
+beacon.cctv.cn # 央视统计
+log.cctv.cn # 央视日志
+log1.cntv.cn # 央视日志 2
+ad.cdntv.com # 央视 CDN 广告
+vdn.cdntv.com # 央视 CDN 视频
 newzone.cctv.com # 央视新区域
 spns.cctv.com # 央视广告系统
 mb.cctv.com # 央视移动端
-mb.cdntv.com # CDN移动端
+mb.cdntv.com # CDN 移动端
 recommend.cctv.com # 推荐系统
 push.cctv.com # 央视推送
-cm.m.cn.miaozhen.com # 秒针移动端
-t.m.cn.miaozhen.com # 秒针追踪
-ad.coocaa.com
-beacon.coocaa.com
-log.coocaa.com
-ad.ffalcon.com
-beacon.ffalcon.com
-log.ffalcon.com
-p1.ffalconimg.com
-ad.hisense.com
-api-ad.hisense.com
-log.hisense.com
-p1.hisensead.com
-api.dangbei.net/payment/qrcode
-pay.dangbei.net
+a.cctv.com # 央视主站
+a.cntv.cn # 央视主站
+d.cntv.cn # 央视主站
+
+# === 智能电视品牌 ===
+
+# 酷开 (coocaa)
+ad.coocaa.com # 酷开广告
+beacon.coocaa.com # 酷开统计
+log.coocaa.com # 酷开日志
+
+# 飞利浦 (ffalcon)
+ad.ffalcon.com # 飞利浦电视广告
+beacon.ffalcon.com # 飞利浦统计
+log.ffalcon.com # 飞利浦日志
+p1.ffalconimg.com # 飞利浦图片
+
+# 海信 (hisense)
+ad.hisense.com # 海信广告
+api-ad.hisense.com # 海信广告 API
+log.hisense.com # 海信日志
+p1.hisensead.com # 海信广告图片
+
+# 当贝
+tapi.dangbei.net/payment/qrcode # 当贝支付二维码
+pay.dangbei.net # 当贝支付
+
+# 小米
+bss.pandora.xiaomi.com # 小米
+jellyfish.pandora.xiaomi.com # 小米
+misc.pandora.xiaomi.com # 小米
+mishop.pandora.xiaomi.com # 小米
+de.pandora.xiaomi.com # 小米
+dvb.pandora.xiaomi.com # 小米
+g.pandora.xiaomi.com # 小米
+pandora.mi.com # 小米
+pandora.xiaomi.com # 小米
+ad.mi.com # 小米广告
+ad.xiaomi.com # 小米广告
+ad1.xiaomi.com # 小米广告
+callback.ad.xiaomi.com # 小米广告回调
+new.api.ad.xiaomi.com # 小米新广告 API
+sdkconfig.ad.xiaomi.com # 小米广告 SDK 配置
+pay.ad.xiaomi.com # 小米广告支付
+log.ad.xiaomi.com # 小米广告日志
+t.track.ad.xiaomi.com # 小米追踪
+mitv.tracking.miui.com # 小米电视追踪
+tracking.miui.com # 小米追踪
+adv.sec.miui.com # 小米广告
+adx.tv.mi.com # 小米广告联盟
+data.mistat.xiaomi.com # 小米数据统计
+metok.sys.miui.com # 小米系统
+
+# === 视频平台 ===
+
+# 爱奇艺
+ad-pc.iqiyi.com # 爱奇艺广告
+ad-static.iqiyi.com # 爱奇艺广告静态资源
+ad.iqiyi.com # 爱奇艺广告
+afp.iqiyi.com # 广告与支付混合平台
+afp.qiyi.com # 爱奇艺
+cmonitor.iqiyi.com # 爱奇艺监控
+log.iqiyi.com # 爱奇艺播放日志
+m.pcv.iqiyi.com # 爱奇艺移动支付
+msg.iqiyi.com # 爱奇艺消息推送
+pay.iqiyi.com # 爱奇艺支付
+paycallback.iqiyi.com # 爱奇艺支付回调
+paycode.iqiyi.com # 爱奇艺支付码
+t7z.cupid.iqiyi.com # 爱奇艺
+vip.iqiyi.com # 爱奇艺 VIP
+
+# 优酷
+ad.youku.com # 优酷广告
+acs.youku.com # 优酷
+atm.youku.com # 优酷
+iyes.youku.com # 优酷
+lstat.youku.com # 优酷统计
+pay.api.youku.com # 优酷支付
+pay.mobile.youku.com # 优酷移动支付
+payment.callback.youku.com # 优酷支付回调
+payment.youku.com # 优酷支付
+vip.api.youku.com # 优酷 VIP
+vip.youku.com # 优酷 VIP
+
+# 芒果 TV
+ad.mgtv.com # 芒果 TV 广告
+ads.mgtv.com # 芒果 TV 广告
+api-ad.mgtv.com # 芒果 TV 广告 API
+api-pay.mgtv.com # 芒果 TV 支付
+log.mgtv.com # 芒果 TV 日志
+mgtv-ad.cdn.mgtv.com # 芒果 TV 广告 CDN
+pay.mgtv.com # 芒果 TV 支付
+vip.bz.mgtv.com # 芒果 TV VIP
+vip.log.mgtv.com # 芒果 TV VIP 日志
+
+# B 站
+ad-api.bilibili.com # B 站广告
+ad.bilibili.com # B 站广告
+beacon.bilibili.com # B 站统计
+cm.bilibili.com # B 站商业接口
+log.bilibili.com # B 站日志
+pay.bilibili.com # B 站支付
+api.vc.bilibili.com # B 站
+
+# 腾讯视频
+ad.qq.com # 腾讯广告
+ad.tencentmusic.com # QQ 音乐广告
+ad.video.qq.com # 腾讯视频广告
+adsclick.qq.com # 腾讯广告
+adsfile.qq.com # 腾讯广告
+adshmct.qq.com # 腾讯广告
+adshmmsg.qq.com # 腾讯广告
+adslvfile.qq.com # 腾讯广告
+adslvseed.qq.com # 腾讯广告
+adsmind.gdtimg.com # 腾讯广告
+adsmind.ugdtimg.com # 腾讯广告
+adsqqclick.qq.com # 腾讯广告
+adsrich.qq.com # 腾讯广告
+adstats.tencentmusic.com # QQ 音乐统计
+gdt.qq.com # 腾讯广告
+gdt.qq.com/getads # 腾讯广告
+mpad.qq.com # 腾讯
+mpad.weixin.qq.com # 微信广告
+pay.tv.qq.com # 腾讯视频支付
+pay.video.qq.com # 腾讯视频支付
+pgdt.gtimg.cn # 腾讯广告
+union.gdtimg.com # 腾讯广告联盟
+vip.tv.qq.com # 腾讯视频 VIP
+vpay.video.qq.com # 腾讯视频支付
+wxad.qq.com # 微信广告
+
+# 咪咕视频
+ad.miguvideo.com # 咪咕视频广告
+ads.migu.cn # 咪咕广告
+api-ad.miguvideo.com # 咪咕视频广告 API
+beacon.migu.cn # 咪咕统计
+log.migu.cn # 咪咕日志
+pay.migu.cn # 咪咕支付
+
+# 百视通 (BesTV)
+ad.bestv.com.cn # 百视达广告
+ads.bestv.com.cn # 百视达广告
+api-ad.bestv.cn # 百视达广告 API
+api.bestv.com.cn/payment/qrcode # 百视达支付二维码
+beacon.bestv.com.cn # 百视达统计
+log.bestv.com.cn # 百视达日志
+pay.bestv.com.cn # 百视达支付
+
+# === 广告平台 ===
+ad.88765.com # 广告
+iad.ihuman.com # 广告
+ad.xelements.cn # 广告
+ad.xunkids.com # 广告
+adcolony.com # 广告平台
+adguanggao.eee114.com # 广告
+advertising.com # 广告
+affise.com # 归因平台
+adjust.com # 移动归因平台
+admaster.com # 广告主
+admaster.com.cn # 广告主
+adsmoloco.com # 广告
+applovin.com # 广告平台
+appsflyer.com # 归因平台
+chartboost.com # 游戏广告
+ditwan.cn # 广告
+g.rs.dbankcloud.com # 华为云
+gs.getui.com # 个推
+ihuman.com # 广告
+ironsrc.com # 广告平台
+mopub.com # 广告平台
+networksdk.ssacdn.com # 广告
+scc.ssacdn.com # 广告
+tapjoy.com # 游戏广告
+unityads.unity3d.com # Unity 广告
+unityads.unitychina.cn # Unity 中国广告
+vungle.com # 广告平台
+
+# === 其他广告 ===
 3dns-2.adobe.com # Adobe 更新
 3dns-3.adobe.com # Adobe 更新
 4009997658.com # 广告/推广
@@ -58,188 +230,100 @@ pay.dangbei.net
 86file.megajoy.com # 欢乐游戏
 86get.joy.cn # 欢乐游戏
 a.applvn.com # 应用程序链接
-a.cctv.com # 央视
-a.cntv.cn # 央视
 aaid.umeng.com # 友盟统计
 acroipm.adobe.com # Adobe
-acs.youku.com # 优酷
 act.vip.iqiyi.com # 爱奇艺 VIP
 activate-sea.adobe.com # Adobe 激活
 activate-sjc0.adobe.com # Adobe 激活
 activate.adobe.com # Adobe 激活
 activate.wip3.adobe.com # Adobe 激活
-ad-api.bilibili.com # B站广告
-ad-pc.iqiyi.com # 爱奇艺广告
-ad-static.iqiyi.com # 爱奇艺广告静态资源
 ad.88765.com # 广告
-ad.bestv.com.cn # 百视达广告
-ad.bilibili.com # B站广告
-ad.cctv.com # 央视广告
 ad.cmvideo.cn # 中国移动广告+支付共用
-ad.cntv.cn # 央视广告
-ad.coocaa.com # 酷开广告
 ad.doubleclick.net # Google 广告
-ad.ffalcon.com # 飞利浦电视广告
-ad.hisense.com # 海信广告
 ad.hpplay.cn # 投屏广告
-ad.ihuman.com # 广告
-ad.iqiyi.com # 爱奇艺广告
 ad.m.taobao.com # 阿里妈妈（部分 BesTV 使用）
-ad.mgtv.com # 芒果TV广告
-ad.mi.com # 小米广告
-ad.miguvideo.com # 咪咕视频广告
-ad.qq.com # 腾讯广告
-ad.tencentmusic.com # QQ音乐广告
 ad.toutiao.com # 字节跳动广告
-ad.video.qq.com # 腾讯视频广告
 ad.weixin.qq.com # 微信广告
-ad.xelements.cn # 广告
-ad.xiaomi.com # 小米广告
-ad.xunkids.com # 广告
-ad.youku.com # 优酷广告
-ad1.xiaomi.com # 小米广告
 adash.m.taobao.com # 阿里妈妈
 adash.man.aliyuncs.com # 阿里妈妈
 adashbc.ut.taobao.com # 阿里妈妈
 adashx.m.taobao.com # 阿里妈妈
 adc.hpplay.cn # 投屏广告
-adcdn.hpplay.cn # 投屏广告CDN
-adcolony.com # 广告平台
+adcdn.hpplay.cn # 投屏广告 CDN
 adcontroL.tudou.com # 土豆广告
 adeng.hpplay.cn # 投屏广告
 adextensioncontrol.tudou.com # 土豆
-adguanggao.eee114.com # 广告
 adiu.amap.com # 高德统计
-adjust.com # 移动归因平台
-admaster.com # 广告主
-admaster.com.cn # 广告主
-admp.weixin.qq.com
+admp.weixin.qq.com # 微信
 adping.qq.com # 腾讯广告
 adplay.tudou.com # 土豆广告
 ads-union.jd.com # 京东广告联盟
-ads-vp5.xhscdn.com
+ads-vp5.xhscdn.com # 广告
 ads.95516.com # 银联广告
-ads.api.vungle.com # Vungle广告
-ads.bestv.com.cn # 百视达广告
-ads.cn.miaozhen.com # 秒针广告
-ads.cup.com.cn
-ads.mgtv.com # 芒果TV广告
-ads.migu.cn # 咪咕广告
-ads.union.jd.com # 京东广告联盟
-adsclick.qq.com # 腾讯广告
-adsfile.qq.com # 腾讯广告
-adsh.wagbridge.taobao.alimama.com # 阿里妈妈
-adshmct.qq.com # 腾讯广告
-adshmmsg.qq.com # 腾讯广告
-adslvfile.qq.com # 腾讯广告
-adslvseed.qq.com # 腾讯广告
-adsmind.gdtimg.com # 腾讯广告
-adsmind.ugdtimg.com # 腾讯广告
-adsmoloco.com # 广告
-adsqqclick.qq.com # 腾讯广告
-adsrich.qq.com # 腾讯广告
-adstats.tencentmusic.com # QQ音乐统计
-adv.sec.miui.com # 小米广告
-advertising.com # 广告
-adx.tv.mi.com # 小米广告联盟
-adx.youku.com # 优酷广告联盟
-affise.com # 归因平台
-afp.iqiyi.com # 广告与支付混合平台
-afp.qiyi.com # 爱奇艺
+ads.api.vungle.com # Vungle 广告
+ads.cup.com.cn # 广告
 alert.kuyun.com # 酷云预警
 ali-ad.a.yximgs.com # 阿里广告
 alog.umeng.com # 友盟统计
 amdc.m.taobao.com # 阿里
 analytics.rayjump.com # 分析
-android.bugly.qq.com # 腾讯Bugly
-api-ad.bestv.cn # 百视达广告API
-api-ad.hisense.com # 海信广告API
-api-ad.mgtv.com # 芒果TV广告API
-api-ad.miguvideo.com # 咪咕视频广告API
-api-pay.mgtv.com # 芒果TV支付
-api.ad.xiaomi.com # 小米广告API
-api.bestv.com.cn/payment/qrcode # 百视达支付二维码
+android.bugly.qq.com # 腾讯 Bugly
 api.cloud.huawei.com # 华为云
 api.cupid.ptqy.gitv.tv # 银河平台
-api.dangbei.net/payment/qrcode # 当贝支付二维码
 api.fd.mob.com # Mob
-api.hpplay.com.cn # 投屏API
+api.hpplay.com.cn # 投屏 API
 api.kingdata.ksyun.com # 金山数据
 api.onesignal.com # 推送服务
 api.ts.feedback.qy.net # 反馈
-api.vc.bilibili.com # B站
-api.vungle.com # Vungle广告
-applog-perf.uc.cn # UC性能日志
-applog.uc.cn # UC日志
-applovin.com # 广告平台
+api.vungle.com # Vungle 广告
+applog-perf.uc.cn # UC 性能日志
+applog.uc.cn # UC 日志
 applvn.com # 应用链接
 apps.corel.com # Corel
-appsflyer.com # 归因平台
 as.weixin.qq.com # 微信
-at-img1.tdimg.com # 图片CDN
-at-img2.tdimg.com # 图片CDN
-at-img3.tdimg.com # 图片CDN
+at-img1.tdimg.com # 图片 CDN
+at-img2.tdimg.com # 图片 CDN
+at-img3.tdimg.com # 图片 CDN
 atianqi.com # 电视应用
-atm.youku.com # 优酷
-auction.unityads.unity.cn # Unity广告
-auction.unityads.unity3d.com # Unity广告
+auction.unityads.unity.cn # Unity 广告
+auction.unityads.unity3d.com # Unity 广告
 auth.api.gitv.tv # 银河认证
-badjs.weixinbridge.com # 微信JS错误上报
+badjs.weixinbridge.com # 微信 JS 错误上报
 baidu.new1cloud.com # 百度云
-baiducdncmn3.inter.iqiyi.com # 爱奇艺CDN
-baiducdncnc.inter.ptqy.gitv.tv # 银河CDN
-baidutv.baidu.com # 百度TV
+baiducdncmn3.inter.iqiyi.com # 爱奇艺 CDN
+baiducdncnc.inter.ptqy.gitv.tv # 银河 CDN
+baidutv.baidu.com # 百度 TV
 bar.baidu.com # 百度
 bdbus-turbonet.baidu.com # 百度
 bds.snssdk.com # 字节跳动
 bdsp.x.jd.com # 京东
-beacon.bestv.com.cn # 百视达统计
-beacon.bilibili.com # B站统计
-beacon.cctv.cn # 央视统计
-beacon.coocaa.com # 酷开统计
-beacon.ffalcon.com # 飞利浦统计
-beacon.iqiyi.com # 爱奇艺统计
-beacon.mgtv.com # 芒果TV统计
-beacon.migu.cn # 咪咕统计
 blackhole.m.jd.com # 京东
-bss.pandora.xiaomi.com # 小米
 c.l.qq.com # 腾讯
-callback.ad.xiaomi.com # 小米广告回调
-cctv-ad.cdn.cctv.cn # 央视广告CDN
-cctv.adsunion.com # 央视广告联盟
-cdn.hpplay.com.cn # 投屏CDN
+cdn.hpplay.com.cn # 投屏 CDN
 centertime.ksyun.com # 金山
-chartboost.com # 游戏广告
-chaturbate.com
-cm.bilibili.com # B站商业接口
+chaturbate.com # 广告
 cm.cn.miaozhen.com # 秒针
 cm.ipinyou.com # 品友
-cmonitor.iqiyi.com # 爱奇艺监控
 collect.data.qq.com # 腾讯数据收集
 com.hisense.service.ad # ADB 包名（非域名）
 conf.hpplay.cn # 投屏配置
 config.kuyun.com # 酷云配置
-config.unityads.unitychina.cn # Unity广告配置
+config.unityads.unitychina.cn # Unity 广告配置
 connectivitycheck.platform.hicloud.com # 华为连接检查
 coreldrawchina.com # Corel
 cpro.baidu.com # 百度网盟
 cupid.ptqy.gitv.tv # 银河平台
-d.cntv.cn # 央视
-data.mistat.xiaomi.com # 小米数据统计
-datahub.zhihu.com
+datahub.zhihu.com # 知乎
 daup.map.baidu.com # 百度地图
-de.pandora.xiaomi.com # 小米
 df.tanx.com # 淘宝联盟
 diagnosis.ad.xiaomi.com # 小米广告诊断
 dig.bdurl.net # 百度
-ditwan.cn # 广告
 dl.cupid.ptqy.gitv.tv # 银河下载
 dm.bytedance.com # 字节跳动
 dm.pstatp.com # 字节跳动
 dm.toutiao.com # 字节跳动
 dnkeeper.platform.dbankcloud.com # 华为云
-duga.zhihu.com
-dvb.pandora.xiaomi.com # 小米
+duga.zhihu.com # 知乎
 ef-dongfeng.tanx.com # 淘宝联盟
 errlog.umeng.com # 友盟错误日志
 ets.tanx.com # 淘宝联盟
@@ -248,145 +332,92 @@ finder.video.qq.com # 视频号广告
 fix.hpplay.cn # 投屏修复
 g.dtv.cn.miaozhan.com # 电视广告
 g.dtv.cn.miaozhen.com # 电视广告
-g.pandora.xiaomi.com # 小米
 galaxy.ad.iqiyi.com # 爱奇艺银河广告
 game.weixin.qq.com # 微信游戏
-gdt.qq.com # 腾讯广告
-gdt.qq.com/getads # 腾讯广告
 gifshow.com # GIF
-googleads.g.doubleclick.net # Google广告
-grs.dbankcloud.com # 华为云
-gs.getui.com # 个推
-gslb.hpplay.cn # 投屏负载均衡
-gsnuoyou.cn
+googleads.g.doubleclick.net # Google 广告
+glb.hpplay.cn # 投屏负载均衡
+gsnuoyou.cn # 广告
 gvod.aiseejapp.atianqi.com # 电视应用
 h-adashx.ut.taobao.com # 阿里妈妈
-h5.hpplay.com.cn # 投屏H5
-h5.ptmi.gitv.tv # 银河H5
+h5.hpplay.com.cn # 投屏 H5
+h5.ptmi.gitv.tv # 银河 H5
 h5.tv.mi.com # 小米电视
 hotupgrade.hpplay.cn # 投屏升级
-hpplay.cdn.cibn.cc # 投屏CDN
+hpplay.cdn.cibn.cc # 投屏 CDN
 hwid-drcn.platform.hicloud.com # 华为设备
-i0.hdslb.com # B站图片CDN（广告图片）
+i0.hdslb.com # B 站图片 CDN（广告图片）
 image.hpplay.cn # 投屏图片
 imdns.hpplay.cn # 投屏
 imp.ad.xelements.cn # 广告
-init.supersonicads.com # SuperSonic广告
-ip.ptqy.gitv.tv # 银河IP
-ironsrc.com # 广告平台
+init.supersonicads.com # SuperSonic 广告
+ip.ptqy.gitv.tv # 银河 IP
 is-gateway.supersonicads.com # SuperSonic
 iws.corel.com # Corel
 iwstat.tudou.com # 土豆统计
-iyes.youku.com # 优酷
-jellyfish.pandora.xiaomi.com # 小米
 js-ad.a.yximgs.com # 阿里广告
 kuyun.com # 酷云
 kwimgs.com # 图片
 leboapi.hpplay.com.cn # 投屏
-live.vzuu.com
+live.vzuu.com # 直播
 log-api.pangolin-sdk-toutiao.com # 字节跳动日志
-log.ad.xiaomi.com # 小米广告日志
-log.bestv.com.cn # 百视达日志
-log.bilibili.com # B站日志
-log.cctv.cn # 央视日志
 log.coocaa.com # 酷开日志
 log.ffalcon.com # 飞利浦日志
 log.hisense.com # 海信日志
-log.iqiyi.com # 爱奇艺播放日志
-log.mgtv.com # 芒果TV日志
-log.migu.cn # 咪咕日志
 log.mmstat.com # 统计
 log.snssdk.com # 字节跳动日志
-log.tbs.qq.com # 腾讯TBS日志
+log.tbs.qq.com # 腾讯 TBS 日志
 log.umsns.com # 友盟
 logbak.hicloud.com # 华为日志
 logonext.tv.kuyun.com # 酷云
-logs.ironsrc.mobi # IronSource日志
-lstat.youku.com # 优酷统计
-m.pcv.iqiyi.com # 爱奇艺移动支付
+logs.ironsrc.mobi # IronSource 日志
 m.reachmax.cn # ReachMax
 ma.baidu.com # 百度
 mairuanwang.com # 迈软
 makeding.com # 麦迪
 mc.corel.com # Corel
-metok.sys.miui.com # 小米系统
-mgtv-ad.cdn.mgtv.com # 芒果TV广告CDN
 miaozhen.com # 秒针
 minigame.qq.com # 微信小游戏
 misc.in.duokanbox.com # 多看
-misc.pandora.xiaomi.com # 小米
-mishop.pandora.xiaomi.com # 小米
-mitv.tracking.miui.com # 小米电视追踪
-mobads.baidu.com # 百度广告
-mon.ad.xelements.cn # 广告
-monitor.bnc66.com # 监控
-mopub.com # 广告平台
-mp.weixin.qq.com/ad
-mp.weixin.qq.com/spread
-mpad.qq.com
-mpad.weixin.qq.com # 微信广告
+mp.weixin.qq.com/ad # 微信广告
+mp.weixin.qq.com/spread # 微信广告
 mpush-api.aliyun.com # 阿里云推送
 ms.applvn.com # 应用链接
-msg.iqiyi.com # 爱奇艺消息推送
 msg.qy.net # 消息
 mtt.taobao.com # 淘宝
-networksdk.ssacdn.com # 广告
-new.api.ad.xiaomi.com # 小米新广告API
-news-l.play.aiseet.atianqi.com # 电视内容
 nielsen.com # 尼尔森
 norma-external-collect.meizu.com # 魅族
 nstat.tudou.com # 土豆统计
-o1098464.ingest.sentry.io
+o1098464.ingest.sentry.io # 错误监控
 oauth-login-drcn.platform.dbankcloud.com # 华为登录
-official-t.720static.com #720yun banner
+official-t.720static.com # 720yun banner
 omgmta.play.aiseet.atianqi.com # 电视
 open.e.kuaishou.cn # 快手
 open.e.kuaishou.com # 快手
-openapi.vip.ptqy.gitv.tv # 银河VIP API
+openapi.vip.ptqy.gitv.tv # 银河 VIP API
 optimus-ads.amap.com # 高德广告
 origin-mc.corel.com # Corel
-ota.ptqy.gitv.tv # 银河OTA
+ota.ptqy.gitv.tv # 银河 OTA
 outcome-ssp.supersonicads.com # SuperSonic
 p1.bestvimg.com # 百视达图片
-p1.ffalconimg.com # 飞利浦图片
-p1.hisensead.com # 海信广告图片
-p1.mgtvimg.com # 芒果TV图片
+p1.mgtvimg.com # 芒果 TV 图片
 p1.migupic.com # 咪咕图片
 p2.bestvimg.com # 百视达图片
-p2.mgtvimg.com # 芒果TV图片
+p2.mgtvimg.com # 芒果 TV 图片
 p2.migupic.com # 咪咕图片
 p2v.tudou.com # 土豆
-pagead2.googleadservices.com # Google广告
-pandora.mi.com # 小米
-pandora.xiaomi.com # 小米
-pangolin-sdk-toutiao-b.com # 字节跳动SDK
+pagead2.googleadservices.com # Google 广告
+pangolin-sdk-toutiao-b.com # 字节跳动 SDK
 pangolin.snssdk.com # 字节跳动
-pay.ad.xiaomi.com # 小米广告支付
-pay.api.youku.com # 优酷支付
-pay.bestv.com.cn # 百视达支付
-pay.bilibili.com # B站支付
-pay.dangbei.net # 当贝支付
 pay.hd.sohu.com # 搜狐支付
 pay.huawei.com # 华为支付
-pay.icntv.help # ICNTv支付
-pay.icntv.xyz # ICNTv支付
-pay.iqiyi.com # 爱奇艺支付
-pay.mgtv.com # 芒果TV支付
-pay.migu.cn # 咪咕支付
-pay.mobile.youku.com # 优酷移动支付
-pay.tv.qq.com # 腾讯视频支付
+pay.icntv.help # ICNTv 支付
+pay.icntv.xyz # ICNTv 支付
 pay.tv.sohu.com # 搜狐支付
-pay.video.qq.com # 腾讯视频支付
 pay.zmengzhu.com # 支付
-paycallback.iqiyi.com # 爱奇艺支付回调
-paycode.iqiyi.com # 爱奇艺支付码
-payment.callback.youku.com # 优酷支付回调
-payment.dbankcloud.cn # 华为应用市场支付
-payment.youku.com # 优酷支付
 pd.ads.cn.miaozhen.com # 秒针广告
-pgdt.gtimg.cn # 腾讯广告
 pglstatp-toutiao.com # 字节跳动
-phncdn.com
+phncdn.com # 广告
 pic1.iqiyi.com # 爱奇艺图片
 pic2.iqiyi.com # 爱奇艺图片
 pic7.iqiyipic.com # 爱奇艺图片
@@ -398,8 +429,8 @@ puma-api.ptqy.gitv.tv # 银河
 px.ucweb.com # UC
 pyk.cr-nielsen.com # 尼尔森
 qr.api.youku.com # 优酷二维码
-qr.bilibili.com # B站二维码
-qr.icntv.cn # ICNTv二维码
+qr.bilibili.com # B 站二维码
+qr.icntv.cn # ICNTv 二维码
 qr.iqiyi.com # 爱奇艺二维码
 qr.mioffice.cn # 小米扫码支付
 qr.sohu.com # 搜狐二维码
@@ -414,66 +445,49 @@ reward.ad.xiaomi.com # 小米广告奖励
 rp.hpplay.cn # 投屏
 rp.mobile.youku.com # 优酷移动
 rt.applovin.com # AppLovin
-rtb.ads.cn.miaozhen.com # 秒针RTB
-s1.hdslb.com # B站
+rtb.ads.cn.miaozhen.com # 秒针 RTB
+s1.hdslb.com # B 站
 s2.zdmimg.com # 什么值得买
 s3-fe-scm.pglstatp-toutiao.com # 字节跳动
 s3a.pstatp.com # 字节跳动
 sayhi.360.cn # 360
-scc.ssacdn.com # 广告
 scs.openspeech.cn # 语音
-sdk-cache.video.ptqy.gitv.tv # 银河SDK缓存
-sdk.ptqy.gitv.tv # 银河SDK
-sdkauth.hpplay.cn # 投屏SDK认证
-sdkconfig.ad.xiaomi.com # 小米广告SDK配置
+sdk-cache.video.ptqy.gitv.tv # 银河 SDK 缓存
+sdk.ptqy.gitv.tv # 银河 SDK
+sdkauth.hpplay.cn # 投屏 SDK 认证
 search.weixin.qq.com # 微信搜一搜广告
 secure.chn.imrworldwide.com # Nielsen
-sentry.in.zhihu.com
-t.track.ad.xiaomi.com # 小米追踪
-t7z.cupid.iqiyi.com # 爱奇艺
+sentry.in.zhihu.com # 错误监控
 t7z.cupid.ptqy.gitv.tv # 银河
-tapjoy.com # 游戏广告
-theqoo.net
+theqoo.net # 广告
 time.video.ptqy.gitv.tv # 银河
 toblog.ctobsnssdk.com # 统计
 tosv.boe.byted.org # 字节跳动
 tosv.byted.org # 字节跳动
 trace.rtbasia.com # RTB
-tracking.miui.com # 小米追踪
 tv.aiseet.atianqi.com # 电视内容
-tv.api.iqiyi.com # 爱奇艺TV端API
-tvapi.kuyun.com # 酷云TV API
-tvapp.hpplay.cn # 投屏TV应用
+tv.api.iqiyi.com # 爱奇艺 TV 端 API
+tvapi.kuyun.com # 酷云 TV API
+tvapp.hpplay.cn # 投屏 TV 应用
 tx-ad.a.yximgs.com # 腾讯广告
 tyaqy.m.cn.miaozhen.com # 秒针
 ulogs.umeng.com # 友盟日志
 ulogs.umengcloud.com # 友盟云日志
 umeng.com # 友盟统计
 umengcloud.com # 友盟云
-union.gdtimg.com # 腾讯广告联盟
-unityads.unity3d.com # Unity广告
-unityads.unitychina.cn # Unity中国广告
 upfile-drcn.platform.hicloud.com # 华为
 utk.baidu.com # 百度
 v.admaster.com.cn # 广告主
 v2.reachmax.cn # ReachMax
 videocontent-dra.himovie.hicloud.com # 华为视频
 view.adjust.com # Adjust
-vip.api.youku.com # 优酷VIP
-vip.bz.mgtv.com # 芒果TV VIP
-vip.iqiyi.com # 爱奇艺VIP
 vip.ktcp.icntv.cn # ICNTv VIP
 vip.ktcp.icntv.top # ICNTv VIP
-vip.log.mgtv.com # 芒果TV VIP日志
-vip.tv.qq.com # 腾讯视频VIP
-vip.video.xiaomi.com # 小米视频VIP
-vip.youku.com # 优酷VIP
+vip.video.xiaomi.com # 小米视频 VIP
 vip.zmengzhu.com # VIP
-vipauth.hpplay.cn # 投屏VIP认证
+vipauth.hpplay.cn # 投屏 VIP 认证
 vlive.qqvideo.tc.qq.com # 腾讯视频
-vpay.video.qq.com # 腾讯视频支付
 vt.ipinyou.com # 品友
-vungle.com # 广告平台
 vv.play.aiseet.atianqi.com # 电视
 webapp.skysrt.com # 投屏
 wechatad.com # 微信广告
@@ -482,11 +496,10 @@ wgo.mmstat.com # 统计
 wq.123789.net.cn # 小游戏跳转
 ws.mmstat.com # 统计
 wxa.wxs.qq.com # 微信小程序
-wxad.qq.com
 wxapp.tc.qq.com # 微信小程序
 wxsnsdy.tc.qq.com # 腾讯视频
 xiaomi-dtv.m.cn.miaozhen.com # 小米电视-秒针
 yhqdashi.com # 广告
 yk-ssp-ad.cp31.ott.cibntv.net # 优酷广告
 yximgs.com # 阿里图片
-zeus-api.vemarsdev.com
+zeus-api.vemarsdev.com # 广告

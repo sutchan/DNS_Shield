@@ -1,2 +1,2 @@
-// src/setupTests.ts v2.1.0
+// src/setupTests.ts v2.2.0
 import '@testing-library/jest-dom';

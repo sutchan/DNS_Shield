@@ -1,7 +1,7 @@
 {
   "name": "DNS Shield - 路由器广告过滤",
   "short_name": "DNS Shield",
-  "description": "路由器级广告过滤规则生成工具，基于 dnsmasq/hosts",
+  "description": "路由器级全局广告过滤规则生成工具，基于 dnsmasq/hosts",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

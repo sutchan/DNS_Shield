@@ -1,4 +1,4 @@
-// src/app/Home.tsx v2.1.0
+// src/app/Home.tsx v2.2.0
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import './globals.css';
@@ -20,12 +20,13 @@ export default function Home() {
   const [outputContent, setOutputContent] = useState({
     dnsmasq: '',
     hosts: '',
-    adguard: ''
+    adguard: '',
+    whitelist: ''
   });
-  const [currentFormat, setCurrentFormat] = useState<'hosts' | 'dnsmasq' | 'adguard'>('hosts');
+  const [currentFormat, setCurrentFormat] = useState<'hosts' | 'dnsmasq' | 'adguard' | 'whitelist'>('hosts');
   const [settings, setSettings] = useState({
     projectName: 'DNS Shield',
-    version: '2.1.0',
+    version: '2.2.0',
     ipv4: '127.0.0.1',
     ipv6: '::',
     addHeader: true,
@@ -34,7 +35,8 @@ export default function Home() {
     removeWildcard: true,
     dnsmasqFilename: 'dnsmasq.conf',
     hostsFilename: 'hosts.txt',
-    adguardFilename: 'adguard.txt'
+    adguardFilename: 'adguard.txt',
+    whitelistFilename: 'whitelist.txt'
   });
   interface CustomDnsEntry {
     domain: string;
@@ -55,15 +57,19 @@ export default function Home() {
   const [stats, setStats] = useState({
     domainCount: 0,
     validCount: 0,
-    commentCount: 0
+    commentCount: 0,
+    blacklistCount: 0,
+    whitelistCount: 0
   });
   const [isUrlSectionCollapsed, setIsUrlSectionCollapsed] = useState(true);
   const [isSettingsPanelCollapsed, setIsSettingsPanelCollapsed] = useState(true);
   const [isUsageGuideCollapsed, setIsUsageGuideCollapsed] = useState(true);
+  const [isWhitelistSectionCollapsed, setIsWhitelistSectionCollapsed] = useState(true);
   const [toastMessage, setToastMessage] = useState('');
   const [urls, setUrls] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [activePreset, setActivePreset] = useState('builtin');
+  const [whitelistInput, setWhitelistInput] = useState('');
   
   // 引用
   const sourceTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -71,6 +77,8 @@ export default function Home() {
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const outputLineNumbersRef = useRef<HTMLDivElement>(null);
   const urlInputRef = useRef<HTMLInputElement>(null);
+  const whitelistTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const whitelistLineNumbersRef = useRef<HTMLDivElement>(null);
   
   // 配置URLs
   const config = {
@@ -183,12 +191,14 @@ export default function Home() {
   // 语言翻译
   const translations = {
     zh: {
-      subtitle: '路由器级广告过滤规则生成工具',
+      subtitle: '路由器级全局广告过滤规则生成工具',
       inputTitle: '📥 输入域名清单',
       advanced: '高级选项',
       domainCount: '域名',
       validCount: '有效',
       commentCount: '注释',
+      blacklistCount: '黑名单',
+      whitelistCount: '白名单',
       urlPlaceholder: '输入 URL 导入域名列表...',
       fetchBtn: '获取',
       addUrl: '➕ 添加URL',
@@ -240,6 +250,8 @@ export default function Home() {
       domainCount: 'Domains',
       validCount: 'Valid',
       commentCount: 'Comments',
+      blacklistCount: 'Blacklist',
+      whitelistCount: 'Whitelist',
       urlPlaceholder: 'Enter URL to import domain list...',
       fetchBtn: 'Fetch',
       addUrl: '➕ Add URL',
@@ -477,7 +489,9 @@ export default function Home() {
       setStats({
         domainCount: filteredDomains.length,
         validCount: filteredDomains.length + uniqueWhitelist.length,
-        commentCount: commentCount
+        commentCount: commentCount,
+        blacklistCount: filteredDomains.length,
+        whitelistCount: uniqueWhitelist.length
       });
 
       // 保存解析结果
@@ -674,7 +688,7 @@ export default function Home() {
   // 清空输入
   const clearAll = () => {
     setSourceInput('');
-    setStats({ domainCount: 0, validCount: 0, commentCount: 0 });
+    setStats({ domainCount: 0, validCount: 0, commentCount: 0, blacklistCount: 0, whitelistCount: 0 });
   };
   
   // 排序域名
@@ -1000,6 +1014,14 @@ export default function Home() {
             <div className="stat-badge">
               <span className="stat-value" id="domainCount">{stats.domainCount}</span>
               <span className="stat-label">{t.domainCount}</span>
+            </div>
+            <div className="stat-badge">
+              <span className="stat-value" id="blacklistCount">{stats.blacklistCount}</span>
+              <span className="stat-label">{t.blacklistCount}</span>
+            </div>
+            <div className="stat-badge">
+              <span className="stat-value" id="whitelistCount">{stats.whitelistCount}</span>
+              <span className="stat-label">{t.whitelistCount}</span>
             </div>
             <div className="stat-badge">
               <span className="stat-value" id="validCount">{stats.validCount}</span>

@@ -1,4 +1,4 @@
-// src/app/layout.tsx v2.1.0
+// src/app/layout.tsx v2.2.0
 import React from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
@@ -7,14 +7,14 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'DNS Shield v2.1.0',
-  description: 'DNS Shield - 路由器级广告过滤规则生成工具。基于 dnsmasq/hosts 的路由器广告过滤，支持梅林固件、小米路由器、OpenWrt 等设备。',
+  title: 'DNS Shield v2.2.0',
+  description: 'DNS Shield - 路由器级全局广告过滤规则生成工具。基于 dnsmasq/hosts 的路由器广告过滤，支持梅林固件、小米路由器、OpenWrt 等设备。',
   keywords: 'DNS广告过滤,dnsmasq,hosts,广告拦截,路由器,梅林固件,小米路由器,OpenWrt,广告过滤规则,DNS Shield',
   authors: { name: 'sutchan' },
   robots: 'index, follow',
   openGraph: {
     title: 'DNS Shield - 路由器广告过滤',
-    description: '路由器级广告过滤规则生成工具，支持 Dnsmasq 和 Hosts 格式',
+    description: '路由器级全局广告过滤规则生成工具，支持 Dnsmasq 和 Hosts 格式',
     type: 'website',
     url: 'https://github.com/sutchan/DNS_Shield',
     images: [

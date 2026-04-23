@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0]
+
+### Added
+- Added whitelist management functionality with independent editing interface
+- Added whitelist import/export capabilities
+- Added whitelist format output option
+
+### Changed
+- Updated all file version numbers to v2.2.0
+- Synchronized version consistency across project files
+- Improved internationalization language files
+- Enhanced application robustness
+- Updated documentation content
+- Synchronized code functionality details to openspec documentation
+
 ## [2.1.0]
 
 ### Changed
@@ -14,6 +29,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced application robustness
 - Updated documentation content
 - Synchronized code functionality details to openspec documentation
+
+## [2.0.3]
+
+### Changed
+- Reorganized domains.txt file structure with clear categories
+- Cleaned duplicate domains (ad.coocaa.com, ad.ffalcon.com, ad.hisense.com)
+- Improved comment consistency and formatting
+- Updated metadata.json to v2.0.3
 
 ## [2.0.2]
 
