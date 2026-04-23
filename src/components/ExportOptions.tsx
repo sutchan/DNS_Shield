@@ -1,6 +1,6 @@
 // src/components/ExportOptions.tsx v2.2.1
 import React, { useRef } from 'react';
-import { OutputContent, ParsedData, Settings, FormatType } from '@/types';
+import { OutputContent, ParsedData, Settings, FormatType, Translation } from '@/types';
 
 interface ExportOptionsProps {
   outputContent: OutputContent;
@@ -8,7 +8,7 @@ interface ExportOptionsProps {
   isSettingsPanelCollapsed: boolean;
   settings: Settings;
   parsedData: ParsedData;
-  t: any;
+  t: Translation;
   isLangZh: boolean;
   toggleSection: (section: string) => void;
   setFormat: (format: FormatType) => void;

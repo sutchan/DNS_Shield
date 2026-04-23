@@ -138,8 +138,8 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
     }
     
     if (parsed.type === 'whitelist') {
-      if (parsed.isValid) {
-        whitelist.push(parsed.domain!);
+      if (parsed.isValid && parsed.domain) {
+        whitelist.push(parsed.domain);
       } else {
         commentCount++;
       }
@@ -147,8 +147,8 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
     }
     
     if (parsed.type === 'customDns') {
-      if (parsed.isValid) {
-        customDns.push({ domain: parsed.domain!, ip: parsed.ip! });
+      if (parsed.isValid && parsed.domain && parsed.ip) {
+        customDns.push({ domain: parsed.domain, ip: parsed.ip });
       } else {
         commentCount++;
       }
@@ -156,8 +156,8 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
     }
     
     if (parsed.type === 'hosts' || parsed.type === 'dnsmasq' || parsed.type === 'adguard' || parsed.type === 'domain') {
-      if (parsed.isValid) {
-        domains.push(parsed.domain!);
+      if (parsed.isValid && parsed.domain) {
+        domains.push(parsed.domain);
       } else {
         commentCount++;
       }
@@ -242,9 +242,9 @@ export const sortDomains = (sourceInput: string): string => {
   const sortedDomains = [...plainDomains].sort((a, b) => {
     const aParsed = parseDomainLine(a);
     const bParsed = parseDomainLine(b);
-    const aDomain = 'domain' in aParsed ? aParsed.domain : '';
-    const bDomain = 'domain' in bParsed ? bParsed.domain : '';
-    return (aDomain || '').localeCompare(bDomain || '');
+    const aDomain = 'domain' in aParsed && aParsed.domain ? aParsed.domain : '';
+    const bDomain = 'domain' in bParsed && bParsed.domain ? bParsed.domain : '';
+    return aDomain.localeCompare(bDomain);
   });
   
   const result = [
@@ -284,11 +284,11 @@ export const dedupeDomains = (sourceInput: string): { content: string; removedCo
     }
     
     let key: string;
-    if (parsed.type === 'whitelist' && 'domain' in parsed) {
+    if (parsed.type === 'whitelist' && 'domain' in parsed && parsed.domain) {
       key = '+' + parsed.domain;
-    } else if (parsed.type === 'customDns' && 'domain' in parsed && 'ip' in parsed) {
+    } else if (parsed.type === 'customDns' && 'domain' in parsed && 'ip' in parsed && parsed.domain && parsed.ip) {
       key = '@' + parsed.domain + '=' + parsed.ip;
-    } else if ('domain' in parsed) {
+    } else if ('domain' in parsed && parsed.domain) {
       key = parsed.domain;
     } else {
       key = line;

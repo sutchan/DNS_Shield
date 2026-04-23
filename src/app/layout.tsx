@@ -1,10 +1,7 @@
 // src/app/layout.tsx v2.2.2
 import React from 'react'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'DNS Shield v2.2.1',
@@ -97,7 +94,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN">
-      <body className={inter.className}>
+      <body>
         {children}
       </body>
     </html>
