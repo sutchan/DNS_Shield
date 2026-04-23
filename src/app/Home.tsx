@@ -64,12 +64,10 @@ export default function Home() {
   const [isUrlSectionCollapsed, setIsUrlSectionCollapsed] = useState(true);
   const [isSettingsPanelCollapsed, setIsSettingsPanelCollapsed] = useState(true);
   const [isUsageGuideCollapsed, setIsUsageGuideCollapsed] = useState(true);
-  const [isWhitelistSectionCollapsed, setIsWhitelistSectionCollapsed] = useState(true);
   const [toastMessage, setToastMessage] = useState('');
   const [urls, setUrls] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [activePreset, setActivePreset] = useState('builtin');
-  const [whitelistInput, setWhitelistInput] = useState('');
   
   // 引用
   const sourceTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -77,8 +75,6 @@ export default function Home() {
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const outputLineNumbersRef = useRef<HTMLDivElement>(null);
   const urlInputRef = useRef<HTMLInputElement>(null);
-  const whitelistTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const whitelistLineNumbersRef = useRef<HTMLDivElement>(null);
   
   // 配置URLs
   const config = {
@@ -241,7 +237,8 @@ export default function Home() {
       usageTipContent: '生成的规则可直接用于路由器广告过滤，支持华硕、梅林、OpenWrt 等固件',
       adguardFormat: 'AdGuard 格式',
       adguardFile: 'AdGuard 文件名',
-      downloadAdguard: '下载 AdGuard 格式'
+      downloadAdguard: '下载 AdGuard 格式',
+      whitelistFormat: '白名单'
     },
     en: {
       subtitle: 'Router-level ad filtering rule generator',
@@ -294,7 +291,8 @@ export default function Home() {
       usageTipContent: 'Generated rules can be directly used for router ad filtering, supporting Asus, Merlin, OpenWrt and other firmware',
       adguardFormat: 'AdGuard',
       adguardFile: 'AdGuard Filename',
-      downloadAdguard: 'Download AdGuard Format'
+      downloadAdguard: 'Download AdGuard Format',
+      whitelistFormat: 'Whitelist'
     }
   };
   
@@ -512,22 +510,22 @@ export default function Home() {
       dnsmasq: {
         commentChar: '#',
         separator: '=====================================',
-        title: 'Dnsmasq Ad Block List',
-        description: 'Router-level ad blocking filter',
-        usage: `# Usage:\n#   - Merlin: Software Center -> DNS Settings\n#   - OpenWrt: Services -> DHCP and DNS`
+        title: isLangZh ? 'Dnsmasq 广告过滤列表' : 'Dnsmasq Ad Block List',
+        description: isLangZh ? '路由器级广告过滤规则' : 'Router-level ad blocking filter',
+        usage: isLangZh ? `# 使用方法:\n#   - 梅林: 软件中心 -> DNS 设置\n#   - OpenWrt: 服务 -> DHCP 和 DNS` : `# Usage:\n#   - Merlin: Software Center -> DNS Settings\n#   - OpenWrt: Services -> DHCP and DNS`
       },
       hosts: {
         commentChar: '#',
         separator: '=====================================',
-        title: 'Hosts Ad Block List',
-        description: 'Router-level ad blocking hosts file',
-        usage: '# Usage: Import to router ad blocking settings'
+        title: isLangZh ? 'Hosts 广告过滤列表' : 'Hosts Ad Block List',
+        description: isLangZh ? '路由器级广告过滤 hosts 文件' : 'Router-level ad blocking hosts file',
+        usage: isLangZh ? '# 使用方法: 导入到路由器广告过滤设置' : '# Usage: Import to router ad blocking settings'
       },
       adguard: {
         commentChar: '!',
         separator: '====================================',
-        title: 'AdGuard Ad Block Filter',
-        description: 'AdGuard-compatible ad blocking filter',
+        title: isLangZh ? 'AdGuard 广告过滤规则' : 'AdGuard Ad Block Filter',
+        description: isLangZh ? '兼容 AdGuard 的广告过滤规则' : 'AdGuard-compatible ad blocking filter',
         usage: ''
       }
     };
@@ -542,21 +540,21 @@ export default function Home() {
     lines.push(`${commentChar} ${settings.projectName} - ${title}`);
     lines.push(`${commentChar} ${separator}`);
     lines.push(`${commentChar}`);
-    lines.push(`${commentChar} Description: ${description}`);
+    lines.push(`${commentChar} ${isLangZh ? '描述: ' : 'Description: '}${description}`);
     lines.push(`${commentChar}`);
-    lines.push(`${commentChar} Version: ${settings.version}`);
-    lines.push(`${commentChar} Update: ${dateStr}`);
-    lines.push(`${commentChar} Domains: ${totalDomains} unique domains`);
+    lines.push(`${commentChar} ${isLangZh ? '版本: ' : 'Version: '}${settings.version}`);
+    lines.push(`${commentChar} ${isLangZh ? '更新: ' : 'Update: '}${dateStr}`);
+    lines.push(`${commentChar} ${isLangZh ? '域名: ' : 'Domains: '}${totalDomains} ${isLangZh ? '个唯一域名' : 'unique domains'}`);
     if (whitelistCount > 0) {
-      lines.push(`${commentChar} Whitelist: ${whitelistCount} domains`);
+      lines.push(`${commentChar} ${isLangZh ? '白名单: ' : 'Whitelist: '}${whitelistCount} ${isLangZh ? '个域名' : 'domains'}`);
     }
     lines.push(`${commentChar}`);
     if (usage) {
       lines.push(usage);
       lines.push(`${commentChar}`);
     }
-    lines.push(`${commentChar} Project: https://github.com/sutchan/DNS_Shield`);
-    lines.push(`${commentChar} Demo: https://dns.ewuse.com/`);
+    lines.push(`${commentChar} ${isLangZh ? '项目: ' : 'Project: '}https://github.com/sutchan/DNS_Shield`);
+    lines.push(`${commentChar} ${isLangZh ? '演示: ' : 'Demo: '}https://dns.ewuse.com/`);
     lines.push(`${commentChar}`);
     lines.push(`${commentChar} ${separator}`);
 
@@ -593,6 +591,7 @@ export default function Home() {
     let dnsmasqContent = '';
     let hostsContent = '';
     let adguardContent = '';
+    let whitelistContent = '';
 
     if (addHeader) {
       const totalDomains = filteredDomains.length + customDns.length;
@@ -626,28 +625,32 @@ export default function Home() {
 
     if (filteredWhitelist.length > 0) {
       if (addHeader) {
-        dnsmasqContent += `\n# Whitelist (allow these domains)\n`;
-        hostsContent += `\n# Whitelist (allow these domains)\n`;
-        adguardContent += `\n! Whitelist (allow these domains)\n`;
+        dnsmasqContent += `\n# ${isLangZh ? '白名单 (允许这些域名)' : 'Whitelist (allow these domains)'}\n`;
+        hostsContent += `\n# ${isLangZh ? '白名单 (允许这些域名)' : 'Whitelist (allow these domains)'}\n`;
+        adguardContent += `\n! ${isLangZh ? '白名单 (允许这些域名)' : 'Whitelist (allow these domains)'}\n`;
+        whitelistContent += `# ${isLangZh ? '白名单 (允许这些域名)' : 'Whitelist (allow these domains)'}\n`;
       }
       filteredWhitelist.forEach(domain => {
         dnsmasqContent += `server=/${domain}/\n`;
-        hostsContent += `# Whitelisted: ${domain}\n`;
+        hostsContent += `# ${isLangZh ? '已白名单: ' : 'Whitelisted: '}${domain}\n`;
         adguardContent += `@@||${domain}^\n`;
+        whitelistContent += `@@||${domain}^\n`;
       });
     }
 
     setOutputContent({
       dnsmasq: dnsmasqContent,
       hosts: hostsContent,
-      adguard: adguardContent
+      adguard: adguardContent,
+      whitelist: whitelistContent
     });
 
     // 生成输出行号 - 使用当前生成的内容
     const content = {
       dnsmasq: dnsmasqContent,
       hosts: hostsContent,
-      adguard: adguardContent
+      adguard: adguardContent,
+      whitelist: whitelistContent
     }[currentFormat];
     generateLineNumbers(content || '', outputLineNumbersRef);
 
@@ -869,12 +872,12 @@ export default function Home() {
   };
   
   // 设置格式
-  const setFormat = (format: 'hosts' | 'dnsmasq' | 'adguard') => {
+  const setFormat = (format: 'hosts' | 'dnsmasq' | 'adguard' | 'whitelist') => {
     setCurrentFormat(format);
   };
   
   // 加载预设
-  const loadPreset = async (preset: string, event: React.MouseEvent) => {
+  const loadPreset = async (preset: string) => {
     setIsLoading(true);
     setActivePreset(preset);
 
@@ -1067,10 +1070,10 @@ export default function Home() {
             <div className="preset-section">
               <span className="preset-label">{t.presetLabel}</span>
               <div className="preset-tags">
-                <span className={`preset-tag ${activePreset === 'builtin' ? 'active' : ''}`} onClick={(e: React.MouseEvent) => loadPreset('builtin', e)}>{t.builtinAd}</span>
-                <span className={`preset-tag ${activePreset === 'adguard' ? 'active' : ''}`} onClick={(e: React.MouseEvent) => loadPreset('adguard', e)}>{t.adguard}</span>
-                <span className={`preset-tag ${activePreset === 'easylist' ? 'active' : ''}`} onClick={(e: React.MouseEvent) => loadPreset('easylist', e)}>{t.easylist}</span>
-                <span className={`preset-tag ${activePreset === 'neohosts' ? 'active' : ''}`} onClick={(e: React.MouseEvent) => loadPreset('neohosts', e)}>{t.neohosts}</span>
+                <span className={`preset-tag ${activePreset === 'builtin' ? 'active' : ''}`} onClick={() => loadPreset('builtin')}>{t.builtinAd}</span>
+                <span className={`preset-tag ${activePreset === 'adguard' ? 'active' : ''}`} onClick={() => loadPreset('adguard')}>{t.adguard}</span>
+                <span className={`preset-tag ${activePreset === 'easylist' ? 'active' : ''}`} onClick={() => loadPreset('easylist')}>{t.easylist}</span>
+                <span className={`preset-tag ${activePreset === 'neohosts' ? 'active' : ''}`} onClick={() => loadPreset('neohosts')}>{t.neohosts}</span>
               </div>
             </div>
           </div>
@@ -1118,6 +1121,12 @@ export default function Home() {
                   onClick={() => setFormat('adguard')}
                 >
                   {t.adguardFormat}
+                </button>
+                <button 
+                  className={`format-tab ${currentFormat === 'whitelist' ? 'active' : ''}`} 
+                  onClick={() => setFormat('whitelist')}
+                >
+                  {t.whitelistFormat}
                 </button>
               </div>
               <button className="settings-btn" onClick={() => toggleSection('settings-panel')} title={t.settingsTitle}>

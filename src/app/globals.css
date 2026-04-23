@@ -642,6 +642,11 @@ body {
   font-size: 0.875rem;
   color: var(--text-secondary);
   text-align: center;
+  transition: var(--transition);
+}
+
+.merge-info:hover {
+  box-shadow: var(--shadow-sm);
 }
 
 .output-container {
