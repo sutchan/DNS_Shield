@@ -1,4 +1,4 @@
-// src/components/Header.tsx v2.2.1
+// src/components/Header.tsx v2.2.5
 import React from 'react';
 
 interface HeaderProps {
@@ -54,8 +54,8 @@ const Header: React.FC<HeaderProps> = ({
               </div>
             )}
           </div>
-          <button className="icon-btn" onClick={toggleTheme} title="切换主题">
-            <span className="theme-btn">{theme === 'dark' ? '☀️' : '🌙'}</span>
+          <button className="icon-btn theme-toggle" onClick={toggleTheme} title={t.settingsTitle}>
+            <span className="theme-icon">{theme === 'dark' ? '☀️' : '🌙'}</span>
           </button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-// src/config/index.ts v2.2.3
+// src/config/index.ts v2.2.5
 
 // 类型声明
 declare const process: {

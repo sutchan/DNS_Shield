@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v2.2.3
+// src/hooks/useRules.ts v2.2.5
 import { useState, useEffect, useRef } from 'react';
 import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
 import { downloadOutput as downloadOutputUtil, copyToClipboard } from '../utils/fileUtils';

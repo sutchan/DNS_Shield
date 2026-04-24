@@ -1,4 +1,4 @@
-// src/hooks/useTheme.ts v2.2.3
+// src/hooks/useTheme.ts v2.2.5
 import { useState, useEffect } from 'react';
 
 export const useTheme = () => {
