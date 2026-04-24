@@ -3,17 +3,17 @@
   "version": "2.2.2",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 8081",
+    "dev": "next dev --port 8082",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
     "global:install": "npm install -g next react react-dom @babel/preset-env @babel/preset-react @babel/preset-typescript @testing-library/jest-dom @testing-library/react @testing-library/user-event @types/jest @types/node @types/react @types/react-dom autoprefixer babel-jest eslint eslint-config-next identity-obj-proxy jest jest-environment-jsdom postcss tailwindcss ts-jest typescript",
-    "global:dev": "set NODE_PATH=%APPDATA%\\npm\\node_modules && next dev --port 8081",
-    "global:build": "set NODE_PATH=%APPDATA%\\npm\\node_modules && next build",
-    "global:start": "set NODE_PATH=%APPDATA%\\npm\\node_modules && next start",
-    "global:lint": "set NODE_PATH=%APPDATA%\\npm\\node_modules && next lint",
-    "global:test": "set NODE_PATH=%APPDATA%\\npm\\node_modules && jest"
+    "global:dev": "npx npm-run-path --env NODE_PATH && next dev --port 8082",
+    "global:build": "npx npm-run-path --env NODE_PATH && next build",
+    "global:start": "npx npm-run-path --env NODE_PATH && next start",
+    "global:lint": "npx npm-run-path --env NODE_PATH && next lint",
+    "global:test": "npx npm-run-path --env NODE_PATH && jest"
   },
   "dependencies": {
     "next": "^14",
@@ -38,6 +38,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^30.3.0",
     "jest-environment-jsdom": "^30.3.0",
+    "npm-run-path": "^6.0.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3",
     "ts-jest": "^29.4.9",

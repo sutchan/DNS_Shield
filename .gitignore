@@ -45,9 +45,7 @@ yarn.lock
 pnpm-lock.yaml
 
 # Next.js
-.next/
-.next/*
-.next/cache/*
+.next/cache/
 dist/
 dist-ssr/
 *.local
