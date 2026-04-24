@@ -1,4 +1,4 @@
-// src/components/DomainList.tsx v2.2.1
+// src/components/DomainList.tsx v2.2.5
 import React, { useRef } from 'react';
 import { Stats } from '../types';
 

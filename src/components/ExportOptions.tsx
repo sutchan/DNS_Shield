@@ -1,4 +1,4 @@
-// src/components/ExportOptions.tsx v2.2.1
+// src/components/ExportOptions.tsx v2.2.5
 import React, { useRef } from 'react';
 import { OutputContent, ParsedData, Settings, FormatType, Translation } from '@/types';
 

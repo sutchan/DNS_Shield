@@ -1,10 +1,10 @@
-// src/app/layout.tsx v2.2.3
+// src/app/layout.tsx v2.2.5
 import React from 'react'
 import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'DNS Shield v2.2.1',
+  title: 'DNS Shield v2.2.5',
   description: 'DNS Shield - 路由器级全局广告过滤规则生成工具。基于 dnsmasq/hosts 的路由器广告过滤，支持梅林固件、小米路由器、OpenWrt 等设备。',
   keywords: 'DNS广告过滤,dnsmasq,hosts,广告拦截,路由器,梅林固件,小米路由器,OpenWrt,广告过滤规则,DNS Shield',
   authors: { name: 'sutchan' },

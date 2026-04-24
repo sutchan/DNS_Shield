@@ -1,4 +1,4 @@
-// src/components/FilterControls.tsx v2.2.1
+// src/components/FilterControls.tsx v2.2.5
 import React, { useRef } from 'react';
 
 interface FilterControlsProps {

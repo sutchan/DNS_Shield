@@ -324,12 +324,10 @@ activate-sea.adobe.com # Adobe 激活
 activate-sjc0.adobe.com # Adobe 激活
 activate.adobe.com # Adobe 激活
 activate.wip3.adobe.com # Adobe 激活
-ad.88765.com # 广告
 ad.cmvideo.cn # 中国移动广告+支付共用
 ad.doubleclick.net # Google 广告
 ad.hpplay.cn # 投屏广告
 ad.m.taobao.com # 阿里妈妈（部分 BesTV 使用）
-ad.toutiao.com # 字节跳动广告
 ad.weixin.qq.com # 微信广告
 adash.m.taobao.com # 阿里妈妈
 adash.man.aliyuncs.com # 阿里妈妈
@@ -406,14 +404,13 @@ df.tanx.com # 淘宝联盟
 diagnosis.ad.xiaomi.com # 小米广告诊断
 dig.bdurl.net # 百度
 dl.cupid.ptqy.gitv.tv # 银河下载
-dm.bytedance.com # 字节跳动
 dm.pstatp.com # 字节跳动
 dm.toutiao.com # 字节跳动
 dnkeeper.platform.dbankcloud.com # 华为云
 duga.zhihu.com # 知乎
 ef-dongfeng.tanx.com # 淘宝联盟
 errlog.umeng.com # 友盟错误日志
-et.tanx.com # 淘宝联盟
+ets.tanx.com # 淘宝联盟
 extlog.snssdk.com # 字节跳动日志
 finder.video.qq.com # 视频号广告
 fix.hpplay.cn # 投屏修复
@@ -448,9 +445,6 @@ kwimgs.com # 图片
 leboapi.hpplay.com.cn # 投屏
 live.vzuu.com # 直播
 log-api.pangolin-sdk-toutiao.com # 字节跳动日志
-log.coocaa.com # 酷开日志
-log.ffalcon.com # 飞利浦日志
-log.hisense.com # 海信日志
 log.mmstat.com # 统计
 log.snssdk.com # 字节跳动日志
 log.tbs.qq.com # 腾讯 TBS 日志
