@@ -229,16 +229,8 @@ body {
 
 
 .panel {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
   padding: var(--spacing-6);
-  box-shadow: var(--shadow-sm);
   transition: var(--transition);
-}
-
-.panel:hover {
-  box-shadow: var(--shadow-md);
 }
 
 .section-header {
@@ -283,15 +275,7 @@ body {
   gap: var(--spacing-4);
   margin-bottom: var(--spacing-4);
   padding: var(--spacing-3);
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
   transition: var(--transition);
-}
-
-.stats-compact:hover {
-  box-shadow: var(--shadow-md);
 }
 
 .stat-badge {
@@ -325,15 +309,7 @@ body {
 .url-section {
   margin-bottom: var(--spacing-4);
   padding: var(--spacing-4);
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
   transition: var(--transition);
-}
-
-.url-section:hover {
-  box-shadow: var(--shadow-md);
 }
 
 .url-section.collapsed {
@@ -417,8 +393,6 @@ body {
 
 .editor-container {
   display: flex;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
   overflow: hidden;
   margin-bottom: var(--spacing-4);
 }
@@ -426,8 +400,6 @@ body {
 .line-numbers {
   width: 40px;
   padding: var(--spacing-3);
-  background-color: var(--bg-tertiary);
-  border-right: 1px solid var(--border-color);
   font-family: var(--font-mono);
   font-size: 0.875rem;
   color: var(--text-secondary);
@@ -576,15 +548,7 @@ body {
 .settings-panel {
   margin-bottom: var(--spacing-4);
   padding: var(--spacing-4);
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
   transition: var(--transition);
-}
-
-.settings-panel:hover {
-  box-shadow: var(--shadow-md);
 }
 
 .settings-panel.collapsed {
@@ -660,25 +624,14 @@ body {
 .merge-info {
   margin-bottom: var(--spacing-4);
   padding: var(--spacing-3);
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
   font-size: 0.875rem;
   color: var(--text-secondary);
   text-align: center;
-  box-shadow: var(--shadow-sm);
   transition: var(--transition);
-}
-
-.merge-info:hover {
-  box-shadow: var(--shadow-md);
-  background-color: var(--bg-tertiary);
 }
 
 .output-container {
   display: flex;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
   overflow: hidden;
   margin-bottom: var(--spacing-4);
 }
@@ -738,10 +691,6 @@ body {
   width: 100%;
   margin-bottom: var(--spacing-4);
   padding: var(--spacing-4);
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
   transition: var(--transition);
   overflow: hidden;
   max-height: 1000px;
@@ -769,15 +718,7 @@ body {
   gap: var(--spacing-3);
   align-items: flex-start;
   padding: var(--spacing-3);
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
   transition: var(--transition);
-}
-
-.usage-step:hover {
-  box-shadow: var(--shadow-sm);
-  border-color: var(--primary);
 }
 
 .step-number {
@@ -864,15 +805,7 @@ body {
   justify-content: center;
   width: 100%;
   padding: var(--spacing-4);
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
   transition: var(--transition);
-}
-
-.footer-top:hover {
-  box-shadow: var(--shadow-md);
 }
 
 .footer-link {
