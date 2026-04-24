@@ -2,55 +2,16 @@
 import React from 'react';
 
 interface FooterProps {
-  isUsageGuideCollapsed: boolean;
   t: any;
-  toggleSection: (section: string) => void;
   version: string;
 }
 
 const Footer: React.FC<FooterProps> = ({
-  isUsageGuideCollapsed,
   t,
-  toggleSection,
   version
 }) => {
   return (
     <footer className="app-footer" id="about-panel">
-      <button className="usage-toggle" id="usageToggle" onClick={() => toggleSection('usage-guide')}>
-        <span id="usageToggleText">{t.usageToggle}</span>
-        <svg className="toggle-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </button>
-      <div className={`usage-guide ${isUsageGuideCollapsed ? 'collapsed' : ''}`} id="usageGuide">
-        <div className="usage-steps">
-          <div className="usage-step">
-            <span className="step-number">1</span>
-            <div className="step-content">
-              <span className="step-title">{t.usageStep1}</span>
-              <span className="step-desc">{t.usageStep1Desc}</span>
-            </div>
-          </div>
-          <div className="usage-step">
-            <span className="step-number">2</span>
-            <div className="step-content">
-              <span className="step-title">{t.usageStep2}</span>
-              <span className="step-desc">{t.usageStep2Desc}</span>
-            </div>
-          </div>
-          <div className="usage-step">
-            <span className="step-number">3</span>
-            <div className="step-content">
-              <span className="step-title">{t.usageStep3}</span>
-              <span className="step-desc">{t.usageStep3Desc}</span>
-            </div>
-          </div>
-        </div>
-        <div className="usage-tip">
-          <span className="tip-label">{t.usageTip}</span>
-          <span className="tip-content">{t.usageTipContent}</span>
-        </div>
-      </div>
       <div className="footer-content">
         <a href="https://github.com/sutchan/DNS_Shield" target="_blank" className="footer-link">
           GitHub

@@ -219,11 +219,35 @@ body {
   border-color: var(--primary);
 }
 
+.app-layout {
+  display: flex;
+  gap: var(--spacing-6);
+  margin-bottom: var(--spacing-8);
+}
+
+.left-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.usage-guide-section {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-4);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.usage-guide-section:hover {
+  box-shadow: var(--shadow-md);
+}
+
 .main-content {
+  flex: 1;
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--spacing-6);
-  margin-bottom: var(--spacing-8);
 }
 
 
@@ -868,6 +892,16 @@ body {
 @media (max-width: 1024px) {
   .container {
     max-width: var(--max-w-3xl);
+  }
+}
+
+@media (max-width: 1024px) {
+  .app-layout {
+    flex-direction: column;
+  }
+  
+  .left-sidebar {
+    width: 100%;
   }
 }
 
