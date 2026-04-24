@@ -56,3 +56,4 @@ node_modules/
 
 # Global cache directory (should be in user home)
 .dns-shield/
+.next/

@@ -57,7 +57,7 @@ export default function Home() {
   // 设置管理
   const [settings, setSettings] = useState<Settings>({
     projectName: 'DNS Shield',
-    version: '2.2.2',
+    version: '2.2.3',
     ipv4: '127.0.0.1',
     ipv6: '::',
     addHeader: true,

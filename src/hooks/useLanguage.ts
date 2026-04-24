@@ -1,4 +1,4 @@
-// src/hooks/useLanguage.ts v2.2.2
+// src/hooks/useLanguage.ts v2.2.3
 import { useState, useEffect, useRef } from 'react';
 import { supportedLanguages, getTranslation, isChineseLanguage } from '../utils/i18n';
 import { Translation } from '../types';

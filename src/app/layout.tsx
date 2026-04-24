@@ -1,4 +1,4 @@
-// src/app/layout.tsx v2.2.2
+// src/app/layout.tsx v2.2.3
 import React from 'react'
 import type { Metadata } from 'next'
 import './globals.css'
