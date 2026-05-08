@@ -1,5 +1,5 @@
 // src/hooks/useDomainData.ts v2.2.5
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
 import { generateLineNumbers } from '../utils/uiUtils';
 import { ParsedData, Stats } from '../types';
@@ -21,96 +21,11 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   });
   const [isLoading, setIsLoading] = useState(false);
   
-  // 引用
   const lineNumbersRef = useRef<HTMLDivElement>(null);
+  const showToastRef = useRef(showToast);
+  showToastRef.current = showToast;
 
-  // 加载本地域名数据
-  const loadLocalDomains = async () => {
-    try {
-      console.warn('Loading from local domains.txt');
-      const localResponse = await fetch('/domains.txt');
-      if (localResponse.ok) {
-        const text = await localResponse.text();
-        if (text.trim()) {
-          setSourceInput(text);
-          parseSourceData(text);
-          generateLineNumbers(text, lineNumbersRef);
-          return true;
-        }
-      }
-      return false;
-    } catch (localError) {
-      console.warn('Could not load local domains.txt:', localError);
-      return false;
-    }
-  };
-
-  // 加载域名数据的函数
-  const loadDomainData = async () => {
-    try {
-      // 尝试从配置的URL加载
-      const response = await fetch(config.domainsUrl);
-      if (response.ok) {
-        const text = await response.text();
-        if (text.trim()) {
-          setSourceInput(text);
-          parseSourceData(text);
-          generateLineNumbers(text, lineNumbersRef);
-          return;
-        }
-      }
-      
-      // 如果远程加载失败，回退到本地文件
-      await loadLocalDomains();
-    } catch (error) {
-      console.warn('Could not load domains.txt:', error);
-      // 发生错误时回退到本地文件
-      await loadLocalDomains();
-    }
-  };
-
-  // 初始化
-  useEffect(() => {
-    // 加载域名数据
-    loadDomainData();
-    
-    // 确保在客户端环境中使用localStorage
-    if (typeof window !== 'undefined') {
-      // 加载自动保存
-      const autosave = localStorage.getItem('dnsShield_autosave');
-      if (autosave && !sourceInput.trim()) {
-        setSourceInput(autosave);
-        parseSourceData(autosave);
-        // 生成自动保存内容的行号
-        generateLineNumbers(autosave, lineNumbersRef);
-        const autoSaveTime = localStorage.getItem('dnsShield_autosave_time');
-        if (autoSaveTime && /^\d+$/.test(autoSaveTime)) {
-          const timeAgo = Math.floor((Date.now() - parseInt(autoSaveTime)) / 60000);
-          if (timeAgo > 0) {
-            showToast('autosaveRestored', { time: timeAgo });
-          }
-        }
-      }
-      
-      // 自动保存
-      const autoSaveInterval = setInterval(() => {
-        if (sourceInput.trim()) {
-          localStorage.setItem('dnsShield_autosave', sourceInput);
-          localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
-        }
-      }, 30000);
-      
-      return () => clearInterval(autoSaveInterval);
-    }
-  }, []);
-
-  // 监听sourceInput变化，更新输入行号
-  useEffect(() => {
-    generateLineNumbers(sourceInput, lineNumbersRef);
-  }, [sourceInput]);
-
-  // 解析域名数据
-  const parseSourceData = (text?: string) => {
+  const parseSourceData = useCallback((text?: string) => {
     try {
       const input = text || sourceInput;
       const { data, stats: newStats } = parseSource(input);
@@ -118,44 +33,110 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
       setStats(newStats);
     } catch (error) {
       console.error('Error parsing source:', error);
-      showToast('parseFailed');
+      showToastRef.current('parseFailed');
     }
-  };
+  }, [sourceInput]);
 
-  // 清空输入
-  const clearAll = () => {
+  const loadLocalDomains = useCallback(async (text: string) => {
+    if (text.trim()) {
+      setSourceInput(text);
+      parseSourceData(text);
+      generateLineNumbers(text, lineNumbersRef);
+      return true;
+    }
+    return false;
+  }, [parseSourceData]);
+
+  const loadDomainData = useCallback(async () => {
+    try {
+      const response = await fetch(config.domainsUrl);
+      if (response.ok) {
+        const text = await response.text();
+        await loadLocalDomains(text);
+        return;
+      }
+      const localResponse = await fetch('/domains.txt');
+      if (localResponse.ok) {
+        const text = await localResponse.text();
+        await loadLocalDomains(text);
+      }
+    } catch (error) {
+      console.warn('Could not load domains.txt:', error);
+      try {
+        const localResponse = await fetch('/domains.txt');
+        if (localResponse.ok) {
+          const text = await localResponse.text();
+          await loadLocalDomains(text);
+        }
+      } catch (localError) {
+        console.warn('Could not load local domains.txt:', localError);
+      }
+    }
+  }, [loadLocalDomains]);
+
+  useEffect(() => {
+    loadDomainData();
+  }, [loadDomainData]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const autosave = localStorage.getItem('dnsShield_autosave');
+    if (autosave && !sourceInput.trim()) {
+      setSourceInput(autosave);
+      parseSourceData(autosave);
+      generateLineNumbers(autosave, lineNumbersRef);
+      const autoSaveTime = localStorage.getItem('dnsShield_autosave_time');
+      if (autoSaveTime && /^\d+$/.test(autoSaveTime)) {
+        const timeAgo = Math.floor((Date.now() - parseInt(autoSaveTime)) / 60000);
+        if (timeAgo > 0) {
+          showToastRef.current('autosaveRestored', { time: timeAgo });
+        }
+      }
+    }
+    
+    const autoSaveInterval = setInterval(() => {
+      if (sourceInput.trim()) {
+        localStorage.setItem('dnsShield_autosave', sourceInput);
+        localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
+      }
+    }, 30000);
+    
+    return () => clearInterval(autoSaveInterval);
+  }, [sourceInput, parseSourceData]);
+
+  useEffect(() => {
+    generateLineNumbers(sourceInput, lineNumbersRef);
+  }, [sourceInput]);
+
+  const clearAll = useCallback(() => {
     setSourceInput('');
     setStats({ domainCount: 0, validCount: 0, commentCount: 0, blacklistCount: 0, whitelistCount: 0 });
-  };
+  }, []);
 
-  // 排序域名
-  const sortDomains = () => {
+  const sortDomains = useCallback(() => {
     const sortedContent = sortDomainsUtil(sourceInput);
     setSourceInput(sortedContent);
     parseSourceData(sortedContent);
-    showToast('domainsSorted');
-  };
+    showToastRef.current('domainsSorted');
+  }, [sourceInput, parseSourceData]);
 
-  // 去重域名
-  const dedupeDomains = () => {
+  const dedupeDomains = useCallback(() => {
     const { content, removedCount } = dedupeDomainsUtil(sourceInput);
     setSourceInput(content);
     parseSourceData(content);
-    showToast('duplicatesRemoved', { count: removedCount });
-  };
+    showToastRef.current('duplicatesRemoved', { count: removedCount });
+  }, [sourceInput, parseSourceData]);
 
-  // 保存域名
-  const saveDomains = () => {
-    // 这里可以实现保存到本地文件的功能
-    showToast('domainsSaved');
-  };
+  const saveDomains = useCallback(() => {
+    showToastRef.current('domainsSaved');
+  }, []);
 
-  // 处理输入变化
-  const handleSourceInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleSourceInput = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setSourceInput(e.target.value);
     parseSourceData(e.target.value);
     generateLineNumbers(e.target.value, lineNumbersRef);
-  };
+  }, [parseSourceData]);
 
   return {
     sourceInput,
