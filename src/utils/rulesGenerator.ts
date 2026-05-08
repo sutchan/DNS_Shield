@@ -50,8 +50,8 @@ export const generateHeader = (formatType: 'dnsmasq' | 'hosts' | 'adguard', tota
     lines.push(usage);
     lines.push(`${commentChar}`);
   }
-  lines.push(`${commentChar} ${t.header.project}https://github.com/sutchan/DNS_Shield`);
-  lines.push(`${commentChar} ${t.header.demo}https://dns.ewuse.com/`);
+  lines.push(`${commentChar} ${t.header.project} https://github.com/sutchan/DNS_Shield`);
+  lines.push(`${commentChar} ${t.header.demo} https://dns.ewuse.com/`);
   lines.push(`${commentChar}`);
   lines.push(`${commentChar} ${separator}`);
 

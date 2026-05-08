@@ -100,7 +100,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt >> 
 | `dnsmasq.conf` | 主 dnsmasq 过滤列表（`address=/domain/0.0.0.0` 格式） |
 | `hosts.txt` | 路由器 hosts 文件（`0.0.0.0 domain` 格式） |
 | `adguard.txt` | AdGuard 浏览器扩展/软件格式（`\|\|domain^`） |
-| `adguard_whitelist.txt` | AdGuard 白名单文件（包含需要允许访问的域名） |
+| `whitelist.txt` | 白名单文件（包含需要允许访问的域名） |
 | `src/app/` | Next.js 源代码目录，包含管理界面逻辑 |
 | `domains.txt` | 统一域名列表（每行一个域名，数据源） |
 
@@ -113,11 +113,11 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt >> 
 | [dnsmasq.conf](dnsmasq.conf) | 梅林/OpenWrt 等支持 dnsmasq 的路由器 | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf) |
 | [hosts.txt](hosts.txt) | 小米/华硕/TP-Link 等支持 hosts 的路由器 | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt) |
 | [adguard.txt](adguard.txt) | AdGuard 浏览器扩展/AdGuard Home | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/adguard.txt) |
-| [adguard_whitelist.txt](adguard_whitelist.txt) | AdGuard 白名单（需要允许的域名） | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/adguard_whitelist.txt) |
+| [whitelist.txt](whitelist.txt) | 白名单（需要允许的域名） | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/whitelist.txt) |
 
 ### 白名单使用说明
 
-`adguard_whitelist.txt` 文件包含需要允许访问的域名，适用于以下场景：
+`whitelist.txt` 文件包含需要允许访问的域名，适用于以下场景：
 
 1. **AdGuard 浏览器扩展/AdGuard Home**：
    - 将白名单文件导入 AdGuard 的白名单设置
@@ -161,7 +161,7 @@ dnsmasq.conf  hosts.txt  adguard.txt
         ↓
   白名单输出
         ↓
-adguard_whitelist.txt
+whitelist.txt
 ```
 
 ## 域名格式说明
