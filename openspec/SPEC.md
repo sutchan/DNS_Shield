@@ -28,7 +28,7 @@ dns-shield/
 ├── dnsmasq.conf                  # Dnsmasq 过滤列表
 ├── hosts.txt                      # Hosts 文件
 ├── adguard.txt                    # AdGuard 过滤列表
-├── adguard_whitelist.txt         # AdGuard 白名单
+├── whitelist.txt                  # 白名单文件
 ├── CHANGELOG.md                  # 变更日志
 ├── .gitignore                    # Git 忽略配置
 ├── package.json                  # 项目配置和依赖
