@@ -1,4 +1,4 @@
-// src/utils/uiUtils.ts v2.2.5
+// src/utils/uiUtils.ts v2.2.6
 import React from 'react';
 
 // 生成行号

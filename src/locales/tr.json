@@ -52,7 +52,7 @@
   "downloadAdguard": "AdGuard Biçimini İndir",
   "whitelistFormat": "Beyaz Liste",
   "toast": {
-    "autosaveRestored": "Otomatik kaydedilen içerik geri yüklendi (${time} dakika önce)",
+    "autosaveRestored": "Otomatik kaydedilen içerik geri yüklendi ({time} dakika önce)",
     "parseFailed": "Çözümleme başarısız, lütfen giriş biçimini kontrol edin",
     "rulesGenerated": "Kurallar başarıyla üretildi!",
     "downloaded": "{filename} indirildi",

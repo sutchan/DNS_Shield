@@ -15,7 +15,7 @@ This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 - **Router compatible** - Works with Merlin, OpenWrt, Xiaomi, ASUS, TP-Link, and more
 - **Whitelist management** - Independent whitelist editing interface with import/export support
 - **Multi-language support** - Supports 16 languages, can be switched on the interface
-- **Next.js framework** - v2.2.5 version has migrated to modern Next.js framework
+- **Next.js framework** - v2.2.6 version has migrated to modern Next.js framework
 
 ## Usage
 
@@ -96,7 +96,7 @@ This project provides pre-generated filter rule files that can be downloaded and
 
 ### Whitelist Usage Instructions
 
-The `adguard_whitelist.txt` file contains domains that need to be allowed access, suitable for the following scenarios:
+The `whitelist.txt` file contains domains that need to be allowed access, suitable for the following scenarios:
 
 1. **AdGuard Browser Extension/AdGuard Home**:
    - Import the whitelist file into AdGuard's whitelist settings

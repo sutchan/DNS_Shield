@@ -52,7 +52,7 @@
   "downloadAdguard": "Pobierz format AdGuard",
   "whitelistFormat": "Biała lista",
   "toast": {
-    "autosaveRestored": "Odtworzono automatycznie zapisany zawartość (${time} minut temu)",
+    "autosaveRestored": "Odtworzono automatycznie zapisany zawartość ({time} minut temu)",
     "parseFailed": "Przetworzenie nie powiodło się, sprawdź format wejściowy",
     "rulesGenerated": "Reguły wygenerowane pomyślnie!",
     "downloaded": "Pobrano {filename}",

@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v2.2.5
+// src/components/OutputPanel.tsx v2.2.6
 import React from 'react';
 import { Settings, Translation } from '../types';
 

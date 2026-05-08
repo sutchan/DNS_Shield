@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v2.2.5
+// src/components/Footer.tsx v2.2.6
 import React, { useState } from 'react';
 
 interface FooterProps {

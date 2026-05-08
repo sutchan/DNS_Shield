@@ -1,4 +1,4 @@
-// src/components/Header.tsx v2.2.5
+// src/components/Header.tsx v2.2.6
 import React from 'react';
 
 interface HeaderProps {
