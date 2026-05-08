@@ -55,8 +55,7 @@ dns-shield/
 │   │   ├── Footer.tsx            # 页脚组件
 │   │   ├── Header.tsx            # 头部组件
 │   │   ├── InputPanel.tsx        # 输入面板组件
-│   │   ├── OutputPanel.tsx       # 输出面板组件
-│   │   └── WhiteListControls.tsx # 白名单控制组件
+│   │   └── OutputPanel.tsx       # 输出面板组件
 │   ├── config/                   # 配置目录
 │   │   └── index.ts              # 应用配置
 │   ├── hooks/                    # 自定义钩子
@@ -133,12 +132,6 @@ dns-shield/
                            ▼
                    ┌───────────────┐
                    │ 白名单输出    │
-                   └───────────────┘
-                           │
-                           ▼
-                   ┌───────────────┐
-                   │adguard_whitelist.txt │
-                   │ (白名单格式)  │
                    └───────────────┘
 ```
 

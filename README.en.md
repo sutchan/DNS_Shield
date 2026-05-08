@@ -79,7 +79,7 @@ Most routers with custom hosts support can use the same method:
 | `dnsmasq.conf` | Main dnsmasq filter list (`address=/domain/0.0.0.0` format) |
 | `hosts.txt` | Hosts file for routers (`0.0.0.0 domain` format) |
 | `adguard.txt` | AdGuard browser extension/software format (`\|\|domain^`) |
-| `adguard_whitelist.txt` | AdGuard whitelist file (contains domains that need to be allowed) |
+| `whitelist.txt` | Whitelist file (contains domains that need to be allowed) |
 | `src/app/` | Next.js source code directory with management interface logic |
 | `domains.txt` | Unified domain list (one domain per line, source of truth) |
 
@@ -92,7 +92,7 @@ This project provides pre-generated filter rule files that can be downloaded and
 | [dnsmasq.conf](dnsmasq.conf) | Routers with dnsmasq support (Merlin/OpenWrt) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf) |
 | [hosts.txt](hosts.txt) | Routers with hosts support (Xiaomi/ASUS/TP-Link) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt) |
 | [adguard.txt](adguard.txt) | AdGuard browser extension/AdGuard Home | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/adguard.txt) |
-| [adguard_whitelist.txt](adguard_whitelist.txt) | AdGuard whitelist (domains that need to be allowed) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/adguard_whitelist.txt) |
+| [whitelist.txt](whitelist.txt) | Whitelist (domains that need to be allowed) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/whitelist.txt) |
 
 ### Whitelist Usage Instructions
 
@@ -140,7 +140,7 @@ dnsmasq.conf  hosts.txt  adguard.txt
         ↓
   Whitelist Output
         ↓
-adguard_whitelist.txt
+whitelist.txt
 ```
 
 ## Contribution
