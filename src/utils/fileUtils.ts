@@ -1,4 +1,4 @@
-// src/utils/fileUtils.ts v2.2.5
+// src/utils/fileUtils.ts v2.2.6
 
 // 下载输出
 export const downloadOutput = (content: string, filename: string): void => {

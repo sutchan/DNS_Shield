@@ -52,7 +52,7 @@
   "downloadAdguard": "Tải xuống định dạng AdGuard",
   "whitelistFormat": "Danh sách trắng",
   "toast": {
-    "autosaveRestored": "Khôi phục nội dung tự động lưu (${time} phút trước)",
+    "autosaveRestored": "Khôi phục nội dung tự động lưu ({time} phút trước)",
     "parseFailed": "Phân tích thất bại, vui lòng kiểm tra định dạng đầu vào",
     "rulesGenerated": "Tạo quy tắc thành công!",
     "downloaded": "Đã tải xuống {filename}",

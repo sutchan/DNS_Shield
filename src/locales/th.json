@@ -52,7 +52,7 @@
   "downloadAdguard": "ดาวน์โหลดรูปแบบ AdGuard",
   "whitelistFormat": "รายการขาว",
   "toast": {
-    "autosaveRestored": "คืนค่าคอนเทนต์ที่บันทึกอัตโนมัติ (${time} นาทีที่แล้ว)",
+    "autosaveRestored": "คืนค่าคอนเทนต์ที่บันทึกอัตโนมัติ ({time} นาทีที่แล้ว)",
     "parseFailed": "การวิเคราะห์ล้มเหลว โปรดตรวจสอบรูปแบบอินพุต",
     "rulesGenerated": "สร้างกฎสำเร็จ!",
     "downloaded": "ดาวน์โหลด {filename}",

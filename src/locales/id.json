@@ -52,7 +52,7 @@
   "downloadAdguard": "Unduh Format AdGuard",
   "whitelistFormat": "Daftar Putih",
   "toast": {
-    "autosaveRestored": "Konten autosave telah dipulihkan (${time} menit yang lalu)",
+    "autosaveRestored": "Konten autosave telah dipulihkan ({time} menit yang lalu)",
     "parseFailed": "Parsing gagal, silakan periksa format input",
     "rulesGenerated": "Aturan berhasil dihasilkan!",
     "downloaded": "Telah diunduh {filename}",

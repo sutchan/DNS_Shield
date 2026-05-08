@@ -1,4 +1,4 @@
-// src/components/InputPanel.tsx v2.2.5
+// src/components/InputPanel.tsx v2.2.6
 import React from 'react';
 import { Translation } from '../types';
 

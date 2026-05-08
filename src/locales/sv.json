@@ -52,7 +52,7 @@
   "downloadAdguard": "Ladda ner AdGuard-format",
   "whitelistFormat": "Vitlista",
   "toast": {
-    "autosaveRestored": "Återställd autosparad innehåll (${time} minuter sedan)",
+    "autosaveRestored": "Återställd autosparad innehåll ({time} minuter sedan)",
     "parseFailed": "Analys misslyckades, kontrollera indataformat",
     "rulesGenerated": "Regler genererade framgångsrikt!",
     "downloaded": "Nerladdat {filename}",

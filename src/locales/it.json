@@ -52,7 +52,7 @@
   "downloadAdguard": "Scarica Formato AdGuard",
   "whitelistFormat": "Whitelist",
   "toast": {
-    "autosaveRestored": "Ripristinato contenuto salvato automaticamente (${time} minuti fa)",
+    "autosaveRestored": "Ripristinato contenuto salvato automaticamente ({time} minuti fa)",
     "parseFailed": "Analisi fallita, controlla il formato di input",
     "rulesGenerated": "Regole generate con successo!",
     "downloaded": "Scaricato {filename}",
