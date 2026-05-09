@@ -33,6 +33,8 @@
   "blockIPv6": "Bloquear IPv6",
   "dedup": "Eliminación automática de duplicados",
   "removeWildcard": "Eliminar caracteres comodín",
+  "lightMode": "Modo claro",
+  "darkMode": "Modo oscuro",
   "mergeInfo": "Haz clic en \"Generar reglas\" para ver la salida",
   "previewPlaceholder": "// Las reglas generadas aparecerán aquí",
   "generateBtn": "🔄 Generar reglas",

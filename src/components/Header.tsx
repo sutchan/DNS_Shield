@@ -1,4 +1,4 @@
-// src/components/Header.tsx v2.2.6
+// src/components/Header.tsx v2.2.7
 import React from 'react';
 
 interface HeaderProps {
@@ -23,21 +23,22 @@ const Header: React.FC<HeaderProps> = ({
   setIsLangDropdownOpen
 }) => {
   return (
-    <header className="app-header">
+    <header className="app-header" id="app-header">
       <div className="header-main">
-        <h1>🛡️ DNS Shield</h1>
+        <h1 id="app-title">🛡️ DNS Shield</h1>
         <div className="header-actions">
           <div className="lang-selector">
             <button 
               className="lang-selector-btn" 
               title={t.settingsTitle}
               onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+              id="lang-selector-btn"
             >
               <span className="lang-icon">{supportedLanguages.find(lang => lang.code === currentLang)?.icon || ''}</span>
               <span className="lang-name">{supportedLanguages.find(lang => lang.code === currentLang)?.name || currentLang}</span>
             </button>
             {isLangDropdownOpen && (
-              <div className="lang-selector-dropdown">
+              <div className="lang-selector-dropdown" id="lang-dropdown">
                 {supportedLanguages.map(lang => (
                   <button
                     key={lang.code}
@@ -54,12 +55,12 @@ const Header: React.FC<HeaderProps> = ({
               </div>
             )}
           </div>
-          <button className="icon-btn theme-toggle" onClick={toggleTheme} title={t.settingsTitle}>
+          <button className="icon-btn theme-toggle" onClick={toggleTheme} title={t.settingsTitle} id="theme-toggle-btn">
             <span className="theme-icon">{theme === 'dark' ? '☀️' : '🌙'}</span>
           </button>
         </div>
       </div>
-      <p className="subtitle">{t.subtitle}</p>
+      <p className="subtitle" id="app-subtitle">{t.subtitle}</p>
     </header>
   );
 };

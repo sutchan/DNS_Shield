@@ -33,6 +33,8 @@
   "blockIPv6": "阻止 IPv6",
   "dedup": "自動去重",
   "removeWildcard": "移除萬用字元",
+  "lightMode": "淺色模式",
+  "darkMode": "深色模式",
   "mergeInfo": "點擊\"生成規則\"查看輸出",
   "previewPlaceholder": "// 生成的規則將顯示在這裡",
   "generateBtn": "🔄 生成規則",

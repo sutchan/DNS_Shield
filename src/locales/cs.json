@@ -33,6 +33,8 @@
   "blockIPv6": "Blokovat IPv6",
   "dedup": "Automaticky odebrat duplikáty",
   "removeWildcard": "Odebrat zástupné znaky",
+  "lightMode": "Světlý režim",
+  "darkMode": "Tmavý režim",
   "mergeInfo": "Klikněte na \"Vygenerovat pravidla\" pro zobrazení výstupu",
   "previewPlaceholder": "// Vygenerovaná pravidla se zobrazí zde",
   "generateBtn": "🔄 Vygenerovat pravidla",

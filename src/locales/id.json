@@ -33,6 +33,8 @@
   "blockIPv6": "Blokir IPv6",
   "dedup": "Hapus Duplikat Otomatis",
   "removeWildcard": "Hapus Karakter Kartu Wild",
+  "lightMode": "Mode Terang",
+  "darkMode": "Mode Gelap",
   "mergeInfo": "Klik \"Generate Aturan\" untuk melihat output",
   "previewPlaceholder": "// Aturan yang dihasilkan akan muncul di sini",
   "generateBtn": "🔄 Generate Aturan",

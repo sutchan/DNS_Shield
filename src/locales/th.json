@@ -33,6 +33,8 @@
   "blockIPv6": "ปิดใช้ IPv6",
   "dedup": "ลบทับซ้อนอัตโนมัติ",
   "removeWildcard": "ลบเครื่องหมายสัญลักษณ์แทน",
+  "lightMode": "โหมดสว่าง",
+  "darkMode": "โหมดมืด",
   "mergeInfo": "คลิก \"สร้างกฎ\" เพื่อดูผลลัพธ์",
   "previewPlaceholder": "// กฎที่สร้างขึ้นจะปรากฏที่นี่",
   "generateBtn": "🔄 สร้างกฎ",

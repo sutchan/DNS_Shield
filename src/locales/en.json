@@ -33,6 +33,8 @@
   "blockIPv6": "Block IPv6",
   "dedup": "Auto Deduplicate",
   "removeWildcard": "Remove Wildcards",
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
   "mergeInfo": "Click \"Generate Rules\" to view output",
   "previewPlaceholder": "// Generated rules will appear here",
   "generateBtn": "🔄 Generate Rules",

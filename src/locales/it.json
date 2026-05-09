@@ -33,6 +33,8 @@
   "blockIPv6": "Blocca IPv6",
   "dedup": "Rimuovi Duplicati Automaticamente",
   "removeWildcard": "Rimuovi Caratteri Jolly",
+  "lightMode": "Modalità Chiara",
+  "darkMode": "Modalità Scura",
   "mergeInfo": "Fai clic su \"Genera Regole\" per visualizzare l'output",
   "previewPlaceholder": "// Le regole generate appariranno qui",
   "generateBtn": "🔄 Genera Regole",

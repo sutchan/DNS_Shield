@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v2.2.6
+// src/components/Footer.tsx v2.2.7
 import React, { useState } from 'react';
 
 interface FooterProps {
@@ -20,7 +20,7 @@ const Footer: React.FC<FooterProps> = ({
     <footer className="app-footer" id="about-panel">
       <div className="footer-content">
         <div className="footer-top">
-          <a href="https://github.com/sutchan/DNS_Shield" target="_blank" className="footer-link">
+          <a href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener noreferrer" className="footer-link" id="github-link">
             GitHub
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
@@ -28,7 +28,7 @@ const Footer: React.FC<FooterProps> = ({
               <line x1="10" y1="14" x2="21" y2="3"></line>
             </svg>
           </a>
-          <a href="https://dns.ewuse.com/" target="_blank" className="footer-link">
+          <a href="https://dns.ewuse.com/" target="_blank" rel="noopener noreferrer" className="footer-link" id="demo-link">
             Demo
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
@@ -42,7 +42,7 @@ const Footer: React.FC<FooterProps> = ({
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
-          <span className="footer-version">v{version}</span>
+          <span className="footer-version" id="version-display">v{version}</span>
         </div>
         <div className={`usage-guide ${isUsageGuideCollapsed ? 'collapsed' : ''}`} id="usageGuide">
           <div className="usage-steps">

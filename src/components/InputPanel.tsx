@@ -1,4 +1,4 @@
-// src/components/InputPanel.tsx v2.2.6
+// src/components/InputPanel.tsx v2.2.7
 import React from 'react';
 import { Translation } from '../types';
 
@@ -62,8 +62,8 @@ const InputPanel: React.FC<InputPanelProps> = ({
   return (
     <section className="panel input-section" id="input-panel">
       <div className="section-header">
-        <h2>{t.inputTitle}</h2>
-        <button className="collapse-btn" onClick={() => toggleSection('url-section')}>
+        <h2 id="input-title">{t.inputTitle}</h2>
+        <button className="collapse-btn" onClick={() => toggleSection('url-section')} id="toggle-url-section-btn">
           <span className="collapse-icon">▼</span>
           <span>{t.advanced}</span>
         </button>
@@ -102,12 +102,12 @@ const InputPanel: React.FC<InputPanelProps> = ({
             placeholder={t.urlPlaceholder} 
             defaultValue="https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt"
           />
-          <button className="btn btn-primary" onClick={fetchFromUrl}>{t.fetchBtn}</button>
+          <button className="btn btn-primary" onClick={fetchFromUrl} id="fetch-url-btn">{t.fetchBtn}</button>
         </div>
         <div className="url-actions">
-          <button className="btn btn-sm" onClick={addUrl}>{t.addUrl}</button>
-          <button className="btn btn-sm" onClick={sortUrls}>{t.sortUrlBtn}</button>
-          <button className="btn btn-sm" onClick={fetchAllUrls}>{t.fetchAllUrls}</button>
+          <button className="btn btn-sm" onClick={addUrl} id="add-url-btn">{t.addUrl}</button>
+          <button className="btn btn-sm" onClick={sortUrls} id="sort-urls-btn">{t.sortUrlBtn}</button>
+          <button className="btn btn-sm" onClick={fetchAllUrls} id="fetch-all-urls-btn">{t.fetchAllUrls}</button>
         </div>
         <div className="url-list" id="urlList">
           {urls.map((url: string, index: number) => (
@@ -147,11 +147,11 @@ const InputPanel: React.FC<InputPanelProps> = ({
       </div>
 
       <div className="editor-actions">
-        <button className="btn btn-outline" onClick={clearAll}>{t.clearBtn}</button>
-        <button className="btn btn-outline" onClick={sortDomains}>{t.sortBtn}</button>
-        <button className="btn btn-primary" onClick={parseSource}>{t.parseBtn}</button>
-        <button className="btn btn-outline" onClick={dedupeDomains}>{t.dedupeBtn}</button>
-        <button className="btn btn-outline" onClick={saveDomains}>{t.saveBtn}</button>
+        <button className="btn btn-outline" onClick={clearAll} id="clear-btn">{t.clearBtn}</button>
+        <button className="btn btn-outline" onClick={sortDomains} id="sort-btn">{t.sortBtn}</button>
+        <button className="btn btn-primary" onClick={parseSource} id="parse-btn">{t.parseBtn}</button>
+        <button className="btn btn-outline" onClick={dedupeDomains} id="dedupe-btn">{t.dedupeBtn}</button>
+        <button className="btn btn-outline" onClick={saveDomains} id="save-btn">{t.saveBtn}</button>
       </div>
     </section>
   );

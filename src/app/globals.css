@@ -1,4 +1,4 @@
-/* src/app/globals.css v2.2.1 */
+/* src/app/globals.css v2.2.7 */
 :root {
   --primary: #4f46e5;
   --primary-dark: #4338ca;
@@ -20,7 +20,8 @@
   --gray-800: #1f2937;
   --gray-900: #111827;
   --text-primary: #1f2937;
-  --text-secondary: #6b7280;
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
   --text-light: #f3f4f6;
   --bg-primary: #ffffff;
   --bg-secondary: #f9fafb;
@@ -96,9 +97,9 @@
 }
 
 [data-theme="dark"] {
-  --primary: #6366f1;
-  --primary-dark: #4f46e5;
-  --primary-light: #818cf8;
+  --primary: #818cf8;
+  --primary-dark: #6366f1;
+  --primary-light: #a5b4fc;
   --secondary: #34d399;
   --success: #34d399;
   --danger: #f87171;
@@ -116,12 +117,13 @@
   --gray-800: #f3f4f6;
   --gray-900: #f9fafb;
   --text-primary: #f3f4f6;
-  --text-secondary: #9ca3af;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
   --text-light: #1f2937;
   --bg-primary: #111827;
   --bg-secondary: #1f2937;
   --bg-tertiary: #374151;
-  --border-color: #374151;
+  --border-color: #4b5563;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);

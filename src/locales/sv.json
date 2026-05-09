@@ -33,6 +33,8 @@
   "blockIPv6": "Blockera IPv6",
   "dedup": "Ta automatiskt bort dubbletter",
   "removeWildcard": "Ta bort jokertecken",
+  "lightMode": "Ljust läge",
+  "darkMode": "Mörkt läge",
   "mergeInfo": "Klicka på \"Generera regler\" för att visa utdata",
   "previewPlaceholder": "// Genererade regler visas här",
   "generateBtn": "🔄 Generera regler",

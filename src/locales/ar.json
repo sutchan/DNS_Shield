@@ -33,6 +33,8 @@
   "blockIPv6": "حظر IPv6",
   "dedup": "إزالة التكرارات التلقائية",
   "removeWildcard": "إزالة العلامات الوILD",
+  "lightMode": "الوضع الفاتح",
+  "darkMode": "الوضع الداكن",
   "mergeInfo": "انقر على \"إنشاء القواعد\" لعرض الناتج",
   "previewPlaceholder": "// ستظهر القواعد المولدة هنا",
   "generateBtn": "🔄 إنشاء القواعد",
