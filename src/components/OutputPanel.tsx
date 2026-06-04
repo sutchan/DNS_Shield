@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v2.2.7
+// src/components/OutputPanel.tsx v2.2.8
 import React from 'react';
 import { Settings, Translation } from '../types';
 
@@ -55,15 +55,18 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
   toggleTheme
 }) => {
   return (
-    <section className="panel output-section" id="output-panel">
+    <section className="panel output-section" id="output-panel" aria-labelledby="output-title">
       <div className="section-header">
         <h2 id="output-title">{t.outputTitle}</h2>
         <div className="header-actions">
-          <div className="format-tabs" id="format-tabs">
+          <div className="format-tabs" id="format-tabs" role="tablist" aria-label="输出格式">
             <button 
               className={`format-tab ${currentFormat === 'hosts' ? 'active' : ''}`} 
               onClick={() => setFormat('hosts')}
               id="format-hosts-btn"
+              role="tab"
+              aria-selected={currentFormat === 'hosts'}
+              aria-controls="outputPreview"
             >
               Hosts
             </button>
@@ -71,6 +74,9 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
               className={`format-tab ${currentFormat === 'dnsmasq' ? 'active' : ''}`} 
               onClick={() => setFormat('dnsmasq')}
               id="format-dnsmasq-btn"
+              role="tab"
+              aria-selected={currentFormat === 'dnsmasq'}
+              aria-controls="outputPreview"
             >
               Dnsmasq
             </button>
@@ -78,6 +84,9 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
               className={`format-tab ${currentFormat === 'adguard' ? 'active' : ''}`} 
               onClick={() => setFormat('adguard')}
               id="format-adguard-btn"
+              role="tab"
+              aria-selected={currentFormat === 'adguard'}
+              aria-controls="outputPreview"
             >
               {t.adguardFormat}
             </button>
@@ -85,12 +94,22 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
               className={`format-tab ${currentFormat === 'whitelist' ? 'active' : ''}`} 
               onClick={() => setFormat('whitelist')}
               id="format-whitelist-btn"
+              role="tab"
+              aria-selected={currentFormat === 'whitelist'}
+              aria-controls="outputPreview"
             >
               {t.whitelistFormat}
             </button>
           </div>
-          <button className="settings-btn" onClick={() => toggleSection('settings-panel')} title={t.settingsTitle} id="settings-panel-toggle-btn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <button 
+            className="settings-btn" 
+            onClick={() => toggleSection('settings-panel')} 
+            title={t.settingsTitle}
+            id="settings-panel-toggle-btn"
+            aria-expanded={!isSettingsPanelCollapsed}
+            aria-controls="settings-panel"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <circle cx="12" cy="12" r="3"></circle>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
             </svg>
@@ -98,10 +117,14 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
         </div>
       </div>
 
-      <div className={`settings-panel ${isSettingsPanelCollapsed ? 'collapsed' : ''}`} id="settings-panel">
-        <div className="settings-grid" id="settings-grid">
+      <div 
+        className={`settings-panel ${isSettingsPanelCollapsed ? 'collapsed' : ''}`} 
+        id="settings-panel"
+        aria-hidden={isSettingsPanelCollapsed}
+      >
+        <div className="settings-grid" id="settings-grid" role="group" aria-label="设置项">
           <div className="settings-item">
-            <label id="project-name-label">{t.projectName}</label>
+            <label htmlFor="projectNameInput" id="project-name-label">{t.projectName}</label>
             <input 
               type="text" 
               id="projectNameInput" 
@@ -110,7 +133,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
             />
           </div>
           <div className="settings-item">
-            <label id="version-label">{t.version}</label>
+            <label htmlFor="versionInput" id="version-label">{t.version}</label>
             <input 
               type="text" 
               id="versionInput" 
@@ -119,7 +142,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
             />
           </div>
           <div className="settings-item">
-            <label id="ipv4-label">{t.ipV4}</label>
+            <label htmlFor="ipv4Input" id="ipv4-label">{t.ipV4}</label>
             <input 
               type="text" 
               id="ipv4Input" 
@@ -128,7 +151,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
             />
           </div>
           <div className="settings-item">
-            <label id="ipv6-label">{t.ipV6}</label>
+            <label htmlFor="ipv6Input" id="ipv6-label">{t.ipV6}</label>
             <input 
               type="text" 
               id="ipv6Input" 
@@ -137,7 +160,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
             />
           </div>
         </div>
-        <div className="options-row" id="options-row">
+        <div className="options-row" id="options-row" role="group" aria-label="选项">
           <label className="checkbox-item">
             <input 
               type="checkbox" 
@@ -188,7 +211,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
         </div>
       </div>
 
-      <div className="merge-info" id="mergeInfo">
+      <div className="merge-info" id="mergeInfo" role="status" aria-live="polite">
         {outputContent[currentFormat] ? (
           <span>{isLangZh ? 
             `黑名单: ${parsedData.domains.length} | 白名单: ${parsedData.whitelist.length} | 自定义DNS: ${parsedData.customDns.length} | Dnsmasq: ${(outputContent.dnsmasq || '').split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('!')).length} 行 | Hosts: ${(outputContent.hosts || '').split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('!')).length} 行 | AdGuard: ${(outputContent.adguard || '').split('\n').filter(line => line && !line.startsWith('#') && !line.startsWith('!')).length} 行` : 
@@ -200,18 +223,20 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
       </div>
 
       <div className="output-container">
-        <div className="line-numbers" id="outputLineNumbers" ref={outputLineNumbersRef}></div>
+        <div className="line-numbers" id="outputLineNumbers" ref={outputLineNumbersRef} aria-hidden="true"></div>
         <div 
           className="output-preview" 
           id="outputPreview" 
           onScroll={syncOutputScroll}
           ref={outputPreviewRef}
+          role="tabpanel"
+          aria-label={`${currentFormat} 格式输出`}
         >
           {outputContent[currentFormat] || t.previewPlaceholder}
         </div>
       </div>
 
-      <div className="output-actions" id="output-actions">
+      <div className="output-actions" id="output-actions" role="group" aria-label="输出操作">
         <button className="btn btn-success" onClick={generateRules} id="generate-rules-btn">{t.generateBtn}</button>
         <button className="btn btn-primary" onClick={downloadOutput} id="download-btn">{t.downloadBtn}</button>
         <button className="btn btn-outline" onClick={copyOutput} id="copy-btn">{t.copyBtn}</button>

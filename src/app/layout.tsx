@@ -1,4 +1,4 @@
-// src/app/layout.tsx v2.2.7
+// src/app/layout.tsx v2.2.8
 import React from 'react'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     alternateLocale: ['en_US', 'zh_TW'],
     url: 'https://dns.ewuse.com',
     siteName: 'DNS Shield',
-    title: 'DNS Shield v2.2.7 - 路由器级广告过滤规则生成工具',
+    title: 'DNS Shield v2.2.8 - 路由器级广告过滤规则生成工具',
     description: '路由器级全局广告过滤规则生成工具，支持 Dnsmasq 和 Hosts 格式',
     images: [
       {
