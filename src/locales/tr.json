@@ -33,6 +33,8 @@
   "blockIPv6": "IPv6'yi Engelle",
   "dedup": "Otomatik Tekrarları Kaldır",
   "removeWildcard": "Joker Karakterleri Kaldır",
+  "lightMode": "Açık Mod",
+  "darkMode": "Koyu Mod",
   "mergeInfo": "Çıktıyı görmek için \"Kuralları Üret\"'e tıklayın",
   "previewPlaceholder": "// Üretilen kurallar burada görünecek",
   "generateBtn": "🔄 Kuralları Üret",

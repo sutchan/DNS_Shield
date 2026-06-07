@@ -1,4 +1,4 @@
-// src/types/index.ts v2.2.6
+// src/types/index.ts v2.2.7
 
 export type FormatType = 'hosts' | 'dnsmasq' | 'adguard' | 'whitelist';
 
@@ -94,6 +94,8 @@ export interface Translation {
   usageStep3Desc: string;
   usageTip: string;
   usageTipContent: string;
+  lightMode: string;
+  darkMode: string;
   header: {
     dnsmasqTitle: string;
     description: string;

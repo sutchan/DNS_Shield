@@ -33,6 +33,8 @@
   "blockIPv6": "Chặn IPv6",
   "dedup": "Loại bỏ trùng lặp tự động",
   "removeWildcard": "Loại bỏ ký tự đại diện",
+  "lightMode": "Chế độ sáng",
+  "darkMode": "Chế độ tối",
   "mergeInfo": "Nhấn \"Tạo quy tắc\" để xem đầu ra",
   "previewPlaceholder": "// Quy tắc được tạo sẽ xuất hiện ở đây",
   "generateBtn": "🔄 Tạo quy tắc",

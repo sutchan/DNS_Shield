@@ -1,4 +1,4 @@
-// src/app/Home.tsx v2.2.5
+// src/app/Home.tsx v2.2.7
 'use client';
 import React, { useState, useRef } from 'react';
 import './globals.css';
@@ -195,6 +195,8 @@ export default function Home() {
           syncOutputScroll={syncOutputScroll}
           updateSettings={updateSettings}
           setSettings={setSettings}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
       </main>
 

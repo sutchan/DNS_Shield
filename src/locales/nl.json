@@ -33,6 +33,8 @@
   "blockIPv6": "Blokkeer IPv6",
   "dedup": "Automatisch dubbels verwijderen",
   "removeWildcard": "Jokertekens verwijderen",
+  "lightMode": "Lichte modus",
+  "darkMode": "Donkere modus",
   "mergeInfo": "Klik op \"Genereer regels\" om uitvoer weer te geven",
   "previewPlaceholder": "// Gegenereerde regels worden hier weergegeven",
   "generateBtn": "🔄 Genereer regels",

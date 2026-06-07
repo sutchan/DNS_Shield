@@ -33,6 +33,8 @@
   "blockIPv6": "阻止 IPv6",
   "dedup": "自动去重",
   "removeWildcard": "移除通配符",
+  "lightMode": "浅色模式",
+  "darkMode": "深色模式",
   "mergeInfo": "点击\"生成规则\"查看输出",
   "previewPlaceholder": "// 生成的规则将显示在这里",
   "generateBtn": "🔄 生成规则",
