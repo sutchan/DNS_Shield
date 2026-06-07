@@ -1,206 +1,79 @@
-# DNS Shield - 路由器级全局广告防护
+# DNS Shield - 路由器广告过滤工具
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-2.2.6-green)](https://github.com/sutchan/DNS_Shield)
+基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告和保护隐私。
 
-基于 DNS 的路由器广告过滤规则库，提供 Web 管理界面。
+## 功能简介
 
-## 简介
+- **广告拦截** - 过滤网页广告、视频广告、App 广告
+- **支付保护** - 屏蔽扫码支付跳转链接（微信、支付宝）
+- **隐私防护** - 阻止追踪器和数据采集
+- **多设备生效** - 路由器设置一次，所有连接设备自动生效
+- **多种格式支持** - Dnsmasq、Hosts、AdGuard 等格式
+- **白名单管理** - 通过网页工具管理白名单
 
-本项目提供基于 dnsmasq/hosts 的广告过滤解决方案，包含：
+## 快速开始
 
-- **473+ 拦截域名** - 本地广告和追踪域名过滤（使用预设源可扩展至 6766+）
-- **广告屏蔽** - 过滤主流广告域名、App 广告、网页广告
-- **支付二维码屏蔽** - 屏蔽微信/支付宝等支付二维码跳转链接
-- **追踪防护** - 阻止数据采集和用户追踪
-- **Web 管理工具** - 通过浏览器生成自定义过滤清单
-- **多种输出格式** - 支持 Dnsmasq、Hosts、AdGuard 和白名单格式
-- **单一数据源工作流** - 一个域名清单生成所有输出格式
-- **路由器兼容** - 支持梅林、OpenWrt、小米、华硕、TP-Link 等
-- **白名单管理** - 独立的白名单编辑界面，支持导入/导出白名单
-- **多语言支持** - 支持 16 种语言，可在界面上切换
-- **Next.js 框架** - v2.2.5 版本已迁移到现代化的 Next.js 框架
+### 第一步：下载过滤规则
 
-## 功能特性
+根据你的路由器类型下载对应文件：
 
-### 广告过滤
-- **视频广告**：优酷、爱奇艺、腾讯视频等视频平台的广告域名
-- **App 广告**：手机应用内置广告、推送广告
-- **网页广告**：横幅广告、弹窗广告、联盟广告
-- **精准广告**：百度、字节跳动等广告投放域名
+| 路由器 | 下载文件 |
+|--------|----------|
+| 梅林/OpenWrt | [dnsmasq.conf](dnsmasq.conf) |
+| 小米/华硕/TP-Link | [hosts.txt](hosts.txt) |
+| AdGuard 用户 | [adguard.txt](adguard.txt) |
 
-### 支付二维码屏蔽（核心功能）
-- **微信广告**：搜一搜广告、视频号广告、小程序广告
-- **QQ 广告**：QQ 群广告、QQ 浏览器广告
-- **支付跳转**：屏蔽支付二维码中间页跳转链接
-- **小程序广告**：微信小程序广告、QQ 小程序广告
+### 第二步：导入路由器
 
-### 追踪防护
-- **数据采集**：阻止分析、统计、埋点域名
-- **用户追踪**：屏蔽行为分析、兴趣推荐追踪
+**梅林固件（华硕）**
+- 路径：软件中心 → DNS 设置 → 自定义 dnsmasq
+- 将 `dnsmasq.conf` 内容复制到配置框中
 
-## 使用方法
-
-### 方式一：Dnsmasq 格式
-
-适用于支持自定义 dnsmasq 配置的路由器。
-
-#### 梅林固件（华硕路由器）
-
-**路径：** 软件中心 → DNS 设置 → 自定义 dnsmasq
-
-复制 `dnsmasq.conf` 的全部内容，粘贴到自定义 dnsmasq 配置中。
-
-#### OpenWrt
-
+**OpenWrt**
 ```bash
 curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf >> /etc/dnsmasq.conf
 ```
 
-### 方式二：Hosts 格式
+**小米路由器**
+- 路径：设置 → 广告拦截 → 自定义 hosts
+- 导入 `hosts.txt`
 
-适用于支持自定义 hosts 文件的路由器。
+详细设置方法请查看 [使用指南](docs/GLOBAL_USAGE.md)。
 
-#### 小米路由器
+## 在线工具
 
-**路径：** 设置 → 广告拦截 → 自定义 hosts
+如需自定义域名列表或生成其他格式，可使用 Web 管理工具。
 
-将 `hosts.txt` 导入路由器的广告屏蔽设置。
-
-#### 华硕路由器（官方固件）
-
-**路径：** 高级设置 → 局域网 → DHCP 服务器 → 自定义 hosts 文件
-
-#### TP-Link 路由器
-
-**路径：** 高级 → 网络 → 互联网 → 自定义 hosts
-
-#### OpenWrt
-
-```bash
-# 方式一：通过 LuCI
-# 服务 → DNS 和 DHCP → 额外 hosts 字段
-
-# 方式二：通过命令行
-curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt >> /etc/hosts
-```
-
-#### 其他路由器
-
-大多数支持自定义 hosts 的路由器都可以使用相同的方法：
-
-1. 从仓库下载 `hosts.txt`
-2. 进入路由器管理后台
-3. 导航到 DNS/hosts 设置
-4. 导入 hosts 文件
+部署方法请查看 [部署指南](docs/DEPLOYMENT.md)。
 
 ## 文件说明
 
-| 文件 | 说明 |
+| 文件 | 用途 |
 |------|------|
-| `dnsmasq.conf` | 主 dnsmasq 过滤列表（`address=/domain/0.0.0.0` 格式） |
-| `hosts.txt` | 路由器 hosts 文件（`0.0.0.0 domain` 格式） |
-| `adguard.txt` | AdGuard 浏览器扩展/软件格式（`\|\|domain^`） |
-| `whitelist.txt` | 白名单文件（包含需要允许访问的域名） |
-| `src/app/` | Next.js 源代码目录，包含管理界面逻辑 |
-| `domains.txt` | 统一域名列表（每行一个域名，数据源） |
+| `dnsmasq.conf` | Dnsmasq 路由器格式 |
+| `hosts.txt` | 标准 hosts 格式 |
+| `adguard.txt` | AdGuard 格式 |
+| `whitelist.txt` | 白名单（需要放行的域名） |
+| `domains.txt` | 统一域名数据源 |
 
-### 直接使用已生成的文件
+## 常见问题
 
-本项目已提供预生成的过滤规则文件，可直接下载使用：
+**Q: 为什么过滤规则不起效？**
+- 清除浏览器缓存
+- 重启路由器 DNS 缓存
+- 检查路由器 DNS 设置是否生效
 
-| 文件 | 适用场景 | 下载链接 |
-|------|----------|----------|
-| [dnsmasq.conf](dnsmasq.conf) | 梅林/OpenWrt 等支持 dnsmasq 的路由器 | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf) |
-| [hosts.txt](hosts.txt) | 小米/华硕/TP-Link 等支持 hosts 的路由器 | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt) |
-| [adguard.txt](adguard.txt) | AdGuard 浏览器扩展/AdGuard Home | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/adguard.txt) |
-| [whitelist.txt](whitelist.txt) | 白名单（需要允许的域名） | [下载](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/whitelist.txt) |
+**Q: 如何添加白名单？**
+- 使用 Web 管理工具的的白名单功能
+- 或手动编辑 `whitelist.txt`，每行一个域名
 
-### 白名单使用说明
+**Q: 规则多久更新一次？**
+- 建议定期从仓库下载最新规则
 
-`whitelist.txt` 文件包含需要允许访问的域名，适用于以下场景：
+## 参与贡献
 
-1. **AdGuard 浏览器扩展/AdGuard Home**：
-   - 将白名单文件导入 AdGuard 的白名单设置
-   - 或复制文件内容到 AdGuard 的自定义白名单规则中
-
-2. **路由器配置**：
-   - 对于支持白名单功能的路由器，可将白名单域名添加到对应设置中
-   - 确保白名单规则优先级高于黑名单规则
-
-3. **自定义过滤**：
-   - 当某些网站因过滤规则无法正常访问时，可将相关域名添加到白名单
-   - 白名单格式为 `+域名`，例如：`+api.example.com`
-
-> **提示**：这些文件会定期更新，建议收藏本仓库或 Watch 获取更新通知。
-
-## Web 管理界面
-
-项目现在基于 Next.js 开发，你可以：
-
-- 从 URL 或本地文件加载域名列表
-- 选择预设源（AdGuard、EasyList、NeoHosts、小米广告）
-- 生成 Dnsmasq、Hosts、AdGuard 和白名单格式输出
-- 配置 IP 地址（IPv4/IPv6）
-- 自动去重和排序域名
-- 独立的白名单编辑界面，支持导入/导出白名单
-- 多语言支持，可在界面上切换 16 种语言
-- 下载生成的文件
-
-## 单一数据源工作流
-
-```
-domains.txt (唯一数据源)
-        ↓
-  Next.js App (Web 工具)
-        ↓
-   ┌────────────┴────────────┐
-   ↓            ↓            ↓
-dnsmasq.conf  hosts.txt  adguard.txt
-        ↓            ↓            ↓
-  (路由器)     (路由器)   (AdGuard)
-        ↓
-  白名单输出
-        ↓
-whitelist.txt
-```
-
-## 域名格式说明
-
-| 格式 | 说明 | 示例 |
-|------|------|------|
-| 纯域名 | 黑名单，阻止解析 | `ad.example.com` |
-| `+` 开头 | 白名单，允许解析 | `+api.example.com` |
-| `!` 开头 | 注释域名 | `!comment.example.com` |
-| `@` 开头 | 自定义 DNS 指向 | `@example.com=127.0.0.1` |
-
-## 贡献
-
-请参考 [贡献指南](CONTRIBUTING.md) 了解如何为项目做出贡献。
-
-## 测试
-
-运行测试：
-
-```bash
-pnpm test
-```
-
-## 部署
-
-请参考 [部署指南](DEPLOYMENT.md) 了解如何部署 Web 管理工具。
-
-## 安全
-
-请参考 [安全指南](SECURITY.md) 了解项目的安全最佳实践。
+欢迎提交域名规则和问题反馈，请查看 [贡献指南](docs/CONTRIBUTING.md)。
 
 ## 许可证
 
 MIT License
-
-## 变更日志
-
-请参考 [变更日志](CHANGELOG.md) 了解项目的版本历史和变更内容。
-
----
-
-[English Version](README.en.md)
