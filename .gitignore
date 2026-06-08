@@ -12,6 +12,7 @@ lerna-debug.log*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
@@ -21,6 +22,7 @@ lerna-debug.log*
 # Environment variables
 .env
 .env.local
+.env.*
 .env.development.local
 .env.test.local
 .env.production.local
@@ -28,6 +30,8 @@ lerna-debug.log*
 # Testing
 coverage
 *.lcov
+.pytest_cache/
+test-output/
 
 # Production
 build
@@ -38,6 +42,10 @@ build
 .env.development.local
 .env.test.local
 .env.production.local
+.cache
+*.tmp
+tmp/
+cache/
 
 # Package manager
 package-lock.json
@@ -50,10 +58,14 @@ dist/
 dist-ssr/
 *.local
 .next/trace
+/.next
+.next/
 
 # Node.js
 node_modules/
 
 # Global cache directory (should be in user home)
 .dns-shield/
-.next/
+
+# Python cache (if any)
+__pycache__/
