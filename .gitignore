@@ -1,37 +1,71 @@
-# Node modules (dependencies)
-node_modules/
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# Build outputs
-dist/
-build/
-
-# Test/coverage outputs
-coverage/
-.pytest_cache/
-test-output/
-
-# OS / editor folders
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
 Thumbs.db
-.vscode/
-.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# Environment / secrets
+# Environment variables
 .env
 .env.local
 .env.*
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Logs and caches
-*.log
-*.log.*
-.cache/
+# Testing
+coverage
+*.lcov
+.pytest_cache/
+test-output/
+
+# Production
+build
+
+# Misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.cache
+*.tmp
 tmp/
 cache/
 
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Next.js
+.next/cache/
+dist/
+dist-ssr/
+*.local
+.next/trace
+/.next
+.next/
+
+# Node.js
+node_modules/
+
+# Global cache directory (should be in user home)
+.dns-shield/
+
 # Python cache (if any)
 __pycache__/
-
-# Misc
-.cache
-*.tmp
-/.next

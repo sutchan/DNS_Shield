@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="DNS Shield - 路由器级广告过滤规则生成工具原型设计">
-    <title>DNS Shield v2.2.8 - UI/UX 原型设计</title>
+    <title>DNS Shield v2.3.0 - UI/UX 原型设计</title>
     <style>
-        /* ==================== 全局样式 ==================== */
+        /* ==================== Apple Design System v2.3.0 ==================== */
         * {
             margin: 0;
             padding: 0;
@@ -14,142 +14,397 @@
         }
 
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #4338ca;
-            --primary-light: #6366f1;
-            --secondary: #10b981;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --info: #3b82f6;
-            --text-primary: #1f2937;
-            --text-secondary: #374151;
-            --text-tertiary: #6b7280;
-            --text-light: #f3f4f6;
-            --bg-primary: #ffffff;
-            --bg-secondary: #f9fafb;
-            --bg-tertiary: #f3f4f6;
-            --border-color: #e5e7eb;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --radius-sm: 0.25rem;
-            --radius-md: 0.375rem;
-            --radius-lg: 0.5rem;
-            --radius-xl: 0.75rem;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            --font-mono: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+            /* Apple-inspired color palette - enhanced */
+            --primary: #007AFF;
+            --primary-dark: #0056CC;
+            --primary-light: #5856D6;
+            --success: #34C759;
+            --warning: #FF9500;
+            --danger: #FF3B30;
+            --info: #5AC8FA;
+            --purple: #AF52DE;
+            --pink: #FF2D55;
+            
+            /* Neutral colors - Apple style */
+            --text-primary: #1D1D1F;
+            --text-secondary: #86868B;
+            --text-tertiary: #C7C7CC;
+            --text-light: #F5F5F7;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F5F5F7;
+            --bg-tertiary: #E5E5EA;
+            --border-color: #D1D1D6;
+            --separator: #C6C6C8;
+            
+            /* Glassmorphism effects */
+            --glass-bg: rgba(255, 255, 255, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            
+            /* Apple-style soft shadows - enhanced */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
+            
+            /* Border radius - Apple style */
+            --radius-xs: 6px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+            --radius-2xl: 32px;
+            
+            /* Smooth transitions - Apple curve */
+            --transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Typography - Apple SF */
+            --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            --font-mono: "SF Mono", "SF Mono", Monaco, Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
+            
+            /* Spacing system - 4px grid */
+            --spacing-1: 4px;
+            --spacing-2: 8px;
+            --spacing-3: 12px;
+            --spacing-4: 16px;
+            --spacing-5: 20px;
+            --spacing-6: 24px;
+            --spacing-8: 32px;
+            --spacing-10: 40px;
+            --spacing-12: 48px;
+            --spacing-16: 64px;
+            --spacing-20: 80px;
+            --spacing-24: 96px;
+            
+            /* Aliases for backward compatibility */
+            --spacing-xs: var(--spacing-1);
+            --spacing-sm: var(--spacing-2);
+            --spacing-md: var(--spacing-4);
+            --spacing-lg: var(--spacing-6);
+            --spacing-xl: var(--spacing-8);
+            --spacing-2xl: var(--spacing-12);
+            --spacing-3xl: var(--spacing-16);
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
             font-family: var(--font-sans);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-secondary);
             min-height: 100vh;
-            padding: 2rem;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* ==================== 文档标题 ==================== */
+        /* ==================== Typography ==================== */
+        h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 700; letter-spacing: -0.02em; }
+        h2 { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 600; letter-spacing: -0.01em; }
+        h3 { font-size: 1.5rem; font-weight: 600; }
+        h4 { font-size: 1.125rem; font-weight: 600; }
+        p { font-size: 1rem; color: var(--text-secondary); }
+
+        /* ==================== Document Header ==================== */
         .doc-header {
-            background: white;
+            background: var(--bg-primary);
             border-radius: var(--radius-xl);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-lg);
+            padding: var(--spacing-3xl) var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-md);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .doc-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), #34C759, #FF9500, var(--primary));
+            background-size: 300% 100%;
+            animation: gradientMove 8s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .doc-header:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
 
         .doc-header h1 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, var(--primary), #5856D6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--spacing-sm);
+            transition: all 0.3s ease;
+        }
+
+        .doc-header:hover h1 {
+            letter-spacing: -0.03em;
         }
 
         .doc-header p {
+            font-size: 1.25rem;
+            font-weight: 500;
             color: var(--text-secondary);
-            font-size: 1.125rem;
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.7;
         }
 
         .doc-header .version {
             display: inline-block;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-full);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: 9999px;
             font-size: 0.875rem;
-            margin-top: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            transition: all 0.3s ease;
         }
 
-        /* ==================== 设计规范部分 ==================== */
+        .doc-header .version:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+        }
+
+        .doc-header .meta {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-2xl);
+            margin-top: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+
+        .doc-header .meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .doc-header .meta-item .icon {
+            width: 32px;
+            height: 32px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* ==================== Design Sections ==================== */
         .design-section {
-            background: white;
+            background: var(--bg-primary);
             border-radius: var(--radius-xl);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-lg);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .design-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+        }
+
+        .design-section:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
         }
 
         .design-section h2 {
-            font-size: 1.75rem;
             color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
             border-bottom: 2px solid var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            position: relative;
+        }
+
+        .design-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--primary);
         }
 
         .design-section h3 {
-            font-size: 1.25rem;
             color: var(--text-primary);
-            margin: 1.5rem 0 1rem;
+            margin: var(--spacing-xl) 0 var(--spacing-md);
+            font-weight: 600;
+            letter-spacing: -0.01em;
         }
 
         .design-section p {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 1rem;
+            margin-bottom: var(--spacing-md);
+            font-size: 1.05rem;
+            line-height: 1.8;
         }
 
-        /* ==================== 颜色展示 ==================== */
+        .design-section ul {
+            color: var(--text-secondary);
+            line-height: 2;
+            margin-left: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* ==================== Color Grid ==================== */
         .color-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin: 1rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
         }
 
         .color-card {
             border-radius: var(--radius-lg);
-            padding: 1rem;
+            padding: var(--spacing-xl) var(--spacing-md);
             text-align: center;
             color: white;
             font-weight: 600;
-            transition: transform 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .color-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .color-card:hover::before {
+            opacity: 1;
         }
 
         .color-card span {
             display: block;
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
-            opacity: 0.9;
+            font-size: 0.8rem;
+            margin-top: var(--spacing-sm);
+            opacity: 0.95;
+            font-weight: 400;
         }
 
-        /* ==================== 设备模拟器 ==================== */
+        /* ==================== Feature Cards ==================== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: linear-gradient(180deg, var(--primary), var(--success));
+            transition: height 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            background: var(--bg-primary);
+            border-color: var(--border-color);
+        }
+
+        .feature-card:hover::before {
+            height: 100%;
+        }
+
+        .feature-card h4 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        .feature-card .tag {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            font-size: 0.7rem;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            margin-right: var(--spacing-sm);
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+        }
+
+        /* ==================== Device Simulator ==================== */
         .device-simulator {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        @media (max-width: 1200px) {
-            .device-simulator {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
+            align-items: start;
         }
 
         .device-container {
@@ -161,111 +416,87 @@
         .device-label {
             font-size: 1.125rem;
             font-weight: 600;
-            color: white;
-            margin-bottom: 1rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
         }
 
         .device-label .size {
             font-size: 0.875rem;
             font-weight: 400;
-            opacity: 0.9;
+            color: var(--text-secondary);
             display: block;
+            margin-top: var(--spacing-xs);
         }
 
-        /* 桌面模拟器 */
+        /* Desktop Frame */
         .desktop-frame {
             width: 100%;
             max-width: 800px;
-            height: 500px;
-            background: #2d2d2d;
-            border-radius: 12px;
-            padding: 8px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            background: #000;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-sm);
+            box-shadow: var(--shadow-lg);
         }
 
         .desktop-screen {
             width: 100%;
-            height: 100%;
-            background: white;
-            border-radius: 8px;
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
             overflow: hidden;
             position: relative;
         }
 
-        /* 平板模拟器 */
+        /* Tablet Frame */
         .tablet-frame {
-            width: 400px;
-            height: 560px;
-            background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
-            border-radius: 24px;
-            padding: 12px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        .tablet-frame::before {
-            content: '';
-            position: absolute;
-            top: 6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 4px;
-            background: #444;
-            border-radius: 2px;
+            width: 360px;
+            height: 480px;
+            background: linear-gradient(145deg, #1D1D1F, #3A3A3C);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-md);
+            box-shadow: var(--shadow-lg);
+            position: relative;
         }
 
         .tablet-screen {
             width: 100%;
             height: 100%;
-            background: white;
-            border-radius: 16px;
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
             overflow: hidden;
         }
 
-        /* 手机模拟器 */
+        /* Phone Frame */
         .phone-frame {
             width: 280px;
             height: 560px;
-            background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
-            border-radius: 32px;
-            padding: 8px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            background: linear-gradient(145deg, #1D1D1F, #3A3A3C);
+            border-radius: 40px;
+            padding: var(--spacing-sm);
+            box-shadow: var(--shadow-lg);
+            position: relative;
         }
 
         .phone-frame::before {
             content: '';
             position: absolute;
-            top: 12px;
+            top: var(--spacing-sm);
             left: 50%;
             transform: translateX(-50%);
             width: 80px;
-            height: 6px;
-            background: #444;
-            border-radius: 3px;
-        }
-
-        .phone-frame::after {
-            content: '';
-            position: absolute;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 40px;
-            border: 2px solid #444;
-            border-radius: 50%;
+            height: 4px;
+            background: #3A3A3C;
+            border-radius: 2px;
         }
 
         .phone-screen {
             width: 100%;
             height: 100%;
-            background: white;
-            border-radius: 24px;
+            background: var(--bg-primary);
+            border-radius: 32px;
             overflow: hidden;
         }
 
-        /* ==================== 应用内容样式 ==================== */
+        /* ==================== App Content ==================== */
         .app-container {
             height: 100%;
             display: flex;
@@ -275,15 +506,15 @@
 
         .app-header {
             background: var(--bg-secondary);
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--separator);
             text-align: center;
         }
 
         .app-header h1 {
             font-size: 1.25rem;
-            color: var(--primary);
-            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-xs);
         }
 
         .app-header .subtitle {
@@ -293,39 +524,47 @@
 
         .main-content {
             flex: 1;
-            padding: 1rem;
+            padding: var(--spacing-md);
             overflow-y: auto;
-            background: var(--bg-tertiary);
+            background: var(--bg-secondary);
+        }
+
+        .main-content.desktop {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
         }
 
         .panel {
-            background: white;
-            border-radius: var(--radius-lg);
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--shadow-sm);
         }
 
         .panel h2 {
             font-size: 0.875rem;
             color: var(--text-primary);
-            margin-bottom: 0.75rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: var(--spacing-sm);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--separator);
+            font-weight: 600;
         }
 
         .stats-compact {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
         }
 
         .stat-badge {
             text-align: center;
-            padding: 0.5rem;
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-md);
+            padding: var(--spacing-sm);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
         }
 
         .stat-value {
@@ -335,14 +574,15 @@
         }
 
         .stat-label {
-            font-size: 0.625rem;
+            font-size: 0.6rem;
             color: var(--text-secondary);
             text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .editor-container {
             display: flex;
-            margin-bottom: 0.75rem;
+            margin-bottom: var(--spacing-md);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
             overflow: hidden;
@@ -350,81 +590,126 @@
         }
 
         .line-numbers {
-            width: 30px;
-            background: var(--bg-tertiary);
-            padding: 0.5rem 0.25rem;
+            width: 36px;
+            background: var(--bg-secondary);
+            padding: var(--spacing-sm);
             font-family: var(--font-mono);
-            font-size: 0.625rem;
-            color: var(--text-secondary);
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
             text-align: right;
             border-right: 1px solid var(--border-color);
         }
 
         .editor {
             flex: 1;
-            padding: 0.5rem;
+            padding: var(--spacing-sm);
             font-family: var(--font-mono);
-            font-size: 0.625rem;
+            font-size: 0.7rem;
             resize: none;
             border: none;
-            background: white;
+            background: var(--bg-primary);
+            color: var(--text-primary);
         }
 
         .editor-actions {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 0.5rem;
+            gap: var(--spacing-sm);
         }
 
         .btn {
-            padding: 0.5rem;
-            border: 1px solid var(--border-color);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: none;
             border-radius: var(--radius-md);
-            font-size: 0.625rem;
+            font-size: 0.7rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
-            background: white;
+            transition: all 0.2s ease;
+            background: var(--bg-secondary);
             color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
         }
 
         .btn:hover {
             background: var(--bg-tertiary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:active::before {
+            width: 200px;
+            height: 200px;
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
         }
 
         .btn-success {
-            background: var(--success);
+            background: linear-gradient(135deg, var(--success), #248A3D);
             color: white;
-            border-color: var(--success);
+            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 6px 16px rgba(52, 199, 89, 0.4);
         }
 
         .format-tabs {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0.25rem;
-            margin-bottom: 0.75rem;
-            background: var(--bg-tertiary);
-            padding: 0.25rem;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-md);
+            background: var(--bg-secondary);
+            padding: var(--spacing-xs);
             border-radius: var(--radius-md);
         }
 
         .format-tab {
-            padding: 0.5rem;
+            padding: var(--spacing-sm);
             border: none;
             background: transparent;
-            font-size: 0.625rem;
+            font-size: 0.7rem;
             cursor: pointer;
             border-radius: var(--radius-sm);
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .format-tab:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
         }
 
         .format-tab.active {
@@ -438,169 +723,199 @@
             border-radius: var(--radius-md);
             overflow: hidden;
             height: 80px;
-            margin-bottom: 0.75rem;
+            margin-bottom: var(--spacing-md);
         }
 
         .output-preview {
             flex: 1;
-            padding: 0.5rem;
+            padding: var(--spacing-sm);
             font-family: var(--font-mono);
-            font-size: 0.625rem;
-            background: white;
+            font-size: 0.65rem;
+            background: var(--bg-primary);
             overflow-y: auto;
+            color: var(--text-primary);
         }
 
         .output-actions {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-        }
-
-        .settings-panel {
-            background: var(--bg-tertiary);
-            padding: 0.75rem;
-            border-radius: var(--radius-md);
-            margin-bottom: 0.75rem;
-        }
-
-        .settings-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .settings-item label {
-            font-size: 0.625rem;
-            color: var(--text-primary);
-            display: block;
-            margin-bottom: 0.25rem;
-        }
-
-        .settings-item input {
-            width: 100%;
-            padding: 0.375rem;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            font-size: 0.625rem;
-        }
-
-        .options-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.625rem;
-        }
-
-        .checkbox-item input {
-            width: 14px;
-            height: 14px;
-        }
-
-        .merge-info {
-            background: var(--bg-tertiary);
-            padding: 0.5rem;
-            border-radius: var(--radius-md);
-            text-align: center;
-            font-size: 0.625rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
+            gap: var(--spacing-sm);
         }
 
         .app-footer {
             background: var(--bg-secondary);
-            padding: 0.75rem;
-            border-top: 1px solid var(--border-color);
+            padding: var(--spacing-sm);
+            border-top: 1px solid var(--separator);
             text-align: center;
-            font-size: 0.625rem;
-            color: var(--text-secondary);
+            font-size: 0.65rem;
+            color: var(--text-tertiary);
         }
 
-        /* ==================== 响应式布局展示 ==================== */
-        .responsive-demo {
+        /* ==================== Layout Showcase ==================== */
+        .layout-showcase {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: var(--spacing-xl);
+            margin: var(--spacing-2xl) 0;
         }
 
-        .responsive-card {
-            background: white;
+        .layout-card {
+            background: var(--bg-primary);
             border-radius: var(--radius-lg);
-            padding: 1.5rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .layout-card:hover {
             box-shadow: var(--shadow-md);
         }
 
-        .responsive-card h3 {
-            font-size: 1.125rem;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-        }
-
-        .breakpoint-visual {
+        .layout-preview {
+            background: var(--bg-secondary);
+            padding: var(--spacing-xl);
+            min-height: 220px;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: var(--spacing-sm);
         }
 
-        .breakpoint-item {
+        .layout-preview-header {
+            background: var(--primary);
+            color: white;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-md);
+            font-size: 0.8rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .layout-preview-body {
+            display: grid;
+            gap: var(--spacing-sm);
+            flex: 1;
+        }
+
+        .layout-preview-body.sidebar {
+            grid-template-columns: 1fr 2fr;
+        }
+
+        .layout-preview-content {
+            background: var(--bg-primary);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-md);
+            font-size: 0.7rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .layout-preview-content.dark {
+            background: var(--bg-tertiary);
+        }
+
+        .layout-info {
+            padding: var(--spacing-lg);
+            border-top: 1px solid var(--separator);
+        }
+
+        .layout-info h4 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .layout-info p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* ==================== State Grid ==================== */
+        .state-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .state-card {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+        }
+
+        .state-card h4 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid var(--separator);
+        }
+
+        .state-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 0.75rem;
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-md);
+            justify-content: space-between;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px dashed var(--border-color);
         }
 
-        .breakpoint-range {
-            font-family: var(--font-mono);
-            font-size: 0.875rem;
-            color: var(--primary);
-            font-weight: 600;
-            min-width: 120px;
+        .state-item:last-child {
+            border-bottom: none;
         }
 
-        .breakpoint-desc {
+        .state-label {
             font-size: 0.875rem;
             color: var(--text-secondary);
         }
 
-        /* ==================== 触控优化展示 ==================== */
+        .state-indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .state-indicator.success { background: var(--success); }
+        .state-indicator.warning { background: var(--warning); }
+        .state-indicator.danger { background: var(--danger); }
+        .state-indicator.info { background: var(--info); }
+        .state-indicator.neutral { background: var(--text-tertiary); }
+
+        /* ==================== Touch Demo ==================== */
         .touch-demo {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-xl);
+            margin: var(--spacing-2xl) 0;
         }
 
         .touch-item {
-            background: white;
-            padding: 1.5rem;
+            background: var(--bg-primary);
+            padding: var(--spacing-xl);
             border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .touch-item:hover {
             box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+            border-color: var(--primary);
         }
 
         .touch-item h4 {
-            font-size: 1rem;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+            font-weight: 600;
         }
 
         .touch-item p {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            margin-bottom: var(--spacing-md);
+            line-height: 1.7;
         }
 
         .touch-visual {
             display: flex;
-            gap: 1rem;
+            gap: var(--spacing-md);
             align-items: center;
         }
 
@@ -608,11 +923,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border-radius: var(--radius-md);
             font-weight: 600;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .touch-target:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+        }
+
+        .touch-target:active {
+            transform: scale(0.95);
         }
 
         .touch-target.small {
@@ -628,159 +953,200 @@
         }
 
         .touch-comparison {
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
-        /* ==================== 无障碍特性 ==================== */
+        /* ==================== Accessibility Features ==================== */
         .a11y-features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
         }
 
         .a11y-card {
-            background: white;
-            padding: 1.5rem;
+            background: var(--bg-primary);
+            padding: var(--spacing-xl);
             border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            border-left: 3px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .a11y-card:hover {
             box-shadow: var(--shadow-md);
-            border-left: 4px solid var(--primary);
+            transform: translateX(4px);
         }
 
         .a11y-card h4 {
-            font-size: 1rem;
             color: var(--text-primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: var(--spacing-sm);
         }
 
         .a11y-card p {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: var(--spacing-sm);
         }
 
         .a11y-card code {
-            background: var(--bg-tertiary);
-            padding: 0.125rem 0.375rem;
+            background: var(--bg-secondary);
+            padding: var(--spacing-xs) var(--spacing-sm);
             border-radius: var(--radius-sm);
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--primary);
+            font-family: var(--font-mono);
         }
 
-        /* ==================== 交互效果 ==================== */
+        .a11y-card .example {
+            background: var(--bg-secondary);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: var(--spacing-sm);
+            font-family: var(--font-mono);
+        }
+
+        /* ==================== Interaction Demo ==================== */
         .interaction-demo {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-xl);
+            margin: var(--spacing-2xl) 0;
         }
 
         .interaction-item {
-            background: white;
-            padding: 1.5rem;
+            background: var(--bg-primary);
+            padding: var(--spacing-xl);
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
         }
 
         .interaction-item h4 {
-            font-size: 1rem;
             color: var(--text-primary);
-            margin-bottom: 1rem;
+            margin-bottom: var(--spacing-lg);
         }
 
         .animation-demo {
             display: flex;
-            gap: 1rem;
+            gap: var(--spacing-md);
             flex-wrap: wrap;
         }
 
         .animation-box {
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: var(--radius-lg);
             color: white;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animation-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .animation-box.hover {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 4px 16px rgba(0, 122, 255, 0.4);
         }
 
         .animation-box.hover:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(0, 122, 255, 0.5);
+        }
+
+        .animation-box.hover:hover::before {
+            opacity: 1;
         }
 
         .animation-box.active {
-            background: var(--secondary);
+            background: linear-gradient(135deg, var(--success), #248A3D);
+            box-shadow: 0 4px 16px rgba(52, 199, 89, 0.4);
         }
 
         .animation-box.active:active {
-            transform: scale(0.95);
+            transform: scale(0.9);
         }
 
         .animation-box.focus {
-            background: var(--info);
-            outline: 2px solid var(--info);
-            outline-offset: 2px;
+            background: linear-gradient(135deg, var(--info), #007AFF);
+            box-shadow: 0 4px 16px rgba(90, 200, 250, 0.4);
+            outline: 3px solid var(--info);
+            outline-offset: 4px;
         }
 
-        /* ==================== 组件库 ==================== */
+        .animation-box:focus {
+            outline: 3px solid var(--primary);
+            outline-offset: 4px;
+        }
+
+        /* ==================== Component Showcase ==================== */
         .component-showcase {
-            background: white;
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: var(--shadow-md);
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            margin: var(--spacing-2xl) 0;
+            box-shadow: var(--shadow-sm);
         }
 
         .component-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: var(--spacing-md);
             align-items: center;
-            padding: 1.5rem;
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-md);
-            margin-bottom: 1rem;
+            padding: var(--spacing-xl);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-lg);
         }
 
         .component-label {
-            font-size: 0.875rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--text-primary);
-            min-width: 120px;
+            min-width: 140px;
         }
 
-        /* 按钮展示 */
         .btn-showcase {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
+            gap: var(--spacing-sm);
         }
 
         .btn-showcase .btn {
-            padding: 0.625rem 1.25rem;
-            font-size: 0.875rem;
+            padding: var(--spacing-md) var(--spacing-lg);
+            font-size: 0.9rem;
             min-height: 44px;
         }
 
-        /* 输入框展示 */
         .input-showcase {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: var(--spacing-md);
         }
 
         .input-item {
             flex: 1;
-            min-width: 200px;
+            min-width: 220px;
         }
 
         .input-item label {
@@ -788,95 +1154,105 @@
             font-size: 0.875rem;
             font-weight: 500;
             color: var(--text-primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: var(--spacing-sm);
         }
 
         .input-item input {
             width: 100%;
-            padding: 0.75rem;
+            padding: var(--spacing-md);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            font-size: 0.875rem;
-            transition: all 0.2s;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
             min-height: 44px;
+            background: var(--bg-primary);
         }
 
         .input-item input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
         }
 
-        /* 复选框展示 */
         .checkbox-showcase {
             display: flex;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: var(--spacing-md);
         }
 
         .checkbox-showcase .checkbox-item {
-            padding: 0.75rem 1rem;
-            background: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--bg-primary);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            font-size: 0.875rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
 
         .checkbox-showcase .checkbox-item:hover {
-            background: var(--bg-tertiary);
+            background: var(--bg-secondary);
+            border-color: var(--primary);
         }
 
         .checkbox-showcase .checkbox-item input {
             width: 18px;
             height: 18px;
+            accent-color: var(--primary);
         }
 
-        /* ==================== 页面流程图 ==================== */
+        /* ==================== Flow Diagram ==================== */
         .flow-diagram {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 1rem;
-            margin: 2rem 0;
-            padding: 2rem;
-            background: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
+            gap: var(--spacing-lg);
+            margin: var(--spacing-2xl) 0;
+            padding: var(--spacing-2xl);
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
         }
 
         .flow-step {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
+            gap: var(--spacing-sm);
             text-align: center;
         }
 
         .flow-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: var(--shadow-sm);
+            font-size: 1.75rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .flow-icon:hover {
+            transform: scale(1.1);
         }
 
         .flow-label {
-            font-size: 0.875rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--text-primary);
         }
 
         .flow-arrow {
             font-size: 2rem;
-            color: var(--primary);
+            color: var(--text-tertiary);
         }
 
         @media (max-width: 768px) {
@@ -889,20 +1265,121 @@
             }
         }
 
-        /* ==================== 页脚 ==================== */
+        /* ==================== Dark Mode Section ==================== */
+        .dark-mode-section {
+            background: #000;
+            color: #F5F5F7;
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .dark-mode-section h2 {
+            color: #F5F5F7;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid #3A3A3C;
+        }
+
+        .dark-mode-section p {
+            color: #A1A1A6;
+        }
+
+        .dark-mode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .dark-mode-card {
+            background: #1D1D1F;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+        }
+
+        .dark-mode-card h4 {
+            color: #F5F5F7;
+            font-size: 1rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .dark-mode-card p {
+            color: #86868B;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .dark-mode-card code {
+            background: #3A3A3C;
+            color: #0A84FF;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+        }
+
+        /* ==================== Breakpoint Table ==================== */
+        .breakpoint-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: var(--spacing-lg) 0;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+        }
+
+        .breakpoint-table th,
+        .breakpoint-table td {
+            padding: var(--spacing-md) var(--spacing-lg);
+            text-align: left;
+            border-bottom: 1px solid var(--separator);
+        }
+
+        .breakpoint-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+        }
+
+        .breakpoint-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .breakpoint-table td {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .breakpoint-table code {
+            background: var(--bg-secondary);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-family: var(--font-mono);
+        }
+
+        /* ==================== Document Footer ==================== */
         .doc-footer {
             text-align: center;
-            padding: 2rem;
-            color: white;
-            font-size: 0.875rem;
+            padding: var(--spacing-2xl);
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
         }
 
         .doc-footer a {
-            color: white;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .doc-footer a:hover {
             text-decoration: underline;
         }
 
-        /* ==================== 打印样式 ==================== */
+        /* ==================== Print Styles ==================== */
         @media print {
             body {
                 background: white;
@@ -910,101 +1387,224 @@
             }
             
             .design-section,
-            .component-showcase {
+            .component-showcase,
+            .dark-mode-section {
                 break-inside: avoid;
                 box-shadow: none;
                 border: 1px solid var(--border-color);
             }
         }
+
+        /* ==================== Responsive ==================== */
+        @media (max-width: 768px) {
+            body {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+
+            .doc-header,
+            .design-section {
+                padding: var(--spacing-xl) var(--spacing-lg);
+            }
+
+            .stats-compact {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .main-content.desktop {
+                grid-template-columns: 1fr;
+            }
+
+            .editor-actions,
+            .output-actions {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .format-tabs {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .feature-grid,
+            .color-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-compact {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .editor-actions,
+            .output-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .tablet-frame,
+            .phone-frame {
+                transform: scale(0.9);
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- 文档标题 -->
     <div class="doc-header">
         <h1>🛡️ DNS Shield</h1>
-        <p>路由器级广告过滤规则生成工具 - UI/UX 原型设计</p>
-        <span class="version">v2.2.8</span>
+        <p>路由器级广告过滤规则生成工具</p>
+        <span class="version">v2.3.0</span>
+        <div class="meta">
+            <div class="meta-item">
+                <span class="icon">📅</span>
+                <span>最后更新：2026年6月</span>
+            </div>
+            <div class="meta-item">
+                <span class="icon">👤</span>
+                <span>设计者：DNS Shield Team</span>
+            </div>
+            <div class="meta-item">
+                <span class="icon">📱</span>
+                <span>桌面 / 平板 / 移动端</span>
+            </div>
+        </div>
     </div>
 
-    <!-- 设计理念 -->
     <div class="design-section">
         <h2>🎨 设计理念</h2>
         <p>
-            DNS Shield 是一个专业的 DNS 广告过滤规则生成工具，我们追求的是<strong>专业、高效、可访问</strong>的设计理念。
-            界面设计强调清晰的信息层次、直观的操作流程和出色的跨设备体验。
+            DNS Shield 采用 Apple 设计语言，追求简洁、优雅、高效的用户体验。
+            界面强调清晰的视觉层次、充足的留白和细腻的动效。
         </p>
         
         <h3>核心设计原则</h3>
         <div class="color-grid">
-            <div class="color-card" style="background: #4f46e5;">
-                专业感
-                <span>使用科技蓝紫色调</span>
+            <div class="color-card" style="background: linear-gradient(135deg, #007AFF, #0056CC);">
+                简洁优雅
+                <span>Apple 风格美学</span>
             </div>
-            <div class="color-card" style="background: #10b981;">
-                高效性
+            <div class="color-card" style="background: linear-gradient(135deg, #34C759, #248A3D);">
+                高效直观
                 <span>清晰的操作流程</span>
             </div>
-            <div class="color-card" style="background: #f59e0b;">
-                可访问
+            <div class="color-card" style="background: linear-gradient(135deg, #FF9500, #C93400);">
+                无障碍优先
                 <span>WCAG AA 标准</span>
             </div>
-            <div class="color-card" style="background: #6366f1;">
-                响应式
+            <div class="color-card" style="background: linear-gradient(135deg, #5AC8FA, #007AFF);">
+                响应式设计
                 <span>完美适配所有设备</span>
+            </div>
+        </div>
+
+        <h3>核心功能模块</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4><span class="tag">输入</span>域名输入</h4>
+                <p>支持手动输入、URL 加载、文件导入三种方式，提供行号显示和语法高亮</p>
+            </div>
+            <div class="feature-card">
+                <h4><span class="tag">预设</span>规则源</h4>
+                <p>内置 AdGuard、EasyList、NeoHosts、小米广告等多个预设源</p>
+            </div>
+            <div class="feature-card">
+                <h4><span class="tag">输出</span>多格式</h4>
+                <p>支持 Dnsmasq、Hosts、AdGuard、白名单四种输出格式</p>
+            </div>
+            <div class="feature-card">
+                <h4><span class="tag">白名单</span>管理</h4>
+                <p>独立的白名单编辑界面，支持导入/导出和批量操作</p>
+            </div>
+            <div class="feature-card">
+                <h4><span class="tag">i18n</span>多语言</h4>
+                <p>支持 16 种语言，界面实时切换，无需刷新页面</p>
+            </div>
+            <div class="feature-card">
+                <h4><span class="tag">主题</span>切换</h4>
+                <p>支持浅色/深色模式切换，记住用户偏好设置</p>
             </div>
         </div>
     </div>
 
-    <!-- 响应式布局 -->
     <div class="design-section">
         <h2>📱 响应式布局策略</h2>
         <p>
             DNS Shield 采用移动优先的响应式设计，确保在桌面、平板和手机等不同设备上都能提供最佳用户体验。
-            我们定义了三个主要断点来适应不同的屏幕尺寸。
+            我们定义了四个主要断点来适应不同的屏幕尺寸。
         </p>
         
-        <div class="responsive-demo">
-            <div class="responsive-card">
-                <h3>桌面端 (≥1024px)</h3>
-                <div class="breakpoint-visual">
-                    <div class="breakpoint-item">
-                        <span class="breakpoint-range">≥ 1280px</span>
-                        <span class="breakpoint-desc">双栏并排布局，输入输出面板并排显示</span>
+        <table class="breakpoint-table">
+            <thead>
+                <tr>
+                    <th>断点</th>
+                    <th>屏幕宽度</th>
+                    <th>布局描述</th>
+                    <th>主要特性</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>手机</td>
+                    <td><code>&lt; 640px</code></td>
+                    <td>单栏堆叠，触控优化</td>
+                    <td>大按钮，全宽输入，全屏模态</td>
+                </tr>
+                <tr>
+                    <td>平板竖屏</td>
+                    <td><code>640px - 767px</code></td>
+                    <td>紧凑单栏</td>
+                    <td>统计信息 2 列，按钮分组</td>
+                </tr>
+                <tr>
+                    <td>平板横屏</td>
+                    <td><code>768px - 1023px</code></td>
+                    <td>自适应单栏/双栏</td>
+                    <td>面板间距增大，触控友好</td>
+                </tr>
+                <tr>
+                    <td>桌面</td>
+                    <td><code>≥ 1024px</code></td>
+                    <td>双栏并排布局</td>
+                    <td>输入输出面板并排，完整功能</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>布局模式</h3>
+        <div class="layout-showcase">
+            <div class="layout-card">
+                <div class="layout-preview">
+                    <div class="layout-preview-header">桌面布局 (≥1024px)</div>
+                    <div class="layout-preview-body sidebar">
+                        <div class="layout-preview-content dark">侧边栏</div>
+                        <div style="display: grid; grid-template-rows: 1fr 1fr; gap: 8px;">
+                            <div class="layout-preview-content">输入面板</div>
+                            <div class="layout-preview-content">输出面板</div>
+                        </div>
                     </div>
-                    <div class="breakpoint-item">
-                        <span class="breakpoint-range">1024px - 1279px</span>
-                        <span class="breakpoint-desc">自适应单栏布局，保持适当间距</span>
-                    </div>
+                </div>
+                <div class="layout-info">
+                    <h4>双栏并排</h4>
+                    <p>侧边导航 + 输入输出面板并排显示，充分利用桌面屏幕空间</p>
                 </div>
             </div>
             
-            <div class="responsive-card">
-                <h3>平板端 (768px - 1023px)</h3>
-                <div class="breakpoint-visual">
-                    <div class="breakpoint-item">
-                        <span class="breakpoint-range">768px - 1023px</span>
-                        <span class="breakpoint-desc">单栏堆叠布局，面板间距增大，触控友好</span>
+            <div class="layout-card">
+                <div class="layout-preview">
+                    <div class="layout-preview-header">移动端布局 (&lt;768px)</div>
+                    <div class="layout-preview-body" style="grid-template-rows: auto auto auto auto auto;">
+                        <div class="layout-preview-content dark">顶部导航</div>
+                        <div class="layout-preview-content">统计信息</div>
+                        <div class="layout-preview-content">输入面板</div>
+                        <div class="layout-preview-content">输出面板</div>
+                        <div class="layout-preview-content dark">底部</div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="responsive-card">
-                <h3>移动端 (&lt;768px)</h3>
-                <div class="breakpoint-visual">
-                    <div class="breakpoint-item">
-                        <span class="breakpoint-range">640px - 767px</span>
-                        <span class="breakpoint-desc">紧凑布局，统计信息垂直排列</span>
-                    </div>
-                    <div class="breakpoint-item">
-                        <span class="breakpoint-range">&lt; 640px</span>
-                        <span class="breakpoint-desc">最小化布局，按钮全宽，操作最简化</span>
-                    </div>
+                <div class="layout-info">
+                    <h4>单栏堆叠</h4>
+                    <p>垂直堆叠布局，触控优先，确保可读性和易操作性</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 设备模拟器 -->
     <div class="design-section">
         <h2>📐 多设备模拟展示</h2>
         <p>
@@ -1013,7 +1613,6 @@
         </p>
         
         <div class="device-simulator">
-            <!-- 桌面端 -->
             <div class="device-container">
                 <div class="device-label">
                     桌面端
@@ -1026,7 +1625,7 @@
                                 <h1>🛡️ DNS Shield</h1>
                                 <p class="subtitle">路由器级广告过滤规则生成工具</p>
                             </div>
-                            <div class="main-content" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="main-content desktop">
                                 <div class="panel">
                                     <h2>输入域名</h2>
                                     <div class="stats-compact">
@@ -1070,14 +1669,13 @@ tracker.example.com</textarea>
                                 </div>
                             </div>
                             <div class="app-footer">
-                                © 2024 DNS Shield v2.2.8
+                                © 2026 DNS Shield v2.3.0
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 平板端 -->
             <div class="device-container">
                 <div class="device-label">
                     平板端
@@ -1111,14 +1709,13 @@ ads.example.com</textarea>
                                 </div>
                             </div>
                             <div class="app-footer">
-                                © 2024 DNS Shield
+                                © 2026 DNS Shield
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 移动端 -->
             <div class="device-container">
                 <div class="device-label">
                     移动端
@@ -1132,15 +1729,15 @@ ads.example.com</textarea>
                                 <p class="subtitle">广告过滤规则</p>
                             </div>
                             <div class="main-content">
-                                <div class="panel" style="padding: 0.75rem;">
-                                    <h2 style="font-size: 0.75rem;">输入</h2>
-                                    <div class="stats-compact" style="grid-template-columns: repeat(2, 1fr); gap: 0.25rem;">
+                                <div class="panel" style="padding: 12px;">
+                                    <h2 style="font-size: 0.8rem;">输入</h2>
+                                    <div class="stats-compact" style="grid-template-columns: repeat(2, 1fr); gap: 4px;">
                                         <div class="stat-badge"><div class="stat-value">125</div><div class="stat-label">域名</div></div>
                                         <div class="stat-badge"><div class="stat-value">120</div><div class="stat-label">黑名单</div></div>
                                     </div>
                                     <div class="editor-container" style="height: 80px;">
-                                        <div class="line-numbers" style="width: 20px;">1<br>2</div>
-                                        <textarea class="editor" style="font-size: 0.5rem;">example.com
+                                        <div class="line-numbers" style="width: 28px;">1<br>2</div>
+                                        <textarea class="editor" style="font-size: 0.6rem;">example.com
 ads.example.com</textarea>
                                     </div>
                                     <div class="editor-actions" style="grid-template-columns: 1fr;">
@@ -1148,8 +1745,8 @@ ads.example.com</textarea>
                                     </div>
                                 </div>
                             </div>
-                            <div class="app-footer" style="padding: 0.5rem; font-size: 0.5rem;">
-                                v2.2.8
+                            <div class="app-footer" style="padding: 8px; font-size: 0.6rem;">
+                                v2.3.0
                             </div>
                         </div>
                     </div>
@@ -1158,18 +1755,17 @@ ads.example.com</textarea>
         </div>
     </div>
 
-    <!-- 触控优化 -->
     <div class="design-section">
         <h2>👆 触控优化</h2>
         <p>
-            移动端交互设计遵循Apple HIG和Material Design指南，确保所有可交互元素都满足最小触控目标尺寸要求，
+            移动端交互设计遵循 Apple HIG 指南，确保所有可交互元素都满足最小触控目标尺寸要求，
             提供流畅的触摸体验。
         </p>
         
         <div class="touch-demo">
             <div class="touch-item">
                 <h4>最小触控目标</h4>
-                <p>所有按钮和交互元素最小尺寸为44×44像素，符合移动设备触控标准。</p>
+                <p>所有按钮和交互元素最小尺寸为 44×44 像素，符合移动设备触控标准。</p>
                 <div class="touch-visual">
                     <div class="touch-target small">36px</div>
                     <span class="touch-comparison">❌ 偏小</span>
@@ -1180,14 +1776,14 @@ ads.example.com</textarea>
             
             <div class="touch-item">
                 <h4>合适的间距</h4>
-                <p>相邻触控目标之间保持至少8px的间距，防止误触。</p>
+                <p>相邻触控目标之间保持至少 8px 的间距，防止误触。</p>
                 <div class="touch-visual" style="flex-direction: column; align-items: flex-start;">
                     <div style="display: flex; gap: 4px;">
                         <div class="touch-target large">A</div>
                         <div class="touch-target large">B</div>
                     </div>
                     <span class="touch-comparison">❌ 间距过小 (4px)</span>
-                    <div style="display: flex; gap: 12px; margin-top: 0.5rem;">
+                    <div style="display: flex; gap: 12px; margin-top: 8px;">
                         <div class="touch-target large">A</div>
                         <div class="touch-target large">B</div>
                     </div>
@@ -1201,321 +1797,206 @@ ads.example.com</textarea>
                 <div class="touch-visual">
                     <div class="animation-box hover">悬停</div>
                     <div class="animation-box active">按下</div>
-                    <div class="animation-box" style="background: #9ca3af; cursor: not-allowed;">禁用</div>
+                    <div class="animation-box" style="background: #C7C7CC; cursor: not-allowed;">禁用</div>
                 </div>
+            </div>
+        </div>
+
+        <h3>手势支持</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>点击</h4>
+                <p>所有按钮和可点击元素支持点击操作，有明显的按下反馈</p>
+            </div>
+            <div class="feature-card">
+                <h4>长按</h4>
+                <p>编辑器支持长按选择文字，域名列表支持长按编辑单条</p>
+            </div>
+            <div class="feature-card">
+                <h4>滑动</h4>
+                <p>移动端支持左右滑动切换功能面板（输入/输出）</p>
+            </div>
+            <div class="feature-card">
+                <h4>下拉刷新</h4>
+                <p>预设源列表支持下拉刷新获取最新数据</p>
             </div>
         </div>
     </div>
 
-    <!-- 无障碍特性 -->
     <div class="design-section">
         <h2>♿ 无障碍设计</h2>
         <p>
             DNS Shield 遵循 WCAG 2.1 AA 级标准，确保色盲、低视力等特殊用户群体也能正常使用应用。
-            我们通过语义化HTML、ARIA属性和适当的颜色对比度来实现这一点。
+            我们通过语义化 HTML、ARIA 属性和适当的颜色对比度来实现这一点。
         </p>
         
         <div class="a11y-features">
             <div class="a11y-card">
                 <h4>ARIA 属性</h4>
-                <p>
-                    使用 <code>role</code>、<code>aria-label</code>、<code>aria-expanded</code> 等属性增强屏幕阅读器支持。
-                </p>
+                <p>使用 role、aria-label、aria-expanded 等属性增强屏幕阅读器支持。</p>
+                <div class="example">
+                    &lt;button role="tab" aria-selected="true" aria-label="切换到 Hosts 格式"&gt;
+                </div>
             </div>
             
             <div class="a11y-card">
                 <h4>颜色对比度</h4>
-                <p>
-                    所有文字与背景的对比度至少达到 4.5:1（普通文字）或 3:1（大文字），符合 WCAG AA 标准。
-                </p>
+                <p>所有文本与背景的对比度至少达到 4.5:1，确保可读性。</p>
+                <div class="example">
+                    文本 #1D1D1F / 背景 #FFFFFF → 对比度 21:1 ✓
+                </div>
             </div>
             
             <div class="a11y-card">
                 <h4>键盘导航</h4>
-                <p>
-                    所有功能都可通过键盘操作，使用 <code>Tab</code> 键导航，<code>Enter</code> 或 <code>Space</code> 键激活。
-                </p>
+                <p>所有交互元素都可以通过键盘访问，并有清晰的焦点指示。</p>
+                <div class="example">
+                    :focus-visible { outline: 3px solid #007AFF; }
+                </div>
             </div>
             
             <div class="a11y-card">
-                <h4>焦点指示器</h4>
-                <p>
-                    使用明显的 <code>:focus-visible</code> 样式，为键盘用户提供清晰的焦点提示。
-                </p>
-            </div>
-            
-            <div class="a11y-card">
-                <h4>语义化HTML</h4>
-                <p>
-                    正确使用 <code>&lt;header&gt;</code>、<code>&lt;main&gt;</code>、<code>&lt;footer&gt;</code> 等语义化标签。
-                </p>
-            </div>
-            
-            <div class="a11y-card">
-                <h4>屏幕阅读器文本</h4>
-                <p>
-                    图标和装饰性元素使用 <code>.sr-only</code> 类隐藏，但保留必要的描述文本。
-                </p>
+                <h4>语义化标签</h4>
+                <p>使用正确的 HTML5 语义标签，如 header、nav、main、section、footer 等。</p>
+                <div class="example">
+                    &lt;nav role="navigation" aria-label="主导航"&gt;
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 交互效果 -->
     <div class="design-section">
-        <h2>✨ 交互效果与动画</h2>
+        <h2>✨ 交互效果</h2>
         <p>
-            精心设计的微交互和过渡动画提升用户体验，让界面更加生动和响应迅速。
-            所有动画都遵循性能优先的原则，避免造成视觉干扰。
+            精心设计的微交互和动画效果，提升用户体验的同时保持简洁高效。
         </p>
         
         <div class="interaction-demo">
             <div class="interaction-item">
-                <h4>按钮状态</h4>
+                <h4>悬停效果</h4>
                 <div class="animation-demo">
                     <div class="animation-box hover">悬停</div>
-                    <div class="animation-box active">按下</div>
-                    <div class="animation-box focus">焦点</div>
+                    <div class="animation-box hover" style="background: linear-gradient(135deg, #34C759, #248A3D);">渐变</div>
+                    <div class="animation-box hover" style="background: #FF9500;">缩放</div>
                 </div>
             </div>
             
             <div class="interaction-item">
-                <h4>面板展开/收起</h4>
-                <p>
-                    使用 <code>max-height</code> 和 <code>cubic-bezier</code> 实现流畅的展开收起动画，
-                    持续时间 300ms。
-                </p>
-                <div style="background: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md);">
-                    <div style="background: white; padding: 0.75rem; border-radius: var(--radius-md); margin-bottom: 0.5rem; animation: slideDown 0.3s ease-out;">
-                        展开的面板
-                    </div>
-                    <div style="font-size: 0.75rem; color: var(--text-secondary);">
-                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                    </div>
-                </div>
-            </div>
-            
-            <div class="interaction-item">
-                <h4>涟漪效果</h4>
-                <p>
-                    按钮点击时产生涟漪效果，提供即时的视觉反馈。
-                    使用 CSS <code>transform</code> 实现，不影响性能。
-                </p>
+                <h4>状态反馈</h4>
                 <div class="animation-demo">
-                    <div class="animation-box hover" style="position: relative; overflow: hidden;">
-                        点击我
-                        <div style="position: absolute; border-radius: 50%; background: rgba(255,255,255,0.3); width: 20px; height: 20px; animation: ripple 0.6s linear;"></div>
-                    </div>
+                    <div class="animation-box active">成功</div>
+                    <div class="animation-box" style="background: #FF9500;">警告</div>
+                    <div class="animation-box" style="background: #FF3B30;">错误</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 组件库 -->
     <div class="component-showcase">
-        <h2 style="font-size: 1.75rem; color: var(--text-primary); margin-bottom: 1.5rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.75rem;">
-            🧩 组件库
-        </h2>
+        <h2 style="margin-bottom: 24px;">🧩 组件库</h2>
         
-        <h3 style="font-size: 1.25rem; color: var(--text-primary); margin: 1.5rem 0;">按钮</h3>
         <div class="component-row">
-            <span class="component-label">主要按钮</span>
+            <div class="component-label">按钮</div>
             <div class="btn-showcase">
-                <button class="btn btn-primary">主要按钮</button>
-                <button class="btn btn-success">成功按钮</button>
-                <button class="btn btn-outline">描边按钮</button>
-                <button class="btn" disabled>禁用按钮</button>
+                <button class="btn">默认</button>
+                <button class="btn btn-primary">主按钮</button>
+                <button class="btn btn-success">成功</button>
+                <button class="btn" style="background: #FF9500; color: white;">警告</button>
+                <button class="btn" style="background: #FF3B30; color: white;">危险</button>
             </div>
         </div>
-        
-        <h3 style="font-size: 1.25rem; color: var(--text-primary); margin: 1.5rem 0;">输入框</h3>
+
         <div class="component-row">
-            <span class="component-label">文本输入</span>
+            <div class="component-label">输入框</div>
             <div class="input-showcase">
                 <div class="input-item">
-                    <label>默认输入框</label>
-                    <input type="text" placeholder="请输入内容...">
+                    <label>默认状态</label>
+                    <input type="text" placeholder="请输入内容">
                 </div>
                 <div class="input-item">
-                    <label>聚焦输入框</label>
-                    <input type="text" placeholder="已聚焦状态" style="border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);">
+                    <label>聚焦状态</label>
+                    <input type="text" value="聚焦时的效果" style="border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);">
                 </div>
             </div>
         </div>
-        
-        <h3 style="font-size: 1.25rem; color: var(--text-primary); margin: 1.5rem 0;">复选框</h3>
+
         <div class="component-row">
-            <span class="component-label">选项</span>
+            <div class="component-label">复选框</div>
             <div class="checkbox-showcase">
                 <label class="checkbox-item">
                     <input type="checkbox" checked>
-                    <span>已选中选项</span>
+                    已选中
                 </label>
                 <label class="checkbox-item">
                     <input type="checkbox">
-                    <span>未选中选项</span>
+                    未选中
                 </label>
                 <label class="checkbox-item">
                     <input type="checkbox" disabled>
-                    <span>禁用选项</span>
+                    已禁用
                 </label>
             </div>
         </div>
-        
-        <h3 style="font-size: 1.25rem; color: var(--text-primary); margin: 1.5rem 0;">标签页</h3>
-        <div class="component-row">
-            <span class="component-label">格式切换</span>
-            <div class="format-tabs" style="max-width: 400px;">
-                <button class="format-tab active">Hosts</button>
-                <button class="format-tab">Dnsmasq</button>
-                <button class="format-tab">AdGuard</button>
-                <button class="format-tab">白名单</button>
-            </div>
-        </div>
-        
-        <h3 style="font-size: 1.25rem; color: var(--text-primary); margin: 1.5rem 0;">统计数据</h3>
-        <div class="component-row">
-            <span class="component-label">统计徽章</span>
-            <div class="stats-compact" style="max-width: 500px;">
-                <div class="stat-badge"><div class="stat-value">125</div><div class="stat-label">域名</div></div>
-                <div class="stat-badge"><div class="stat-value">120</div><div class="stat-label">黑名单</div></div>
-                <div class="stat-badge"><div class="stat-value">5</div><div class="stat-label">白名单</div></div>
-                <div class="stat-badge"><div class="stat-value">118</div><div class="stat-label">有效</div></div>
-                <div class="stat-badge"><div class="stat-value">7</div><div class="stat-label">注释</div></div>
-            </div>
-        </div>
     </div>
 
-    <!-- 用户流程 -->
     <div class="design-section">
-        <h2>🔄 用户操作流程</h2>
-        <p>
-            DNS Shield 的设计遵循简单直接的工作流程：输入域名 → 解析处理 → 选择格式 → 生成规则 → 下载使用。
-            每一步都经过优化，确保用户能够快速完成任务。
-        </p>
-        
+        <h2>🔄 工作流程</h2>
         <div class="flow-diagram">
             <div class="flow-step">
                 <div class="flow-icon">📝</div>
-                <span class="flow-label">输入域名</span>
+                <div class="flow-label">输入域名</div>
             </div>
-            <span class="flow-arrow">→</span>
+            <div class="flow-arrow">→</div>
+            <div class="flow-step">
+                <div class="flow-icon">🔍</div>
+                <div class="flow-label">解析处理</div>
+            </div>
+            <div class="flow-arrow">→</div>
             <div class="flow-step">
                 <div class="flow-icon">⚙️</div>
-                <span class="flow-label">解析处理</span>
+                <div class="flow-label">生成规则</div>
             </div>
-            <span class="flow-arrow">→</span>
+            <div class="flow-arrow">→</div>
             <div class="flow-step">
-                <div class="flow-icon">📋</div>
-                <span class="flow-label">选择格式</span>
-            </div>
-            <span class="flow-arrow">→</span>
-            <div class="flow-step">
-                <div class="flow-icon">✨</div>
-                <span class="flow-label">生成规则</span>
-            </div>
-            <span class="flow-arrow">→</span>
-            <div class="flow-step">
-                <div class="flow-icon">⬇️</div>
-                <span class="flow-label">下载使用</span>
+                <div class="flow-icon">💾</div>
+                <div class="flow-label">导出文件</div>
             </div>
         </div>
     </div>
 
-    <!-- 设计规格 -->
-    <div class="design-section">
-        <h2>📐 设计规格</h2>
+    <div class="dark-mode-section">
+        <h2>🌙 深色模式</h2>
+        <p>
+            支持系统跟随和手动切换的深色模式，采用 Apple 的深色设计语言，
+            使用纯黑背景减少 OLED 屏幕功耗。
+        </p>
         
-        <h3>颜色系统</h3>
-        <div class="color-grid">
-            <div class="color-card" style="background: #4f46e5;">
-                Primary
-                <span>#4f46e5</span>
+        <div class="dark-mode-grid">
+            <div class="dark-mode-card">
+                <h4>系统跟随</h4>
+                <p>自动检测系统主题设置，实时切换深色/浅色模式</p>
             </div>
-            <div class="color-card" style="background: #4338ca;">
-                Primary Dark
-                <span>#4338ca</span>
+            <div class="dark-mode-card">
+                <h4>偏好记忆</h4>
+                <p>记住用户的主题选择，下次访问时自动应用</p>
             </div>
-            <div class="color-card" style="background: #6366f1;">
-                Primary Light
-                <span>#6366f1</span>
+            <div class="dark-mode-card">
+                <h4>平滑过渡</h4>
+                <p><code>transition: all 0.3s ease</code> 流畅的主题切换动画</p>
             </div>
-            <div class="color-card" style="background: #10b981;">
-                Success
-                <span>#10b981</span>
-            </div>
-            <div class="color-card" style="background: #ef4444;">
-                Danger
-                <span>#ef4444</span>
-            </div>
-            <div class="color-card" style="background: #f59e0b;">
-                Warning
-                <span>#f59e0b</span>
-            </div>
-            <div class="color-card" style="background: #1f2937;">
-                Text Primary
-                <span>#1f2937</span>
-            </div>
-            <div class="color-card" style="background: #374151;">
-                Text Secondary
-                <span>#374151</span>
+            <div class="dark-mode-card">
+                <h4>真黑背景</h4>
+                <p>使用 #000000 纯黑背景，适合 OLED 屏幕省电</p>
             </div>
         </div>
-        
-        <h3>字体系统</h3>
-        <p>
-            <strong>主要字体：</strong>系统字体栈（-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, ...）<br>
-            <strong>代码字体：</strong>SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New"
-        </p>
-        
-        <h3>间距系统</h3>
-        <p>
-            使用 4px 基础单位的间距系统：<br>
-            <code>0.25rem (4px)</code> | <code>0.5rem (8px)</code> | <code>0.75rem (12px)</code> | <code>1rem (16px)</code> | <code>1.5rem (24px)</code> | <code>2rem (32px)</code>
-        </p>
-        
-        <h3>圆角系统</h3>
-        <p>
-            <code>0.25rem (4px)</code> - 小圆角（输入框、按钮）<br>
-            <code>0.5rem (8px)</code> - 中圆角（卡片、面板）<br>
-            <code>0.75rem (12px)</code> - 大圆角（主要容器、模态框）
-        </p>
-        
-        <h3>阴影系统</h3>
-        <p>
-            <strong>阴影小：</strong><code>0 1px 2px rgba(0, 0, 0, 0.05)</code><br>
-            <strong>阴影中：</strong><code>0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)</code><br>
-            <strong>阴影大：</strong><code>0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)</code>
-        </p>
     </div>
 
-    <!-- 页脚 -->
     <div class="doc-footer">
-        <p>
-            DNS Shield UI/UX 原型设计 v2.2.8<br>
-            设计文档由 <a href="#">DNS Shield Team</a> 提供<br>
-            最后更新：2024年
+        <p>DNS Shield v2.3.0 UI/UX 原型设计 | 采用 Apple 设计风格</p>
+        <p style="margin-top: 8px;">
+            <a href="#">查看完整文档</a> · 
+            <a href="#">反馈建议</a>
         </p>
     </div>
-
-    <!-- 动画样式 -->
-    <style>
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-    </style>
 </body>
 </html>
