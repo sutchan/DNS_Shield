@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0]
+
+### Added
+- Enhanced Apple design system with glassmorphism effects
+- Added comprehensive animation specifications (elastic curves, micro-interactions)
+- Added visual depth and layering specifications
+- Added accessibility guidelines and ARIA attributes
+- Added 16 language internationalization support (ar, cs, en, es, hi, id, it, nl, pl, ru, sv, th, tr, vi, zh-cn, zh-tw)
+- Added comprehensive design tokens (colors, shadows, spacing, typography)
+- Added PWA support with service worker and manifest
+
+### Changed
+- Complete UI/UX redesign following Apple design principles
+- Updated color palette to Apple blue (#007AFF) as primary color
+- Enhanced shadow system with multi-layer depth
+- Updated transition curves to Apple-style cubic-bezier animations
+- Improved responsive design for mobile devices
+- Synchronized all file version numbers to v2.3.0
+- Updated OpenSpec documentation with new design specifications
+- Updated prototype design with enhanced visual effects
+- Updated global CSS with complete design system variables
+- Verified and fixed all code quality issues via lint
+
+### Fixed
+- Fixed theme color inconsistency in layout.tsx
+- Fixed SPEC.md component list accuracy
+- Fixed version number consistency across all files
+
 ## [2.2.5]
 
 ### Changed

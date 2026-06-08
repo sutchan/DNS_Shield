@@ -10,6 +10,7 @@
 - **多设备生效** - 路由器设置一次，所有连接设备自动生效
 - **多种格式支持** - Dnsmasq、Hosts、AdGuard 等格式
 - **白名单管理** - 通过网页工具管理白名单
+- **国际化支持** - 支持 16 种语言
 
 ## 快速开始
 
@@ -56,6 +57,34 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf 
 | `whitelist.txt` | 白名单（需要放行的域名） |
 | `domains.txt` | 统一域名数据源 |
 
+## 技术特性
+
+- **Apple 设计风格** - 现代化 UI/UX，采用 Apple 设计语言
+- **响应式布局** - 完美支持桌面端和移动端
+- **深色模式** - 支持浅色/深色模式切换
+- **PWA 支持** - 可安装到桌面，离线可用
+- **TypeScript** - 完整的类型安全
+- **SSR/SSG** - Next.js 框架支持服务器端渲染
+
+## 开发
+
+```bash
+# 安装依赖
+npm install
+
+# 开发模式
+npm run dev
+
+# 构建生产版本
+npm run build
+
+# 运行测试
+npm test
+
+# 代码检查
+npm run lint
+```
+
 ## 常见问题
 
 **Q: 为什么过滤规则不起效？**
@@ -77,3 +106,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf 
 ## 许可证
 
 MIT License
+
+## 版本
+
+当前版本：v2.3.0
