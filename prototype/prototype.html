@@ -6,7 +6,7 @@
     <meta name="description" content="DNS Shield - 路由器级广告过滤规则生成工具原型设计">
     <title>DNS Shield v2.3.0 - UI/UX 原型设计</title>
     <style>
-        /* ==================== Apple Design System ==================== */
+        /* ==================== Apple Design System v2.3.0 ==================== */
         * {
             margin: 0;
             padding: 0;
@@ -14,47 +14,77 @@
         }
 
         :root {
-            /* Apple-inspired color palette */
+            /* Apple-inspired color palette - enhanced */
             --primary: #007AFF;
             --primary-dark: #0056CC;
+            --primary-light: #5856D6;
             --success: #34C759;
             --warning: #FF9500;
             --danger: #FF3B30;
             --info: #5AC8FA;
+            --purple: #AF52DE;
+            --pink: #FF2D55;
             
-            /* Neutral colors */
+            /* Neutral colors - Apple style */
             --text-primary: #1D1D1F;
             --text-secondary: #86868B;
             --text-tertiary: #C7C7CC;
+            --text-light: #F5F5F7;
             --bg-primary: #FFFFFF;
             --bg-secondary: #F5F5F7;
             --bg-tertiary: #E5E5EA;
             --border-color: #D1D1D6;
             --separator: #C6C6C8;
             
-            /* Shadows (Apple-style soft shadows) */
+            /* Glassmorphism effects */
+            --glass-bg: rgba(255, 255, 255, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            
+            /* Apple-style soft shadows - enhanced */
             --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
             --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
             
-            /* Border radius */
+            /* Border radius - Apple style */
+            --radius-xs: 6px;
             --radius-sm: 8px;
             --radius-md: 12px;
             --radius-lg: 18px;
             --radius-xl: 24px;
+            --radius-2xl: 32px;
             
-            /* Typography */
+            /* Smooth transitions - Apple curve */
+            --transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Typography - Apple SF */
             --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-            --font-mono: "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            --font-mono: "SF Mono", "SF Mono", Monaco, Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
             
-            /* Spacing */
-            --spacing-xs: 4px;
-            --spacing-sm: 8px;
-            --spacing-md: 16px;
-            --spacing-lg: 24px;
-            --spacing-xl: 32px;
-            --spacing-2xl: 48px;
-            --spacing-3xl: 64px;
+            /* Spacing system - 4px grid */
+            --spacing-1: 4px;
+            --spacing-2: 8px;
+            --spacing-3: 12px;
+            --spacing-4: 16px;
+            --spacing-5: 20px;
+            --spacing-6: 24px;
+            --spacing-8: 32px;
+            --spacing-10: 40px;
+            --spacing-12: 48px;
+            --spacing-16: 64px;
+            --spacing-20: 80px;
+            --spacing-24: 96px;
+            
+            /* Aliases for backward compatibility */
+            --spacing-xs: var(--spacing-1);
+            --spacing-sm: var(--spacing-2);
+            --spacing-md: var(--spacing-4);
+            --spacing-lg: var(--spacing-6);
+            --spacing-xl: var(--spacing-8);
+            --spacing-2xl: var(--spacing-12);
+            --spacing-3xl: var(--spacing-16);
         }
 
         html {

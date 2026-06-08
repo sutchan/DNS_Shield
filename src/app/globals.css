@@ -1,13 +1,16 @@
 /* src/app/globals.css v2.3.0 - Apple Design Style */
 :root {
-  /* Apple-inspired color palette */
+  /* Apple-inspired color palette - enhanced */
   --primary: #007AFF;
   --primary-dark: #0056CC;
+  --primary-light: #5856D6;
   --secondary: #34C759;
   --success: #34C759;
   --danger: #FF3B30;
   --warning: #FF9500;
   --info: #5AC8FA;
+  --purple: #AF52DE;
+  --pink: #FF2D55;
   
   /* Neutral colors - Apple style */
   --text-primary: #1D1D1F;
@@ -20,25 +23,34 @@
   --border-color: #D1D1D6;
   --separator: #C6C6C8;
   
-  /* Apple-style soft shadows */
+  /* Glassmorphism effects */
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  
+  /* Apple-style soft shadows - enhanced */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
   
   /* Apple-style rounded corners */
+  --radius-xs: 6px;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 18px;
   --radius-xl: 24px;
+  --radius-2xl: 32px;
   
-  /* Smooth transitions */
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Smooth transitions - Apple curve */
+  --transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   
-  /* Typography - Apple system fonts */
+  /* Typography - Apple SF */
   --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+  --font-mono: 'SF Mono', 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
   
-  /* Spacing system */
+  /* Spacing system - 4px grid */
   --spacing-1: 4px;
   --spacing-2: 8px;
   --spacing-3: 12px;
