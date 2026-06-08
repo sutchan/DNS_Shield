@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="DNS Shield - 路由器级广告过滤规则生成工具原型设计">
-    <title>DNS Shield v2.2.6 - UI/UX 原型设计</title>
+    <title>DNS Shield v2.3.0 - UI/UX 原型设计</title>
     <style>
         /* ==================== Apple Design System ==================== */
         * {
@@ -84,10 +84,11 @@
             border-radius: var(--radius-xl);
             padding: var(--spacing-3xl) var(--spacing-xl);
             margin-bottom: var(--spacing-2xl);
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
             text-align: center;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
         }
 
         .doc-header::before {
@@ -96,18 +97,45 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--success));
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), #34C759, #FF9500, var(--primary));
+            background-size: 300% 100%;
+            animation: gradientMove 8s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .doc-header:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
 
         .doc-header h1 {
-            color: var(--text-primary);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, var(--primary), #5856D6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: var(--spacing-sm);
+            transition: all 0.3s ease;
+        }
+
+        .doc-header:hover h1 {
+            letter-spacing: -0.03em;
         }
 
         .doc-header p {
             font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--text-secondary);
             margin-bottom: var(--spacing-lg);
+            line-height: 1.7;
         }
 
         .doc-header .version {
@@ -119,6 +147,13 @@
             font-size: 0.875rem;
             font-weight: 600;
             letter-spacing: 0.05em;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .doc-header .version:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
         }
 
         .doc-header .meta {
@@ -155,28 +190,57 @@
             padding: var(--spacing-2xl);
             margin-bottom: var(--spacing-xl);
             box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .design-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
         }
 
         .design-section:hover {
             box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
         }
 
         .design-section h2 {
             color: var(--text-primary);
             margin-bottom: var(--spacing-lg);
             padding-bottom: var(--spacing-md);
-            border-bottom: 1px solid var(--separator);
+            border-bottom: 2px solid var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            position: relative;
+        }
+
+        .design-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: var(--primary);
         }
 
         .design-section h3 {
             color: var(--text-primary);
             margin: var(--spacing-xl) 0 var(--spacing-md);
+            font-weight: 600;
+            letter-spacing: -0.01em;
         }
 
         .design-section p {
             margin-bottom: var(--spacing-md);
             font-size: 1.05rem;
+            line-height: 1.8;
         }
 
         .design-section ul {
@@ -201,12 +265,30 @@
             color: white;
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .color-card:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .color-card:hover::before {
+            opacity: 1;
         }
 
         .color-card span {
@@ -231,13 +313,30 @@
             padding: var(--spacing-xl);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 0;
+            background: linear-gradient(180deg, var(--primary), var(--success));
+            transition: height 0.3s ease;
         }
 
         .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
             background: var(--bg-primary);
             border-color: var(--border-color);
+        }
+
+        .feature-card:hover::before {
+            height: 100%;
         }
 
         .feature-card h4 {
@@ -246,16 +345,19 @@
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
+            font-weight: 600;
+            letter-spacing: -0.01em;
         }
 
         .feature-card p {
             font-size: 0.95rem;
             margin: 0;
+            line-height: 1.7;
         }
 
         .feature-card .tag {
             display: inline-block;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             font-size: 0.7rem;
             padding: var(--spacing-xs) var(--spacing-sm);
@@ -263,6 +365,7 @@
             margin-right: var(--spacing-sm);
             font-weight: 600;
             letter-spacing: 0.03em;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
         }
 
         /* ==================== Device Simulator ==================== */
@@ -489,30 +592,67 @@
             border: none;
             border-radius: var(--radius-md);
             font-size: 0.7rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             background: var(--bg-secondary);
             color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
         }
 
         .btn:hover {
             background: var(--bg-tertiary);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:active::before {
+            width: 200px;
+            height: 200px;
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
         }
 
         .btn-success {
-            background: var(--success);
+            background: linear-gradient(135deg, var(--success), #248A3D);
             color: white;
+            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 6px 16px rgba(52, 199, 89, 0.4);
         }
 
         .format-tabs {
@@ -722,20 +862,25 @@
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
             transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
         }
 
         .touch-item:hover {
             box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+            border-color: var(--primary);
         }
 
         .touch-item h4 {
             color: var(--text-primary);
             margin-bottom: var(--spacing-sm);
+            font-weight: 600;
         }
 
         .touch-item p {
             font-size: 0.95rem;
             margin-bottom: var(--spacing-md);
+            line-height: 1.7;
         }
 
         .touch-visual {
@@ -748,16 +893,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border-radius: var(--radius-md);
             font-weight: 600;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            transition: all 0.3s ease;
         }
 
         .touch-target:hover {
-            transform: scale(1.05);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+        }
+
+        .touch-target:active {
+            transform: scale(0.95);
         }
 
         .touch-target.small {
@@ -775,6 +925,7 @@
         .touch-comparison {
             font-size: 0.85rem;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
         /* ==================== Accessibility Features ==================== */
@@ -866,30 +1017,56 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-weight: 500;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animation-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .animation-box.hover {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 4px 16px rgba(0, 122, 255, 0.4);
         }
 
         .animation-box.hover:hover {
-            transform: translateY(-6px) scale(1.05);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(0, 122, 255, 0.5);
+        }
+
+        .animation-box.hover:hover::before {
+            opacity: 1;
         }
 
         .animation-box.active {
-            background: var(--success);
+            background: linear-gradient(135deg, var(--success), #248A3D);
+            box-shadow: 0 4px 16px rgba(52, 199, 89, 0.4);
         }
 
         .animation-box.active:active {
-            transform: scale(0.92);
+            transform: scale(0.9);
         }
 
         .animation-box.focus {
-            background: var(--info);
+            background: linear-gradient(135deg, var(--info), #007AFF);
+            box-shadow: 0 4px 16px rgba(90, 200, 250, 0.4);
             outline: 3px solid var(--info);
-            outline-offset: 3px;
+            outline-offset: 4px;
+        }
+
+        .animation-box:focus {
+            outline: 3px solid var(--primary);
+            outline-offset: 4px;
         }
 
         /* ==================== Component Showcase ==================== */
@@ -1243,7 +1420,7 @@
     <div class="doc-header">
         <h1>🛡️ DNS Shield</h1>
         <p>路由器级广告过滤规则生成工具</p>
-        <span class="version">v2.2.6</span>
+        <span class="version">v2.3.0</span>
         <div class="meta">
             <div class="meta-item">
                 <span class="icon">📅</span>
@@ -1462,7 +1639,7 @@ tracker.example.com</textarea>
                                 </div>
                             </div>
                             <div class="app-footer">
-                                © 2026 DNS Shield v2.2.6
+                                © 2026 DNS Shield v2.3.0
                             </div>
                         </div>
                     </div>
@@ -1539,7 +1716,7 @@ ads.example.com</textarea>
                                 </div>
                             </div>
                             <div class="app-footer" style="padding: 8px; font-size: 0.6rem;">
-                                v2.2.6
+                                v2.3.0
                             </div>
                         </div>
                     </div>
@@ -1785,7 +1962,7 @@ ads.example.com</textarea>
     </div>
 
     <div class="doc-footer">
-        <p>DNS Shield v2.2.6 UI/UX 原型设计 | 采用 Apple 设计风格</p>
+        <p>DNS Shield v2.3.0 UI/UX 原型设计 | 采用 Apple 设计风格</p>
         <p style="margin-top: 8px;">
             <a href="#">查看完整文档</a> · 
             <a href="#">反馈建议</a>

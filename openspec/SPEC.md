@@ -130,9 +130,6 @@ dns-shield/
 │   │   ├── ui/                   # UI 组件
 │   │   │   ├── Loading.tsx       # 加载组件
 │   │   │   └── Toast.tsx         # 提示组件
-│   │   ├── DomainList.tsx        # 域名列表组件
-│   │   ├── ExportOptions.tsx     # 导出选项组件
-│   │   ├── FilterControls.tsx    # 过滤控制组件
 │   │   ├── Footer.tsx            # 页脚组件
 │   │   ├── Header.tsx            # 头部组件
 │   │   ├── InputPanel.tsx        # 输入面板组件
