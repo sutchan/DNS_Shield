@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added 16 language internationalization support (ar, cs, en, es, hi, id, it, nl, pl, ru, sv, th, tr, vi, zh-cn, zh-tw)
 - Added comprehensive design tokens (colors, shadows, spacing, typography)
 - Added PWA support with service worker and manifest
+- Added setupTests.ts for Jest test configuration
+- Added CSS variables for gray colors (--gray-400, --gray-500)
 
 ### Changed
 - Complete UI/UX redesign following Apple design principles
@@ -27,11 +29,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated prototype design with enhanced visual effects
 - Updated global CSS with complete design system variables
 - Verified and fixed all code quality issues via lint
+- Fixed isLoading state in useDomainData hook to properly track loading state
+- Replaced innerHTML with innerText in uiUtils.ts for improved security (XSS prevention)
+- Added theme-toggle-item CSS class for theme switcher styling
+- Updated README.en.md version references from 2.2.5 to 2.3.0
 
 ### Fixed
 - Fixed theme color inconsistency in layout.tsx
 - Fixed SPEC.md component list accuracy
 - Fixed version number consistency across all files
+- Fixed undefined CSS variables (--gray-400, --gray-500)
+- Fixed missing src/setupTests.ts file referenced in spec
+- Fixed isLoading state not being updated in useDomainData hook
+- Fixed XSS security issue by replacing innerHTML with innerText in line number generation
+- Fixed missing theme-toggle-item CSS class used in OutputPanel
 
 ## [2.2.5]
 

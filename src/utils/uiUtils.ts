@@ -1,12 +1,15 @@
 // src/utils/uiUtils.ts v2.3.0
-import React from 'react';
 
-// 生成行号
+// 生成行号 - 使用 textContent 代替 innerHTML，避免 XSS 风险
 export const generateLineNumbers = (text: string, ref: React.RefObject<HTMLDivElement>): void => {
   if (ref.current) {
-    const lines = text.split('\n').length;
-    const lineNumbersHtml = Array.from({ length: lines }, (_, i) => i + 1).join('<br>');
-    ref.current.innerHTML = lineNumbersHtml;
+    const lineCount = text.split('\n').length;
+    const lineNumbers: string[] = [];
+    for (let i = 1; i <= lineCount; i++) {
+      lineNumbers.push(String(i));
+    }
+    // 使用 innerText 代替 innerHTML 避免 XSS 风险
+    ref.current.innerText = lineNumbers.join('\n');
   }
 };
 
