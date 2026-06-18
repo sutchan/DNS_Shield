@@ -57,7 +57,8 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'google-site-verification-code',
+    // TODO: 生产环境部署前，请替换为您实际的 Google Search Console 验证代码
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || 'google-site-verification-code',
   },
   other: {
     'geo.region': 'CN',
