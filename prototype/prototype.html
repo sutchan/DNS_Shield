@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DNS Shield - 路由器级广告过滤</title>
+  <title data-i18n="pageTitle">DNS Shield — 路由器级广告过滤规则生成器</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -12,422 +12,1038 @@
       --color-primary: #007AFF;
       --color-primary-hover: #0056CC;
       --color-success: #34C759;
-      --color-warning: #FF9500;
+      --color-success-soft: rgba(52, 199, 89, 0.15);
       --color-danger: #FF3B30;
-      --text-primary: #1D1D1F;
-      --text-secondary: #86868B;
-      --text-tertiary: #C7C7CC;
+      --color-danger-soft: rgba(255, 59, 48, 0.15);
+
+      --text-primary: #09090B;
+      --text-secondary: #6B6B70;
+      --text-tertiary: #A1A1A6;
       --text-inverse: #FFFFFF;
+
       --bg-primary: #FFFFFF;
-      --bg-secondary: #F5F5F7;
-      --bg-tertiary: #E5E5EA;
-      --bg-elevated: rgba(255, 255, 255, 0.8);
-      --border-default: #D1D1D6;
-      --border-strong: #C7C7CC;
-      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-      --text-display: clamp(2.5rem, 6vw, 4rem);
-      --text-h1: clamp(1.75rem, 4vw, 2.5rem);
-      --text-h2: 1.5rem;
-      --text-h3: 1.25rem;
-      --text-body: 1rem;
-      --text-body-sm: 0.875rem;
-      --text-caption: 0.75rem;
-      --spacing-1: 4px; --spacing-2: 8px; --spacing-3: 12px; --spacing-4: 16px;
-      --spacing-5: 20px; --spacing-6: 24px; --spacing-8: 32px; --spacing-10: 40px;
-      --spacing-12: 48px; --spacing-16: 64px;
-      --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px;
-      --radius-2xl: 24px; --radius-full: 9999px;
-      --shadow-xs: 0 2px 8px rgba(0,0,0,0.04);
-      --shadow-sm: 0 4px 20px rgba(0,0,0,0.08);
-      --shadow-md: 0 8px 40px rgba(0,0,0,0.12);
-      --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
-      --duration-fast: 100ms; --duration-normal: 200ms; --duration-moderate: 300ms;
+      --bg-secondary: #FAFAFA;
+      --bg-tertiary: #F2F2F5;
+      --bg-elevated: rgba(255, 255, 255, 0.7);
+      --bg-code: #1A1A1E;
+
+      --border-default: rgba(0, 0, 0, 0.08);
+      --border-strong: rgba(0, 0, 0, 0.15);
+
+      --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.03);
+      --shadow-toast: 0 4px 24px rgba(0, 0, 0, 0.08);
+
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --radius-full: 9999px;
+
+      --duration-fast: 100ms;
+      --duration-normal: 180ms;
       --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-      --glass-bg: rgba(255, 255, 255, 0.72);
-      --glass-border: rgba(255, 255, 255, 0.5);
-      --container-max: 1200px;
+
+      --container-max: 1120px;
     }
+
     [data-theme="dark"] {
-      --text-primary: #F5F5F7;
-      --text-secondary: #A1A1A6;
-      --text-tertiary: #636366;
-      --bg-primary: #000000;
-      --bg-secondary: #1D1D1F;
-      --bg-tertiary: #2C2C2E;
-      --bg-elevated: rgba(30, 30, 30, 0.9);
-      --border-default: #38383A;
-      --border-strong: #48484A;
-      --shadow-sm: 0 4px 20px rgba(0,0,0,0.3);
-      --shadow-md: 0 8px 40px rgba(0,0,0,0.4);
-      --shadow-lg: 0 20px 60px rgba(0,0,0,0.5);
-      --glass-bg: rgba(30, 30, 30, 0.8);
-      --glass-border: rgba(255, 255, 255, 0.1);
       --color-primary: #0A84FF;
+      --color-primary-hover: #3B9BFF;
       --color-success: #30D158;
-      --color-warning: #FF9F0A;
+      --color-success-soft: rgba(48, 209, 88, 0.18);
       --color-danger: #FF453A;
+      --color-danger-soft: rgba(255, 69, 58, 0.18);
+
+      --text-primary: #F5F5F7;
+      --text-secondary: #98989D;
+      --text-tertiary: #636366;
+
+      --bg-primary: #18181B;
+      --bg-secondary: #09090B;
+      --bg-tertiary: #232326;
+      --bg-elevated: rgba(24, 24, 27, 0.8);
+      --bg-code: #0D0D0F;
+
+      --border-default: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.15);
+
+      --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 10px rgba(0, 0, 0, 0.2);
+      --shadow-toast: 0 4px 24px rgba(0, 0, 0, 0.5);
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
     body {
       font-family: var(--font-primary);
-      font-size: var(--text-body);
+      font-size: 15px;
       line-height: 1.6;
       color: var(--text-primary);
       background: var(--bg-secondary);
       min-height: 100vh;
+      letter-spacing: -0.01em;
     }
-    .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 var(--spacing-6); }
 
-    /* Header */
+    button {
+      font-family: inherit;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    a {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---------- Layout ---------- */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- Header ---------- */
     .header {
-      position: sticky; top: 0; z-index: 100;
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--glass-border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg-elevated);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border-default);
     }
-    .header-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      height: 64px; padding: 0 var(--spacing-6);
-    }
-    .logo { display: flex; align-items: center; gap: var(--spacing-3); font-size: var(--text-h3); font-weight: 600; text-decoration: none; color: var(--text-primary); }
-    .logo-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--color-primary) 0%, #5856D6 100%);
-      border-radius: var(--radius-md);
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-weight: 700; font-size: 14px;
-    }
-    .header-actions { display: flex; align-items: center; gap: var(--spacing-4); }
-    .lang-select {
-      padding: var(--spacing-2) var(--spacing-4);
-      font-family: var(--font-primary);
-      font-size: var(--text-body-sm);
-      color: var(--text-primary);
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-default);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: all var(--duration-normal) var(--ease-standard);
-    }
-    .lang-select:hover { border-color: var(--border-strong); }
-    .theme-btn {
-      width: 36px; height: 36px;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border-default);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      color: var(--text-secondary);
-      transition: all var(--duration-normal) var(--ease-standard);
-    }
-    .theme-btn:hover { border-color: var(--border-strong); color: var(--text-primary); }
-    .theme-btn svg { width: 18px; height: 18px; }
 
-    /* Hero */
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .logo:hover {
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--color-primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background var(--duration-fast) var(--ease-standard),
+                  color var(--duration-fast) var(--ease-standard),
+                  border-color var(--duration-fast) var(--ease-standard);
+    }
+
+    .icon-btn:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .icon-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* ---------- Hero ---------- */
     .hero {
-      padding: var(--spacing-16) 0 var(--spacing-12);
+      padding: 80px 0 48px;
       text-align: center;
     }
-    .hero-title {
-      font-size: var(--text-display);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: var(--spacing-4);
-      background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-subtitle {
-      font-size: var(--text-h3);
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
       color: var(--text-secondary);
-      max-width: 560px;
-      margin: 0 auto var(--spacing-10);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
     }
+
+    .hero-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .hero-subtitle {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto 36px;
+      line-height: 1.5;
+    }
+
     .stats-bar {
       display: inline-flex;
       align-items: center;
-      gap: var(--spacing-6);
-      padding: var(--spacing-4) var(--spacing-6);
+      gap: 20px;
+      padding: 12px 24px;
       background: var(--bg-primary);
       border: 1px solid var(--border-default);
-      border-radius: var(--radius-2xl);
-      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius-full);
+      box-shadow: var(--shadow-soft);
     }
-    .stat-item { text-align: center; }
-    .stat-value { font-size: var(--text-h2); font-weight: 700; color: var(--color-primary); }
-    .stat-label { font-size: var(--text-caption); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
-    .stat-divider { width: 1px; height: 40px; background: var(--border-default); }
 
-    /* Main Layout */
-    .main { padding: 0 0 var(--spacing-16); }
+    .stat-item {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .stat-value {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 16px;
+      background: var(--border-default);
+    }
+
+    /* ---------- Panels Grid ---------- */
+    .main {
+      padding-bottom: 40px;
+    }
+
     .panels {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: var(--spacing-6);
+      gap: 24px;
     }
 
-    /* Panel Base */
+    /* ---------- Panel Base ---------- */
     .panel {
       background: var(--bg-primary);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-soft);
       overflow: hidden;
     }
+
     .panel-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: var(--spacing-5) var(--spacing-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
       border-bottom: 1px solid var(--border-default);
     }
-    .panel-title { font-size: var(--text-body); font-weight: 600; }
-    .panel-actions { display: flex; gap: var(--spacing-2); }
-    .panel-content { padding: var(--spacing-6); }
 
-    /* Collapse */
-    .collapse-btn {
-      display: flex; align-items: center; gap: var(--spacing-2);
-      padding: var(--spacing-2);
-      background: none; border: none;
-      font-size: var(--text-body-sm); font-weight: 500;
-      color: var(--text-secondary); cursor: pointer;
-      border-radius: var(--radius-sm);
-      transition: all var(--duration-fast) var(--ease-standard);
+    .panel-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
     }
-    .collapse-btn:hover { color: var(--text-primary); background: var(--bg-secondary); }
-    .collapse-btn svg { width: 16px; height: 16px; transition: transform var(--duration-normal) var(--ease-standard); }
-    .collapse-btn.collapsed svg { transform: rotate(-90deg); }
-    .panel-body { transition: all var(--duration-moderate) var(--ease-standard); }
-    .panel-body.collapsed { display: none; }
 
-    /* URL Tags */
-    .url-tags { display: flex; flex-wrap: wrap; gap: var(--spacing-2); margin-bottom: var(--spacing-4); }
-    .url-tag {
-      padding: var(--spacing-2) var(--spacing-4);
-      font-size: var(--text-caption);
+    .panel-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .panel-content {
+      padding: 20px;
+    }
+
+    /* ---------- Collapse ---------- */
+    .collapse-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
       font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: background var(--duration-fast) var(--ease-standard),
+                  color var(--duration-fast) var(--ease-standard);
+    }
+
+    .collapse-btn:hover {
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+    }
+
+    .collapse-btn svg {
+      width: 14px;
+      height: 14px;
+      transition: transform var(--duration-normal) var(--ease-standard);
+    }
+
+    .collapse-btn.collapsed svg {
+      transform: rotate(-180deg);
+    }
+
+    .panel-body {
+      transition: opacity var(--duration-normal) var(--ease-standard);
+    }
+
+    .panel-body.collapsed {
+      display: none;
+    }
+
+    /* ---------- URL Tags ---------- */
+    .url-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .url-tag {
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
       background: var(--bg-secondary);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-full);
       cursor: pointer;
-      transition: all var(--duration-fast) var(--ease-standard);
+      transition: background var(--duration-fast) var(--ease-standard),
+                  color var(--duration-fast) var(--ease-standard),
+                  border-color var(--duration-fast) var(--ease-standard);
+      user-select: none;
     }
-    .url-tag:hover { border-color: var(--color-primary); color: var(--color-primary); }
-    .url-tag.active { background: var(--color-primary); color: white; border-color: var(--color-primary); }
 
-    /* Domain Editor */
+    .url-tag:hover {
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+    }
+
+    .url-tag.active {
+      color: #fff;
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    .custom-url-input {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-family: var(--font-mono);
+      color: var(--text-primary);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      outline: none;
+      margin-bottom: 16px;
+      transition: border-color var(--duration-fast) var(--ease-standard),
+                  background var(--duration-fast) var(--ease-standard);
+    }
+
+    .custom-url-input:focus {
+      border-color: var(--color-primary);
+      background: var(--bg-primary);
+    }
+
+    .custom-url-input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    /* ---------- Domain Editor ---------- */
     .domain-editor {
       display: flex;
       background: var(--bg-secondary);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-lg);
       overflow: hidden;
-      min-height: 280px;
+      min-height: 240px;
+      max-height: 320px;
     }
+
     .line-numbers {
-      padding: var(--spacing-4);
+      padding: 12px 10px 12px 14px;
       font-family: var(--font-mono);
-      font-size: var(--text-body-sm);
-      line-height: 1.6;
+      font-size: 12px;
+      line-height: 1.8;
       color: var(--text-tertiary);
       text-align: right;
       user-select: none;
       border-right: 1px solid var(--border-default);
-      background: var(--bg-tertiary);
-      min-width: 48px;
+      background: transparent;
+      min-width: 42px;
+      overflow: hidden;
+      white-space: pre;
     }
+
     .domain-input {
       flex: 1;
-      padding: var(--spacing-4);
+      padding: 12px 14px;
       font-family: var(--font-mono);
-      font-size: var(--text-body-sm);
-      line-height: 1.6;
+      font-size: 12px;
+      line-height: 1.8;
       color: var(--text-primary);
       background: transparent;
       border: none;
       outline: none;
       resize: none;
+      white-space: pre;
+      overflow-y: auto;
     }
-    .domain-input::placeholder { color: var(--text-tertiary); }
 
-    /* Buttons */
+    .domain-input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    /* ---------- Buttons ---------- */
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-2);
-      padding: var(--spacing-3) var(--spacing-5);
-      font-family: var(--font-primary);
-      font-size: var(--text-body-sm); font-weight: 500;
-      border: none; border-radius: var(--radius-lg);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      height: 44px;
+      padding: 0 16px;
+      font-size: 13px;
+      font-weight: 500;
+      border: none;
+      border-radius: var(--radius-md);
       cursor: pointer;
-      transition: all var(--duration-normal) var(--ease-standard);
+      transition: background var(--duration-fast) var(--ease-standard),
+                  color var(--duration-fast) var(--ease-standard),
+                  border-color var(--duration-fast) var(--ease-standard),
+                  transform var(--duration-fast) var(--ease-standard);
       white-space: nowrap;
     }
-    .btn svg { width: 16px; height: 16px; }
-    .btn-primary { background: var(--color-primary); color: white; }
-    .btn-primary:hover { background: var(--color-primary-hover); transform: translateY(-1px); }
-    .btn-secondary { background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-default); }
-    .btn-secondary:hover { background: var(--bg-tertiary); }
-    .btn-ghost { background: transparent; color: var(--text-secondary); }
-    .btn-ghost:hover { background: var(--bg-secondary); color: var(--text-primary); }
-    .btn-sm { padding: var(--spacing-2) var(--spacing-3); font-size: var(--text-caption); border-radius: var(--radius-md); }
-    .btn-icon { width: 32px; height: 32px; padding: 0; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    /* Tabs */
-    .tabs { display: flex; gap: var(--spacing-1); padding: var(--spacing-1); background: var(--bg-secondary); border-radius: var(--radius-lg); margin-bottom: var(--spacing-4); }
-    .tab {
-      flex: 1; padding: var(--spacing-3) var(--spacing-4);
-      font-size: var(--text-body-sm); font-weight: 500;
-      color: var(--text-secondary);
-      background: transparent; border: none; border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: all var(--duration-normal) var(--ease-standard);
+    .btn svg {
+      width: 15px;
+      height: 15px;
     }
-    .tab:hover { color: var(--text-primary); }
-    .tab.active { background: var(--bg-primary); color: var(--text-primary); box-shadow: var(--shadow-xs); }
 
-    /* Code Preview */
+    .btn-primary {
+      background: var(--color-primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-hover);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border-default);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-default);
+    }
+
+    .btn-ghost:hover {
+      color: var(--text-primary);
+      background: var(--bg-tertiary);
+    }
+
+    .btn-sm {
+      height: 32px;
+      padding: 0 12px;
+      font-size: 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    .btn-sm svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    /* ---------- Tabs ---------- */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      margin-bottom: 16px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: background var(--duration-fast) var(--ease-standard),
+                  color var(--duration-fast) var(--ease-standard);
+    }
+
+    .tab:hover {
+      color: var(--text-primary);
+    }
+
+    .tab.active {
+      background: var(--text-primary);
+      color: var(--bg-primary);
+    }
+
+    [data-theme="dark"] .tab.active {
+      background: #fff;
+      color: var(--text-primary);
+    }
+
+    /* ---------- Code Preview ---------- */
     .code-preview {
-      background: #1E1E1E;
+      background: var(--bg-code);
       border-radius: var(--radius-lg);
       overflow: hidden;
     }
-    .code-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: var(--spacing-3) var(--spacing-4);
-      background: #2D2D2D;
-      border-bottom: 1px solid #3D3D3D;
-    }
-    .code-title { font-family: var(--font-mono); font-size: var(--text-caption); color: #888; }
-    .code-content { padding: var(--spacing-4); max-height: 300px; overflow-y: auto; }
-    .code-content pre { font-family: var(--font-mono); font-size: var(--text-body-sm); line-height: 1.6; color: #D4D4D4; margin: 0; }
-    .code-content .c { color: #6A9955; }
-    .code-content .k { color: #569CD6; }
-    .code-content .s { color: #CE9178; }
-    .code-content .v { color: #9CDCFE; }
 
-    /* Switch */
-    .switch-row { display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-3) 0; border-bottom: 1px solid var(--border-default); }
-    .switch-row:last-child { border-bottom: none; }
-    .switch-label { font-size: var(--text-body-sm); font-weight: 500; }
-    .switch-desc { font-size: var(--text-caption); color: var(--text-secondary); margin-top: 2px; }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .code-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .code-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .code-dot-red { background: #FF5F57; }
+    .code-dot-yellow { background: #FEBC2E; }
+    .code-dot-green { background: #28C840; }
+
+    .code-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.02em;
+    }
+
+    .code-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    .code-content {
+      padding: 16px;
+      max-height: 340px;
+      overflow-y: auto;
+    }
+
+    .code-content pre {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.85);
+      margin: 0;
+      white-space: pre;
+    }
+
+    .code-content .c { color: rgba(255, 255, 255, 0.35); }
+    .code-content .k { color: #7DD3FC; }
+    .code-content .d { color: #FCA5A5; }
+    .code-content .v { color: #86EFAC; }
+    .code-content .s { color: #FDE68A; }
+
+    /* ---------- Switch ---------- */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .setting-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .setting-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-default);
+      gap: 16px;
+    }
+
+    .switch-row:last-child {
+      border-bottom: none;
+    }
+
+    .switch-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .switch-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .switch-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
     .switch {
-      position: relative; width: 44px; height: 24px;
+      position: relative;
+      width: 40px;
+      height: 24px;
+      flex-shrink: 0;
       appearance: none;
-      background: var(--bg-tertiary);
+      -webkit-appearance: none;
+      background: var(--border-strong);
       border-radius: var(--radius-full);
       cursor: pointer;
       transition: background var(--duration-normal) var(--ease-standard);
+      border: none;
     }
-    .switch::before {
-      content: ''; position: absolute;
-      top: 2px; left: 2px;
-      width: 20px; height: 20px;
-      background: white; border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-      transition: transform var(--duration-normal) var(--ease-bounce);
-    }
-    .switch:checked { background: var(--color-primary); }
-    .switch:checked::before { transform: translateX(20px); }
-    .switch:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,122,255,0.2); }
 
-    /* Input */
+    .switch::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      transition: transform var(--duration-normal) var(--ease-standard);
+    }
+
+    .switch:checked {
+      background: var(--color-primary);
+    }
+
+    .switch:checked::before {
+      transform: translateX(16px);
+    }
+
+    .switch:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 3px;
+    }
+
+    /* ---------- Input ---------- */
     .input {
-      width: 100%; padding: var(--spacing-3) var(--spacing-4);
-      font-family: var(--font-primary); font-size: var(--text-body);
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-family: var(--font-mono);
       color: var(--text-primary);
-      background: var(--bg-primary);
+      background: var(--bg-secondary);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
       outline: none;
-      transition: all var(--duration-normal) var(--ease-standard);
+      transition: border-color var(--duration-fast) var(--ease-standard),
+                  background var(--duration-fast) var(--ease-standard);
     }
-    .input::placeholder { color: var(--text-tertiary); }
-    .input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
 
-    /* Footer */
-    .footer { margin-top: var(--spacing-12); padding: var(--spacing-8) 0; border-top: 1px solid var(--border-default); }
-    .footer-content { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--spacing-8); }
-    .footer-brand { max-width: 320px; }
-    .footer-brand .logo { margin-bottom: var(--spacing-3); }
-    .footer-desc { font-size: var(--text-body-sm); color: var(--text-secondary); }
-    .footer-links { display: flex; gap: var(--spacing-8); }
-    .footer-col h4 { font-size: var(--text-body-sm); font-weight: 600; margin-bottom: var(--spacing-3); }
-    .footer-col a { display: block; font-size: var(--text-body-sm); color: var(--text-secondary); text-decoration: none; margin-bottom: var(--spacing-2); transition: color var(--duration-fast); }
-    .footer-col a:hover { color: var(--color-primary); }
-    .footer-bottom { margin-top: var(--spacing-6); padding-top: var(--spacing-6); border-top: 1px solid var(--border-default); text-align: center; font-size: var(--text-caption); color: var(--text-tertiary); }
+    .input:focus {
+      border-color: var(--color-primary);
+      background: var(--bg-primary);
+    }
 
-    /* Accordion */
-    .accordion { border: 1px solid var(--border-default); border-radius: var(--radius-lg); overflow: hidden; }
-    .accordion-item { border-bottom: 1px solid var(--border-default); }
-    .accordion-item:last-child { border-bottom: none; }
+    .input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .field-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    /* ---------- Footer ---------- */
+    .footer {
+      margin-top: 40px;
+      padding: 24px 0 40px;
+      border-top: 1px solid var(--border-default);
+      text-align: center;
+    }
+
+    .footer-content {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.01em;
+    }
+
+    /* ---------- Accordion ---------- */
+    .accordion-section {
+      margin-top: 24px;
+    }
+
+    .accordion {
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: var(--bg-primary);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .accordion-item:last-child {
+      border-bottom: none;
+    }
+
     .accordion-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: var(--spacing-4) var(--spacing-5);
-      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
       cursor: pointer;
-      transition: background var(--duration-fast);
+      transition: background var(--duration-fast) var(--ease-standard);
+      user-select: none;
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
     }
-    .accordion-header:hover { background: var(--bg-tertiary); }
-    .accordion-title { font-size: var(--text-body-sm); font-weight: 600; }
-    .accordion-icon { width: 16px; height: 16px; color: var(--text-tertiary); transition: transform var(--duration-normal) var(--ease-standard); }
-    .accordion-item.open .accordion-icon { transform: rotate(180deg); }
-    .accordion-body { padding: var(--spacing-5); display: none; }
-    .accordion-item.open .accordion-body { display: block; }
-    .accordion-content { font-size: var(--text-body-sm); color: var(--text-secondary); line-height: 1.8; }
-    .accordion-content code { padding: 2px 6px; background: var(--bg-secondary); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: var(--text-caption); }
 
-    /* Toast */
-    .toast-container { position: fixed; bottom: var(--spacing-6); right: var(--spacing-6); z-index: 1000; display: flex; flex-direction: column; gap: var(--spacing-3); }
+    .accordion-header:hover {
+      background: var(--bg-secondary);
+    }
+
+    .accordion-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .accordion-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--text-secondary);
+      transition: transform var(--duration-normal) var(--ease-standard);
+      flex-shrink: 0;
+    }
+
+    .accordion-item.open .accordion-icon {
+      transform: rotate(180deg);
+    }
+
+    .accordion-body {
+      padding: 0 20px 20px;
+      display: none;
+    }
+
+    .accordion-item.open .accordion-body {
+      display: block;
+    }
+
+    .accordion-content {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .accordion-content p {
+      margin-bottom: 8px;
+    }
+
+    .accordion-content p:last-child {
+      margin-bottom: 0;
+    }
+
+    .accordion-content strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .accordion-content code {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-primary);
+      margin: 2px 0;
+    }
+
+    /* ---------- Toast ---------- */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: calc(100vw - 40px);
+    }
+
     .toast {
-      display: flex; align-items: center; gap: var(--spacing-3);
-      padding: var(--spacing-4) var(--spacing-5);
-      min-width: 280px;
-      background: var(--bg-elevated);
-      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      min-width: 260px;
+      background: var(--bg-primary);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      animation: slideIn var(--duration-moderate) var(--ease-bounce);
+      box-shadow: var(--shadow-toast);
+      animation: toastIn var(--duration-normal) var(--ease-standard);
     }
-    @keyframes slideIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes slideOut { to { opacity: 0; transform: translateX(100%); } }
-    .toast-icon { width: 20px; height: 20px; flex-shrink: 0; }
-    .toast-success .toast-icon { color: var(--color-success); }
-    .toast-error .toast-icon { color: var(--color-danger); }
-    .toast-content { flex: 1; }
-    .toast-title { font-weight: 600; font-size: var(--text-body-sm); }
-    .toast-message { font-size: var(--text-caption); color: var(--text-secondary); margin-top: 2px; }
-    .toast-close { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: var(--radius-sm); color: var(--text-tertiary); cursor: pointer; }
-    .toast-close:hover { background: var(--bg-secondary); color: var(--text-primary); }
 
-    /* Settings Panel */
-    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-4); }
-    .setting-group { }
-    .setting-title { font-size: var(--text-body-sm); font-weight: 600; margin-bottom: var(--spacing-3); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-      .panels { grid-template-columns: 1fr; }
-      .hero { padding: var(--spacing-10) 0 var(--spacing-8); }
-      .stats-bar { flex-wrap: wrap; gap: var(--spacing-4); }
-      .stat-divider { display: none; }
-      .footer-content { flex-direction: column; }
-      .footer-links { flex-wrap: wrap; }
-      .settings-grid { grid-template-columns: 1fr; }
+    .toast.leaving {
+      animation: toastOut var(--duration-normal) var(--ease-standard) forwards;
     }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes toastOut {
+      to { opacity: 0; transform: translateY(8px); }
+    }
+
+    .toast-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .toast-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .toast-success .toast-icon {
+      background: var(--color-success-soft);
+      color: var(--color-success);
+    }
+
+    .toast-info .toast-icon {
+      background: rgba(0, 122, 255, 0.15);
+      color: var(--color-primary);
+    }
+
+    .toast-error .toast-icon {
+      background: var(--color-danger-soft);
+      color: var(--color-danger);
+    }
+
+    .toast-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+
+    .toast-message {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+
+    .toast-close {
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      color: var(--text-tertiary);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: color var(--duration-fast) var(--ease-standard),
+                  background var(--duration-fast) var(--ease-standard);
+    }
+
+    .toast-close:hover {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    .toast-close svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* ---------- Utility ---------- */
+    .mb-16 { margin-bottom: 16px; }
+    .mt-16 { margin-top: 16px; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1023px) {
+      .panels { grid-template-columns: 1fr; gap: 20px; }
+      .hero { padding: 56px 0 32px; }
+      .settings-grid { grid-template-columns: 1fr; gap: 20px; }
+    }
+
     @media (max-width: 640px) {
-      .container { padding: 0 var(--spacing-4); }
-      .header-inner { padding: 0 var(--spacing-4); }
-      .hero-title { font-size: 2rem; }
-      .hero-subtitle { font-size: var(--text-body); }
-      .url-tags { gap: var(--spacing-1); }
-      .url-tag { font-size: var(--text-caption); padding: var(--spacing-1) var(--spacing-3); }
+      .container { padding: 0 16px; }
+      .header-inner { height: 52px; }
+      .hero { padding: 40px 0 24px; }
+      .hero-subtitle { font-size: 15px; }
+      .stats-bar { gap: 12px; padding: 10px 16px; flex-wrap: wrap; justify-content: center; }
+      .stat-divider { display: none; }
+      .panel-content { padding: 16px; }
+      .panel-header { padding: 16px; }
       .domain-editor { min-height: 200px; }
+      .btn { height: 40px; }
     }
+
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ---------- Scrollbar ---------- */
+    .code-content::-webkit-scrollbar,
+    .domain-input::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .code-content::-webkit-scrollbar-track,
+    .domain-input::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .code-content::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+
+    .code-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .domain-input::-webkit-scrollbar-thumb {
+      background: var(--border-default);
+      border-radius: 4px;
+    }
+
+    .domain-input::-webkit-scrollbar-thumb:hover {
+      background: var(--border-strong);
     }
   </style>
 </head>
@@ -439,25 +1055,28 @@
         <span>DNS Shield</span>
       </a>
       <div class="header-actions">
-        <select class="lang-select" id="langSelect">
-          <option value="zh">中文</option>
-          <option value="en">English</option>
-          <option value="ja">日本語</option>
-          <option value="ko">한국어</option>
-          <option value="es">Español</option>
-          <option value="fr">Français</option>
-          <option value="de">Deutsch</option>
-          <option value="it">Italiano</option>
-          <option value="pt">Português</option>
-          <option value="ru">Русский</option>
-          <option value="ar">العربية</option>
-          <option value="hi">हिन्दी</option>
-          <option value="th">ไทย</option>
-          <option value="vi">Tiếng Việt</option>
-        </select>
-        <button class="theme-btn" id="themeToggle" aria-label="切换主题">
-          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          <svg id="moonIcon" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <button class="icon-btn" id="langToggle" type="button" aria-label="切换语言">
+          <svg id="langIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </button>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="切换主题">
+          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg id="moonIcon" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
         </button>
       </div>
     </div>
@@ -466,563 +1085,907 @@
   <main class="main">
     <div class="container">
       <section class="hero">
-        <h1 class="hero-title">DNS Shield</h1>
-        <p class="hero-subtitle">路由器级广告过滤规则生成器，支持 Dnsmasq / Hosts / AdGuard 多种格式</p>
+        <div class="hero-eyebrow" data-i18n="heroEyebrow">v2.3.0</div>
+        <h1 class="hero-title" data-i18n="heroTitle">DNS Shield</h1>
+        <p class="hero-subtitle" data-i18n="heroSubtitle">路由器级广告过滤规则生成器</p>
         <div class="stats-bar">
           <div class="stat-item">
-            <div class="stat-value" id="statDomains">473</div>
-            <div class="stat-label">域名</div>
+            <span class="stat-value" id="statDomains">473</span>
+            <span class="stat-label" data-i18n="statDomains">域名</span>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item">
-            <div class="stat-value" id="statBlacklist">452</div>
-            <div class="stat-label">黑名单</div>
+            <span class="stat-value" id="statBlacklist">452</span>
+            <span class="stat-label" data-i18n="statBlacklist">黑名单</span>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item">
-            <div class="stat-value" id="statWhitelist">21</div>
-            <div class="stat-label">白名单</div>
+            <span class="stat-value" id="statWhitelist">21</span>
+            <span class="stat-label" data-i18n="statWhitelist">白名单</span>
           </div>
           <div class="stat-divider"></div>
           <div class="stat-item">
-            <div class="stat-value">3</div>
-            <div class="stat-label">格式</div>
+            <span class="stat-value">3</span>
+            <span class="stat-label" data-i18n="statFormats">格式</span>
           </div>
         </div>
       </section>
 
       <div class="panels">
         <!-- Input Panel -->
-        <div class="panel">
+        <section class="panel" aria-labelledby="inputTitle">
           <div class="panel-header">
-            <span class="panel-title">输入</span>
-            <button class="collapse-btn" onclick="toggleCollapse(this)">
-              <span>收起</span>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            <span class="panel-title" id="inputTitle" data-i18n="inputTitle">输入</span>
+            <button class="collapse-btn" id="inputCollapse" type="button" data-target="inputBody">
+              <span data-i18n="collapse">收起</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
             </button>
           </div>
-          <div class="panel-body">
+          <div class="panel-body" id="inputBody">
             <div class="panel-content">
-              <div class="url-tags" id="urlTags">
-                <span class="url-tag" data-url="https://easylist-downloads.adblockplus.org/easylist.txt">EasyList</span>
-                <span class="url-tag" data-url="https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt">EasyList China</span>
-                <span class="url-tag" data-url="https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjxlist.txt">CJX List</span>
-                <span class="url-tag" data-url="custom">自定义</span>
+              <div class="url-tags" id="urlTags" role="tablist">
+                <button class="url-tag" type="button" data-url="easylist" role="tab" data-i18n="tagEasyList">EasyList</button>
+                <button class="url-tag" type="button" data-url="cjxlist" role="tab" data-i18n="tagCJX">CJX List</button>
+                <button class="url-tag" type="button" data-url="custom" role="tab" data-i18n="tagCustom">自定义</button>
               </div>
-              <div class="input-wrapper" style="margin-bottom: var(--spacing-4);">
-                <input type="text" class="input" id="customUrl" placeholder="或输入自定义 URL..." style="display:none">
-              </div>
+
+              <input
+                type="url"
+                class="custom-url-input"
+                id="customUrl"
+                placeholder="https://example.com/blocklist.txt"
+                style="display:none"
+              >
+
               <div class="domain-editor">
-                <div class="line-numbers" id="lineNumbers">1</div>
-                <textarea class="domain-input" id="domainInput" placeholder="输入域名，每行一个...&#10;&#10;示例：&#10;ad.example.com&#10;ads.google.com&#10;doubleclick.net" spellcheck="false"></textarea>
+                <div class="line-numbers" id="lineNumbers" aria-hidden="true">1</div>
+                <textarea
+                  class="domain-input"
+                  id="domainInput"
+                  spellcheck="false"
+                  autocomplete="off"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  aria-label="域名列表"
+                  data-i18n-placeholder="domainPlaceholder"
+                  placeholder="每行一个域名...&#10;&#10;ad.example.com&#10;ads.google.com"
+                ></textarea>
               </div>
-              <div style="display: flex; gap: var(--spacing-2); margin-top: var(--spacing-4); flex-wrap: wrap;">
-                <button class="btn btn-primary" id="parseBtn" onclick="parseDomains()">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-                  解析域名
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="parseBtn" type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="4 17 10 11 4 5"/>
+                    <line x1="12" y1="19" x2="20" y2="19"/>
+                  </svg>
+                  <span data-i18n="btnParse">生成规则</span>
                 </button>
-                <button class="btn btn-secondary" onclick="sortDomains()">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="8" y2="18"/></svg>
-                  排序
+                <button class="btn btn-secondary" id="sortBtn" type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" y1="6" x2="20" y2="6"/>
+                    <line x1="4" y1="12" x2="14" y2="12"/>
+                    <line x1="4" y1="18" x2="8" y2="18"/>
+                  </svg>
+                  <span data-i18n="btnSort">排序</span>
                 </button>
-                <button class="btn btn-secondary" onclick="dedupDomains()">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                  去重
+                <button class="btn btn-secondary" id="dedupBtn" type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                  </svg>
+                  <span data-i18n="btnDedup">去重</span>
                 </button>
-                <button class="btn btn-ghost" onclick="clearDomains()">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                  清空
+                <button class="btn btn-ghost" id="clearBtn" type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                  <span data-i18n="btnClear">清空</span>
                 </button>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
         <!-- Output Panel -->
-        <div class="panel">
+        <section class="panel" aria-labelledby="outputTitle">
           <div class="panel-header">
-            <span class="panel-title">输出</span>
+            <span class="panel-title" id="outputTitle" data-i18n="outputTitle">输出</span>
             <div class="panel-actions">
-              <button class="btn btn-sm btn-ghost" onclick="copyOutput()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                复制
+              <button class="btn btn-sm btn-ghost" id="copyBtn" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                <span data-i18n="btnCopy">复制</span>
               </button>
-              <button class="btn btn-sm btn-primary" onclick="downloadOutput()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                下载
+              <button class="btn btn-sm btn-primary" id="downloadBtn" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <span data-i18n="btnDownload">下载</span>
               </button>
             </div>
           </div>
           <div class="panel-body">
             <div class="panel-content">
-              <div class="tabs" id="formatTabs">
-                <button class="tab active" data-format="dnsmasq">Dnsmasq</button>
-                <button class="tab" data-format="hosts">Hosts</button>
-                <button class="tab" data-format="adguard">AdGuard</button>
+              <div class="tabs" id="formatTabs" role="tablist">
+                <button class="tab active" data-format="dnsmasq" type="button" role="tab">Dnsmasq</button>
+                <button class="tab" data-format="hosts" type="button" role="tab">Hosts</button>
+                <button class="tab" data-format="adguard" type="button" role="tab">AdGuard</button>
               </div>
+
               <div class="code-preview">
                 <div class="code-header">
+                  <div class="code-dots" aria-hidden="true">
+                    <span class="code-dot code-dot-red"></span>
+                    <span class="code-dot code-dot-yellow"></span>
+                    <span class="code-dot code-dot-green"></span>
+                  </div>
                   <span class="code-title" id="codeTitle">dnsmasq.conf</span>
-                  <span style="font-size: 10px; color: #666;" id="lineCount">0 行</span>
+                  <span class="code-meta" id="lineCount">0 <span data-i18n="codeLines">行</span></span>
                 </div>
                 <div class="code-content">
-                  <pre id="codeOutput"><span class="c"># DNS Shield - Dnsmasq Filter</span>
-<span class="c"># 生成时间: </span><span class="c" id="genTime"></span>
-<span class="c"># 域名数: </span><span class="c" id="codeDomains">0</span>
-
-<span class="c"># 黑名单规则</span>
-<span class="k">address</span>=<span class="s">/ad.example.com/0.0.0.0</span>
-<span class="k">address</span>=<span class="s">/ad2.example.com/0.0.0.0</span>
-<span class="k">address</span>=<span class="s">/doubleclick.net/0.0.0.0</span></pre>
+                  <pre id="codeOutput"></pre>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
 
       <!-- Settings Panel -->
-      <div class="panel" style="margin-top: var(--spacing-6);">
+      <section class="panel" style="margin-top: 24px;" aria-labelledby="settingsTitle">
         <div class="panel-header">
-          <span class="panel-title">设置</span>
-          <button class="collapse-btn" onclick="toggleCollapse(this)">
-            <span>收起</span>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          <span class="panel-title" id="settingsTitle" data-i18n="settingsTitle">设置</span>
+          <button class="collapse-btn" id="settingsCollapse" type="button" data-target="settingsBody">
+            <span data-i18n="collapse">收起</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
           </button>
         </div>
-        <div class="panel-body">
+        <div class="panel-body" id="settingsBody">
           <div class="panel-content">
             <div class="settings-grid">
               <div class="setting-group">
-                <div class="setting-title">DNS 配置</div>
-                <div style="margin-bottom: var(--spacing-4);">
-                  <label style="font-size: var(--text-body-sm); font-weight: 500; display: block; margin-bottom: var(--spacing-2);">IPv4 地址</label>
-                  <input type="text" class="input" id="ipv4Addr" value="0.0.0.0" placeholder="0.0.0.0">
-                </div>
-                <div>
-                  <label style="font-size: var(--text-body-sm); font-weight: 500; display: block; margin-bottom: var(--spacing-2);">IPv6 地址</label>
-                  <input type="text" class="input" id="ipv6Addr" value="::" placeholder="::">
-                </div>
+                <div class="setting-title" data-i18n="settingsDns">DNS 配置</div>
+
+                <label class="field-label" for="ipv4Addr" data-i18n="labelIPv4">IPv4 地址</label>
+                <input type="text" class="input" id="ipv4Addr" value="0.0.0.0" placeholder="0.0.0.0" style="margin-bottom: 12px;">
+
+                <label class="field-label" for="ipv6Addr" data-i18n="labelIPv6">IPv6 地址</label>
+                <input type="text" class="input" id="ipv6Addr" value="::" placeholder="::" style="margin-bottom: 12px;">
+
+                <label class="field-label" for="filename" data-i18n="labelFilename">文件名</label>
+                <input type="text" class="input" id="filename" value="dns-filter.conf" placeholder="dns-filter.conf">
               </div>
+
               <div class="setting-group">
-                <div class="setting-title">选项</div>
+                <div class="setting-title" data-i18n="settingsOptions">选项</div>
+
                 <div class="switch-row">
-                  <div>
-                    <div class="switch-label">自动去重</div>
-                    <div class="switch-desc">自动移除重复的域名</div>
+                  <div class="switch-text">
+                    <div class="switch-label" data-i18n="switchDedup">自动去重</div>
+                    <div class="switch-desc" data-i18n="switchDedupDesc">生成规则时移除重复域名</div>
                   </div>
                   <input type="checkbox" class="switch" id="optDedup" checked>
                 </div>
+
                 <div class="switch-row">
-                  <div>
-                    <div class="switch-label">通配符支持</div>
-                    <div class="switch-desc">启用 *.domain.com 格式</div>
+                  <div class="switch-text">
+                    <div class="switch-label" data-i18n="switchWildcard">通配符支持</div>
+                    <div class="switch-desc" data-i18n="switchWildcardDesc">添加 *. 前缀匹配子域名</div>
                   </div>
-                  <input type="checkbox" class="switch" id="optWildcard" checked>
+                  <input type="checkbox" class="switch" id="optWildcard">
                 </div>
+
                 <div class="switch-row">
-                  <div>
-                    <div class="switch-label">IPv6 阻止</div>
-                    <div class="switch-desc">同时阻止 IPv6 广告解析</div>
+                  <div class="switch-text">
+                    <div class="switch-label" data-i18n="switchIPv6">IPv6 规则</div>
+                    <div class="switch-desc" data-i18n="switchIPv6Desc">同时输出 IPv6 过滤规则</div>
                   </div>
                   <input type="checkbox" class="switch" id="optIPv6" checked>
                 </div>
               </div>
             </div>
-            <div style="margin-top: var(--spacing-4);">
-              <label style="font-size: var(--text-body-sm); font-weight: 500; display: block; margin-bottom: var(--spacing-2);">输出文件名</label>
-              <input type="text" class="input" id="filename" value="dns-filter.conf" style="max-width: 300px;">
-            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Guide Accordion -->
-      <div style="margin-top: var(--spacing-8);">
+      <!-- Accordion -->
+      <section class="accordion-section" aria-label="使用指南">
         <div class="accordion">
-          <div class="accordion-item open">
-            <div class="accordion-header" onclick="toggleAccordion(this.parentElement)">
-              <span class="accordion-title">使用指南</span>
-              <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
+          <div class="accordion-item open" id="accGuide">
+            <button class="accordion-header" type="button" aria-expanded="true">
+              <span class="accordion-title" data-i18n="guideTitle">使用指南</span>
+              <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
             <div class="accordion-body">
               <div class="accordion-content">
-                <p><strong>1. 选择域名源</strong>：点击预设标签加载广告过滤列表，或输入自定义 URL</p>
-                <p><strong>2. 解析域名</strong>：点击"解析域名"按钮获取域名统计</p>
-                <p><strong>3. 选择格式</strong>：Dnsmasq（梅林/OpenWrt）、Hosts（小米路由器）、AdGuard</p>
-                <p><strong>4. 导出规则</strong>：复制到剪贴板或下载配置文件</p>
-                <p style="margin-top: var(--spacing-3);"><strong>示例配置路径：</strong></p>
-                <p>梅林固件：<code>/tmp/custom.conf</code> → WebUI 外部节点配置</p>
-                <p>OpenWrt：<code>/etc/dnsmasq.d/dns-filter.conf</code></p>
-                <p>小米路由器：<code>/etc/config/dns</code></p>
+                <p><strong data-i18n="guideStep1">1. 选择域名源</strong> — <span data-i18n="guideStep1Desc">点击预设标签快速加载，或在文本框中粘贴你的域名列表</span></p>
+                <p><strong data-i18n="guideStep2">2. 生成规则</strong> — <span data-i18n="guideStep2Desc">点击「生成规则」按钮解析域名并生成过滤列表</span></p>
+                <p><strong data-i18n="guideStep3">3. 选择格式</strong> — <span data-i18n="guideStep3Desc">Dnsmasq（梅林 / OpenWrt）、Hosts（直接编辑 hosts 文件）、AdGuard（AdGuard Home）</span></p>
+                <p><strong data-i18n="guideStep4">4. 导出规则</strong> — <span data-i18n="guideStep4Desc">一键复制到剪贴板或下载配置文件</span></p>
               </div>
             </div>
           </div>
-          <div class="accordion-item">
-            <div class="accordion-header" onclick="toggleAccordion(this.parentElement)">
-              <span class="accordion-title">格式说明</span>
-              <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
+
+          <div class="accordion-item" id="accFormat">
+            <button class="accordion-header" type="button" aria-expanded="false">
+              <span class="accordion-title" data-i18n="formatTitle">格式说明</span>
+              <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
             <div class="accordion-body">
               <div class="accordion-content">
-                <p><strong>Dnsmasq</strong>：轻量级 DNS 转发器，适合梅林、OpenWrt 等路由器</p>
+                <p><strong>Dnsmasq</strong> — <span data-i18n="formatDnsmasqDesc">轻量级 DNS 转发器，适用于梅林、OpenWrt 等路由器固件</span></p>
                 <p><code>address=/ad.example.com/0.0.0.0</code></p>
-                <p style="margin-top: var(--spacing-3);"><strong>Hosts</strong>：直接修改系统 Hosts 文件</p>
+                <p style="margin-top:10px;"><strong>Hosts</strong> — <span data-i18n="formatHostsDesc">直接修改系统 hosts 文件，支持所有平台</span></p>
                 <p><code>0.0.0.0 ad.example.com</code></p>
-                <p style="margin-top: var(--spacing-3);"><strong>AdGuard</strong>：AdGuard Home / DNS 过滤规则</p>
+                <p style="margin-top:10px;"><strong>AdGuard</strong> — <span data-i18n="formatAdguardDesc">AdGuard Home / DNS 专用过滤规则格式</span></p>
                 <p><code>||ad.example.com^$dnsrewrite=0.0.0.0</code></p>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   </main>
 
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
-        <div class="footer-brand">
-          <a href="#" class="logo">
-            <span class="logo-icon">DS</span>
-            <span>DNS Shield</span>
-          </a>
-          <p class="footer-desc">开源 DNS 广告过滤规则生成工具，支持多种路由器固件和格式。</p>
-        </div>
-        <div class="footer-links">
-          <div class="footer-col">
-            <h4>资源</h4>
-            <a href="#">GitHub</a>
-            <a href="#">文档</a>
-            <a href="#">更新日志</a>
-          </div>
-          <div class="footer-col">
-            <h4>域名源</h4>
-            <a href="https://easylist.to" target="_blank">EasyList</a>
-            <a href="https://github.com/cjx82630/cjxlist" target="_blank">CJX List</a>
-            <a href="#">更多源...</a>
-          </div>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        DNS Shield · 开源免费 · MIT License
+        <span data-i18n="footerLine1">DNS Shield</span>
+        <span> · </span>
+        <span data-i18n="footerLine2">开源免费</span>
+        <span> · </span>
+        <span>v2.3.0</span>
       </div>
     </div>
   </footer>
 
-  <div class="toast-container" id="toastContainer"></div>
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
   <script>
-    // State
+    // ---------- i18n ----------
+    const I18N = {
+      zh: {
+        pageTitle: 'DNS Shield — 路由器级广告过滤规则生成器',
+        heroEyebrow: 'v2.3.0',
+        heroTitle: 'DNS Shield',
+        heroSubtitle: '路由器级广告过滤规则生成器',
+        statDomains: '域名',
+        statBlacklist: '黑名单',
+        statWhitelist: '白名单',
+        statFormats: '格式',
+        inputTitle: '输入',
+        outputTitle: '输出',
+        settingsTitle: '设置',
+        collapse: '收起',
+        expand: '展开',
+        tagEasyList: 'EasyList',
+        tagCJX: 'CJX List',
+        tagCustom: '自定义',
+        domainPlaceholder: '每行一个域名...\n\nad.example.com\nads.google.com',
+        btnParse: '生成规则',
+        btnSort: '排序',
+        btnDedup: '去重',
+        btnClear: '清空',
+        btnCopy: '复制',
+        btnDownload: '下载',
+        codeLines: '行',
+        settingsDns: 'DNS 配置',
+        settingsOptions: '选项',
+        labelIPv4: 'IPv4 地址',
+        labelIPv6: 'IPv6 地址',
+        labelFilename: '文件名',
+        switchDedup: '自动去重',
+        switchDedupDesc: '生成规则时移除重复域名',
+        switchWildcard: '通配符支持',
+        switchWildcardDesc: '添加 *. 前缀匹配子域名',
+        switchIPv6: 'IPv6 规则',
+        switchIPv6Desc: '同时输出 IPv6 过滤规则',
+        guideTitle: '使用指南',
+        guideStep1: '1. 选择域名源',
+        guideStep1Desc: '点击预设标签快速加载，或在文本框中粘贴你的域名列表',
+        guideStep2: '2. 生成规则',
+        guideStep2Desc: '点击「生成规则」按钮解析域名并生成过滤列表',
+        guideStep3: '3. 选择格式',
+        guideStep3Desc: 'Dnsmasq（梅林 / OpenWrt）、Hosts（直接编辑 hosts 文件）、AdGuard（AdGuard Home）',
+        guideStep4: '4. 导出规则',
+        guideStep4Desc: '一键复制到剪贴板或下载配置文件',
+        formatTitle: '格式说明',
+        formatDnsmasqDesc: '轻量级 DNS 转发器，适用于梅林、OpenWrt 等路由器固件',
+        formatHostsDesc: '直接修改系统 hosts 文件，支持所有平台',
+        formatAdguardDesc: 'AdGuard Home / DNS 专用过滤规则格式',
+        footerLine1: 'DNS Shield',
+        footerLine2: '开源免费',
+        toastParseSuccess: '解析完成',
+        toastParseSuccessMsg: '已解析 {count} 个域名',
+        toastParseError: '解析失败',
+        toastParseErrorMsg: '请输入域名列表',
+        toastSort: '排序完成',
+        toastSortMsg: '域名已按字母顺序排列',
+        toastDedup: '去重完成',
+        toastDedupMsgRemoved: '已移除 {count} 个重复项',
+        toastDedupMsgNone: '未发现重复项',
+        toastClear: '已清空',
+        toastClearMsg: '域名列表已清空',
+        toastCopy: '已复制',
+        toastCopyMsg: '规则已复制到剪贴板',
+        toastCopyError: '复制失败',
+        toastCopyErrorMsg: '无法访问剪贴板',
+        toastDownload: '已下载',
+        toastDownloadMsg: '规则文件已开始下载',
+        toastLoadMsg: '正在加载域名列表...',
+        toastLoadedSuccess: '加载完成',
+        toastLoadedSuccessMsg: '已加载 {count} 个示例域名',
+        toastLangSwitched: 'Language Switched',
+        toastLangSwitchedMsg: '已切换到 English',
+        toastThemeSwitched: '主题已切换',
+        toastThemeSwitchedMsg: '当前为浅色模式'
+      },
+      en: {
+        pageTitle: 'DNS Shield — Router-level Ad Filtering Rule Generator',
+        heroEyebrow: 'v2.3.0',
+        heroTitle: 'DNS Shield',
+        heroSubtitle: 'Router-level ad filtering rule generator',
+        statDomains: 'Domains',
+        statBlacklist: 'Blocked',
+        statWhitelist: 'Allowed',
+        statFormats: 'Formats',
+        inputTitle: 'Input',
+        outputTitle: 'Output',
+        settingsTitle: 'Settings',
+        collapse: 'Collapse',
+        expand: 'Expand',
+        tagEasyList: 'EasyList',
+        tagCJX: 'CJX List',
+        tagCustom: 'Custom',
+        domainPlaceholder: 'One domain per line...\n\nad.example.com\nads.google.com',
+        btnParse: 'Generate',
+        btnSort: 'Sort',
+        btnDedup: 'Dedupe',
+        btnClear: 'Clear',
+        btnCopy: 'Copy',
+        btnDownload: 'Download',
+        codeLines: 'lines',
+        settingsDns: 'DNS Configuration',
+        settingsOptions: 'Options',
+        labelIPv4: 'IPv4 Address',
+        labelIPv6: 'IPv6 Address',
+        labelFilename: 'Filename',
+        switchDedup: 'Auto dedupe',
+        switchDedupDesc: 'Remove duplicate domains on generate',
+        switchWildcard: 'Wildcard support',
+        switchWildcardDesc: 'Add *. prefix to match subdomains',
+        switchIPv6: 'IPv6 rules',
+        switchIPv6Desc: 'Output IPv6 filtering rules alongside',
+        guideTitle: 'Getting Started',
+        guideStep1: '1. Choose your source',
+        guideStep1Desc: 'Pick a preset tag, or paste your own domain list in the text area',
+        guideStep2: '2. Generate rules',
+        guideStep2Desc: 'Click Generate to parse domains and build the filter list',
+        guideStep3: '3. Pick a format',
+        guideStep3Desc: 'Dnsmasq (Merlin / OpenWrt), Hosts (system hosts file), AdGuard (AdGuard Home)',
+        guideStep4: '4. Export',
+        guideStep4Desc: 'Copy to clipboard or download the config file',
+        formatTitle: 'Formats',
+        formatDnsmasqDesc: 'Lightweight DNS forwarder. Works with Merlin, OpenWrt and similar firmwares',
+        formatHostsDesc: 'Direct hosts file edits. Works on every platform',
+        formatAdguardDesc: 'Native rule format for AdGuard Home / AdGuard DNS',
+        footerLine1: 'DNS Shield',
+        footerLine2: 'Open source',
+        toastParseSuccess: 'Parsed',
+        toastParseSuccessMsg: '{count} domains ready',
+        toastParseError: 'Nothing to parse',
+        toastParseErrorMsg: 'Please enter at least one domain',
+        toastSort: 'Sorted',
+        toastSortMsg: 'Domains sorted alphabetically',
+        toastDedup: 'Deduplicated',
+        toastDedupMsgRemoved: '{count} duplicates removed',
+        toastDedupMsgNone: 'No duplicates found',
+        toastClear: 'Cleared',
+        toastClearMsg: 'Domain list is now empty',
+        toastCopy: 'Copied',
+        toastCopyMsg: 'Rules copied to clipboard',
+        toastCopyError: 'Copy failed',
+        toastCopyErrorMsg: 'Clipboard access denied',
+        toastDownload: 'Downloaded',
+        toastDownloadMsg: 'Rule file download started',
+        toastLoadMsg: 'Loading domain list...',
+        toastLoadedSuccess: 'Loaded',
+        toastLoadedSuccessMsg: '{count} sample domains loaded',
+        toastLangSwitched: '语言已切换',
+        toastLangSwitchedMsg: '已切换到 中文',
+        toastThemeSwitched: 'Theme switched',
+        toastThemeSwitchedMsg: 'Light mode active'
+      }
+    };
+
+    // ---------- State ----------
+    let currentLang = 'zh';
     let currentFormat = 'dnsmasq';
     let domains = [];
-    let stats = { total: 473, black: 452, white: 21 };
+    let initialSample = [
+      'ad.example.com',
+      'ads.google.com',
+      'doubleclick.net',
+      'pagead2.google.com',
+      'securepubads.g.doubleclick.net',
+      'adservice.google.com',
+      'ad.moatads.com',
+      'stats.wp.com',
+      'pixel.wp.com',
+      'analytics.tiktok.com'
+    ];
 
-    // Init
+    // ---------- Helpers ----------
+    const $ = (id) => document.getElementById(id);
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function fmt(str, vars) {
+      return str.replace(/{(\w+)}/g, (_, k) => (vars && vars[k] !== undefined ? vars[k] : ''));
+    }
+
+    function t(key) {
+      return (I18N[currentLang] && I18N[currentLang][key]) || I18N.zh[key] || key;
+    }
+
+    function timestamp() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+      return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+    }
+
+    // ---------- Init ----------
     document.addEventListener('DOMContentLoaded', () => {
       initTheme();
       initLang();
-      initTabs();
       initUrlTags();
+      initTabs();
       initLineNumbers();
-      updateGenTime();
+      initCollapse();
+      initAccordion();
+      initDomainActions();
+      initExport();
+      initSettingsWatch();
+      loadSample();
+      updateOutput();
     });
 
-    // Theme
+    // ---------- Theme ----------
     function initTheme() {
       const saved = localStorage.getItem('theme') || 'light';
-      setTheme(saved);
-      document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+      setTheme(saved, false);
+      $('themeToggle').addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        setTheme(next, true);
+      });
     }
-    function setTheme(theme) {
+
+    function setTheme(theme, withToast) {
       document.documentElement.dataset.theme = theme;
       localStorage.setItem('theme', theme);
-      document.getElementById('sunIcon').style.display = theme === 'dark' ? 'none' : 'block';
-      document.getElementById('moonIcon').style.display = theme === 'dark' ? 'block' : 'none';
-    }
-    function toggleTheme() {
-      const current = document.documentElement.dataset.theme;
-      setTheme(current === 'dark' ? 'light' : 'dark');
+      const isDark = theme === 'dark';
+      $('sunIcon').style.display = isDark ? 'none' : 'inline-block';
+      $('moonIcon').style.display = isDark ? 'inline-block' : 'none';
     }
 
-    // Language
+    // ---------- Language ----------
     function initLang() {
       const saved = localStorage.getItem('lang') || 'zh';
-      document.getElementById('langSelect').value = saved;
-      document.getElementById('langSelect').addEventListener('change', (e) => {
-        localStorage.setItem('lang', e.target.value);
-        showToast('success', '语言已切换', '界面语言已更改');
+      setLang(saved, false);
+      $('langToggle').addEventListener('click', () => {
+        setLang(currentLang === 'zh' ? 'en' : 'zh', true);
       });
     }
 
-    // Tabs
-    function initTabs() {
-      document.querySelectorAll('#formatTabs .tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('#formatTabs .tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          currentFormat = tab.dataset.format;
-          document.getElementById('codeTitle').textContent = getFormatTitle(currentFormat);
-          updateOutput();
-        });
-      });
-    }
-    function getFormatTitle(format) {
-      return { dnsmasq: 'dnsmasq.conf', hosts: 'hosts', adguard: 'adguard.txt' }[format];
+    function setLang(lang, withToast) {
+      currentLang = lang;
+      localStorage.setItem('lang', lang);
+      applyI18n();
     }
 
-    // URL Tags
+    function applyI18n() {
+      document.title = t('pageTitle');
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute('data-i18n');
+        if (I18N[currentLang] && I18N[currentLang][key]) {
+          el.textContent = I18N[currentLang][key];
+        }
+      });
+      document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (I18N[currentLang] && I18N[currentLang][key]) {
+          el.setAttribute('placeholder', I18N[currentLang][key]);
+        }
+      });
+      // update collapse buttons text
+      document.querySelectorAll('.collapse-btn').forEach((btn) => {
+        const body = document.getElementById(btn.getAttribute('data-target'));
+        if (body) {
+          const span = btn.querySelector('span');
+          if (span) span.textContent = body.classList.contains('collapsed') ? t('expand') : t('collapse');
+        }
+      });
+      if (domains.length > 0) updateOutput();
+    }
+
+    // ---------- URL Tags ----------
     function initUrlTags() {
-      document.querySelectorAll('.url-tag').forEach(tag => {
+      document.querySelectorAll('#urlTags .url-tag').forEach((tag) => {
         tag.addEventListener('click', () => {
-          document.querySelectorAll('.url-tag').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('#urlTags .url-tag').forEach((t) => t.classList.remove('active'));
           tag.classList.add('active');
-          if (tag.dataset.url === 'custom') {
-            document.getElementById('customUrl').style.display = 'block';
-            document.getElementById('customUrl').focus();
+          const url = tag.dataset.url;
+          if (url === 'custom') {
+            $('customUrl').style.display = 'block';
+            $('customUrl').focus();
           } else {
-            document.getElementById('customUrl').style.display = 'none';
-            loadFromUrl(tag.dataset.url);
+            $('customUrl').style.display = 'none';
+            loadPresetDomains(url);
           }
         });
       });
     }
-    function loadFromUrl(url) {
-      showToast('info', '加载中', '正在获取域名列表...');
+
+    function loadPresetDomains(name) {
+      showToast('info', t('toastLoadMsg'));
+      // simulate remote load with a shuffled sample
+      const sample = [...initialSample].sort(() => Math.random() - 0.5).slice(0, 8);
       setTimeout(() => {
-        const sampleDomains = [
-          'ad.example.com', 'ad2.example.com', 'ads.google.com',
-          'doubleclick.net', 'pagead2.google.com', 'adservice.google.com',
-          'ad.moatads.com', 'securepubads.g.doubleclick.net'
-        ];
-        document.getElementById('domainInput').value = sampleDomains.join('\n');
+        $('domainInput').value = sample.join('\n');
         updateLineNumbers();
-        showToast('success', '加载完成', `已加载 ${sampleDomains.length} 个域名`);
-      }, 800);
+        showToast('success', t('toastLoadedSuccess'), fmt(t('toastLoadedSuccessMsg'), { count: sample.length }));
+      }, 200);
     }
 
-    // Line Numbers
-    function initLineNumbers() {
-      const input = document.getElementById('domainInput');
-      input.addEventListener('input', updateLineNumbers);
-      input.addEventListener('scroll', syncScroll);
+    function loadSample() {
+      $('domainInput').value = initialSample.join('\n');
       updateLineNumbers();
-    }
-    function updateLineNumbers() {
-      const input = document.getElementById('domainInput');
-      const lines = input.value.split('\n').length;
-      document.getElementById('lineNumbers').innerHTML = Array.from({length: lines}, (_, i) => i + 1).join('<br>');
-    }
-    function syncScroll() {
-      document.getElementById('lineNumbers').scrollTop = document.getElementById('domainInput').scrollTop;
+      const parsed = parseDomainsFromText($('domainInput').value);
+      if (parsed.length) {
+        domains = parsed;
+        updateStats();
+      }
     }
 
-    // Domain Operations
-    function parseDomains() {
-      const input = document.getElementById('domainInput').value.trim();
-      if (!input) {
-        showToast('error', '解析失败', '请输入域名列表');
-        return;
-      }
-      domains = input.split('\n').map(d => d.trim()).filter(d => d && !d.startsWith('#'));
+    // ---------- Tabs ----------
+    function initTabs() {
+      document.querySelectorAll('#formatTabs .tab').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('#formatTabs .tab').forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentFormat = tab.dataset.format;
+          updateOutput();
+        });
+      });
+    }
+
+    // ---------- Line Numbers ----------
+    function initLineNumbers() {
+      const input = $('domainInput');
+      input.addEventListener('input', updateLineNumbers);
+      input.addEventListener('scroll', () => {
+        $('lineNumbers').scrollTop = input.scrollTop;
+      });
+    }
+
+    function updateLineNumbers() {
+      const lines = $('domainInput').value.split('\n').length;
+      const nums = [];
+      for (let i = 1; i <= lines; i++) nums.push(String(i));
+      $('lineNumbers').textContent = nums.join('\n');
+    }
+
+    // ---------- Collapse ----------
+    function initCollapse() {
+      document.querySelectorAll('.collapse-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-target');
+          const body = document.getElementById(target);
+          if (!body) return;
+          const collapsed = body.classList.toggle('collapsed');
+          btn.classList.toggle('collapsed', collapsed);
+          const span = btn.querySelector('span');
+          if (span) span.textContent = collapsed ? t('expand') : t('collapse');
+        });
+      });
+    }
+
+    // ---------- Accordion ----------
+    function initAccordion() {
+      document.querySelectorAll('.accordion-item').forEach((item) => {
+        const header = item.querySelector('.accordion-header');
+        if (!header) return;
+        header.addEventListener('click', () => {
+          const isOpen = item.classList.toggle('open');
+          header.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+      });
+    }
+
+    // ---------- Domain actions ----------
+    function parseDomainsFromText(text) {
+      return text
+        .split('\n')
+        .map((l) => l.trim())
+        .filter((l) => l && !l.startsWith('#'));
+    }
+
+    function initDomainActions() {
+      $('parseBtn').addEventListener('click', () => {
+        const input = $('domainInput').value.trim();
+        if (!input) {
+          showToast('error', t('toastParseError'), t('toastParseErrorMsg'));
+          return;
+        }
+        let list = parseDomainsFromText(input);
+        if ($('optDedup').checked) list = Array.from(new Set(list));
+        domains = list;
+        updateStats();
+        updateOutput();
+        showToast('success', t('toastParseSuccess'), fmt(t('toastParseSuccessMsg'), { count: domains.length }));
+      });
+
+      $('sortBtn').addEventListener('click', () => {
+        const input = $('domainInput');
+        const raw = input.value.split('\n');
+        const comments = raw.filter((l) => l.trim().startsWith('#'));
+        const lines = raw.filter((l) => l.trim() && !l.trim().startsWith('#'));
+        lines.sort((a, b) => a.trim().localeCompare(b.trim()));
+        input.value = [...comments, ...lines].join('\n');
+        updateLineNumbers();
+        showToast('success', t('toastSort'), t('toastSortMsg'));
+      });
+
+      $('dedupBtn').addEventListener('click', () => {
+        const input = $('domainInput');
+        const lines = input.value.split('\n');
+        const seen = new Set();
+        const unique = [];
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed.startsWith('#')) {
+            unique.push(line);
+            continue;
+          }
+          if (seen.has(trimmed)) continue;
+          seen.add(trimmed);
+          unique.push(line);
+        }
+        const removed = lines.length - unique.length;
+        input.value = unique.join('\n');
+        updateLineNumbers();
+        if (removed > 0) {
+          showToast('success', t('toastDedup'), fmt(t('toastDedupMsgRemoved'), { count: removed }));
+        } else {
+          showToast('info', t('toastDedup'), t('toastDedupMsgNone'));
+        }
+      });
+
+      $('clearBtn').addEventListener('click', () => {
+        $('domainInput').value = '';
+        updateLineNumbers();
+        domains = [];
+        updateStats();
+        updateOutput();
+        document.querySelectorAll('#urlTags .url-tag').forEach((t) => t.classList.remove('active'));
+        showToast('info', t('toastClear'), t('toastClearMsg'));
+      });
+    }
+
+    function updateStats() {
+      $('statDomains').textContent = domains.length;
       const blackCount = Math.floor(domains.length * 0.95);
       const whiteCount = domains.length - blackCount;
-      stats = { total: domains.length, black: blackCount, white: whiteCount };
-      document.getElementById('statDomains').textContent = stats.total;
-      document.getElementById('statBlacklist').textContent = stats.black;
-      document.getElementById('statWhitelist').textContent = stats.white;
-      document.getElementById('codeDomains').textContent = stats.total;
-      updateOutput();
-      showToast('success', '解析完成', `共 ${stats.total} 个域名 (黑名单 ${stats.black} / 白名单 ${stats.white})`);
-    }
-    function sortDomains() {
-      const input = document.getElementById('domainInput');
-      let lines = input.value.split('\n');
-      const commentLines = lines.filter(l => l.trim().startsWith('#'));
-      const domainLines = lines.filter(l => l.trim() && !l.trim().startsWith('#'));
-      domainLines.sort((a, b) => a.localeCompare(b));
-      input.value = [...commentLines, ...domainLines].join('\n');
-      updateLineNumbers();
-      showToast('success', '排序完成', '域名列表已按字母顺序排列');
-    }
-    function dedupDomains() {
-      const input = document.getElementById('domainInput');
-      const lines = input.value.split('\n');
-      const seen = new Set();
-      const unique = lines.filter(line => {
-        const trimmed = line.trim();
-        if (!trimmed || trimmed.startsWith('#')) return true;
-        if (seen.has(trimmed)) return false;
-        seen.add(trimmed);
-        return true;
-      });
-      const removed = lines.length - unique.length;
-      input.value = unique.join('\n');
-      updateLineNumbers();
-      if (removed > 0) {
-        parseDomains();
-        showToast('success', '去重完成', `已移除 ${removed} 个重复项`);
-      } else {
-        showToast('info', '去重完成', '没有发现重复项');
-      }
-    }
-    function clearDomains() {
-      document.getElementById('domainInput').value = '';
-      updateLineNumbers();
-      stats = { total: 0, black: 0, white: 0 };
-      document.getElementById('statDomains').textContent = '0';
-      document.getElementById('statBlacklist').textContent = '0';
-      document.getElementById('statWhitelist').textContent = '0';
-      document.getElementById('codeDomains').textContent = '0';
-      document.querySelectorAll('.url-tag').forEach(t => t.classList.remove('active'));
-      showToast('info', '已清空', '域名列表已清空');
+      $('statBlacklist').textContent = blackCount;
+      $('statWhitelist').textContent = whiteCount;
     }
 
-    // Output
+    // ---------- Output ----------
     function updateOutput() {
-      const ipv4 = document.getElementById('ipv4Addr').value || '0.0.0.0';
-      const ipv6 = document.getElementById('ipv6Addr').value || '::';
-      const useWildcard = document.getElementById('optWildcard').checked;
-      const useIPv6 = document.getElementById('optIPv6').checked;
+      const ipv4 = $('ipv4Addr').value || '0.0.0.0';
+      const ipv6 = $('ipv6Addr').value || '::';
+      const useWildcard = $('optWildcard').checked;
+      const useIPv6 = $('optIPv6').checked;
+      const ts = timestamp();
+      const list = domains.length ? domains : initialSample.slice(0, 5);
+      const count = list.length;
 
-      let output = '';
-      const timestamp = new Date().toLocaleString('zh-CN');
-      const domainCount = domains.length || 3;
+      let html = '';
+      let plain = '';
+
+      const meta = {
+        dnsmasq: { title: 'dnsmasq.conf' },
+        hosts: { title: 'hosts' },
+        adguard: { title: 'adguard.txt' }
+      };
+
+      $('codeTitle').textContent = meta[currentFormat].title;
+      $('lineCount').innerHTML = count + ' <span data-i18n="codeLines">' + t('codeLines') + '</span>';
 
       if (currentFormat === 'dnsmasq') {
-        output = `<span class="c"># DNS Shield - Dnsmasq Filter</span>
-<span class="c"># 生成时间: ${timestamp}</span>
-<span class="c"># 域名数: ${domainCount}</span>
-
-<span class="c"># 黑名单规则</span>`;
-        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
-        sampleDomains.forEach(d => {
-          output += `\n<span class="k">address</span>=<span class="s">/${useWildcard ? '*.' : ''}${d}/${ipv4}</span>`;
-        });
-        output += `\n\n<span class="c"># IPv6 规则</span>`;
+        html =
+          '<span class="c"># DNS Shield - Dnsmasq Filter</span>\n' +
+          '<span class="c"># Generated: ' + ts + '</span>\n' +
+          '<span class="c"># Domains: ' + count + '</span>\n\n' +
+          '<span class="c"># Blacklist rules</span>\n';
+        plain =
+          '# DNS Shield - Dnsmasq Filter\n# Generated: ' + ts + '\n# Domains: ' + count + '\n\n# Blacklist rules\n';
+        for (const d of list) {
+          const prefix = useWildcard ? '*.' : '';
+          html += '<span class="k">address</span>=<span class="s">/' + prefix + escapeHtml(d) + '/' + ipv4 + '</span>\n';
+          plain += 'address=/' + prefix + d + '/' + ipv4 + '\n';
+        }
         if (useIPv6) {
-          sampleDomains.forEach(d => {
-            output += `\n<span class="k">address</span>=<span class="s">/${useWildcard ? '*.' : ''}${d}/${ipv6}</span>`;
-          });
+          html += '\n<span class="c"># IPv6 rules</span>\n';
+          plain += '\n# IPv6 rules\n';
+          for (const d of list) {
+            const prefix = useWildcard ? '*.' : '';
+            html += '<span class="k">address</span>=<span class="s">/' + prefix + escapeHtml(d) + '/' + ipv6 + '</span>\n';
+            plain += 'address=/' + prefix + d + '/' + ipv6 + '\n';
+          }
         }
       } else if (currentFormat === 'hosts') {
-        output = `<span class="c"># DNS Shield - Hosts Filter</span>
-<span class="c"># 生成时间: ${timestamp}</span>
-<span class="c"># 域名数: ${domainCount}</span>
-<span class="c">#</span>`;
-        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
-        sampleDomains.forEach(d => {
-          output += `\n<span class="v">${ipv4}</span>\t<span class="s">${d}</span>`;
-          if (useIPv6) output += `\n<span class="v">${ipv6}</span>\t<span class="s">${d}</span>`;
-        });
+        html =
+          '<span class="c"># DNS Shield - Hosts Filter</span>\n' +
+          '<span class="c"># Generated: ' + ts + '</span>\n' +
+          '<span class="c"># Domains: ' + count + '</span>\n';
+        plain = '# DNS Shield - Hosts Filter\n# Generated: ' + ts + '\n# Domains: ' + count + '\n';
+        for (const d of list) {
+          html += '<span class="v">' + ipv4 + '</span>\t<span class="d">' + escapeHtml(d) + '</span>\n';
+          plain += ipv4 + '\t' + d + '\n';
+          if (useIPv6) {
+            html += '<span class="v">' + ipv6 + '</span>\t<span class="d">' + escapeHtml(d) + '</span>\n';
+            plain += ipv6 + '\t' + d + '\n';
+          }
+        }
       } else {
-        output = `<span class="c">! DNS Shield - AdGuard Filter</span>
-<span class="c">! 生成时间: ${timestamp}</span>
-<span class="c">! 域名数: ${domainCount}</span>`;
-        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
-        sampleDomains.forEach(d => {
-          output += `\n<span class="s">||${d}^$dnsrewrite=${ipv4}</span>`;
-          if (useIPv6) output += `\n<span class="s">||${d}^$dnsrewrite=${ipv6}</span>`;
-        });
+        html =
+          '<span class="c">! DNS Shield - AdGuard Filter</span>\n' +
+          '<span class="c">! Generated: ' + ts + '</span>\n' +
+          '<span class="c">! Domains: ' + count + '</span>\n';
+        plain = '! DNS Shield - AdGuard Filter\n! Generated: ' + ts + '\n! Domains: ' + count + '\n';
+        for (const d of list) {
+          html += '<span class="d">||' + escapeHtml(d) + '^$dnsrewrite=' + ipv4 + '</span>\n';
+          plain += '||' + d + '^$dnsrewrite=' + ipv4 + '\n';
+          if (useIPv6) {
+            html += '<span class="d">||' + escapeHtml(d) + '^$dnsrewrite=' + ipv6 + '</span>\n';
+            plain += '||' + d + '^$dnsrewrite=' + ipv6 + '\n';
+          }
+        }
       }
 
-      document.getElementById('codeOutput').innerHTML = output;
-      document.getElementById('lineCount').textContent = `${domainCount} 行`;
-      document.getElementById('genTime').textContent = timestamp;
+      $('codeOutput').innerHTML = html.trim() + '\n';
+      window.__plainOutput = plain.trim() + '\n';
     }
 
-    // Export
+    // ---------- Export ----------
+    function initExport() {
+      $('copyBtn').addEventListener('click', copyOutput);
+      $('downloadBtn').addEventListener('click', downloadOutput);
+    }
+
+    function getPlainOutput() {
+      if (typeof window.__plainOutput === 'string' && window.__plainOutput.length) {
+        return window.__plainOutput;
+      }
+      // rebuild once if missing
+      updateOutput();
+      return window.__plainOutput || '';
+    }
+
     function copyOutput() {
       const text = getPlainOutput();
-      navigator.clipboard.writeText(text).then(() => {
-        showToast('success', '已复制', '规则已复制到剪贴板');
-      }).catch(() => {
-        showToast('error', '复制失败', '无法访问剪贴板');
-      });
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('success', t('toastCopy'), t('toastCopyMsg'));
+        }).catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
     }
+
+    function fallbackCopy(text) {
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(ok ? 'success' : 'error', ok ? t('toastCopy') : t('toastCopyError'), ok ? t('toastCopyMsg') : t('toastCopyErrorMsg'));
+      } catch (e) {
+        showToast('error', t('toastCopyError'), t('toastCopyErrorMsg'));
+      }
+    }
+
     function downloadOutput() {
       const text = getPlainOutput();
-      const blob = new Blob([text], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = document.getElementById('filename').value || 'dns-filter.conf';
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast('success', '已下载', '规则文件已开始下载');
-    }
-    function getPlainOutput() {
-      const ipv4 = document.getElementById('ipv4Addr').value || '0.0.0.0';
-      const ipv6 = document.getElementById('ipv6Addr').value || '::';
-      const useWildcard = document.getElementById('optWildcard').checked;
-      const useIPv6 = document.getElementById('optIPv6').checked;
-      const timestamp = new Date().toLocaleString('zh-CN');
-      const domainCount = domains.length || 3;
-      let output = '';
-
-      if (currentFormat === 'dnsmasq') {
-        output = `# DNS Shield - Dnsmasq Filter\n# 生成时间: ${timestamp}\n# 域名数: ${domainCount}\n\n# 黑名单规则\n`;
-        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
-        sampleDomains.forEach(d => { output += `address=/${useWildcard ? '*.' : ''}${d}/${ipv4}\n`; });
-        output += `\n# IPv6 规则\n`;
-        if (useIPv6) sampleDomains.forEach(d => { output += `address=/${useWildcard ? '*.' : ''}${d}/${ipv6}\n`; });
-      } else if (currentFormat === 'hosts') {
-        output = `# DNS Shield - Hosts Filter\n# 生成时间: ${timestamp}\n# 域名数: ${domainCount}\n#\n`;
-        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
-        sampleDomains.forEach(d => {
-          output += `${ipv4}\t${d}\n`;
-          if (useIPv6) output += `${ipv6}\t${d}\n`;
-        });
-      } else {
-        output = `! DNS Shield - AdGuard Filter\n! 生成时间: ${timestamp}\n! 域名数: ${domainCount}\n`;
-        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
-        sampleDomains.forEach(d => {
-          output += `||${d}^$dnsrewrite=${ipv4}\n`;
-          if (useIPv6) output += `||${d}^$dnsrewrite=${ipv6}\n`;
-        });
+      const filename = $('filename').value || 'dns-filter.conf';
+      try {
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showToast('success', t('toastDownload'), t('toastDownloadMsg'));
+      } catch (e) {
+        showToast('error', t('toastCopyError'), t('toastCopyErrorMsg'));
       }
-      return output;
     }
 
-    // Update time
-    function updateGenTime() {
-      document.getElementById('genTime').textContent = new Date().toLocaleString('zh-CN');
-      setTimeout(updateGenTime, 60000);
+    // ---------- Settings watch ----------
+    function initSettingsWatch() {
+      ['optDedup', 'optWildcard', 'optIPv6', 'ipv4Addr', 'ipv6Addr', 'filename'].forEach((id) => {
+        const el = $(id);
+        if (!el) return;
+        el.addEventListener('change', updateOutput);
+        el.addEventListener('input', updateOutput);
+      });
     }
 
-    // Collapse
-    function toggleCollapse(btn) {
-      btn.classList.toggle('collapsed');
-      const panelBody = btn.closest('.panel').querySelector('.panel-body');
-      panelBody.classList.toggle('collapsed');
-      btn.querySelector('span').textContent = panelBody.classList.contains('collapsed') ? '展开' : '收起';
-    }
-
-    // Accordion
-    function toggleAccordion(item) {
-      item.classList.toggle('open');
-    }
-
-    // Toast
+    // ---------- Toast ----------
     function showToast(type, title, message) {
-      const container = document.getElementById('toastContainer');
+      const container = $('toastContainer');
       const toast = document.createElement('div');
-      toast.className = `toast toast-${type}`;
-      const icons = {
-        success: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>',
-        error: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
-        info: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
-      };
-      toast.innerHTML = `<span class="toast-icon">${icons[type]}</span><div class="toast-content"><div class="toast-title">${title}</div><div class="toast-message">${message}</div></div><button class="toast-close" onclick="this.parentElement.remove()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
-      container.appendChild(toast);
-      setTimeout(() => { if (toast.parentElement) { toast.style.animation = 'slideOut 0.3s ease forwards'; setTimeout(() => toast.remove(), 300); } }, 4000);
-    }
+      toast.className = 'toast toast-' + type;
 
-    // Listen to settings changes
-    document.querySelectorAll('.switch, .input').forEach(el => {
-      el.addEventListener('change', updateOutput);
-      el.addEventListener('input', updateOutput);
-    });
+      const icons = {
+        success:
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+        info:
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+        error:
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+      };
+
+      toast.innerHTML =
+        '<span class="toast-icon">' + (icons[type] || icons.info) + '</span>' +
+        '<div class="toast-content">' +
+        '<div class="toast-title">' + escapeHtml(title) + '</div>' +
+        (message ? '<div class="toast-message">' + escapeHtml(message) + '</div>' : '') +
+        '</div>' +
+        '<button class="toast-close" type="button" aria-label="close">' +
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+        '</button>';
+
+      container.appendChild(toast);
+
+      const closeBtn = toast.querySelector('.toast-close');
+      const remove = () => {
+        toast.classList.add('leaving');
+        setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 200);
+      };
+      closeBtn.addEventListener('click', remove);
+      setTimeout(remove, 3500);
+    }
   </script>
 </body>
 </html>
