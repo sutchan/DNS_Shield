@@ -1,2002 +1,1927 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="DNS Shield - 路由器级广告过滤规则生成工具原型设计">
-    <title>DNS Shield v2.3.0 - UI/UX 原型设计</title>
-    <style>
-        /* ==================== Apple Design System v2.3.0 ==================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            /* Apple-inspired color palette - enhanced */
-            --primary: #007AFF;
-            --primary-dark: #0056CC;
-            --primary-light: #5856D6;
-            --success: #34C759;
-            --warning: #FF9500;
-            --danger: #FF3B30;
-            --info: #5AC8FA;
-            --purple: #AF52DE;
-            --pink: #FF2D55;
-            
-            /* Neutral colors - Apple style */
-            --text-primary: #1D1D1F;
-            --text-secondary: #86868B;
-            --text-tertiary: #C7C7CC;
-            --text-light: #F5F5F7;
-            --bg-primary: #FFFFFF;
-            --bg-secondary: #F5F5F7;
-            --bg-tertiary: #E5E5EA;
-            --border-color: #D1D1D6;
-            --separator: #C6C6C8;
-            
-            /* Glassmorphism effects */
-            --glass-bg: rgba(255, 255, 255, 0.72);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-            
-            /* Apple-style soft shadows - enhanced */
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
-            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.15);
-            
-            /* Border radius - Apple style */
-            --radius-xs: 6px;
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 18px;
-            --radius-xl: 24px;
-            --radius-2xl: 32px;
-            
-            /* Smooth transitions - Apple curve */
-            --transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-            
-            /* Typography - Apple SF */
-            --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-            --font-mono: "SF Mono", "SF Mono", Monaco, Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
-            
-            /* Spacing system - 4px grid */
-            --spacing-1: 4px;
-            --spacing-2: 8px;
-            --spacing-3: 12px;
-            --spacing-4: 16px;
-            --spacing-5: 20px;
-            --spacing-6: 24px;
-            --spacing-8: 32px;
-            --spacing-10: 40px;
-            --spacing-12: 48px;
-            --spacing-16: 64px;
-            --spacing-20: 80px;
-            --spacing-24: 96px;
-            
-            /* Aliases for backward compatibility */
-            --spacing-xs: var(--spacing-1);
-            --spacing-sm: var(--spacing-2);
-            --spacing-md: var(--spacing-4);
-            --spacing-lg: var(--spacing-6);
-            --spacing-xl: var(--spacing-8);
-            --spacing-2xl: var(--spacing-12);
-            --spacing-3xl: var(--spacing-16);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-sans);
-            background: var(--bg-secondary);
-            min-height: 100vh;
-            padding: var(--spacing-2xl) var(--spacing-lg);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* ==================== Typography ==================== */
-        h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 700; letter-spacing: -0.02em; }
-        h2 { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 600; letter-spacing: -0.01em; }
-        h3 { font-size: 1.5rem; font-weight: 600; }
-        h4 { font-size: 1.125rem; font-weight: 600; }
-        p { font-size: 1rem; color: var(--text-secondary); }
-
-        /* ==================== Document Header ==================== */
-        .doc-header {
-            background: var(--bg-primary);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-3xl) var(--spacing-xl);
-            margin-bottom: var(--spacing-2xl);
-            box-shadow: var(--shadow-md);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .doc-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), #34C759, #FF9500, var(--primary));
-            background-size: 300% 100%;
-            animation: gradientMove 8s ease infinite;
-        }
-
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .doc-header:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .doc-header h1 {
-            font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 700;
-            letter-spacing: -0.025em;
-            background: linear-gradient(135deg, var(--primary), #5856D6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: var(--spacing-sm);
-            transition: all 0.3s ease;
-        }
-
-        .doc-header:hover h1 {
-            letter-spacing: -0.03em;
-        }
-
-        .doc-header p {
-            font-size: 1.25rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-lg);
-            line-height: 1.7;
-        }
-
-        .doc-header .version {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: var(--spacing-sm) var(--spacing-lg);
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .doc-header .version:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
-        }
-
-        .doc-header .meta {
-            display: flex;
-            justify-content: center;
-            gap: var(--spacing-2xl);
-            margin-top: var(--spacing-xl);
-            flex-wrap: wrap;
-        }
-
-        .doc-header .meta-item {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-        }
-
-        .doc-header .meta-item .icon {
-            width: 32px;
-            height: 32px;
-            background: var(--bg-secondary);
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-        }
-
-        /* ==================== Design Sections ==================== */
-        .design-section {
-            background: var(--bg-primary);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-2xl);
-            margin-bottom: var(--spacing-xl);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .design-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
-        }
-
-        .design-section:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
-        }
-
-        .design-section h2 {
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-lg);
-            padding-bottom: var(--spacing-md);
-            border-bottom: 2px solid var(--primary);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            position: relative;
-        }
-
-        .design-section h2::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 60px;
-            height: 2px;
-            background: var(--primary);
-        }
-
-        .design-section h3 {
-            color: var(--text-primary);
-            margin: var(--spacing-xl) 0 var(--spacing-md);
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-
-        .design-section p {
-            margin-bottom: var(--spacing-md);
-            font-size: 1.05rem;
-            line-height: 1.8;
-        }
-
-        .design-section ul {
-            color: var(--text-secondary);
-            line-height: 2;
-            margin-left: var(--spacing-lg);
-            margin-bottom: var(--spacing-md);
-        }
-
-        /* ==================== Color Grid ==================== */
-        .color-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: var(--spacing-lg);
-            margin: var(--spacing-lg) 0;
-        }
-
-        .color-card {
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-xl) var(--spacing-md);
-            text-align: center;
-            color: white;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .color-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .color-card:hover {
-            transform: translateY(-8px) scale(1.03);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-        }
-
-        .color-card:hover::before {
-            opacity: 1;
-        }
-
-        .color-card span {
-            display: block;
-            font-size: 0.8rem;
-            margin-top: var(--spacing-sm);
-            opacity: 0.95;
-            font-weight: 400;
-        }
-
-        /* ==================== Feature Cards ==================== */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--spacing-lg);
-            margin: var(--spacing-xl) 0;
-        }
-
-        .feature-card {
-            background: var(--bg-secondary);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-xl);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 0;
-            background: linear-gradient(180deg, var(--primary), var(--success));
-            transition: height 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-lg);
-            background: var(--bg-primary);
-            border-color: var(--border-color);
-        }
-
-        .feature-card:hover::before {
-            height: 100%;
-        }
-
-        .feature-card h4 {
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-sm);
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-
-        .feature-card p {
-            font-size: 0.95rem;
-            margin: 0;
-            line-height: 1.7;
-        }
-
-        .feature-card .tag {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            font-size: 0.7rem;
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: var(--radius-sm);
-            margin-right: var(--spacing-sm);
-            font-weight: 600;
-            letter-spacing: 0.03em;
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
-        }
-
-        /* ==================== Device Simulator ==================== */
-        .device-simulator {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: var(--spacing-2xl);
-            margin: var(--spacing-2xl) 0;
-            align-items: start;
-        }
-
-        .device-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .device-label {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .device-label .size {
-            font-size: 0.875rem;
-            font-weight: 400;
-            color: var(--text-secondary);
-            display: block;
-            margin-top: var(--spacing-xs);
-        }
-
-        /* Desktop Frame */
-        .desktop-frame {
-            width: 100%;
-            max-width: 800px;
-            background: #000;
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-sm);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .desktop-screen {
-            width: 100%;
-            background: var(--bg-primary);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Tablet Frame */
-        .tablet-frame {
-            width: 360px;
-            height: 480px;
-            background: linear-gradient(145deg, #1D1D1F, #3A3A3C);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-md);
-            box-shadow: var(--shadow-lg);
-            position: relative;
-        }
-
-        .tablet-screen {
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-        }
-
-        /* Phone Frame */
-        .phone-frame {
-            width: 280px;
-            height: 560px;
-            background: linear-gradient(145deg, #1D1D1F, #3A3A3C);
-            border-radius: 40px;
-            padding: var(--spacing-sm);
-            box-shadow: var(--shadow-lg);
-            position: relative;
-        }
-
-        .phone-frame::before {
-            content: '';
-            position: absolute;
-            top: var(--spacing-sm);
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: #3A3A3C;
-            border-radius: 2px;
-        }
-
-        .phone-screen {
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            border-radius: 32px;
-            overflow: hidden;
-        }
-
-        /* ==================== App Content ==================== */
-        .app-container {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .app-header {
-            background: var(--bg-secondary);
-            padding: var(--spacing-md);
-            border-bottom: 1px solid var(--separator);
-            text-align: center;
-        }
-
-        .app-header h1 {
-            font-size: 1.25rem;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-xs);
-        }
-
-        .app-header .subtitle {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
-        .main-content {
-            flex: 1;
-            padding: var(--spacing-md);
-            overflow-y: auto;
-            background: var(--bg-secondary);
-        }
-
-        .main-content.desktop {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--spacing-md);
-            padding: var(--spacing-md);
-        }
-
-        .panel {
-            background: var(--bg-primary);
-            border-radius: var(--radius-md);
-            padding: var(--spacing-md);
-            margin-bottom: var(--spacing-md);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .panel h2 {
-            font-size: 0.875rem;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-sm);
-            padding-bottom: var(--spacing-sm);
-            border-bottom: 1px solid var(--separator);
-            font-weight: 600;
-        }
-
-        .stats-compact {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: var(--spacing-sm);
-            margin-bottom: var(--spacing-md);
-        }
-
-        .stat-badge {
-            text-align: center;
-            padding: var(--spacing-sm);
-            background: var(--bg-secondary);
-            border-radius: var(--radius-sm);
-        }
-
-        .stat-value {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .stat-label {
-            font-size: 0.6rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .editor-container {
-            display: flex;
-            margin-bottom: var(--spacing-md);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            height: 100px;
-        }
-
-        .line-numbers {
-            width: 36px;
-            background: var(--bg-secondary);
-            padding: var(--spacing-sm);
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            color: var(--text-tertiary);
-            text-align: right;
-            border-right: 1px solid var(--border-color);
-        }
-
-        .editor {
-            flex: 1;
-            padding: var(--spacing-sm);
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            resize: none;
-            border: none;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-
-        .editor-actions {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: var(--spacing-sm);
-        }
-
-        .btn {
-            padding: var(--spacing-sm) var(--spacing-md);
-            border: none;
-            border-radius: var(--radius-md);
-            font-size: 0.7rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.4s ease, height 0.4s ease;
-        }
-
-        .btn:hover {
-            background: var(--bg-tertiary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn:active::before {
-            width: 200px;
-            height: 200px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #248A3D);
-            color: white;
-            box-shadow: 0 4px 12px rgba(52, 199, 89, 0.3);
-        }
-
-        .btn-success:hover {
-            box-shadow: 0 6px 16px rgba(52, 199, 89, 0.4);
-        }
-
-        .format-tabs {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: var(--spacing-xs);
-            margin-bottom: var(--spacing-md);
-            background: var(--bg-secondary);
-            padding: var(--spacing-xs);
-            border-radius: var(--radius-md);
-        }
-
-        .format-tab {
-            padding: var(--spacing-sm);
-            border: none;
-            background: transparent;
-            font-size: 0.7rem;
-            cursor: pointer;
-            border-radius: var(--radius-sm);
-            transition: all 0.2s ease;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .format-tab:hover {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-        }
-
-        .format-tab.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .output-container {
-            display: flex;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            height: 80px;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .output-preview {
-            flex: 1;
-            padding: var(--spacing-sm);
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            background: var(--bg-primary);
-            overflow-y: auto;
-            color: var(--text-primary);
-        }
-
-        .output-actions {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--spacing-sm);
-        }
-
-        .app-footer {
-            background: var(--bg-secondary);
-            padding: var(--spacing-sm);
-            border-top: 1px solid var(--separator);
-            text-align: center;
-            font-size: 0.65rem;
-            color: var(--text-tertiary);
-        }
-
-        /* ==================== Layout Showcase ==================== */
-        .layout-showcase {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: var(--spacing-xl);
-            margin: var(--spacing-2xl) 0;
-        }
-
-        .layout-card {
-            background: var(--bg-primary);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-        }
-
-        .layout-card:hover {
-            box-shadow: var(--shadow-md);
-        }
-
-        .layout-preview {
-            background: var(--bg-secondary);
-            padding: var(--spacing-xl);
-            min-height: 220px;
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-sm);
-        }
-
-        .layout-preview-header {
-            background: var(--primary);
-            color: white;
-            padding: var(--spacing-sm) var(--spacing-md);
-            border-radius: var(--radius-md);
-            font-size: 0.8rem;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .layout-preview-body {
-            display: grid;
-            gap: var(--spacing-sm);
-            flex: 1;
-        }
-
-        .layout-preview-body.sidebar {
-            grid-template-columns: 1fr 2fr;
-        }
-
-        .layout-preview-content {
-            background: var(--bg-primary);
-            padding: var(--spacing-sm);
-            border-radius: var(--radius-md);
-            font-size: 0.7rem;
-            text-align: center;
-            color: var(--text-secondary);
-        }
-
-        .layout-preview-content.dark {
-            background: var(--bg-tertiary);
-        }
-
-        .layout-info {
-            padding: var(--spacing-lg);
-            border-top: 1px solid var(--separator);
-        }
-
-        .layout-info h4 {
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .layout-info p {
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        /* ==================== State Grid ==================== */
-        .state-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: var(--spacing-lg);
-            margin: var(--spacing-xl) 0;
-        }
-
-        .state-card {
-            background: var(--bg-secondary);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-xl);
-        }
-
-        .state-card h4 {
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-md);
-            padding-bottom: var(--spacing-sm);
-            border-bottom: 1px solid var(--separator);
-        }
-
-        .state-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: var(--spacing-sm) 0;
-            border-bottom: 1px dashed var(--border-color);
-        }
-
-        .state-item:last-child {
-            border-bottom: none;
-        }
-
-        .state-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .state-indicator {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-        }
-
-        .state-indicator.success { background: var(--success); }
-        .state-indicator.warning { background: var(--warning); }
-        .state-indicator.danger { background: var(--danger); }
-        .state-indicator.info { background: var(--info); }
-        .state-indicator.neutral { background: var(--text-tertiary); }
-
-        /* ==================== Touch Demo ==================== */
-        .touch-demo {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--spacing-xl);
-            margin: var(--spacing-2xl) 0;
-        }
-
-        .touch-item {
-            background: var(--bg-primary);
-            padding: var(--spacing-xl);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-        }
-
-        .touch-item:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-4px);
-            border-color: var(--primary);
-        }
-
-        .touch-item h4 {
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-sm);
-            font-weight: 600;
-        }
-
-        .touch-item p {
-            font-size: 0.95rem;
-            margin-bottom: var(--spacing-md);
-            line-height: 1.7;
-        }
-
-        .touch-visual {
-            display: flex;
-            gap: var(--spacing-md);
-            align-items: center;
-        }
-
-        .touch-target {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border-radius: var(--radius-md);
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .touch-target:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
-        }
-
-        .touch-target:active {
-            transform: scale(0.95);
-        }
-
-        .touch-target.small {
-            width: 36px;
-            height: 36px;
-            font-size: 0.75rem;
-        }
-
-        .touch-target.large {
-            width: 44px;
-            height: 44px;
-            font-size: 0.875rem;
-        }
-
-        .touch-comparison {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* ==================== Accessibility Features ==================== */
-        .a11y-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--spacing-lg);
-            margin: var(--spacing-xl) 0;
-        }
-
-        .a11y-card {
-            background: var(--bg-primary);
-            padding: var(--spacing-xl);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-            border-left: 3px solid var(--primary);
-            transition: all 0.3s ease;
-        }
-
-        .a11y-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateX(4px);
-        }
-
-        .a11y-card h4 {
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .a11y-card p {
-            font-size: 0.95rem;
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .a11y-card code {
-            background: var(--bg-secondary);
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: var(--radius-sm);
-            font-size: 0.8rem;
-            color: var(--primary);
-            font-family: var(--font-mono);
-        }
-
-        .a11y-card .example {
-            background: var(--bg-secondary);
-            padding: var(--spacing-md);
-            border-radius: var(--radius-md);
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: var(--spacing-sm);
-            font-family: var(--font-mono);
-        }
-
-        /* ==================== Interaction Demo ==================== */
-        .interaction-demo {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--spacing-xl);
-            margin: var(--spacing-2xl) 0;
-        }
-
-        .interaction-item {
-            background: var(--bg-primary);
-            padding: var(--spacing-xl);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .interaction-item h4 {
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .animation-demo {
-            display: flex;
-            gap: var(--spacing-md);
-            flex-wrap: wrap;
-        }
-
-        .animation-box {
-            width: 90px;
-            height: 90px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: var(--radius-lg);
-            color: white;
-            font-size: 0.8rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .animation-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 50%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .animation-box.hover {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            box-shadow: 0 4px 16px rgba(0, 122, 255, 0.4);
-        }
-
-        .animation-box.hover:hover {
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 12px 32px rgba(0, 122, 255, 0.5);
-        }
-
-        .animation-box.hover:hover::before {
-            opacity: 1;
-        }
-
-        .animation-box.active {
-            background: linear-gradient(135deg, var(--success), #248A3D);
-            box-shadow: 0 4px 16px rgba(52, 199, 89, 0.4);
-        }
-
-        .animation-box.active:active {
-            transform: scale(0.9);
-        }
-
-        .animation-box.focus {
-            background: linear-gradient(135deg, var(--info), #007AFF);
-            box-shadow: 0 4px 16px rgba(90, 200, 250, 0.4);
-            outline: 3px solid var(--info);
-            outline-offset: 4px;
-        }
-
-        .animation-box:focus {
-            outline: 3px solid var(--primary);
-            outline-offset: 4px;
-        }
-
-        /* ==================== Component Showcase ==================== */
-        .component-showcase {
-            background: var(--bg-primary);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-2xl);
-            margin: var(--spacing-2xl) 0;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .component-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--spacing-md);
-            align-items: center;
-            padding: var(--spacing-xl);
-            background: var(--bg-secondary);
-            border-radius: var(--radius-lg);
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .component-label {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            min-width: 140px;
-        }
-
-        .btn-showcase {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--spacing-sm);
-        }
-
-        .btn-showcase .btn {
-            padding: var(--spacing-md) var(--spacing-lg);
-            font-size: 0.9rem;
-            min-height: 44px;
-        }
-
-        .input-showcase {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--spacing-md);
-        }
-
-        .input-item {
-            flex: 1;
-            min-width: 220px;
-        }
-
-        .input-item label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .input-item input {
-            width: 100%;
-            padding: var(--spacing-md);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-            min-height: 44px;
-            background: var(--bg-primary);
-        }
-
-        .input-item input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
-        }
-
-        .checkbox-showcase {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--spacing-md);
-        }
-
-        .checkbox-showcase .checkbox-item {
-            padding: var(--spacing-md) var(--spacing-lg);
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-        }
-
-        .checkbox-showcase .checkbox-item:hover {
-            background: var(--bg-secondary);
-            border-color: var(--primary);
-        }
-
-        .checkbox-showcase .checkbox-item input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-        }
-
-        /* ==================== Flow Diagram ==================== */
-        .flow-diagram {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: var(--spacing-lg);
-            margin: var(--spacing-2xl) 0;
-            padding: var(--spacing-2xl);
-            background: var(--bg-primary);
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .flow-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: var(--spacing-sm);
-            text-align: center;
-        }
-
-        .flow-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            box-shadow: var(--shadow-md);
-            transition: all 0.3s ease;
-        }
-
-        .flow-icon:hover {
-            transform: scale(1.1);
-        }
-
-        .flow-label {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .flow-arrow {
-            font-size: 2rem;
-            color: var(--text-tertiary);
-        }
-
-        @media (max-width: 768px) {
-            .flow-diagram {
-                flex-direction: column;
-            }
-            
-            .flow-arrow {
-                transform: rotate(90deg);
-            }
-        }
-
-        /* ==================== Dark Mode Section ==================== */
-        .dark-mode-section {
-            background: #000;
-            color: #F5F5F7;
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-2xl);
-            margin-bottom: var(--spacing-xl);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .dark-mode-section h2 {
-            color: #F5F5F7;
-            margin-bottom: var(--spacing-lg);
-            padding-bottom: var(--spacing-md);
-            border-bottom: 1px solid #3A3A3C;
-        }
-
-        .dark-mode-section p {
-            color: #A1A1A6;
-        }
-
-        .dark-mode-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: var(--spacing-lg);
-            margin: var(--spacing-xl) 0;
-        }
-
-        .dark-mode-card {
-            background: #1D1D1F;
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-xl);
-        }
-
-        .dark-mode-card h4 {
-            color: #F5F5F7;
-            font-size: 1rem;
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .dark-mode-card p {
-            color: #86868B;
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        .dark-mode-card code {
-            background: #3A3A3C;
-            color: #0A84FF;
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: var(--radius-sm);
-            font-size: 0.8rem;
-            font-family: var(--font-mono);
-        }
-
-        /* ==================== Breakpoint Table ==================== */
-        .breakpoint-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin: var(--spacing-lg) 0;
-            overflow: hidden;
-            border-radius: var(--radius-lg);
-        }
-
-        .breakpoint-table th,
-        .breakpoint-table td {
-            padding: var(--spacing-md) var(--spacing-lg);
-            text-align: left;
-            border-bottom: 1px solid var(--separator);
-        }
-
-        .breakpoint-table th {
-            background: var(--bg-secondary);
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: var(--text-primary);
-        }
-
-        .breakpoint-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .breakpoint-table td {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-        }
-
-        .breakpoint-table code {
-            background: var(--bg-secondary);
-            padding: var(--spacing-xs) var(--spacing-sm);
-            border-radius: var(--radius-sm);
-            font-size: 0.8rem;
-            color: var(--primary);
-            font-family: var(--font-mono);
-        }
-
-        /* ==================== Document Footer ==================== */
-        .doc-footer {
-            text-align: center;
-            padding: var(--spacing-2xl);
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
-        }
-
-        .doc-footer a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        .doc-footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* ==================== Print Styles ==================== */
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-            
-            .design-section,
-            .component-showcase,
-            .dark-mode-section {
-                break-inside: avoid;
-                box-shadow: none;
-                border: 1px solid var(--border-color);
-            }
-        }
-
-        /* ==================== Responsive ==================== */
-        @media (max-width: 768px) {
-            body {
-                padding: var(--spacing-lg) var(--spacing-md);
-            }
-
-            .doc-header,
-            .design-section {
-                padding: var(--spacing-xl) var(--spacing-lg);
-            }
-
-            .stats-compact {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .main-content.desktop {
-                grid-template-columns: 1fr;
-            }
-
-            .editor-actions,
-            .output-actions {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .format-tabs {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .feature-grid,
-            .color-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-compact {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .editor-actions,
-            .output-actions {
-                grid-template-columns: 1fr;
-            }
-
-            .tablet-frame,
-            .phone-frame {
-                transform: scale(0.9);
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DNS Shield - 设计原型</title>
+  
+  <!-- Google Fonts - SF Pro Alternative -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ========================================
+       CSS Variables - Design Tokens
+       ======================================== */
+    :root {
+      /* Color - Primary */
+      --color-primary: #007AFF;
+      --color-primary-hover: #0056CC;
+      --color-primary-light: rgba(0, 122, 255, 0.1);
+      
+      /* Color - Semantic */
+      --color-success: #34C759;
+      --color-warning: #FF9500;
+      --color-danger: #FF3B30;
+      --color-info: #5AC8FA;
+      
+      /* Color - Text */
+      --text-primary: #1D1D1F;
+      --text-secondary: #86868B;
+      --text-tertiary: #C7C7CC;
+      --text-inverse: #FFFFFF;
+      
+      /* Color - Background */
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #F5F5F7;
+      --bg-tertiary: #E5E5EA;
+      --bg-elevated: rgba(255, 255, 255, 0.8);
+      
+      /* Color - Border */
+      --border-default: #D1D1D6;
+      --border-strong: #C7C7CC;
+      --border-separator: #C6C6C8;
+      
+      /* Gray Scale */
+      --gray-50: #F9FAFB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-300: #D1D5DB;
+      --gray-400: #9CA3AF;
+      --gray-500: #6B7280;
+      --gray-600: #4B5563;
+      --gray-700: #374151;
+      --gray-800: #1F2937;
+      --gray-900: #111827;
+      
+      /* Font Family */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', Monaco, Menlo, monospace;
+      
+      /* Font Size */
+      --text-display: clamp(2rem, 5vw, 3rem);
+      --text-h1: clamp(1.5rem, 3vw, 2rem);
+      --text-h2: 1.5rem;
+      --text-h3: 1.25rem;
+      --text-body: 1rem;
+      --text-body-sm: 0.875rem;
+      --text-caption: 0.75rem;
+      
+      /* Spacing */
+      --spacing-0: 0;
+      --spacing-1: 4px;
+      --spacing-2: 8px;
+      --spacing-3: 12px;
+      --spacing-4: 16px;
+      --spacing-5: 20px;
+      --spacing-6: 24px;
+      --spacing-8: 32px;
+      --spacing-10: 40px;
+      --spacing-12: 48px;
+      --spacing-16: 64px;
+      
+      /* Border Radius */
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --radius-2xl: 24px;
+      --radius-full: 9999px;
+      
+      /* Shadow */
+      --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.04);
+      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 8px 40px rgba(0, 0, 0, 0.12);
+      --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
+      
+      /* Animation */
+      --duration-instant: 0ms;
+      --duration-fast: 100ms;
+      --duration-normal: 200ms;
+      --duration-moderate: 300ms;
+      --duration-slow: 400ms;
+      
+      --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-enter: cubic-bezier(0, 0, 0.2, 1);
+      --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-sharp: cubic-bezier(0.32, 0.72, 0, 1);
+      
+      /* Glass Effect */
+      --glass-bg: rgba(255, 255, 255, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.5);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+      
+      /* Layout */
+      --container-max: 1280px;
+      --sidebar-width: 280px;
+    }
+    
+    /* Dark Theme */
+    [data-theme="dark"] {
+      --text-primary: #F5F5F7;
+      --text-secondary: #A1A1A6;
+      --text-tertiary: #636366;
+      
+      --bg-primary: #000000;
+      --bg-secondary: #1D1D1F;
+      --bg-tertiary: #2C2C2E;
+      --bg-elevated: rgba(30, 30, 30, 0.9);
+      
+      --border-default: #38383A;
+      --border-strong: #48484A;
+      --border-separator: #38383A;
+      
+      --gray-50: #1F2937;
+      --gray-100: #2D3748;
+      --gray-200: #374151;
+      --gray-300: #4B5563;
+      --gray-400: #6B7280;
+      --gray-500: #4B5563;
+      --gray-600: #374151;
+      --gray-700: #2D3748;
+      --gray-800: #1F2937;
+      --gray-900: #111827;
+      
+      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 8px 40px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.45);
+      
+      --glass-bg: rgba(30, 30, 30, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      
+      --color-primary: #0A84FF;
+      --color-success: #30D158;
+      --color-warning: #FF9F0A;
+      --color-danger: #FF453A;
+      --color-info: #64D2FF;
+    }
+    
+    /* ========================================
+       Base Styles
+       ======================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    body {
+      font-family: var(--font-primary);
+      font-size: var(--text-body);
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      min-height: 100vh;
+    }
+    
+    /* ========================================
+       Layout Components
+       ======================================== */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 var(--spacing-4);
+    }
+    
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
+    }
+    
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      padding: 0 var(--spacing-6);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-3);
+      font-size: var(--text-h3);
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--gradient-primary);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    
+    /* ========================================
+       Theme Toggle
+       ======================================== */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1);
+      background: var(--bg-secondary);
+      border-radius: var(--radius-full);
+    }
+    
+    .theme-toggle-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-2) var(--spacing-4);
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: var(--text-body-sm);
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all var(--duration-normal) var(--ease-standard);
+    }
+    
+    .theme-toggle-item:hover {
+      color: var(--text-primary);
+    }
+    
+    .theme-toggle-item.active {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-xs);
+    }
+    
+    .theme-toggle-item svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    /* ========================================
+       Button Component
+       ======================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-5);
+      font-family: var(--font-primary);
+      font-size: var(--text-body);
+      font-weight: 500;
+      line-height: 1;
+      text-decoration: none;
+      border: none;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-standard);
+      white-space: nowrap;
+    }
+    
+    .btn svg {
+      width: 18px;
+      height: 18px;
+    }
+    
+    /* Button Variants */
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--text-inverse);
+      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+    }
+    
+    .btn-primary:hover {
+      background: var(--color-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+    }
+    
+    .btn-primary:active {
+      transform: scale(0.97);
+      box-shadow: 0 1px 4px rgba(0, 122, 255, 0.2);
+    }
+    
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border-default);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--bg-tertiary);
+      border-color: var(--border-strong);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      color: var(--color-primary);
+      border: 1px solid var(--color-primary);
+    }
+    
+    .btn-outline:hover {
+      background: var(--color-primary-light);
+    }
+    
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+    }
+    
+    .btn-ghost:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    
+    .btn-destructive {
+      background: var(--color-danger);
+      color: var(--text-inverse);
+    }
+    
+    .btn-destructive:hover {
+      background: #D63629;
+      transform: translateY(-1px);
+    }
+    
+    /* Button Sizes */
+    .btn-sm {
+      padding: var(--spacing-2) var(--spacing-4);
+      font-size: var(--text-body-sm);
+      border-radius: var(--radius-md);
+    }
+    
+    .btn-sm svg {
+      width: 14px;
+      height: 14px;
+    }
+    
+    .btn-lg {
+      padding: var(--spacing-4) var(--spacing-6);
+      font-size: var(--text-body);
+      border-radius: var(--radius-xl);
+    }
+    
+    .btn-icon {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border-radius: var(--radius-md);
+    }
+    
+    .btn-icon.btn-sm {
+      width: 32px;
+      height: 32px;
+    }
+    
+    /* Button States */
+    .btn:disabled,
+    .btn.is-loading {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    
+    .btn.is-loading {
+      position: relative;
+      color: transparent;
+    }
+    
+    .btn.is-loading::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border: 2px solid transparent;
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* ========================================
+       Input Component
+       ======================================== */
+    .input-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2);
+    }
+    
+    .input-label {
+      font-size: var(--text-body-sm);
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    
+    .input-required {
+      color: var(--color-danger);
+      margin-left: var(--spacing-1);
+    }
+    
+    .input {
+      width: 100%;
+      padding: var(--spacing-3) var(--spacing-4);
+      font-family: var(--font-primary);
+      font-size: var(--text-body);
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      outline: none;
+      transition: all var(--duration-normal) var(--ease-standard);
+    }
+    
+    .input::placeholder {
+      color: var(--text-tertiary);
+    }
+    
+    .input:hover:not(:disabled) {
+      border-color: var(--border-strong);
+    }
+    
+    .input:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    }
+    
+    .input:disabled {
+      background: var(--bg-tertiary);
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .input.error {
+      border-color: var(--color-danger);
+    }
+    
+    .input.error:focus {
+      box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1);
+    }
+    
+    .input-description {
+      font-size: var(--text-caption);
+      color: var(--text-secondary);
+    }
+    
+    .input-error {
+      font-size: var(--text-caption);
+      color: var(--color-danger);
+    }
+    
+    /* Textarea */
+    .textarea {
+      min-height: 200px;
+      resize: vertical;
+      font-family: var(--font-mono);
+      font-size: var(--text-body-sm);
+      line-height: 1.6;
+    }
+    
+    /* ========================================
+       Card Component
+       ======================================== */
+    .card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: all var(--duration-normal) var(--ease-standard);
+    }
+    
+    .card:hover {
+      box-shadow: var(--shadow-md);
+    }
+    
+    .card-header {
+      padding: var(--spacing-6);
+      border-bottom: 1px solid var(--border-separator);
+    }
+    
+    .card-title {
+      font-size: var(--text-h3);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-2);
+    }
+    
+    .card-description {
+      font-size: var(--text-body-sm);
+      color: var(--text-secondary);
+    }
+    
+    .card-content {
+      padding: var(--spacing-6);
+    }
+    
+    .card-footer {
+      padding: var(--spacing-4) var(--spacing-6);
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-separator);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--spacing-3);
+    }
+    
+    /* ========================================
+       Badge Component
+       ======================================== */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1) var(--spacing-3);
+      font-size: var(--text-caption);
+      font-weight: 500;
+      border-radius: var(--radius-full);
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+    }
+    
+    .badge-primary {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+    
+    .badge-success {
+      background: rgba(52, 199, 89, 0.1);
+      color: var(--color-success);
+    }
+    
+    .badge-warning {
+      background: rgba(255, 149, 0, 0.1);
+      color: var(--color-warning);
+    }
+    
+    .badge-danger {
+      background: rgba(255, 59, 48, 0.1);
+      color: var(--color-danger);
+    }
+    
+    .badge svg {
+      width: 12px;
+      height: 12px;
+    }
+    
+    /* ========================================
+       Tabs Component
+       ======================================== */
+    .tabs {
+      width: 100%;
+    }
+    
+    .tabs-list {
+      display: flex;
+      gap: var(--spacing-1);
+      padding: var(--spacing-1);
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+    }
+    
+    .tabs-trigger {
+      flex: 1;
+      padding: var(--spacing-3) var(--spacing-4);
+      font-family: var(--font-primary);
+      font-size: var(--text-body-sm);
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-standard);
+    }
+    
+    .tabs-trigger:hover {
+      color: var(--text-primary);
+    }
+    
+    .tabs-trigger.active {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-xs);
+    }
+    
+    .tabs-content {
+      padding: var(--spacing-6) 0;
+    }
+    
+    /* ========================================
+       Toast Component
+       ======================================== */
+    .toast-container {
+      position: fixed;
+      bottom: var(--spacing-6);
+      right: var(--spacing-6);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-3);
+    }
+    
+    .toast {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-3);
+      padding: var(--spacing-4) var(--spacing-5);
+      min-width: 320px;
+      max-width: 420px;
+      background: var(--bg-elevated);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      animation: slideIn var(--duration-moderate) var(--ease-bounce);
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .toast-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+    }
+    
+    .toast-success .toast-icon { color: var(--color-success); }
+    .toast-error .toast-icon { color: var(--color-danger); }
+    .toast-warning .toast-icon { color: var(--color-warning); }
+    .toast-info .toast-icon { color: var(--color-info); }
+    
+    .toast-content {
+      flex: 1;
+    }
+    
+    .toast-title {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-1);
+    }
+    
+    .toast-message {
+      font-size: var(--text-body-sm);
+      color: var(--text-secondary);
+    }
+    
+    .toast-close {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      color: var(--text-tertiary);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-standard);
+    }
+    
+    .toast-close:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    
+    /* ========================================
+       Skeleton Loading
+       ======================================== */
+    .skeleton {
+      background: linear-gradient(
+        90deg,
+        var(--bg-secondary) 25%,
+        var(--bg-tertiary) 50%,
+        var(--bg-secondary) 75%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--radius-md);
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    
+    .skeleton-text {
+      height: 16px;
+      margin-bottom: var(--spacing-2);
+    }
+    
+    .skeleton-text:last-child {
+      width: 70%;
+    }
+    
+    .skeleton-title {
+      height: 24px;
+      width: 60%;
+      margin-bottom: var(--spacing-3);
+    }
+    
+    .skeleton-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-full);
+    }
+    
+    /* ========================================
+       Empty State
+       ======================================== */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-12) var(--spacing-6);
+      text-align: center;
+    }
+    
+    .empty-state-icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: var(--spacing-6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-2xl);
+      color: var(--text-tertiary);
+    }
+    
+    .empty-state-icon svg {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .empty-state-title {
+      font-size: var(--text-h3);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-2);
+    }
+    
+    .empty-state-description {
+      max-width: 320px;
+      font-size: var(--text-body-sm);
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-6);
+    }
+    
+    .empty-state-actions {
+      display: flex;
+      gap: var(--spacing-3);
+    }
+    
+    /* ========================================
+       Code Preview
+       ======================================== */
+    .code-preview {
+      background: var(--gray-900);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    
+    .code-preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-3) var(--spacing-4);
+      background: var(--gray-800);
+      border-bottom: 1px solid var(--gray-700);
+    }
+    
+    .code-preview-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-caption);
+      color: var(--gray-400);
+    }
+    
+    .code-preview-content {
+      padding: var(--spacing-4);
+      overflow-x: auto;
+    }
+    
+    .code-preview pre {
+      font-family: var(--font-mono);
+      font-size: var(--text-body-sm);
+      line-height: 1.6;
+      color: var(--gray-100);
+      margin: 0;
+    }
+    
+    .code-preview code {
+      font-family: inherit;
+    }
+    
+    /* Syntax Highlighting */
+    .code-keyword { color: #C678DD; }
+    .code-string { color: #98C379; }
+    .code-comment { color: #5C6370; font-style: italic; }
+    .code-number { color: #D19A66; }
+    .code-property { color: #E06C75; }
+    
+    /* ========================================
+       Stats Grid
+       ======================================== */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: var(--spacing-4);
+    }
+    
+    .stat-card {
+      padding: var(--spacing-5);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: var(--text-h2);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-1);
+    }
+    
+    .stat-label {
+      font-size: var(--text-caption);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .stat-card.primary .stat-value { color: var(--color-primary); }
+    .stat-card.success .stat-value { color: var(--color-success); }
+    .stat-card.warning .stat-value { color: var(--color-warning); }
+    .stat-card.danger .stat-value { color: var(--color-danger); }
+    
+    /* ========================================
+       Switch Component
+       ======================================== */
+    .switch-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-4);
+    }
+    
+    .switch-label {
+      font-size: var(--text-body);
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    
+    .switch-description {
+      font-size: var(--text-body-sm);
+      color: var(--text-secondary);
+      margin-top: var(--spacing-1);
+    }
+    
+    .switch {
+      position: relative;
+      width: 51px;
+      height: 31px;
+      appearance: none;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: background var(--duration-normal) var(--ease-standard);
+    }
+    
+    .switch::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 27px;
+      height: 27px;
+      background: white;
+      border-radius: var(--radius-full);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform var(--duration-normal) var(--ease-bounce);
+    }
+    
+    .switch:checked {
+      background: var(--color-primary);
+    }
+    
+    .switch:checked::before {
+      transform: translateX(20px);
+    }
+    
+    .switch:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+    }
+    
+    .switch:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    /* ========================================
+       Select Component
+       ======================================== */
+    .select-wrapper {
+      position: relative;
+    }
+    
+    .select {
+      width: 100%;
+      padding: var(--spacing-3) var(--spacing-10) var(--spacing-3) var(--spacing-4);
+      font-family: var(--font-primary);
+      font-size: var(--text-body);
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      appearance: none;
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-standard);
+    }
+    
+    .select:hover:not(:disabled) {
+      border-color: var(--border-strong);
+    }
+    
+    .select:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+      outline: none;
+    }
+    
+    .select-icon {
+      position: absolute;
+      right: var(--spacing-4);
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      color: var(--text-tertiary);
+      pointer-events: none;
+    }
+    
+    /* ========================================
+       Dialog Component
+       ======================================== */
+    .dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      animation: fadeIn var(--duration-normal) var(--ease-standard);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .dialog {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      width: 90%;
+      max-width: 480px;
+      background: var(--bg-primary);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--shadow-lg);
+      animation: dialogIn var(--duration-moderate) var(--ease-bounce);
+    }
+    
+    @keyframes dialogIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -48%) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+    
+    .dialog-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-6);
+      border-bottom: 1px solid var(--border-separator);
+    }
+    
+    .dialog-title {
+      font-size: var(--text-h3);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .dialog-close {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-md);
+      color: var(--text-tertiary);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease-standard);
+    }
+    
+    .dialog-close:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+    
+    .dialog-content {
+      padding: var(--spacing-6);
+    }
+    
+    .dialog-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--spacing-3);
+      padding: var(--spacing-4) var(--spacing-6);
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-separator);
+      border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+    }
+    
+    /* ========================================
+       Main Content Area
+       ======================================== */
+    .main {
+      padding: var(--spacing-8) 0;
+    }
+    
+    .page-header {
+      margin-bottom: var(--spacing-8);
+      text-align: center;
+    }
+    
+    .page-title {
+      font-size: var(--text-display);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-4);
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-success) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .page-subtitle {
+      font-size: var(--text-h3);
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Section */
+    .section {
+      margin-bottom: var(--spacing-12);
+    }
+    
+    .section-title {
+      font-size: var(--text-h2);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-6);
+      padding-bottom: var(--spacing-3);
+      border-bottom: 2px solid var(--color-primary);
+      display: inline-block;
+    }
+    
+    .section-description {
+      font-size: var(--text-body);
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-6);
+    }
+    
+    /* Demo Grid */
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-6);
+    }
+    
+    .demo-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-4);
+    }
+    
+    .demo-label {
+      font-size: var(--text-caption);
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--spacing-3);
+    }
+    
+    /* ========================================
+       Utility Classes
+       ======================================== */
+    .mt-4 { margin-top: var(--spacing-4); }
+    .mt-6 { margin-top: var(--spacing-6); }
+    .mt-8 { margin-top: var(--spacing-8); }
+    .mb-4 { margin-bottom: var(--spacing-4); }
+    .mb-6 { margin-bottom: var(--spacing-6); }
+    .mb-8 { margin-bottom: var(--spacing-8); }
+    
+    .text-center { text-align: center; }
+    .text-muted { color: var(--text-secondary); }
+    
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-center { justify-content: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: var(--spacing-2); }
+    .gap-3 { gap: var(--spacing-3); }
+    .gap-4 { gap: var(--spacing-4); }
+    .gap-6 { gap: var(--spacing-6); }
+    
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    
+    /* ========================================
+       Responsive Design
+       ======================================== */
+    @media (max-width: 640px) {
+      .header-inner {
+        padding: 0 var(--spacing-4);
+      }
+      
+      .theme-toggle-item span {
+        display: none;
+      }
+      
+      .theme-toggle-item {
+        padding: var(--spacing-2);
+      }
+      
+      .tabs-list {
+        flex-direction: column;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .demo-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+    
+    /* ========================================
+       Reduced Motion
+       ======================================== */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="doc-header">
-        <h1>🛡️ DNS Shield</h1>
-        <p>路由器级广告过滤规则生成工具</p>
-        <span class="version">v2.3.0</span>
-        <div class="meta">
-            <div class="meta-item">
-                <span class="icon">📅</span>
-                <span>最后更新：2026年6月</span>
-            </div>
-            <div class="meta-item">
-                <span class="icon">👤</span>
-                <span>设计者：DNS Shield Team</span>
-            </div>
-            <div class="meta-item">
-                <span class="icon">📱</span>
-                <span>桌面 / 平板 / 移动端</span>
-            </div>
-        </div>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner container">
+      <a href="#" class="logo">
+        <span class="logo-icon">DS</span>
+        <span>DNS Shield</span>
+      </a>
+      
+      <div class="theme-toggle" role="group" aria-label="主题切换">
+        <button class="theme-toggle-item active" data-theme="light" aria-pressed="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <span>浅色</span>
+        </button>
+        <button class="theme-toggle-item" data-theme="dark" aria-pressed="false">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <span>深色</span>
+        </button>
+        <button class="theme-toggle-item" data-theme="system" aria-pressed="false">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          <span>自动</span>
+        </button>
+      </div>
     </div>
+  </header>
 
-    <div class="design-section">
-        <h2>🎨 设计理念</h2>
-        <p>
-            DNS Shield 采用 Apple 设计语言，追求简洁、优雅、高效的用户体验。
-            界面强调清晰的视觉层次、充足的留白和细腻的动效。
-        </p>
+  <!-- Main Content -->
+  <main class="main">
+    <div class="container">
+      
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">DNS Shield 设计系统</h1>
+        <p class="page-subtitle">基于 Apple Human Interface Guidelines 的现代化设计规范，包含完整的组件库和交互标准</p>
+      </div>
+
+      <!-- Section 1: Colors -->
+      <section class="section">
+        <h2 class="section-title">1. 色彩系统</h2>
+        <p class="section-description">DNS Shield 使用基于语义的颜色系统，支持浅色和深色模式自动切换。</p>
         
-        <h3>核心设计原则</h3>
-        <div class="color-grid">
-            <div class="color-card" style="background: linear-gradient(135deg, #007AFF, #0056CC);">
-                简洁优雅
-                <span>Apple 风格美学</span>
+        <div class="demo-grid">
+          <!-- Primary Colors -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">主色调</h3>
+              <p class="card-description">品牌核心色彩</p>
             </div>
-            <div class="color-card" style="background: linear-gradient(135deg, #34C759, #248A3D);">
-                高效直观
-                <span>清晰的操作流程</span>
+            <div class="card-content">
+              <div class="demo-row">
+                <div style="width: 60px; height: 60px; background: var(--color-primary); border-radius: var(--radius-md);"></div>
+                <div style="width: 60px; height: 60px; background: var(--color-success); border-radius: var(--radius-md);"></div>
+                <div style="width: 60px; height: 60px; background: var(--color-warning); border-radius: var(--radius-md);"></div>
+                <div style="width: 60px; height: 60px; background: var(--color-danger); border-radius: var(--radius-md);"></div>
+                <div style="width: 60px; height: 60px; background: var(--color-info); border-radius: var(--radius-md);"></div>
+              </div>
+              <p class="mt-4 text-muted" style="font-size: var(--text-caption);">
+                Primary: #007AFF | Success: #34C759 | Warning: #FF9500 | Danger: #FF3B30 | Info: #5AC8FA
+              </p>
             </div>
-            <div class="color-card" style="background: linear-gradient(135deg, #FF9500, #C93400);">
-                无障碍优先
-                <span>WCAG AA 标准</span>
+          </div>
+          
+          <!-- Gray Scale -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">灰度色阶</h3>
+              <p class="card-description">用于文本、边框和背景</p>
             </div>
-            <div class="color-card" style="background: linear-gradient(135deg, #5AC8FA, #007AFF);">
-                响应式设计
-                <span>完美适配所有设备</span>
+            <div class="card-content">
+              <div class="demo-row">
+                <div style="width: 40px; height: 40px; background: var(--gray-100); border-radius: var(--radius-sm);"></div>
+                <div style="width: 40px; height: 40px; background: var(--gray-200); border-radius: var(--radius-sm);"></div>
+                <div style="width: 40px; height: 40px; background: var(--gray-300); border-radius: var(--radius-sm);"></div>
+                <div style="width: 40px; height: 40px; background: var(--gray-400); border-radius: var(--radius-sm);"></div>
+                <div style="width: 40px; height: 40px; background: var(--gray-500); border-radius: var(--radius-sm);"></div>
+                <div style="width: 40px; height: 40px; background: var(--gray-600); border-radius: var(--radius-sm);"></div>
+                <div style="width: 40px; height: 40px; background: var(--gray-700); border-radius: var(--radius-sm);"></div>
+                <div style="width: 40px; height: 40px; background: var(--gray-800); border-radius: var(--radius-sm);"></div>
+              </div>
             </div>
+          </div>
+          
+          <!-- Text Colors -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">文本色彩</h3>
+              <p class="card-description">语义化文本颜色</p>
+            </div>
+            <div class="card-content">
+              <p style="color: var(--text-primary); margin-bottom: var(--spacing-2);">主要文本 Primary</p>
+              <p style="color: var(--text-secondary); margin-bottom: var(--spacing-2);">次要文本 Secondary</p>
+              <p style="color: var(--text-tertiary);">三级文本 Tertiary</p>
+            </div>
+          </div>
+          
+          <!-- Background Colors -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">背景色彩</h3>
+              <p class="card-description">页面和组件背景</p>
+            </div>
+            <div class="card-content">
+              <div style="padding: var(--spacing-4); background: var(--bg-primary); border: 1px solid var(--border-default); border-radius: var(--radius-md); margin-bottom: var(--spacing-2);">
+                <span style="font-size: var(--text-caption); color: var(--text-secondary);">Primary Background</span>
+              </div>
+              <div style="padding: var(--spacing-4); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-md); margin-bottom: var(--spacing-2);">
+                <span style="font-size: var(--text-caption); color: var(--text-secondary);">Secondary Background</span>
+              </div>
+              <div style="padding: var(--spacing-4); background: var(--bg-tertiary); border: 1px solid var(--border-default); border-radius: var(--radius-md);">
+                <span style="font-size: var(--text-caption); color: var(--text-secondary);">Tertiary Background</span>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <h3>核心功能模块</h3>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <h4><span class="tag">输入</span>域名输入</h4>
-                <p>支持手动输入、URL 加载、文件导入三种方式，提供行号显示和语法高亮</p>
-            </div>
-            <div class="feature-card">
-                <h4><span class="tag">预设</span>规则源</h4>
-                <p>内置 AdGuard、EasyList、NeoHosts、小米广告等多个预设源</p>
-            </div>
-            <div class="feature-card">
-                <h4><span class="tag">输出</span>多格式</h4>
-                <p>支持 Dnsmasq、Hosts、AdGuard、白名单四种输出格式</p>
-            </div>
-            <div class="feature-card">
-                <h4><span class="tag">白名单</span>管理</h4>
-                <p>独立的白名单编辑界面，支持导入/导出和批量操作</p>
-            </div>
-            <div class="feature-card">
-                <h4><span class="tag">i18n</span>多语言</h4>
-                <p>支持 16 种语言，界面实时切换，无需刷新页面</p>
-            </div>
-            <div class="feature-card">
-                <h4><span class="tag">主题</span>切换</h4>
-                <p>支持浅色/深色模式切换，记住用户偏好设置</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="design-section">
-        <h2>📱 响应式布局策略</h2>
-        <p>
-            DNS Shield 采用移动优先的响应式设计，确保在桌面、平板和手机等不同设备上都能提供最佳用户体验。
-            我们定义了四个主要断点来适应不同的屏幕尺寸。
-        </p>
+      <!-- Section 2: Typography -->
+      <section class="section">
+        <h2 class="section-title">2. 字体规范</h2>
+        <p class="section-description">使用系统字体栈确保最佳的阅读体验和性能。</p>
         
-        <table class="breakpoint-table">
-            <thead>
-                <tr>
-                    <th>断点</th>
-                    <th>屏幕宽度</th>
-                    <th>布局描述</th>
-                    <th>主要特性</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>手机</td>
-                    <td><code>&lt; 640px</code></td>
-                    <td>单栏堆叠，触控优化</td>
-                    <td>大按钮，全宽输入，全屏模态</td>
-                </tr>
-                <tr>
-                    <td>平板竖屏</td>
-                    <td><code>640px - 767px</code></td>
-                    <td>紧凑单栏</td>
-                    <td>统计信息 2 列，按钮分组</td>
-                </tr>
-                <tr>
-                    <td>平板横屏</td>
-                    <td><code>768px - 1023px</code></td>
-                    <td>自适应单栏/双栏</td>
-                    <td>面板间距增大，触控友好</td>
-                </tr>
-                <tr>
-                    <td>桌面</td>
-                    <td><code>≥ 1024px</code></td>
-                    <td>双栏并排布局</td>
-                    <td>输入输出面板并排，完整功能</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="card">
+          <div class="card-content">
+            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
+              <span class="demo-label">Display</span>
+              <p style="font-size: var(--text-display); font-weight: 700; line-height: 1.1;">DNS Shield v2.3.0</p>
+            </div>
+            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
+              <span class="demo-label">H1</span>
+              <p style="font-size: var(--text-h1); font-weight: 600;">路由器级广告过滤</p>
+            </div>
+            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
+              <span class="demo-label">H2</span>
+              <p style="font-size: var(--text-h2); font-weight: 600;">域名过滤规则生成</p>
+            </div>
+            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
+              <span class="demo-label">H3</span>
+              <p style="font-size: var(--text-h3); font-weight: 600;">支持多种输出格式</p>
+            </div>
+            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
+              <span class="demo-label">Body</span>
+              <p style="font-size: var(--text-body);">基于 dnsmasq/hosts 的路由器全局广告防护，支持梅林固件、小米路由器、OpenWrt 等设备。</p>
+            </div>
+            <div class="demo-item" style="margin-bottom: var(--spacing-4);">
+              <span class="demo-label">Body Small</span>
+              <p style="font-size: var(--text-body-sm); color: var(--text-secondary);">辅助说明文字，用于次要信息展示</p>
+            </div>
+            <div class="demo-item">
+              <span class="demo-label">Caption</span>
+              <p style="font-size: var(--text-caption); color: var(--text-tertiary);">标签、徽章和说明文字</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <h3>布局模式</h3>
-        <div class="layout-showcase">
-            <div class="layout-card">
-                <div class="layout-preview">
-                    <div class="layout-preview-header">桌面布局 (≥1024px)</div>
-                    <div class="layout-preview-body sidebar">
-                        <div class="layout-preview-content dark">侧边栏</div>
-                        <div style="display: grid; grid-template-rows: 1fr 1fr; gap: 8px;">
-                            <div class="layout-preview-content">输入面板</div>
-                            <div class="layout-preview-content">输出面板</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="layout-info">
-                    <h4>双栏并排</h4>
-                    <p>侧边导航 + 输入输出面板并排显示，充分利用桌面屏幕空间</p>
-                </div>
+      <!-- Section 3: Buttons -->
+      <section class="section">
+        <h2 class="section-title">3. 按钮组件</h2>
+        <p class="section-description">支持多种变体和尺寸，适用于不同的使用场景。</p>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">按钮变体</h3>
+          </div>
+          <div class="card-content">
+            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
+              <span class="demo-label">主要按钮</span>
+              <div class="demo-row">
+                <button class="btn btn-primary">主要操作</button>
+                <button class="btn btn-primary btn-sm">小型</button>
+                <button class="btn btn-primary btn-lg">大型</button>
+                <button class="btn btn-primary btn-icon" aria-label="图标按钮">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+              </div>
             </div>
             
-            <div class="layout-card">
-                <div class="layout-preview">
-                    <div class="layout-preview-header">移动端布局 (&lt;768px)</div>
-                    <div class="layout-preview-body" style="grid-template-rows: auto auto auto auto auto;">
-                        <div class="layout-preview-content dark">顶部导航</div>
-                        <div class="layout-preview-content">统计信息</div>
-                        <div class="layout-preview-content">输入面板</div>
-                        <div class="layout-preview-content">输出面板</div>
-                        <div class="layout-preview-content dark">底部</div>
-                    </div>
-                </div>
-                <div class="layout-info">
-                    <h4>单栏堆叠</h4>
-                    <p>垂直堆叠布局，触控优先，确保可读性和易操作性</p>
-                </div>
+            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
+              <span class="demo-label">次要按钮</span>
+              <div class="demo-row">
+                <button class="btn btn-secondary">次要操作</button>
+                <button class="btn btn-outline">轮廓按钮</button>
+                <button class="btn btn-ghost">幽灵按钮</button>
+              </div>
             </div>
+            
+            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
+              <span class="demo-label">状态按钮</span>
+              <div class="demo-row">
+                <button class="btn btn-primary" disabled>禁用状态</button>
+                <button class="btn btn-primary is-loading">加载中...</button>
+                <button class="btn btn-destructive">危险操作</button>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
+      </section>
 
-    <div class="design-section">
-        <h2>📐 多设备模拟展示</h2>
-        <p>
-            以下是 DNS Shield 在三种主要设备上的界面模拟，展示响应式布局的实际效果。
-            您可以看到布局在不同屏幕尺寸下的自适应变化。
-        </p>
+      <!-- Section 4: Form Elements -->
+      <section class="section">
+        <h2 class="section-title">4. 表单元素</h2>
+        <p class="section-description">包含输入框、选择器、开关等表单控件。</p>
         
-        <div class="device-simulator">
-            <div class="device-container">
-                <div class="device-label">
-                    桌面端
-                    <span class="size">≥ 1024px</span>
-                </div>
-                <div class="desktop-frame">
-                    <div class="desktop-screen">
-                        <div class="app-container">
-                            <div class="app-header">
-                                <h1>🛡️ DNS Shield</h1>
-                                <p class="subtitle">路由器级广告过滤规则生成工具</p>
-                            </div>
-                            <div class="main-content desktop">
-                                <div class="panel">
-                                    <h2>输入域名</h2>
-                                    <div class="stats-compact">
-                                        <div class="stat-badge"><div class="stat-value">125</div><div class="stat-label">域名</div></div>
-                                        <div class="stat-badge"><div class="stat-value">120</div><div class="stat-label">黑名单</div></div>
-                                        <div class="stat-badge"><div class="stat-value">5</div><div class="stat-label">白名单</div></div>
-                                        <div class="stat-badge"><div class="stat-value">118</div><div class="stat-label">有效</div></div>
-                                        <div class="stat-badge"><div class="stat-value">7</div><div class="stat-label">注释</div></div>
-                                    </div>
-                                    <div class="editor-container">
-                                        <div class="line-numbers">1<br>2<br>3</div>
-                                        <textarea class="editor">example.com
-ads.example.com
-tracker.example.com</textarea>
-                                    </div>
-                                    <div class="editor-actions">
-                                        <button class="btn">清空</button>
-                                        <button class="btn">排序</button>
-                                        <button class="btn btn-primary">解析</button>
-                                        <button class="btn">去重</button>
-                                        <button class="btn">保存</button>
-                                    </div>
-                                </div>
-                                <div class="panel">
-                                    <h2>输出规则</h2>
-                                    <div class="format-tabs">
-                                        <button class="format-tab active">Hosts</button>
-                                        <button class="format-tab">Dnsmasq</button>
-                                        <button class="format-tab">AdGuard</button>
-                                        <button class="format-tab">白名单</button>
-                                    </div>
-                                    <div class="output-container">
-                                        <div class="output-preview">127.0.0.1 example.com
-127.0.0.1 ads.example.com</div>
-                                    </div>
-                                    <div class="output-actions">
-                                        <button class="btn btn-success">生成规则</button>
-                                        <button class="btn btn-primary">下载</button>
-                                        <button class="btn">复制</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="app-footer">
-                                © 2026 DNS Shield v2.3.0
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="demo-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">输入框</h3>
             </div>
-
-            <div class="device-container">
-                <div class="device-label">
-                    平板端
-                    <span class="size">768px - 1023px</span>
-                </div>
-                <div class="tablet-frame">
-                    <div class="tablet-screen">
-                        <div class="app-container">
-                            <div class="app-header">
-                                <h1>🛡️ DNS Shield</h1>
-                                <p class="subtitle">路由器级广告过滤规则生成工具</p>
-                            </div>
-                            <div class="main-content">
-                                <div class="panel">
-                                    <h2>输入域名</h2>
-                                    <div class="stats-compact" style="grid-template-columns: repeat(3, 1fr);">
-                                        <div class="stat-badge"><div class="stat-value">125</div><div class="stat-label">域名</div></div>
-                                        <div class="stat-badge"><div class="stat-value">120</div><div class="stat-label">黑名单</div></div>
-                                        <div class="stat-badge"><div class="stat-value">5</div><div class="stat-label">白名单</div></div>
-                                    </div>
-                                    <div class="editor-container">
-                                        <div class="line-numbers">1<br>2<br>3</div>
-                                        <textarea class="editor">example.com
-ads.example.com</textarea>
-                                    </div>
-                                    <div class="editor-actions" style="grid-template-columns: repeat(3, 1fr);">
-                                        <button class="btn">清空</button>
-                                        <button class="btn btn-primary">解析</button>
-                                        <button class="btn">保存</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="app-footer">
-                                © 2026 DNS Shield
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="device-container">
-                <div class="device-label">
-                    移动端
-                    <span class="size">&lt; 768px</span>
-                </div>
-                <div class="phone-frame">
-                    <div class="phone-screen">
-                        <div class="app-container">
-                            <div class="app-header">
-                                <h1>🛡️ DNS</h1>
-                                <p class="subtitle">广告过滤规则</p>
-                            </div>
-                            <div class="main-content">
-                                <div class="panel" style="padding: 12px;">
-                                    <h2 style="font-size: 0.8rem;">输入</h2>
-                                    <div class="stats-compact" style="grid-template-columns: repeat(2, 1fr); gap: 4px;">
-                                        <div class="stat-badge"><div class="stat-value">125</div><div class="stat-label">域名</div></div>
-                                        <div class="stat-badge"><div class="stat-value">120</div><div class="stat-label">黑名单</div></div>
-                                    </div>
-                                    <div class="editor-container" style="height: 80px;">
-                                        <div class="line-numbers" style="width: 28px;">1<br>2</div>
-                                        <textarea class="editor" style="font-size: 0.6rem;">example.com
-ads.example.com</textarea>
-                                    </div>
-                                    <div class="editor-actions" style="grid-template-columns: 1fr;">
-                                        <button class="btn btn-primary" style="width: 100%;">解析</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="app-footer" style="padding: 8px; font-size: 0.6rem;">
-                                v2.3.0
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="design-section">
-        <h2>👆 触控优化</h2>
-        <p>
-            移动端交互设计遵循 Apple HIG 指南，确保所有可交互元素都满足最小触控目标尺寸要求，
-            提供流畅的触摸体验。
-        </p>
-        
-        <div class="touch-demo">
-            <div class="touch-item">
-                <h4>最小触控目标</h4>
-                <p>所有按钮和交互元素最小尺寸为 44×44 像素，符合移动设备触控标准。</p>
-                <div class="touch-visual">
-                    <div class="touch-target small">36px</div>
-                    <span class="touch-comparison">❌ 偏小</span>
-                    <div class="touch-target large">44px</div>
-                    <span class="touch-comparison">✅ 标准</span>
-                </div>
-            </div>
-            
-            <div class="touch-item">
-                <h4>合适的间距</h4>
-                <p>相邻触控目标之间保持至少 8px 的间距，防止误触。</p>
-                <div class="touch-visual" style="flex-direction: column; align-items: flex-start;">
-                    <div style="display: flex; gap: 4px;">
-                        <div class="touch-target large">A</div>
-                        <div class="touch-target large">B</div>
-                    </div>
-                    <span class="touch-comparison">❌ 间距过小 (4px)</span>
-                    <div style="display: flex; gap: 12px; margin-top: 8px;">
-                        <div class="touch-target large">A</div>
-                        <div class="touch-target large">B</div>
-                    </div>
-                    <span class="touch-comparison">✅ 合适间距 (12px)</span>
-                </div>
-            </div>
-            
-            <div class="touch-item">
-                <h4>视觉反馈</h4>
-                <p>按钮提供清晰的悬停、按下和禁用状态，让用户了解交互结果。</p>
-                <div class="touch-visual">
-                    <div class="animation-box hover">悬停</div>
-                    <div class="animation-box active">按下</div>
-                    <div class="animation-box" style="background: #C7C7CC; cursor: not-allowed;">禁用</div>
-                </div>
-            </div>
-        </div>
-
-        <h3>手势支持</h3>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <h4>点击</h4>
-                <p>所有按钮和可点击元素支持点击操作，有明显的按下反馈</p>
-            </div>
-            <div class="feature-card">
-                <h4>长按</h4>
-                <p>编辑器支持长按选择文字，域名列表支持长按编辑单条</p>
-            </div>
-            <div class="feature-card">
-                <h4>滑动</h4>
-                <p>移动端支持左右滑动切换功能面板（输入/输出）</p>
-            </div>
-            <div class="feature-card">
-                <h4>下拉刷新</h4>
-                <p>预设源列表支持下拉刷新获取最新数据</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="design-section">
-        <h2>♿ 无障碍设计</h2>
-        <p>
-            DNS Shield 遵循 WCAG 2.1 AA 级标准，确保色盲、低视力等特殊用户群体也能正常使用应用。
-            我们通过语义化 HTML、ARIA 属性和适当的颜色对比度来实现这一点。
-        </p>
-        
-        <div class="a11y-features">
-            <div class="a11y-card">
-                <h4>ARIA 属性</h4>
-                <p>使用 role、aria-label、aria-expanded 等属性增强屏幕阅读器支持。</p>
-                <div class="example">
-                    &lt;button role="tab" aria-selected="true" aria-label="切换到 Hosts 格式"&gt;
-                </div>
-            </div>
-            
-            <div class="a11y-card">
-                <h4>颜色对比度</h4>
-                <p>所有文本与背景的对比度至少达到 4.5:1，确保可读性。</p>
-                <div class="example">
-                    文本 #1D1D1F / 背景 #FFFFFF → 对比度 21:1 ✓
-                </div>
-            </div>
-            
-            <div class="a11y-card">
-                <h4>键盘导航</h4>
-                <p>所有交互元素都可以通过键盘访问，并有清晰的焦点指示。</p>
-                <div class="example">
-                    :focus-visible { outline: 3px solid #007AFF; }
-                </div>
-            </div>
-            
-            <div class="a11y-card">
-                <h4>语义化标签</h4>
-                <p>使用正确的 HTML5 语义标签，如 header、nav、main、section、footer 等。</p>
-                <div class="example">
-                    &lt;nav role="navigation" aria-label="主导航"&gt;
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="design-section">
-        <h2>✨ 交互效果</h2>
-        <p>
-            精心设计的微交互和动画效果，提升用户体验的同时保持简洁高效。
-        </p>
-        
-        <div class="interaction-demo">
-            <div class="interaction-item">
-                <h4>悬停效果</h4>
-                <div class="animation-demo">
-                    <div class="animation-box hover">悬停</div>
-                    <div class="animation-box hover" style="background: linear-gradient(135deg, #34C759, #248A3D);">渐变</div>
-                    <div class="animation-box hover" style="background: #FF9500;">缩放</div>
-                </div>
-            </div>
-            
-            <div class="interaction-item">
-                <h4>状态反馈</h4>
-                <div class="animation-demo">
-                    <div class="animation-box active">成功</div>
-                    <div class="animation-box" style="background: #FF9500;">警告</div>
-                    <div class="animation-box" style="background: #FF3B30;">错误</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="component-showcase">
-        <h2 style="margin-bottom: 24px;">🧩 组件库</h2>
-        
-        <div class="component-row">
-            <div class="component-label">按钮</div>
-            <div class="btn-showcase">
-                <button class="btn">默认</button>
-                <button class="btn btn-primary">主按钮</button>
-                <button class="btn btn-success">成功</button>
-                <button class="btn" style="background: #FF9500; color: white;">警告</button>
-                <button class="btn" style="background: #FF3B30; color: white;">危险</button>
-            </div>
-        </div>
-
-        <div class="component-row">
-            <div class="component-label">输入框</div>
-            <div class="input-showcase">
-                <div class="input-item">
-                    <label>默认状态</label>
-                    <input type="text" placeholder="请输入内容">
-                </div>
-                <div class="input-item">
-                    <label>聚焦状态</label>
-                    <input type="text" value="聚焦时的效果" style="border-color: var(--primary); box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);">
-                </div>
-            </div>
-        </div>
-
-        <div class="component-row">
-            <div class="component-label">复选框</div>
-            <div class="checkbox-showcase">
-                <label class="checkbox-item">
-                    <input type="checkbox" checked>
-                    已选中
+            <div class="card-content">
+              <div class="input-wrapper" style="margin-bottom: var(--spacing-4);">
+                <label class="input-label" for="input-demo">
+                  域名列表 <span class="input-required">*</span>
                 </label>
-                <label class="checkbox-item">
-                    <input type="checkbox">
-                    未选中
-                </label>
-                <label class="checkbox-item">
-                    <input type="checkbox" disabled>
-                    已禁用
-                </label>
+                <input type="text" id="input-demo" class="input" placeholder="请输入域名，每行一个">
+                <p class="input-description">支持批量输入，每行一个域名</p>
+              </div>
+              
+              <div class="input-wrapper" style="margin-bottom: var(--spacing-4);">
+                <label class="input-label" for="input-error">错误状态</label>
+                <input type="text" id="input-error" class="input error" value="无效输入">
+                <p class="input-error">请输入有效的域名格式</p>
+              </div>
+              
+              <div class="input-wrapper">
+                <label class="input-label" for="input-disabled">禁用状态</label>
+                <input type="text" id="input-disabled" class="input" value="禁用输入" disabled>
+              </div>
             </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">选择器与开关</h3>
+            </div>
+            <div class="card-content">
+              <div class="input-wrapper" style="margin-bottom: var(--spacing-6);">
+                <label class="input-label" for="select-demo">选择语言</label>
+                <div class="select-wrapper">
+                  <select id="select-demo" class="select">
+                    <option value="zh">中文 (简体)</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                    <option value="ko">한국어</option>
+                  </select>
+                  <svg class="select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+              </div>
+              
+              <div class="switch-wrapper" style="margin-bottom: var(--spacing-4);">
+                <div>
+                  <p class="switch-label">启用 IPv6 阻止</p>
+                  <p class="switch-description">同时阻止 IPv6 广告域名解析</p>
+                </div>
+                <input type="checkbox" class="switch" role="switch" checked>
+              </div>
+              
+              <div class="switch-wrapper">
+                <div>
+                  <p class="switch-label">自动去重</p>
+                  <p class="switch-description">自动移除重复的域名条目</p>
+                </div>
+                <input type="checkbox" class="switch" role="switch" checked>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
+      </section>
 
-    <div class="design-section">
-        <h2>🔄 工作流程</h2>
-        <div class="flow-diagram">
-            <div class="flow-step">
-                <div class="flow-icon">📝</div>
-                <div class="flow-label">输入域名</div>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step">
-                <div class="flow-icon">🔍</div>
-                <div class="flow-label">解析处理</div>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step">
-                <div class="flow-icon">⚙️</div>
-                <div class="flow-label">生成规则</div>
-            </div>
-            <div class="flow-arrow">→</div>
-            <div class="flow-step">
-                <div class="flow-icon">💾</div>
-                <div class="flow-label">导出文件</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="dark-mode-section">
-        <h2>🌙 深色模式</h2>
-        <p>
-            支持系统跟随和手动切换的深色模式，采用 Apple 的深色设计语言，
-            使用纯黑背景减少 OLED 屏幕功耗。
-        </p>
+      <!-- Section 5: Badges -->
+      <section class="section">
+        <h2 class="section-title">5. 徽章组件</h2>
+        <p class="section-description">用于显示状态、标签和计数信息。</p>
         
-        <div class="dark-mode-grid">
-            <div class="dark-mode-card">
-                <h4>系统跟随</h4>
-                <p>自动检测系统主题设置，实时切换深色/浅色模式</p>
+        <div class="card">
+          <div class="card-content">
+            <div class="demo-row" style="margin-bottom: var(--spacing-4);">
+              <span class="badge">默认</span>
+              <span class="badge badge-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                主要
+              </span>
+              <span class="badge badge-success">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                成功
+              </span>
+              <span class="badge badge-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                警告
+              </span>
+              <span class="badge badge-danger">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                危险
+              </span>
             </div>
-            <div class="dark-mode-card">
-                <h4>偏好记忆</h4>
-                <p>记住用户的主题选择，下次访问时自动应用</p>
+            
+            <div class="demo-row">
+              <span class="badge" style="padding: var(--spacing-2) var(--spacing-4);">
+                <strong style="font-size: var(--text-body);">473</strong> 个域名
+              </span>
+              <span class="badge badge-success">
+                <strong style="font-size: var(--text-body);">+15</strong> 新增
+              </span>
+              <span class="badge badge-danger">
+                <strong style="font-size: var(--text-body);">-3</strong> 移除
+              </span>
             </div>
-            <div class="dark-mode-card">
-                <h4>平滑过渡</h4>
-                <p><code>transition: all 0.3s ease</code> 流畅的主题切换动画</p>
-            </div>
-            <div class="dark-mode-card">
-                <h4>真黑背景</h4>
-                <p>使用 #000000 纯黑背景，适合 OLED 屏幕省电</p>
-            </div>
+          </div>
         </div>
-    </div>
+      </section>
 
-    <div class="doc-footer">
-        <p>DNS Shield v2.3.0 UI/UX 原型设计 | 采用 Apple 设计风格</p>
-        <p style="margin-top: 8px;">
-            <a href="#">查看完整文档</a> · 
-            <a href="#">反馈建议</a>
-        </p>
+      <!-- Section 6: Tabs -->
+      <section class="section">
+        <h2 class="section-title">6. 标签页</h2>
+        <p class="section-description">用于在相关内容之间切换。</p>
+        
+        <div class="card">
+          <div class="card-content">
+            <div class="tabs">
+              <div class="tabs-list" role="tablist">
+                <button class="tabs-trigger active" role="tab" aria-selected="true">Dnsmasq</button>
+                <button class="tabs-trigger" role="tab" aria-selected="false">Hosts</button>
+                <button class="tabs-trigger" role="tab" aria-selected="false">AdGuard</button>
+                <button class="tabs-trigger" role="tab" aria-selected="false">白名单</button>
+              </div>
+              <div class="tabs-content" role="tabpanel">
+                <div class="code-preview">
+                  <div class="code-preview-header">
+                    <span class="code-preview-title">dnsmasq.conf</span>
+                    <button class="btn btn-sm btn-ghost">复制</button>
+                  </div>
+                  <div class="code-preview-content">
+                    <pre><code><span class="code-comment"># DNS Shield - Dnsmasq Filter</span>
+<span class="code-comment"># Version: 2.3.0</span>
+
+<span class="code-property">address</span>=<span class="code-string">/ad.example.com/0.0.0.0</span>
+<span class="code-property">address</span>=<span class="code-string">/ad.doubleclick.net/0.0.0.0</span>
+<span class="code-property">address</span>=<span class="code-string">/ads.google.com/0.0.0.0</span>
+
+<span class="code-comment"># WhiteList</span>
+<span class="code-keyword">server</span>=<span class="code-string">/+api.example.com/8.8.8.8</span></code></pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Cards -->
+      <section class="section">
+        <h2 class="section-title">7. 卡片组件</h2>
+        <p class="section-description">用于分组展示相关内容。</p>
+        
+        <div class="demo-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">统计数据</h3>
+              <p class="card-description">实时域名统计信息</p>
+            </div>
+            <div class="card-content">
+              <div class="stats-grid">
+                <div class="stat-card primary">
+                  <div class="stat-value">473</div>
+                  <div class="stat-label">总域名</div>
+                </div>
+                <div class="stat-card success">
+                  <div class="stat-value">452</div>
+                  <div class="stat-label">黑名单</div>
+                </div>
+                <div class="stat-card warning">
+                  <div class="stat-value">21</div>
+                  <div class="stat-label">白名单</div>
+                </div>
+                <div class="stat-card danger">
+                  <div class="stat-value">156</div>
+                  <div class="stat-label">无效</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-secondary btn-sm">刷新</button>
+              <button class="btn btn-primary btn-sm">导出</button>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">输出格式</h3>
+              <p class="card-description">选择目标路由器类型</p>
+            </div>
+            <div class="card-content">
+              <div class="demo-item">
+                <div class="input-wrapper" style="margin-bottom: var(--spacing-4);">
+                  <label class="input-label">路由器类型</label>
+                  <div class="select-wrapper">
+                    <select class="select">
+                      <option value="merlin">梅林固件 (ASUS)</option>
+                      <option value="openwrt">OpenWrt</option>
+                      <option value="mi">小米路由器</option>
+                      <option value="tplink">TP-Link</option>
+                    </select>
+                    <svg class="select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </div>
+                </div>
+                <div class="switch-wrapper">
+                  <p class="switch-label">添加头部注释</p>
+                  <input type="checkbox" class="switch" role="switch" checked>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 8: Toast Notifications -->
+      <section class="section">
+        <h2 class="section-title">8. 提示通知</h2>
+        <p class="section-description">用于向用户传达操作结果和系统消息。</p>
+        
+        <div class="demo-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">提示类型</h3>
+            </div>
+            <div class="card-content">
+              <div class="demo-row">
+                <button class="btn btn-primary" onclick="showToast('success')">成功提示</button>
+                <button class="btn btn-destructive" onclick="showToast('error')">错误提示</button>
+                <button class="btn btn-outline" onclick="showToast('warning')">警告提示</button>
+                <button class="btn btn-secondary" onclick="showToast('info')">信息提示</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 9: Empty State -->
+      <section class="section">
+        <h2 class="section-title">9. 空状态</h2>
+        <p class="section-description">数据为空或加载失败时的友好提示。</p>
+        
+        <div class="card">
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="12" y1="18" x2="12" y2="12"></line>
+                <line x1="9" y1="15" x2="15" y2="15"></line>
+              </svg>
+            </div>
+            <h3 class="empty-state-title">暂无域名数据</h3>
+            <p class="empty-state-description">
+              添加您的第一个域名列表，开始生成广告过滤规则
+            </p>
+            <div class="empty-state-actions">
+              <button class="btn btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                添加域名
+              </button>
+              <button class="btn btn-outline">导入预设源</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 10: Skeleton Loading -->
+      <section class="section">
+        <h2 class="section-title">10. 骨架屏加载</h2>
+        <p class="section-description">内容加载过程中的占位动画。</p>
+        
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">加载中...</h3>
+          </div>
+          <div class="card-content">
+            <div class="flex items-center gap-4">
+              <div class="skeleton skeleton-avatar"></div>
+              <div style="flex: 1;">
+                <div class="skeleton skeleton-title"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 11: Dialog -->
+      <section class="section">
+        <h2 class="section-title">11. 对话框</h2>
+        <p class="section-description">用于需要用户确认或输入的模态交互。</p>
+        
+        <div class="card">
+          <div class="card-content">
+            <button class="btn btn-destructive" onclick="showDialog()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+              删除选中域名
+            </button>
+          </div>
+        </div>
+      </section>
+
     </div>
+  </main>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Dialog (Hidden by default) -->
+  <div id="dialogBackdrop" class="dialog-backdrop" style="display: none;" onclick="hideDialog()"></div>
+  <div id="dialog" class="dialog" style="display: none;">
+    <div class="dialog-header">
+      <h2 class="dialog-title">确认删除</h2>
+      <button class="dialog-close" onclick="hideDialog()" aria-label="关闭">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="dialog-content">
+      <p>确定要删除选中的域名吗？此操作不可撤销。</p>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-secondary" onclick="hideDialog()">取消</button>
+      <button class="btn btn-destructive" onclick="hideDialog()">确认删除</button>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Theme Toggle
+    const themeToggle = document.querySelector('.theme-toggle');
+    const themeButtons = themeToggle.querySelectorAll('.theme-toggle-item');
+    
+    themeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const theme = button.dataset.theme;
+        
+        // Update active state
+        themeButtons.forEach(btn => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-pressed', 'false');
+        });
+        button.classList.add('active');
+        button.setAttribute('aria-pressed', 'true');
+        
+        // Apply theme
+        if (theme === 'system') {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.dataset.theme = prefersDark ? 'dark' : 'light';
+        } else {
+          document.documentElement.dataset.theme = theme;
+        }
+      });
+    });
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      const activeButton = themeToggle.querySelector('.theme-toggle-item.active');
+      if (activeButton.dataset.theme === 'system') {
+        document.documentElement.dataset.theme = e.matches ? 'dark' : 'light';
+      }
+    });
+    
+    // Toast System
+    function showToast(type) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      
+      const icons = {
+        success: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+        error: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>',
+        warning: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>',
+        info: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
+      };
+      
+      const messages = {
+        success: { title: '操作成功', message: '规则已成功生成并保存。' },
+        error: { title: '操作失败', message: '网络连接失败，请检查您的网络。' },
+        warning: { title: '注意', message: '此操作可能会影响现有配置。' },
+        info: { title: '提示', message: '您的更改将自动保存。' }
+      };
+      
+      const msg = messages[type];
+      
+      toast.innerHTML = `
+        <span class="toast-icon">${icons[type]}</span>
+        <div class="toast-content">
+          <p class="toast-title">${msg.title}</p>
+          <p class="toast-message">${msg.message}</p>
+        </div>
+        <button class="toast-close" onclick="this.parentElement.remove()" aria-label="关闭">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+      
+      container.appendChild(toast);
+      
+      // Auto remove after 5 seconds
+      setTimeout(() => {
+        if (toast.parentElement) {
+          toast.style.animation = 'slideOut 0.3s ease forwards';
+          setTimeout(() => toast.remove(), 300);
+        }
+      }, 5000);
+    }
+    
+    // Add slideOut animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideOut {
+        to {
+          opacity: 0;
+          transform: translateX(100%);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Dialog
+    function showDialog() {
+      document.getElementById('dialogBackdrop').style.display = 'block';
+      document.getElementById('dialog').style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function hideDialog() {
+      document.getElementById('dialogBackdrop').style.display = 'none';
+      document.getElementById('dialog').style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    
+    // Escape key to close dialog
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        hideDialog();
+      }
+    });
+    
+    // Tab switching
+    const tabTriggers = document.querySelectorAll('.tabs-trigger');
+    tabTriggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        tabTriggers.forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        trigger.classList.add('active');
+        trigger.setAttribute('aria-selected', 'true');
+      });
+    });
+  </script>
 </body>
 </html>

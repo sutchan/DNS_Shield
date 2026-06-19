@@ -48,6 +48,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   }, [parseSourceData]);
 
   const loadDomainData = useCallback(async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(config.domainsUrl);
       if (response.ok) {
@@ -71,6 +72,8 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
       } catch (localError) {
         console.warn('Could not load local domains.txt:', localError);
       }
+    } finally {
+      setIsLoading(false);
     }
   }, [loadLocalDomains]);
 

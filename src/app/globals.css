@@ -118,6 +118,10 @@
   --gap-20: 80px;
   --gap-24: 96px;
   --gap-32: 128px;
+
+  /* Gray colors - for scrollbars and fallback UI */
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
 }
 
 [data-theme="dark"] {
@@ -145,6 +149,10 @@
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.6);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.7);
   --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.8);
+
+  /* Dark mode gray colors */
+  --gray-400: #6B7280;
+  --gray-500: #4B5563;
 }
 
 * {
@@ -728,6 +736,15 @@ body {
   height: 18px;
   accent-color: var(--primary);
   cursor: pointer;
+}
+
+.theme-toggle-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2);
+  border-radius: var(--radius-md);
+  transition: var(--transition);
 }
 
 .merge-info {

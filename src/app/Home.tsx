@@ -28,8 +28,9 @@ export default function Home() {
   
   // 显示提示
   const [toastMessage, setToastMessage] = useState('');
-  const showToast = (key: string, params?: { [key: string]: string | number }) => {
-    let message = (t.toast as any)[key] || key;
+  const showToast = (key: string, params?: Record<string, string | number>) => {
+    const toastMessages = t.toast as Record<string, string>;
+    let message = toastMessages[key] || key;
     if (params) {
       Object.entries(params).forEach(([k, v]) => {
         message = message.replace(`{${k}}`, String(v));

@@ -1,6 +1,6 @@
 // src/hooks/useUrlManager.ts v2.3.0
 import { useState, useRef } from 'react';
-import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls } from '../utils/fileUtils';
+import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl } from '../utils/fileUtils';
 import { generateLineNumbers } from '../utils/uiUtils';
 import { config } from '../config/index';
 
@@ -105,13 +105,18 @@ export const useUrlManager = (
     });
   };
 
-  // 从 URL 获取域名
+  // 从 URL 获取域名（带 URL 验证）
   const fetchFromUrl = async () => {
     await withLoading({
       beforeLoad: () => {
         const url = urlInputRef.current?.value.trim();
         if (!url) {
           showToast('urlEnter');
+          return false;
+        }
+        // 验证 URL 格式和协议
+        if (!isValidHttpUrl(url)) {
+          showToast('invalidUrl');
           return false;
         }
         return true;
@@ -129,11 +134,16 @@ export const useUrlManager = (
     });
   };
 
-  // 添加 URL
+  // 添加 URL（带 URL 验证）
   const addUrl = () => {
     const url = urlInputRef.current?.value.trim();
     if (!url) {
       showToast('urlEnter');
+      return;
+    }
+    // 验证 URL 格式和协议
+    if (!isValidHttpUrl(url)) {
+      showToast('invalidUrl');
       return;
     }
 
@@ -148,18 +158,24 @@ export const useUrlManager = (
     showToast('urlsSorted');
   };
 
-  // 获取全部 URLs
+  // 获取全部 URLs（仅处理有效的 HTTP/HTTPS URLs）
   const fetchAllUrls = async () => {
+    // 过滤出有效的 URLs
+    const validUrls = urls.filter(url => isValidHttpUrl(url));
+
+    if (validUrls.length === 0) {
+      showToast('invalidUrl');
+      return;
+    }
+
+    if (validUrls.length < urls.length) {
+      showToast('invalidUrlsFiltered', { count: urls.length - validUrls.length });
+    }
+
     await withLoading({
-      beforeLoad: () => {
-        if (urls.length === 0) {
-          showToast('urlListEmpty');
-          return false;
-        }
-        return true;
-      },
+      beforeLoad: () => true,
       loadingToast: { key: 'loading' },
-      fetchFn: () => fetchFromUrls(urls),
+      fetchFn: () => fetchFromUrls(validUrls),
       errorContext: 'fetchAllUrls',
       successToast: { key: 'urlsFetched' },
       errorToast: { key: 'fetchFailed' }

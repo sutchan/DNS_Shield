@@ -1,5 +1,15 @@
 // src/utils/fileUtils.ts v2.3.0
 
+// 验证 URL 是否为安全的 HTTP/HTTPS 协议
+export const isValidHttpUrl = (url: string): boolean => {
+  try {
+    const parsed = new URL(url);
+    return ['http:', 'https:'].includes(parsed.protocol);
+  } catch {
+    return false;
+  }
+};
+
 // 下载输出
 export const downloadOutput = (content: string, filename: string): void => {
   const blob = new Blob([content], { type: 'text/plain' });
@@ -24,24 +34,36 @@ export const copyToClipboard = async (content: string): Promise<boolean> => {
   }
 };
 
-// 从URL获取内容
-export const fetchFromUrl = async (url: string): Promise<string> => {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+// 从URL获取内容（带超时控制）
+export const fetchFromUrl = async (url: string, timeout = 10000): Promise<string> => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const response = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.text();
+  } catch (error) {
+    clearTimeout(timeoutId);
+
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('Request timeout');
+    }
+    throw error;
   }
-  return await response.text();
 };
 
-// 从多个URL获取内容
-export const fetchFromUrls = async (urls: string[]): Promise<string> => {
+// 从多个URL获取内容（带超时控制）
+export const fetchFromUrls = async (urls: string[], timeout = 10000): Promise<string> => {
   let allContent = '';
   for (const url of urls) {
     try {
-      const response = await fetch(url);
-      if (response.ok) {
-        allContent += await response.text() + '\n';
-      }
+      const content = await fetchFromUrl(url, timeout);
+      allContent += content + '\n';
     } catch (error) {
       console.error(`Error fetching from ${url}:`, error);
     }
