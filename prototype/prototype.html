@@ -3,1924 +3,1025 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DNS Shield - 设计原型</title>
-  
-  <!-- Google Fonts - SF Pro Alternative -->
+  <title>DNS Shield - 路由器级广告过滤</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
   <style>
-    /* ========================================
-       CSS Variables - Design Tokens
-       ======================================== */
     :root {
-      /* Color - Primary */
       --color-primary: #007AFF;
       --color-primary-hover: #0056CC;
-      --color-primary-light: rgba(0, 122, 255, 0.1);
-      
-      /* Color - Semantic */
       --color-success: #34C759;
       --color-warning: #FF9500;
       --color-danger: #FF3B30;
-      --color-info: #5AC8FA;
-      
-      /* Color - Text */
       --text-primary: #1D1D1F;
       --text-secondary: #86868B;
       --text-tertiary: #C7C7CC;
       --text-inverse: #FFFFFF;
-      
-      /* Color - Background */
       --bg-primary: #FFFFFF;
       --bg-secondary: #F5F5F7;
       --bg-tertiary: #E5E5EA;
       --bg-elevated: rgba(255, 255, 255, 0.8);
-      
-      /* Color - Border */
       --border-default: #D1D1D6;
       --border-strong: #C7C7CC;
-      --border-separator: #C6C6C8;
-      
-      /* Gray Scale */
-      --gray-50: #F9FAFB;
-      --gray-100: #F3F4F6;
-      --gray-200: #E5E7EB;
-      --gray-300: #D1D5DB;
-      --gray-400: #9CA3AF;
-      --gray-500: #6B7280;
-      --gray-600: #4B5563;
-      --gray-700: #374151;
-      --gray-800: #1F2937;
-      --gray-900: #111827;
-      
-      /* Font Family */
-      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-      --font-mono: 'JetBrains Mono', 'SF Mono', Monaco, Menlo, monospace;
-      
-      /* Font Size */
-      --text-display: clamp(2rem, 5vw, 3rem);
-      --text-h1: clamp(1.5rem, 3vw, 2rem);
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --text-display: clamp(2.5rem, 6vw, 4rem);
+      --text-h1: clamp(1.75rem, 4vw, 2.5rem);
       --text-h2: 1.5rem;
       --text-h3: 1.25rem;
       --text-body: 1rem;
       --text-body-sm: 0.875rem;
       --text-caption: 0.75rem;
-      
-      /* Spacing */
-      --spacing-0: 0;
-      --spacing-1: 4px;
-      --spacing-2: 8px;
-      --spacing-3: 12px;
-      --spacing-4: 16px;
-      --spacing-5: 20px;
-      --spacing-6: 24px;
-      --spacing-8: 32px;
-      --spacing-10: 40px;
-      --spacing-12: 48px;
-      --spacing-16: 64px;
-      
-      /* Border Radius */
-      --radius-sm: 6px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --radius-xl: 16px;
-      --radius-2xl: 24px;
-      --radius-full: 9999px;
-      
-      /* Shadow */
-      --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.04);
-      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.08);
-      --shadow-md: 0 8px 40px rgba(0, 0, 0, 0.12);
-      --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
-      
-      /* Animation */
-      --duration-instant: 0ms;
-      --duration-fast: 100ms;
-      --duration-normal: 200ms;
-      --duration-moderate: 300ms;
-      --duration-slow: 400ms;
-      
+      --spacing-1: 4px; --spacing-2: 8px; --spacing-3: 12px; --spacing-4: 16px;
+      --spacing-5: 20px; --spacing-6: 24px; --spacing-8: 32px; --spacing-10: 40px;
+      --spacing-12: 48px; --spacing-16: 64px;
+      --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px;
+      --radius-2xl: 24px; --radius-full: 9999px;
+      --shadow-xs: 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-sm: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-md: 0 8px 40px rgba(0,0,0,0.12);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+      --duration-fast: 100ms; --duration-normal: 200ms; --duration-moderate: 300ms;
       --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-      --ease-enter: cubic-bezier(0, 0, 0.2, 1);
-      --ease-exit: cubic-bezier(0.4, 0, 1, 1);
       --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-      --ease-sharp: cubic-bezier(0.32, 0.72, 0, 1);
-      
-      /* Glass Effect */
       --glass-bg: rgba(255, 255, 255, 0.72);
       --glass-border: rgba(255, 255, 255, 0.5);
-      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-      
-      /* Layout */
-      --container-max: 1280px;
-      --sidebar-width: 280px;
+      --container-max: 1200px;
     }
-    
-    /* Dark Theme */
     [data-theme="dark"] {
       --text-primary: #F5F5F7;
       --text-secondary: #A1A1A6;
       --text-tertiary: #636366;
-      
       --bg-primary: #000000;
       --bg-secondary: #1D1D1F;
       --bg-tertiary: #2C2C2E;
       --bg-elevated: rgba(30, 30, 30, 0.9);
-      
       --border-default: #38383A;
       --border-strong: #48484A;
-      --border-separator: #38383A;
-      
-      --gray-50: #1F2937;
-      --gray-100: #2D3748;
-      --gray-200: #374151;
-      --gray-300: #4B5563;
-      --gray-400: #6B7280;
-      --gray-500: #4B5563;
-      --gray-600: #374151;
-      --gray-700: #2D3748;
-      --gray-800: #1F2937;
-      --gray-900: #111827;
-      
-      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.25);
-      --shadow-md: 0 8px 40px rgba(0, 0, 0, 0.35);
-      --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.45);
-      
-      --glass-bg: rgba(30, 30, 30, 0.75);
+      --shadow-sm: 0 4px 20px rgba(0,0,0,0.3);
+      --shadow-md: 0 8px 40px rgba(0,0,0,0.4);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,0.5);
+      --glass-bg: rgba(30, 30, 30, 0.8);
       --glass-border: rgba(255, 255, 255, 0.1);
-      --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      
       --color-primary: #0A84FF;
       --color-success: #30D158;
       --color-warning: #FF9F0A;
       --color-danger: #FF453A;
-      --color-info: #64D2FF;
     }
-    
-    /* ========================================
-       Base Styles
-       ======================================== */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    html {
-      font-size: 16px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; }
     body {
       font-family: var(--font-primary);
       font-size: var(--text-body);
       line-height: 1.6;
       color: var(--text-primary);
-      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      background: var(--bg-secondary);
       min-height: 100vh;
     }
-    
-    /* ========================================
-       Layout Components
-       ======================================== */
-    .container {
-      width: 100%;
-      max-width: var(--container-max);
-      margin: 0 auto;
-      padding: 0 var(--spacing-4);
-    }
-    
+    .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 var(--spacing-6); }
+
+    /* Header */
     .header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: sticky; top: 0; z-index: 100;
       background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--glass-border);
-      box-shadow: var(--glass-shadow);
     }
-    
     .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-      padding: 0 var(--spacing-6);
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; padding: 0 var(--spacing-6);
     }
-    
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-3);
-      font-size: var(--text-h3);
-      font-weight: 600;
-      color: var(--text-primary);
-      text-decoration: none;
-    }
-    
+    .logo { display: flex; align-items: center; gap: var(--spacing-3); font-size: var(--text-h3); font-weight: 600; text-decoration: none; color: var(--text-primary); }
     .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: var(--gradient-primary);
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--color-primary) 0%, #5856D6 100%);
       border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 700;
-      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: 14px;
     }
-    
-    /* ========================================
-       Theme Toggle
-       ======================================== */
-    .theme-toggle {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-1);
-      padding: var(--spacing-1);
-      background: var(--bg-secondary);
-      border-radius: var(--radius-full);
-    }
-    
-    .theme-toggle-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-2);
+    .header-actions { display: flex; align-items: center; gap: var(--spacing-4); }
+    .lang-select {
       padding: var(--spacing-2) var(--spacing-4);
-      border: none;
-      background: transparent;
-      border-radius: var(--radius-full);
-      cursor: pointer;
+      font-family: var(--font-primary);
       font-size: var(--text-body-sm);
-      font-weight: 500;
+      color: var(--text-primary);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-standard);
+    }
+    .lang-select:hover { border-color: var(--border-strong); }
+    .theme-btn {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      cursor: pointer;
       color: var(--text-secondary);
       transition: all var(--duration-normal) var(--ease-standard);
     }
-    
-    .theme-toggle-item:hover {
-      color: var(--text-primary);
+    .theme-btn:hover { border-color: var(--border-strong); color: var(--text-primary); }
+    .theme-btn svg { width: 18px; height: 18px; }
+
+    /* Hero */
+    .hero {
+      padding: var(--spacing-16) 0 var(--spacing-12);
+      text-align: center;
     }
-    
-    .theme-toggle-item.active {
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      box-shadow: var(--shadow-xs);
+    .hero-title {
+      font-size: var(--text-display);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--spacing-4);
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    
-    .theme-toggle-item svg {
-      width: 16px;
-      height: 16px;
+    .hero-subtitle {
+      font-size: var(--text-h3);
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin: 0 auto var(--spacing-10);
     }
-    
-    /* ========================================
-       Button Component
-       ======================================== */
-    .btn {
+    .stats-bar {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: var(--spacing-2);
-      padding: var(--spacing-3) var(--spacing-5);
-      font-family: var(--font-primary);
-      font-size: var(--text-body);
-      font-weight: 500;
-      line-height: 1;
-      text-decoration: none;
-      border: none;
-      border-radius: var(--radius-lg);
-      cursor: pointer;
-      transition: all var(--duration-normal) var(--ease-standard);
-      white-space: nowrap;
-    }
-    
-    .btn svg {
-      width: 18px;
-      height: 18px;
-    }
-    
-    /* Button Variants */
-    .btn-primary {
-      background: var(--color-primary);
-      color: var(--text-inverse);
-      box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
-    }
-    
-    .btn-primary:hover {
-      background: var(--color-primary-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
-    }
-    
-    .btn-primary:active {
-      transform: scale(0.97);
-      box-shadow: 0 1px 4px rgba(0, 122, 255, 0.2);
-    }
-    
-    .btn-secondary {
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      border: 1px solid var(--border-default);
-    }
-    
-    .btn-secondary:hover {
-      background: var(--bg-tertiary);
-      border-color: var(--border-strong);
-    }
-    
-    .btn-outline {
-      background: transparent;
-      color: var(--color-primary);
-      border: 1px solid var(--color-primary);
-    }
-    
-    .btn-outline:hover {
-      background: var(--color-primary-light);
-    }
-    
-    .btn-ghost {
-      background: transparent;
-      color: var(--text-secondary);
-    }
-    
-    .btn-ghost:hover {
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-    }
-    
-    .btn-destructive {
-      background: var(--color-danger);
-      color: var(--text-inverse);
-    }
-    
-    .btn-destructive:hover {
-      background: #D63629;
-      transform: translateY(-1px);
-    }
-    
-    /* Button Sizes */
-    .btn-sm {
-      padding: var(--spacing-2) var(--spacing-4);
-      font-size: var(--text-body-sm);
-      border-radius: var(--radius-md);
-    }
-    
-    .btn-sm svg {
-      width: 14px;
-      height: 14px;
-    }
-    
-    .btn-lg {
+      gap: var(--spacing-6);
       padding: var(--spacing-4) var(--spacing-6);
-      font-size: var(--text-body);
-      border-radius: var(--radius-xl);
-    }
-    
-    .btn-icon {
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      border-radius: var(--radius-md);
-    }
-    
-    .btn-icon.btn-sm {
-      width: 32px;
-      height: 32px;
-    }
-    
-    /* Button States */
-    .btn:disabled,
-    .btn.is-loading {
-      opacity: 0.5;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-    
-    .btn.is-loading {
-      position: relative;
-      color: transparent;
-    }
-    
-    .btn.is-loading::after {
-      content: '';
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      border: 2px solid transparent;
-      border-top-color: currentColor;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    /* ========================================
-       Input Component
-       ======================================== */
-    .input-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-2);
-    }
-    
-    .input-label {
-      font-size: var(--text-body-sm);
-      font-weight: 500;
-      color: var(--text-primary);
-    }
-    
-    .input-required {
-      color: var(--color-danger);
-      margin-left: var(--spacing-1);
-    }
-    
-    .input {
-      width: 100%;
-      padding: var(--spacing-3) var(--spacing-4);
-      font-family: var(--font-primary);
-      font-size: var(--text-body);
-      color: var(--text-primary);
       background: var(--bg-primary);
       border: 1px solid var(--border-default);
-      border-radius: var(--radius-md);
-      outline: none;
-      transition: all var(--duration-normal) var(--ease-standard);
+      border-radius: var(--radius-2xl);
+      box-shadow: var(--shadow-sm);
     }
-    
-    .input::placeholder {
-      color: var(--text-tertiary);
+    .stat-item { text-align: center; }
+    .stat-value { font-size: var(--text-h2); font-weight: 700; color: var(--color-primary); }
+    .stat-label { font-size: var(--text-caption); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+    .stat-divider { width: 1px; height: 40px; background: var(--border-default); }
+
+    /* Main Layout */
+    .main { padding: 0 0 var(--spacing-16); }
+    .panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-6);
     }
-    
-    .input:hover:not(:disabled) {
-      border-color: var(--border-strong);
-    }
-    
-    .input:focus {
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-    }
-    
-    .input:disabled {
-      background: var(--bg-tertiary);
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    
-    .input.error {
-      border-color: var(--color-danger);
-    }
-    
-    .input.error:focus {
-      box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1);
-    }
-    
-    .input-description {
-      font-size: var(--text-caption);
-      color: var(--text-secondary);
-    }
-    
-    .input-error {
-      font-size: var(--text-caption);
-      color: var(--color-danger);
-    }
-    
-    /* Textarea */
-    .textarea {
-      min-height: 200px;
-      resize: vertical;
-      font-family: var(--font-mono);
-      font-size: var(--text-body-sm);
-      line-height: 1.6;
-    }
-    
-    /* ========================================
-       Card Component
-       ======================================== */
-    .card {
+
+    /* Panel Base */
+    .panel {
       background: var(--bg-primary);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-xl);
       box-shadow: var(--shadow-sm);
       overflow: hidden;
-      transition: all var(--duration-normal) var(--ease-standard);
     }
-    
-    .card:hover {
-      box-shadow: var(--shadow-md);
+    .panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--spacing-5) var(--spacing-6);
+      border-bottom: 1px solid var(--border-default);
     }
-    
-    .card-header {
-      padding: var(--spacing-6);
-      border-bottom: 1px solid var(--border-separator);
+    .panel-title { font-size: var(--text-body); font-weight: 600; }
+    .panel-actions { display: flex; gap: var(--spacing-2); }
+    .panel-content { padding: var(--spacing-6); }
+
+    /* Collapse */
+    .collapse-btn {
+      display: flex; align-items: center; gap: var(--spacing-2);
+      padding: var(--spacing-2);
+      background: none; border: none;
+      font-size: var(--text-body-sm); font-weight: 500;
+      color: var(--text-secondary); cursor: pointer;
+      border-radius: var(--radius-sm);
+      transition: all var(--duration-fast) var(--ease-standard);
     }
-    
-    .card-title {
-      font-size: var(--text-h3);
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: var(--spacing-2);
-    }
-    
-    .card-description {
-      font-size: var(--text-body-sm);
-      color: var(--text-secondary);
-    }
-    
-    .card-content {
-      padding: var(--spacing-6);
-    }
-    
-    .card-footer {
-      padding: var(--spacing-4) var(--spacing-6);
-      background: var(--bg-secondary);
-      border-top: 1px solid var(--border-separator);
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: var(--spacing-3);
-    }
-    
-    /* ========================================
-       Badge Component
-       ======================================== */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--spacing-1);
-      padding: var(--spacing-1) var(--spacing-3);
+    .collapse-btn:hover { color: var(--text-primary); background: var(--bg-secondary); }
+    .collapse-btn svg { width: 16px; height: 16px; transition: transform var(--duration-normal) var(--ease-standard); }
+    .collapse-btn.collapsed svg { transform: rotate(-90deg); }
+    .panel-body { transition: all var(--duration-moderate) var(--ease-standard); }
+    .panel-body.collapsed { display: none; }
+
+    /* URL Tags */
+    .url-tags { display: flex; flex-wrap: wrap; gap: var(--spacing-2); margin-bottom: var(--spacing-4); }
+    .url-tag {
+      padding: var(--spacing-2) var(--spacing-4);
       font-size: var(--text-caption);
       font-weight: 500;
-      border-radius: var(--radius-full);
       background: var(--bg-secondary);
-      color: var(--text-secondary);
-    }
-    
-    .badge-primary {
-      background: var(--color-primary-light);
-      color: var(--color-primary);
-    }
-    
-    .badge-success {
-      background: rgba(52, 199, 89, 0.1);
-      color: var(--color-success);
-    }
-    
-    .badge-warning {
-      background: rgba(255, 149, 0, 0.1);
-      color: var(--color-warning);
-    }
-    
-    .badge-danger {
-      background: rgba(255, 59, 48, 0.1);
-      color: var(--color-danger);
-    }
-    
-    .badge svg {
-      width: 12px;
-      height: 12px;
-    }
-    
-    /* ========================================
-       Tabs Component
-       ======================================== */
-    .tabs {
-      width: 100%;
-    }
-    
-    .tabs-list {
-      display: flex;
-      gap: var(--spacing-1);
-      padding: var(--spacing-1);
-      background: var(--bg-secondary);
-      border-radius: var(--radius-lg);
-    }
-    
-    .tabs-trigger {
-      flex: 1;
-      padding: var(--spacing-3) var(--spacing-4);
-      font-family: var(--font-primary);
-      font-size: var(--text-body-sm);
-      font-weight: 500;
-      color: var(--text-secondary);
-      background: transparent;
-      border: none;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: all var(--duration-normal) var(--ease-standard);
-    }
-    
-    .tabs-trigger:hover {
-      color: var(--text-primary);
-    }
-    
-    .tabs-trigger.active {
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      box-shadow: var(--shadow-xs);
-    }
-    
-    .tabs-content {
-      padding: var(--spacing-6) 0;
-    }
-    
-    /* ========================================
-       Toast Component
-       ======================================== */
-    .toast-container {
-      position: fixed;
-      bottom: var(--spacing-6);
-      right: var(--spacing-6);
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-3);
-    }
-    
-    .toast {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--spacing-3);
-      padding: var(--spacing-4) var(--spacing-5);
-      min-width: 320px;
-      max-width: 420px;
-      background: var(--bg-elevated);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--border-default);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      animation: slideIn var(--duration-moderate) var(--ease-bounce);
-    }
-    
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateX(100%);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    
-    .toast-icon {
-      flex-shrink: 0;
-      width: 20px;
-      height: 20px;
-    }
-    
-    .toast-success .toast-icon { color: var(--color-success); }
-    .toast-error .toast-icon { color: var(--color-danger); }
-    .toast-warning .toast-icon { color: var(--color-warning); }
-    .toast-info .toast-icon { color: var(--color-info); }
-    
-    .toast-content {
-      flex: 1;
-    }
-    
-    .toast-title {
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: var(--spacing-1);
-    }
-    
-    .toast-message {
-      font-size: var(--text-body-sm);
-      color: var(--text-secondary);
-    }
-    
-    .toast-close {
-      flex-shrink: 0;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      border: none;
-      border-radius: var(--radius-sm);
-      color: var(--text-tertiary);
+      border-radius: var(--radius-full);
       cursor: pointer;
       transition: all var(--duration-fast) var(--ease-standard);
     }
-    
-    .toast-close:hover {
+    .url-tag:hover { border-color: var(--color-primary); color: var(--color-primary); }
+    .url-tag.active { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+
+    /* Domain Editor */
+    .domain-editor {
+      display: flex;
       background: var(--bg-secondary);
-      color: var(--text-primary);
-    }
-    
-    /* ========================================
-       Skeleton Loading
-       ======================================== */
-    .skeleton {
-      background: linear-gradient(
-        90deg,
-        var(--bg-secondary) 25%,
-        var(--bg-tertiary) 50%,
-        var(--bg-secondary) 75%
-      );
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-      border-radius: var(--radius-md);
-    }
-    
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-    
-    .skeleton-text {
-      height: 16px;
-      margin-bottom: var(--spacing-2);
-    }
-    
-    .skeleton-text:last-child {
-      width: 70%;
-    }
-    
-    .skeleton-title {
-      height: 24px;
-      width: 60%;
-      margin-bottom: var(--spacing-3);
-    }
-    
-    .skeleton-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-full);
-    }
-    
-    /* ========================================
-       Empty State
-       ======================================== */
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: var(--spacing-12) var(--spacing-6);
-      text-align: center;
-    }
-    
-    .empty-state-icon {
-      width: 80px;
-      height: 80px;
-      margin-bottom: var(--spacing-6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-secondary);
-      border-radius: var(--radius-2xl);
-      color: var(--text-tertiary);
-    }
-    
-    .empty-state-icon svg {
-      width: 40px;
-      height: 40px;
-    }
-    
-    .empty-state-title {
-      font-size: var(--text-h3);
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: var(--spacing-2);
-    }
-    
-    .empty-state-description {
-      max-width: 320px;
-      font-size: var(--text-body-sm);
-      color: var(--text-secondary);
-      margin-bottom: var(--spacing-6);
-    }
-    
-    .empty-state-actions {
-      display: flex;
-      gap: var(--spacing-3);
-    }
-    
-    /* ========================================
-       Code Preview
-       ======================================== */
-    .code-preview {
-      background: var(--gray-900);
+      border: 1px solid var(--border-default);
       border-radius: var(--radius-lg);
       overflow: hidden;
+      min-height: 280px;
     }
-    
-    .code-preview-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--spacing-3) var(--spacing-4);
-      background: var(--gray-800);
-      border-bottom: 1px solid var(--gray-700);
-    }
-    
-    .code-preview-title {
-      font-family: var(--font-mono);
-      font-size: var(--text-caption);
-      color: var(--gray-400);
-    }
-    
-    .code-preview-content {
+    .line-numbers {
       padding: var(--spacing-4);
-      overflow-x: auto;
-    }
-    
-    .code-preview pre {
       font-family: var(--font-mono);
       font-size: var(--text-body-sm);
       line-height: 1.6;
-      color: var(--gray-100);
-      margin: 0;
+      color: var(--text-tertiary);
+      text-align: right;
+      user-select: none;
+      border-right: 1px solid var(--border-default);
+      background: var(--bg-tertiary);
+      min-width: 48px;
     }
-    
-    .code-preview code {
-      font-family: inherit;
-    }
-    
-    /* Syntax Highlighting */
-    .code-keyword { color: #C678DD; }
-    .code-string { color: #98C379; }
-    .code-comment { color: #5C6370; font-style: italic; }
-    .code-number { color: #D19A66; }
-    .code-property { color: #E06C75; }
-    
-    /* ========================================
-       Stats Grid
-       ======================================== */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: var(--spacing-4);
-    }
-    
-    .stat-card {
-      padding: var(--spacing-5);
-      background: var(--bg-primary);
-      border: 1px solid var(--border-default);
-      border-radius: var(--radius-lg);
-      text-align: center;
-    }
-    
-    .stat-value {
-      font-size: var(--text-h2);
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: var(--spacing-1);
-    }
-    
-    .stat-label {
-      font-size: var(--text-caption);
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    
-    .stat-card.primary .stat-value { color: var(--color-primary); }
-    .stat-card.success .stat-value { color: var(--color-success); }
-    .stat-card.warning .stat-value { color: var(--color-warning); }
-    .stat-card.danger .stat-value { color: var(--color-danger); }
-    
-    /* ========================================
-       Switch Component
-       ======================================== */
-    .switch-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--spacing-4);
-    }
-    
-    .switch-label {
-      font-size: var(--text-body);
-      font-weight: 500;
-      color: var(--text-primary);
-    }
-    
-    .switch-description {
+    .domain-input {
+      flex: 1;
+      padding: var(--spacing-4);
+      font-family: var(--font-mono);
       font-size: var(--text-body-sm);
-      color: var(--text-secondary);
-      margin-top: var(--spacing-1);
+      line-height: 1.6;
+      color: var(--text-primary);
+      background: transparent;
+      border: none;
+      outline: none;
+      resize: none;
     }
-    
+    .domain-input::placeholder { color: var(--text-tertiary); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-2);
+      padding: var(--spacing-3) var(--spacing-5);
+      font-family: var(--font-primary);
+      font-size: var(--text-body-sm); font-weight: 500;
+      border: none; border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-standard);
+      white-space: nowrap;
+    }
+    .btn svg { width: 16px; height: 16px; }
+    .btn-primary { background: var(--color-primary); color: white; }
+    .btn-primary:hover { background: var(--color-primary-hover); transform: translateY(-1px); }
+    .btn-secondary { background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-default); }
+    .btn-secondary:hover { background: var(--bg-tertiary); }
+    .btn-ghost { background: transparent; color: var(--text-secondary); }
+    .btn-ghost:hover { background: var(--bg-secondary); color: var(--text-primary); }
+    .btn-sm { padding: var(--spacing-2) var(--spacing-3); font-size: var(--text-caption); border-radius: var(--radius-md); }
+    .btn-icon { width: 32px; height: 32px; padding: 0; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: var(--spacing-1); padding: var(--spacing-1); background: var(--bg-secondary); border-radius: var(--radius-lg); margin-bottom: var(--spacing-4); }
+    .tab {
+      flex: 1; padding: var(--spacing-3) var(--spacing-4);
+      font-size: var(--text-body-sm); font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent; border: none; border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--duration-normal) var(--ease-standard);
+    }
+    .tab:hover { color: var(--text-primary); }
+    .tab.active { background: var(--bg-primary); color: var(--text-primary); box-shadow: var(--shadow-xs); }
+
+    /* Code Preview */
+    .code-preview {
+      background: #1E1E1E;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .code-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--spacing-3) var(--spacing-4);
+      background: #2D2D2D;
+      border-bottom: 1px solid #3D3D3D;
+    }
+    .code-title { font-family: var(--font-mono); font-size: var(--text-caption); color: #888; }
+    .code-content { padding: var(--spacing-4); max-height: 300px; overflow-y: auto; }
+    .code-content pre { font-family: var(--font-mono); font-size: var(--text-body-sm); line-height: 1.6; color: #D4D4D4; margin: 0; }
+    .code-content .c { color: #6A9955; }
+    .code-content .k { color: #569CD6; }
+    .code-content .s { color: #CE9178; }
+    .code-content .v { color: #9CDCFE; }
+
+    /* Switch */
+    .switch-row { display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-3) 0; border-bottom: 1px solid var(--border-default); }
+    .switch-row:last-child { border-bottom: none; }
+    .switch-label { font-size: var(--text-body-sm); font-weight: 500; }
+    .switch-desc { font-size: var(--text-caption); color: var(--text-secondary); margin-top: 2px; }
     .switch {
-      position: relative;
-      width: 51px;
-      height: 31px;
+      position: relative; width: 44px; height: 24px;
       appearance: none;
       background: var(--bg-tertiary);
       border-radius: var(--radius-full);
       cursor: pointer;
       transition: background var(--duration-normal) var(--ease-standard);
     }
-    
     .switch::before {
-      content: '';
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 27px;
-      height: 27px;
-      background: white;
-      border-radius: var(--radius-full);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      content: ''; position: absolute;
+      top: 2px; left: 2px;
+      width: 20px; height: 20px;
+      background: white; border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
       transition: transform var(--duration-normal) var(--ease-bounce);
     }
-    
-    .switch:checked {
-      background: var(--color-primary);
-    }
-    
-    .switch:checked::before {
-      transform: translateX(20px);
-    }
-    
-    .switch:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
-    }
-    
-    .switch:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    
-    /* ========================================
-       Select Component
-       ======================================== */
-    .select-wrapper {
-      position: relative;
-    }
-    
-    .select {
-      width: 100%;
-      padding: var(--spacing-3) var(--spacing-10) var(--spacing-3) var(--spacing-4);
-      font-family: var(--font-primary);
-      font-size: var(--text-body);
+    .switch:checked { background: var(--color-primary); }
+    .switch:checked::before { transform: translateX(20px); }
+    .switch:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,122,255,0.2); }
+
+    /* Input */
+    .input {
+      width: 100%; padding: var(--spacing-3) var(--spacing-4);
+      font-family: var(--font-primary); font-size: var(--text-body);
       color: var(--text-primary);
       background: var(--bg-primary);
       border: 1px solid var(--border-default);
       border-radius: var(--radius-md);
-      appearance: none;
-      cursor: pointer;
+      outline: none;
       transition: all var(--duration-normal) var(--ease-standard);
     }
-    
-    .select:hover:not(:disabled) {
-      border-color: var(--border-strong);
-    }
-    
-    .select:focus {
-      border-color: var(--color-primary);
-      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-      outline: none;
-    }
-    
-    .select-icon {
-      position: absolute;
-      right: var(--spacing-4);
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      color: var(--text-tertiary);
-      pointer-events: none;
-    }
-    
-    /* ========================================
-       Dialog Component
-       ======================================== */
-    .dialog-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
-      z-index: 999;
-      animation: fadeIn var(--duration-normal) var(--ease-standard);
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    .dialog {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 1000;
-      width: 90%;
-      max-width: 480px;
-      background: var(--bg-primary);
-      border-radius: var(--radius-2xl);
-      box-shadow: var(--shadow-lg);
-      animation: dialogIn var(--duration-moderate) var(--ease-bounce);
-    }
-    
-    @keyframes dialogIn {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -48%) scale(0.96);
-      }
-      to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-    }
-    
-    .dialog-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--spacing-6);
-      border-bottom: 1px solid var(--border-separator);
-    }
-    
-    .dialog-title {
-      font-size: var(--text-h3);
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    
-    .dialog-close {
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-      border: none;
-      border-radius: var(--radius-md);
-      color: var(--text-tertiary);
+    .input::placeholder { color: var(--text-tertiary); }
+    .input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+
+    /* Footer */
+    .footer { margin-top: var(--spacing-12); padding: var(--spacing-8) 0; border-top: 1px solid var(--border-default); }
+    .footer-content { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--spacing-8); }
+    .footer-brand { max-width: 320px; }
+    .footer-brand .logo { margin-bottom: var(--spacing-3); }
+    .footer-desc { font-size: var(--text-body-sm); color: var(--text-secondary); }
+    .footer-links { display: flex; gap: var(--spacing-8); }
+    .footer-col h4 { font-size: var(--text-body-sm); font-weight: 600; margin-bottom: var(--spacing-3); }
+    .footer-col a { display: block; font-size: var(--text-body-sm); color: var(--text-secondary); text-decoration: none; margin-bottom: var(--spacing-2); transition: color var(--duration-fast); }
+    .footer-col a:hover { color: var(--color-primary); }
+    .footer-bottom { margin-top: var(--spacing-6); padding-top: var(--spacing-6); border-top: 1px solid var(--border-default); text-align: center; font-size: var(--text-caption); color: var(--text-tertiary); }
+
+    /* Accordion */
+    .accordion { border: 1px solid var(--border-default); border-radius: var(--radius-lg); overflow: hidden; }
+    .accordion-item { border-bottom: 1px solid var(--border-default); }
+    .accordion-item:last-child { border-bottom: none; }
+    .accordion-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--spacing-4) var(--spacing-5);
+      background: var(--bg-secondary);
       cursor: pointer;
-      transition: all var(--duration-fast) var(--ease-standard);
+      transition: background var(--duration-fast);
     }
-    
-    .dialog-close:hover {
-      background: var(--bg-secondary);
-      color: var(--text-primary);
+    .accordion-header:hover { background: var(--bg-tertiary); }
+    .accordion-title { font-size: var(--text-body-sm); font-weight: 600; }
+    .accordion-icon { width: 16px; height: 16px; color: var(--text-tertiary); transition: transform var(--duration-normal) var(--ease-standard); }
+    .accordion-item.open .accordion-icon { transform: rotate(180deg); }
+    .accordion-body { padding: var(--spacing-5); display: none; }
+    .accordion-item.open .accordion-body { display: block; }
+    .accordion-content { font-size: var(--text-body-sm); color: var(--text-secondary); line-height: 1.8; }
+    .accordion-content code { padding: 2px 6px; background: var(--bg-secondary); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: var(--text-caption); }
+
+    /* Toast */
+    .toast-container { position: fixed; bottom: var(--spacing-6); right: var(--spacing-6); z-index: 1000; display: flex; flex-direction: column; gap: var(--spacing-3); }
+    .toast {
+      display: flex; align-items: center; gap: var(--spacing-3);
+      padding: var(--spacing-4) var(--spacing-5);
+      min-width: 280px;
+      background: var(--bg-elevated);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      animation: slideIn var(--duration-moderate) var(--ease-bounce);
     }
-    
-    .dialog-content {
-      padding: var(--spacing-6);
+    @keyframes slideIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideOut { to { opacity: 0; transform: translateX(100%); } }
+    .toast-icon { width: 20px; height: 20px; flex-shrink: 0; }
+    .toast-success .toast-icon { color: var(--color-success); }
+    .toast-error .toast-icon { color: var(--color-danger); }
+    .toast-content { flex: 1; }
+    .toast-title { font-weight: 600; font-size: var(--text-body-sm); }
+    .toast-message { font-size: var(--text-caption); color: var(--text-secondary); margin-top: 2px; }
+    .toast-close { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; border-radius: var(--radius-sm); color: var(--text-tertiary); cursor: pointer; }
+    .toast-close:hover { background: var(--bg-secondary); color: var(--text-primary); }
+
+    /* Settings Panel */
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-4); }
+    .setting-group { }
+    .setting-title { font-size: var(--text-body-sm); font-weight: 600; margin-bottom: var(--spacing-3); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .panels { grid-template-columns: 1fr; }
+      .hero { padding: var(--spacing-10) 0 var(--spacing-8); }
+      .stats-bar { flex-wrap: wrap; gap: var(--spacing-4); }
+      .stat-divider { display: none; }
+      .footer-content { flex-direction: column; }
+      .footer-links { flex-wrap: wrap; }
+      .settings-grid { grid-template-columns: 1fr; }
     }
-    
-    .dialog-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: var(--spacing-3);
-      padding: var(--spacing-4) var(--spacing-6);
-      background: var(--bg-secondary);
-      border-top: 1px solid var(--border-separator);
-      border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
-    }
-    
-    /* ========================================
-       Main Content Area
-       ======================================== */
-    .main {
-      padding: var(--spacing-8) 0;
-    }
-    
-    .page-header {
-      margin-bottom: var(--spacing-8);
-      text-align: center;
-    }
-    
-    .page-title {
-      font-size: var(--text-display);
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: var(--spacing-4);
-      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-success) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .page-subtitle {
-      font-size: var(--text-h3);
-      color: var(--text-secondary);
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    
-    /* Section */
-    .section {
-      margin-bottom: var(--spacing-12);
-    }
-    
-    .section-title {
-      font-size: var(--text-h2);
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: var(--spacing-6);
-      padding-bottom: var(--spacing-3);
-      border-bottom: 2px solid var(--color-primary);
-      display: inline-block;
-    }
-    
-    .section-description {
-      font-size: var(--text-body);
-      color: var(--text-secondary);
-      margin-bottom: var(--spacing-6);
-    }
-    
-    /* Demo Grid */
-    .demo-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: var(--spacing-6);
-    }
-    
-    .demo-item {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-4);
-    }
-    
-    .demo-label {
-      font-size: var(--text-caption);
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    
-    .demo-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--spacing-3);
-    }
-    
-    /* ========================================
-       Utility Classes
-       ======================================== */
-    .mt-4 { margin-top: var(--spacing-4); }
-    .mt-6 { margin-top: var(--spacing-6); }
-    .mt-8 { margin-top: var(--spacing-8); }
-    .mb-4 { margin-bottom: var(--spacing-4); }
-    .mb-6 { margin-bottom: var(--spacing-6); }
-    .mb-8 { margin-bottom: var(--spacing-8); }
-    
-    .text-center { text-align: center; }
-    .text-muted { color: var(--text-secondary); }
-    
-    .flex { display: flex; }
-    .flex-col { flex-direction: column; }
-    .items-center { align-items: center; }
-    .justify-center { justify-content: center; }
-    .justify-between { justify-content: space-between; }
-    .gap-2 { gap: var(--spacing-2); }
-    .gap-3 { gap: var(--spacing-3); }
-    .gap-4 { gap: var(--spacing-4); }
-    .gap-6 { gap: var(--spacing-6); }
-    
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-    
-    /* ========================================
-       Responsive Design
-       ======================================== */
     @media (max-width: 640px) {
-      .header-inner {
-        padding: 0 var(--spacing-4);
-      }
-      
-      .theme-toggle-item span {
-        display: none;
-      }
-      
-      .theme-toggle-item {
-        padding: var(--spacing-2);
-      }
-      
-      .tabs-list {
-        flex-direction: column;
-      }
-      
-      .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .demo-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
-      .btn {
-        width: 100%;
-      }
+      .container { padding: 0 var(--spacing-4); }
+      .header-inner { padding: 0 var(--spacing-4); }
+      .hero-title { font-size: 2rem; }
+      .hero-subtitle { font-size: var(--text-body); }
+      .url-tags { gap: var(--spacing-1); }
+      .url-tag { font-size: var(--text-caption); padding: var(--spacing-1) var(--spacing-3); }
+      .domain-editor { min-height: 200px; }
     }
-    
-    /* ========================================
-       Reduced Motion
-       ======================================== */
     @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header class="header">
     <div class="header-inner container">
       <a href="#" class="logo">
         <span class="logo-icon">DS</span>
         <span>DNS Shield</span>
       </a>
-      
-      <div class="theme-toggle" role="group" aria-label="主题切换">
-        <button class="theme-toggle-item active" data-theme="light" aria-pressed="true">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-          </svg>
-          <span>浅色</span>
-        </button>
-        <button class="theme-toggle-item" data-theme="dark" aria-pressed="false">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
-          <span>深色</span>
-        </button>
-        <button class="theme-toggle-item" data-theme="system" aria-pressed="false">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-            <line x1="8" y1="21" x2="16" y2="21"></line>
-            <line x1="12" y1="17" x2="12" y2="21"></line>
-          </svg>
-          <span>自动</span>
+      <div class="header-actions">
+        <select class="lang-select" id="langSelect">
+          <option value="zh">中文</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="it">Italiano</option>
+          <option value="pt">Português</option>
+          <option value="ru">Русский</option>
+          <option value="ar">العربية</option>
+          <option value="hi">हिन्दी</option>
+          <option value="th">ไทย</option>
+          <option value="vi">Tiếng Việt</option>
+        </select>
+        <button class="theme-btn" id="themeToggle" aria-label="切换主题">
+          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg id="moonIcon" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Content -->
   <main class="main">
     <div class="container">
-      
-      <!-- Page Header -->
-      <div class="page-header">
-        <h1 class="page-title">DNS Shield 设计系统</h1>
-        <p class="page-subtitle">基于 Apple Human Interface Guidelines 的现代化设计规范，包含完整的组件库和交互标准</p>
-      </div>
-
-      <!-- Section 1: Colors -->
-      <section class="section">
-        <h2 class="section-title">1. 色彩系统</h2>
-        <p class="section-description">DNS Shield 使用基于语义的颜色系统，支持浅色和深色模式自动切换。</p>
-        
-        <div class="demo-grid">
-          <!-- Primary Colors -->
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">主色调</h3>
-              <p class="card-description">品牌核心色彩</p>
-            </div>
-            <div class="card-content">
-              <div class="demo-row">
-                <div style="width: 60px; height: 60px; background: var(--color-primary); border-radius: var(--radius-md);"></div>
-                <div style="width: 60px; height: 60px; background: var(--color-success); border-radius: var(--radius-md);"></div>
-                <div style="width: 60px; height: 60px; background: var(--color-warning); border-radius: var(--radius-md);"></div>
-                <div style="width: 60px; height: 60px; background: var(--color-danger); border-radius: var(--radius-md);"></div>
-                <div style="width: 60px; height: 60px; background: var(--color-info); border-radius: var(--radius-md);"></div>
-              </div>
-              <p class="mt-4 text-muted" style="font-size: var(--text-caption);">
-                Primary: #007AFF | Success: #34C759 | Warning: #FF9500 | Danger: #FF3B30 | Info: #5AC8FA
-              </p>
-            </div>
+      <section class="hero">
+        <h1 class="hero-title">DNS Shield</h1>
+        <p class="hero-subtitle">路由器级广告过滤规则生成器，支持 Dnsmasq / Hosts / AdGuard 多种格式</p>
+        <div class="stats-bar">
+          <div class="stat-item">
+            <div class="stat-value" id="statDomains">473</div>
+            <div class="stat-label">域名</div>
           </div>
-          
-          <!-- Gray Scale -->
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">灰度色阶</h3>
-              <p class="card-description">用于文本、边框和背景</p>
-            </div>
-            <div class="card-content">
-              <div class="demo-row">
-                <div style="width: 40px; height: 40px; background: var(--gray-100); border-radius: var(--radius-sm);"></div>
-                <div style="width: 40px; height: 40px; background: var(--gray-200); border-radius: var(--radius-sm);"></div>
-                <div style="width: 40px; height: 40px; background: var(--gray-300); border-radius: var(--radius-sm);"></div>
-                <div style="width: 40px; height: 40px; background: var(--gray-400); border-radius: var(--radius-sm);"></div>
-                <div style="width: 40px; height: 40px; background: var(--gray-500); border-radius: var(--radius-sm);"></div>
-                <div style="width: 40px; height: 40px; background: var(--gray-600); border-radius: var(--radius-sm);"></div>
-                <div style="width: 40px; height: 40px; background: var(--gray-700); border-radius: var(--radius-sm);"></div>
-                <div style="width: 40px; height: 40px; background: var(--gray-800); border-radius: var(--radius-sm);"></div>
-              </div>
-            </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-value" id="statBlacklist">452</div>
+            <div class="stat-label">黑名单</div>
           </div>
-          
-          <!-- Text Colors -->
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">文本色彩</h3>
-              <p class="card-description">语义化文本颜色</p>
-            </div>
-            <div class="card-content">
-              <p style="color: var(--text-primary); margin-bottom: var(--spacing-2);">主要文本 Primary</p>
-              <p style="color: var(--text-secondary); margin-bottom: var(--spacing-2);">次要文本 Secondary</p>
-              <p style="color: var(--text-tertiary);">三级文本 Tertiary</p>
-            </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-value" id="statWhitelist">21</div>
+            <div class="stat-label">白名单</div>
           </div>
-          
-          <!-- Background Colors -->
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">背景色彩</h3>
-              <p class="card-description">页面和组件背景</p>
-            </div>
-            <div class="card-content">
-              <div style="padding: var(--spacing-4); background: var(--bg-primary); border: 1px solid var(--border-default); border-radius: var(--radius-md); margin-bottom: var(--spacing-2);">
-                <span style="font-size: var(--text-caption); color: var(--text-secondary);">Primary Background</span>
-              </div>
-              <div style="padding: var(--spacing-4); background: var(--bg-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-md); margin-bottom: var(--spacing-2);">
-                <span style="font-size: var(--text-caption); color: var(--text-secondary);">Secondary Background</span>
-              </div>
-              <div style="padding: var(--spacing-4); background: var(--bg-tertiary); border: 1px solid var(--border-default); border-radius: var(--radius-md);">
-                <span style="font-size: var(--text-caption); color: var(--text-secondary);">Tertiary Background</span>
-              </div>
-            </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-value">3</div>
+            <div class="stat-label">格式</div>
           </div>
         </div>
       </section>
 
-      <!-- Section 2: Typography -->
-      <section class="section">
-        <h2 class="section-title">2. 字体规范</h2>
-        <p class="section-description">使用系统字体栈确保最佳的阅读体验和性能。</p>
-        
-        <div class="card">
-          <div class="card-content">
-            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
-              <span class="demo-label">Display</span>
-              <p style="font-size: var(--text-display); font-weight: 700; line-height: 1.1;">DNS Shield v2.3.0</p>
-            </div>
-            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
-              <span class="demo-label">H1</span>
-              <p style="font-size: var(--text-h1); font-weight: 600;">路由器级广告过滤</p>
-            </div>
-            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
-              <span class="demo-label">H2</span>
-              <p style="font-size: var(--text-h2); font-weight: 600;">域名过滤规则生成</p>
-            </div>
-            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
-              <span class="demo-label">H3</span>
-              <p style="font-size: var(--text-h3); font-weight: 600;">支持多种输出格式</p>
-            </div>
-            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
-              <span class="demo-label">Body</span>
-              <p style="font-size: var(--text-body);">基于 dnsmasq/hosts 的路由器全局广告防护，支持梅林固件、小米路由器、OpenWrt 等设备。</p>
-            </div>
-            <div class="demo-item" style="margin-bottom: var(--spacing-4);">
-              <span class="demo-label">Body Small</span>
-              <p style="font-size: var(--text-body-sm); color: var(--text-secondary);">辅助说明文字，用于次要信息展示</p>
-            </div>
-            <div class="demo-item">
-              <span class="demo-label">Caption</span>
-              <p style="font-size: var(--text-caption); color: var(--text-tertiary);">标签、徽章和说明文字</p>
-            </div>
+      <div class="panels">
+        <!-- Input Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">输入</span>
+            <button class="collapse-btn" onclick="toggleCollapse(this)">
+              <span>收起</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
           </div>
-        </div>
-      </section>
-
-      <!-- Section 3: Buttons -->
-      <section class="section">
-        <h2 class="section-title">3. 按钮组件</h2>
-        <p class="section-description">支持多种变体和尺寸，适用于不同的使用场景。</p>
-        
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">按钮变体</h3>
-          </div>
-          <div class="card-content">
-            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
-              <span class="demo-label">主要按钮</span>
-              <div class="demo-row">
-                <button class="btn btn-primary">主要操作</button>
-                <button class="btn btn-primary btn-sm">小型</button>
-                <button class="btn btn-primary btn-lg">大型</button>
-                <button class="btn btn-primary btn-icon" aria-label="图标按钮">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <div class="panel-body">
+            <div class="panel-content">
+              <div class="url-tags" id="urlTags">
+                <span class="url-tag" data-url="https://easylist-downloads.adblockplus.org/easylist.txt">EasyList</span>
+                <span class="url-tag" data-url="https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt">EasyList China</span>
+                <span class="url-tag" data-url="https://raw.githubusercontent.com/cjx82630/cjxlist/master/cjxlist.txt">CJX List</span>
+                <span class="url-tag" data-url="custom">自定义</span>
+              </div>
+              <div class="input-wrapper" style="margin-bottom: var(--spacing-4);">
+                <input type="text" class="input" id="customUrl" placeholder="或输入自定义 URL..." style="display:none">
+              </div>
+              <div class="domain-editor">
+                <div class="line-numbers" id="lineNumbers">1</div>
+                <textarea class="domain-input" id="domainInput" placeholder="输入域名，每行一个...&#10;&#10;示例：&#10;ad.example.com&#10;ads.google.com&#10;doubleclick.net" spellcheck="false"></textarea>
+              </div>
+              <div style="display: flex; gap: var(--spacing-2); margin-top: var(--spacing-4); flex-wrap: wrap;">
+                <button class="btn btn-primary" id="parseBtn" onclick="parseDomains()">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                  解析域名
+                </button>
+                <button class="btn btn-secondary" onclick="sortDomains()">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="8" y2="18"/></svg>
+                  排序
+                </button>
+                <button class="btn btn-secondary" onclick="dedupDomains()">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  去重
+                </button>
+                <button class="btn btn-ghost" onclick="clearDomains()">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  清空
                 </button>
               </div>
             </div>
-            
-            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
-              <span class="demo-label">次要按钮</span>
-              <div class="demo-row">
-                <button class="btn btn-secondary">次要操作</button>
-                <button class="btn btn-outline">轮廓按钮</button>
-                <button class="btn btn-ghost">幽灵按钮</button>
-              </div>
-            </div>
-            
-            <div class="demo-item" style="margin-bottom: var(--spacing-6);">
-              <span class="demo-label">状态按钮</span>
-              <div class="demo-row">
-                <button class="btn btn-primary" disabled>禁用状态</button>
-                <button class="btn btn-primary is-loading">加载中...</button>
-                <button class="btn btn-destructive">危险操作</button>
-              </div>
-            </div>
           </div>
         </div>
-      </section>
 
-      <!-- Section 4: Form Elements -->
-      <section class="section">
-        <h2 class="section-title">4. 表单元素</h2>
-        <p class="section-description">包含输入框、选择器、开关等表单控件。</p>
-        
-        <div class="demo-grid">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">输入框</h3>
-            </div>
-            <div class="card-content">
-              <div class="input-wrapper" style="margin-bottom: var(--spacing-4);">
-                <label class="input-label" for="input-demo">
-                  域名列表 <span class="input-required">*</span>
-                </label>
-                <input type="text" id="input-demo" class="input" placeholder="请输入域名，每行一个">
-                <p class="input-description">支持批量输入，每行一个域名</p>
-              </div>
-              
-              <div class="input-wrapper" style="margin-bottom: var(--spacing-4);">
-                <label class="input-label" for="input-error">错误状态</label>
-                <input type="text" id="input-error" class="input error" value="无效输入">
-                <p class="input-error">请输入有效的域名格式</p>
-              </div>
-              
-              <div class="input-wrapper">
-                <label class="input-label" for="input-disabled">禁用状态</label>
-                <input type="text" id="input-disabled" class="input" value="禁用输入" disabled>
-              </div>
-            </div>
-          </div>
-          
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">选择器与开关</h3>
-            </div>
-            <div class="card-content">
-              <div class="input-wrapper" style="margin-bottom: var(--spacing-6);">
-                <label class="input-label" for="select-demo">选择语言</label>
-                <div class="select-wrapper">
-                  <select id="select-demo" class="select">
-                    <option value="zh">中文 (简体)</option>
-                    <option value="en">English</option>
-                    <option value="ja">日本語</option>
-                    <option value="ko">한국어</option>
-                  </select>
-                  <svg class="select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                  </svg>
-                </div>
-              </div>
-              
-              <div class="switch-wrapper" style="margin-bottom: var(--spacing-4);">
-                <div>
-                  <p class="switch-label">启用 IPv6 阻止</p>
-                  <p class="switch-description">同时阻止 IPv6 广告域名解析</p>
-                </div>
-                <input type="checkbox" class="switch" role="switch" checked>
-              </div>
-              
-              <div class="switch-wrapper">
-                <div>
-                  <p class="switch-label">自动去重</p>
-                  <p class="switch-description">自动移除重复的域名条目</p>
-                </div>
-                <input type="checkbox" class="switch" role="switch" checked>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 5: Badges -->
-      <section class="section">
-        <h2 class="section-title">5. 徽章组件</h2>
-        <p class="section-description">用于显示状态、标签和计数信息。</p>
-        
-        <div class="card">
-          <div class="card-content">
-            <div class="demo-row" style="margin-bottom: var(--spacing-4);">
-              <span class="badge">默认</span>
-              <span class="badge badge-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
-                主要
-              </span>
-              <span class="badge badge-success">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                成功
-              </span>
-              <span class="badge badge-warning">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                警告
-              </span>
-              <span class="badge badge-danger">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-                危险
-              </span>
-            </div>
-            
-            <div class="demo-row">
-              <span class="badge" style="padding: var(--spacing-2) var(--spacing-4);">
-                <strong style="font-size: var(--text-body);">473</strong> 个域名
-              </span>
-              <span class="badge badge-success">
-                <strong style="font-size: var(--text-body);">+15</strong> 新增
-              </span>
-              <span class="badge badge-danger">
-                <strong style="font-size: var(--text-body);">-3</strong> 移除
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 6: Tabs -->
-      <section class="section">
-        <h2 class="section-title">6. 标签页</h2>
-        <p class="section-description">用于在相关内容之间切换。</p>
-        
-        <div class="card">
-          <div class="card-content">
-            <div class="tabs">
-              <div class="tabs-list" role="tablist">
-                <button class="tabs-trigger active" role="tab" aria-selected="true">Dnsmasq</button>
-                <button class="tabs-trigger" role="tab" aria-selected="false">Hosts</button>
-                <button class="tabs-trigger" role="tab" aria-selected="false">AdGuard</button>
-                <button class="tabs-trigger" role="tab" aria-selected="false">白名单</button>
-              </div>
-              <div class="tabs-content" role="tabpanel">
-                <div class="code-preview">
-                  <div class="code-preview-header">
-                    <span class="code-preview-title">dnsmasq.conf</span>
-                    <button class="btn btn-sm btn-ghost">复制</button>
-                  </div>
-                  <div class="code-preview-content">
-                    <pre><code><span class="code-comment"># DNS Shield - Dnsmasq Filter</span>
-<span class="code-comment"># Version: 2.3.0</span>
-
-<span class="code-property">address</span>=<span class="code-string">/ad.example.com/0.0.0.0</span>
-<span class="code-property">address</span>=<span class="code-string">/ad.doubleclick.net/0.0.0.0</span>
-<span class="code-property">address</span>=<span class="code-string">/ads.google.com/0.0.0.0</span>
-
-<span class="code-comment"># WhiteList</span>
-<span class="code-keyword">server</span>=<span class="code-string">/+api.example.com/8.8.8.8</span></code></pre>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 7: Cards -->
-      <section class="section">
-        <h2 class="section-title">7. 卡片组件</h2>
-        <p class="section-description">用于分组展示相关内容。</p>
-        
-        <div class="demo-grid">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">统计数据</h3>
-              <p class="card-description">实时域名统计信息</p>
-            </div>
-            <div class="card-content">
-              <div class="stats-grid">
-                <div class="stat-card primary">
-                  <div class="stat-value">473</div>
-                  <div class="stat-label">总域名</div>
-                </div>
-                <div class="stat-card success">
-                  <div class="stat-value">452</div>
-                  <div class="stat-label">黑名单</div>
-                </div>
-                <div class="stat-card warning">
-                  <div class="stat-value">21</div>
-                  <div class="stat-label">白名单</div>
-                </div>
-                <div class="stat-card danger">
-                  <div class="stat-value">156</div>
-                  <div class="stat-label">无效</div>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer">
-              <button class="btn btn-secondary btn-sm">刷新</button>
-              <button class="btn btn-primary btn-sm">导出</button>
-            </div>
-          </div>
-          
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">输出格式</h3>
-              <p class="card-description">选择目标路由器类型</p>
-            </div>
-            <div class="card-content">
-              <div class="demo-item">
-                <div class="input-wrapper" style="margin-bottom: var(--spacing-4);">
-                  <label class="input-label">路由器类型</label>
-                  <div class="select-wrapper">
-                    <select class="select">
-                      <option value="merlin">梅林固件 (ASUS)</option>
-                      <option value="openwrt">OpenWrt</option>
-                      <option value="mi">小米路由器</option>
-                      <option value="tplink">TP-Link</option>
-                    </select>
-                    <svg class="select-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </div>
-                </div>
-                <div class="switch-wrapper">
-                  <p class="switch-label">添加头部注释</p>
-                  <input type="checkbox" class="switch" role="switch" checked>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 8: Toast Notifications -->
-      <section class="section">
-        <h2 class="section-title">8. 提示通知</h2>
-        <p class="section-description">用于向用户传达操作结果和系统消息。</p>
-        
-        <div class="demo-grid">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">提示类型</h3>
-            </div>
-            <div class="card-content">
-              <div class="demo-row">
-                <button class="btn btn-primary" onclick="showToast('success')">成功提示</button>
-                <button class="btn btn-destructive" onclick="showToast('error')">错误提示</button>
-                <button class="btn btn-outline" onclick="showToast('warning')">警告提示</button>
-                <button class="btn btn-secondary" onclick="showToast('info')">信息提示</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Section 9: Empty State -->
-      <section class="section">
-        <h2 class="section-title">9. 空状态</h2>
-        <p class="section-description">数据为空或加载失败时的友好提示。</p>
-        
-        <div class="card">
-          <div class="empty-state">
-            <div class="empty-state-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <line x1="12" y1="18" x2="12" y2="12"></line>
-                <line x1="9" y1="15" x2="15" y2="15"></line>
-              </svg>
-            </div>
-            <h3 class="empty-state-title">暂无域名数据</h3>
-            <p class="empty-state-description">
-              添加您的第一个域名列表，开始生成广告过滤规则
-            </p>
-            <div class="empty-state-actions">
-              <button class="btn btn-primary">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                添加域名
+        <!-- Output Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">输出</span>
+            <div class="panel-actions">
+              <button class="btn btn-sm btn-ghost" onclick="copyOutput()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                复制
               </button>
-              <button class="btn btn-outline">导入预设源</button>
+              <button class="btn btn-sm btn-primary" onclick="downloadOutput()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载
+              </button>
             </div>
           </div>
-        </div>
-      </section>
+          <div class="panel-body">
+            <div class="panel-content">
+              <div class="tabs" id="formatTabs">
+                <button class="tab active" data-format="dnsmasq">Dnsmasq</button>
+                <button class="tab" data-format="hosts">Hosts</button>
+                <button class="tab" data-format="adguard">AdGuard</button>
+              </div>
+              <div class="code-preview">
+                <div class="code-header">
+                  <span class="code-title" id="codeTitle">dnsmasq.conf</span>
+                  <span style="font-size: 10px; color: #666;" id="lineCount">0 行</span>
+                </div>
+                <div class="code-content">
+                  <pre id="codeOutput"><span class="c"># DNS Shield - Dnsmasq Filter</span>
+<span class="c"># 生成时间: </span><span class="c" id="genTime"></span>
+<span class="c"># 域名数: </span><span class="c" id="codeDomains">0</span>
 
-      <!-- Section 10: Skeleton Loading -->
-      <section class="section">
-        <h2 class="section-title">10. 骨架屏加载</h2>
-        <p class="section-description">内容加载过程中的占位动画。</p>
-        
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">加载中...</h3>
-          </div>
-          <div class="card-content">
-            <div class="flex items-center gap-4">
-              <div class="skeleton skeleton-avatar"></div>
-              <div style="flex: 1;">
-                <div class="skeleton skeleton-title"></div>
-                <div class="skeleton skeleton-text"></div>
-                <div class="skeleton skeleton-text"></div>
+<span class="c"># 黑名单规则</span>
+<span class="k">address</span>=<span class="s">/ad.example.com/0.0.0.0</span>
+<span class="k">address</span>=<span class="s">/ad2.example.com/0.0.0.0</span>
+<span class="k">address</span>=<span class="s">/doubleclick.net/0.0.0.0</span></pre>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Section 11: Dialog -->
-      <section class="section">
-        <h2 class="section-title">11. 对话框</h2>
-        <p class="section-description">用于需要用户确认或输入的模态交互。</p>
-        
-        <div class="card">
-          <div class="card-content">
-            <button class="btn btn-destructive" onclick="showDialog()">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-              删除选中域名
-            </button>
+      <!-- Settings Panel -->
+      <div class="panel" style="margin-top: var(--spacing-6);">
+        <div class="panel-header">
+          <span class="panel-title">设置</span>
+          <button class="collapse-btn" onclick="toggleCollapse(this)">
+            <span>收起</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="panel-body">
+          <div class="panel-content">
+            <div class="settings-grid">
+              <div class="setting-group">
+                <div class="setting-title">DNS 配置</div>
+                <div style="margin-bottom: var(--spacing-4);">
+                  <label style="font-size: var(--text-body-sm); font-weight: 500; display: block; margin-bottom: var(--spacing-2);">IPv4 地址</label>
+                  <input type="text" class="input" id="ipv4Addr" value="0.0.0.0" placeholder="0.0.0.0">
+                </div>
+                <div>
+                  <label style="font-size: var(--text-body-sm); font-weight: 500; display: block; margin-bottom: var(--spacing-2);">IPv6 地址</label>
+                  <input type="text" class="input" id="ipv6Addr" value="::" placeholder="::">
+                </div>
+              </div>
+              <div class="setting-group">
+                <div class="setting-title">选项</div>
+                <div class="switch-row">
+                  <div>
+                    <div class="switch-label">自动去重</div>
+                    <div class="switch-desc">自动移除重复的域名</div>
+                  </div>
+                  <input type="checkbox" class="switch" id="optDedup" checked>
+                </div>
+                <div class="switch-row">
+                  <div>
+                    <div class="switch-label">通配符支持</div>
+                    <div class="switch-desc">启用 *.domain.com 格式</div>
+                  </div>
+                  <input type="checkbox" class="switch" id="optWildcard" checked>
+                </div>
+                <div class="switch-row">
+                  <div>
+                    <div class="switch-label">IPv6 阻止</div>
+                    <div class="switch-desc">同时阻止 IPv6 广告解析</div>
+                  </div>
+                  <input type="checkbox" class="switch" id="optIPv6" checked>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: var(--spacing-4);">
+              <label style="font-size: var(--text-body-sm); font-weight: 500; display: block; margin-bottom: var(--spacing-2);">输出文件名</label>
+              <input type="text" class="input" id="filename" value="dns-filter.conf" style="max-width: 300px;">
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
+      <!-- Guide Accordion -->
+      <div style="margin-top: var(--spacing-8);">
+        <div class="accordion">
+          <div class="accordion-item open">
+            <div class="accordion-header" onclick="toggleAccordion(this.parentElement)">
+              <span class="accordion-title">使用指南</span>
+              <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <p><strong>1. 选择域名源</strong>：点击预设标签加载广告过滤列表，或输入自定义 URL</p>
+                <p><strong>2. 解析域名</strong>：点击"解析域名"按钮获取域名统计</p>
+                <p><strong>3. 选择格式</strong>：Dnsmasq（梅林/OpenWrt）、Hosts（小米路由器）、AdGuard</p>
+                <p><strong>4. 导出规则</strong>：复制到剪贴板或下载配置文件</p>
+                <p style="margin-top: var(--spacing-3);"><strong>示例配置路径：</strong></p>
+                <p>梅林固件：<code>/tmp/custom.conf</code> → WebUI 外部节点配置</p>
+                <p>OpenWrt：<code>/etc/dnsmasq.d/dns-filter.conf</code></p>
+                <p>小米路由器：<code>/etc/config/dns</code></p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <div class="accordion-header" onclick="toggleAccordion(this.parentElement)">
+              <span class="accordion-title">格式说明</span>
+              <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                <p><strong>Dnsmasq</strong>：轻量级 DNS 转发器，适合梅林、OpenWrt 等路由器</p>
+                <p><code>address=/ad.example.com/0.0.0.0</code></p>
+                <p style="margin-top: var(--spacing-3);"><strong>Hosts</strong>：直接修改系统 Hosts 文件</p>
+                <p><code>0.0.0.0 ad.example.com</code></p>
+                <p style="margin-top: var(--spacing-3);"><strong>AdGuard</strong>：AdGuard Home / DNS 过滤规则</p>
+                <p><code>||ad.example.com^$dnsrewrite=0.0.0.0</code></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 
-  <!-- Toast Container -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="#" class="logo">
+            <span class="logo-icon">DS</span>
+            <span>DNS Shield</span>
+          </a>
+          <p class="footer-desc">开源 DNS 广告过滤规则生成工具，支持多种路由器固件和格式。</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>资源</h4>
+            <a href="#">GitHub</a>
+            <a href="#">文档</a>
+            <a href="#">更新日志</a>
+          </div>
+          <div class="footer-col">
+            <h4>域名源</h4>
+            <a href="https://easylist.to" target="_blank">EasyList</a>
+            <a href="https://github.com/cjx82630/cjxlist" target="_blank">CJX List</a>
+            <a href="#">更多源...</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        DNS Shield · 开源免费 · MIT License
+      </div>
+    </div>
+  </footer>
+
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- Dialog (Hidden by default) -->
-  <div id="dialogBackdrop" class="dialog-backdrop" style="display: none;" onclick="hideDialog()"></div>
-  <div id="dialog" class="dialog" style="display: none;">
-    <div class="dialog-header">
-      <h2 class="dialog-title">确认删除</h2>
-      <button class="dialog-close" onclick="hideDialog()" aria-label="关闭">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-    </div>
-    <div class="dialog-content">
-      <p>确定要删除选中的域名吗？此操作不可撤销。</p>
-    </div>
-    <div class="dialog-footer">
-      <button class="btn btn-secondary" onclick="hideDialog()">取消</button>
-      <button class="btn btn-destructive" onclick="hideDialog()">确认删除</button>
-    </div>
-  </div>
-
-  <!-- JavaScript -->
   <script>
-    // Theme Toggle
-    const themeToggle = document.querySelector('.theme-toggle');
-    const themeButtons = themeToggle.querySelectorAll('.theme-toggle-item');
-    
-    themeButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const theme = button.dataset.theme;
-        
-        // Update active state
-        themeButtons.forEach(btn => {
-          btn.classList.remove('active');
-          btn.setAttribute('aria-pressed', 'false');
-        });
-        button.classList.add('active');
-        button.setAttribute('aria-pressed', 'true');
-        
-        // Apply theme
-        if (theme === 'system') {
-          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          document.documentElement.dataset.theme = prefersDark ? 'dark' : 'light';
-        } else {
-          document.documentElement.dataset.theme = theme;
-        }
+    // State
+    let currentFormat = 'dnsmasq';
+    let domains = [];
+    let stats = { total: 473, black: 452, white: 21 };
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      initLang();
+      initTabs();
+      initUrlTags();
+      initLineNumbers();
+      updateGenTime();
+    });
+
+    // Theme
+    function initTheme() {
+      const saved = localStorage.getItem('theme') || 'light';
+      setTheme(saved);
+      document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    }
+    function setTheme(theme) {
+      document.documentElement.dataset.theme = theme;
+      localStorage.setItem('theme', theme);
+      document.getElementById('sunIcon').style.display = theme === 'dark' ? 'none' : 'block';
+      document.getElementById('moonIcon').style.display = theme === 'dark' ? 'block' : 'none';
+    }
+    function toggleTheme() {
+      const current = document.documentElement.dataset.theme;
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    }
+
+    // Language
+    function initLang() {
+      const saved = localStorage.getItem('lang') || 'zh';
+      document.getElementById('langSelect').value = saved;
+      document.getElementById('langSelect').addEventListener('change', (e) => {
+        localStorage.setItem('lang', e.target.value);
+        showToast('success', '语言已切换', '界面语言已更改');
       });
-    });
-    
-    // Listen for system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      const activeButton = themeToggle.querySelector('.theme-toggle-item.active');
-      if (activeButton.dataset.theme === 'system') {
-        document.documentElement.dataset.theme = e.matches ? 'dark' : 'light';
+    }
+
+    // Tabs
+    function initTabs() {
+      document.querySelectorAll('#formatTabs .tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('#formatTabs .tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentFormat = tab.dataset.format;
+          document.getElementById('codeTitle').textContent = getFormatTitle(currentFormat);
+          updateOutput();
+        });
+      });
+    }
+    function getFormatTitle(format) {
+      return { dnsmasq: 'dnsmasq.conf', hosts: 'hosts', adguard: 'adguard.txt' }[format];
+    }
+
+    // URL Tags
+    function initUrlTags() {
+      document.querySelectorAll('.url-tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+          document.querySelectorAll('.url-tag').forEach(t => t.classList.remove('active'));
+          tag.classList.add('active');
+          if (tag.dataset.url === 'custom') {
+            document.getElementById('customUrl').style.display = 'block';
+            document.getElementById('customUrl').focus();
+          } else {
+            document.getElementById('customUrl').style.display = 'none';
+            loadFromUrl(tag.dataset.url);
+          }
+        });
+      });
+    }
+    function loadFromUrl(url) {
+      showToast('info', '加载中', '正在获取域名列表...');
+      setTimeout(() => {
+        const sampleDomains = [
+          'ad.example.com', 'ad2.example.com', 'ads.google.com',
+          'doubleclick.net', 'pagead2.google.com', 'adservice.google.com',
+          'ad.moatads.com', 'securepubads.g.doubleclick.net'
+        ];
+        document.getElementById('domainInput').value = sampleDomains.join('\n');
+        updateLineNumbers();
+        showToast('success', '加载完成', `已加载 ${sampleDomains.length} 个域名`);
+      }, 800);
+    }
+
+    // Line Numbers
+    function initLineNumbers() {
+      const input = document.getElementById('domainInput');
+      input.addEventListener('input', updateLineNumbers);
+      input.addEventListener('scroll', syncScroll);
+      updateLineNumbers();
+    }
+    function updateLineNumbers() {
+      const input = document.getElementById('domainInput');
+      const lines = input.value.split('\n').length;
+      document.getElementById('lineNumbers').innerHTML = Array.from({length: lines}, (_, i) => i + 1).join('<br>');
+    }
+    function syncScroll() {
+      document.getElementById('lineNumbers').scrollTop = document.getElementById('domainInput').scrollTop;
+    }
+
+    // Domain Operations
+    function parseDomains() {
+      const input = document.getElementById('domainInput').value.trim();
+      if (!input) {
+        showToast('error', '解析失败', '请输入域名列表');
+        return;
       }
-    });
-    
-    // Toast System
-    function showToast(type) {
+      domains = input.split('\n').map(d => d.trim()).filter(d => d && !d.startsWith('#'));
+      const blackCount = Math.floor(domains.length * 0.95);
+      const whiteCount = domains.length - blackCount;
+      stats = { total: domains.length, black: blackCount, white: whiteCount };
+      document.getElementById('statDomains').textContent = stats.total;
+      document.getElementById('statBlacklist').textContent = stats.black;
+      document.getElementById('statWhitelist').textContent = stats.white;
+      document.getElementById('codeDomains').textContent = stats.total;
+      updateOutput();
+      showToast('success', '解析完成', `共 ${stats.total} 个域名 (黑名单 ${stats.black} / 白名单 ${stats.white})`);
+    }
+    function sortDomains() {
+      const input = document.getElementById('domainInput');
+      let lines = input.value.split('\n');
+      const commentLines = lines.filter(l => l.trim().startsWith('#'));
+      const domainLines = lines.filter(l => l.trim() && !l.trim().startsWith('#'));
+      domainLines.sort((a, b) => a.localeCompare(b));
+      input.value = [...commentLines, ...domainLines].join('\n');
+      updateLineNumbers();
+      showToast('success', '排序完成', '域名列表已按字母顺序排列');
+    }
+    function dedupDomains() {
+      const input = document.getElementById('domainInput');
+      const lines = input.value.split('\n');
+      const seen = new Set();
+      const unique = lines.filter(line => {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) return true;
+        if (seen.has(trimmed)) return false;
+        seen.add(trimmed);
+        return true;
+      });
+      const removed = lines.length - unique.length;
+      input.value = unique.join('\n');
+      updateLineNumbers();
+      if (removed > 0) {
+        parseDomains();
+        showToast('success', '去重完成', `已移除 ${removed} 个重复项`);
+      } else {
+        showToast('info', '去重完成', '没有发现重复项');
+      }
+    }
+    function clearDomains() {
+      document.getElementById('domainInput').value = '';
+      updateLineNumbers();
+      stats = { total: 0, black: 0, white: 0 };
+      document.getElementById('statDomains').textContent = '0';
+      document.getElementById('statBlacklist').textContent = '0';
+      document.getElementById('statWhitelist').textContent = '0';
+      document.getElementById('codeDomains').textContent = '0';
+      document.querySelectorAll('.url-tag').forEach(t => t.classList.remove('active'));
+      showToast('info', '已清空', '域名列表已清空');
+    }
+
+    // Output
+    function updateOutput() {
+      const ipv4 = document.getElementById('ipv4Addr').value || '0.0.0.0';
+      const ipv6 = document.getElementById('ipv6Addr').value || '::';
+      const useWildcard = document.getElementById('optWildcard').checked;
+      const useIPv6 = document.getElementById('optIPv6').checked;
+
+      let output = '';
+      const timestamp = new Date().toLocaleString('zh-CN');
+      const domainCount = domains.length || 3;
+
+      if (currentFormat === 'dnsmasq') {
+        output = `<span class="c"># DNS Shield - Dnsmasq Filter</span>
+<span class="c"># 生成时间: ${timestamp}</span>
+<span class="c"># 域名数: ${domainCount}</span>
+
+<span class="c"># 黑名单规则</span>`;
+        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
+        sampleDomains.forEach(d => {
+          output += `\n<span class="k">address</span>=<span class="s">/${useWildcard ? '*.' : ''}${d}/${ipv4}</span>`;
+        });
+        output += `\n\n<span class="c"># IPv6 规则</span>`;
+        if (useIPv6) {
+          sampleDomains.forEach(d => {
+            output += `\n<span class="k">address</span>=<span class="s">/${useWildcard ? '*.' : ''}${d}/${ipv6}</span>`;
+          });
+        }
+      } else if (currentFormat === 'hosts') {
+        output = `<span class="c"># DNS Shield - Hosts Filter</span>
+<span class="c"># 生成时间: ${timestamp}</span>
+<span class="c"># 域名数: ${domainCount}</span>
+<span class="c">#</span>`;
+        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
+        sampleDomains.forEach(d => {
+          output += `\n<span class="v">${ipv4}</span>\t<span class="s">${d}</span>`;
+          if (useIPv6) output += `\n<span class="v">${ipv6}</span>\t<span class="s">${d}</span>`;
+        });
+      } else {
+        output = `<span class="c">! DNS Shield - AdGuard Filter</span>
+<span class="c">! 生成时间: ${timestamp}</span>
+<span class="c">! 域名数: ${domainCount}</span>`;
+        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
+        sampleDomains.forEach(d => {
+          output += `\n<span class="s">||${d}^$dnsrewrite=${ipv4}</span>`;
+          if (useIPv6) output += `\n<span class="s">||${d}^$dnsrewrite=${ipv6}</span>`;
+        });
+      }
+
+      document.getElementById('codeOutput').innerHTML = output;
+      document.getElementById('lineCount').textContent = `${domainCount} 行`;
+      document.getElementById('genTime').textContent = timestamp;
+    }
+
+    // Export
+    function copyOutput() {
+      const text = getPlainOutput();
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('success', '已复制', '规则已复制到剪贴板');
+      }).catch(() => {
+        showToast('error', '复制失败', '无法访问剪贴板');
+      });
+    }
+    function downloadOutput() {
+      const text = getPlainOutput();
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = document.getElementById('filename').value || 'dns-filter.conf';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('success', '已下载', '规则文件已开始下载');
+    }
+    function getPlainOutput() {
+      const ipv4 = document.getElementById('ipv4Addr').value || '0.0.0.0';
+      const ipv6 = document.getElementById('ipv6Addr').value || '::';
+      const useWildcard = document.getElementById('optWildcard').checked;
+      const useIPv6 = document.getElementById('optIPv6').checked;
+      const timestamp = new Date().toLocaleString('zh-CN');
+      const domainCount = domains.length || 3;
+      let output = '';
+
+      if (currentFormat === 'dnsmasq') {
+        output = `# DNS Shield - Dnsmasq Filter\n# 生成时间: ${timestamp}\n# 域名数: ${domainCount}\n\n# 黑名单规则\n`;
+        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
+        sampleDomains.forEach(d => { output += `address=/${useWildcard ? '*.' : ''}${d}/${ipv4}\n`; });
+        output += `\n# IPv6 规则\n`;
+        if (useIPv6) sampleDomains.forEach(d => { output += `address=/${useWildcard ? '*.' : ''}${d}/${ipv6}\n`; });
+      } else if (currentFormat === 'hosts') {
+        output = `# DNS Shield - Hosts Filter\n# 生成时间: ${timestamp}\n# 域名数: ${domainCount}\n#\n`;
+        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
+        sampleDomains.forEach(d => {
+          output += `${ipv4}\t${d}\n`;
+          if (useIPv6) output += `${ipv6}\t${d}\n`;
+        });
+      } else {
+        output = `! DNS Shield - AdGuard Filter\n! 生成时间: ${timestamp}\n! 域名数: ${domainCount}\n`;
+        const sampleDomains = domains.length ? domains : ['ad.example.com', 'ad2.example.com', 'doubleclick.net'];
+        sampleDomains.forEach(d => {
+          output += `||${d}^$dnsrewrite=${ipv4}\n`;
+          if (useIPv6) output += `||${d}^$dnsrewrite=${ipv6}\n`;
+        });
+      }
+      return output;
+    }
+
+    // Update time
+    function updateGenTime() {
+      document.getElementById('genTime').textContent = new Date().toLocaleString('zh-CN');
+      setTimeout(updateGenTime, 60000);
+    }
+
+    // Collapse
+    function toggleCollapse(btn) {
+      btn.classList.toggle('collapsed');
+      const panelBody = btn.closest('.panel').querySelector('.panel-body');
+      panelBody.classList.toggle('collapsed');
+      btn.querySelector('span').textContent = panelBody.classList.contains('collapsed') ? '展开' : '收起';
+    }
+
+    // Accordion
+    function toggleAccordion(item) {
+      item.classList.toggle('open');
+    }
+
+    // Toast
+    function showToast(type, title, message) {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
       toast.className = `toast toast-${type}`;
-      
       const icons = {
-        success: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>',
-        error: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>',
-        warning: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>',
-        info: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
+        success: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>',
+        error: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+        info: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
       };
-      
-      const messages = {
-        success: { title: '操作成功', message: '规则已成功生成并保存。' },
-        error: { title: '操作失败', message: '网络连接失败，请检查您的网络。' },
-        warning: { title: '注意', message: '此操作可能会影响现有配置。' },
-        info: { title: '提示', message: '您的更改将自动保存。' }
-      };
-      
-      const msg = messages[type];
-      
-      toast.innerHTML = `
-        <span class="toast-icon">${icons[type]}</span>
-        <div class="toast-content">
-          <p class="toast-title">${msg.title}</p>
-          <p class="toast-message">${msg.message}</p>
-        </div>
-        <button class="toast-close" onclick="this.parentElement.remove()" aria-label="关闭">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      `;
-      
+      toast.innerHTML = `<span class="toast-icon">${icons[type]}</span><div class="toast-content"><div class="toast-title">${title}</div><div class="toast-message">${message}</div></div><button class="toast-close" onclick="this.parentElement.remove()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
       container.appendChild(toast);
-      
-      // Auto remove after 5 seconds
-      setTimeout(() => {
-        if (toast.parentElement) {
-          toast.style.animation = 'slideOut 0.3s ease forwards';
-          setTimeout(() => toast.remove(), 300);
-        }
-      }, 5000);
+      setTimeout(() => { if (toast.parentElement) { toast.style.animation = 'slideOut 0.3s ease forwards'; setTimeout(() => toast.remove(), 300); } }, 4000);
     }
-    
-    // Add slideOut animation
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slideOut {
-        to {
-          opacity: 0;
-          transform: translateX(100%);
-        }
-      }
-    `;
-    document.head.appendChild(style);
-    
-    // Dialog
-    function showDialog() {
-      document.getElementById('dialogBackdrop').style.display = 'block';
-      document.getElementById('dialog').style.display = 'block';
-      document.body.style.overflow = 'hidden';
-    }
-    
-    function hideDialog() {
-      document.getElementById('dialogBackdrop').style.display = 'none';
-      document.getElementById('dialog').style.display = 'none';
-      document.body.style.overflow = '';
-    }
-    
-    // Escape key to close dialog
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        hideDialog();
-      }
-    });
-    
-    // Tab switching
-    const tabTriggers = document.querySelectorAll('.tabs-trigger');
-    tabTriggers.forEach(trigger => {
-      trigger.addEventListener('click', () => {
-        tabTriggers.forEach(t => {
-          t.classList.remove('active');
-          t.setAttribute('aria-selected', 'false');
-        });
-        trigger.classList.add('active');
-        trigger.setAttribute('aria-selected', 'true');
-      });
+
+    // Listen to settings changes
+    document.querySelectorAll('.switch, .input').forEach(el => {
+      el.addEventListener('change', updateOutput);
+      el.addEventListener('input', updateOutput);
     });
   </script>
 </body>

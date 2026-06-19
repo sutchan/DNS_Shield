@@ -8,7 +8,8 @@ const securityHeaders = [
     value: [
       "default-src 'self'",
       // 允许加载自身域名、GitHub 资源和字体服务
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://raw.githubusercontent.com",
+      // 注意: 'unsafe-inline' 是 Next.js 水合所需，'unsafe-eval' 已移除以提高安全性
+      "script-src 'self' 'unsafe-inline' https://raw.githubusercontent.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https: blob:",

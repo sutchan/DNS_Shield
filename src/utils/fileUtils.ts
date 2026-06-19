@@ -1,7 +1,14 @@
 // src/utils/fileUtils.ts v2.3.0
 
+// URL 最大长度限制（防止 DoS 攻击）
+const MAX_URL_LENGTH = 2048;
+
 // 验证 URL 是否为安全的 HTTP/HTTPS 协议
 export const isValidHttpUrl = (url: string): boolean => {
+  // 检查 URL 长度
+  if (!url || url.length > MAX_URL_LENGTH) {
+    return false;
+  }
   try {
     const parsed = new URL(url);
     return ['http:', 'https:'].includes(parsed.protocol);

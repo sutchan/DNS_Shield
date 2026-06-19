@@ -1,4 +1,7 @@
-// src/components/ui/Toast.tsx v2.3.0
+// src/components/ui/Toast.tsx
+// 简单的 Toast 组件 - 兼容 Home.tsx 的原有 API
+'use client';
+
 import React from 'react';
 
 interface ToastProps {
@@ -9,7 +12,11 @@ const Toast: React.FC<ToastProps> = ({ message }) => {
   if (!message) return null;
 
   return (
-    <div className="toast" id="toast">
+    <div 
+      className="toast" 
+      role="alert"
+      aria-live="polite"
+    >
       {message}
     </div>
   );
