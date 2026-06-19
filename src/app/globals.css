@@ -25,7 +25,6 @@
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
   }
-
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -47,13 +46,127 @@
     --input: 240 3.7% 15.9%;
     --ring: 224.3 76.3% 48%;
   }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+}
+
+/* =========================
+   DNS Shield — 业务组件样式
+   ========================= */
+
+.container { @apply max-w-5xl mx-auto px-4 py-6; }
+.main-content { @apply flex flex-col lg:flex-row gap-4; }
+
+/* ---------- Header ---------- */
+.app-header { @apply flex flex-col gap-2 mb-6; }
+.header-main { @apply flex items-center justify-between; }
+.app-title { @apply text-2xl font-bold tracking-tight; }
+.header-actions { @apply flex items-center gap-2; }
+.subtitle { @apply text-sm text-muted-foreground; }
+
+/* ---------- Panel / Card ---------- */
+.panel { @apply rounded-lg border border-border bg-card text-card-foreground shadow-sm p-4 mb-4 flex flex-col; }
+.section-header { @apply flex items-center justify-between mb-3; }
+.section-header h2 { @apply text-lg font-semibold tracking-tight; }
+.collapse-btn { @apply inline-flex items-center gap-1 text-sm px-2 py-1 rounded hover:bg-accent transition-colors; }
+.collapse-icon { @apply inline-block transition-transform duration-200; }
+.collapse-icon.collapsed { transform: rotate(-90deg); }
+
+/* ---------- 统计信息 ---------- */
+.stats-compact { @apply flex flex-wrap gap-2 mb-3; }
+.stat-badge { @apply inline-flex flex-col items-center px-3 py-1 rounded-md bg-muted text-muted-foreground text-xs min-w-[72px]; }
+.stat-value { @apply text-base font-semibold text-foreground; }
+.stat-label { @apply mt-1; }
+
+/* ---------- URL 区域 ---------- */
+.url-section { @apply mb-3 overflow-hidden transition-[max-height] duration-200 ease-out; max-height: 1000px; }
+.url-section.collapsed { max-height: 0; margin: 0; padding: 0; border: 0; opacity: 0; }
+.url-input-row { @apply flex items-center gap-2 mb-2; }
+.url-input { @apply flex-1 h-9 px-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring; }
+.url-actions { @apply flex flex-wrap gap-2 mb-2; }
+.url-list { @apply flex flex-col gap-1 max-h-32 overflow-y-auto mb-2 text-sm; }
+.url-item { @apply flex items-center justify-between px-2 py-1 rounded bg-muted/40; }
+.url-remove-btn { @apply inline-flex items-center justify-center w-6 h-6 rounded hover:bg-destructive hover:text-destructive-foreground transition-colors; }
+.preset-section { @apply flex flex-wrap items-center gap-2; }
+.preset-label { @apply text-sm font-medium text-muted-foreground; }
+.preset-tags { @apply flex flex-wrap gap-1; }
+.preset-tag { @apply inline-flex items-center px-2 py-1 rounded-md text-xs cursor-pointer bg-muted text-muted-foreground hover:bg-accent transition-colors; }
+.preset-tag.active { @apply bg-primary text-primary-foreground; }
+
+/* ---------- 文本编辑器 ---------- */
+.editor-container { @apply relative flex flex-col mb-3 border border-input rounded-md overflow-hidden; }
+.line-numbers { @apply absolute left-0 top-0 bottom-0 w-12 py-3 pr-2 text-right text-xs text-muted-foreground select-none bg-muted/30 font-mono overflow-hidden border-r border-border; }
+#sourceInput, #outputPreview { @apply w-full min-h-[200px] py-3 pl-14 pr-3 text-sm font-mono bg-background resize-y focus:outline-none; }
+#outputPreview { @apply overflow-auto; }
+.editor-actions { @apply flex flex-wrap gap-2 justify-end; }
+
+/* ---------- 按钮样式 ---------- */
+.btn { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-9 px-3; }
+.btn-sm { @apply h-8 px-2 text-xs; }
+.btn-primary { @apply bg-primary text-primary-foreground hover:bg-primary/90; }
+.btn-outline { @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground; }
+.btn-success { @apply bg-emerald-500 text-white hover:bg-emerald-500/90; }
+.settings-btn { @apply inline-flex items-center justify-center w-9 h-9 rounded-md border border-input bg-background hover:bg-accent transition-colors; }
+
+/* ---------- 格式 Tabs ---------- */
+.format-tabs { @apply inline-flex items-center justify-center p-1 rounded-lg bg-muted; }
+.format-tab { @apply inline-flex items-center justify-center px-3 py-1 text-sm font-medium rounded-md transition-all text-muted-foreground hover:text-foreground; }
+.format-tab.active { @apply bg-background text-foreground shadow-sm; }
+
+/* ---------- 设置面板 ---------- */
+.settings-panel { @apply overflow-hidden transition-[max-height] duration-200 ease-out mb-3; max-height: 2000px; }
+.settings-panel.collapsed { max-height: 0; margin: 0; padding: 0; opacity: 0; }
+.settings-grid { @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3; }
+.settings-item { @apply flex flex-col gap-1; }
+.settings-item label { @apply text-xs font-medium text-muted-foreground; }
+.settings-item input { @apply h-9 px-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring; }
+.options-row { @apply flex flex-wrap gap-4; }
+.checkbox-item { @apply inline-flex items-center gap-2 text-sm cursor-pointer select-none; }
+.checkbox-item input[type="checkbox"] { @apply w-4 h-4 rounded border border-input text-primary accent-current; }
+
+/* ---------- 输出面板 ---------- */
+.merge-info { @apply text-xs text-muted-foreground mb-3 px-1; }
+.output-container { @apply relative flex mb-3 border border-input rounded-md overflow-hidden; }
+
+/* ---------- Footer ---------- */
+.footer { @apply mt-6 text-center text-xs text-muted-foreground; }
+.usage-panel { @apply mb-4; }
+.usage-steps { @apply flex flex-col gap-2; }
+.usage-step { @apply flex flex-col; }
+.usage-tip { @apply text-xs text-muted-foreground mt-2; }
+
+/* ---------- Loading 遮罩 ---------- */
+.loading-overlay { @apply fixed inset-0 bg-background/60 backdrop-blur-sm flex items-center justify-center z-50; }
+.loading-spinner { @apply w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin; }
+.loading-text { @apply ml-3 text-sm text-foreground; }
+
+/* ---------- Toast 通知 ---------- */
+.toast { @apply fixed top-4 right-4 z-50 px-4 py-3 rounded-md bg-primary text-primary-foreground text-sm shadow-lg; }
+
+/* ---------- 工具类 ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ---------- 减少动画（用户偏好） ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

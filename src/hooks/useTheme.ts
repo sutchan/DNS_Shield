@@ -1,34 +1,39 @@
 // src/hooks/useTheme.ts v2.3.0
+// - 支持 Tailwind 的 .dark 类（供 shadcn/ui 使用）
+// - 保持 data-theme 属性（供旧 CSS 变量使用）
 import { useState, useEffect } from 'react';
 
 export const useTheme = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
-  // 初始化主题
+  // 1) 初始化主题（先读 localStorage → 浏览器偏好）
   useEffect(() => {
+    if (typeof window === 'undefined') return;
     const savedTheme = localStorage.getItem('theme');
-    setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      setTheme(savedTheme);
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(prefersDark ? 'dark' : 'light');
+    }
   }, []);
 
-  // 监听主题变化并更新data-theme属性
+  // 2) 同步到 HTML 属性 —— 同时维护 .dark 类（Tailwind）和 data-theme（旧变量）
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', theme);
+    if (typeof window === 'undefined') return;
+    const root = document.documentElement;
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
     }
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
   }, [theme]);
 
-  // 切换主题
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    // 确保在客户端环境中使用localStorage
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('theme', newTheme);
-    }
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  return {
-    theme,
-    toggleTheme
-  };
+  return { theme, toggleTheme };
 };

@@ -1,92 +1,104 @@
 // src/components/Header.tsx v2.3.0
-import React from 'react';
+// - 使用 shadcn/ui: Button, DropdownMenu
+// - 完整类型注解，移除 t: any
+// - 键盘可达性 (Enter / Space 触发)
+'use client';
+
+import * as React from 'react';
+import { Button } from './ui/Button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from './ui/DropdownMenu';
+import { Translation, Language } from '../types';
 
 interface HeaderProps {
   theme: 'light' | 'dark';
   currentLang: string;
-  isLangDropdownOpen: boolean;
-  supportedLanguages: Array<{ code: string; name: string; icon: string }>;
-  t: any;
+  supportedLanguages: Language[];
+  t: Translation;
   toggleTheme: () => void;
   switchLang: (lang: string) => void;
-  setIsLangDropdownOpen: (open: boolean) => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
   theme,
   currentLang,
-  isLangDropdownOpen,
   supportedLanguages,
   t,
   toggleTheme,
   switchLang,
-  setIsLangDropdownOpen
 }) => {
+  const current = supportedLanguages.find((lang) => lang.code === currentLang);
+  const currentIcon = current?.icon || '🌐';
+  const currentName = current?.name || currentLang;
+
   return (
-    <header className="app-header" id="app-header" role="banner">
+    <header
+      className="app-header"
+      id="app-header"
+      role="banner"
+    >
       <div className="header-main">
-        <h1 id="app-title">🛡️ DNS Shield</h1>
+        <h1 id="app-title" className="app-title">
+          <span aria-hidden="true">🛡️</span>
+          <span className="ml-2">DNS Shield</span>
+        </h1>
+
         <div className="header-actions">
-          <div className="lang-selector">
-            <button 
-              className="lang-selector-btn" 
-              title={t.settingsTitle}
-              aria-label={t.settingsTitle}
-              aria-haspopup="listbox"
-              aria-expanded={isLangDropdownOpen}
-              onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-              id="lang-selector-btn"
-            >
-              <span className="lang-icon" aria-hidden="true">
-                {supportedLanguages.find(lang => lang.code === currentLang)?.icon || ''}
-              </span>
-              <span className="lang-name">
-                {supportedLanguages.find(lang => lang.code === currentLang)?.name || currentLang}
-              </span>
-            </button>
-            {isLangDropdownOpen && (
-              <div 
-                className="lang-selector-dropdown" 
-                id="lang-dropdown"
-                role="listbox"
-                aria-label="语言选择"
+          {/* 语言选择器 - shadcn DropdownMenu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                className="lang-selector-btn"
+                aria-label={t.settingsTitle}
+                id="lang-selector-btn"
               >
-                {supportedLanguages.map(lang => (
-                  <button
-                    key={lang.code}
-                    className={`lang-option ${currentLang === lang.code ? 'active' : ''}`}
-                    role="option"
-                    aria-selected={currentLang === lang.code}
-                    onClick={() => {
-                      switchLang(lang.code);
-                      setIsLangDropdownOpen(false);
-                    }}
-                  >
-                    <span className="lang-icon" aria-hidden="true">{lang.icon || ''}</span>
-                    <span className="lang-name">{lang.name}</span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <button 
-            className="icon-btn theme-toggle" 
-            onClick={toggleTheme} 
+                <span className="lang-icon" aria-hidden="true">{currentIcon}</span>
+                <span className="lang-name">{currentName}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="lang-selector-dropdown">
+              {supportedLanguages.map((lang) => (
+                <DropdownMenuItem
+                  key={lang.code}
+                  onSelect={() => switchLang(lang.code)}
+                  className={`lang-option ${currentLang === lang.code ? 'active' : ''}`}
+                  role="option"
+                  aria-selected={currentLang === lang.code}
+                >
+                  <span className="lang-icon" aria-hidden="true">{lang.icon || ''}</span>
+                  <span className="lang-name">{lang.name}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {/* 主题切换按钮 - shadcn Button */}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={toggleTheme}
             aria-label={theme === 'dark' ? t.lightMode : t.darkMode}
             aria-pressed={theme === 'dark'}
             title={theme === 'dark' ? t.lightMode : t.darkMode}
             id="theme-toggle-btn"
+            className="theme-toggle"
           >
-            <span className="theme-icon" aria-hidden="true">
+            <span className="theme-icon text-lg" aria-hidden="true">
               {theme === 'dark' ? '☀️' : '🌙'}
             </span>
-            <span className="sr-only">
-              {theme === 'dark' ? t.lightMode : t.darkMode}
-            </span>
-          </button>
+          </Button>
         </div>
       </div>
-      <p className="subtitle" id="app-subtitle">{t.subtitle}</p>
+
+      <p className="subtitle" id="app-subtitle">
+        {t.subtitle}
+      </p>
     </header>
   );
 };

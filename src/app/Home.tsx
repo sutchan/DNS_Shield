@@ -140,15 +140,13 @@ export default function Home() {
 
   return (
     <div className="container" id="app-container">
-      <Header 
+      <Header
         theme={theme}
         currentLang={currentLang}
-        isLangDropdownOpen={isLangDropdownOpen}
         supportedLanguages={supportedLanguages}
         t={t}
         toggleTheme={toggleTheme}
         switchLang={switchLang}
-        setIsLangDropdownOpen={setIsLangDropdownOpen}
       />
 
       <main className="main-content">
