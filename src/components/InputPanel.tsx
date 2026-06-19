@@ -1,5 +1,9 @@
 // src/components/InputPanel.tsx v2.3.0
-import React from 'react';
+'use client';
+import * as React from 'react';
+import { Button } from './ui/Button';
+import { Input } from './ui/Input';
+import { Badge } from './ui/Badge';
 import { Translation } from '../types';
 
 interface InputPanelProps {
@@ -61,157 +65,178 @@ const InputPanel: React.FC<InputPanelProps> = ({
 }) => {
   return (
     <section className="panel input-section" id="input-panel" aria-labelledby="input-title">
+      {/* 标题栏 */}
       <div className="section-header">
         <h2 id="input-title">{t.inputTitle}</h2>
-        <button 
-          className="collapse-btn" 
-          onClick={() => toggleSection('url-section')} 
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="collapse-btn"
+          onClick={() => toggleSection('url-section')}
           id="toggle-url-section-btn"
           aria-expanded={!isUrlSectionCollapsed}
           aria-controls="url-section"
         >
           <span className={`collapse-icon ${isUrlSectionCollapsed ? 'collapsed' : ''}`} aria-hidden="true">▼</span>
           <span>{t.advanced}</span>
-        </button>
+        </Button>
       </div>
 
+      {/* 统计信息 — shadcn Badge */}
       <div className="stats-compact" id="stats-bar" role="region" aria-label="统计信息">
-        <div className="stat-badge" role="status" aria-live="polite">
+        <Badge variant="secondary" className="stat-badge" role="status" aria-live="polite">
           <span className="stat-value" id="domainCount" aria-label={t.domainCount}>{stats.domainCount}</span>
           <span className="stat-label">{t.domainCount}</span>
-        </div>
-        <div className="stat-badge" role="status" aria-live="polite">
+        </Badge>
+        <Badge variant="secondary" className="stat-badge" role="status" aria-live="polite">
           <span className="stat-value" id="blacklistCount" aria-label={t.blacklistCount}>{stats.blacklistCount}</span>
           <span className="stat-label">{t.blacklistCount}</span>
-        </div>
-        <div className="stat-badge" role="status" aria-live="polite">
+        </Badge>
+        <Badge variant="secondary" className="stat-badge" role="status" aria-live="polite">
           <span className="stat-value" id="whitelistCount" aria-label={t.whitelistCount}>{stats.whitelistCount}</span>
           <span className="stat-label">{t.whitelistCount}</span>
-        </div>
-        <div className="stat-badge" role="status" aria-live="polite">
+        </Badge>
+        <Badge variant="secondary" className="stat-badge" role="status" aria-live="polite">
           <span className="stat-value" id="validCount" aria-label={t.validCount}>{stats.validCount}</span>
           <span className="stat-label">{t.validCount}</span>
-        </div>
-        <div className="stat-badge" role="status" aria-live="polite">
+        </Badge>
+        <Badge variant="secondary" className="stat-badge" role="status" aria-live="polite">
           <span className="stat-value" id="commentCount" aria-label={t.commentCount}>{stats.commentCount}</span>
           <span className="stat-label">{t.commentCount}</span>
-        </div>
+        </Badge>
       </div>
 
-      <div 
-        className={`url-section ${isUrlSectionCollapsed ? 'collapsed' : ''}`} 
+      {/* URL 区域（可折叠） */}
+      <div
+        className={`url-section ${isUrlSectionCollapsed ? 'collapsed' : ''}`}
         id="url-section"
         aria-hidden={isUrlSectionCollapsed}
       >
+        {/* URL 输入行 — shadcn Input */}
         <div className="url-input-row">
           <label htmlFor="urlInput" className="sr-only">{t.urlPlaceholder}</label>
-          <input 
-            type="text" 
-            className="url-input" 
-            id="urlInput" 
-            ref={urlInputRef}
-            placeholder={t.urlPlaceholder} 
+          <Input
+            type="text"
+            id="urlInput"
+            ref={urlInputRef as React.RefObject<HTMLInputElement>}
+            placeholder={t.urlPlaceholder}
             defaultValue="https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt"
             aria-describedby="url-help"
+            className="url-input"
           />
-          <button 
-            className="btn btn-primary" 
-            onClick={fetchFromUrl} 
-            id="fetch-url-btn"
-            aria-describedby="url-help"
-          >
+          <Button type="button" variant="default" size="sm" onClick={fetchFromUrl} id="fetch-url-btn" aria-describedby="url-help">
             {t.fetchBtn}
-          </button>
+          </Button>
         </div>
         <div id="url-help" className="sr-only">
           输入URL地址获取域名列表
         </div>
+
+        {/* URL 操作按钮 */}
         <div className="url-actions" role="group" aria-label="URL操作">
-          <button className="btn btn-sm" onClick={addUrl} id="add-url-btn">{t.addUrl}</button>
-          <button className="btn btn-sm" onClick={sortUrls} id="sort-urls-btn">{t.sortUrlBtn}</button>
-          <button className="btn btn-sm" onClick={fetchAllUrls} id="fetch-all-urls-btn">{t.fetchAllUrls}</button>
+          <Button type="button" variant="outline" size="sm" onClick={addUrl} id="add-url-btn">{t.addUrl}</Button>
+          <Button type="button" variant="outline" size="sm" onClick={sortUrls} id="sort-urls-btn">{t.sortUrlBtn}</Button>
+          <Button type="button" variant="outline" size="sm" onClick={fetchAllUrls} id="fetch-all-urls-btn">{t.fetchAllUrls}</Button>
         </div>
+
+        {/* URL 列表 */}
         <div className="url-list" id="urlList" role="list" aria-label="URL列表">
           {urls.map((url: string, index: number) => (
             <div key={index} className="url-item" role="listitem">
               <span>{url}</span>
-              <button 
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
                 className="url-remove-btn"
                 onClick={() => setUrls(urls.filter((_: string, i: number) => i !== index))}
                 aria-label={`移除 ${url}`}
               >
                 ×
-              </button>
+              </Button>
             </div>
           ))}
         </div>
 
+        {/* 预设标签 — shadcn Badge variant */}
         <div className="preset-section">
           <span className="preset-label" id="preset-label">{t.presetLabel}</span>
           <div className="preset-tags" role="group" aria-labelledby="preset-label">
-            <span 
-              className={`preset-tag ${activePreset === 'builtin' ? 'active' : ''}`} 
+            <Badge
+              variant={activePreset === 'builtin' ? 'default' : 'outline'}
+              className="preset-tag cursor-pointer"
               onClick={() => loadPreset('builtin')}
               role="button"
               tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadPreset('builtin'); }}
               aria-pressed={activePreset === 'builtin'}
             >
               {t.builtinAd}
-            </span>
-            <span 
-              className={`preset-tag ${activePreset === 'adguard' ? 'active' : ''}`} 
+            </Badge>
+            <Badge
+              variant={activePreset === 'adguard' ? 'default' : 'outline'}
+              className="preset-tag cursor-pointer"
               onClick={() => loadPreset('adguard')}
               role="button"
               tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadPreset('adguard'); }}
               aria-pressed={activePreset === 'adguard'}
             >
               {t.adguard}
-            </span>
-            <span 
-              className={`preset-tag ${activePreset === 'easylist' ? 'active' : ''}`} 
+            </Badge>
+            <Badge
+              variant={activePreset === 'easylist' ? 'default' : 'outline'}
+              className="preset-tag cursor-pointer"
               onClick={() => loadPreset('easylist')}
               role="button"
               tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadPreset('easylist'); }}
               aria-pressed={activePreset === 'easylist'}
             >
               {t.easylist}
-            </span>
-            <span 
-              className={`preset-tag ${activePreset === 'neohosts' ? 'active' : ''}`} 
+            </Badge>
+            <Badge
+              variant={activePreset === 'neohosts' ? 'default' : 'outline'}
+              className="preset-tag cursor-pointer"
               onClick={() => loadPreset('neohosts')}
               role="button"
               tabIndex={0}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadPreset('neohosts'); }}
               aria-pressed={activePreset === 'neohosts'}
             >
               {t.neohosts}
-            </span>
+            </Badge>
           </div>
         </div>
       </div>
 
+      {/* 域名编辑器 */}
       <div className="editor-container">
         <div className="line-numbers" id="lineNumbers" ref={lineNumbersRef} aria-hidden="true"></div>
         <label htmlFor="sourceInput" className="sr-only">{t.inputPlaceholder}</label>
-        <textarea 
-          id="sourceInput" 
-          placeholder={t.inputPlaceholder} 
+        <textarea
+          id="sourceInput"
+          placeholder={t.inputPlaceholder}
           value={sourceInput}
           onChange={handleSourceInput}
           onScroll={syncScroll}
           ref={sourceTextareaRef}
           aria-describedby="sourceInput-help"
-        ></textarea>
+          className="w-full min-h-[200px] py-3 pl-14 pr-3 text-sm font-mono bg-background resize-y focus:outline-none"
+        />
       </div>
       <div id="sourceInput-help" className="sr-only">
         输入域名列表，每行一个
       </div>
 
+      {/* 编辑操作按钮 */}
       <div className="editor-actions" role="group" aria-label="编辑操作">
-        <button className="btn btn-outline" onClick={clearAll} id="clear-btn">{t.clearBtn}</button>
-        <button className="btn btn-outline" onClick={sortDomains} id="sort-btn">{t.sortBtn}</button>
-        <button className="btn btn-primary" onClick={parseSource} id="parse-btn">{t.parseBtn}</button>
-        <button className="btn btn-outline" onClick={dedupeDomains} id="dedupe-btn">{t.dedupeBtn}</button>
-        <button className="btn btn-outline" onClick={saveDomains} id="save-btn">{t.saveBtn}</button>
+        <Button type="button" variant="outline" size="sm" onClick={clearAll} id="clear-btn">{t.clearBtn}</Button>
+        <Button type="button" variant="outline" size="sm" onClick={sortDomains} id="sort-btn">{t.sortBtn}</Button>
+        <Button type="button" variant="default" onClick={parseSource} id="parse-btn">{t.parseBtn}</Button>
+        <Button type="button" variant="outline" size="sm" onClick={dedupeDomains} id="dedupe-btn">{t.dedupeBtn}</Button>
+        <Button type="button" variant="outline" size="sm" onClick={saveDomains} id="save-btn">{t.saveBtn}</Button>
       </div>
     </section>
   );

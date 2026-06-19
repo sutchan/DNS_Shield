@@ -1,6 +1,6 @@
 // src/app/Home.tsx v2.3.0
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './globals.css';
 
 // 导入组件
@@ -25,6 +25,11 @@ export default function Home() {
   // 使用钩子
   const { theme, toggleTheme } = useTheme();
   const { currentLang, isLangDropdownOpen, setIsLangDropdownOpen, supportedLanguages, t, isLangZh, switchLang } = useLanguage();
+
+  // L-003: 动态更新 html lang 属性（语言切换时同步）
+  useEffect(() => {
+    document.documentElement.lang = currentLang;
+  }, [currentLang]);
   
   // 显示提示
   const [toastMessage, setToastMessage] = useState('');

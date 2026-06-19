@@ -175,7 +175,14 @@ export const useUrlManager = (
     await withLoading({
       beforeLoad: () => true,
       loadingToast: { key: 'loading' },
-      fetchFn: () => fetchFromUrls(validUrls),
+      fetchFn: async () => {
+        const result = await fetchFromUrls(validUrls);
+        if (result.failedUrls.length > 0) {
+          const failedCount = result.failedUrls.length;
+          showToast('invalidUrlsFiltered', { count: failedCount });
+        }
+        return result.content;
+      },
       errorContext: 'fetchAllUrls',
       successToast: { key: 'urlsFetched' },
       errorToast: { key: 'fetchFailed' }
