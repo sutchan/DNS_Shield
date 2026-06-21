@@ -1,22 +1,31 @@
 'use client';
 
-import * as React from 'react';
+import { Toaster } from 'sonner';
 
-interface ToastProps {
-  message: string;
+interface ToastProviderProps {
+  children?: React.ReactNode;
 }
 
-const Toast: React.FC<ToastProps> = ({ message }) => {
-  if (!message) return null;
+export function ToastProvider({ children }: ToastProviderProps = {}) {
   return (
-    <div
-      role="alert"
-      aria-live="polite"
-      className="fixed top-4 right-4 z-50 px-4 py-3 rounded-md bg-primary text-primary-foreground text-sm shadow-lg"
-    >
-      {message}
-    </div>
+    <>
+      {children}
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          style: {
+            background: 'hsl(var(--background))',
+            color: 'hsl(var(--foreground))',
+            border: '1px solid hsl(var(--border))',
+          },
+          className: 'toast-sonner',
+        }}
+        closeButton
+        richColors
+        theme="system"
+      />
+    </>
   );
-};
+}
 
-export default Toast;
+export { toast } from 'sonner';

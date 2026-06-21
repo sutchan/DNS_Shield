@@ -65,15 +65,23 @@ export const fetchFromUrl = async (url: string, timeout = 10000): Promise<string
 };
 
 // 从多个URL获取内容（带超时控制）
-export const fetchFromUrls = async (urls: string[], timeout = 10000): Promise<string> => {
+export interface FetchUrlsResult {
+  content: string;
+  failedUrls: { url: string; error: string }[];
+}
+export const fetchFromUrls = async (urls: string[], timeout = 10000): Promise<FetchUrlsResult> => {
+  const failedUrls: { url: string; error: string }[] = [];
   let allContent = '';
   for (const url of urls) {
     try {
       const content = await fetchFromUrl(url, timeout);
       allContent += content + '\n';
     } catch (error) {
-      console.error(`Error fetching from ${url}:`, error);
+      failedUrls.push({
+        url,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
     }
   }
-  return allContent;
+  return { content: allContent, failedUrls };
 };

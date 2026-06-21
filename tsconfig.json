@@ -12,15 +12,13 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "target": "es2015",
-    "downlevelIteration": true,
-    "types": ["node", "react", "react-dom"],
+    "target": "es2017",
+    "types": [],
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }

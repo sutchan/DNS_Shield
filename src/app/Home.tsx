@@ -1,6 +1,6 @@
 // src/app/Home.tsx v2.3.0
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './globals.css';
 
 // 导入组件
@@ -8,7 +8,7 @@ import Header from '../components/Header';
 import InputPanel from '../components/InputPanel';
 import OutputPanel from '../components/OutputPanel';
 import Footer from '../components/Footer';
-import Toast from '../components/ui/Toast';
+import { ToastProvider } from '../components/ui/Toast';
 import Loading from '../components/ui/Loading';
 
 // 导入钩子
@@ -17,6 +17,7 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useDomainData } from '../hooks/useDomainData';
 import { useRules } from '../hooks/useRules';
 import { useUrlManager } from '../hooks/useUrlManager';
+import { toast } from 'sonner';
 
 // 导入类型
 import { Settings } from '../types';
@@ -25,9 +26,13 @@ export default function Home() {
   // 使用钩子
   const { theme, toggleTheme } = useTheme();
   const { currentLang, isLangDropdownOpen, setIsLangDropdownOpen, supportedLanguages, t, isLangZh, switchLang } = useLanguage();
+
+  // L-003: 动态更新 html lang 属性（语言切换时同步）
+  useEffect(() => {
+    document.documentElement.lang = currentLang;
+  }, [currentLang]);
   
   // 显示提示
-  const [toastMessage, setToastMessage] = useState('');
   const showToast = (key: string, params?: Record<string, string | number>) => {
     const toastMessages = t.toast as Record<string, string>;
     let message = toastMessages[key] || key;
@@ -36,8 +41,7 @@ export default function Home() {
         message = message.replace(`{${k}}`, String(v));
       });
     }
-    setToastMessage(message);
-    setTimeout(() => setToastMessage(''), 3000);
+    toast(message);
   };
 
   // 域名数据管理
@@ -205,7 +209,7 @@ export default function Home() {
       />
 
       <Loading isLoading={isLoading} isLangZh={isLangZh} />
-      <Toast message={toastMessage} />
+      <ToastProvider />
     </div>
   );
 }
