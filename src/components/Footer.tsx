@@ -1,8 +1,9 @@
-// src/components/Footer.tsx v2.3.0
+// src/components/Footer.tsx v2.3.1
 import React, { useState } from 'react';
+import { Translation } from '../types';
 
 interface FooterProps {
-  t: any;
+  t: Translation;
   version: string;
 }
 

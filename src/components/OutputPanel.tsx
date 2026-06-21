@@ -1,6 +1,10 @@
+// src/components/OutputPanel.tsx v2.3.1
 'use client';
 import * as React from 'react';
 import { Button } from './ui/Button';
+import { Input } from './ui/Input';
+import { Label } from './ui/Label';
+import { Checkbox } from './ui/Checkbox';
 import { Tabs, TabsList, TabsTrigger } from './ui/Tabs';
 import { Settings, Translation, FormatType, OutputContent, ParsedData } from '../types';
 
@@ -21,7 +25,7 @@ interface OutputPanelProps {
   copyOutput: () => void;
   syncOutputScroll: () => void;
   updateSettings: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setSettings: (settings: Settings) => void;
+  setSettings: React.Dispatch<React.SetStateAction<Settings>>;
   theme?: 'light' | 'dark';
   toggleTheme?: () => void;
 }
@@ -72,7 +76,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <circle cx="12" cy="12" r="3"></circle>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
             </svg>
           </Button>
         </div>
@@ -85,8 +89,8 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
       >
         <div className="settings-grid" id="settings-grid" role="group" aria-label="设置项">
           <div className="settings-item">
-            <label htmlFor="projectNameInput" id="project-name-label">{t.projectName}</label>
-            <input
+            <Label htmlFor="projectNameInput" id="project-name-label">{t.projectName}</Label>
+            <Input
               type="text"
               id="projectNameInput"
               defaultValue={settings.projectName}
@@ -94,8 +98,8 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
             />
           </div>
           <div className="settings-item">
-            <label htmlFor="versionInput" id="version-label">{t.version}</label>
-            <input
+            <Label htmlFor="versionInput" id="version-label">{t.version}</Label>
+            <Input
               type="text"
               id="versionInput"
               defaultValue={settings.version}
@@ -103,8 +107,8 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
             />
           </div>
           <div className="settings-item">
-            <label htmlFor="ipv4Input" id="ipv4-label">{t.ipV4}</label>
-            <input
+            <Label htmlFor="ipv4Input" id="ipv4-label">{t.ipV4}</Label>
+            <Input
               type="text"
               id="ipv4Input"
               defaultValue={settings.ipv4}
@@ -112,8 +116,8 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
             />
           </div>
           <div className="settings-item">
-            <label htmlFor="ipv6Input" id="ipv6-label">{t.ipV6}</label>
-            <input
+            <Label htmlFor="ipv6Input" id="ipv6-label">{t.ipV6}</Label>
+            <Input
               type="text"
               id="ipv6Input"
               defaultValue={settings.ipv6}
@@ -122,52 +126,47 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
           </div>
         </div>
         <div className="options-row" id="options-row" role="group" aria-label="选项">
-          <label className="checkbox-item">
-            <input
-              type="checkbox"
+          <div className="checkbox-item">
+            <Checkbox
               id="addHeader"
               checked={settings.addHeader}
-              onChange={(e) => setSettings({...settings, addHeader: e.target.checked})}
+              onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, addHeader: checked === true }))}
             />
-            <span id="header-comment-label">{t.headerComment}</span>
-          </label>
-          <label className="checkbox-item">
-            <input
-              type="checkbox"
+            <Label htmlFor="addHeader" id="header-comment-label">{t.headerComment}</Label>
+          </div>
+          <div className="checkbox-item">
+            <Checkbox
               id="blockIPv6"
               checked={settings.blockIPv6}
-              onChange={(e) => setSettings({...settings, blockIPv6: e.target.checked})}
+              onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, blockIPv6: checked === true }))}
             />
-            <span id="block-ipv6-label">{t.blockIPv6}</span>
-          </label>
-          <label className="checkbox-item">
-            <input
-              type="checkbox"
+            <Label htmlFor="blockIPv6" id="block-ipv6-label">{t.blockIPv6}</Label>
+          </div>
+          <div className="checkbox-item">
+            <Checkbox
               id="dedupDomains"
               checked={settings.dedupDomains}
-              onChange={(e) => setSettings({...settings, dedupDomains: e.target.checked})}
+              onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, dedupDomains: checked === true }))}
             />
-            <span id="dedup-label">{t.dedup}</span>
-          </label>
-          <label className="checkbox-item">
-            <input
-              type="checkbox"
+            <Label htmlFor="dedupDomains" id="dedup-label">{t.dedup}</Label>
+          </div>
+          <div className="checkbox-item">
+            <Checkbox
               id="removeWildcard"
               checked={settings.removeWildcard}
-              onChange={(e) => setSettings({...settings, removeWildcard: e.target.checked})}
+              onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, removeWildcard: checked === true }))}
             />
-            <span id="remove-wildcard-label">{t.removeWildcard}</span>
-          </label>
+            <Label htmlFor="removeWildcard" id="remove-wildcard-label">{t.removeWildcard}</Label>
+          </div>
           {toggleTheme && (
-            <label className="checkbox-item theme-toggle-item" id="theme-setting-item">
-              <input
-                type="checkbox"
+            <div className="checkbox-item theme-toggle-item" id="theme-setting-item">
+              <Checkbox
                 id="themeToggle"
                 checked={theme === 'dark'}
-                onChange={toggleTheme}
+                onCheckedChange={() => toggleTheme()}
               />
-              <span id="theme-mode-label">{theme === 'dark' ? t.darkMode : t.lightMode}</span>
-            </label>
+              <Label htmlFor="themeToggle" id="theme-mode-label">{theme === 'dark' ? t.darkMode : t.lightMode}</Label>
+            </div>
           )}
         </div>
       </div>

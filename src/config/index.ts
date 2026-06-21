@@ -1,15 +1,5 @@
-// src/config/index.ts v2.3.0
-
-// 类型声明
-declare const process: {
-  env: {
-    NEXT_PUBLIC_DOMAINS_URL?: string;
-    NEXT_PUBLIC_PRESET_BUILTIN?: string;
-    NEXT_PUBLIC_PRESET_ADGUARD?: string;
-    NEXT_PUBLIC_PRESET_EASYLIST?: string;
-    NEXT_PUBLIC_PRESET_NEOHOSTS?: string;
-  };
-};
+// src/config/index.ts v2.3.1
+// @types/node 已提供 process.env 类型，无需重复声明
 
 // 应用配置
 export const config = {

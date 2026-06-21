@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.ts v2.3.0
+// src/hooks/useDomainData.ts v2.3.1
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
 import { generateLineNumbers } from '../utils/uiUtils';
@@ -108,9 +108,13 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     return () => clearInterval(autoSaveInterval);
   }, [sourceInput, parseSourceData]);
 
+  // 防抖解析：用户停止输入 300ms 后再解析，避免频繁计算
   useEffect(() => {
-    generateLineNumbers(sourceInput, lineNumbersRef);
-  }, [sourceInput]);
+    const timer = setTimeout(() => {
+      parseSourceData(sourceInput);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [sourceInput, parseSourceData]);
 
   const clearAll = useCallback(() => {
     setSourceInput('');
@@ -137,9 +141,8 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
 
   const handleSourceInput = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setSourceInput(e.target.value);
-    parseSourceData(e.target.value);
     generateLineNumbers(e.target.value, lineNumbersRef);
-  }, [parseSourceData]);
+  }, []);
 
   return {
     sourceInput,
