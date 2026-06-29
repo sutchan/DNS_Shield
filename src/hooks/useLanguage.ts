@@ -1,12 +1,11 @@
-// src/hooks/useLanguage.ts v2.3.0
-import { useState, useEffect, useRef } from 'react';
+// src/hooks/useLanguage.ts v2.3.1
+import { useState, useEffect } from 'react';
 import { supportedLanguages, getTranslation, isChineseLanguage } from '../utils/i18n';
 import { Translation } from '../types';
 
 export const useLanguage = () => {
   const [currentLang, setCurrentLang] = useState('zh-cn');
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
-  const langSelectorRef = useRef<HTMLDivElement>(null);
 
   // 初始化语言
   useEffect(() => {
@@ -17,8 +16,8 @@ export const useLanguage = () => {
   // 监听点击事件，点击其他地方关闭语言选择器下拉菜单
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const langSelector = document.querySelector('.lang-selector');
-      if (langSelector && !langSelector.contains(event.target as Node)) {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.lang-selector')) {
         setIsLangDropdownOpen(false);
       }
     };
