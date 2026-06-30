@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.2]
+
+### Added
+- 添加缺失的国际化翻译键 `invalidUrl` 和 `invalidUrlsFiltered`（16 种语言）
+- 创建高保真原型 `prototype.canvas.tsx`
+- 添加 `openspec/` 项目规范文档（SPEC.md、TASKS.md、CHECKLIST.md、config.yaml）
+
+### Changed
+- 统一全项目版本号为 v2.3.2（package.json、layout.tsx、Home.tsx、next.config.js、docs 等）
+- 更新所有源文件头注释版本至 v2.3.2
+- 更新 openspec SPEC.md 至 v2.3.2，重写文件结构和依赖信息
+
+### Fixed
+- 修复 layout.tsx 中 og:title 版本号不一致（v2.3.0 → v2.3.2）
+- 修复 useLanguage.ts 移除无用的 click-outside 事件监听器
+- 修复 Loading 组件 DOM 结构（移除无意义的嵌套 div）
+- 修复 docs/README.md 引用不存在的 GLOBAL_USAGE.md
+- 修复 16 个 locale 文件缺失 `invalidUrl` 和 `invalidUrlsFiltered` 翻译键
+- 修复 types/index.ts 缺失 toast 类型定义
+
 ## [2.3.0]
 
 ### Added

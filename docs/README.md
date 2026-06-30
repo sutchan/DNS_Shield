@@ -39,7 +39,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf 
 - 路径：设置 → 广告拦截 → 自定义 hosts
 - 导入 `hosts.txt`
 
-详细设置方法请查看 [使用指南](docs/GLOBAL_USAGE.md)。
+详细设置方法请查看 [部署指南](DEPLOYMENT.md)。
 
 ## 在线工具
 
@@ -109,4 +109,4 @@ MIT License
 
 ## 版本
 
-当前版本：v2.3.0
+当前版本：v2.3.2

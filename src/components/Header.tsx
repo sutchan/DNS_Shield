@@ -1,4 +1,4 @@
-// src/components/Header.tsx v2.3.0
+// src/components/Header.tsx v2.3.2
 // - 使用 shadcn/ui: Button, DropdownMenu
 // - 完整类型注解，移除 t: any
 // - 键盘可达性 (Enter / Space 触发)
