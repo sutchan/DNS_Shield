@@ -72,7 +72,9 @@
     "urlsSorted": "URL เรียงลำดับแล้ว",
     "urlsFetched": "ดึง URL ทั้งหมดแล้ว",
     "urlListEmpty": "รายการ URL ว่างเปล่า",
-    "loading": "กำลังโหลด..."
+    "loading": "กำลังโหลด...",
+    "invalidUrl": "กรุณาใส่ URL ที่ถูกต้อง",
+    "invalidUrlsFiltered": "กรอง URL ไม่ถูกต้อง {count} รายการ"
   },
   "header": {
     "dnsmasqTitle": "รายการบล็อกโฆษณา Dnsmasq",

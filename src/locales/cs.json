@@ -72,7 +72,9 @@
     "urlsSorted": "URL byly seřazeny",
     "urlsFetched": "Všechny URL byly načteny",
     "urlListEmpty": "Seznam URL je prázdný",
-    "loading": "Načítání..."
+    "loading": "Načítání...",
+    "invalidUrl": "Zadejte prosím platnou URL adresu",
+    "invalidUrlsFiltered": "Filtrováno {count} neplatných URL"
   },
   "header": {
     "dnsmasqTitle": "Seznam blokování reklam Dnsmasq",

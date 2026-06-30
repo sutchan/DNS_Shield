@@ -72,7 +72,9 @@
     "urlsSorted": "URL ordinati",
     "urlsFetched": "Tutti gli URL recuperati",
     "urlListEmpty": "Elenco URL vuoto",
-    "loading": "Caricamento..."
+    "loading": "Caricamento...",
+    "invalidUrl": "Inserisci un URL valido",
+    "invalidUrlsFiltered": "Filtrati {count} URL non validi"
   },
   "header": {
     "dnsmasqTitle": "Elenco Blocco Pubblicità Dnsmasq",

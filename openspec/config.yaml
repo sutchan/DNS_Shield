@@ -1,0 +1,37 @@
+schema: spec-driven
+
+# Project context
+context: |
+  Tech stack: TypeScript, React 18, Next.js 14, Tailwind CSS 3.4, shadcn/ui, sonner
+  We use conventional commits
+  Domain: DNS-based ad blocking
+  Project structure follows Next.js App Router conventions
+  We use SemVer for versioning
+  We maintain a single source of truth in public/domains.txt
+  We support multiple output formats: dnsmasq, hosts, AdGuard, and whitelist
+  We follow strict file header format with version and date
+  We maintain whitelist.txt for whitelist rules
+  We use Next.js App Router with page.tsx, layout.tsx, and Home.tsx components
+  We have 16 internationalization languages
+  We use shadcn/ui components (Radix UI based) with Tailwind CSS
+  We use sonner for toast notifications
+  Dev server runs on port 8082 (pnpm dev)
+
+# Per-artifact rules
+rules:
+  proposal:
+    - Keep proposals under 500 words
+    - Always include a "Non-goals" section
+  tasks:
+    - Break tasks into chunks of max 2 hours
+    - Include testing tasks for all functionality changes
+  spec:
+    - Maintain consistency with actual project structure
+    - Update dependency versions to match package.json
+    - Include all supported router platforms
+    - Keep version number in sync with package.json
+  checklist:
+    - Include all required files and configurations
+    - Verify all generated file formats
+    - Ensure router compatibility testing
+    - Match actual file structure on main branch

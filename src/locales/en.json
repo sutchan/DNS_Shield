@@ -72,7 +72,9 @@
     "urlsSorted": "URLs sorted",
     "urlsFetched": "Fetched all URLs",
     "urlListEmpty": "URL list is empty",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "invalidUrl": "Please enter a valid URL",
+    "invalidUrlsFiltered": "Filtered {count} invalid URLs"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq Ad Block List",

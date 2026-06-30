@@ -72,7 +72,9 @@
     "urlsSorted": "URL đã sắp xếp",
     "urlsFetched": "Đã lấy tất cả URL",
     "urlListEmpty": "Danh sách URL trống",
-    "loading": "Đang tải..."
+    "loading": "Đang tải...",
+    "invalidUrl": "Vui lòng nhập URL hợp lệ",
+    "invalidUrlsFiltered": "Đã lọc {count} URL không hợp lệ"
   },
   "header": {
     "dnsmasqTitle": "Danh sách chặn quảng cáo Dnsmasq",

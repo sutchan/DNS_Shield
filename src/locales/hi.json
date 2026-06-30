@@ -72,7 +72,9 @@
     "urlsSorted": "URL क्रमबद्ध कर दिए गए हैं",
     "urlsFetched": "सभी URL प्राप्त किए गए",
     "urlListEmpty": "URL सूची खाली है",
-    "loading": "लोड हो रहा है..."
+    "loading": "लोड हो रहा है...",
+    "invalidUrl": "कृपया एक मान्य URL दर्ज करें",
+    "invalidUrlsFiltered": "{count} अमान्य URL फ़िल्टर किए गए"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq विज्ञापन ब्लॉक सूची",

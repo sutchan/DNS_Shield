@@ -72,7 +72,9 @@
     "urlsSorted": "URL:er sorterade",
     "urlsFetched": "Alla URL:er hämtade",
     "urlListEmpty": "URL-listan är tom",
-    "loading": "Laddar..."
+    "loading": "Laddar...",
+    "invalidUrl": "Ange en giltig URL",
+    "invalidUrlsFiltered": "Filtrerade {count} ogiltiga URL:er"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq annonsblockeringslista",

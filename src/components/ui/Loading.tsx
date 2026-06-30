@@ -1,4 +1,4 @@
-// src/components/ui/Loading.tsx v2.3.0
+// src/components/ui/Loading.tsx v2.3.2
 import React from 'react';
 
 interface LoadingProps {
@@ -11,10 +11,8 @@ const Loading: React.FC<LoadingProps> = ({ isLoading, isLangZh }) => {
 
   return (
     <div className="loading-overlay">
-      <div className="loading-spinner">
-        <div className="spinner"></div>
-        <span>{isLangZh ? '加载中...' : 'Loading...'}</span>
-      </div>
+      <div className="loading-spinner"></div>
+      <span className="loading-text">{isLangZh ? '加载中...' : 'Loading...'}</span>
     </div>
   );
 };

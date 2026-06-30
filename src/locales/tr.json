@@ -72,7 +72,9 @@
     "urlsSorted": "URL'ler sıralandı",
     "urlsFetched": "Tüm URL'ler alındı",
     "urlListEmpty": "URL listesi boş",
-    "loading": "Yükleniyor..."
+    "loading": "Yükleniyor...",
+    "invalidUrl": "Lütfen geçerli bir URL girin",
+    "invalidUrlsFiltered": "{count} geçersiz URL filtrelendi"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq Reklam Engelleme Listesi",

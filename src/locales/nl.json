@@ -72,7 +72,9 @@
     "urlsSorted": "URL's gesorteerd",
     "urlsFetched": "Alle URL's opgehaald",
     "urlListEmpty": "URL-lijst is leeg",
-    "loading": "Laden..."
+    "loading": "Laden...",
+    "invalidUrl": "Voer een geldige URL in",
+    "invalidUrlsFiltered": "{count} ongeldige URLs gefilterd"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq advertentieblokkeringslijst",

@@ -1,4 +1,4 @@
-// src/app/Home.tsx v2.3.0
+// src/app/Home.tsx v2.3.2
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import './globals.css';
@@ -25,7 +25,7 @@ import { Settings } from '../types';
 export default function Home() {
   // 使用钩子
   const { theme, toggleTheme } = useTheme();
-  const { currentLang, isLangDropdownOpen, setIsLangDropdownOpen, supportedLanguages, t, isLangZh, switchLang } = useLanguage();
+  const { currentLang, supportedLanguages, t, isLangZh, switchLang } = useLanguage();
 
   // L-003: 动态更新 html lang 属性（语言切换时同步）
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function Home() {
   // 设置管理
   const [settings, setSettings] = useState<Settings>({
     projectName: 'DNS Shield',
-    version: '2.3.0',
+    version: '2.3.2',
     ipv4: '127.0.0.1',
     ipv6: '::',
     addHeader: true,

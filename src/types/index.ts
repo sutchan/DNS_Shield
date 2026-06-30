@@ -1,4 +1,4 @@
-// src/types/index.ts v2.3.0
+// src/types/index.ts v2.3.2
 
 export type FormatType = 'hosts' | 'dnsmasq' | 'adguard' | 'whitelist';
 
@@ -139,6 +139,8 @@ export interface Translation {
     presetLoaded: string;
     presetFailed: string;
     loading: string;
+    invalidUrl: string;
+    invalidUrlsFiltered: string;
   };
 }
 

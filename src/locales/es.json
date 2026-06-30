@@ -72,7 +72,9 @@
     "urlsSorted": "URL ordenadas",
     "urlsFetched": "Todas las URL obtenidas",
     "urlListEmpty": "La lista de URL está vacía",
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "invalidUrl": "Por favor, introduzca una URL válida",
+    "invalidUrlsFiltered": "Se filtraron {count} URL no válidas"
   },
   "header": {
     "dnsmasqTitle": "Lista de bloqueo de anuncios Dnsmasq",

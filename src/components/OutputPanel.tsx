@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v2.3.1
+// src/components/OutputPanel.tsx v2.3.2
 'use client';
 import * as React from 'react';
 import { Button } from './ui/Button';

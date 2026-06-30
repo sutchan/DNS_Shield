@@ -72,7 +72,9 @@
     "urlsSorted": "URL posortowane",
     "urlsFetched": "Pobrano wszystkie URL",
     "urlListEmpty": "Lista URL jest pusta",
-    "loading": "Ładowanie..."
+    "loading": "Ładowanie...",
+    "invalidUrl": "Wprowadź prawidłowy adres URL",
+    "invalidUrlsFiltered": "Filtrowano {count} nieprawidłowych URL-i"
   },
   "header": {
     "dnsmasqTitle": "Lista blokowania reklam Dnsmasq",

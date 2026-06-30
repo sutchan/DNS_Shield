@@ -72,7 +72,9 @@
     "urlsSorted": "URL отсортированы",
     "urlsFetched": "Получены все URL",
     "urlListEmpty": "Список URL пуст",
-    "loading": "Загрузка..."
+    "loading": "Загрузка...",
+    "invalidUrl": "Введите действительный URL-адрес",
+    "invalidUrlsFiltered": "Отфильтровано {count} недействительных URL"
   },
   "header": {
     "dnsmasqTitle": "Список блокировки рекламы Dnsmasq",

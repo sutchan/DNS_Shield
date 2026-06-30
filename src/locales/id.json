@@ -72,7 +72,9 @@
     "urlsSorted": "URL telah diurutkan",
     "urlsFetched": "Semua URL telah diambil",
     "urlListEmpty": "Daftar URL kosong",
-    "loading": "Memuat..."
+    "loading": "Memuat...",
+    "invalidUrl": "Silakan masukkan URL yang valid",
+    "invalidUrlsFiltered": "Menyaring {count} URL tidak valid"
   },
   "header": {
     "dnsmasqTitle": "Daftar Blok Iklan Dnsmasq",

@@ -72,7 +72,9 @@
     "urlsSorted": "تم فرز URLs",
     "urlsFetched": "تم جلب جميع URLs",
     "urlListEmpty": "قائمة URL فارغة",
-    "loading": "جاري التحميل..."
+    "loading": "جاري التحميل...",
+    "invalidUrl": "يرجى إدخال عنوان URL صالح",
+    "invalidUrlsFiltered": "تم تصفية {count} عناوين URL غير صالحة"
   },
   "header": {
     "dnsmasqTitle": "قائمة فلترة Ad Block لـ Dnsmasq",

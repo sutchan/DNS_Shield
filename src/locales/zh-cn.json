@@ -72,7 +72,9 @@
     "urlsSorted": "URLs 已排序",
     "urlsFetched": "已获取全部 URLs",
     "urlListEmpty": "URL 列表为空",
-    "loading": "加载中..."
+    "loading": "加载中...",
+    "invalidUrl": "请输入有效的 URL 地址",
+    "invalidUrlsFiltered": "已过滤 {count} 个无效 URL"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq 广告过滤列表",
