@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNS Shield — 组件库展示 v3.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-primary: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px;
+  --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-12: 48px;
+  --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px; --radius-full: 9999px;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --duration-fast: 150ms;
+}
+
+[data-theme="dark"] {
+  --bg: #0A0A0F; --surface: #141419; --elevated: #1C1C24; --muted: #2C2C3A; --input: #1C1C24;
+  --text: #F5F5F7; --text-secondary: #98989D; --text-tertiary: #6E6E73;
+  --border: #2C2C3A; --border-hover: #3A3A4A;
+  --primary: #0A84FF; --primary-hover: #4DA3FF; --primary-subtle: rgba(10,132,255,0.15);
+  --success: #30D158; --success-bg: rgba(48,209,88,0.12);
+  --warning: #FF9F0A; --warning-bg: rgba(255,159,10,0.12);
+  --error: #FF453A; --error-bg: rgba(255,69,58,0.12);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2); --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+[data-theme="light"] {
+  --bg: #FFFFFF; --surface: #F5F5F7; --elevated: #FFFFFF; --muted: #E8E8ED; --input: #F5F5F7;
+  --text: #1D1D1F; --text-secondary: #6E6E73; --text-tertiary: #A1A1A6;
+  --border: #D2D2D7; --border-hover: #86868B;
+  --primary: #007AFF; --primary-hover: #0056D3; --primary-subtle: rgba(0,122,255,0.10);
+  --success: #34C759; --success-bg: rgba(52,199,89,0.10);
+  --warning: #FF9500; --warning-bg: rgba(255,149,0,0.10);
+  --error: #FF3B30; --error-bg: rgba(255,59,48,0.10);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04); --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--font-primary); color: var(--text); background: var(--bg);
+  transition: background 300ms ease, color 300ms ease;
+  padding: var(--space-6);
+}
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: var(--radius-sm); }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--radius-full); }
+
+/* Layout */
+.app { max-width: 1120px; margin: 0 auto; }
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: var(--space-8); padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--border);
+}
+.header-left { display: flex; align-items: center; gap: var(--space-3); }
+.header-meta { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+.nav-tabs { display: flex; gap: var(--space-1); flex-wrap: wrap; margin-bottom: var(--space-8); }
+.nav-tab {
+  padding: 6px 14px; font-size: 13px; font-weight: 500; color: var(--text-secondary);
+  background: transparent; border: 1px solid var(--border); border-radius: var(--radius-md);
+  cursor: pointer; transition: all var(--duration-fast) var(--ease-out);
+}
+.nav-tab:hover { border-color: var(--border-hover); color: var(--text); }
+.nav-tab--active { background: var(--primary); color: #FFF; border-color: var(--primary); }
+
+/* Section */
+.section { margin-bottom: var(--space-10); }
+.section-title {
+  font-size: 20px; font-weight: 600; letter-spacing: -0.01em;
+  display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-5);
+}
+.section-desc { font-size: 13px; color: var(--text-secondary); margin-top: 2px; font-weight: 400; }
+.component-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: var(--space-5); margin-bottom: var(--space-4);
+  transition: background 300ms ease, border-color 300ms ease;
+}
+.component-name {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2);
+}
+.component-name code {
+  font-size: 12px; font-weight: 400; color: var(--text-secondary);
+  font-family: var(--font-mono); background: var(--muted); padding: 2px 8px; border-radius: 4px;
+}
+.demo-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) 0; border-bottom: 1px solid var(--border);
+}
+.demo-row:last-child { border-bottom: none; }
+.demo-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-tertiary); min-width: 80px;
+}
+.demo-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+@media (max-width: 640px) { .demo-grid-2 { grid-template-columns: 1fr; } }
+.demo-block { display: flex; flex-direction: column; gap: var(--space-2); }
+.demo-block-label { font-size: 11px; color: var(--text-tertiary); }
+
+/* ===== Button ===== */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  font-family: var(--font-primary); font-weight: 500; line-height: 1;
+  border: 1px solid transparent; cursor: pointer; user-select: none; white-space: nowrap;
+  transition: all var(--duration-fast) var(--ease-out); position: relative; overflow: hidden;
+  text-decoration: none;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.btn--sm { height: 28px; padding: 0 var(--space-2); font-size: 11px; border-radius: var(--radius-sm); }
+.btn--md { height: 32px; padding: 0 var(--space-3); font-size: 12px; border-radius: var(--radius-md); }
+.btn--lg { height: 36px; padding: 0 var(--space-4); font-size: 13px; border-radius: var(--radius-md); }
+.btn--xl { height: 40px; padding: 0 var(--space-5); font-size: 14px; font-weight: 600; border-radius: var(--radius-md); }
+.btn--icon { padding: 0; width: 32px; }
+.btn--icon.btn--sm { width: 28px; }
+.btn--icon.btn--lg { width: 36px; }
+
+.btn--primary { background: var(--primary); color: #FFF; border-color: var(--primary); }
+.btn--primary:hover:not(:disabled) { background: var(--primary-hover); border-color: var(--primary-hover); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.btn--secondary { background: var(--elevated); color: var(--text); border-color: var(--border); }
+.btn--secondary:hover:not(:disabled) { border-color: var(--border-hover); background: var(--muted); }
+.btn--ghost { background: transparent; color: var(--text-secondary); border-color: transparent; }
+.btn--ghost:hover:not(:disabled) { background: var(--muted); color: var(--text); }
+.btn--destructive { background: var(--error); color: #FFF; border-color: var(--error); }
+.btn--destructive:hover:not(:disabled) { opacity: 0.9; box-shadow: var(--shadow-md); }
+.btn--outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); }
+.btn--outline:hover:not(:disabled) { background: var(--primary-subtle); }
+.btn-icon { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* ===== Input ===== */
+.input {
+  width: 100%; height: 36px; padding: 0 var(--space-3);
+  font-family: var(--font-primary); font-size: 14px; color: var(--text);
+  background: var(--input); border: 1px solid var(--border); border-radius: var(--radius-md);
+  outline: none; transition: all var(--duration-fast) var(--ease-out);
+}
+.input::placeholder { color: var(--text-tertiary); }
+.input:hover:not(:disabled):not(:focus) { border-color: var(--border-hover); }
+.input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-subtle); }
+.input--error { border-color: var(--error); }
+.input--error:focus { box-shadow: 0 0 0 3px var(--error-bg); }
+.input--success { border-color: var(--success); }
+.input:disabled { opacity: 0.5; cursor: not-allowed; }
+.input--with-left { padding-left: 36px; }
+.input-label { display: block; font-size: 12px; font-weight: 500; margin-bottom: 6px; }
+.input-error { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--error); margin-top: 4px; }
+
+/* ===== Badge ===== */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: var(--radius-sm);
+  font-size: 11px; font-weight: 500; line-height: 1.4; letter-spacing: 0.02em; white-space: nowrap;
+}
+.badge--default { background: var(--muted); color: var(--text-secondary); }
+.badge--primary { background: var(--primary-subtle); color: var(--primary); }
+.badge--success { background: var(--success-bg); color: var(--success); }
+.badge--warning { background: var(--warning-bg); color: var(--warning); }
+.badge--error { background: var(--error-bg); color: var(--error); }
+.badge--pill { border-radius: var(--radius-full); }
+.badge-sm { font-size: 10px; padding: 1px 6px; }
+
+/* ===== Card ===== */
+.card-demo {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: var(--space-5); transition: background 300ms, border-color 300ms, box-shadow 200ms;
+  box-shadow: var(--shadow-sm);
+}
+.card-demo--elevated { background: var(--elevated); }
+.card-demo--bordered { border-width: 2px; }
+.card-demo:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.card-label { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+.card-text { font-size: 12px; color: var(--text-secondary); }
+
+/* ===== Tabs (Segmented) ===== */
+.tabs-wrapper {
+  display: inline-flex; padding: 2px; background: var(--muted); border-radius: var(--radius-md); gap: 2px;
+}
+.tab-item {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; font-size: 12px; font-weight: 500;
+  color: var(--text-secondary); background: transparent;
+  border: none; border-radius: var(--radius-sm); cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out); white-space: nowrap;
+}
+.tab-item:hover { color: var(--text); }
+.tab-item--active { background: var(--elevated); color: var(--text); box-shadow: var(--shadow-sm); }
+
+/* ===== Tag ===== */
+.tag-demo {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: var(--radius-sm);
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out); user-select: none;
+}
+.tag-demo--default { background: var(--muted); color: var(--text-secondary); border: 1px solid transparent; }
+.tag-demo--default:hover { border-color: var(--border-hover); color: var(--text); }
+.tag-demo--active { background: var(--primary); color: #FFF; }
+
+/* ===== Switch ===== */
+.switch-demo { position: relative; width: 36px; height: 22px; cursor: pointer; display: inline-block; }
+.switch-demo input { opacity: 0; width: 0; height: 0; }
+.switch-track { position: absolute; inset: 0; background: var(--border); border-radius: var(--radius-full); transition: background var(--duration-fast) var(--ease-out); }
+.switch-demo input:checked + .switch-track { background: var(--primary); }
+.switch-thumb { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: #FFF; border-radius: 50%; transition: transform var(--duration-fast) var(--ease-out); box-shadow: var(--shadow-sm); }
+.switch-demo input:checked ~ .switch-thumb { transform: translateX(14px); }
+
+/* ===== Skeleton ===== */
+.skeleton { background: var(--muted); border-radius: var(--radius-sm); position: relative; overflow: hidden; }
+.skeleton::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--elevated) 50%, transparent), transparent);
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+/* ===== Tooltip ===== */
+.tooltip-demo { position: relative; display: inline-flex; }
+.tooltip-demo::after {
+  content: attr(data-tip);
+  position: absolute; bottom: calc(100% + 6px); left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  padding: 4px 8px; font-size: 11px; font-weight: 500;
+  color: var(--text); background: var(--elevated);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  white-space: nowrap; opacity: 0; pointer-events: none;
+  transition: all var(--duration-fast) var(--ease-out);
+  box-shadow: var(--shadow-md);
+}
+.tooltip-demo:hover::after { opacity: 1; transform: translateX(-50%) scale(1); }
+
+/* ===== Toast ===== */
+.toast-demo {
+  display: inline-flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--elevated); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+  max-width: 360px;
+}
+.toast-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.toast-icon--s { color: var(--success); }
+.toast-icon--e { color: var(--error); }
+.toast-icon--w { color: var(--warning); }
+.toast-demo-content { flex: 1; }
+.toast-demo-title { font-size: 14px; font-weight: 500; }
+.toast-demo-desc { font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Header -->
+  <header class="header">
+    <div>
+      <div class="header-left">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+        <div>
+          <h1 style="font-size:20px;font-weight:700;letter-spacing:-0.02em;">DNS Shield 组件库</h1>
+          <div class="header-meta">Design System v3.0 · Swiss Modernism 2.0 × Apple Precision</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="themeBadge" class="badge badge--default" style="font-size:10px;letter-spacing:0.05em;">深色模式</span>
+        <button onclick="toggleTheme()" class="btn btn--sm btn--ghost" aria-label="切换主题">
+          <svg id="themeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          切换主题
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Nav -->
+  <nav class="nav-tabs">
+    <button class="nav-tab nav-tab--active" onclick="scrollToSection('buttons')">Buttons</button>
+    <button class="nav-tab" onclick="scrollToSection('inputs')">Inputs</button>
+    <button class="nav-tab" onclick="scrollToSection('cards')">Cards</button>
+    <button class="nav-tab" onclick="scrollToSection('badges')">Badges</button>
+    <button class="nav-tab" onclick="scrollToSection('tabs-tags')">Tabs & Tags</button>
+    <button class="nav-tab" onclick="scrollToSection('switches')">Switches</button>
+    <button class="nav-tab" onclick="scrollToSection('editor')">Editor</button>
+    <button class="nav-tab" onclick="scrollToSection('empty')">Empty States</button>
+    <button class="nav-tab" onclick="scrollToSection('skeleton')">Skeleton</button>
+    <button class="nav-tab" onclick="scrollToSection('toast')">Toasts</button>
+  </nav>
+
+  <!-- ========== BUTTONS ========== -->
+  <section class="section" id="buttons">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/>
+      </svg>
+      Button <span class="section-desc">按钮 — 4 种变体 · 4 种尺寸 · 5 种状态</span>
+    </h2>
+
+    <!-- Variants -->
+    <div class="component-card">
+      <div class="component-name">变体 <code>variant</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Primary</span>
+        <button class="btn btn--md btn--primary"><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>Primary</button>
+        <button class="btn btn--md btn--secondary">Secondary</button>
+        <button class="btn btn--md btn--ghost">Ghost</button>
+        <button class="btn btn--md btn--destructive">Destructive</button>
+        <button class="btn btn--md btn--outline">Outline</button>
+      </div>
+    </div>
+
+    <!-- Sizes -->
+    <div class="component-card">
+      <div class="component-name">尺寸 <code>size</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Sizes</span>
+        <button class="btn btn--sm btn--primary">Small</button>
+        <button class="btn btn--md btn--primary">Medium</button>
+        <button class="btn btn--lg btn--primary">Large</button>
+        <button class="btn btn--xl btn--primary">X-Large</button>
+      </div>
+    </div>
+
+    <!-- States -->
+    <div class="component-card">
+      <div class="component-name">状态 <code>states</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Default</span>
+        <button class="btn btn--md btn--primary">默认</button>
+        <button class="btn btn--md btn--secondary">默认</button>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Hover</span>
+        <button class="btn btn--md btn--primary" style="background:var(--primary-hover);border-color:var(--primary-hover);box-shadow:var(--shadow-md);transform:translateY(-1px);">悬停</button>
+        <button class="btn btn--md btn--secondary" style="border-color:var(--border-hover);background:var(--muted);">悬停</button>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Disabled</span>
+        <button class="btn btn--md btn--primary" disabled>禁用</button>
+        <button class="btn btn--md btn--secondary" disabled>禁用</button>
+        <button class="btn btn--md btn--ghost" disabled>禁用</button>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Loading</span>
+        <button class="btn btn--md btn--primary btn--loading" style="color:transparent;pointer-events:none;">
+          <span style="width:14px;height:14px;border:2px solid #FFF;border-top-color:transparent;border-radius:50%;animation:spin 0.6s linear infinite;position:absolute;"></span>
+          加载中
+        </button>
+        <button class="btn btn--md btn--secondary btn--loading" style="color:transparent;pointer-events:none;">
+          <span style="width:14px;height:14px;border:2px solid var(--text);border-top-color:transparent;border-radius:50%;animation:spin 0.6s linear infinite;position:absolute;"></span>
+          加载中
+        </button>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Icon Only</span>
+        <button class="btn btn--md btn--icon btn--primary" aria-label="播放">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </button>
+        <button class="btn btn--sm btn--icon btn--secondary" aria-label="设置">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33"/></svg>
+        </button>
+        <button class="btn btn--lg btn--icon btn--primary" aria-label="下载">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- With Icons -->
+    <div class="component-card">
+      <div class="component-name">带图标 <code>icon+text</code></div>
+      <div class="demo-row">
+        <button class="btn btn--md btn--primary">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="12" x2="2" y2="12"/><polyline points="18 8 22 12 18 16"/></svg>
+          导入数据
+        </button>
+        <button class="btn btn--md btn--secondary">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          导出规则
+        </button>
+        <button class="btn btn--md btn--ghost">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          复制链接
+        </button>
+        <button class="btn btn--md btn--destructive">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          删除
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== INPUTS ========== -->
+  <section class="section" id="inputs">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20"/>
+      </svg>
+      Input <span class="section-desc">输入框 — 5 种状态 · 支持图标前置</span>
+    </h2>
+
+    <div class="component-card">
+      <div class="component-name">状态 <code>states</code></div>
+      <div class="demo-grid-2">
+        <div class="demo-block">
+          <span class="demo-block-label">Default</span>
+          <input class="input" type="text" placeholder="输入域名..." aria-label="默认输入框">
+        </div>
+        <div class="demo-block">
+          <span class="demo-block-label">Focused</span>
+          <div style="position:relative;">
+            <svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-tertiary);pointer-events:none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="input input--with-left" type="text" placeholder="搜索..." value="example.com" style="border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-subtle);" aria-label="聚焦状态的输入框">
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-block-label">Error</span>
+          <input class="input input--error" type="text" value="invalid..domain" aria-label="错误状态的输入框">
+          <div class="input-error">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            域名格式无效
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-block-label">Success</span>
+          <input class="input input--success" type="text" value="google.com" aria-label="成功状态的输入框">
+        </div>
+        <div class="demo-block">
+          <span class="demo-block-label">Disabled</span>
+          <input class="input" type="text" value="只读内容" disabled aria-label="禁用状态的输入框">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CARDS ========== -->
+  <section class="section" id="cards">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+      </svg>
+      Card <span class="section-desc">卡片 — 3 种变体 · 微交互悬停效果</span>
+    </h2>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--space-4);">
+      <div class="card-demo">
+        <div class="card-label">Default</div>
+        <div class="card-text">background: var(--surface)<br>border: 1px solid var(--border)<br>box-shadow: var(--shadow-sm)</div>
+      </div>
+      <div class="card-demo card-demo--elevated">
+        <div class="card-label">Elevated</div>
+        <div class="card-text">background: var(--elevated)<br>用于浮层面板<br>更高的可见性</div>
+      </div>
+      <div class="card-demo card-demo--bordered">
+        <div class="card-label">Bordered</div>
+        <div class="card-text">border-width: 2px<br>用于强调内容区域<br>视觉重量更重</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BADGES ========== -->
+  <section class="section" id="badges">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+      </svg>
+      Badge <span class="section-desc">徽标 — 5 种语义 · 支持图标 · Pill 模式</span>
+    </h2>
+
+    <div class="component-card">
+      <div class="component-name">语义变体</div>
+      <div class="demo-row">
+        <span class="badge badge--default">Default</span>
+        <span class="badge badge--primary">Primary</span>
+        <span class="badge badge--success">Success</span>
+        <span class="badge badge--warning">Warning</span>
+        <span class="badge badge--error">Error</span>
+      </div>
+      <div class="demo-row" style="margin-top:8px;">
+        <span class="badge badge--success badge--pill">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          已运行
+        </span>
+        <span class="badge badge--warning badge--pill">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          需关注
+        </span>
+        <span class="badge badge--error">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          规则冲突
+        </span>
+        <span class="badge badge--primary">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          处理中
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TABS & TAGS ========== -->
+  <section class="section" id="tabs-tags">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+      Tabs & Tags <span class="section-desc">分段控件 · 预设标签</span>
+    </h2>
+
+    <div class="component-card">
+      <div class="component-name">Tabs (Segmented Control)</div>
+      <div class="demo-row">
+        <div class="tabs-wrapper">
+          <button class="tab-item tab-item--active" role="tab" aria-selected="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            Dnsmasq
+          </button>
+          <button class="tab-item" role="tab" aria-selected="false">Hosts</button>
+          <button class="tab-item" role="tab" aria-selected="false">AdGuard</button>
+          <button class="tab-item" role="tab" aria-selected="false">白名单</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="component-card">
+      <div class="component-name">Tags (预设选择器)</div>
+      <div class="demo-row">
+        <span class="tag-demo tag-demo--active">内置数据</span>
+        <span class="tag-demo tag-demo--default">AdGuard</span>
+        <span class="tag-demo tag-demo--default">EasyList</span>
+        <span class="tag-demo tag-demo--default">NeoHosts</span>
+        <span class="tag-demo tag-demo--default">StevenBlack</span>
+        <span class="tag-demo tag-demo--default">ClassicList</span>
+        <span class="tag-demo tag-demo--default">OISD</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SWITCHES ========== -->
+  <section class="section" id="switches">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="6" width="20" height="12" rx="6"/><circle cx="8" cy="12" r="4"/>
+      </svg>
+      Switch <span class="section-desc">开关 — 带微动画过渡</span>
+    </h2>
+
+    <div class="component-card">
+      <div class="demo-row">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <label class="switch-demo">
+            <input type="checkbox" checked aria-label="开关-开">
+            <span class="switch-track"></span>
+            <span class="switch-thumb"></span>
+          </label>
+          <span style="font-size:13px;">已开启</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <label class="switch-demo">
+            <input type="checkbox" aria-label="开关-关">
+            <span class="switch-track"></span>
+            <span class="switch-thumb"></span>
+          </label>
+          <span style="font-size:13px;">已关闭</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EDITOR ========== -->
+  <section class="section" id="editor">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/>
+      </svg>
+      Code Editor <span class="section-desc">代码编辑器 — 行号 · 语法高亮 · 读写模式</span>
+    </h2>
+
+    <div class="component-card">
+      <div class="component-name">Input Mode <code>可编辑</code></div>
+      <div id="demoEditor" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+        <div style="display:flex;">
+          <div id="gutter1" style="display:flex;flex-direction:column;align-items:flex-end;padding:12px 8px;min-width:44px;background:var(--muted);border-right:1px solid var(--border);user-select:none;flex-shrink:0;"></div>
+          <textarea id="editorArea" style="flex:1;width:100%;min-height:200px;padding:12px;font-family:var(--font-mono);font-size:13px;line-height:1.6;color:var(--text);background:var(--input);border:none;outline:none;resize:vertical;" spellcheck="false" aria-label="代码编辑器"># === 白名单 ===
++idm.iot.mi.com
++api.io.mi.com
+
+# === 小米 ===
+bss.pandora.xiaomi.com
+jellyfish.pandora.xiaomi.com
+ad.mi.com
+ad.xiaomi.com</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="component-card">
+      <div class="component-name">Output Mode <code>只读 + 语法高亮</code></div>
+      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+        <div style="display:flex;">
+          <div style="display:flex;flex-direction:column;align-items:flex-end;padding:12px 8px;min-width:44px;background:var(--muted);border-right:1px solid var(--border);user-select:none;flex-shrink:0;">
+            <span style="font-family:var(--font-mono);font-size:13px;line-height:1.6;height:20.8px;color:var(--text-tertiary);">1</span>
+            <span style="font-family:var(--font-mono);font-size:13px;line-height:1.6;height:20.8px;color:var(--text-tertiary);">2</span>
+            <span style="font-family:var(--font-mono);font-size:13px;line-height:1.6;height:20.8px;color:var(--text-tertiary);">3</span>
+            <span style="font-family:var(--font-mono);font-size:13px;line-height:1.6;height:20.8px;color:var(--text-tertiary);">4</span>
+            <span style="font-family:var(--font-mono);font-size:13px;line-height:1.6;height:20.8px;color:var(--text-tertiary);">5</span>
+            <span style="font-family:var(--font-mono);font-size:13px;line-height:1.6;height:20.8px;color:var(--text-tertiary);">6</span>
+          </div>
+          <pre style="flex:1;min-height:140px;padding:12px;font-family:var(--font-mono);font-size:13px;line-height:1.6;color:var(--text);background:var(--input);margin:0;overflow:auto;white-space:pre-wrap;word-break:break-all;">
+<span style="color:var(--text-tertiary);font-style:italic;"># =====================================</span>
+<span style="color:var(--text-tertiary);font-style:italic;"># DNS Shield - Dnsmasq 过滤列表</span>
+<span style="color:var(--text-tertiary);font-style:italic;"># =====================================</span>
+
+<span style="color:var(--primary);">address</span>=/ad.mi.com/<span style="color:var(--warning);">127.0.0.1</span>
+<span style="color:var(--primary);">address</span>=/ad.xiaomi.com/<span style="color:var(--warning);">127.0.0.1</span>
+<span style="color:var(--primary);">address</span>=/ad.iqiyi.com/<span style="color:var(--warning);">127.0.0.1</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EMPTY STATES ========== -->
+  <section class="section" id="empty">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="2"/><line x1="8" y1="12" x2="16" y2="12"/>
+      </svg>
+      Empty State <span class="section-desc">空状态 — 图标 · 标题 · 描述 · CTA</span>
+    </h2>
+
+    <div class="component-card">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 16px;text-align:center;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="12" y1="18" x2="12" y2="12"/>
+          <line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+        <h3 style="font-size:18px;font-weight:600;margin-top:16px;letter-spacing:-0.01em;">暂无数据</h3>
+        <p style="font-size:14px;color:var(--text-secondary);margin-top:8px;max-width:280px;">输入域名或导入 URL 后即可开始生成过滤规则</p>
+        <button class="btn btn--md btn--primary" style="margin-top:20px;">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          导入域名
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SKELETON ========== -->
+  <section class="section" id="skeleton">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/>
+      </svg>
+      Skeleton <span class="section-desc">骨架屏 — 脉冲动画加载效果</span>
+    </h2>
+
+    <div class="component-card">
+      <div class="demo-grid-2">
+        <div>
+          <span class="demo-block-label" style="margin-bottom:8px;display:block;">Text Skeleton</span>
+          <div class="skeleton" style="height:22px;width:40%;margin-bottom:12px;"></div>
+          <div class="skeleton" style="height:14px;width:100%;margin-bottom:8px;"></div>
+          <div class="skeleton" style="height:14px;width:100%;margin-bottom:8px;"></div>
+          <div class="skeleton" style="height:14px;width:60%;"></div>
+        </div>
+        <div>
+          <span class="demo-block-label" style="margin-bottom:8px;display:block;">Card Skeleton</span>
+          <div class="skeleton" style="height:200px;width:100%;border-radius:12px;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TOASTS ========== -->
+  <section class="section" id="toast">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+      </svg>
+      Toast <span class="section-desc">通知 — 成功 · 错误 · 警告 · 信息</span>
+    </h2>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="toast-demo" role="alert">
+        <svg class="toast-icon toast-icon--s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <div class="toast-demo-content">
+          <div class="toast-demo-title">规则生成成功</div>
+          <div class="toast-demo-desc">共生成 6 条 Dnsmasq 规则</div>
+        </div>
+        <button style="width:20px;height:20px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--text-tertiary);cursor:pointer;border-radius:4px;flex-shrink:0;" aria-label="关闭">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="toast-demo" role="alert">
+        <svg class="toast-icon toast-icon--e" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        <div class="toast-demo-content">
+          <div class="toast-demo-title">网络请求失败</div>
+          <div class="toast-demo-desc">
+            无法连接到远程服务器
+            <a href="#" onclick="event.preventDefault();" style="display:inline-flex;align-items:center;gap:2px;font-size:12px;color:var(--primary);text-decoration:none;cursor:pointer;margin-left:4px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              重试
+            </a>
+          </div>
+        </div>
+        <button style="width:20px;height:20px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--text-tertiary);cursor:pointer;border-radius:4px;flex-shrink:0;" aria-label="关闭">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="toast-demo" role="alert">
+        <svg class="toast-icon toast-icon--w" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div class="toast-demo-content">
+          <div class="toast-demo-title">解析警告</div>
+          <div class="toast-demo-desc">发现 2 个重复域名，已自动去重</div>
+        </div>
+        <button style="width:20px;height:20px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--text-tertiary);cursor:pointer;border-radius:4px;flex-shrink:0;" aria-label="关闭">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+let isDark = true;
+document.documentElement.setAttribute('data-theme', 'dark');
+
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeBadge').textContent = isDark ? '深色模式' : '浅色模式';
+}
+
+function scrollToSection(id) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('nav-tab--active'));
+  event.target.classList.add('nav-tab--active');
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+// Gutter sync
+const textarea = document.getElementById('editorArea');
+const gutter = document.getElementById('gutter1');
+
+function updateGutter() {
+  const lines = textarea.value.split('\n').length;
+  gutter.innerHTML = '';
+  for (let i = 1; i <= lines; i++) {
+    const span = document.createElement('span');
+    span.style.cssText = 'font-family:var(--font-mono);font-size:13px;line-height:1.6;height:20.8px;color:var(--text-tertiary);';
+    span.textContent = i;
+    gutter.appendChild(span);
+  }
+}
+
+if (textarea) {
+  textarea.addEventListener('input', updateGutter);
+  updateGutter();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNS Shield — 高保真原型 v3.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   DNS Shield Design System v3.0
+   Swiss Modernism 2.0 × Apple Precision
+   ============================================ */
+
+/* --- CSS Custom Properties (Design Tokens) --- */
+:root {
+  /* Colors - Light */
+  --bg-primary: #FFFFFF;
+  --bg-surface: #F5F5F7;
+  --bg-elevated: #FFFFFF;
+  --bg-muted: #E8E8ED;
+  --bg-input: #F5F5F7;
+
+  --text-primary: #1D1D1F;
+  --text-secondary: #6E6E73;
+  --text-tertiary: #A1A1A6;
+  --text-inverse: #FFFFFF;
+
+  --border-default: #D2D2D7;
+  --border-hover: #86868B;
+  --border-focus: #007AFF;
+
+  --accent-primary: #007AFF;
+  --accent-hover: #0056D3;
+  --accent-active: #004999;
+  --accent-subtle: rgba(0, 122, 255, 0.10);
+
+  --success: #34C759;
+  --success-bg: rgba(52, 199, 89, 0.10);
+  --warning: #FF9500;
+  --warning-bg: rgba(255, 149, 0, 0.10);
+  --error: #FF3B30;
+  --error-bg: rgba(255, 59, 48, 0.10);
+  --info: #007AFF;
+  --info-bg: rgba(0, 122, 255, 0.10);
+
+  /* Typography */
+  --font-primary: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+
+  --text-display: 32px;
+  --text-h1: 24px;
+  --text-h2: 18px;
+  --text-h3: 14px;
+  --text-body: 14px;
+  --text-small: 12px;
+  --text-caption: 11px;
+  --text-mono: 13px;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --lh-tight: 1.2;
+  --lh-normal: 1.4;
+  --lh-relaxed: 1.5;
+  --lh-loose: 1.6;
+
+  /* Spacing (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows - Light */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-instant: 75ms;
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+
+  /* Z-index */
+  --z-sticky: 10;
+  --z-dropdown: 50;
+  --z-modal: 100;
+  --z-toast: 200;
+  --z-tooltip: 300;
+}
+
+/* --- Dark Theme Overrides --- */
+[data-theme="dark"] {
+  --bg-primary: #0A0A0F;
+  --bg-surface: #141419;
+  --bg-elevated: #1C1C24;
+  --bg-muted: #2C2C3A;
+  --bg-input: #1C1C24;
+
+  --text-primary: #F5F5F7;
+  --text-secondary: #98989D;
+  --text-tertiary: #6E6E73;
+  --text-inverse: #FFFFFF;
+
+  --border-default: #2C2C3A;
+  --border-hover: #3A3A4A;
+  --border-focus: #0A84FF;
+
+  --accent-primary: #0A84FF;
+  --accent-hover: #4DA3FF;
+  --accent-active: #60AFFF;
+  --accent-subtle: rgba(10, 132, 255, 0.15);
+
+  --success: #30D158;
+  --success-bg: rgba(48, 209, 88, 0.12);
+  --warning: #FF9F0A;
+  --warning-bg: rgba(255, 159, 10, 0.12);
+  --error: #FF453A;
+  --error-bg: rgba(255, 69, 58, 0.12);
+  --info: #0A84FF;
+  --info-bg: rgba(10, 132, 255, 0.12);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- Base Reset --- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: var(--text-body);
+  line-height: var(--lh-relaxed);
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  transition: background var(--duration-slow) var(--ease-out),
+              color var(--duration-slow) var(--ease-out);
+  overflow-x: hidden;
+}
+
+/* --- Focus Styles (Accessibility) --- */
+:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+/* ============================================
+   LAYOUT COMPONENTS
+   ============================================ */
+
+/* --- App Shell --- */
+.app-shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Container --- */
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--space-6);
+  }
+}
+
+/* --- Header --- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: color-mix(in srgb, var(--bg-elevated) 92%, transparent);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid var(--border-default);
+  transition: background var(--duration-slow) var(--ease-out),
+              border-color var(--duration-slow) var(--ease-out);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .header-inner {
+    padding: 0 var(--space-6);
+  }
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.header-brand-icon {
+  width: 22px;
+  height: 22px;
+  color: var(--accent-primary);
+}
+
+.header-brand-name {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+}
+
+.header-version {
+  font-size: var(--text-caption);
+  color: var(--text-tertiary);
+  font-weight: var(--weight-medium);
+  margin-left: var(--space-1);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* --- Header Badge --- */
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  color: var(--accent-primary);
+  background: var(--accent-subtle);
+  cursor: default;
+}
+
+/* --- Main Content --- */
+.main-content {
+  flex: 1;
+  padding: var(--space-6) 0;
+}
+
+@media (min-width: 768px) {
+  .main-content {
+    padding: var(--space-8) 0;
+  }
+}
+
+/* --- Page Header --- */
+.page-header {
+  margin-bottom: var(--space-6);
+}
+
+.page-title {
+  font-size: var(--text-display);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  line-height: var(--lh-tight);
+}
+
+.page-subtitle {
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+  margin-top: var(--space-2);
+}
+
+/* --- Grid Layouts --- */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 1024px) {
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+}
+
+/* ============================================
+   COMPONENT: Card / Panel
+   ============================================ */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  transition: background var(--duration-slow) var(--ease-out),
+              border-color var(--duration-slow) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.card--elevated {
+  box-shadow: var(--shadow-sm);
+  background: var(--bg-elevated);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.card-title {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+  line-height: var(--lh-normal);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.card-title-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   COMPONENT: Button
+   ============================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-primary);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: all var(--duration-fast) var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Button Sizes */
+.btn--sm {
+  height: 28px;
+  padding: 0 var(--space-2);
+  font-size: var(--text-caption);
+  border-radius: var(--radius-sm);
+}
+
+.btn--md {
+  height: 32px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-md);
+}
+
+.btn--lg {
+  height: 36px;
+  padding: 0 var(--space-4);
+  font-size: var(--text-body);
+  border-radius: var(--radius-md);
+}
+
+.btn--xl {
+  height: 40px;
+  padding: 0 var(--space-5);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  border-radius: var(--radius-md);
+}
+
+/* Button Variants */
+.btn--primary {
+  background: var(--accent-primary);
+  color: var(--text-inverse);
+  border-color: var(--accent-primary);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn--primary:active:not(:disabled) {
+  background: var(--accent-active);
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn--secondary {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-default);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  border-color: var(--border-hover);
+  background: var(--bg-muted);
+}
+
+.btn--secondary:active:not(:disabled) {
+  background: var(--bg-surface);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: transparent;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: var(--bg-muted);
+  color: var(--text-primary);
+}
+
+.btn--ghost:active:not(:disabled) {
+  background: var(--border-default);
+}
+
+.btn--destructive {
+  background: var(--error);
+  color: var(--text-inverse);
+  border-color: var(--error);
+}
+
+.btn--destructive:hover:not(:disabled) {
+  opacity: 0.9;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Button Icon Only */
+.btn--icon {
+  padding: 0;
+  width: 32px;
+}
+
+.btn--icon.btn--sm {
+  width: 28px;
+}
+
+.btn--icon.btn--lg {
+  width: 36px;
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* Button Loading State */
+.btn__spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  position: absolute;
+}
+
+.btn--loading {
+  color: transparent;
+  pointer-events: none;
+}
+
+.btn--loading .btn-icon,
+.btn--loading .btn-text {
+  visibility: hidden;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Button Group */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.btn-group--right {
+  justify-content: flex-end;
+}
+
+/* ============================================
+   COMPONENT: Input
+   ============================================ */
+.input-wrapper {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  height: 36px;
+  padding: 0 var(--space-3);
+  font-family: var(--font-primary);
+  font-size: var(--text-body);
+  color: var(--text-primary);
+  background: var(--bg-input);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.input:hover:not(:disabled):not(:focus) {
+  border-color: var(--border-hover);
+}
+
+.input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+.input--error {
+  border-color: var(--error);
+}
+
+.input--error:focus {
+  box-shadow: 0 0 0 3px var(--error-bg);
+}
+
+.input--success {
+  border-color: var(--success);
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.input--with-left {
+  padding-left: 36px;
+}
+
+.input--with-right {
+  padding-right: 36px;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.input-icon--left {
+  left: var(--space-3);
+}
+
+.input-icon--right {
+  right: var(--space-3);
+}
+
+.input-label {
+  display: block;
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.input-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-small);
+  color: var(--error);
+  margin-top: var(--space-1);
+}
+
+.input-error-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   COMPONENT: Textarea / Code Editor
+   ============================================ */
+.editor {
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.editor:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+.editor-inner {
+  display: flex;
+  position: relative;
+}
+
+.editor-gutter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: var(--space-3) var(--space-2);
+  min-width: 44px;
+  background: var(--bg-muted);
+  border-right: 1px solid var(--border-default);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.editor-gutter-line {
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  line-height: var(--lh-loose);
+  color: var(--text-tertiary);
+  height: 20.8px;
+}
+
+.editor-textarea {
+  flex: 1;
+  width: 100%;
+  min-height: 240px;
+  padding: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  line-height: var(--lh-loose);
+  color: var(--text-primary);
+  background: var(--bg-input);
+  border: none;
+  outline: none;
+  resize: vertical;
+}
+
+.editor-textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.editor-textarea--readonly {
+  resize: none;
+  cursor: default;
+}
+
+/* Syntax Highlighting in Read-only Pre */
+.editor-pre {
+  flex: 1;
+  min-height: 240px;
+  padding: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  line-height: var(--lh-loose);
+  color: var(--text-primary);
+  background: var(--bg-input);
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.editor-comment { color: var(--text-tertiary); font-style: italic; }
+.editor-keyword { color: var(--accent-primary); }
+.editor-string { color: var(--success); }
+.editor-number { color: var(--warning); }
+
+/* ============================================
+   COMPONENT: Badge
+   ============================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.badge--default {
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+}
+
+.badge--primary {
+  background: var(--accent-subtle);
+  color: var(--accent-primary);
+}
+
+.badge--success {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.badge--warning {
+  background: var(--warning-bg);
+  color: var(--warning);
+}
+
+.badge--error {
+  background: var(--error-bg);
+  color: var(--error);
+}
+
+.badge-icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* ============================================
+   COMPONENT: Stat Card
+   ============================================ */
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  min-width: 68px;
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+}
+
+.stat-value {
+  font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  line-height: var(--lh-tight);
+}
+
+.stat-label {
+  font-size: var(--text-caption);
+  color: var(--text-secondary);
+  margin-top: 2px;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================
+   COMPONENT: Tabs (Segmented Control)
+   ============================================ */
+.tabs {
+  display: inline-flex;
+  padding: 2px;
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
+  gap: 2px;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 4px 10px;
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  white-space: nowrap;
+}
+
+.tab:hover:not(.tab--active) {
+  color: var(--text-primary);
+}
+
+.tab--active {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* ============================================
+   COMPONENT: Tag / Preset Chip
+   ============================================ */
+.tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  user-select: none;
+}
+
+.tag--default {
+  background: var(--bg-muted);
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+}
+
+.tag--default:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.tag--active {
+  background: var(--accent-primary);
+  color: var(--text-inverse);
+}
+
+.tag--active:hover {
+  background: var(--accent-hover);
+}
+
+/* ============================================
+   COMPONENT: URL Import Bar
+   ============================================ */
+.url-import {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--bg-input);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  transition: background var(--duration-slow) var(--ease-out),
+              border-color var(--duration-slow) var(--ease-out);
+}
+
+.url-import-row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.url-import-input {
+  flex: 1;
+}
+
+/* ============================================
+   COMPONENT: Empty State
+   ============================================ */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-4);
+  text-align: center;
+}
+
+.empty-state-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-4);
+}
+
+.empty-state-title {
+  font-size: var(--text-h2);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.empty-state-desc {
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+  margin-top: var(--space-2);
+  max-width: 280px;
+}
+
+.empty-state-action {
+  margin-top: var(--space-5);
+}
+
+/* ============================================
+   COMPONENT: Footer
+   ============================================ */
+.footer {
+  border-top: 1px solid var(--border-default);
+  padding: var(--space-6) 0;
+  text-align: center;
+  transition: border-color var(--duration-slow) var(--ease-out);
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  margin-bottom: var(--space-3);
+}
+
+.footer-link {
+  font-size: var(--text-small);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.footer-link:hover {
+  color: var(--accent-primary);
+}
+
+.footer-divider {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+}
+
+.footer-copy {
+  font-size: var(--text-small);
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   COMPONENT: Toast / Notification
+   ============================================ */
+.toast-container {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  min-width: 300px;
+  max-width: 400px;
+  animation: toast-in var(--duration-slow) var(--ease-out);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.toast-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.toast-icon--success { color: var(--success); }
+.toast-icon--error { color: var(--error); }
+.toast-icon--warning { color: var(--warning); }
+.toast-icon--info { color: var(--info); }
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-title {
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+}
+
+.toast-desc {
+  font-size: var(--text-small);
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+.toast-close {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.toast-close:hover {
+  color: var(--text-primary);
+}
+
+.toast-close-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.toast-retry {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: var(--text-small);
+  color: var(--accent-primary);
+  text-decoration: none;
+  cursor: pointer;
+  margin-left: var(--space-1);
+}
+
+.toast-retry:hover {
+  text-decoration: underline;
+}
+
+/* ============================================
+   COMPONENT: Skeleton / Loading
+   ============================================ */
+.skeleton {
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--bg-elevated) 50%, transparent),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.skeleton--text {
+  height: 14px;
+  width: 100%;
+  margin-bottom: var(--space-2);
+}
+
+.skeleton--text-short {
+  height: 14px;
+  width: 60%;
+  margin-bottom: var(--space-2);
+}
+
+.skeleton--heading {
+  height: 22px;
+  width: 40%;
+  margin-bottom: var(--space-3);
+}
+
+.skeleton--card {
+  height: 300px;
+  width: 100%;
+}
+
+/* ============================================
+   TOOLTIP
+   ============================================ */
+.tooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  padding: 4px 8px;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--duration-fast) var(--ease-out);
+  z-index: var(--z-tooltip);
+  box-shadow: var(--shadow-md);
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* ============================================
+   RESPONSIVE HELPERS
+   ============================================ */
+.hidden-mobile {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hidden-mobile {
+    display: revert;
+  }
+}
+
+.hidden-desktop {
+  display: revert;
+}
+
+@media (min-width: 768px) {
+  .hidden-desktop {
+    display: none;
+  }
+}
+
+/* ============================================
+   MERGE INFO BAR
+   ============================================ */
+.merge-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: var(--text-small);
+  color: var(--text-secondary);
+  padding: var(--space-2) 0;
+}
+
+.merge-info-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.merge-info-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   SETTINGS PANEL (Collapsible)
+   ============================================ */
+.settings-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-small);
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.settings-toggle:hover {
+  background: var(--bg-muted);
+  color: var(--text-primary);
+}
+
+.settings-toggle-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.settings-toggle--open .settings-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.settings-panel {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: all var(--duration-slow) var(--ease-out);
+}
+
+.settings-panel--open {
+  max-height: 300px;
+  opacity: 1;
+}
+
+.settings-inner {
+  padding: var(--space-4);
+  background: var(--bg-muted);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-3);
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) 0;
+}
+
+.settings-label {
+  font-size: var(--text-small);
+  color: var(--text-secondary);
+}
+
+/* Switch */
+.switch {
+  position: relative;
+  width: 36px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-track {
+  position: absolute;
+  inset: 0;
+  background: var(--border-default);
+  border-radius: var(--radius-full);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.switch input:checked + .switch-track {
+  background: var(--accent-primary);
+}
+
+.switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: var(--text-inverse);
+  border-radius: 50%;
+  transition: transform var(--duration-fast) var(--ease-out);
+  box-shadow: var(--shadow-sm);
+}
+
+.switch input:checked ~ .switch-thumb {
+  transform: translateX(14px);
+}
+
+/* ============================================
+   STATE LABEL (for demo purposes)
+   ============================================ */
+.demo-state-label {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-3);
+  padding: 2px 6px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================
+   FORM GROUP
+   ============================================ */
+.form-group {
+  margin-bottom: var(--space-4);
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+</style>
+</head>
+<body>
+
+<div id="app" class="app-shell">
+  <!-- ============ HEADER ============ -->
+  <header class="header" role="banner">
+    <div class="header-inner">
+      <a href="#" class="header-brand" aria-label="DNS Shield 首页">
+        <!-- Shield Icon -->
+        <svg class="header-brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+        <span class="header-brand-name">DNS Shield</span>
+        <span class="header-version">v3.0</span>
+      </a>
+
+      <div class="header-actions">
+        <span class="header-badge hidden-mobile">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          原型预览
+        </span>
+
+        <!-- Data Toggle -->
+        <button class="btn btn--sm btn--ghost" id="dataToggle" onclick="toggleData()" aria-label="切换数据显示状态">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="9" y1="21" x2="9" y2="9"/>
+          </svg>
+          <span class="btn-text" id="dataToggleLabel">有数据</span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button class="btn btn--sm btn--ghost" id="themeToggle" onclick="toggleTheme()" aria-label="切换深色/浅色模式">
+          <svg class="btn-icon" id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <span class="btn-text" id="themeLabel">深色</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main class="main-content" role="main">
+    <div class="container">
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">DNS Shield</h1>
+        <p class="page-subtitle">路由器级全局广告过滤规则生成工具 — 输入域名清单，自动生成 Dnsmasq / Hosts / AdGuard 格式规则</p>
+      </div>
+
+      <!-- Dual Panel Grid -->
+      <div class="grid-2">
+
+        <!-- ==================== INPUT PANEL ==================== -->
+        <section class="card" aria-label="输入面板">
+          <div class="card-header">
+            <h2 class="card-title">
+              <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+              输入域名清单
+            </h2>
+            <button class="settings-toggle" id="settingsToggle" onclick="toggleSettings()" aria-label="展开/收起高级选项" aria-expanded="false">
+              <svg class="settings-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+              高级选项
+            </button>
+          </div>
+
+          <!-- Stats Row -->
+          <div class="stat-row" id="statsRow">
+            <div class="stat-item"><span class="stat-value" id="statDomains">6</span><span class="stat-label">域名</span></div>
+            <div class="stat-item"><span class="stat-value" id="statBlacklist">6</span><span class="stat-label">黑名单</span></div>
+            <div class="stat-item"><span class="stat-value" id="statWhitelist">2</span><span class="stat-label">白名单</span></div>
+            <div class="stat-item"><span class="stat-value" id="statValid">8</span><span class="stat-label">有效</span></div>
+            <div class="stat-item"><span class="stat-value" id="statComments">4</span><span class="stat-label">注释</span></div>
+          </div>
+
+          <!-- URL Import -->
+          <div class="url-import" style="margin-bottom: var(--space-3);">
+            <div class="url-import-row">
+              <div class="input-wrapper url-import-input">
+                <svg class="input-icon input-icon--left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+                <input class="input input--with-left" type="text" placeholder="输入 URL 导入域名列表..." value="https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt" readonly aria-label="URL 导入地址">
+              </div>
+              <button class="btn btn--md btn--primary" aria-label="获取远程域名列表">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="12" x2="2" y2="12"/>
+                  <polyline points="18 8 22 12 18 16"/>
+                </svg>
+                <span class="btn-text">获取</span>
+              </button>
+            </div>
+            <div class="tag-group">
+              <span class="tag tag--active" role="button" tabindex="0" aria-label="选择预设: 内置数据">内置数据</span>
+              <span class="tag tag--default" role="button" tabindex="0" aria-label="选择预设: AdGuard">AdGuard</span>
+              <span class="tag tag--default" role="button" tabindex="0" aria-label="选择预设: EasyList">EasyList</span>
+              <span class="tag tag--default" role="button" tabindex="0" aria-label="选择预设: NeoHosts">NeoHosts</span>
+              <span class="tag tag--default" role="button" tabindex="0" aria-label="选择预设: StevenBlack">StevenBlack</span>
+            </div>
+          </div>
+
+          <!-- Code Editor -->
+          <div class="editor" style="margin-bottom: var(--space-3);">
+            <div class="editor-inner">
+              <div class="editor-gutter" id="inputGutter">
+                <span class="editor-gutter-line">1</span>
+                <span class="editor-gutter-line">2</span>
+                <span class="editor-gutter-line">3</span>
+                <span class="editor-gutter-line">4</span>
+                <span class="editor-gutter-line">5</span>
+                <span class="editor-gutter-line">6</span>
+                <span class="editor-gutter-line">7</span>
+                <span class="editor-gutter-line">8</span>
+                <span class="editor-gutter-line">9</span>
+                <span class="editor-gutter-line">10</span>
+                <span class="editor-gutter-line">11</span>
+                <span class="editor-gutter-line">12</span>
+                <span class="editor-gutter-line">13</span>
+                <span class="editor-gutter-line">14</span>
+                <span class="editor-gutter-line">15</span>
+                <span class="editor-gutter-line">16</span>
+                <span class="editor-gutter-line">17</span>
+                <span class="editor-gutter-line">18</span>
+                <span class="editor-gutter-line">19</span>
+                <span class="editor-gutter-line">20</span>
+              </div>
+              <textarea class="editor-textarea" id="inputEditor" placeholder="# 输入域名，每行一个&#10;ad.example.com&#10;# + 开头为白名单&#10;# @domain=ip 为自定义DNS" spellcheck="false" aria-label="域名编辑器"># === 白名单 ===
++idm.iot.mi.com
++api.io.mi.com
+
+# === 小米 ===
+bss.pandora.xiaomi.com
+jellyfish.pandora.xiaomi.com
+ad.mi.com
+ad.xiaomi.com
+
+# === 视频平台 ===
+ad.iqiyi.com
+log.iqiyi.com
+ad.youku.com
+ad.bilibili.com
+log.bilibili.com</textarea>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="btn-group btn-group--right">
+            <button class="btn btn--sm btn--ghost" aria-label="清空编辑器">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              </svg>
+              <span class="btn-text">清空</span>
+            </button>
+            <button class="btn btn--sm btn--ghost" aria-label="排序域名">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="8" y1="6" x2="21" y2="6"/>
+                <line x1="8" y1="12" x2="21" y2="12"/>
+                <line x1="8" y1="18" x2="21" y2="18"/>
+                <line x1="3" y1="6" x2="3.01" y2="6"/>
+                <line x1="3" y1="12" x2="3.01" y2="12"/>
+                <line x1="3" y1="18" x2="3.01" y2="18"/>
+              </svg>
+              <span class="btn-text">排序</span>
+            </button>
+            <button class="btn btn--sm btn--ghost" aria-label="去重域名">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
+              </svg>
+              <span class="btn-text">去重</span>
+            </button>
+            <button class="btn btn--sm btn--secondary" aria-label="保存到本地">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/>
+                <polyline points="7 3 7 8 15 8"/>
+              </svg>
+              <span class="btn-text">保存</span>
+            </button>
+            <button class="btn btn--lg btn--primary" aria-label="解析并生成规则">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              <span class="btn-text">解析域名</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- ==================== OUTPUT PANEL ==================== -->
+        <section class="card" aria-label="输出面板">
+          <div class="card-header">
+            <h2 class="card-title">
+              <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 3 21 3 21 8"/>
+                <line x1="4" y1="20" x2="21" y2="3"/>
+                <polyline points="21 16 21 21 16 21"/>
+                <line x1="15" y1="15" x2="21" y2="21"/>
+                <line x1="4" y1="4" x2="9" y2="9"/>
+              </svg>
+              生成过滤规则
+            </h2>
+
+            <div class="btn-group" style="gap: var(--space-2);">
+              <!-- Format Tabs -->
+              <div class="tabs" role="tablist" aria-label="规则格式">
+                <button class="tab tab--active" role="tab" aria-selected="true" data-format="dnsmasq" onclick="switchFormat(event, 'dnsmasq')">
+                  <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="4 17 10 11 4 5"/>
+                    <line x1="12" y1="19" x2="20" y2="19"/>
+                  </svg>
+                  Dnsmasq
+                </button>
+                <button class="tab" role="tab" aria-selected="false" data-format="hosts" onclick="switchFormat(event, 'hosts')">
+                  <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <line x1="3" y1="9" x2="21" y2="9"/>
+                  </svg>
+                  Hosts
+                </button>
+                <button class="tab" role="tab" aria-selected="false" data-format="adguard" onclick="switchFormat(event, 'adguard')">
+                  <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  </svg>
+                  AdGuard
+                </button>
+                <button class="tab" role="tab" aria-selected="false" data-format="whitelist" onclick="switchFormat(event, 'whitelist')">
+                  <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12l2 2 4-4"/>
+                    <circle cx="12" cy="12" r="10"/>
+                  </svg>
+                  白名单
+                </button>
+              </div>
+
+              <!-- Settings gear -->
+              <button class="btn btn--md btn--icon btn--ghost tooltip" data-tooltip="输出设置" aria-label="输出设置">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33"/>
+                  <path d="M5.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06c.26.26.7.44 1.12.33"/>
+                  <path d="M12 2v2"/>
+                  <path d="M12 20v2"/>
+                  <path d="M4.93 4.93l1.41 1.41"/>
+                  <path d="M17.66 17.66l1.41 1.41"/>
+                  <path d="M2 12h2"/>
+                  <path d="M20 12h2"/>
+                  <path d="M6.34 17.66l-1.41 1.41"/>
+                  <path d="M19.07 4.93l-1.41 1.41"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Merge Info -->
+          <div class="merge-info" id="mergeInfo">
+            <span class="merge-info-item">
+              <span class="merge-info-dot" style="background: var(--accent-primary);"></span>
+              黑名单: 6
+            </span>
+            <span class="merge-info-item">
+              <span class="merge-info-dot" style="background: var(--success);"></span>
+              白名单: 2
+            </span>
+            <span class="merge-info-item">
+              <span class="merge-info-dot" style="background: var(--text-tertiary);"></span>
+              自定义 DNS: 0
+            </span>
+            <span class="merge-info-item">Dnsmasq: 6 行</span>
+            <span class="merge-info-item">Hosts: 6 行</span>
+            <span class="merge-info-item">AdGuard: 6 行</span>
+          </div>
+
+          <!-- Output Editor -->
+          <div class="editor" style="margin-bottom: var(--space-3);">
+            <div class="editor-inner">
+              <div class="editor-gutter" id="outputGutter">
+                <span class="editor-gutter-line">1</span>
+                <span class="editor-gutter-line">2</span>
+                <span class="editor-gutter-line">3</span>
+                <span class="editor-gutter-line">4</span>
+                <span class="editor-gutter-line">5</span>
+                <span class="editor-gutter-line">6</span>
+                <span class="editor-gutter-line">7</span>
+                <span class="editor-gutter-line">8</span>
+                <span class="editor-gutter-line">9</span>
+                <span class="editor-gutter-line">10</span>
+                <span class="editor-gutter-line">11</span>
+                <span class="editor-gutter-line">12</span>
+                <span class="editor-gutter-line">13</span>
+                <span class="editor-gutter-line">14</span>
+                <span class="editor-gutter-line">15</span>
+                <span class="editor-gutter-line">16</span>
+                <span class="editor-gutter-line">17</span>
+                <span class="editor-gutter-line">18</span>
+                <span class="editor-gutter-line">19</span>
+                <span class="editor-gutter-line">20</span>
+              </div>
+              <pre class="editor-pre" id="outputEditor" aria-label="规则输出预览"><span class="editor-comment"># =====================================</span>
+<span class="editor-comment"># DNS Shield - Dnsmasq 广告过滤列表</span>
+<span class="editor-comment"># =====================================</span>
+<span class="editor-comment">#</span>
+<span class="editor-comment"># 路由器级广告过滤规则</span>
+<span class="editor-comment">#</span>
+<span class="editor-comment"># 版本: 3.0.0</span>
+<span class="editor-comment"># 域名: 6 个唯一域名</span>
+<span class="editor-comment">#</span>
+<span class="editor-comment"># 使用方法:</span>
+<span class="editor-comment"># - 梅林: 软件中心 → DNS 设置</span>
+<span class="editor-comment"># - OpenWrt: 服务 → DHCP 和 DNS</span>
+<span class="editor-comment"># =====================================</span>
+
+<span class="editor-keyword">address</span>=/ad.mi.com/<span class="editor-number">127.0.0.1</span>
+<span class="editor-keyword">address</span>=/ad.xiaomi.com/<span class="editor-number">127.0.0.1</span>
+<span class="editor-keyword">address</span>=/ad.iqiyi.com/<span class="editor-number">127.0.0.1</span>
+<span class="editor-keyword">address</span>=/log.iqiyi.com/<span class="editor-number">127.0.0.1</span>
+<span class="editor-keyword">address</span>=/ad.youku.com/<span class="editor-number">127.0.0.1</span>
+<span class="editor-keyword">address</span>=/ad.bilibili.com/<span class="editor-number">127.0.0.1</span>
+
+<span class="editor-comment"># 白名单 (允许这些域名)</span>
+<span class="editor-keyword">server</span>=/mi.com/
+<span class="editor-keyword">server</span>=/iot.mi.com/</pre>
+            </div>
+          </div>
+
+          <!-- Output Buttons -->
+          <div class="btn-group btn-group--right">
+            <button class="btn btn--md btn--primary" aria-label="重新生成规则">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"/>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+              </svg>
+              <span class="btn-text">生成规则</span>
+            </button>
+            <button class="btn btn--md btn--primary" aria-label="下载规则文件">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              <span class="btn-text">下载</span>
+            </button>
+            <button class="btn btn--md btn--secondary" aria-label="复制到剪贴板">
+              <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span class="btn-text">复制</span>
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <!-- ============ COMPONENT SHOWCASE SECTION ============ -->
+      <section style="margin-top: var(--space-12);">
+        <div class="page-header">
+          <h2 class="card-title" style="font-size: var(--text-h1);">
+            <svg class="card-title-icon" style="width:22px;height:22px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            组件展示
+          </h2>
+          <p class="page-subtitle">所有组件严格遵循 DNS Shield Design System v3.0 规范</p>
+        </div>
+
+        <!-- Buttons Showcase -->
+        <div class="card" style="margin-bottom: var(--space-4);">
+          <h3 class="card-title" style="margin-bottom: var(--space-4);">
+            <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <line x1="9" y1="9" x2="15" y2="15"/>
+              <line x1="15" y1="9" x2="9" y2="15"/>
+            </svg>
+            按钮 (Button)
+          </h3>
+
+          <div style="display:grid; grid-template-columns: 1fr; gap: var(--space-4);">
+            <!-- Variants -->
+            <div>
+              <span class="demo-state-label">变体</span>
+              <div class="btn-group">
+                <button class="btn btn--md btn--primary"><span class="btn-text">Primary</span></button>
+                <button class="btn btn--md btn--secondary"><span class="btn-text">Secondary</span></button>
+                <button class="btn btn--md btn--ghost"><span class="btn-text">Ghost</span></button>
+                <button class="btn btn--md btn--destructive"><span class="btn-text">Destructive</span></button>
+              </div>
+            </div>
+
+            <!-- Sizes -->
+            <div>
+              <span class="demo-state-label">尺寸</span>
+              <div class="btn-group">
+                <button class="btn btn--sm btn--primary"><span class="btn-text">Small</span></button>
+                <button class="btn btn--md btn--primary"><span class="btn-text">Medium</span></button>
+                <button class="btn btn--lg btn--primary"><span class="btn-text">Large</span></button>
+                <button class="btn btn--xl btn--primary"><span class="btn-text">X-Large</span></button>
+              </div>
+            </div>
+
+            <!-- Icon Buttons -->
+            <div>
+              <span class="demo-state-label">图标按钮</span>
+              <div class="btn-group">
+                <button class="btn btn--md btn--icon btn--primary" aria-label="播放">
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                  </svg>
+                </button>
+                <button class="btn btn--md btn--icon btn--secondary" aria-label="设置">
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33"/>
+                  </svg>
+                </button>
+                <button class="btn btn--lg btn--icon btn--primary" aria-label="下载">
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- States -->
+            <div>
+              <span class="demo-state-label">状态</span>
+              <div class="btn-group">
+                <button class="btn btn--md btn--primary" disabled><span class="btn-text">Disabled</span></button>
+                <button class="btn btn--md btn--secondary" disabled><span class="btn-text">Disabled</span></button>
+                <button class="btn btn--md btn--primary btn--loading">
+                  <span class="btn__spinner"></span>
+                  <span class="btn-text">Loading</span>
+                </button>
+                <button class="btn btn--md btn--primary" style="filter: brightness(1.1); box-shadow: 0 0 0 2px var(--border-focus);">
+                  <span class="btn-text">Focused</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- With Icons -->
+            <div>
+              <span class="demo-state-label">带图标</span>
+              <div class="btn-group">
+                <button class="btn btn--md btn--primary">
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="12" x2="2" y2="12"/><polyline points="18 8 22 12 18 16"/>
+                  </svg>
+                  <span class="btn-text">获取数据</span>
+                </button>
+                <button class="btn btn--md btn--secondary">
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  <span class="btn-text">下载文件</span>
+                </button>
+                <button class="btn btn--md btn--ghost">
+                  <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                  </svg>
+                  <span class="btn-text">链接</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inputs Showcase -->
+        <div class="card" style="margin-bottom: var(--space-4);">
+          <h3 class="card-title" style="margin-bottom: var(--space-4);">
+            <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="M2 8h20"/>
+            </svg>
+            输入框 (Input)
+          </h3>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+            <div class="form-group">
+              <label class="input-label">默认输入框</label>
+              <input class="input" type="text" placeholder="输入域名..." aria-label="默认输入框">
+            </div>
+            <div class="form-group">
+              <label class="input-label">聚焦状态</label>
+              <div class="input-wrapper">
+                <svg class="input-icon input-icon--left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input class="input input--with-left" type="text" placeholder="搜索域名..." value="example.com" aria-label="带图标的输入框">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label">错误状态</label>
+              <input class="input input--error" type="text" value="invalid domain" aria-label="错误状态的输入框">
+              <div class="input-error">
+                <svg class="input-error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+                </svg>
+                域名格式无效，请检查后重试
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label">成功状态</label>
+              <input class="input input--success" type="text" value="google.com" aria-label="成功状态的输入框">
+            </div>
+            <div class="form-group">
+              <label class="input-label">禁用状态</label>
+              <input class="input" type="text" value="只读内容" disabled aria-label="禁用状态的输入框">
+            </div>
+          </div>
+        </div>
+
+        <!-- Badges Showcase -->
+        <div class="card" style="margin-bottom: var(--space-4);">
+          <h3 class="card-title" style="margin-bottom: var(--space-4);">
+            <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            徽标 (Badge)
+          </h3>
+          <div class="btn-group">
+            <span class="badge badge--default">Default</span>
+            <span class="badge badge--primary">Primary</span>
+            <span class="badge badge--success">Success</span>
+            <span class="badge badge--warning">Warning</span>
+            <span class="badge badge--error">Error</span>
+          </div>
+          <div class="btn-group" style="margin-top: var(--space-3);">
+            <span class="badge badge--success">
+              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              已生效
+            </span>
+            <span class="badge badge--warning">
+              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+              </svg>
+              需关注
+            </span>
+            <span class="badge badge--error">
+              <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
+              规则冲突
+            </span>
+          </div>
+        </div>
+
+        <!-- Tabs & Tags Showcase -->
+        <div class="card" style="margin-bottom: var(--space-4);">
+          <h3 class="card-title" style="margin-bottom: var(--space-4);">
+            <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+            </svg>
+            标签组 (Tabs & Tags)
+          </h3>
+
+          <div style="margin-bottom: var(--space-4);">
+            <span class="demo-state-label" style="margin-bottom: var(--space-2); display: inline-block;">分段控件 (Tabs)</span>
+            <div class="tabs" role="tablist">
+              <button class="tab tab--active" role="tab" aria-selected="true">Dnsmasq</button>
+              <button class="tab" role="tab" aria-selected="false">Hosts</button>
+              <button class="tab" role="tab" aria-selected="false">AdGuard</button>
+              <button class="tab" role="tab" aria-selected="false">白名单</button>
+            </div>
+          </div>
+
+          <div>
+            <span class="demo-state-label" style="margin-bottom: var(--space-2); display: inline-block;">标签 (Tags)</span>
+            <div class="tag-group">
+              <span class="tag tag--active" role="button" tabindex="0">内置数据</span>
+              <span class="tag tag--default" role="button" tabindex="0">AdGuard</span>
+              <span class="tag tag--default" role="button" tabindex="0">EasyList</span>
+              <span class="tag tag--default" role="button" tabindex="0">NeoHosts</span>
+              <span class="tag tag--default" role="button" tabindex="0">StevenBlack</span>
+              <span class="tag tag--default" role="button" tabindex="0">ClassicList</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State Showcase -->
+        <div class="card" style="margin-bottom: var(--space-4);">
+          <h3 class="card-title" style="margin-bottom: var(--space-4);">
+            <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="2"/><line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+            空状态 (Empty State)
+          </h3>
+          <div class="empty-state">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+            <h4 class="empty-state-title">暂无数据</h4>
+            <p class="empty-state-desc">输入域名或导入 URL 后即可开始生成过滤规则</p>
+            <div class="empty-state-action">
+              <button class="btn btn--md btn--primary">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                <span class="btn-text">导入域名</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading / Skeleton Showcase -->
+        <div class="card" style="margin-bottom: var(--space-4);">
+          <h3 class="card-title" style="margin-bottom: var(--space-4);">
+            <svg class="card-title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/>
+            </svg>
+            加载状态 (Skeleton)
+          </h3>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+            <div>
+              <span class="demo-state-label">文本骨架屏</span>
+              <div class="skeleton skeleton--heading"></div>
+              <div class="skeleton skeleton--text"></div>
+              <div class="skeleton skeleton--text"></div>
+              <div class="skeleton skeleton--text-short"></div>
+            </div>
+            <div>
+              <span class="demo-state-label">卡片骨架屏</span>
+              <div class="skeleton skeleton--card"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-links">
+        <a href="#" class="footer-link" aria-label="GitHub 仓库">GitHub</a>
+        <span class="footer-divider"></span>
+        <a href="#" class="footer-link" aria-label="在线演示">Demo</a>
+        <span class="footer-divider"></span>
+        <a href="#" class="footer-link" aria-label="使用文档">文档</a>
+        <span class="footer-divider"></span>
+        <span class="footer-link" style="cursor:default;">v3.0.0</span>
+      </div>
+      <p class="footer-copy">DNS Shield — 路由器级广告过滤规则生成工具</p>
+    </div>
+  </footer>
+
+  <!-- ============ TOAST NOTIFICATIONS ============ -->
+  <div class="toast-container" id="toastContainer">
+    <!-- Success Toast -->
+    <div class="toast" role="alert">
+      <svg class="toast-icon toast-icon--success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      <div class="toast-content">
+        <div class="toast-title">规则生成成功</div>
+        <div class="toast-desc">共生成 6 条 Dnsmasq 规则</div>
+      </div>
+      <button class="toast-close" aria-label="关闭通知">
+        <svg class="toast-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Error Toast -->
+    <div class="toast" role="alert">
+      <svg class="toast-icon toast-icon--error" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+      </svg>
+      <div class="toast-content">
+        <div class="toast-title">网络请求失败</div>
+        <div class="toast-desc">
+          无法连接到远程服务器
+          <a class="toast-retry" href="#" onclick="event.preventDefault();">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10"/>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+            </svg>
+            重试
+          </a>
+        </div>
+      </div>
+      <button class="toast-close" aria-label="关闭通知">
+        <svg class="toast-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================
+// Prototype Interactivity
+// ============================================
+
+let isDark = true;
+let hasData = true;
+let currentFormat = 'dnsmasq';
+
+// --- Theme Toggle ---
+function toggleTheme() {
+  isDark = !isDark;
+  const root = document.documentElement;
+  root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+
+  const icon = document.getElementById('themeIcon');
+  const label = document.getElementById('themeLabel');
+
+  if (isDark) {
+    icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    label.textContent = '深色';
+  } else {
+    icon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+    label.textContent = '浅色';
+  }
+}
+
+// --- Data Toggle ---
+function toggleData() {
+  hasData = !hasData;
+  const label = document.getElementById('dataToggleLabel');
+  const stats = document.getElementById('statsRow');
+  const mergeInfo = document.getElementById('mergeInfo');
+  const inputEditor = document.getElementById('inputEditor');
+  const outputEditor = document.getElementById('outputEditor');
+  const inputGutter = document.getElementById('inputGutter');
+  const outputGutter = document.getElementById('outputGutter');
+
+  label.textContent = hasData ? '有数据' : '空状态';
+
+  if (hasData) {
+    stats.style.display = 'flex';
+    mergeInfo.style.display = 'flex';
+    inputEditor.value = `# === 白名单 ===\n+idm.iot.mi.com\n+api.io.mi.com\n\n# === 小米 ===\nbss.pandora.xiaomi.com\njellyfish.pandora.xiaomi.com\nad.mi.com\nad.xiaomi.com\n\n# === 视频平台 ===\nad.iqiyi.com\nlog.iqiyi.com\nad.youku.com\nad.bilibili.com\nlog.bilibili.com`;
+    renderOutput(currentFormat);
+    renderGutter(inputGutter, 20);
+    renderGutter(outputGutter, 20);
+  } else {
+    stats.style.display = 'none';
+    mergeInfo.style.display = 'none';
+    inputEditor.value = '';
+    outputEditor.innerHTML = `<span style="color: var(--text-tertiary);">// 暂无输出数据</span>`;
+    renderGutter(inputGutter, 1);
+    renderGutter(outputGutter, 1);
+  }
+}
+
+// --- Format Switching ---
+function switchFormat(event, format) {
+  currentFormat = format;
+
+  // Update tab active state
+  document.querySelectorAll('[role="tab"]').forEach(tab => {
+    tab.classList.remove('tab--active');
+    tab.setAttribute('aria-selected', 'false');
+  });
+  event.currentTarget.classList.add('tab--active');
+  event.currentTarget.setAttribute('aria-selected', 'true');
+
+  if (hasData) {
+    renderOutput(format);
+  }
+}
+
+// --- Render Output ---
+function renderOutput(format) {
+  const outputEl = document.getElementById('outputEditor');
+  const outputGutter = document.getElementById('outputGutter');
+
+  const outputs = {
+    dnsmasq: `<span class="editor-comment"># =====================================</span>
+<span class="editor-comment"># DNS Shield - Dnsmasq 广告过滤列表</span>
+<span class="editor-comment"># =====================================</span>
+<span class="editor-comment">#</span>
+<span class="editor-comment"># 路由器级广告过滤规则</span>
+<span class="editor-comment">#</span>
+<span class="editor-comment"># 版本: 3.0.0</span>
+<span class="editor-comment"># 域名: 6 个唯一域名</span>
+<span class="editor-comment">#</span>
+<span class="editor-comment"># 使用方法:</span>
+<span class="editor-comment"># - 梅林: 软件中心 → DNS 设置</span>
+<span class="editor-comment"># - OpenWrt: 服务 → DHCP 和 DNS</span>
+<span class="editor-comment"># =====================================</span>
+
+<span class="editor-keyword">address</span>=/ad.mi.com/<span class="editor-number">127.0.0.1</span>
+<span class="editor-keyword">address</span>=/ad.xiaomi.com/<span class="editor-number">127.0.0.1</span>
+<span class="editor-keyword">address</span>=/ad.iqiyi.com/<span class="editor-number">127.0.0.1</span>
+<span class="editor-keyword">address</span>=/log.iqiyi.com/<span class="editor-number">127.0.0.1</span>
+<span class="editor-keyword">address</span>=/ad.youku.com/<span class="editor-number">127.0.0.1</span>
+<span class="editor-keyword">address</span>=/ad.bilibili.com/<span class="editor-number">127.0.0.1</span>
+
+<span class="editor-comment"># 白名单 (允许这些域名)</span>
+<span class="editor-keyword">server</span>=/mi.com/
+<span class="editor-keyword">server</span>=/iot.mi.com/`,
+
+    hosts: `<span class="editor-comment"># =====================================</span>
+<span class="editor-comment"># DNS Shield - Hosts 广告过滤列表</span>
+<span class="editor-comment"># =====================================</span>
+<span class="editor-comment">#</span>
+<span class="editor-comment"># 版本: 3.0.0</span>
+<span class="editor-comment"># =====================================</span>
+
+<span class="editor-number">127.0.0.1</span> ad.mi.com
+<span class="editor-number">127.0.0.1</span> ad.xiaomi.com
+<span class="editor-number">127.0.0.1</span> ad.iqiyi.com
+<span class="editor-number">127.0.0.1</span> log.iqiyi.com
+<span class="editor-number">127.0.0.1</span> ad.youku.com
+<span class="editor-number">127.0.0.1</span> ad.bilibili.com
+
+<span class="editor-comment"># 白名单 (允许这些域名)</span>
+<span class="editor-comment"># mi.com</span>
+<span class="editor-comment"># iot.mi.com</span>`,
+
+    adguard: `<span class="editor-comment">! =====================================</span>
+<span class="editor-comment">! DNS Shield - AdGuard 广告过滤规则</span>
+<span class="editor-comment">! =====================================</span>
+<span class="editor-comment">!</span>
+<span class="editor-comment">! 版本: 3.0.0</span>
+<span class="editor-comment">! 域名: 6 个唯一域名</span>
+<span class="editor-comment">! =====================================</span>
+
+||ad.mi.com^
+||ad.xiaomi.com^
+||ad.iqiyi.com^
+||log.iqiyi.com^
+||ad.youku.com^
+||ad.bilibili.com^
+
+<span class="editor-comment">! 白名单</span>
+@@||mi.com^
+@@||iot.mi.com^`,
+
+    whitelist: `<span class="editor-comment"># =====================================</span>
+<span class="editor-comment"># DNS Shield - 白名单列表</span>
+<span class="editor-comment"># =====================================</span>
+<span class="editor-comment">#</span>
+<span class="editor-comment"># 这些域名将被绕过过滤</span>
+<span class="editor-comment"># =====================================</span>
+
+@@||mi.com^
+@@||iot.mi.com^`
+  };
+
+  outputEl.innerHTML = outputs[format] || '';
+  const lineCount = (outputs[format] || '').split('\n').length;
+  renderGutter(outputGutter, lineCount);
+}
+
+// --- Render Gutter ---
+function renderGutter(gutter, lines) {
+  gutter.innerHTML = '';
+  for (let i = 1; i <= lines; i++) {
+    const span = document.createElement('span');
+    span.className = 'editor-gutter-line';
+    span.textContent = i;
+    gutter.appendChild(span);
+  }
+}
+
+// --- Settings Toggle ---
+function toggleSettings() {
+  const btn = document.getElementById('settingsToggle');
+  const panel = document.querySelector('.settings-panel');
+  const isOpen = btn.classList.toggle('settings-toggle--open');
+  btn.setAttribute('aria-expanded', isOpen);
+  if (panel) {
+    panel.classList.toggle('settings-panel--open', isOpen);
+  }
+}
+
+// --- Initialize ---
+document.addEventListener('DOMContentLoaded', () => {
+  document.documentElement.setAttribute('data-theme', 'dark');
+});
+</script>
+</body>
+</html>
