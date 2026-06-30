@@ -28,7 +28,8 @@ dns-shield/
 │   ├── CONTRIBUTING.md             # 贡献指南
 │   ├── DEPLOYMENT.md               # 部署指南
 │   ├── SECURITY.md                 # 安全指南
-│   └── SUPPORT.md                  # 支持文档
+│   ├── SUPPORT.md                  # 支持文档
+│   └── security_best_practices_report.md  # 安全审查报告 v3.0
 ├── openspec/                       # 项目规范文档
 │   ├── SPEC.md                     # 项目规范（本文件）
 │   ├── TASKS.md                    # 任务清单
@@ -47,26 +48,26 @@ dns-shield/
 │   ├── app/                        # App Router 目录
 │   │   ├── page.tsx                # 主页面入口
 │   │   ├── Home.tsx                # 主组件（包含所有功能逻辑）
-│   │   ├── globals.css             # 全局样式（CSS 变量 + Tailwind）
+│   │   ├── globals.css             # 全局样式（CSS 变量 + Tailwind + 业务组件）
 │   │   └── layout.tsx              # 根布局（Metadata + SEO）
 │   ├── components/                 # 业务组件
-│   │   ├── ui/                     # shadcn/ui 基础组件
-│   │   │   ├── Badge.tsx
-│   │   │   ├── Button.tsx
-│   │   │   ├── Card.tsx
-│   │   │   ├── Checkbox.tsx
-│   │   │   ├── Dialog.tsx
-│   │   │   ├── DropdownMenu.tsx
-│   │   │   ├── Input.tsx
-│   │   │   ├── Label.tsx
-│   │   │   ├── Loading.tsx
-│   │   │   ├── Select.tsx
-│   │   │   ├── Skeleton.tsx
-│   │   │   ├── Switch.tsx
-│   │   │   ├── Tabs.tsx
-│   │   │   ├── Toast.tsx
-│   │   │   └── Tooltip.tsx
-│   │   ├── Header.tsx              # 页头（标题 + 语言/主题切换）
+│   │   ├── ui/                     # shadcn/ui 基础组件（原子层）
+│   │   │   ├── button.tsx          # Button（支持 isLoading）
+│   │   │   ├── card.tsx            # Card / CardHeader / CardTitle / CardContent
+│   │   │   ├── input.tsx           # Input（支持 ref）
+│   │   │   ├── badge.tsx           # Badge（支持 success/warning/error 变体）
+│   │   │   ├── dialog.tsx
+│   │   │   ├── dropdown-menu.tsx
+│   │   │   ├── label.tsx
+│   │   │   ├── checkbox.tsx
+│   │   │   ├── switch.tsx
+│   │   │   ├── tabs.tsx            # Tabs（圆角优化）
+│   │   │   ├── tooltip.tsx
+│   │   │   ├── toast.tsx           # Sonner ToastProvider
+│   │   │   ├── skeleton.tsx
+│   │   │   ├── select.tsx
+│   │   │   └── loading.tsx
+│   │   ├── Header.tsx              # 页头（Shield 图标 + 语言/主题切换）
 │   │   ├── Footer.tsx              # 页脚（链接 + 使用说明）
 │   │   ├── InputPanel.tsx          # 输入面板（域名编辑 + URL 导入）
 │   │   └── OutputPanel.tsx         # 输出面板（规则预览 + 设置）

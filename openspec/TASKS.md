@@ -35,9 +35,15 @@
 - [x] 优化 Web 管理工具界面（Apple 设计风格）
 - [x] 添加新的预设源（内置/AdGuard/EasyList/NeoHosts）
 - [x] 改进规则生成算法（支持白名单/自定义DNS）
+- [x] 建立完整设计系统（/shadcn/design-system.md）
+- [x] 建立组件库规范（/shadcn/component-library.md）
+- [x] 建立交互标准（/shadcn/interaction-standards.md）
+- [x] 创建高保真原型目录（/prototype/）
+- [x] 全面使用 Lucide 图标替换 emoji
+- [x] 升级 shadcn/ui 组件（Button isLoading / Badge 变体 / Tabs 圆角）
 - [ ] 添加单元测试
 - [x] 优化浏览器兼容性
 - [x] 完善国际化支持（16 种语言）
-- [ ] 改进文档质量和完整性
+- [x] 改进文档质量和完整性
 - [ ] 优化构建和部署流程
 - [x] 增强安全性和性能（CSP 头部、URL 验证）
