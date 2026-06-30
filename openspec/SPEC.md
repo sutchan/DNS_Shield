@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v2.3.2 |
+| 当前版本 | v3.0 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -93,7 +93,14 @@ dns-shield/
 │       ├── parser.ts               # 域名解析器
 │       ├── rulesGenerator.ts       # 规则生成器
 │       └── uiUtils.ts              # UI 工具（行号生成、滚动同步）
-├── prototype.canvas.tsx            # 高保真原型
+├── prototype/                        # 原型目录
+│   ├── prototype.canvas.tsx          # 高保真原型
+│   ├── design-system.md              # 设计系统规范
+│   └── component-library.md          # 组件库规范
+├── shadcn/                           # shadcn 设计规范
+│   ├── design-system.md              # 设计系统（色彩/字体/间距/动效）
+│   ├── component-library.md          # 组件库（基础/复合/业务组件）
+│   └── interaction-standards.md      # 交互标准（模式/反馈/错误/空状态）
 ├── .env.local                      # 本地环境变量
 ├── .eslintrc.json                  # ESLint 配置
 ├── .gitignore                      # Git 忽略配置
