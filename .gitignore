@@ -69,3 +69,5 @@ node_modules/
 
 # Python cache (if any)
 __pycache__/
+/test_screenshots
+/.workbuddy
