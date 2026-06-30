@@ -1,10 +1,8 @@
-// src/components/Header.tsx v2.3.2
-// - 使用 shadcn/ui: Button, DropdownMenu
-// - 完整类型注解，移除 t: any
-// - 键盘可达性 (Enter / Space 触发)
+// src/components/Header.tsx v3.0
 'use client';
 
 import * as React from 'react';
+import { Shield, Sun, Moon, Globe, Check } from 'lucide-react';
 import { Button } from './ui/Button';
 import {
   DropdownMenu,
@@ -32,53 +30,57 @@ const Header: React.FC<HeaderProps> = ({
   switchLang,
 }) => {
   const current = supportedLanguages.find((lang) => lang.code === currentLang);
-  const currentIcon = current?.icon || '🌐';
   const currentName = current?.name || currentLang;
 
   return (
-    <header
-      className="app-header"
-      id="app-header"
-      role="banner"
-    >
-      <div className="header-main">
-        <h1 id="app-title" className="app-title">
-          <span aria-hidden="true">🛡️</span>
-          <span className="ml-2">DNS Shield</span>
-        </h1>
+    <header className="app-header" id="app-header" role="banner">
+      <div className="header-top">
+        <div className="header-brand">
+          <div className="brand-icon" aria-hidden="true">
+            <Shield className="h-5 w-5 text-primary" strokeWidth={2} />
+          </div>
+          <div>
+            <h1 className="app-title">DNS Shield</h1>
+            <p className="app-subtitle" id="app-subtitle">
+              {t.subtitle}
+            </p>
+          </div>
+        </div>
 
-        <div className="header-actions">
-          {/* 语言选择器 - shadcn DropdownMenu */}
+        <div className="flex items-center gap-2">
+          {/* Language Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
                 size="sm"
-                className="lang-selector-btn"
+                className="gap-1.5"
                 aria-label={t.settingsTitle}
                 id="lang-selector-btn"
               >
-                <span className="lang-icon" aria-hidden="true">{currentIcon}</span>
-                <span className="lang-name">{currentName}</span>
+                <Globe className="h-3.5 w-3.5" strokeWidth={1.8} />
+                <span className="text-sm">{currentName}</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="lang-selector-dropdown">
+            <DropdownMenuContent align="end" className="w-40">
               {supportedLanguages.map((lang) => (
                 <DropdownMenuItem
                   key={lang.code}
                   onSelect={() => switchLang(lang.code)}
-                  className={`lang-option ${currentLang === lang.code ? 'active' : ''}`}
+                  className={`flex items-center gap-2 ${currentLang === lang.code ? 'text-primary font-medium' : ''}`}
                   role="option"
                   aria-selected={currentLang === lang.code}
                 >
-                  <span className="lang-icon" aria-hidden="true">{lang.icon || ''}</span>
-                  <span className="lang-name">{lang.name}</span>
+                  <span className="flex-1">{lang.name}</span>
+                  {currentLang === lang.code && (
+                    <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
+                  )}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* 主题切换按钮 - shadcn Button */}
+          {/* Theme Toggle */}
           <Button
             variant="outline"
             size="icon"
@@ -87,18 +89,15 @@ const Header: React.FC<HeaderProps> = ({
             aria-pressed={theme === 'dark'}
             title={theme === 'dark' ? t.lightMode : t.darkMode}
             id="theme-toggle-btn"
-            className="theme-toggle"
           >
-            <span className="theme-icon text-lg" aria-hidden="true">
-              {theme === 'dark' ? '☀️' : '🌙'}
-            </span>
+            {theme === 'dark' ? (
+              <Sun className="h-4 w-4" strokeWidth={1.8} />
+            ) : (
+              <Moon className="h-4 w-4" strokeWidth={1.8} />
+            )}
           </Button>
         </div>
       </div>
-
-      <p className="subtitle" id="app-subtitle">
-        {t.subtitle}
-      </p>
     </header>
   );
 };

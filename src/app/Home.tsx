@@ -198,8 +198,6 @@ export default function Home() {
           syncOutputScroll={syncOutputScroll}
           updateSettings={updateSettings}
           setSettings={setSettings}
-          theme={theme}
-          toggleTheme={toggleTheme}
         />
       </main>
 

@@ -2,153 +2,371 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   DNS Shield — Design System v3.0
+   Designer: UI Designer
+   Philosophy: Swiss Precision × Calm Technology
+   ============================================ */
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    /* --- Color tokens (oklch) --- */
+    --background: 0 0% 98.5%;
+    --foreground: 240 8% 12%;
+
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 240 8% 12%;
+
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    --popover-foreground: 240 8% 12%;
+
+    --primary: 217 89% 47%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 6% 90%;
+    --secondary-foreground: 240 4% 16%;
+
+    --muted: 220 8% 94%;
+    --muted-foreground: 240 3% 46%;
+
+    --accent: 217 70% 94%;
+    --accent-foreground: 217 89% 47%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+    --info: 217 89% 47%;
+
+    --border: 220 6% 88%;
+    --input: 220 6% 88%;
+    --ring: 217 89% 47%;
+
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.625rem;
+    --radius-xl: 0.75rem;
+    --radius-2xl: 1rem;
   }
+
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 224.3 76.3% 48%;
+    --background: 240 6% 7%;
+    --foreground: 0 0% 95%;
+
+    --card: 240 4% 10%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 240 4% 10%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 217 85% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 3% 18%;
+    --secondary-foreground: 0 0% 90%;
+
+    --muted: 240 3% 14%;
+    --muted-foreground: 240 2% 55%;
+
+    --accent: 217 40% 20%;
+    --accent-foreground: 217 85% 60%;
+
+    --destructive: 0 62% 35%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 70% 40%;
+    --warning: 38 90% 45%;
+    --info: 217 85% 55%;
+
+    --border: 240 3% 20%;
+    --input: 240 3% 20%;
+    --ring: 217 85% 55%;
   }
+
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary) / 0.2);
+    color: hsl(var(--foreground));
+  }
+
+  /* Focus ring — visible, accessible, and beautiful */
+  *:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
   }
 }
 
-/* =========================
-   DNS Shield — 业务组件样式
-   ========================= */
+/* ============================================
+   Layout
+   ============================================ */
+.container-main {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10;
+}
 
-.container { @apply max-w-5xl mx-auto px-4 py-6; }
-.main-content { @apply flex flex-col lg:flex-row gap-4; }
+.app-header {
+  @apply flex flex-col gap-3 mb-8;
+}
 
-/* ---------- Header ---------- */
-.app-header { @apply flex flex-col gap-2 mb-6; }
-.header-main { @apply flex items-center justify-between; }
-.app-title { @apply text-2xl font-bold tracking-tight; }
-.header-actions { @apply flex items-center gap-2; }
-.subtitle { @apply text-sm text-muted-foreground; }
+.header-top {
+  @apply flex items-center justify-between;
+}
 
-/* ---------- Panel / Card ---------- */
-.panel { @apply rounded-lg border border-border bg-card text-card-foreground shadow-sm p-4 mb-4 flex flex-col; }
-.section-header { @apply flex items-center justify-between mb-3; }
-.section-header h2 { @apply text-lg font-semibold tracking-tight; }
-.collapse-btn { @apply inline-flex items-center gap-1 text-sm px-2 py-1 rounded hover:bg-accent transition-colors; }
-.collapse-icon { @apply inline-block transition-transform duration-200; }
-.collapse-icon.collapsed { transform: rotate(-90deg); }
+.header-brand {
+  @apply flex items-center gap-3;
+}
 
-/* ---------- 统计信息 ---------- */
-.stats-compact { @apply flex flex-wrap gap-2 mb-3; }
-.stat-badge { @apply inline-flex flex-col items-center px-3 py-1 rounded-md bg-muted text-muted-foreground text-xs min-w-[72px]; }
-.stat-value { @apply text-base font-semibold text-foreground; }
-.stat-label { @apply mt-1; }
+.brand-icon {
+  @apply flex items-center justify-center w-10 h-10 rounded-xl;
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.12), hsl(var(--primary) / 0.04));
+}
 
-/* ---------- URL 区域 ---------- */
-.url-section { @apply mb-3 overflow-hidden transition-[max-height] duration-200 ease-out; max-height: 1000px; }
-.url-section.collapsed { max-height: 0; margin: 0; padding: 0; border: 0; opacity: 0; }
-.url-input-row { @apply flex items-center gap-2 mb-2; }
-.url-input { @apply flex-1 h-9 px-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring; }
-.url-actions { @apply flex flex-wrap gap-2 mb-2; }
-.url-list { @apply flex flex-col gap-1 max-h-32 overflow-y-auto mb-2 text-sm; }
-.url-item { @apply flex items-center justify-between px-2 py-1 rounded bg-muted/40; }
-.url-remove-btn { @apply inline-flex items-center justify-center w-6 h-6 rounded hover:bg-destructive hover:text-destructive-foreground transition-colors; }
-.preset-section { @apply flex flex-wrap items-center gap-2; }
-.preset-label { @apply text-sm font-medium text-muted-foreground; }
-.preset-tags { @apply flex flex-wrap gap-1; }
-.preset-tag { @apply inline-flex items-center px-2 py-1 rounded-md text-xs cursor-pointer bg-muted text-muted-foreground hover:bg-accent transition-colors; }
-.preset-tag.active { @apply bg-primary text-primary-foreground; }
+.app-title {
+  @apply text-[1.625rem] sm:text-2xl font-semibold tracking-tight leading-tight;
+  letter-spacing: -0.02em;
+}
 
-/* ---------- 文本编辑器 ---------- */
-.editor-container { @apply relative flex flex-col mb-3 border border-input rounded-md overflow-hidden; }
-.line-numbers { @apply absolute left-0 top-0 bottom-0 w-12 py-3 pr-2 text-right text-xs text-muted-foreground select-none bg-muted/30 font-mono overflow-hidden border-r border-border; }
-#sourceInput, #outputPreview { @apply w-full min-h-[200px] py-3 pl-14 pr-3 text-sm font-mono bg-background resize-y focus:outline-none; }
-#outputPreview { @apply overflow-auto; }
-.editor-actions { @apply flex flex-wrap gap-2 justify-end; }
+.app-subtitle {
+  @apply text-sm text-muted-foreground tracking-normal;
+}
 
-/* ---------- 按钮样式 ---------- */
-.btn { @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors h-9 px-3; }
-.btn-sm { @apply h-8 px-2 text-xs; }
-.btn-primary { @apply bg-primary text-primary-foreground hover:bg-primary/90; }
-.btn-outline { @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground; }
-.btn-success { @apply bg-emerald-500 text-white hover:bg-emerald-500/90; }
-.settings-btn { @apply inline-flex items-center justify-center w-9 h-9 rounded-md border border-input bg-background hover:bg-accent transition-colors; }
+/* ============================================
+   Panel — the container for input/output
+   ============================================ */
+.panel {
+  @apply flex-1 rounded-2xl border border-border bg-card shadow-[0_1px_3px_0_hsl(var(--border)_/_0.3)] overflow-hidden;
+  transition: box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-/* ---------- 格式 Tabs ---------- */
-.format-tabs { @apply inline-flex items-center justify-center p-1 rounded-lg bg-muted; }
-.format-tab { @apply inline-flex items-center justify-center px-3 py-1 text-sm font-medium rounded-md transition-all text-muted-foreground hover:text-foreground; }
-.format-tab.active { @apply bg-background text-foreground shadow-sm; }
+.panel-body {
+  @apply p-5 sm:p-6;
+}
 
-/* ---------- 设置面板 ---------- */
-.settings-panel { @apply overflow-hidden transition-[max-height] duration-200 ease-out mb-3; max-height: 2000px; }
-.settings-panel.collapsed { max-height: 0; margin: 0; padding: 0; opacity: 0; }
-.settings-grid { @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3; }
-.settings-item { @apply flex flex-col gap-1; }
-.settings-item label { @apply text-xs font-medium text-muted-foreground; }
-.settings-item input { @apply h-9 px-3 rounded-md border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring; }
-.options-row { @apply flex flex-wrap gap-4; }
-.checkbox-item { @apply inline-flex items-center gap-2 text-sm cursor-pointer select-none; }
-.checkbox-item input[type="checkbox"] { @apply w-4 h-4 rounded border border-input text-primary accent-current; }
+.panel-header {
+  @apply flex items-center justify-between mb-5;
+}
 
-/* ---------- 输出面板 ---------- */
-.merge-info { @apply text-xs text-muted-foreground mb-3 px-1; }
-.output-container { @apply relative flex mb-3 border border-input rounded-md overflow-hidden; }
+.panel-title {
+  @apply flex items-center gap-2.5;
+}
 
-/* ---------- Footer ---------- */
-.footer { @apply mt-6 text-center text-xs text-muted-foreground; }
-.usage-panel { @apply mb-4; }
-.usage-steps { @apply flex flex-col gap-2; }
-.usage-step { @apply flex flex-col; }
-.usage-tip { @apply text-xs text-muted-foreground mt-2; }
+.panel-title h2 {
+  @apply text-[1.0625rem] font-semibold tracking-tight;
+}
 
-/* ---------- Loading 遮罩 ---------- */
-.loading-overlay { @apply fixed inset-0 bg-background/60 backdrop-blur-sm flex items-center justify-center z-50; }
-.loading-spinner { @apply w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin; }
-.loading-text { @apply ml-3 text-sm text-foreground; }
+/* ============================================
+   Stats
+   ============================================ */
+.stats-grid {
+  @apply grid grid-cols-5 gap-2 mb-5;
+}
 
-/* ---------- Toast 通知 ---------- */
-.toast { @apply fixed top-4 right-4 z-50 px-4 py-3 rounded-md bg-primary text-primary-foreground text-sm shadow-lg; }
+.stat-item {
+  @apply flex flex-col items-center gap-0.5 px-2 py-2.5 rounded-xl bg-muted/60 text-center;
+}
 
-/* ---------- 工具类 ---------- */
+.stat-value {
+  @apply text-lg font-semibold leading-none tracking-tight;
+}
+
+.stat-label {
+  @apply inline-flex items-center gap-1 text-[0.6875rem] text-muted-foreground leading-none;
+}
+
+/* ============================================
+   URL Section (collapsible)
+   ============================================ */
+.url-section {
+  overflow: hidden;
+  transition: max-height 350ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 250ms ease,
+              margin 250ms ease;
+}
+
+.url-section-expanded {
+  max-height: 600px;
+  opacity: 1;
+  margin-bottom: 1.25rem;
+}
+
+.url-section-collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-bottom: 0;
+  border: 0;
+  padding: 0;
+}
+
+.url-panel {
+  @apply p-4 rounded-xl border border-border bg-muted/40;
+}
+
+/* ============================================
+   Editor
+   ============================================ */
+.editor-wrapper {
+  @apply relative mb-5 border border-border rounded-xl overflow-hidden;
+  transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editor-wrapper:focus-within {
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.1);
+}
+
+.line-numbers {
+  @apply absolute left-0 top-0 bottom-0 w-11 pt-3 pr-2 text-right text-[0.75rem] leading-6 text-muted-foreground/60 select-none bg-muted/40 font-mono overflow-hidden border-r border-border;
+  pointer-events: none;
+}
+
+.editor-textarea {
+  @apply w-full min-h-[200px] pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent resize-y;
+  line-height: 1.5rem;
+  tab-size: 2;
+}
+
+.editor-textarea::placeholder {
+  @apply text-muted-foreground/50;
+}
+
+.editor-textarea:focus {
+  outline: none;
+}
+
+/* ============================================
+   Presets
+   ============================================ */
+.preset-group {
+  @apply flex flex-wrap items-center gap-2;
+}
+
+.preset-label {
+  @apply text-[0.8125rem] font-medium text-muted-foreground mr-1;
+}
+
+.preset-chip {
+  @apply inline-flex items-center px-2.5 py-1 rounded-lg text-[0.75rem] font-medium cursor-pointer transition-all duration-150;
+}
+
+.preset-chip-default {
+  @apply bg-primary text-primary-foreground shadow-sm;
+}
+
+.preset-chip-outline {
+  @apply bg-muted text-muted-foreground hover:bg-secondary;
+}
+
+/* ============================================
+   Output Panel Specific
+   ============================================ */
+.output-body {
+  @apply p-5 sm:p-6;
+}
+
+.output-header {
+  @apply flex items-center justify-between mb-5;
+}
+
+.format-tabs {
+  @apply inline-flex items-center p-0.5 rounded-xl bg-muted gap-0.5;
+}
+
+.format-tab {
+  @apply inline-flex items-center justify-center px-3 py-1.5 text-[0.8125rem] font-medium rounded-lg transition-all duration-150 text-muted-foreground;
+}
+
+.format-tab.active {
+  @apply bg-card text-foreground shadow-sm;
+}
+
+.output-stats {
+  @apply text-[0.75rem] text-muted-foreground mb-4 px-0.5;
+}
+
+/* ============================================
+   Settings Panel
+   ============================================ */
+.settings-panel {
+  overflow: hidden;
+  transition: max-height 350ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 250ms ease,
+              margin 250ms ease;
+}
+
+.settings-expanded {
+  max-height: 800px;
+  opacity: 1;
+  margin-bottom: 1.25rem;
+}
+
+.settings-collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-bottom: 0;
+}
+
+.settings-inner {
+  @apply p-4 rounded-xl border border-border bg-muted/40;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+.app-footer {
+  @apply mt-10 text-center;
+}
+
+.footer-links {
+  @apply flex items-center justify-center gap-5 mb-2;
+}
+
+.footer-link {
+  @apply inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-150;
+}
+
+/* ============================================
+   Loading
+   ============================================ */
+.loading-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center;
+  background: hsl(var(--background) / 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.loading-spinner {
+  @apply w-8 h-8;
+  border: 2px solid hsl(var(--border));
+  border-top-color: hsl(var(--primary));
+  border-radius: 50%;
+  animation: spin 0.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   Logo SVG
+   ============================================ */
+.logo-shield {
+  color: hsl(var(--primary));
+  stroke: hsl(var(--primary) / 0.3);
+}
+
+/* ============================================
+   Utilities
+   ============================================ */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -161,7 +379,9 @@
   border-width: 0;
 }
 
-/* ---------- 减少动画（用户偏好） ---------- */
+/* ============================================
+   Reduced Motion
+   ============================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
