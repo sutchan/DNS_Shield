@@ -1,3 +1,4 @@
+// src/components/ui/Label.tsx v3.1.0
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 import { cva, type VariantProps } from "class-variance-authority"

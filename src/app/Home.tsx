@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.0.0
+// src/app/Home.tsx v3.1.0
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import './globals.css';
@@ -62,7 +62,7 @@ export default function Home() {
   // 设置管理
   const [settings, setSettings] = useState<Settings>({
     projectName: 'DNS Shield',
-    version: '3.0.0',
+    version: '3.1.0',
     ipv4: '127.0.0.1',
     ipv6: '::',
     addHeader: true,
