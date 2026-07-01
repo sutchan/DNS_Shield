@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.1.0 |
+| 当前版本 | v3.0 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -28,7 +28,8 @@ dns-shield/
 │   ├── CONTRIBUTING.md             # 贡献指南
 │   ├── DEPLOYMENT.md               # 部署指南
 │   ├── SECURITY.md                 # 安全指南
-│   └── SUPPORT.md                  # 支持文档
+│   ├── SUPPORT.md                  # 支持文档
+│   └── security_best_practices_report.md  # 安全审查报告 v3.0
 ├── openspec/                       # 项目规范文档
 │   ├── SPEC.md                     # 项目规范（本文件）
 │   ├── TASKS.md                    # 任务清单
@@ -47,27 +48,26 @@ dns-shield/
 │   ├── app/                        # App Router 目录
 │   │   ├── page.tsx                # 主页面入口
 │   │   ├── Home.tsx                # 主组件（包含所有功能逻辑）
-│   │   ├── globals.css             # 全局样式（CSS 变量 + Tailwind）
+│   │   ├── globals.css             # 全局样式（CSS 变量 + Tailwind + 业务组件）
 │   │   └── layout.tsx              # 根布局（Metadata + SEO）
 │   ├── components/                 # 业务组件
-│   │   ├── ui/                     # shadcn/ui 基础组件
-│   │   │   ├── Badge.tsx
-│   │   │   ├── Button.tsx
-│   │   │   ├── Card.tsx
-│   │   │   ├── Checkbox.tsx
-│   │   │   ├── Dialog.tsx
-│   │   │   ├── DropdownMenu.tsx
-│   │   │   ├── Input.tsx
-│   │   │   ├── Label.tsx
-│   │   │   ├── Loading.tsx
-│   │   │   ├── Accordion.tsx
-│   │   │   ├── Select.tsx
-│   │   │   ├── Skeleton.tsx
-│   │   │   ├── Switch.tsx
-│   │   │   ├── Tabs.tsx
-│   │   │   ├── Toast.tsx
-│   │   │   └── Tooltip.tsx
-│   │   ├── Header.tsx              # 页头（标题 + 语言/主题切换）
+│   │   ├── ui/                     # shadcn/ui 基础组件（原子层）
+│   │   │   ├── button.tsx          # Button（支持 isLoading）
+│   │   │   ├── card.tsx            # Card / CardHeader / CardTitle / CardContent
+│   │   │   ├── input.tsx           # Input（支持 ref）
+│   │   │   ├── badge.tsx           # Badge（支持 success/warning/error 变体）
+│   │   │   ├── dialog.tsx
+│   │   │   ├── dropdown-menu.tsx
+│   │   │   ├── label.tsx
+│   │   │   ├── checkbox.tsx
+│   │   │   ├── switch.tsx
+│   │   │   ├── tabs.tsx            # Tabs（圆角优化）
+│   │   │   ├── tooltip.tsx
+│   │   │   ├── toast.tsx           # Sonner ToastProvider
+│   │   │   ├── skeleton.tsx
+│   │   │   ├── select.tsx
+│   │   │   └── loading.tsx
+│   │   ├── Header.tsx              # 页头（Shield 图标 + 语言/主题切换）
 │   │   ├── Footer.tsx              # 页脚（链接 + 使用说明）
 │   │   ├── InputPanel.tsx          # 输入面板（域名编辑 + URL 导入）
 │   │   └── OutputPanel.tsx         # 输出面板（规则预览 + 设置）
@@ -94,7 +94,14 @@ dns-shield/
 │       ├── parser.ts               # 域名解析器
 │       ├── rulesGenerator.ts       # 规则生成器
 │       └── uiUtils.ts              # UI 工具（行号生成、滚动同步）
-├── prototype.canvas.tsx            # 高保真原型
+├── prototype/                        # 原型目录
+│   ├── prototype.canvas.tsx          # 高保真原型
+│   ├── design-system.md              # 设计系统规范
+│   └── component-library.md          # 组件库规范
+├── shadcn/                           # shadcn 设计规范
+│   ├── design-system.md              # 设计系统（色彩/字体/间距/动效）
+│   ├── component-library.md          # 组件库（基础/复合/业务组件）
+│   └── interaction-standards.md      # 交互标准（模式/反馈/错误/空状态）
 ├── .env.local                      # 本地环境变量
 ├── .eslintrc.json                  # ESLint 配置
 ├── .gitignore                      # Git 忽略配置

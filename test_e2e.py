@@ -14,14 +14,14 @@ def test_dns_shield():
         
         title = page.title()
         assert 'DNS Shield' in title, f"Title mismatch: {title}"
-        print("  OK Page loaded successfully")
+        print("  ✓ Page loaded successfully")
         
         # 2. 检查主要元素存在
         print("[2/8] Testing main elements...")
         assert page.locator('header#app-header').is_visible(), "Header not found"
         assert page.locator('#input-panel').is_visible(), "Input panel not found"
         assert page.locator('#output-panel').is_visible(), "Output panel not found"
-        print("  OK All main elements present")
+        print("  ✓ All main elements present")
         
         # 3. 主题切换测试
         print("[3/8] Testing theme toggle...")
@@ -31,7 +31,7 @@ def test_dns_shield():
         page.screenshot(path='E:/Github/DNS_Shield/test_screenshots/dark_mode.png')
         theme_btn.click()
         page.wait_for_timeout(500)
-        print("  OK Theme toggle works")
+        print("  ✓ Theme toggle works")
         
         # 4. 语言切换测试
         print("[4/8] Testing language switch...")
@@ -39,9 +39,9 @@ def test_dns_shield():
         lang_btn.click()
         page.wait_for_timeout(300)
         page.screenshot(path='E:/Github/DNS_Shield/test_screenshots/lang_dropdown.png')
-        lang_btn.click()
+        lang_btn.click()  # close dropdown
         page.wait_for_timeout(300)
-        print("  OK Language switch works")
+        print("  ✓ Language switch works")
         
         # 5. 输入域名测试
         print("[5/8] Testing domain input...")
@@ -49,7 +49,7 @@ def test_dns_shield():
         textarea.fill('ad.example.com\n+api.example.com\n# comment')
         page.wait_for_timeout(500)
         page.screenshot(path='E:/Github/DNS_Shield/test_screenshots/with_input.png')
-        print("  OK Domain input works")
+        print("  ✓ Domain input works")
         
         # 6. 生成规则测试
         print("[6/8] Testing rule generation...")
@@ -59,7 +59,7 @@ def test_dns_shield():
         page.screenshot(path='E:/Github/DNS_Shield/test_screenshots/generated.png')
         output = page.locator('#outputPreview').text_content()
         assert output and len(output) > 10, "Output not generated"
-        print("  OK Rule generation works")
+        print("  ✓ Rule generation works")
         
         # 7. 格式切换测试
         print("[7/8] Testing format tabs...")
@@ -71,7 +71,7 @@ def test_dns_shield():
         format_adguard.click()
         page.wait_for_timeout(500)
         page.screenshot(path='E:/Github/DNS_Shield/test_screenshots/adguard_format.png')
-        print("  OK Format switching works")
+        print("  ✓ Format switching works")
         
         # 8. 移动端响应式测试
         print("[8/8] Testing mobile responsive...")
@@ -80,11 +80,11 @@ def test_dns_shield():
         page.wait_for_load_state('networkidle')
         page.wait_for_timeout(1000)
         page.screenshot(path='E:/Github/DNS_Shield/test_screenshots/mobile.png', full_page=True)
-        print("  OK Mobile responsive layout works")
+        print("  ✓ Mobile responsive layout works")
         
         browser.close()
         print("\n" + "="*50)
-        print("All 8 tests passed!")
+        print("All 8 tests passed! ✓")
         print("="*50)
         return 0
 

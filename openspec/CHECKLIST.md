@@ -1,5 +1,19 @@
 # 质量检查清单
 
+## UI/UX 设计规范
+
+- [ ] 无 emoji 作为 UI 图标（使用 Lucide SVG）
+- [ ] 颜色使用 CSS 变量（无硬编码颜色值）
+- [ ] 按钮悬停有视觉反馈
+- [ ] 所有可点击元素有 cursor-pointer
+- [ ] 过渡动画平滑（150-300ms）
+- [ ] 响应式适配（Mobile / Tablet / Desktop）
+- [ ] 深色/浅色模式切换正常
+- [ ] 焦点状态可见（键盘导航）
+- [ ] 空状态有统一组件
+- [ ] 错误状态有清晰提示
+- [ ] 加载状态有反馈
+
 ## 代码质量
 
 - [ ] 代码格式符合项目规范
@@ -7,6 +21,17 @@
 - [ ] 文件编码为 UTF-8
 - [ ] TypeScript 类型完整
 - [ ] 文件头注释版本格式正确
+
+## shadcn/ui 组件规范
+
+- [ ] `src/components/ui/button.tsx` 使用 cva 管理变体
+- [ ] `src/components/ui/button.tsx` 支持 isLoading 状态
+- [ ] `src/components/ui/card.tsx` 使用圆角 2xl
+- [ ] `src/components/ui/badge.tsx` 支持 success/warning/error 变体
+- [ ] `src/components/ui/tabs.tsx` 使用圆角 lg
+- [ ] `src/components/ui/input.tsx` 支持 ref 传递
+- [ ] 所有组件使用 `cn()` 合并类名
+- [ ] 所有组件使用 `forwardRef`
 
 ## 文档完整性
 
@@ -25,6 +50,14 @@
 ## 文件结构
 
 - [ ] 根目录文件结构符合 SPEC.md 定义
+- [ ] `prototype/` 目录存在且包含原型文件
+- [ ] `prototype/prototype.canvas.tsx` 存在且内容完整
+- [ ] `prototype/design-system.md` 设计系统规范完整
+- [ ] `prototype/component-library.md` 组件库规范完整
+- [ ] `shadcn/` 目录存在且包含设计规范
+- [ ] `shadcn/design-system.md` 设计系统规范完整
+- [ ] `shadcn/component-library.md` 组件库规范完整
+- [ ] `shadcn/interaction-standards.md` 交互标准完整
 - [ ] `public/domains.txt` 存在且格式正确
 - [ ] `public/adguard.txt` 存在且格式正确
 - [ ] `public/whitelist.txt` 存在且格式正确
