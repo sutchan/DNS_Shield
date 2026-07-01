@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -24,6 +26,18 @@
     --input: 240 5.9% 90%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Monaco, Consolas, monospace;
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+    --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -45,13 +59,32 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 224.3 76.3% 48%;
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
   }
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  ::selection {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
   }
 }
 
@@ -70,7 +103,7 @@
 .subtitle { @apply text-sm text-muted-foreground; }
 
 /* ---------- Panel / Card ---------- */
-.panel { @apply rounded-lg border border-border bg-card text-card-foreground shadow-sm p-4 mb-4 flex flex-col; }
+.panel { @apply rounded-lg border border-border bg-card text-card-foreground shadow-sm p-4 mb-4 flex flex-col transition-all duration-200 hover:shadow-md hover:-translate-y-0.5; }
 .section-header { @apply flex items-center justify-between mb-3; }
 .section-header h2 { @apply text-lg font-semibold tracking-tight; }
 .collapse-btn { @apply inline-flex items-center gap-1 text-sm px-2 py-1 rounded hover:bg-accent transition-colors; }
@@ -168,5 +201,67 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* =========================
+   交互效果 — 对齐设计规范
+   ========================= */
+
+.hover-lift {
+  transition: transform 200ms var(--ease-out),
+              box-shadow 200ms var(--ease-out);
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.active-scale {
+  transition: transform 100ms var(--ease-out);
+}
+.active-scale:active {
+  transform: scale(0.98);
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+.fade-in {
+  animation: fadeIn 200ms var(--ease-out);
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slide-up {
+  animation: slideUp 200ms var(--ease-out);
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.panel-expand {
+  animation: panelExpand 200ms var(--ease-out);
+}
+@keyframes panelExpand {
+  from {
+    opacity: 0;
+    transform: scaleY(0.95);
+    transform-origin: top;
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
   }
 }

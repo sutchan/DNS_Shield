@@ -7,7 +7,7 @@ project:
   type: "web-application"
   framework: "next.js"
   language: "typescript"
-  version: "2.3.0"
+  version: "2.3.1"
 
 directories:
   source: "src"
@@ -70,6 +70,11 @@ components:
       file: "src/components/ui/Label.tsx"
     - name: "Skeleton"
       file: "src/components/ui/Skeleton.tsx"
+    - name: "Accordion"
+      file: "src/components/ui/Accordion.tsx"
+      parts: ["AccordionItem", "AccordionTrigger", "AccordionContent"]
+    - name: "Loading"
+      file: "src/components/ui/Loading.tsx"
 
   business:
     - name: "Header"

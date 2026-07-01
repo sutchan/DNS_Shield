@@ -1,6 +1,6 @@
 # DNS Shield - 技术规格说明书
 
-> 版本: v2.3.0 | 最后更新: 2024-06-19 | 状态: 有效
+> 版本: v2.3.1 | 最后更新: 2024-06-22 | 状态: 有效
 
 ---
 
@@ -9,7 +9,7 @@
 ### 1.1 项目名称与类型
 - **项目名称**: DNS Shield
 - **项目类型**: Web 应用（Next.js）
-- **版本**: v2.3.0
+- **版本**: v2.3.1
 - **描述**: 路由器级全局广告过滤规则生成工具
 
 ### 1.2 核心功能
@@ -63,14 +63,13 @@ DNS Shield 是一个在线工具，用于生成路由器级别的广告过滤规
 │   │   │   ├── Select.tsx
 │   │   │   ├── Label.tsx
 │   │   │   ├── Badge.tsx
-│   │   │   └── Skeleton.tsx
+│   │   │   ├── Skeleton.tsx
+│   │   │   ├── Accordion.tsx
+│   │   │   └── Loading.tsx
 │   │   ├── Header.tsx         # 页头组件
 │   │   ├── Footer.tsx         # 页脚组件
 │   │   ├── InputPanel.tsx     # 输入面板
-│   │   ├── OutputPanel.tsx    # 输出面板
-│   │   └── ui/               # 原有 UI 组件
-│   │       ├── Loading.tsx
-│   │       └── Toast.tsx
+│   │   └── OutputPanel.tsx    # 输出面板
 │   ├── hooks/                 # React Hooks
 │   │   ├── useDomainData.ts   # 域名数据管理
 │   │   ├── useUrlManager.ts   # URL 管理
@@ -326,6 +325,7 @@ npm run dev      # 开发服务器
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| v2.3.1 | 2024-06-22 | 对齐设计规范，添加 Accordion 组件，完善交互动效，更新字体系统 |
 | v2.3.0 | 2024-06-19 | 合并 trae/solo-agent-XM3tte，添加 shadcn/ui，安全加固 |
 | v2.2.5 | 2024-06-17 | 设计系统完善，多语言支持 |
 | v2.2.0 | 2024-06-15 | 初始功能实现 |

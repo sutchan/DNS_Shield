@@ -1,6 +1,6 @@
 # DNS Shield - 任务清单
 
-> 版本: v2.3.0 | 最后更新: 2024-06-19 | 状态: 执行中
+> 版本: v2.3.1 | 最后更新: 2024-06-22 | 状态: 执行中
 
 ---
 
@@ -61,23 +61,23 @@
 
 ### 1.5 文档同步
 - [x] 创建 `openspec/SPEC.md` 技术规格说明书
-- [ ] 创建 `openspec/TASKS.md` 任务清单（本文档）
-- [ ] 创建 `openspec/CHECKLIST.md` 审查清单
-- [ ] 创建 `openspec/config.yaml` 配置文件
+- [x] 创建 `openspec/TASKS.md` 任务清单（本文档）
+- [x] 创建 `openspec/CHECKLIST.md` 审查清单
+- [x] 创建 `openspec/config.yaml` 配置文件
 
 ---
 
 ## 二、待办任务
 
 ### 2.1 高优先级
-- [ ] 将现有组件迁移到 shadcn/ui 组件
+- [x] 将现有组件迁移到 shadcn/ui 组件
   - InputPanel.tsx → 使用 shadcn Input、Button
   - OutputPanel.tsx → 使用 shadcn Card、Tabs
   - Header.tsx → 使用 shadcn DropdownMenu、Switch
-- [ ] 更新 Home.tsx 适配新的 shadcn/ui 组件
-- [ ] 运行 `npm install` 安装新依赖
-- [ ] 运行 lint 和 typecheck 验证
-- [ ] 全面功能测试
+- [x] 更新 Home.tsx 适配新的 shadcn/ui 组件
+- [x] 运行 `npm install` 安装新依赖
+- [x] 运行 lint 和 typecheck 验证
+- [x] 全面功能测试
 
 ### 2.2 中优先级
 - [ ] 优化深色模式样式
@@ -139,10 +139,10 @@
 | 设计系统重构完成 | 2024-06-19 | ✅ |
 | shadcn/ui 集成完成 | 2024-06-19 | ✅ |
 | 安全审查通过 | 2024-06-19 | ✅ |
-| 组件迁移完成 | TBD | ⏳ |
-| lint/typecheck 通过 | TBD | ⏳ |
-| 功能测试通过 | TBD | ⏳ |
-| 文档同步完成 | TBD | ⏳ |
+| 组件迁移完成 | 2024-06-22 | ✅ |
+| lint/typecheck 通过 | 2024-06-22 | ✅ |
+| 功能测试通过 | 2024-06-22 | ✅ |
+| 文档同步完成 | 2024-06-22 | ✅ |
 
 ---
 
