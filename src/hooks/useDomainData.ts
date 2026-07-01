@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.ts v2.3.2
+// src/hooks/useDomainData.ts v3.0.0
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
 import { generateLineNumbers } from '../utils/uiUtils';

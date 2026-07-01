@@ -1,4 +1,4 @@
-// src/config/index.ts v2.3.2
+// src/config/index.ts v3.0.0
 // @types/node 已提供 process.env 类型，无需重复声明
 
 // 应用配置

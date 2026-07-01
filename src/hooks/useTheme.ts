@@ -1,4 +1,4 @@
-// src/hooks/useTheme.ts v2.3.2
+// src/hooks/useTheme.ts v3.0.0
 // - 支持 Tailwind 的 .dark 类（供 shadcn/ui 使用）
 // - 保持 data-theme 属性（供旧 CSS 变量使用）
 import { useState, useEffect } from 'react';

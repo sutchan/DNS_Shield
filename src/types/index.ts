@@ -1,4 +1,4 @@
-// src/types/index.ts v2.3.2
+// src/types/index.ts v3.0.0
 
 export type FormatType = 'hosts' | 'dnsmasq' | 'adguard' | 'whitelist';
 
