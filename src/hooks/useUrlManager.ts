@@ -105,25 +105,31 @@ export const useUrlManager = (
     });
   };
 
+  // URL 验证函数
+  const validateUrlInput = (): { isValid: boolean; url?: string } => {
+    const url = urlInputRef.current?.value.trim();
+    if (!url) {
+      showToast('urlEnter');
+      return { isValid: false };
+    }
+    // 验证 URL 格式和协议
+    if (!isValidHttpUrl(url)) {
+      showToast('invalidUrl');
+      return { isValid: false };
+    }
+    return { isValid: true, url };
+  };
+
   // 从 URL 获取域名（带 URL 验证）
   const fetchFromUrl = async () => {
     await withLoading({
       beforeLoad: () => {
-        const url = urlInputRef.current?.value.trim();
-        if (!url) {
-          showToast('urlEnter');
-          return false;
-        }
-        // 验证 URL 格式和协议
-        if (!isValidHttpUrl(url)) {
-          showToast('invalidUrl');
-          return false;
-        }
-        return true;
+        const { isValid } = validateUrlInput();
+        return isValid;
       },
       fetchFn: async () => {
-        const url = urlInputRef.current?.value.trim();
-        if (!url) {
+        const { isValid, url } = validateUrlInput();
+        if (!isValid || !url) {
           throw new Error('URL not provided');
         }
         return fetchFromUrlUtil(url);
@@ -136,14 +142,8 @@ export const useUrlManager = (
 
   // 添加 URL（带 URL 验证）
   const addUrl = () => {
-    const url = urlInputRef.current?.value.trim();
-    if (!url) {
-      showToast('urlEnter');
-      return;
-    }
-    // 验证 URL 格式和协议
-    if (!isValidHttpUrl(url)) {
-      showToast('invalidUrl');
+    const { isValid, url } = validateUrlInput();
+    if (!isValid || !url) {
       return;
     }
 
