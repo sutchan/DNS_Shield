@@ -33,7 +33,7 @@ const OUTPUT_SAMPLES: Record<string, string> = {
 # =====================================
 #
 # 路由器级广告过滤规则
-# 版本: 3.0.0 | 域名: 6 个
+# 版本: 3.1.0 | 域名: 6 个
 # =====================================
 
 address=/ad.mi.com/127.0.0.1
@@ -50,7 +50,7 @@ server=/iot.mi.com/`,
   hosts: `# =====================================
 # DNS Shield - Hosts 广告过滤列表
 # =====================================
-# 版本: 3.0.0
+# 版本: 3.1.0
 # =====================================
 
 127.0.0.1 ad.mi.com
@@ -66,7 +66,7 @@ server=/iot.mi.com/`,
   adguard: `! =====================================
 ! DNS Shield - AdGuard 广告过滤规则
 ! =====================================
-! 版本: 3.0.0 | 域名: 6 个
+! 版本: 3.1.0 | 域名: 6 个
 ! =====================================
 
 ||ad.mi.com^
@@ -894,7 +894,7 @@ export default function PrototypeCanvas() {
             <span style={{ width: 3, height: 3, borderRadius: '50%', background: t.textTertiary }} />
             <a href="#" style={{ fontSize: 12, color: t.textSecondary, textDecoration: 'none' }}>文档</a>
             <span style={{ width: 3, height: 3, borderRadius: '50%', background: t.textTertiary }} />
-            <span style={{ fontSize: 12, color: t.textTertiary, cursor: 'default' }}>v3.0.0</span>
+            <span style={{ fontSize: 12, color: t.textTertiary, cursor: 'default' }}>v3.1.0</span>
           </div>
           <p style={{ fontSize: 12, color: t.textTertiary }}>DNS Shield — 路由器级广告过滤规则生成工具</p>
         </div>
