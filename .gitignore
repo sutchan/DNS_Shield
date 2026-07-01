@@ -60,6 +60,7 @@ dist-ssr/
 .next/trace
 /.next
 .next/
+*.tsbuildinfo
 
 # Node.js
 node_modules/

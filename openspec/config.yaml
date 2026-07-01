@@ -35,3 +35,57 @@ rules:
     - Verify all generated file formats
     - Ensure router compatibility testing
     - Match actual file structure on main branch
+
+# Component registry
+components:
+  ui:
+    - name: "Accordion"
+      file: "src/components/ui/Accordion.tsx"
+      parts: ["Accordion", "AccordionItem", "AccordionTrigger", "AccordionContent"]
+    - name: "Badge"
+      file: "src/components/ui/Badge.tsx"
+      parts: ["Badge"]
+    - name: "Button"
+      file: "src/components/ui/Button.tsx"
+      parts: ["Button", "buttonVariants"]
+    - name: "Card"
+      file: "src/components/ui/Card.tsx"
+      parts: ["Card", "CardHeader", "CardTitle", "CardDescription", "CardContent", "CardFooter"]
+    - name: "Checkbox"
+      file: "src/components/ui/Checkbox.tsx"
+      parts: ["Checkbox"]
+    - name: "Dialog"
+      file: "src/components/ui/Dialog.tsx"
+      parts: ["Dialog", "DialogTrigger", "DialogContent", "DialogHeader", "DialogFooter", "DialogTitle", "DialogDescription"]
+    - name: "DropdownMenu"
+      file: "src/components/ui/DropdownMenu.tsx"
+      parts: ["DropdownMenu", "DropdownMenuTrigger", "DropdownMenuContent", "DropdownMenuItem", "DropdownMenuLabel", "DropdownMenuSeparator"]
+    - name: "Input"
+      file: "src/components/ui/Input.tsx"
+      parts: ["Input"]
+    - name: "Label"
+      file: "src/components/ui/Label.tsx"
+      parts: ["Label"]
+    - name: "Loading"
+      file: "src/components/ui/Loading.tsx"
+      parts: ["Loading"]
+    - name: "Select"
+      file: "src/components/ui/Select.tsx"
+      parts: ["Select", "SelectTrigger", "SelectValue", "SelectContent", "SelectItem"]
+    - name: "Skeleton"
+      file: "src/components/ui/Skeleton.tsx"
+      parts: ["Skeleton"]
+    - name: "Switch"
+      file: "src/components/ui/Switch.tsx"
+      parts: ["Switch"]
+    - name: "Tabs"
+      file: "src/components/ui/Tabs.tsx"
+      parts: ["Tabs", "TabsList", "TabsTrigger", "TabsContent"]
+    - name: "Toast"
+      file: "src/components/ui/Toast.tsx"
+      parts: ["Toast", "toast"]
+    - name: "Tooltip"
+      file: "src/components/ui/Tooltip.tsx"
+      parts: ["Tooltip", "TooltipTrigger", "TooltipContent"]
+
+version: "3.1.0"

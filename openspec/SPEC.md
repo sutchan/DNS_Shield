@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v2.3.2 |
+| 当前版本 | v3.1.0 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -60,6 +60,7 @@ dns-shield/
 │   │   │   ├── Input.tsx
 │   │   │   ├── Label.tsx
 │   │   │   ├── Loading.tsx
+│   │   │   ├── Accordion.tsx
 │   │   │   ├── Select.tsx
 │   │   │   ├── Skeleton.tsx
 │   │   │   ├── Switch.tsx
@@ -157,7 +158,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 2.3.2 |
+| 版本号 | 3.1.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -264,3 +265,12 @@ refactor: 优化规则生成逻辑
 - 部分广告域名使用 HTTPS 硬编码，需配合 Pi-hole 或广告屏蔽插件
 - 部分设备可能有 hosts 文件大小限制
 - 需要定期更新规则以应对新广告形式
+
+## 12. 版本历史
+
+| 版本 | 日期 | 变更 |
+|------|------|------|
+| v3.1.0 | 2026-06-30 | 添加 Accordion 组件，完善按钮点击缩放和面板悬停浮起动效 |
+| v3.0.0 | 2026-06-30 | 设计系统全面重构：oklch 色彩空间、Swiss Precision 排版、Apple 风格动效曲线 |
+| v2.3.2 | 2024-06-19 | 添加缺失国际化翻译键，创建 openspec 规范文档 |
+| v2.3.0 | 2024-06-19 | 合并 trae/solo-agent 分支，添加 shadcn/ui，安全加固 |
