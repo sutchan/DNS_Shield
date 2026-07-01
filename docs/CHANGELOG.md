@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2026-06-30
+
+### Added
+- 新增 Accordion 折叠面板组件（基于 Radix UI）
+- 新增按钮点击缩放交互效果（`active:scale-[0.98]`）
+- 新增面板悬停浮起效果（hover-lift：上浮 2px + 阴影加深）
+- 新增 `@radix-ui/react-accordion` 依赖
+
+### Changed
+- Button 组件过渡动画从 `transition-colors` 升级为 `transition-all`
+- 更新 openspec 文档至 v3.1.0，补充组件注册表和版本历史
+- 更新组件列表，添加 Accordion 组件
+
+### Fixed
+- 修复代码与设计规范中交互动效的对齐问题
+- 修复组件库完整性，补充缺失的 Accordion 组件
+
+## [3.0.0] - 2026-06-30
+
+### Added
+- 全面重构设计系统为 v3.0（Swiss Precision × Calm Technology 设计哲学）
+- 采用 oklch 色彩空间替代 HSL，色彩分布更均匀
+- 新增完整的设计系统文档（`shadcn/design-system.md`、`shadcn/interaction-standards.md`）
+- 新增设计复盘报告（`shadcn/design-polish-report.md`）
+- 新增高保真原型（`prototype/prototype.html`、`prototype/prototype.canvas.tsx`）
+- 启用 Inter 字体 OpenType 特性（cv02, cv03, cv04, cv11）
+- 新增 11 级灰阶色彩系统
+- 新增 4px 基准间距系统
+- 新增 Apple 风格 ease-out-quart 动效曲线（cubic-bezier(0.16, 1, 0.3, 1)）
+- 新增 ::selection 半透明蓝色高亮样式
+- 新增 focus ring 2px + 2px offset 样式
+- 新增 PWA 图标（72x72 ~ 512x512，共 8 个尺寸）
+
+### Changed
+- 背景色从纯白调整为 98% 柔和近白，减少视觉刺眼
+- 前景色从纯黑调整为 12% 阅读灰，更舒适
+- 边框从 15% 灰调淡至 12% 灰，减少视觉噪音
+- 深色模式背景调整为更柔和的 hsl(240 6% 7%)
+- 容器 max-width 从 max-w-5xl 扩展至 max-w-6xl，更宽敞
+- panel 内边距从 p-4 增加至 p-5 sm:p-6，增强呼吸感
+- 标题字距优化为 letter-spacing: -0.02em，更紧凑
+- 代码编辑器字号优化为 0.8125rem (13px)
+- 所有元素行高对齐 6 的倍数（24px = 6×4pt）
+- 统一使用 Lucide SVG 图标，移除所有 emoji 图标
+- Loading spinner 使用 border-top-color 动画替代完整环
+
+### Removed
+- 移除 OutputPanel 底部多余的 theme toggle（已在 Header 中）
+- 移除无必要的多层卡片嵌套
+- 移除所有内联 SVG，统一使用 Lucide 图标库
+
+### Security
+- 增强安全性和性能（CSP 头部、URL 验证）
+
 ## [2.3.2]
 
 ### Added

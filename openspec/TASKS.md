@@ -32,6 +32,10 @@
 
 ## 开发任务
 
+- [x] 设计系统全面重构（v3.0：oklch 色彩、Swiss Precision 排版、Apple 风格动效）
+- [x] 添加 Accordion 折叠面板组件
+- [x] 完善按钮交互效果（点击缩放 active:scale-[0.98]）
+- [x] 优化面板悬停效果（hover-lift 上浮阴影）
 - [x] 优化 Web 管理工具界面（Apple 设计风格）
 - [x] 添加新的预设源（内置/AdGuard/EasyList/NeoHosts）
 - [x] 改进规则生成算法（支持白名单/自定义DNS）
