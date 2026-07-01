@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.0 |
+| 当前版本 | v3.1.0 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -51,22 +51,23 @@ dns-shield/
 │   │   ├── globals.css             # 全局样式（CSS 变量 + Tailwind + 业务组件）
 │   │   └── layout.tsx              # 根布局（Metadata + SEO）
 │   ├── components/                 # 业务组件
-│   │   ├── ui/                     # shadcn/ui 基础组件（原子层）
-│   │   │   ├── button.tsx          # Button（支持 isLoading）
-│   │   │   ├── card.tsx            # Card / CardHeader / CardTitle / CardContent
-│   │   │   ├── input.tsx           # Input（支持 ref）
-│   │   │   ├── badge.tsx           # Badge（支持 success/warning/error 变体）
-│   │   │   ├── dialog.tsx
-│   │   │   ├── dropdown-menu.tsx
-│   │   │   ├── label.tsx
-│   │   │   ├── checkbox.tsx
-│   │   │   ├── switch.tsx
-│   │   │   ├── tabs.tsx            # Tabs（圆角优化）
-│   │   │   ├── tooltip.tsx
-│   │   │   ├── toast.tsx           # Sonner ToastProvider
-│   │   │   ├── skeleton.tsx
-│   │   │   ├── select.tsx
-│   │   │   └── loading.tsx
+│   │   ├── ui/                     # shadcn/ui 基础组件
+│   │   │   ├── Accordion.tsx
+│   │   │   ├── Badge.tsx
+│   │   │   ├── Button.tsx
+│   │   │   ├── Card.tsx
+│   │   │   ├── Checkbox.tsx
+│   │   │   ├── Dialog.tsx
+│   │   │   ├── DropdownMenu.tsx
+│   │   │   ├── Input.tsx
+│   │   │   ├── Label.tsx
+│   │   │   ├── Loading.tsx
+│   │   │   ├── Select.tsx
+│   │   │   ├── Skeleton.tsx
+│   │   │   ├── Switch.tsx
+│   │   │   ├── Tabs.tsx
+│   │   │   ├── Toast.tsx
+│   │   │   └── Tooltip.tsx
 │   │   ├── Header.tsx              # 页头（Shield 图标 + 语言/主题切换）
 │   │   ├── Footer.tsx              # 页脚（链接 + 使用说明）
 │   │   ├── InputPanel.tsx          # 输入面板（域名编辑 + URL 导入）
