@@ -1,15 +1,15 @@
-# DNS Shield - 安全审查报告 v3.0
+# DNS Shield - 安全审查报告 v3.1.0
 
-> 版本: v3.0 | 审查日期: 2026-06-30 | 审查人: 速构构（Modern Webapp Expert）
+> 版本: v3.1.0 | 审查日期: 2026-07-03 | 审查人: 速构构（Modern Webapp Expert）
 > 技术栈: Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 + shadcn/ui
 
 ---
 
 ## 执行摘要
 
-DNS Shield v3.0 安全状况**优秀**。所有已知安全问题已修复，代码通过 TypeScript 严格模式检查、ESLint 规则验证和 Next.js 构建。
+DNS Shield v3.1.0 安全状况**优秀**。所有已知安全问题已修复，代码通过 TypeScript 严格模式检查、ESLint 规则验证和 Next.js 构建。
 
-**关键改进（v3.0）**:
+**关键改进（v3.1.0）**:
 - 全面移除 emoji 图标，统一使用 Lucide SVG 图标
 - 升级设计系统，使用 CSS 变量管理颜色（无硬编码颜色）
 - 优化组件架构，使用 shadcn/ui 标准组件模式
@@ -136,7 +136,7 @@ npm audit fix --force
 
 ## 总结
 
-DNS Shield v3.0 在**安全性**、**代码质量**、**无障碍**方面均达到生产级标准。所有已知安全问题已修复，构建和类型检查通过。
+DNS Shield v3.1.0 在**安全性**、**代码质量**、**无障碍**方面均达到生产级标准。所有已知安全问题已修复，构建和类型检查通过。
 
 **建议后续关注**:
 1. 定期运行 `npm audit` 检查依赖漏洞
