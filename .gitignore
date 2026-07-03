@@ -65,6 +65,9 @@ dist-ssr/
 # Node.js
 node_modules/
 
+# pnpm store (local)
+.pnpm-store/
+
 # Global cache directory (should be in user home)
 .dns-shield/
 

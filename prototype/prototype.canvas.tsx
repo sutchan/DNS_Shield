@@ -1,6 +1,6 @@
-// DNS Shield 高保真原型 v3.3.0
+// DNS Shield 高保真原型 v3.4.0
 // 设计规范：Swiss Modernism 2.0 × Apple Precision
-// 严格遵循 DNS Shield Design System v3.3.0
+// 严格遵循 DNS Shield Design System v3.4.0
 import React, { useState, useCallback } from 'react';
 
 const MOCK_DOMAINS = `# === 白名单 ===

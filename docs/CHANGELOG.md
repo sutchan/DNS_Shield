@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0] - 2026-07-03
+
+### Added
+- 根目录新增 `CHANGELOG.md`（Keep a Changelog 规范，含 Release 链接）
+- 新增 `.github/ISSUE_TEMPLATE/bug_report.md` Bug 报告模板
+- 新增 `.github/ISSUE_TEMPLATE/feature_request.md` 功能请求模板
+
+### Changed
+- 重写 `.github/ISSUE_TEMPLATE/config.yml` 为标准 GitHub 格式
+- 整理项目目录：移除 `overview.md`、`test_e2e.py`、`DNS_Shield.code-workspace`、`pnpm-workspace.yaml`、`.codebuddy/`
+- 将 `shadcn/` 目录归入 `prototype/` 统一管理
+- 版本号统一更新至 v3.4.0
+
+### Fixed
+- 修复 `openspec/config.yaml` 版本号停留在 v3.1.0 的问题
+
 ## [3.3.0] - 2026-07-03
 
 ### Added

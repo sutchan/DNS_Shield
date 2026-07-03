@@ -1,4 +1,4 @@
-// src/components/ui/Dialog.tsx v3.3.0
+// src/components/ui/Dialog.tsx v3.4.0
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
