@@ -1,4 +1,4 @@
-# DNS Shield — 交互标准 v3.0
+# DNS Shield — 交互标准 v3.1.0
 
 ## 1. 交互模式
 
