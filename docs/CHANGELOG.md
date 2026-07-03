@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.3.0] - 2026-07-03
+
+### Added
+- 新增 `SettingsPanel.tsx` — 设置面板组件（从 OutputPanel.tsx 拆分）
+- 新增 `UrlSection.tsx` — URL 导入区域组件（含 PresetTags 子组件，从 InputPanel.tsx 拆分）
+- 新增 `useLoading.ts` — 通用加载状态管理 hook（从 useUrlManager.ts 拆分）
+- 新增 `useSettings.ts` — 设置管理 hook（从 Home.tsx 拆分）
+
+### Changed
+- 版本号统一更新至 v3.3.0（全部源文件 + 文档文件）
+- 完成 4 个超过 200 行文件的模块拆分：
+  - `Home.tsx` 213 → 189 行
+  - `OutputPanel.tsx` 212 → 137 行
+  - `InputPanel.tsx` 205 → 153 行
+  - `useUrlManager.ts` 204 → 148 行
+- i18n 清理：移除所有 16 种语言翻译中的 emoji 图标，统一使用 Lucide SVG 图标
+- 优化代码架构，提升模块复用性和可维护性
+- 更新 openspec/SPEC.md 版本历史记录
+- 更新 prototype 原型文件版本号
+- 更新 shadcn 设计规范文档版本号
+
+### Fixed
+- 修复代码规范问题：UI 图标全部使用 Lucide SVG，移除翻译文本中的 emoji
+- 修复模块过大问题，所有源文件均控制在 200 行以内
+- 修复代码组织架构，职责分离更清晰
+
 ## [3.2.0] - 2026-07-03
 
 ### Added

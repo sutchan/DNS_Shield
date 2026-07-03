@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.2.0
+// src/app/Home.tsx v3.3.0
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import './globals.css';
@@ -17,10 +17,8 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useDomainData } from '../hooks/useDomainData';
 import { useRules } from '../hooks/useRules';
 import { useUrlManager } from '../hooks/useUrlManager';
+import { useSettings } from '../hooks/useSettings';
 import { toast } from 'sonner';
-
-// 导入类型
-import { Settings } from '../types';
 
 export default function Home() {
   // 使用钩子
@@ -60,20 +58,7 @@ export default function Home() {
   } = useDomainData(showToast);
 
   // 设置管理
-  const [settings, setSettings] = useState<Settings>({
-    projectName: 'DNS Shield',
-    version: '3.2.0',
-    ipv4: '127.0.0.1',
-    ipv6: '::',
-    addHeader: true,
-    blockIPv6: false,
-    dedupDomains: true,
-    removeWildcard: true,
-    dnsmasqFilename: 'dnsmasq.conf',
-    hostsFilename: 'hosts.txt',
-    adguardFilename: 'adguard.txt',
-    whitelistFilename: 'whitelist.txt'
-  });
+  const { settings, setSettings, updateSettings } = useSettings();
 
   // 规则生成
   const { 
@@ -114,15 +99,6 @@ export default function Home() {
     if (sourceTextareaRef.current && lineNumbersRef.current) {
       lineNumbersRef.current.scrollTop = sourceTextareaRef.current.scrollTop;
     }
-  };
-
-  // 更新设置
-  const updateSettings = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setSettings((prev: Settings) => ({
-      ...prev,
-      [id.replace('Input', '')]: value
-    }));
   };
 
   // 切换区域

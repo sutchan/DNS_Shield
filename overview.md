@@ -1,4 +1,4 @@
-# DNS Shield v3.2.0 — 全面审查与修复报告
+# DNS Shield v3.3.0 — 全面审查与修复报告
 
 ## 完成的工作
 
@@ -25,11 +25,11 @@
 | `OutputPanel.tsx` | 212 | 保持 | 结构清晰，无需拆分 |
 
 ### 5. 版本统一 ✅
-- 33 个源文件 + 9 个文档文件 → 全部 v3.2.0
+- 33 个源文件 + 9 个文档文件 → 全部 v3.3.0
 
 ### 6. 文档更新 ✅
 - `docs/README.md` 重写
-- `docs/CHANGELOG.md` 新增 v3.2.0
+- `docs/CHANGELOG.md` 新增 v3.3.0
 - `openspec/SPEC.md` 同步
 
 ### 7. Git 提交 ✅

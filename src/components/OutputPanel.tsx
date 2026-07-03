@@ -1,12 +1,10 @@
-// src/components/OutputPanel.tsx v3.2.0
+// src/components/OutputPanel.tsx v3.3.0
 'use client';
 import * as React from 'react';
-import { Sparkles, Download, Copy, Settings, ChevronDown, FileCode } from 'lucide-react';
+import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
 import { Button } from './ui/Button';
-import { Input } from './ui/Input';
-import { Label } from './ui/Label';
-import { Checkbox } from './ui/Checkbox';
 import { Tabs, TabsList, TabsTrigger } from './ui/Tabs';
+import SettingsPanel from './SettingsPanel';
 import { Settings as SettingsType, Translation, FormatType, OutputContent, ParsedData } from '../types';
 
 interface OutputPanelProps {
@@ -81,86 +79,13 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
         </div>
 
         {/* Settings Panel */}
-        <div
-          className={`settings-panel ${isSettingsPanelCollapsed ? 'settings-collapsed' : 'settings-expanded'}`}
-          id="settings-panel"
-          aria-hidden={isSettingsPanelCollapsed}
-        >
-          <div className="settings-inner">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="projectNameInput" className="text-xs font-medium text-muted-foreground">{t.projectName}</Label>
-                <Input
-                  type="text"
-                  id="projectNameInput"
-                  defaultValue={settings.projectName}
-                  onChange={updateSettings}
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="versionInput" className="text-xs font-medium text-muted-foreground">{t.version}</Label>
-                <Input
-                  type="text"
-                  id="versionInput"
-                  defaultValue={settings.version}
-                  onChange={updateSettings}
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="ipv4Input" className="text-xs font-medium text-muted-foreground">{t.ipV4}</Label>
-                <Input
-                  type="text"
-                  id="ipv4Input"
-                  defaultValue={settings.ipv4}
-                  onChange={updateSettings}
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <Label htmlFor="ipv6Input" className="text-xs font-medium text-muted-foreground">{t.ipV6}</Label>
-                <Input
-                  type="text"
-                  id="ipv6Input"
-                  defaultValue={settings.ipv6}
-                  onChange={updateSettings}
-                />
-              </div>
-            </div>
-            <div className="flex flex-wrap gap-4">
-              <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
-                <Checkbox
-                  id="addHeader"
-                  checked={settings.addHeader}
-                  onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, addHeader: checked === true }))}
-                />
-                <Label htmlFor="addHeader" className="text-sm text-muted-foreground cursor-pointer">{t.headerComment}</Label>
-              </div>
-              <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
-                <Checkbox
-                  id="blockIPv6"
-                  checked={settings.blockIPv6}
-                  onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, blockIPv6: checked === true }))}
-                />
-                <Label htmlFor="blockIPv6" className="text-sm text-muted-foreground cursor-pointer">{t.blockIPv6}</Label>
-              </div>
-              <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
-                <Checkbox
-                  id="dedupDomains"
-                  checked={settings.dedupDomains}
-                  onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, dedupDomains: checked === true }))}
-                />
-                <Label htmlFor="dedupDomains" className="text-sm text-muted-foreground cursor-pointer">{t.dedup}</Label>
-              </div>
-              <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
-                <Checkbox
-                  id="removeWildcard"
-                  checked={settings.removeWildcard}
-                  onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, removeWildcard: checked === true }))}
-                />
-                <Label htmlFor="removeWildcard" className="text-sm text-muted-foreground cursor-pointer">{t.removeWildcard}</Label>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SettingsPanel
+          isCollapsed={isSettingsPanelCollapsed}
+          settings={settings}
+          t={t}
+          updateSettings={updateSettings}
+          setSettings={setSettings}
+        />
 
         {/* Merge Info */}
         <div className="output-stats" id="mergeInfo" role="status" aria-live="polite">

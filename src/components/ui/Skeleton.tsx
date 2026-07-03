@@ -1,4 +1,4 @@
-// src/components/ui/Skeleton.tsx v3.2.0
+// src/components/ui/Skeleton.tsx v3.3.0
 import { cn } from "@/lib/utils"
 
 function Skeleton({

@@ -86,9 +86,18 @@ src/
 │   ├── Header.tsx    # 页头组件
 │   ├── Footer.tsx    # 页脚组件
 │   ├── InputPanel.tsx # 输入面板
-│   ├── InputEditor.tsx# 域名编辑器子组件
-│   └── OutputPanel.tsx# 输出面板
-├── hooks/            # 自定义 Hooks（useTheme、useLanguage、useDomainData 等）
+│   ├── InputEditor.tsx # 域名编辑器子组件
+│   ├── OutputPanel.tsx # 输出面板
+│   ├── SettingsPanel.tsx # 设置面板子组件
+│   └── UrlSection.tsx # URL 导入区域子组件
+├── hooks/            # 自定义 Hooks
+│   ├── useTheme.ts   # 主题切换
+│   ├── useLanguage.ts # 语言切换
+│   ├── useDomainData.ts # 域名数据管理
+│   ├── useRules.ts   # 规则生成
+│   ├── useUrlManager.ts # URL 管理
+│   ├── useSettings.ts # 设置管理
+│   └── useLoading.ts # 加载状态管理
 ├── locales/          # 16 种语言翻译文件
 ├── types/            # TypeScript 类型定义
 ├── utils/            # 工具函数
@@ -151,4 +160,4 @@ MIT License
 
 ## 版本
 
-当前版本：v3.2.0
+当前版本：v3.3.0
