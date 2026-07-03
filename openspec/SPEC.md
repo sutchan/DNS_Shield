@@ -29,7 +29,7 @@ dns-shield/
 │   ├── DEPLOYMENT.md               # 部署指南
 │   ├── SECURITY.md                 # 安全指南
 │   ├── SUPPORT.md                  # 支持文档
-│   └── security_best_practices_report.md  # 安全审查报告 v3.0
+│   └── security_best_practices_report.md  # 安全审查报告 v3.1.0
 ├── openspec/                       # 项目规范文档
 │   ├── SPEC.md                     # 项目规范（本文件）
 │   ├── TASKS.md                    # 任务清单
