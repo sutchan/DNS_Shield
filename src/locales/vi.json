@@ -50,8 +50,6 @@
   "usageTip": "💡 Mẹo",
   "usageTipContent": "Quy tắc được tạo có thể được sử dụng trực tiếp cho việc lọc quảng cáo router, hỗ trợ firmware Asus, Merlin, OpenWrt và các firmware khác",
   "adguardFormat": "AdGuard",
-  "adguardFile": "Tên tệp AdGuard",
-  "downloadAdguard": "Tải xuống định dạng AdGuard",
   "whitelistFormat": "Danh sách trắng",
   "toast": {
     "autosaveRestored": "Khôi phục nội dung tự động lưu ({time} phút trước)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL đã được thêm",
     "urlsSorted": "URL đã sắp xếp",
     "urlsFetched": "Đã lấy tất cả URL",
-    "urlListEmpty": "Danh sách URL trống",
     "loading": "Đang tải...",
     "invalidUrl": "Vui lòng nhập URL hợp lệ",
     "invalidUrlsFiltered": "Đã lọc {count} URL không hợp lệ"

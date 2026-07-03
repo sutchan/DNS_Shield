@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0] - 2026-07-03
+
+### Added
+- 新增 `domainValidator.ts` — 域名验证与行解析工具模块（从 parser.ts 拆分）
+- 新增 `InputEditor.tsx` — 域名编辑器子组件（从 InputPanel.tsx 拆分）
+
+### Changed
+- 版本号统一更新至 v3.2.0（33 个源文件 + 9 个文档文件）
+- 更新 README 中文/英文文档，同步当前功能说明
+- i18n 清理：移除 16 种语言中 3 个废弃的翻译键（`adguardFile`、`downloadAdguard`、`toast.urlListEmpty`）
+- InputPanel 优化：使用 Lucide SVG 图标替换 emoji × 关闭按钮
+- InputEditor 提取为独立文件，降低 InputPanel 行数至 200 行以下
+- parser.ts 精简：将域名验证逻辑提取到 domainValidator.ts
+
+### Fixed
+- 修复 Home.tsx settings 默认版本号为 v3.2.0
+- 修复 layout.tsx description 中缺失版本号
+- 修复输入/输出面板行号容器 ID 冲突（`#lineNumbers` → `#inputLineNumbers`）
+- 修复代码与设计规范中关于图标使用的对齐问题
+
 ## [3.1.0] - 2026-06-30
 
 ### Added

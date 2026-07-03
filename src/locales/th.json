@@ -50,8 +50,6 @@
   "usageTip": "💡 แนะนำ",
   "usageTipContent": "กฎที่สร้างขึ้นสามารถใช้โดยตรงสำหรับการกรองโฆษณาในเราเตอร์ รองรับเฟิร์มแวร์ Asus, Merlin, OpenWrt และอื่นๆ",
   "adguardFormat": "AdGuard",
-  "adguardFile": "ชื่อไฟล์ AdGuard",
-  "downloadAdguard": "ดาวน์โหลดรูปแบบ AdGuard",
   "whitelistFormat": "รายการขาว",
   "toast": {
     "autosaveRestored": "คืนค่าคอนเทนต์ที่บันทึกอัตโนมัติ ({time} นาทีที่แล้ว)",
@@ -71,7 +69,6 @@
     "urlAdded": "เพิ่ม URL แล้ว",
     "urlsSorted": "URL เรียงลำดับแล้ว",
     "urlsFetched": "ดึง URL ทั้งหมดแล้ว",
-    "urlListEmpty": "รายการ URL ว่างเปล่า",
     "loading": "กำลังโหลด...",
     "invalidUrl": "กรุณาใส่ URL ที่ถูกต้อง",
     "invalidUrlsFiltered": "กรอง URL ไม่ถูกต้อง {count} รายการ"

@@ -50,8 +50,6 @@
   "usageTip": "💡 İpucu",
   "usageTipContent": "Üretilen kurallar, Asus, Merlin, OpenWrt ve diğer donanımları destekleyen router reklam filtrelemesi için doğrudan kullanılabilir",
   "adguardFormat": "AdGuard",
-  "adguardFile": "AdGuard Dosya Adı",
-  "downloadAdguard": "AdGuard Biçimini İndir",
   "whitelistFormat": "Beyaz Liste",
   "toast": {
     "autosaveRestored": "Otomatik kaydedilen içerik geri yüklendi ({time} dakika önce)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL eklendi",
     "urlsSorted": "URL'ler sıralandı",
     "urlsFetched": "Tüm URL'ler alındı",
-    "urlListEmpty": "URL listesi boş",
     "loading": "Yükleniyor...",
     "invalidUrl": "Lütfen geçerli bir URL girin",
     "invalidUrlsFiltered": "{count} geçersiz URL filtrelendi"

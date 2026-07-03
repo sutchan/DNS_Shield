@@ -50,8 +50,6 @@
   "usageTip": "💡 Совет",
   "usageTipContent": "Сгенерированные правила можно использовать напрямую для фильтрации рекламы на маршрутизаторе, поддерживает прошивки Asus, Merlin, OpenWrt и другие",
   "adguardFormat": "AdGuard",
-  "adguardFile": "Имя файла AdGuard",
-  "downloadAdguard": "Скачать формат AdGuard",
   "whitelistFormat": "Белый список",
   "toast": {
     "autosaveRestored": "Восстановлено автосохраненное содержимое ({time} минут назад)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL добавлен",
     "urlsSorted": "URL отсортированы",
     "urlsFetched": "Получены все URL",
-    "urlListEmpty": "Список URL пуст",
     "loading": "Загрузка...",
     "invalidUrl": "Введите действительный URL-адрес",
     "invalidUrlsFiltered": "Отфильтровано {count} недействительных URL"

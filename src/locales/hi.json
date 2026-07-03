@@ -50,8 +50,6 @@
   "usageTip": "💡 सुझाव",
   "usageTipContent": "जनरेट किए गए नियमों का उपयोग सीधे राउटर विज्ञापन फ़िल्टरिंग के लिए किया जा सकता है, Asus, Merlin, OpenWrt और अन्य फर्मवेयर का समर्थन करता है",
   "adguardFormat": "AdGuard",
-  "adguardFile": "AdGuard फ़ाइल नाम",
-  "downloadAdguard": "AdGuard प्रारूप डाउनलोड करें",
   "whitelistFormat": "व्हाइटलिस्ट",
   "toast": {
     "autosaveRestored": "ऑटो-सेव्ड सामग्री पुनर्स्थापित की गई (पिछले {time} मिनट पहले)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL जोड़ा गया",
     "urlsSorted": "URL क्रमबद्ध कर दिए गए हैं",
     "urlsFetched": "सभी URL प्राप्त किए गए",
-    "urlListEmpty": "URL सूची खाली है",
     "loading": "लोड हो रहा है...",
     "invalidUrl": "कृपया एक मान्य URL दर्ज करें",
     "invalidUrlsFiltered": "{count} अमान्य URL फ़िल्टर किए गए"

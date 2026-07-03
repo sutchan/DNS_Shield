@@ -50,8 +50,6 @@
   "usageTip": "💡 Tip",
   "usageTipContent": "Aturan yang dihasilkan dapat digunakan langsung untuk filtering iklan router, mendukung firmware Asus, Merlin, OpenWrt, dan lainnya",
   "adguardFormat": "AdGuard",
-  "adguardFile": "Nama File AdGuard",
-  "downloadAdguard": "Unduh Format AdGuard",
   "whitelistFormat": "Daftar Putih",
   "toast": {
     "autosaveRestored": "Konten autosave telah dipulihkan ({time} menit yang lalu)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL telah ditambahkan",
     "urlsSorted": "URL telah diurutkan",
     "urlsFetched": "Semua URL telah diambil",
-    "urlListEmpty": "Daftar URL kosong",
     "loading": "Memuat...",
     "invalidUrl": "Silakan masukkan URL yang valid",
     "invalidUrlsFiltered": "Menyaring {count} URL tidak valid"

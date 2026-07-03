@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.1.0 |
+| 当前版本 | v3.2.0 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -29,7 +29,7 @@ dns-shield/
 │   ├── DEPLOYMENT.md               # 部署指南
 │   ├── SECURITY.md                 # 安全指南
 │   ├── SUPPORT.md                  # 支持文档
-│   └── security_best_practices_report.md  # 安全审查报告 v3.1.0
+│   └── security_best_practices_report.md  # 安全审查报告 v3.2.0
 ├── openspec/                       # 项目规范文档
 │   ├── SPEC.md                     # 项目规范（本文件）
 │   ├── TASKS.md                    # 任务清单
@@ -70,6 +70,7 @@ dns-shield/
 │   │   │   └── Tooltip.tsx
 │   │   ├── Header.tsx              # 页头（Shield 图标 + 语言/主题切换）
 │   │   ├── Footer.tsx              # 页脚（链接 + 使用说明）
+│   │   ├── InputEditor.tsx          # 域名编辑器子组件
 │   │   ├── InputPanel.tsx          # 输入面板（域名编辑 + URL 导入）
 │   │   └── OutputPanel.tsx         # 输出面板（规则预览 + 设置）
 │   ├── config/
@@ -90,13 +91,17 @@ dns-shield/
 │   ├── types/
 │   │   └── index.ts                # TypeScript 类型定义
 │   └── utils/                      # 工具函数
+│       ├── domainValidator.ts      # 域名验证与行解析
 │       ├── fileUtils.ts            # 文件操作（下载、复制、URL 获取）
 │       ├── i18n.ts                 # 国际化配置
-│       ├── parser.ts               # 域名解析器
+│       ├── parser.ts               # 域名解析器（排序、去重）
 │       ├── rulesGenerator.ts       # 规则生成器
 │       └── uiUtils.ts              # UI 工具（行号生成、滚动同步）
 ├── prototype/                        # 原型目录
-│   ├── prototype.canvas.tsx          # 高保真原型
+│   ├── prototype.html                # 高保真原型（HTML 版本）
+│   ├── prototype.canvas.tsx          # 高保真原型（React 版本）
+│   ├── components-showcase.html      # 组件库展示
+│   ├── OVERVIEW.md                   # 原型总览文档
 │   ├── design-system.md              # 设计系统规范
 │   └── component-library.md          # 组件库规范
 ├── shadcn/                           # shadcn 设计规范
@@ -166,7 +171,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.1.0 |
+| 版本号 | 3.2.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -278,6 +283,7 @@ refactor: 优化规则生成逻辑
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| v3.2.0 | 2026-07-03 | 新增 domainValidator.ts/InputEditor.tsx 模块拆分；清理废弃 i18n 键；版本统一 v3.2.0 |
 | v3.1.0 | 2026-06-30 | 添加 Accordion 组件，完善按钮点击缩放和面板悬停浮起动效 |
 | v3.0.0 | 2026-06-30 | 设计系统全面重构：oklch 色彩空间、Swiss Precision 排版、Apple 风格动效曲线 |
 | v2.3.2 | 2024-06-19 | 添加缺失国际化翻译键，创建 openspec 规范文档 |

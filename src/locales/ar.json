@@ -50,8 +50,6 @@
   "usageTip": "💡 تلميح",
   "usageTipContent": "يمكن استخدام القواعد المولدة مباشرةً لفلترة الإعلانات على الراوتر، مما يدعم أجهزة Asus، Merlin، OpenWrt وغيرها",
   "adguardFormat": "AdGuard",
-  "adguardFile": "اسم ملف AdGuard",
-  "downloadAdguard": "تنزيل تنسيق AdGuard",
   "whitelistFormat": "قائمة أبيض",
   "toast": {
     "autosaveRestored": "تم استعادة المحتوى المحفوظ تلقائيًا (منذ {time} دقيقة)",
@@ -71,7 +69,6 @@
     "urlAdded": "تمت إضافة URL",
     "urlsSorted": "تم فرز URLs",
     "urlsFetched": "تم جلب جميع URLs",
-    "urlListEmpty": "قائمة URL فارغة",
     "loading": "جاري التحميل...",
     "invalidUrl": "يرجى إدخال عنوان URL صالح",
     "invalidUrlsFiltered": "تم تصفية {count} عناوين URL غير صالحة"

@@ -50,8 +50,6 @@
   "usageTip": "💡 Wskazówka",
   "usageTipContent": "Wygenerowane reguły mogą być używane bezpośrednio do filtrowania reklam na routerze, obsługuje firmware Asus, Merlin, OpenWrt i inne",
   "adguardFormat": "AdGuard",
-  "adguardFile": "Nazwa pliku AdGuard",
-  "downloadAdguard": "Pobierz format AdGuard",
   "whitelistFormat": "Biała lista",
   "toast": {
     "autosaveRestored": "Odtworzono automatycznie zapisany zawartość ({time} minut temu)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL dodany",
     "urlsSorted": "URL posortowane",
     "urlsFetched": "Pobrano wszystkie URL",
-    "urlListEmpty": "Lista URL jest pusta",
     "loading": "Ładowanie...",
     "invalidUrl": "Wprowadź prawidłowy adres URL",
     "invalidUrlsFiltered": "Filtrowano {count} nieprawidłowych URL-i"

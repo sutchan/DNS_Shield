@@ -50,8 +50,6 @@
   "usageTip": "💡 Tip",
   "usageTipContent": "Vygenerovaná pravidla lze přímo použít pro filtrování reklam na routeru, podporuje firmware Asus, Merlin, OpenWrt a další",
   "adguardFormat": "AdGuard",
-  "adguardFile": "Název souboru AdGuard",
-  "downloadAdguard": "Stáhnout formát AdGuard",
   "whitelistFormat": "Bílá lista",
   "toast": {
     "autosaveRestored": "Obnoveno automaticky uložený obsah (před {time} minutami)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL byla přidána",
     "urlsSorted": "URL byly seřazeny",
     "urlsFetched": "Všechny URL byly načteny",
-    "urlListEmpty": "Seznam URL je prázdný",
     "loading": "Načítání...",
     "invalidUrl": "Zadejte prosím platnou URL adresu",
     "invalidUrlsFiltered": "Filtrováno {count} neplatných URL"

@@ -50,8 +50,6 @@
   "usageTip": "💡 Tip",
   "usageTipContent": "Generated rules can be directly used for router ad filtering, supporting Asus, Merlin, OpenWrt and other firmware",
   "adguardFormat": "AdGuard",
-  "adguardFile": "AdGuard Filename",
-  "downloadAdguard": "Download AdGuard Format",
   "whitelistFormat": "Whitelist",
   "toast": {
     "autosaveRestored": "Restored auto-saved content ({time} min ago)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL added",
     "urlsSorted": "URLs sorted",
     "urlsFetched": "Fetched all URLs",
-    "urlListEmpty": "URL list is empty",
     "loading": "Loading...",
     "invalidUrl": "Please enter a valid URL",
     "invalidUrlsFiltered": "Filtered {count} invalid URLs"

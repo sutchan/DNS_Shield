@@ -1,22 +1,26 @@
-// src/components/InputPanel.tsx v3.1.0
+// src/components/InputPanel.tsx v3.2.0
 'use client';
 import * as React from 'react';
+import { X, Link, ExternalLink } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { Badge } from './ui/Badge';
+import InputEditor from './InputEditor';
 import { Translation } from '../types';
+
+interface Stats {
+  domainCount: number;
+  validCount: number;
+  commentCount: number;
+  blacklistCount: number;
+  whitelistCount: number;
+}
 
 interface InputPanelProps {
   sourceInput: string;
   urls: string[];
   isUrlSectionCollapsed: boolean;
-  stats: {
-    domainCount: number;
-    validCount: number;
-    commentCount: number;
-    blacklistCount: number;
-    whitelistCount: number;
-  };
+  stats: Stats;
   activePreset: string;
   t: Translation;
   lineNumbersRef: React.RefObject<HTMLDivElement>;
@@ -37,6 +41,8 @@ interface InputPanelProps {
   fetchAllUrls: () => void;
   setUrls: (urls: string[]) => void;
 }
+
+const PRESETS = ['builtin', 'adguard', 'easylist', 'neohosts'] as const;
 
 const InputPanel: React.FC<InputPanelProps> = ({
   sourceInput,
@@ -61,8 +67,16 @@ const InputPanel: React.FC<InputPanelProps> = ({
   addUrl,
   sortUrls,
   fetchAllUrls,
-  setUrls
+  setUrls,
 }) => {
+  const statItems = [
+    { key: 'domainCount' as const, labelKey: 'domainCount' as keyof Translation },
+    { key: 'blacklistCount' as const, labelKey: 'blacklistCount' as keyof Translation },
+    { key: 'whitelistCount' as const, labelKey: 'whitelistCount' as keyof Translation },
+    { key: 'validCount' as const, labelKey: 'validCount' as keyof Translation },
+    { key: 'commentCount' as const, labelKey: 'commentCount' as keyof Translation },
+  ] as const;
+
   return (
     <section className="panel input-section" id="input-panel" aria-labelledby="input-title">
       {/* 标题栏 */}
@@ -83,37 +97,22 @@ const InputPanel: React.FC<InputPanelProps> = ({
         </Button>
       </div>
 
-      {/* 统计信息 — shadcn Badge */}
+      {/* 统计信息 */}
       <div className="stats-compact" id="stats-bar" role="region" aria-label="统计信息">
-        <Badge variant="secondary" className="stat-badge" role="status" aria-live="polite">
-          <span className="stat-value" id="domainCount" aria-label={t.domainCount}>{stats.domainCount}</span>
-          <span className="stat-label">{t.domainCount}</span>
-        </Badge>
-        <Badge variant="secondary" className="stat-badge" role="status" aria-live="polite">
-          <span className="stat-value" id="blacklistCount" aria-label={t.blacklistCount}>{stats.blacklistCount}</span>
-          <span className="stat-label">{t.blacklistCount}</span>
-        </Badge>
-        <Badge variant="secondary" className="stat-badge" role="status" aria-live="polite">
-          <span className="stat-value" id="whitelistCount" aria-label={t.whitelistCount}>{stats.whitelistCount}</span>
-          <span className="stat-label">{t.whitelistCount}</span>
-        </Badge>
-        <Badge variant="secondary" className="stat-badge" role="status" aria-live="polite">
-          <span className="stat-value" id="validCount" aria-label={t.validCount}>{stats.validCount}</span>
-          <span className="stat-label">{t.validCount}</span>
-        </Badge>
-        <Badge variant="secondary" className="stat-badge" role="status" aria-live="polite">
-          <span className="stat-value" id="commentCount" aria-label={t.commentCount}>{stats.commentCount}</span>
-          <span className="stat-label">{t.commentCount}</span>
-        </Badge>
+        {statItems.map(({ key, labelKey }) => (
+          <Badge key={key} variant="secondary" className="stat-badge" role="status" aria-live="polite">
+            <span className="stat-value" id={key} aria-label={String(t[labelKey])}>{stats[key]}</span>
+            <span className="stat-label">{String(t[labelKey])}</span>
+          </Badge>
+        ))}
       </div>
 
-      {/* URL 区域（可折叠） */}
+      {/* URL 区域 */}
       <div
         className={`url-section ${isUrlSectionCollapsed ? 'collapsed' : ''}`}
         id="url-section"
         aria-hidden={isUrlSectionCollapsed}
       >
-        {/* URL 输入行 — shadcn Input */}
         <div className="url-input-row">
           <label htmlFor="urlInput" className="sr-only">{t.urlPlaceholder}</label>
           <Input
@@ -126,12 +125,11 @@ const InputPanel: React.FC<InputPanelProps> = ({
             className="url-input"
           />
           <Button type="button" variant="default" size="sm" onClick={fetchFromUrl} id="fetch-url-btn" aria-describedby="url-help">
+            <ExternalLink className="h-3.5 w-3.5 mr-1" strokeWidth={1.8} />
             {t.fetchBtn}
           </Button>
         </div>
-        <div id="url-help" className="sr-only">
-          输入URL地址获取域名列表
-        </div>
+        <div id="url-help" className="sr-only">输入URL地址获取域名列表</div>
 
         {/* URL 操作按钮 */}
         <div className="url-actions" role="group" aria-label="URL操作">
@@ -144,7 +142,8 @@ const InputPanel: React.FC<InputPanelProps> = ({
         <div className="url-list" id="urlList" role="list" aria-label="URL列表">
           {urls.map((url: string, index: number) => (
             <div key={index} className="url-item" role="listitem">
-              <span>{url}</span>
+              <Link className="url-item-icon h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.8} />
+              <span className="url-item-text">{url}</span>
               <Button
                 type="button"
                 variant="ghost"
@@ -153,82 +152,43 @@ const InputPanel: React.FC<InputPanelProps> = ({
                 onClick={() => setUrls(urls.filter((_: string, i: number) => i !== index))}
                 aria-label={`移除 ${url}`}
               >
-                ×
+                <X className="h-3.5 w-3.5" strokeWidth={1.8} />
               </Button>
             </div>
           ))}
         </div>
 
-        {/* 预设标签 — shadcn Badge variant */}
+        {/* 预设标签 */}
         <div className="preset-section">
           <span className="preset-label" id="preset-label">{t.presetLabel}</span>
           <div className="preset-tags" role="group" aria-labelledby="preset-label">
-            <Badge
-              variant={activePreset === 'builtin' ? 'default' : 'outline'}
-              className="preset-tag cursor-pointer"
-              onClick={() => loadPreset('builtin')}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadPreset('builtin'); }}
-              aria-pressed={activePreset === 'builtin'}
-            >
-              {t.builtinAd}
-            </Badge>
-            <Badge
-              variant={activePreset === 'adguard' ? 'default' : 'outline'}
-              className="preset-tag cursor-pointer"
-              onClick={() => loadPreset('adguard')}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadPreset('adguard'); }}
-              aria-pressed={activePreset === 'adguard'}
-            >
-              {t.adguard}
-            </Badge>
-            <Badge
-              variant={activePreset === 'easylist' ? 'default' : 'outline'}
-              className="preset-tag cursor-pointer"
-              onClick={() => loadPreset('easylist')}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadPreset('easylist'); }}
-              aria-pressed={activePreset === 'easylist'}
-            >
-              {t.easylist}
-            </Badge>
-            <Badge
-              variant={activePreset === 'neohosts' ? 'default' : 'outline'}
-              className="preset-tag cursor-pointer"
-              onClick={() => loadPreset('neohosts')}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadPreset('neohosts'); }}
-              aria-pressed={activePreset === 'neohosts'}
-            >
-              {t.neohosts}
-            </Badge>
+            {PRESETS.map((preset) => (
+              <Badge
+                key={preset}
+                variant={activePreset === preset ? 'default' : 'outline'}
+                className="preset-tag cursor-pointer"
+                onClick={() => loadPreset(preset)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadPreset(preset); }}
+                aria-pressed={activePreset === preset}
+              >
+                {t[preset as keyof Translation] as string}
+              </Badge>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* 域名编辑器 */}
-      <div className="editor-container">
-        <div className="line-numbers" id="lineNumbers" ref={lineNumbersRef} aria-hidden="true"></div>
-        <label htmlFor="sourceInput" className="sr-only">{t.inputPlaceholder}</label>
-        <textarea
-          id="sourceInput"
-          placeholder={t.inputPlaceholder}
-          value={sourceInput}
-          onChange={handleSourceInput}
-          onScroll={syncScroll}
-          ref={sourceTextareaRef}
-          aria-describedby="sourceInput-help"
-          className="w-full min-h-[200px] py-3 pl-14 pr-3 text-sm font-mono bg-background resize-y focus:outline-none"
-        />
-      </div>
-      <div id="sourceInput-help" className="sr-only">
-        输入域名列表，每行一个
-      </div>
+      {/* 域名编辑器（提取为子组件） */}
+      <InputEditor
+        sourceInput={sourceInput}
+        t={t}
+        lineNumbersRef={lineNumbersRef}
+        sourceTextareaRef={sourceTextareaRef}
+        handleSourceInput={handleSourceInput}
+        syncScroll={syncScroll}
+      />
 
       {/* 编辑操作按钮 */}
       <div className="editor-actions" role="group" aria-label="编辑操作">

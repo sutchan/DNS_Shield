@@ -50,8 +50,6 @@
   "usageTip": "💡 提示",
   "usageTipContent": "生成的規則可直接用於路由器廣告過濾，支援華碩、梅林、OpenWrt 等韌體",
   "adguardFormat": "AdGuard 格式",
-  "adguardFile": "AdGuard 檔名",
-  "downloadAdguard": "下載 AdGuard 格式",
   "whitelistFormat": "白名單",
   "toast": {
     "autosaveRestored": "已恢復上次自動儲存的內容 ({time}分鐘前)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL 已新增",
     "urlsSorted": "URLs 已排序",
     "urlsFetched": "已獲取全部 URLs",
-    "urlListEmpty": "URL 列表為空",
     "loading": "載入中...",
     "invalidUrl": "請輸入有效的 URL 位址",
     "invalidUrlsFiltered": "已過濾 {count} 個無效 URL"

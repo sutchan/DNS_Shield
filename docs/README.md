@@ -8,9 +8,14 @@
 - **支付保护** - 屏蔽扫码支付跳转链接（微信、支付宝）
 - **隐私防护** - 阻止追踪器和数据采集
 - **多设备生效** - 路由器设置一次，所有连接设备自动生效
-- **多种格式支持** - Dnsmasq、Hosts、AdGuard 等格式
-- **白名单管理** - 通过网页工具管理白名单
+- **多种格式支持** - Dnsmasq、Hosts、AdGuard、白名单等格式
+- **白名单管理** - 自定义白名单，避免误拦截关键服务
+- **自定义 DNS 指向** - 支持 @domain=ip 语法，自定义域名解析
+- **URL 导入** - 从远程 URL 获取域名列表（带超时控制）
+- **预设数据源** - 内置 AdGuard、EasyList、NeoHosts 等预设
+- **自动保存/恢复** - 每 30 秒自动保存内容到浏览器
 - **国际化支持** - 支持 16 种语言
+- **深色/浅色模式** - 一键切换主题配色
 
 ## 快速开始
 
@@ -45,6 +50,8 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf 
 
 如需自定义域名列表或生成其他格式，可使用 Web 管理工具。
 
+访问 [https://dns.ewuse.com](https://dns.ewuse.com/) 在线使用。
+
 部署方法请查看 [部署指南](docs/DEPLOYMENT.md)。
 
 ## 文件说明
@@ -59,12 +66,40 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf 
 
 ## 技术特性
 
-- **Apple 设计风格** - 现代化 UI/UX，采用 Apple 设计语言
+- **Swiss Modernism 设计风格** - 现代化 UI/UX，Apple 设计精度
+- **shadcn/ui 组件库** - 基于 Radix UI，可访问性强
 - **响应式布局** - 完美支持桌面端和移动端
-- **深色模式** - 支持浅色/深色模式切换
+- **深色/浅色模式** - 支持一键主题切换
 - **PWA 支持** - 可安装到桌面，离线可用
 - **TypeScript** - 完整的类型安全
-- **SSR/SSG** - Next.js 框架支持服务器端渲染
+- **SSR** - Next.js 框架支持服务端渲染
+- **16 种国际化语言** - 全球用户友好体验
+- **模块化架构** - 清晰的分层文件结构
+
+## 项目结构
+
+```
+src/
+├── app/              # Next.js App Router（布局、页面、全局样式）
+├── components/       # React 组件
+│   ├── ui/           # shadcn/ui 基础组件（Button、Input、Tabs 等）
+│   ├── Header.tsx    # 页头组件
+│   ├── Footer.tsx    # 页脚组件
+│   ├── InputPanel.tsx # 输入面板
+│   ├── InputEditor.tsx# 域名编辑器子组件
+│   └── OutputPanel.tsx# 输出面板
+├── hooks/            # 自定义 Hooks（useTheme、useLanguage、useDomainData 等）
+├── locales/          # 16 种语言翻译文件
+├── types/            # TypeScript 类型定义
+├── utils/            # 工具函数
+│   ├── parser.ts     # 域名解析与排序去重
+│   ├── domainValidator.ts # 域名验证与行解析
+│   ├── rulesGenerator.ts  # 规则生成器
+│   ├── fileUtils.ts  # 文件操作
+│   ├── i18n.ts       # 国际化配置
+│   └── uiUtils.ts    # UI 工具函数
+└── config/           # 应用配置（预设源 URL）
+```
 
 ## 开发
 
@@ -72,18 +107,25 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf 
 # 安装依赖
 npm install
 
-# 开发模式
+# 开发模式（端口 8082）
 npm run dev
 
 # 构建生产版本
 npm run build
 
-# 运行测试
-npm test
-
 # 代码检查
 npm run lint
 ```
+
+## 项目规范
+
+项目严格遵循 [openspec/SPEC.md](openspec/SPEC.md) 定义的规范，包括：
+
+- 域名格式规范（`+` 白名单、`@` 自定义 DNS、`#` 注释）
+- 输出格式规范（Dnsmasq、Hosts、AdGuard、白名单）
+- Git 提交规范（feat/fix/docs/chore/refactor）
+- 版本管理规范（SemVer 语义化版本）
+- 组件分层规范（UI 基础组件 → 业务组件 → 页面组件）
 
 ## 常见问题
 
@@ -93,7 +135,7 @@ npm run lint
 - 检查路由器 DNS 设置是否生效
 
 **Q: 如何添加白名单？**
-- 使用 Web 管理工具的的白名单功能
+- 使用 Web 管理工具的白名单功能
 - 或手动编辑 `whitelist.txt`，每行一个域名
 
 **Q: 规则多久更新一次？**
@@ -109,4 +151,4 @@ MIT License
 
 ## 版本
 
-当前版本：v3.1.0
+当前版本：v3.2.0

@@ -1,4 +1,4 @@
-// src/components/Header.tsx v3.1.0
+// src/components/Header.tsx v3.2.0
 'use client';
 
 import * as React from 'react';

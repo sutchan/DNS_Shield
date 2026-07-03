@@ -1,4 +1,4 @@
-// src/components/ui/Switch.tsx v3.1.0
+// src/components/ui/Switch.tsx v3.2.0
 import * as React from "react"
 import * as SwitchPrimitives from "@radix-ui/react-switch"
 

@@ -50,8 +50,6 @@
   "usageTip": "💡 Tip",
   "usageTipContent": "Gegenereerde regels kunnen direct worden gebruikt voor routeradvertentiefiltering, ondersteunt Asus, Merlin, OpenWrt en andere firmware",
   "adguardFormat": "AdGuard",
-  "adguardFile": "AdGuard-bestandsnaam",
-  "downloadAdguard": "Download AdGuard-formaat",
   "whitelistFormat": "Whitelist",
   "toast": {
     "autosaveRestored": "Automatisch opgeslagen inhoud hersteld ({time} minuten geleden)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL toegevoegd",
     "urlsSorted": "URL's gesorteerd",
     "urlsFetched": "Alle URL's opgehaald",
-    "urlListEmpty": "URL-lijst is leeg",
     "loading": "Laden...",
     "invalidUrl": "Voer een geldige URL in",
     "invalidUrlsFiltered": "{count} ongeldige URLs gefilterd"

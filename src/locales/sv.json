@@ -50,8 +50,6 @@
   "usageTip": "💡 Tips",
   "usageTipContent": "Genererade regler kan användas direkt för routerannonsfiltrering, stödjer firmware för Asus, Merlin, OpenWrt och andra",
   "adguardFormat": "AdGuard",
-  "adguardFile": "AdGuard-filnamn",
-  "downloadAdguard": "Ladda ner AdGuard-format",
   "whitelistFormat": "Vitlista",
   "toast": {
     "autosaveRestored": "Återställd autosparad innehåll ({time} minuter sedan)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL lagt till",
     "urlsSorted": "URL:er sorterade",
     "urlsFetched": "Alla URL:er hämtade",
-    "urlListEmpty": "URL-listan är tom",
     "loading": "Laddar...",
     "invalidUrl": "Ange en giltig URL",
     "invalidUrlsFiltered": "Filtrerade {count} ogiltiga URL:er"

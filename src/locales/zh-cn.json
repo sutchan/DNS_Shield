@@ -50,8 +50,6 @@
   "usageTip": "💡 提示",
   "usageTipContent": "生成的规则可直接用于路由器广告过滤，支持华硕、梅林、OpenWrt 等固件",
   "adguardFormat": "AdGuard 格式",
-  "adguardFile": "AdGuard 文件名",
-  "downloadAdguard": "下载 AdGuard 格式",
   "whitelistFormat": "白名单",
   "toast": {
     "autosaveRestored": "已恢复上次自动保存的内容 ({time}分钟前)",
@@ -71,7 +69,6 @@
     "urlAdded": "URL 已添加",
     "urlsSorted": "URLs 已排序",
     "urlsFetched": "已获取全部 URLs",
-    "urlListEmpty": "URL 列表为空",
     "loading": "加载中...",
     "invalidUrl": "请输入有效的 URL 地址",
     "invalidUrlsFiltered": "已过滤 {count} 个无效 URL"
