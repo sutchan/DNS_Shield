@@ -1,4 +1,4 @@
-// src/utils/fileUtils.ts v3.3.0
+// src/utils/fileUtils.ts v3.4.0
 
 // URL 最大长度限制（防止 DoS 攻击）
 const MAX_URL_LENGTH = 2048;

@@ -7,18 +7,26 @@
 
 ## [Unreleased]
 
+## [3.4.0] - 2026-07-03
+
+### Added
+- 根目录新增 `CHANGELOG.md`（Keep a Changelog 规范，含完整版本历史和 Release 链接）
+- 新增 `.github/ISSUE_TEMPLATE/bug_report.md` — Bug 报告模板
+- 新增 `.github/ISSUE_TEMPLATE/feature_request.md` — 功能请求模板
+
 ### Changed
-- 整理项目目录结构，移除冗余文件
+- 重写 `.github/ISSUE_TEMPLATE/config.yml` 为标准 GitHub 格式（`contact_links` + `blank_issues_enabled`）
+- 整理项目目录结构，移除冗余文件：
   - 移除临时工作记录文件 `overview.md`
   - 移除个人测试脚本 `test_e2e.py`（使用 Windows 本地路径）
   - 移除冗余工作区配置 `DNS_Shield.code-workspace`
   - 移除无效的 `pnpm-workspace.yaml`（引用不存在的 `unrs-resolver`）
   - 移除本地 IDE 配置目录 `.codebuddy/`
 - 将 `shadcn/` 设计规范目录归入 `prototype/` 统一管理
-- 完善 `.github/ISSUE_TEMPLATE/` 配置：
-  - 重写 `config.yml` 为标准 GitHub 格式（`contact_links` + `blank_issues_enabled`）
-  - 新增 `bug_report.md` Bug 报告模板
-  - 新增 `feature_request.md` 功能请求模板
+- 版本号统一更新至 v3.4.0（源文件、文档、配置文件）
+
+### Fixed
+- 修复 `openspec/config.yaml` 版本号停留在 v3.1.0 的问题
 
 ## [3.3.0] - 2026-07-03
 
@@ -379,7 +387,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.3.0...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.4.0...HEAD
+[3.4.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.4.0
 [3.3.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.3.0
 [3.2.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.2.0
 [3.1.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.1.0

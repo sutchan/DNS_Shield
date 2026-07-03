@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.3.0 |
+| 当前版本 | v3.4.0 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -287,7 +287,8 @@ refactor: 优化规则生成逻辑
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
-| v3.3.0 | 2026-07-03 | 完成 4 个超过 200 行文件的模块拆分；新增 SettingsPanel/UrlSection/useSettings/useLoading 模块；移除所有 i18n 翻译中的 emoji 图标；版本统一 v3.3.0 |
+| v3.4.0 | 2026-07-03 | 项目目录整理：移除冗余文件，shadcn/ 归入 prototype/ 统一管理；完善 GitHub Issue 模板配置；根目录新增 CHANGELOG.md |
+| v3.3.0 | 2026-07-03 | 完成 4 个超过 200 行文件的模块拆分；新增 SettingsPanel/UrlSection/useSettings/useLoading 模块；移除所有 i18n 翻译中的 emoji 图标；版本统一 v3.4.0 |
 | v3.2.0 | 2026-07-03 | 新增 domainValidator.ts/InputEditor.tsx 模块拆分；清理废弃 i18n 键；版本统一 v3.2.0 |
 | v3.1.0 | 2026-06-30 | 添加 Accordion 组件，完善按钮点击缩放和面板悬停浮起动效 |
 | v3.0.0 | 2026-06-30 | 设计系统全面重构：oklch 色彩空间、Swiss Precision 排版、Apple 风格动效曲线 |
