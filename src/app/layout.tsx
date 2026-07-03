@@ -1,4 +1,4 @@
-// src/app/layout.tsx v3.2.0
+// src/app/layout.tsx v3.3.0
 import React from 'react'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
@@ -6,10 +6,10 @@ import './globals.css'
 export const metadata: Metadata = {
   metadataBase: new URL('https://dns.ewuse.com'),
   title: {
-    default: 'DNS Shield v3.2.0 - 路由器级广告过滤规则生成工具',
+    default: 'DNS Shield v3.3.0 - 路由器级广告过滤规则生成工具',
     template: '%s | DNS Shield',
   },
-  description: 'DNS Shield v3.2.0 - 路由器级全局广告过滤规则生成工具。基于 dnsmasq/hosts 的路由器广告过滤，支持梅林固件、小米路由器、OpenWrt 等设备。自动生成 AdBlock、DNS 过滤规则，轻松屏蔽广告域名。',
+  description: 'DNS Shield v3.3.0 - 路由器级全局广告过滤规则生成工具。基于 dnsmasq/hosts 的路由器广告过滤，支持梅林固件、小米路由器、OpenWrt 等设备。自动生成 AdBlock、DNS 过滤规则，轻松屏蔽广告域名。',
   keywords: ['DNS广告过滤', 'dnsmasq', 'hosts', '广告拦截', '路由器', '梅林固件', '小米路由器', 'OpenWrt', '广告过滤规则', 'DNS Shield', 'ad blocking', 'router firmware', 'AdBlock', 'DNS filter', '广告屏蔽', '去广告'],
   authors: [{ name: 'sutchan', url: 'https://github.com/sutchan' }],
   creator: 'sutchan',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     alternateLocale: ['en_US', 'zh_TW'],
     url: 'https://dns.ewuse.com',
     siteName: 'DNS Shield',
-    title: 'DNS Shield v3.2.0 - 路由器级广告过滤规则生成工具',
+    title: 'DNS Shield v3.3.0 - 路由器级广告过滤规则生成工具',
     description: '路由器级全局广告过滤规则生成工具，支持 Dnsmasq 和 Hosts 格式',
     images: [
       {

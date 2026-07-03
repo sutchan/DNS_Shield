@@ -1,0 +1,109 @@
+// src/components/SettingsPanel.tsx v3.3.0
+// 设置面板组件 —— 从 OutputPanel 拆分
+'use client';
+import * as React from 'react';
+import { Input } from './ui/Input';
+import { Label } from './ui/Label';
+import { Checkbox } from './ui/Checkbox';
+import { Settings as SettingsType, Translation } from '../types';
+
+interface SettingsPanelProps {
+  isCollapsed: boolean;
+  settings: SettingsType;
+  t: Translation;
+  updateSettings: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
+}
+
+const SettingsPanel: React.FC<SettingsPanelProps> = ({
+  isCollapsed,
+  settings,
+  t,
+  updateSettings,
+  setSettings,
+}) => {
+  return (
+    <div
+      className={`settings-panel ${isCollapsed ? 'settings-collapsed' : 'settings-expanded'}`}
+      id="settings-panel"
+      aria-hidden={isCollapsed}
+    >
+      <div className="settings-inner">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="projectNameInput" className="text-xs font-medium text-muted-foreground">{t.projectName}</Label>
+            <Input
+              type="text"
+              id="projectNameInput"
+              defaultValue={settings.projectName}
+              onChange={updateSettings}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="versionInput" className="text-xs font-medium text-muted-foreground">{t.version}</Label>
+            <Input
+              type="text"
+              id="versionInput"
+              defaultValue={settings.version}
+              onChange={updateSettings}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="ipv4Input" className="text-xs font-medium text-muted-foreground">{t.ipV4}</Label>
+            <Input
+              type="text"
+              id="ipv4Input"
+              defaultValue={settings.ipv4}
+              onChange={updateSettings}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="ipv6Input" className="text-xs font-medium text-muted-foreground">{t.ipV6}</Label>
+            <Input
+              type="text"
+              id="ipv6Input"
+              defaultValue={settings.ipv6}
+              onChange={updateSettings}
+            />
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-4">
+          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
+            <Checkbox
+              id="addHeader"
+              checked={settings.addHeader}
+              onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, addHeader: checked === true }))}
+            />
+            <Label htmlFor="addHeader" className="text-sm text-muted-foreground cursor-pointer">{t.headerComment}</Label>
+          </div>
+          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
+            <Checkbox
+              id="blockIPv6"
+              checked={settings.blockIPv6}
+              onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, blockIPv6: checked === true }))}
+            />
+            <Label htmlFor="blockIPv6" className="text-sm text-muted-foreground cursor-pointer">{t.blockIPv6}</Label>
+          </div>
+          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
+            <Checkbox
+              id="dedupDomains"
+              checked={settings.dedupDomains}
+              onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, dedupDomains: checked === true }))}
+            />
+            <Label htmlFor="dedupDomains" className="text-sm text-muted-foreground cursor-pointer">{t.dedup}</Label>
+          </div>
+          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
+            <Checkbox
+              id="removeWildcard"
+              checked={settings.removeWildcard}
+              onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, removeWildcard: checked === true }))}
+            />
+            <Label htmlFor="removeWildcard" className="text-sm text-muted-foreground cursor-pointer">{t.removeWildcard}</Label>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SettingsPanel;

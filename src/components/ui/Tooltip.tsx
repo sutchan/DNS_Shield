@@ -1,4 +1,4 @@
-// src/components/ui/Tooltip.tsx v3.2.0
+// src/components/ui/Tooltip.tsx v3.3.0
 import * as React from "react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 

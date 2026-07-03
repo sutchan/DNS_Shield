@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v3.2.0
+// src/components/Footer.tsx v3.3.0
 import React, { useState } from 'react';
 import { Translation } from '../types';
 

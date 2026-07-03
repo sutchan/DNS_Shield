@@ -1,19 +1,9 @@
-// src/hooks/useUrlManager.ts v3.2.0
+// src/hooks/useUrlManager.ts v3.3.0
 import { useState, useRef } from 'react';
 import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl } from '../utils/fileUtils';
 import { generateLineNumbers } from '../utils/uiUtils';
 import { config } from '../config/index';
-
-interface LoadConfig {
-  fetchFn: () => Promise<string>;
-  onSuccess?: (content: string) => void;
-  onError?: (error: unknown) => void;
-  successToast?: { key: string; params?: Record<string, string | number> };
-  errorToast?: { key: string; params?: Record<string, string | number> };
-  loadingToast?: { key: string; params?: Record<string, string | number> };
-  beforeLoad?: () => boolean | void;
-  errorContext?: string;
-}
+import { useLoading } from './useLoading';
 
 export const useUrlManager = (
   setSourceInput: (value: string) => void,
@@ -23,87 +13,10 @@ export const useUrlManager = (
   isLangZh: boolean
 ) => {
   const [urls, setUrls] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [activePreset, setActivePreset] = useState('builtin');
   
-  // 引用
   const urlInputRef = useRef<HTMLInputElement>(null);
-
-  // 通用的加载包装函数
-  const withLoading = async (config: LoadConfig): Promise<void> => {
-    const {
-      fetchFn,
-      onSuccess,
-      onError,
-      successToast,
-      errorToast,
-      loadingToast,
-      beforeLoad,
-      errorContext
-    } = config;
-
-    // 执行前置检查
-    if (beforeLoad && beforeLoad() === false) {
-      return;
-    }
-
-    setIsLoading(true);
-    if (loadingToast) {
-      showToast(loadingToast.key, loadingToast.params);
-    }
-
-    try {
-      const content = await fetchFn();
-      
-      // 更新状态
-      setSourceInput(content);
-      parseSourceData(content);
-      generateLineNumbers(content, lineNumbersRef);
-      
-      // 执行自定义成功回调
-      if (onSuccess) {
-        onSuccess(content);
-      }
-      
-      // 显示成功提示
-      if (successToast) {
-        showToast(successToast.key, successToast.params);
-      }
-    } catch (error) {
-      const context = errorContext || 'Loading operation';
-      console.error(`[${context}] Error:`, error);
-      
-      // 执行自定义错误回调
-      if (onError) {
-        onError(error);
-      }
-      
-      // 显示错误提示
-      if (errorToast) {
-        showToast(errorToast.key, errorToast.params);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // 加载预设
-  const loadPreset = async (preset: string) => {
-    setActivePreset(preset);
-
-    await withLoading({
-      fetchFn: async () => {
-        const url = config.presets[preset as keyof typeof config.presets];
-        if (!url) {
-          throw new Error('Preset URL not found');
-        }
-        return fetchFromUrlUtil(url);
-      },
-      errorContext: `loadPreset(${preset})`,
-      successToast: { key: 'presetLoaded', params: { preset } },
-      errorToast: { key: 'presetFailed' }
-    });
-  };
+  const { isLoading, withLoading } = useLoading(showToast);
 
   // URL 验证函数
   const validateUrlInput = (): { isValid: boolean; url?: string } => {
@@ -112,7 +25,6 @@ export const useUrlManager = (
       showToast('urlEnter');
       return { isValid: false };
     }
-    // 验证 URL 格式和协议
     if (!isValidHttpUrl(url)) {
       showToast('invalidUrl');
       return { isValid: false };
@@ -120,9 +32,32 @@ export const useUrlManager = (
     return { isValid: true, url };
   };
 
+  // 加载预设
+  const loadPreset = async (preset: string) => {
+    setActivePreset(preset);
+
+    await withLoading<string>({
+      fetchFn: async () => {
+        const url = config.presets[preset as keyof typeof config.presets];
+        if (!url) {
+          throw new Error('Preset URL not found');
+        }
+        return fetchFromUrlUtil(url);
+      },
+      onSuccess: (content: string) => {
+        setSourceInput(content);
+        parseSourceData(content);
+        generateLineNumbers(content, lineNumbersRef);
+      },
+      errorContext: `loadPreset(${preset})`,
+      successToast: { key: 'presetLoaded', params: { preset } },
+      errorToast: { key: 'presetFailed' }
+    });
+  };
+
   // 从 URL 获取域名（带 URL 验证）
   const fetchFromUrl = async () => {
-    await withLoading({
+    await withLoading<string>({
       beforeLoad: () => {
         const { isValid } = validateUrlInput();
         return isValid;
@@ -133,6 +68,11 @@ export const useUrlManager = (
           throw new Error('URL not provided');
         }
         return fetchFromUrlUtil(url);
+      },
+      onSuccess: (content: string) => {
+        setSourceInput(content);
+        parseSourceData(content);
+        generateLineNumbers(content, lineNumbersRef);
       },
       errorContext: 'fetchFromUrl',
       successToast: { key: 'domainsFetched' },
@@ -160,7 +100,6 @@ export const useUrlManager = (
 
   // 获取全部 URLs（仅处理有效的 HTTP/HTTPS URLs）
   const fetchAllUrls = async () => {
-    // 过滤出有效的 URLs
     const validUrls = urls.filter(url => isValidHttpUrl(url));
 
     if (validUrls.length === 0) {
@@ -172,7 +111,7 @@ export const useUrlManager = (
       showToast('invalidUrlsFiltered', { count: urls.length - validUrls.length });
     }
 
-    await withLoading({
+    await withLoading<string>({
       beforeLoad: () => true,
       loadingToast: { key: 'loading' },
       fetchFn: async () => {
@@ -182,6 +121,11 @@ export const useUrlManager = (
           showToast('invalidUrlsFiltered', { count: failedCount });
         }
         return result.content;
+      },
+      onSuccess: (content: string) => {
+        setSourceInput(content);
+        parseSourceData(content);
+        generateLineNumbers(content, lineNumbersRef);
       },
       errorContext: 'fetchAllUrls',
       successToast: { key: 'urlsFetched' },
