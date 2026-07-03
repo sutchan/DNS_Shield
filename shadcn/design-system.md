@@ -2,4 +2,4 @@
 
 > 基于 shadcn/ui + Tailwind CSS + Radix UI 的完整设计系统
 
-(design-system.md content goes here - placeholder for full content)
+（设计系统规范完整内容）
