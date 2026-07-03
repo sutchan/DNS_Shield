@@ -1,19 +1,27 @@
-# Issue template configuration
+# GitHub Issue 模板配置
+# 文档: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository
 
-# The navigation bar at the top of the repository
+# 禁用空白 Issue，引导用户使用模板
+blank_issues_enabled: false
 
-# Add links to the navigation bar
+# 联系链接 — 在 Issue 选择页面显示
+contact_links:
+  - name: 📖 项目文档
+    url: https://github.com/sutchan/DNS_Shield/blob/main/docs/README.md
+    about: 安装、使用和部署指南
 
-# The first item is the default link
+  - name: 📋 变更日志
+    url: https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md
+    about: 查看版本更新记录
 
-- name: README
-  href: README.md
+  - name: 🤝 贡献指南
+    url: https://github.com/sutchan/DNS_Shield/blob/main/docs/CONTRIBUTING.md
+    about: 参与项目开发和维护
 
-- name: Contributing
-  href: CONTRIBUTING.md
+  - name: 🔒 安全指南
+    url: https://github.com/sutchan/DNS_Shield/blob/main/docs/SECURITY.md
+    about: 安全最佳实践和漏洞报告流程
 
-- name: Security
-  href: SECURITY.md
-
-- name: Changelog
-  href: CHANGELOG.md
+  - name: 💬 讨论区
+    url: https://github.com/sutchan/DNS_Shield/discussions
+    about: 提问、讨论和功能建议
