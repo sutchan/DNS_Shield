@@ -182,7 +182,7 @@ export default function Home() {
         version={settings.version}
       />
 
-      <Loading isLoading={isLoading} isLangZh={isLangZh} />
+      <Loading isLoading={isLoading} loadingText={t.toast.loading} />
       <ToastProvider />
     </div>
   );

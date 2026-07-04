@@ -89,7 +89,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
           {t.fetchBtn}
         </Button>
       </div>
-      <div id="url-help" className="sr-only">输入URL地址获取域名列表</div>
+      <div id="url-help" className="sr-only">{t.urlHelp}</div>
 
       {/* URL 操作按钮 */}
       <div className="url-actions" role="group" aria-label="URL操作">
@@ -110,7 +110,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
               size="icon"
               className="url-remove-btn"
               onClick={() => setUrls(urls.filter((_: string, i: number) => i !== index))}
-              aria-label={`移除 ${url}`}
+              aria-label={t.removeUrlAria.replace('{url}', url)}
             >
               <X className="h-3.5 w-3.5" strokeWidth={1.8} />
             </Button>

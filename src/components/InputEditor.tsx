@@ -38,7 +38,7 @@ const InputEditor: React.FC<InputEditorProps> = ({
         />
       </div>
       <div id="sourceInput-help" className="sr-only">
-        输入域名列表，每行一个
+        {t.inputHelp}
       </div>
     </>
   );

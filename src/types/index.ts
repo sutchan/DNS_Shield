@@ -96,6 +96,11 @@ export interface Translation {
   usageTipContent: string;
   lightMode: string;
   darkMode: string;
+  inputHelp: string;
+  urlHelp: string;
+  removeUrlAria: string;
+  githubLinkAria: string;
+  demoLinkAria: string;
   header: {
     dnsmasqTitle: string;
     description: string;

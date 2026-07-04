@@ -41,8 +41,6 @@ interface InputPanelProps {
   setUrls: (urls: string[]) => void;
 }
 
-const PRESETS = ['builtin', 'adguard', 'easylist', 'neohosts'] as const;
-
 const InputPanel: React.FC<InputPanelProps> = ({
   sourceInput,
   urls,
