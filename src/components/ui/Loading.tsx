@@ -3,16 +3,16 @@ import React from 'react';
 
 interface LoadingProps {
   isLoading: boolean;
-  isLangZh: boolean;
+  loadingText: string;
 }
 
-const Loading: React.FC<LoadingProps> = ({ isLoading, isLangZh }) => {
+const Loading: React.FC<LoadingProps> = ({ isLoading, loadingText }) => {
   if (!isLoading) return null;
 
   return (
     <div className="loading-overlay">
       <div className="loading-spinner"></div>
-      <span className="loading-text">{isLangZh ? '加载中...' : 'Loading...'}</span>
+      <span className="loading-text">{loadingText}</span>
     </div>
   );
 };

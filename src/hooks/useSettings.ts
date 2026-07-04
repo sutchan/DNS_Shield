@@ -5,7 +5,7 @@ import { Settings } from '../types';
 
 const DEFAULT_SETTINGS: Settings = {
   projectName: 'DNS Shield',
-  version: '3.3.0',
+  version: '3.4.0',
   ipv4: '127.0.0.1',
   ipv6: '::',
   addHeader: true,

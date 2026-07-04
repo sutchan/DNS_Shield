@@ -27,7 +27,7 @@ const Footer: React.FC<FooterProps> = ({
             rel="noopener noreferrer" 
             className="footer-link" 
             id="github-link"
-            aria-label="访问 GitHub 仓库（新窗口打开）"
+            aria-label={t.githubLinkAria}
           >
             GitHub
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -42,7 +42,7 @@ const Footer: React.FC<FooterProps> = ({
             rel="noopener noreferrer" 
             className="footer-link" 
             id="demo-link"
-            aria-label="访问演示站点（新窗口打开）"
+            aria-label={t.demoLinkAria}
           >
             Demo
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
