@@ -32,7 +32,7 @@
   "headerComment": "تعليقات الرأس",
   "blockIPv6": "حظر IPv6",
   "dedup": "إزالة التكرارات التلقائية",
-  "removeWildcard": "إزالة العلامات الوILD",
+  "removeWildcard": "إزالة أحرف البدل",
   "lightMode": "الوضع الفاتح",
   "darkMode": "الوضع الداكن",
   "inputHelp": "أدخل قائمة النطاقات، واحدة لكل سطر",
@@ -55,7 +55,7 @@
   "usageTip": "تلميح",
   "usageTipContent": "يمكن استخدام القواعد المولدة مباشرةً لفلترة الإعلانات على الراوتر، مما يدعم أجهزة Asus، Merlin، OpenWrt وغيرها",
   "adguardFormat": "AdGuard",
-  "whitelistFormat": "قائمة أبيض",
+  "whitelistFormat": "قائمة بيضاء",
   "toast": {
     "autosaveRestored": "تم استعادة المحتوى المحفوظ تلقائيًا (منذ {time} دقيقة)",
     "parseFailed": "فشل التحليل، يرجى التحقق من تنسيق الإدخال",
@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "قائمة الأبيض (السماح بهذه النطاقات)",
     "label": "مدرج في القائمة البيضاء:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "القائمة السوداء: {blacklist} | القائمة البيضاء: {whitelist} | DNS مخصص: {customDns}",
+  "versionLabel": "النسخة",
+  "languageSelectorAria": "اختر اللغة",
+  "statsAria": "الإحصائيات",
+  "editorActionsAria": "إجراءات المحرر",
+  "outputActionsAria": "إجراءات الإخراج",
+  "outputFormatAria": "إخراج تنسيق {format}",
+  "urlActionsAria": "إجراءات URL",
+  "urlListAria": "قائمة URL",
+  "usageGuideAria": "دليل الاستخدام"
 }

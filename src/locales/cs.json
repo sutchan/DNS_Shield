@@ -55,7 +55,7 @@
   "usageTip": "Tip",
   "usageTipContent": "Vygenerovaná pravidla lze přímo použít pro filtrování reklam na routeru, podporuje firmware Asus, Merlin, OpenWrt a další",
   "adguardFormat": "AdGuard",
-  "whitelistFormat": "Bílá lista",
+  "whitelistFormat": "Bílý seznam",
   "toast": {
     "autosaveRestored": "Obnoveno automaticky uložený obsah (před {time} minutami)",
     "parseFailed": "Analýza selhala, prosím zkontrolujte formát vstupu",
@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "Bílá lista (povolit tyto domény)",
     "label": "Na bílé listě:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "Černá listina: {blacklist} | Bílá listina: {whitelist} | Vlastní DNS: {customDns}",
+  "versionLabel": "Verze",
+  "languageSelectorAria": "Vybrat jazyk",
+  "statsAria": "Statistiky",
+  "editorActionsAria": "Akce editoru",
+  "outputActionsAria": "Akce výstupu",
+  "outputFormatAria": "Výstup formátu {format}",
+  "urlActionsAria": "Akce URL",
+  "urlListAria": "Seznam URL",
+  "usageGuideAria": "Průvodce použitím"
 }

@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "Beyaz Liste (bu alan adlarına izin ver)",
     "label": "Beyaz listede:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "Kara liste: {blacklist} | Beyaz liste: {whitelist} | Özel DNS: {customDns}",
+  "versionLabel": "Sürüm",
+  "languageSelectorAria": "Dil seç",
+  "statsAria": "İstatistikler",
+  "editorActionsAria": "Düzenleyici eylemleri",
+  "outputActionsAria": "Çıktı eylemleri",
+  "outputFormatAria": "{format} formatı çıktısı",
+  "urlActionsAria": "URL eylemleri",
+  "urlListAria": "URL listesi",
+  "usageGuideAria": "Kullanım kılavuzu"
 }

@@ -101,6 +101,18 @@ export interface Translation {
   removeUrlAria: string;
   githubLinkAria: string;
   demoLinkAria: string;
+  hostsFormat: string;
+  dnsmasqFormat: string;
+  mergeStats: string;
+  versionLabel: string;
+  languageSelectorAria: string;
+  statsAria: string;
+  editorActionsAria: string;
+  outputActionsAria: string;
+  outputFormatAria: string;
+  urlActionsAria: string;
+  urlListAria: string;
+  usageGuideAria: string;
   header: {
     dnsmasqTitle: string;
     description: string;

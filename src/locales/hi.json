@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "व्हाइटलिस्ट (इन डोमेनों की अनुमति दें)",
     "label": "व्हाइटलिस्ट में:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "ब्लैकलिस्ट: {blacklist} | व्हाइटलिस्ट: {whitelist} | कस्टम DNS: {customDns}",
+  "versionLabel": "संस्करण",
+  "languageSelectorAria": "भाषा चुनें",
+  "statsAria": "आँकड़े",
+  "editorActionsAria": "संपादक क्रियाएँ",
+  "outputActionsAria": "आउटपुट क्रियाएँ",
+  "outputFormatAria": "{format} प्रारूप आउटपुट",
+  "urlActionsAria": "URL क्रियाएँ",
+  "urlListAria": "URL सूची",
+  "usageGuideAria": "उपयोग गाइड"
 }

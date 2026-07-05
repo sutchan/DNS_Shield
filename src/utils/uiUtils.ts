@@ -12,17 +12,3 @@ export const generateLineNumbers = (text: string, ref: React.RefObject<HTMLDivEl
     ref.current.textContent = lineNumbers;
   }
 };
-
-// 同步滚动
-export const syncScroll = (textareaRef: React.RefObject<HTMLTextAreaElement>, lineNumbersRef: React.RefObject<HTMLDivElement>): void => {
-  if (textareaRef.current && lineNumbersRef.current) {
-    lineNumbersRef.current.scrollTop = textareaRef.current.scrollTop;
-  }
-};
-
-// 同步输出滚动
-export const syncOutputScroll = (previewRef: React.RefObject<HTMLDivElement>, lineNumbersRef: React.RefObject<HTMLDivElement>): void => {
-  if (previewRef.current && lineNumbersRef.current) {
-    lineNumbersRef.current.scrollTop = previewRef.current.scrollTop;
-  }
-};
