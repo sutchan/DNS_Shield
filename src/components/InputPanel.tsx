@@ -5,15 +5,7 @@ import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
 import InputEditor from './InputEditor';
 import UrlSection, { PresetTags } from './UrlSection';
-import { Translation } from '../types';
-
-interface Stats {
-  domainCount: number;
-  validCount: number;
-  commentCount: number;
-  blacklistCount: number;
-  whitelistCount: number;
-}
+import { Translation, Stats } from '../types';
 
 interface InputPanelProps {
   sourceInput: string;
@@ -95,7 +87,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
       </div>
 
       {/* 统计信息 */}
-      <div className="stats-compact" id="stats-bar" role="region" aria-label="统计信息">
+      <div className="stats-compact" id="stats-bar" role="region" aria-label={t.statsAria}>
         {statItems.map(({ key, labelKey }) => (
           <Badge key={key} variant="secondary" className="stat-badge" role="status" aria-live="polite">
             <span className="stat-value" id={key} aria-label={String(t[labelKey])}>{stats[key]}</span>
@@ -137,7 +129,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
       />
 
       {/* 编辑操作按钮 */}
-      <div className="editor-actions" role="group" aria-label="编辑操作">
+      <div className="editor-actions" role="group" aria-label={t.editorActionsAria}>
         <Button type="button" variant="outline" size="sm" onClick={clearAll} id="clear-btn">{t.clearBtn}</Button>
         <Button type="button" variant="outline" size="sm" onClick={sortDomains} id="sort-btn">{t.sortBtn}</Button>
         <Button type="button" variant="default" onClick={parseSource} id="parse-btn">{t.parseBtn}</Button>

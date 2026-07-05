@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
 import { downloadOutput as downloadOutputUtil, copyToClipboard } from '../utils/fileUtils';
 import { generateLineNumbers } from '../utils/uiUtils';
-import { OutputContent, Settings, ParsedData, Translation } from '../types';
+import { OutputContent, Settings, ParsedData, Translation, FormatType } from '../types';
 
 export const useRules = (parsedData: ParsedData, settings: Settings, t: Translation, showToast: (key: string, params?: { [key: string]: string | number }) => void) => {
   const [outputContent, setOutputContent] = useState<OutputContent>({
@@ -12,7 +12,7 @@ export const useRules = (parsedData: ParsedData, settings: Settings, t: Translat
     adguard: '',
     whitelist: ''
   });
-  const [currentFormat, setCurrentFormat] = useState<'hosts' | 'dnsmasq' | 'adguard' | 'whitelist'>('hosts');
+  const [currentFormat, setCurrentFormat] = useState<FormatType>('hosts');
   
   // 引用
   const outputPreviewRef = useRef<HTMLDivElement>(null);
@@ -56,7 +56,7 @@ export const useRules = (parsedData: ParsedData, settings: Settings, t: Translat
   };
 
   // 设置格式
-  const setFormat = (format: 'hosts' | 'dnsmasq' | 'adguard' | 'whitelist') => {
+  const setFormat = (format: FormatType) => {
     setCurrentFormat(format);
   };
 

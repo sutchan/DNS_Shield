@@ -67,7 +67,6 @@ export const useLoading = (
 
   return {
     isLoading,
-    withLoading,
-    setIsLoading
+    withLoading
   };
 };

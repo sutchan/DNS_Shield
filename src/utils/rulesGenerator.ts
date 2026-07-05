@@ -112,7 +112,7 @@ export const generateRules = (domains: string[], whitelist: string[], customDns:
     adguardContent += `||${item.domain}^\n`;
 
     if (blockIPv6) {
-      dnsmasqContent += `address=/${item.domain}/::\n`;
+      dnsmasqContent += `address=/${item.domain}/${settings.ipv6}\n`;
     }
   });
 

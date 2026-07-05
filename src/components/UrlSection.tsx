@@ -7,6 +7,7 @@ import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { Badge } from './ui/Badge';
 import { Translation } from '../types';
+import { config } from '../config';
 
 interface UrlSectionProps {
   isCollapsed: boolean;
@@ -21,6 +22,14 @@ interface UrlSectionProps {
 }
 
 const PRESETS = ['builtin', 'adguard', 'easylist', 'neohosts'] as const;
+
+// 预设标识符到翻译键的映射（config 用 'builtin'，Translation 接口用 'builtinAd'）
+const PRESET_LABEL_KEY: Record<typeof PRESETS[number], keyof Translation> = {
+  builtin: 'builtinAd',
+  adguard: 'adguard',
+  easylist: 'easylist',
+  neohosts: 'neohosts',
+};
 
 interface PresetTagsProps {
   activePreset: string;
@@ -48,7 +57,7 @@ export const PresetTags: React.FC<PresetTagsProps> = ({
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadPreset(preset); }}
             aria-pressed={activePreset === preset}
           >
-            {t[preset as keyof Translation] as string}
+            {t[PRESET_LABEL_KEY[preset]] as string}
           </Badge>
         ))}
       </div>
@@ -80,29 +89,29 @@ const UrlSection: React.FC<UrlSectionProps> = ({
           id="urlInput"
           ref={urlInputRef as React.RefObject<HTMLInputElement>}
           placeholder={t.urlPlaceholder}
-          defaultValue="https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt"
+          defaultValue={config.domainsUrl}
           aria-describedby="url-help"
           className="url-input"
         />
         <Button type="button" variant="default" size="sm" onClick={fetchFromUrl} id="fetch-url-btn" aria-describedby="url-help">
-          <ExternalLink className="h-3.5 w-3.5 mr-1" strokeWidth={1.8} />
+          <ExternalLink className="h-3.5 w-3.5 mr-1" strokeWidth={1.8} aria-hidden="true" />
           {t.fetchBtn}
         </Button>
       </div>
       <div id="url-help" className="sr-only">{t.urlHelp}</div>
 
       {/* URL 操作按钮 */}
-      <div className="url-actions" role="group" aria-label="URL操作">
+      <div className="url-actions" role="group" aria-label={t.urlActionsAria}>
         <Button type="button" variant="outline" size="sm" onClick={addUrl} id="add-url-btn">{t.addUrl}</Button>
         <Button type="button" variant="outline" size="sm" onClick={sortUrls} id="sort-urls-btn">{t.sortUrlBtn}</Button>
         <Button type="button" variant="outline" size="sm" onClick={fetchAllUrls} id="fetch-all-urls-btn">{t.fetchAllUrls}</Button>
       </div>
 
       {/* URL 列表 */}
-      <div className="url-list" id="urlList" role="list" aria-label="URL列表">
+      <div className="url-list" id="urlList" role="list" aria-label={t.urlListAria}>
         {urls.map((url: string, index: number) => (
           <div key={index} className="url-item" role="listitem">
-            <Link className="url-item-icon h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.8} />
+            <Link className="url-item-icon h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.8} aria-hidden="true" />
             <span className="url-item-text">{url}</span>
             <Button
               type="button"
@@ -112,7 +121,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
               onClick={() => setUrls(urls.filter((_: string, i: number) => i !== index))}
               aria-label={t.removeUrlAria.replace('{url}', url)}
             >
-              <X className="h-3.5 w-3.5" strokeWidth={1.8} />
+              <X className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden="true" />
             </Button>
           </div>
         ))}

@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "Danh sách trắng (cho phép các miền này)",
     "label": "Trong danh sách trắng:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "Danh sách đen: {blacklist} | Danh sách trắng: {whitelist} | DNS tùy chỉnh: {customDns}",
+  "versionLabel": "Phiên bản",
+  "languageSelectorAria": "Chọn ngôn ngữ",
+  "statsAria": "Thống kê",
+  "editorActionsAria": "Hành động trình soạn thảo",
+  "outputActionsAria": "Hành động đầu ra",
+  "outputFormatAria": "Đầu ra định dạng {format}",
+  "urlActionsAria": "Hành động URL",
+  "urlListAria": "Danh sách URL",
+  "usageGuideAria": "Hướng dẫn sử dụng"
 }

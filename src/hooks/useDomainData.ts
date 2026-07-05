@@ -24,6 +24,8 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const showToastRef = useRef(showToast);
   showToastRef.current = showToast;
+  const sourceInputRef = useRef(sourceInput);
+  sourceInputRef.current = sourceInput;
 
   const parseSourceData = useCallback((text?: string) => {
     try {
@@ -81,11 +83,11 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     loadDomainData();
   }, [loadDomainData]);
 
+  // 恢复自动保存内容（仅在挂载时执行一次，避免清空后又被覆盖）
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    
     const autosave = localStorage.getItem('dnsShield_autosave');
-    if (autosave && !sourceInput.trim()) {
+    if (autosave && !sourceInputRef.current.trim()) {
       setSourceInput(autosave);
       parseSourceData(autosave);
       generateLineNumbers(autosave, lineNumbersRef);
@@ -97,16 +99,20 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
         }
       }
     }
-    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 自动保存定时器（仅创建一次，通过 ref 读取最新输入）
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
     const autoSaveInterval = setInterval(() => {
-      if (sourceInput.trim()) {
-        localStorage.setItem('dnsShield_autosave', sourceInput);
+      if (sourceInputRef.current.trim()) {
+        localStorage.setItem('dnsShield_autosave', sourceInputRef.current);
         localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
       }
     }, 30000);
-    
     return () => clearInterval(autoSaveInterval);
-  }, [sourceInput, parseSourceData]);
+  }, []);
 
   // 防抖解析：用户停止输入 300ms 后再解析，避免频繁计算
   useEffect(() => {
@@ -150,7 +156,6 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     stats,
     isLoading,
     lineNumbersRef,
-    loadDomainData,
     parseSourceData,
     clearAll,
     sortDomains,

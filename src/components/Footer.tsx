@@ -1,4 +1,5 @@
 // src/components/Footer.tsx v3.4.0
+'use client';
 import React, { useState } from 'react';
 import { Translation } from '../types';
 
@@ -63,14 +64,14 @@ const Footer: React.FC<FooterProps> = ({
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
-          <span className="footer-version" id="version-display" aria-label={`版本 ${version}`}>v{version}</span>
+          <span className="footer-version" id="version-display" aria-label={`${t.versionLabel} ${version}`}>v{version}</span>
         </div>
-        <div 
-          className={`usage-guide ${isUsageGuideCollapsed ? 'collapsed' : ''}`} 
+        <div
+          className={`usage-guide ${isUsageGuideCollapsed ? 'collapsed' : ''}`}
           id="usageGuide"
           aria-hidden={isUsageGuideCollapsed}
         >
-          <div className="usage-steps" role="region" aria-label="使用指南">
+          <div className="usage-steps" role="region" aria-label={t.usageGuideAria}>
             <div className="usage-step">
               <span className="step-number" aria-hidden="true">1</span>
               <div className="step-content">

@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "Белый список (разрешить эти домены)",
     "label": "В белом списке:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "Чёрный список: {blacklist} | Белый список: {whitelist} | Пользовательский DNS: {customDns}",
+  "versionLabel": "Версия",
+  "languageSelectorAria": "Выбрать язык",
+  "statsAria": "Статистика",
+  "editorActionsAria": "Действия редактора",
+  "outputActionsAria": "Действия вывода",
+  "outputFormatAria": "Вывод формата {format}",
+  "urlActionsAria": "Действия URL",
+  "urlListAria": "Список URL",
+  "usageGuideAria": "Руководство по использованию"
 }

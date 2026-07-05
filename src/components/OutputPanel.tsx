@@ -14,7 +14,6 @@ interface OutputPanelProps {
   settings: SettingsType;
   parsedData: ParsedData;
   t: Translation;
-  isLangZh: boolean;
   outputPreviewRef: React.RefObject<HTMLDivElement>;
   outputLineNumbersRef: React.RefObject<HTMLDivElement>;
   toggleSection: (section: string) => void;
@@ -34,7 +33,6 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
   settings,
   parsedData,
   t,
-  isLangZh,
   outputPreviewRef,
   outputLineNumbersRef,
   toggleSection,
@@ -51,14 +49,14 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
       <div className="output-body">
         <div className="output-header">
           <div className="panel-title">
-            <FileCode className="h-4 w-4 text-primary" strokeWidth={1.8} />
+            <FileCode className="h-4 w-4 text-primary" strokeWidth={1.8} aria-hidden="true" />
             <h2 id="output-title">{t.outputTitle}</h2>
           </div>
           <div className="flex items-center gap-2">
             <Tabs value={currentFormat} onValueChange={(v) => setFormat(v as FormatType)}>
               <TabsList className="format-tabs">
-                <TabsTrigger value="hosts" id="format-hosts-btn">Hosts</TabsTrigger>
-                <TabsTrigger value="dnsmasq" id="format-dnsmasq-btn">Dnsmasq</TabsTrigger>
+                <TabsTrigger value="hosts" id="format-hosts-btn">{t.hostsFormat}</TabsTrigger>
+                <TabsTrigger value="dnsmasq" id="format-dnsmasq-btn">{t.dnsmasqFormat}</TabsTrigger>
                 <TabsTrigger value="adguard" id="format-adguard-btn">{t.adguardFormat}</TabsTrigger>
                 <TabsTrigger value="whitelist" id="format-whitelist-btn">{t.whitelistFormat}</TabsTrigger>
               </TabsList>
@@ -73,7 +71,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
               aria-expanded={!isSettingsPanelCollapsed}
               aria-controls="settings-panel"
             >
-              <Settings className="h-4 w-4" strokeWidth={1.8} />
+              <Settings className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
             </Button>
           </div>
         </div>
@@ -90,9 +88,10 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
         {/* Merge Info */}
         <div className="output-stats" id="mergeInfo" role="status" aria-live="polite">
           {outputContent[currentFormat] ? (
-            <span>{isLangZh ?
-              `黑名单: ${parsedData.domains.length} | 白名单: ${parsedData.whitelist.length} | 自定义DNS: ${parsedData.customDns.length}` :
-              `Blacklist: ${parsedData.domains.length} | Whitelist: ${parsedData.whitelist.length} | Custom DNS: ${parsedData.customDns.length}`}
+            <span>{t.mergeStats
+              .replace('{blacklist}', String(parsedData.domains.length))
+              .replace('{whitelist}', String(parsedData.whitelist.length))
+              .replace('{customDns}', String(parsedData.customDns.length))}
             </span>
           ) : (
             t.mergeInfo
@@ -108,24 +107,24 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
             onScroll={syncOutputScroll}
             ref={outputPreviewRef}
             role="tabpanel"
-            aria-label={`${currentFormat} 格式输出`}
+            aria-label={t.outputFormatAria.replace('{format}', currentFormat)}
           >
             {outputContent[currentFormat] || t.previewPlaceholder}
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap gap-2 justify-end" id="output-actions" role="group" aria-label="输出操作">
+        <div className="flex flex-wrap gap-2 justify-end" id="output-actions" role="group" aria-label={t.outputActionsAria}>
           <Button type="button" variant="default" onClick={generateRules} id="generate-rules-btn">
-            <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} />
+            <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
             {t.generateBtn}
           </Button>
           <Button type="button" variant="default" onClick={downloadOutput} id="download-btn">
-            <Download className="h-4 w-4 mr-1" strokeWidth={1.8} />
+            <Download className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
             {t.downloadBtn}
           </Button>
           <Button type="button" variant="outline" onClick={copyOutput} id="copy-btn">
-            <Copy className="h-4 w-4 mr-1" strokeWidth={1.8} />
+            <Copy className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
             {t.copyBtn}
           </Button>
         </div>
