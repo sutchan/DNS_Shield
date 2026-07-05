@@ -111,8 +111,13 @@
 /* ============================================
    Layout
    ============================================ */
+.container,
 .container-main {
   @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10;
+}
+
+.main-content {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-6;
 }
 
 .app-header {
@@ -120,7 +125,7 @@
 }
 
 .header-top {
-  @apply flex items-center justify-between;
+  @apply flex items-center justify-between flex-wrap gap-3;
 }
 
 .header-brand {
@@ -172,6 +177,34 @@
   @apply text-[1.0625rem] font-semibold tracking-tight;
 }
 
+/* Input section — 输入面板的左边框强调 */
+.input-section {
+  @apply flex flex-col;
+}
+
+/* Section header — 区段标题栏（含折叠按钮） */
+.section-header {
+  @apply flex items-center justify-between mb-4 gap-2;
+}
+
+.section-header h2 {
+  @apply text-[1.0625rem] font-semibold tracking-tight;
+}
+
+/* Collapse button — 折叠/展开按钮 */
+.collapse-btn {
+  @apply inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground;
+}
+
+.collapse-icon {
+  @apply inline-block text-[0.625rem] transition-transform duration-200;
+  transform: rotate(0deg);
+}
+
+.collapse-icon.collapsed {
+  transform: rotate(-90deg);
+}
+
 /* ============================================
    Stats
    ============================================ */
@@ -179,12 +212,20 @@
   @apply grid grid-cols-5 gap-2 mb-5;
 }
 
+.stats-compact {
+  @apply flex flex-wrap gap-2 mb-5;
+}
+
 .stat-item {
   @apply flex flex-col items-center gap-0.5 px-2 py-2.5 rounded-xl bg-muted/60 text-center;
 }
 
+.stat-badge {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1;
+}
+
 .stat-value {
-  @apply text-lg font-semibold leading-none tracking-tight;
+  @apply text-sm font-semibold leading-none tracking-tight;
 }
 
 .stat-label {
@@ -199,15 +240,12 @@
   transition: max-height 350ms cubic-bezier(0.16, 1, 0.3, 1),
               opacity 250ms ease,
               margin 250ms ease;
-}
-
-.url-section-expanded {
   max-height: 600px;
   opacity: 1;
   margin-bottom: 1.25rem;
 }
 
-.url-section-collapsed {
+.url-section.collapsed {
   max-height: 0;
   opacity: 0;
   margin-bottom: 0;
@@ -219,14 +257,48 @@
   @apply p-4 rounded-xl border border-border bg-muted/40;
 }
 
+.url-input-row {
+  @apply flex gap-2 mb-3;
+}
+
+.url-input {
+  @apply flex-1;
+}
+
+.url-actions {
+  @apply flex flex-wrap gap-2 mb-3;
+}
+
+.url-list {
+  @apply flex flex-col gap-1.5 mb-3 max-h-32 overflow-y-auto;
+}
+
+.url-item {
+  @apply flex items-center gap-2 px-2 py-1.5 rounded-lg bg-muted/50 text-[0.8125rem] font-mono;
+}
+
+.url-item-icon {
+  @apply flex-shrink-0 text-muted-foreground;
+}
+
+.url-item-text {
+  @apply flex-1 truncate text-muted-foreground;
+}
+
+.url-remove-btn {
+  @apply flex-shrink-0 h-6 w-6;
+}
+
 /* ============================================
    Editor
    ============================================ */
+.editor-container,
 .editor-wrapper {
   @apply relative mb-5 border border-border rounded-xl overflow-hidden;
   transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.editor-container:focus-within,
 .editor-wrapper:focus-within {
   border-color: hsl(var(--ring));
   box-shadow: 0 0 0 3px hsl(var(--ring) / 0.1);
@@ -251,18 +323,35 @@
   outline: none;
 }
 
+/* Output preview (div-based, no resize, allow scroll) */
+.editor-preview {
+  @apply w-full min-h-[200px] max-h-[400px] pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent overflow-auto whitespace-pre-wrap;
+  line-height: 1.5rem;
+  tab-size: 2;
+}
+
+.editor-actions {
+  @apply flex flex-wrap gap-2 justify-end;
+}
+
 /* ============================================
    Presets
    ============================================ */
-.preset-group {
-  @apply flex flex-wrap items-center gap-2;
+.preset-group,
+.preset-section {
+  @apply flex flex-wrap items-center gap-2 mb-4;
+}
+
+.preset-tags {
+  @apply flex flex-wrap items-center gap-1.5;
 }
 
 .preset-label {
   @apply text-[0.8125rem] font-medium text-muted-foreground mr-1;
 }
 
-.preset-chip {
+.preset-chip,
+.preset-tag {
   @apply inline-flex items-center px-2.5 py-1 rounded-lg text-[0.75rem] font-medium cursor-pointer transition-all duration-150;
 }
 
@@ -309,6 +398,9 @@
   transition: max-height 350ms cubic-bezier(0.16, 1, 0.3, 1),
               opacity 250ms ease,
               margin 250ms ease;
+  max-height: 800px;
+  opacity: 1;
+  margin-bottom: 1.25rem;
 }
 
 .settings-expanded {
@@ -317,7 +409,8 @@
   margin-bottom: 1.25rem;
 }
 
-.settings-collapsed {
+.settings-collapsed,
+.settings-panel.collapsed {
   max-height: 0;
   opacity: 0;
   margin-bottom: 0;
@@ -334,12 +427,90 @@
   @apply mt-10 text-center;
 }
 
+.footer-content {
+  @apply flex flex-col items-center gap-3;
+}
+
+.footer-top {
+  @apply flex items-center justify-center flex-wrap gap-5;
+}
+
 .footer-links {
   @apply flex items-center justify-center gap-5 mb-2;
 }
 
 .footer-link {
   @apply inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-150;
+}
+
+.footer-version {
+  @apply text-[0.75rem] text-muted-foreground/70 font-mono;
+}
+
+/* Usage guide — 使用指南（可折叠） */
+.usage-toggle {
+  @apply inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors duration-150 cursor-pointer bg-transparent border-0;
+}
+
+.toggle-arrow {
+  @apply inline-block transition-transform duration-200;
+  transform: rotate(0deg);
+}
+
+.toggle-arrow.collapsed {
+  transform: rotate(-90deg);
+}
+
+.usage-guide {
+  overflow: hidden;
+  transition: max-height 350ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 250ms ease,
+              margin 250ms ease;
+  max-height: 800px;
+  opacity: 1;
+  margin-top: 1rem;
+}
+
+.usage-guide.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+
+.usage-steps {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4;
+}
+
+.usage-step {
+  @apply flex items-start gap-3 p-3 rounded-xl bg-muted/40 text-left;
+}
+
+.step-number {
+  @apply flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-[0.75rem] font-semibold;
+}
+
+.step-content {
+  @apply flex flex-col gap-0.5;
+}
+
+.step-title {
+  @apply text-[0.8125rem] font-medium text-foreground;
+}
+
+.step-desc {
+  @apply text-[0.75rem] text-muted-foreground leading-relaxed;
+}
+
+.usage-tip {
+  @apply flex items-start gap-2 p-3 rounded-xl bg-accent text-left;
+}
+
+.tip-label {
+  @apply flex-shrink-0 text-[0.75rem] font-semibold text-accent-foreground;
+}
+
+.tip-content {
+  @apply text-[0.75rem] text-muted-foreground leading-relaxed;
 }
 
 /* ============================================
@@ -357,6 +528,14 @@
   border-top-color: hsl(var(--primary));
   border-radius: 50%;
   animation: spin 0.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.loading-text {
+  @apply mt-4 text-sm text-muted-foreground;
+}
+
+.loading-content {
+  @apply flex flex-col items-center justify-center;
 }
 
 @keyframes spin {

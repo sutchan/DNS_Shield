@@ -33,6 +33,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `useRules` now uses `FormatType` instead of repeated literal unions
 - Removed unused exports/params (`setIsLoading`, `loadDomainData`, `isLangZh`, `isChineseLanguage`)
 
+### UI Layout Fixes
+- Fixed 30+ CSS classes used by components but undefined in `globals.css`, which caused complete layout breakdown:
+  - Root containers: added `.container`, `.main-content` (grid layout for input/output panels)
+  - Input panel: added `.input-section`, `.section-header`, `.collapse-btn`, `.collapse-icon`, `.stats-compact`, `.stat-badge`, `.editor-actions`
+  - URL section: added `.url-input-row`, `.url-input`, `.url-actions`, `.url-list`, `.url-item`, `.url-item-icon`, `.url-item-text`, `.url-remove-btn`
+  - Presets: added `.preset-section`, `.preset-tags`, `.preset-tag`
+  - Editor: added `.editor-container` (shares styles with `.editor-wrapper`), new `.editor-preview` (div-based output preview)
+  - Footer: added `.footer-content`, `.footer-top`, `.footer-version`, `.usage-toggle`, `.toggle-arrow`, `.usage-guide`, `.usage-steps`, `.usage-step`, `.step-number`, `.step-content`, `.step-title`, `.step-desc`, `.usage-tip`, `.tip-label`, `.tip-content`
+  - Loading: added `.loading-text`, `.loading-content` (vertical centering of spinner and text)
+- Unified collapse state naming convention: components use `collapsed` modifier (e.g., `class="url-section collapsed"`), CSS now uses compound selectors (e.g., `.url-section.collapsed`) instead of mismatched `.url-section-collapsed`
+- Fixed `InputEditor` textarea missing `editor-textarea` class — no border, no padding, no line-height alignment
+- Fixed `OutputPanel` preview div incorrectly using `editor-textarea` class (now uses dedicated `.editor-preview` to avoid resize handle on div)
+- Fixed `Loading` component spinner and text laid out horizontally (now vertically stacked via `.loading-content` flex-col)
+- Added `flex-wrap` to `.header-top` to support wrapping of brand area and controls on small screens
+
 ## [3.4.0] - 2026-07-03
 
 ### Added

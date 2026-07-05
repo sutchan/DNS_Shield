@@ -102,7 +102,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
         <div className="editor-wrapper">
           <div className="line-numbers" id="outputLineNumbers" ref={outputLineNumbersRef} aria-hidden="true"></div>
           <div
-            className="editor-textarea overflow-auto whitespace-pre-wrap"
+            className="editor-preview"
             id="outputPreview"
             onScroll={syncOutputScroll}
             ref={outputPreviewRef}
