@@ -131,6 +131,39 @@ export const viewport: Viewport = {
   ],
 }
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'DNS Shield',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'Web',
+  applicationSubCategory: 'Ad Blocking',
+  softwareVersion: '3.4.0',
+  description:
+    '路由器级全局广告过滤规则生成工具。基于 dnsmasq/hosts 的路由器广告过滤，支持梅林固件、小米路由器、OpenWrt 等设备。自动生成 AdBlock、DNS 过滤规则，轻松屏蔽广告域名。',
+  url: 'https://dns.ewuse.com',
+  downloadUrl: 'https://github.com/sutchan/DNS_Shield',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'CNY',
+  },
+  author: {
+    '@type': 'Person',
+    name: 'sutchan',
+    url: 'https://github.com/sutchan',
+  },
+  featureList: [
+    '支持 Dnsmasq 和 Hosts 格式规则生成',
+    '兼容梅林固件、小米路由器、OpenWrt',
+    '自定义黑白名单管理',
+    '实时预览过滤规则',
+    '一键复制/下载规则文件',
+  ],
+  inLanguage: ['zh-CN', 'en-US'],
+  screenshot: 'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/preview.png',
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -139,6 +172,10 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {children}
       </body>
     </html>
