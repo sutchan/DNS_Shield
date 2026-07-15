@@ -7,6 +7,7 @@ import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { Badge } from './ui/Badge';
 import { Translation } from '../types';
+import { config } from '../config';
 
 interface UrlSectionProps {
   isCollapsed: boolean;
@@ -21,6 +22,13 @@ interface UrlSectionProps {
 }
 
 const PRESETS = ['builtin', 'adguard', 'easylist', 'neohosts'] as const;
+
+const PRESET_LABEL_KEY: Record<typeof PRESETS[number], keyof Translation> = {
+  builtin: 'builtinAd',
+  adguard: 'adguard',
+  easylist: 'easylist',
+  neohosts: 'neohosts',
+};
 
 interface PresetTagsProps {
   activePreset: string;
@@ -48,7 +56,7 @@ export const PresetTags: React.FC<PresetTagsProps> = ({
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') loadPreset(preset); }}
             aria-pressed={activePreset === preset}
           >
-            {t[preset as keyof Translation] as string}
+            {t[PRESET_LABEL_KEY[preset]] as string}
           </Badge>
         ))}
       </div>
@@ -80,7 +88,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
           id="urlInput"
           ref={urlInputRef as React.RefObject<HTMLInputElement>}
           placeholder={t.urlPlaceholder}
-          defaultValue="https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt"
+          defaultValue={config.domainsUrl}
           aria-describedby="url-help"
           className="url-input"
         />
@@ -92,14 +100,14 @@ const UrlSection: React.FC<UrlSectionProps> = ({
       <div id="url-help" className="sr-only">{t.urlHelp}</div>
 
       {/* URL 操作按钮 */}
-      <div className="url-actions" role="group" aria-label="URL操作">
+      <div className="url-actions" role="group" aria-label={t.urlActionsAria}>
         <Button type="button" variant="outline" size="sm" onClick={addUrl} id="add-url-btn">{t.addUrl}</Button>
         <Button type="button" variant="outline" size="sm" onClick={sortUrls} id="sort-urls-btn">{t.sortUrlBtn}</Button>
         <Button type="button" variant="outline" size="sm" onClick={fetchAllUrls} id="fetch-all-urls-btn">{t.fetchAllUrls}</Button>
       </div>
 
       {/* URL 列表 */}
-      <div className="url-list" id="urlList" role="list" aria-label="URL列表">
+      <div className="url-list" id="urlList" role="list" aria-label={t.urlListAria}>
         {urls.map((url: string, index: number) => (
           <div key={index} className="url-item" role="listitem">
             <Link className="url-item-icon h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.8} />

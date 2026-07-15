@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "รายการขาว (อนุญาตโดเมนเหล่านี้)",
     "label": "ในรายการขาว:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "รายการดำ: {blacklist} | รายการขาว: {whitelist} | DNS ที่กำหนดเอง: {customDns}",
+  "versionLabel": "รุ่น",
+  "languageSelectorAria": "เลือกภาษา",
+  "statsAria": "สถิติ",
+  "editorActionsAria": "การดำเนินการของเครื่องมือแก้ไข",
+  "outputActionsAria": "การดำเนินการเอาต์พุต",
+  "outputFormatAria": "เอาต์พุตรูปแบบ {format}",
+  "urlActionsAria": "การดำเนินการ URL",
+  "urlListAria": "รายการ URL",
+  "usageGuideAria": "คู่มือการใช้งาน"
 }

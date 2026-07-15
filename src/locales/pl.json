@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "Biała lista (zezwól na te domeny)",
     "label": "Na białej liście:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "Czarna lista: {blacklist} | Biała lista: {whitelist} | Niestandardowy DNS: {customDns}",
+  "versionLabel": "Wersja",
+  "languageSelectorAria": "Wybierz język",
+  "statsAria": "Statystyki",
+  "editorActionsAria": "Akcje edytora",
+  "outputActionsAria": "Akcje wyjścia",
+  "outputFormatAria": "Wyjście w formacie {format}",
+  "urlActionsAria": "Akcje URL",
+  "urlListAria": "Lista URL",
+  "usageGuideAria": "Przewodnik użytkownika"
 }

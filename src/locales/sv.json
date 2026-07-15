@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "Vitlista (tillåt dessa domäner)",
     "label": "På vitlista:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "Svartlista: {blacklist} | Vitlista: {whitelist} | Anpassad DNS: {customDns}",
+  "versionLabel": "Version",
+  "languageSelectorAria": "Välj språk",
+  "statsAria": "Statistik",
+  "editorActionsAria": "Editoråtgärder",
+  "outputActionsAria": "Utdataåtgärder",
+  "outputFormatAria": "Utdata i {format}-format",
+  "urlActionsAria": "URL-åtgärder",
+  "urlListAria": "URL-lista",
+  "usageGuideAria": "Användarhandbok"
 }

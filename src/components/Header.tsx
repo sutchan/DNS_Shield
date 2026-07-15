@@ -55,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({
                 variant="outline"
                 size="sm"
                 className="gap-1.5"
-                aria-label={t.settingsTitle}
+                aria-label={t.languageSelectorAria}
                 id="lang-selector-btn"
               >
                 <Globe className="h-3.5 w-3.5" strokeWidth={1.8} />

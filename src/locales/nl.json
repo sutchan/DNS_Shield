@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "Whitelist (toestaan van deze domeinen)",
     "label": "In whitelist:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "Blacklist: {blacklist} | Whitelist: {whitelist} | Aangepaste DNS: {customDns}",
+  "versionLabel": "Versie",
+  "languageSelectorAria": "Selecteer taal",
+  "statsAria": "Statistieken",
+  "editorActionsAria": "Editor acties",
+  "outputActionsAria": "Uitvoer acties",
+  "outputFormatAria": "{format} formaat uitvoer",
+  "urlActionsAria": "URL acties",
+  "urlListAria": "URL lijst",
+  "usageGuideAria": "Gebruiksaanwijzing"
 }

@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DNS Shield — 高保真原型 v3.1.0</title>
+<title>DNS Shield — 高保真原型 v3.4.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* DNS Shield Design System v3.1.0 */
+/* DNS Shield Design System v3.4.0 */
 :root{--bg-primary:#fff;--bg-surface:#F5F5F7;--bg-elevated:#fff;--bg-muted:#E8E8ED;--bg-input:#F5F5F7;--text-primary:#1D1D1F;--text-secondary:#6E6E73;--text-tertiary:#A1A1A6;--text-inverse:#fff;--border-default:#D2D2D7;--border-hover:#86868B;--border-focus:#007AFF;--accent-primary:#007AFF;--accent-hover:#0056D3;--accent-active:#004999;--accent-subtle:rgba(0,122,255,.1);--success:#34C759;--success-bg:rgba(52,199,89,.1);--warning:#FF9500;--warning-bg:rgba(255,149,0,.1);--error:#FF3B30;--error-bg:rgba(255,59,48,.1);--info:#007AFF;--info-bg:rgba(0,122,255,.1);--font-primary:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--font-mono:'SF Mono','JetBrains Mono','Fira Code',monospace;--text-display:32px;--text-h1:24px;--text-h2:18px;--text-h3:14px;--text-body:14px;--text-small:12px;--text-caption:11px;--text-mono:13px;--weight-normal:400;--weight-medium:500;--weight-semibold:600;--weight-bold:700;--lh-tight:1.2;--lh-normal:1.4;--lh-relaxed:1.5;--lh-loose:1.6;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;--radius-sm:6px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;--radius-full:9999px;--shadow-sm:0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.06);--shadow-lg:0 8px 24px rgba(0,0,0,.08);--shadow-xl:0 16px 48px rgba(0,0,0,.12);--ease-out:cubic-bezier(0,0,.2,1);--ease-in:cubic-bezier(.4,0,1,1);--ease-spring:cubic-bezier(.34,1.56,.64,1);--duration-instant:75ms;--duration-fast:150ms;--duration-normal:200ms;--duration-slow:300ms;--z-sticky:10;--z-dropdown:50;--z-modal:100;--z-toast:200;--z-tooltip:300}
 [data-theme=dark]{--bg-primary:#0A0A0F;--bg-surface:#141419;--bg-elevated:#1C1C24;--bg-muted:#2C2C3A;--bg-input:#1C1C24;--text-primary:#F5F5F7;--text-secondary:#98989D;--text-tertiary:#6E6E73;--text-inverse:#fff;--border-default:#2C2C3A;--border-hover:#3A3A4A;--border-focus:#0A84FF;--accent-primary:#0A84FF;--accent-hover:#4DA3FF;--accent-active:#60AFFF;--accent-subtle:rgba(10,132,255,.15);--success:#30D158;--success-bg:rgba(48,209,88,.12);--warning:#FF9F0A;--warning-bg:rgba(255,159,10,.12);--error:#FF453A;--error-bg:rgba(255,69,58,.12);--info:#0A84FF;--info-bg:rgba(10,132,255,.12);--shadow-sm:0 1px 2px rgba(0,0,0,.2);--shadow-md:0 4px 12px rgba(0,0,0,.3);--shadow-lg:0 8px 24px rgba(0,0,0,.4);--shadow-xl:0 16px 48px rgba(0,0,0,.5)}
 @media (prefers-reduced-motion:reduce){*,::after,::before{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
@@ -198,7 +198,7 @@ body{font-family:var(--font-primary);font-size:var(--text-body);line-height:var(
       <a href="#" class="header-brand" aria-label="DNS Shield 首页">
         <svg class="header-brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
         <span class="header-brand-name">DNS Shield</span>
-        <span class="header-version">v3.1.0</span>
+        <span class="header-version">v3.4.0</span>
       </a>
       <div class="header-actions">
         <span class="header-badge hidden-mobile"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>原型预览</span>
@@ -301,7 +301,7 @@ log.bilibili.com</textarea>
 <span class="editor-comment">#</span>
 <span class="editor-comment"># 路由器级广告过滤规则</span>
 <span class="editor-comment">#</span>
-<span class="editor-comment"># 版本: 3.1.0</span>
+<span class="editor-comment"># 版本: 3.4.0</span>
 <span class="editor-comment"># 域名: 6 个唯一域名</span>
 <span class="editor-comment">#</span>
 <span class="editor-comment"># 使用方法:</span>
@@ -339,7 +339,7 @@ log.bilibili.com</textarea>
         <span class="footer-divider"></span>
         <a href="#" class="footer-link" aria-label="使用文档">文档</a>
         <span class="footer-divider"></span>
-        <span class="footer-link" style="cursor:default;">v3.1.0</span>
+        <span class="footer-link" style="cursor:default;">v3.4.0</span>
       </div>
       <p class="footer-copy">DNS Shield — 路由器级广告过滤规则生成工具</p>
     </div>

@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "قائمة الأبيض (السماح بهذه النطاقات)",
     "label": "مدرج في القائمة البيضاء:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "قائمة السوداء: {blacklist} | قائمة الأبيض: {whitelist} | DNS مخصص: {customDns}",
+  "versionLabel": "النسخة",
+  "languageSelectorAria": "اختر اللغة",
+  "statsAria": "الإحصائيات",
+  "editorActionsAria": "إجراءات المحرر",
+  "outputActionsAria": "إجراءات الإخراج",
+  "outputFormatAria": "إخراج تنسيق {format}",
+  "urlActionsAria": "إجراءات URL",
+  "urlListAria": "قائمة URL",
+  "usageGuideAria": "دليل الاستخدام"
 }

@@ -23,7 +23,7 @@ import { toast } from 'sonner';
 export default function Home() {
   // 使用钩子
   const { theme, toggleTheme } = useTheme();
-  const { currentLang, supportedLanguages, t, isLangZh, switchLang } = useLanguage();
+  const { currentLang, supportedLanguages, t, switchLang } = useLanguage();
 
   // L-003: 动态更新 html lang 属性（语言切换时同步）
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function Home() {
     sortUrls, 
     fetchAllUrls, 
     setUrls
-  } = useUrlManager(setSourceInput, parseSourceData, showToast, lineNumbersRef, isLangZh);
+  } = useUrlManager(setSourceInput, parseSourceData, showToast, lineNumbersRef);
 
   // 区域折叠状态
   const [isUrlSectionCollapsed, setIsUrlSectionCollapsed] = useState(true);
@@ -163,7 +163,6 @@ export default function Home() {
           settings={settings}
           parsedData={parsedData}
           t={t}
-          isLangZh={isLangZh}
           outputPreviewRef={outputPreviewRef}
           outputLineNumbersRef={outputLineNumbersRef}
           toggleSection={toggleSection}

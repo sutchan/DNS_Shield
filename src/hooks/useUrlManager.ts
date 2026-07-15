@@ -9,8 +9,7 @@ export const useUrlManager = (
   setSourceInput: (value: string) => void,
   parseSourceData: (text?: string) => void,
   showToast: (key: string, params?: { [key: string]: string | number }) => void,
-  lineNumbersRef: React.RefObject<HTMLDivElement>,
-  isLangZh: boolean
+  lineNumbersRef: React.RefObject<HTMLDivElement>
 ) => {
   const [urls, setUrls] = useState<string[]>([]);
   const [activePreset, setActivePreset] = useState('builtin');

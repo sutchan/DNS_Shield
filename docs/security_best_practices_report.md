@@ -1,7 +1,7 @@
 # DNS Shield - 安全审查报告 v3.4.0
 
-> 版本: v3.1.0 | 审查日期: 2024-06-19 | 审查人: Claude Code
-> 最后更新: 2026-06-19
+> 版本: v3.4.0 | 审查日期: 2026-07-03 | 审查人: Claude Code
+> 最后更新: 2026-07-03
 
 ---
 
@@ -9,7 +9,7 @@
 
 DNS Shield v3.4.0 安全状况整体**优秀**。已实现：完整 CSP 安全头部、`unsafe-eval` 已移除、URL 协议验证（http/https）、HTTP 请求超时控制（AbortController）、XSS 防护（innerText）。
 
-**关键改进（v3.1.0）**:
+**关键改进（v3.4.0）**:
 - 全面移除 emoji 图标，统一使用 Lucide SVG 图标
 - 升级设计系统，使用 CSS 变量管理颜色（无硬编码颜色）
 - 优化组件架构，使用 shadcn/ui 标准组件模式

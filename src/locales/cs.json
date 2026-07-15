@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "Bílá lista (povolit tyto domény)",
     "label": "Na bílé listě:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "Černá lista: {blacklist} | Bílá lista: {whitelist} | Vlastní DNS: {customDns}",
+  "versionLabel": "Verze",
+  "languageSelectorAria": "Vybrat jazyk",
+  "statsAria": "Statistiky",
+  "editorActionsAria": "Akce editoru",
+  "outputActionsAria": "Akce výstupu",
+  "outputFormatAria": "Výstup ve formátu {format}",
+  "urlActionsAria": "Akce URL",
+  "urlListAria": "Seznam URL",
+  "usageGuideAria": "Návod na použití"
 }

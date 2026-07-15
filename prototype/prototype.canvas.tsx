@@ -22,7 +22,7 @@ log.bilibili.com`;
 
 const OUTPUT_SAMPLES: Record<string, string> = {
   dnsmasq: `# DNS Shield - Dnsmasq 广告过滤列表
-# 版本: 3.1.0 | 域名: 6 个
+# 版本: 3.4.0 | 域名: 6 个
 
 address=/ad.mi.com/127.0.0.1
 address=/ad.xiaomi.com/127.0.0.1
@@ -35,7 +35,7 @@ address=/ad.bilibili.com/127.0.0.1
 server=/mi.com/
 server=/iot.mi.com/`,
   hosts: `# DNS Shield - Hosts 广告过滤列表
-# 版本: 3.1.0
+# 版本: 3.4.0
 
 127.0.0.1 ad.mi.com
 127.0.0.1 ad.xiaomi.com
@@ -44,7 +44,7 @@ server=/iot.mi.com/`,
 127.0.0.1 ad.youku.com
 127.0.0.1 ad.bilibili.com`,
   adguard: `! DNS Shield - AdGuard 广告过滤规则
-! 版本: 3.1.0 | 域名: 6 个
+! 版本: 3.4.0 | 域名: 6 个
 
 ||ad.mi.com^
 ||ad.xiaomi.com^
@@ -119,7 +119,7 @@ export default function PrototypeCanvas() {
     <div style={{ minHeight:'100dvh', display:'flex', flexDirection:'column', background:t.bg, color:t.text, fontFamily:"'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif", transition:'background 300ms ease, color 300ms ease' }}>
       <header style={{ position:'sticky', top:0, zIndex:10, background:`color-mix(in srgb, ${t.elevated} 92%, transparent)`, backdropFilter:'blur(16px) saturate(180%)', WebkitBackdropFilter:'blur(16px) saturate(180%)', borderBottom:`1px solid ${t.border}`, transition:'background 300ms ease, border-color 300ms ease' }}>
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', height:48, maxWidth:1120, margin:'0 auto', padding:'0 16px' }}>
-          <a href="#" style={{ display:'flex', alignItems:'center', gap:8, textDecoration:'none', color:t.text }} aria-label="DNS Shield 首页"><Icons.Shield /><span style={{ fontSize:14, fontWeight:600, letterSpacing:'-0.01em' }}>DNS Shield</span><span style={{ fontSize:11, color:t.textTertiary, fontWeight:500 }}>v3.1.0</span></a>
+          <a href="#" style={{ display:'flex', alignItems:'center', gap:8, textDecoration:'none', color:t.text }} aria-label="DNS Shield 首页"><Icons.Shield /><span style={{ fontSize:14, fontWeight:600, letterSpacing:'-0.01em' }}>DNS Shield</span><span style={{ fontSize:11, color:t.textTertiary, fontWeight:500 }}>v3.4.0</span></a>
           <div style={{ display:'flex', alignItems:'center', gap:8 }}>
             <button onClick={toggleData} style={{ display:'inline-flex', alignItems:'center', gap:4, height:28, padding:'0 8px', fontSize:11, fontWeight:500, color:t.textSecondary, background:'transparent', border:'none', borderRadius:6, cursor:'pointer', transition:'all 150ms ease' }} aria-label="切换数据状态">{showData?'有数据':'空状态'}</button>
             <button onClick={toggleTheme} style={{ display:'inline-flex', alignItems:'center', gap:4, height:28, padding:'0 8px', fontSize:11, fontWeight:500, color:t.textSecondary, background:'transparent', border:'none', borderRadius:6, cursor:'pointer', transition:'all 150ms ease' }} aria-label="切换深色/浅色主题">{isDark?<Icons.Moon />:<Icons.Sun />}{isDark?'深色':'浅色'}</button>
@@ -160,7 +160,7 @@ export default function PrototypeCanvas() {
       </main>
       <footer style={{ borderTop:`1px solid ${t.border}`, padding:'24px 0', textAlign:'center', transition:'border-color 300ms ease' }}>
         <div style={{ maxWidth:1120, margin:'0 auto', padding:'0 16px' }}>
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:24, marginBottom:12 }}><a href="#" style={{ fontSize:12, color:t.textSecondary, textDecoration:'none' }}>GitHub</a><span style={{ width:3, height:3, borderRadius:'50%', background:t.textTertiary }}/><a href="#" style={{ fontSize:12, color:t.textSecondary, textDecoration:'none' }}>Demo</a><span style={{ width:3, height:3, borderRadius:'50%', background:t.textTertiary }}/><a href="#" style={{ fontSize:12, color:t.textSecondary, textDecoration:'none' }}>文档</a><span style={{ width:3, height:3, borderRadius:'50%', background:t.textTertiary }}/><span style={{ fontSize:12, color:t.textTertiary, cursor:'default' }}>v3.1.0</span></div>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:24, marginBottom:12 }}><a href="#" style={{ fontSize:12, color:t.textSecondary, textDecoration:'none' }}>GitHub</a><span style={{ width:3, height:3, borderRadius:'50%', background:t.textTertiary }}/><a href="#" style={{ fontSize:12, color:t.textSecondary, textDecoration:'none' }}>Demo</a><span style={{ width:3, height:3, borderRadius:'50%', background:t.textTertiary }}/><a href="#" style={{ fontSize:12, color:t.textSecondary, textDecoration:'none' }}>文档</a><span style={{ width:3, height:3, borderRadius:'50%', background:t.textTertiary }}/><span style={{ fontSize:12, color:t.textTertiary, cursor:'default' }}>v3.4.0</span></div>
           <p style={{ fontSize:12, color:t.textTertiary }}>DNS Shield — 路由器级广告过滤规则生成工具</p>
         </div>
       </footer>

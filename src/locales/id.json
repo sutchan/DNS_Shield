@@ -101,5 +101,17 @@
   "whitelist": {
     "title": "Daftar Putih (izinkan domain ini)",
     "label": "Daftar Putih:"
-  }
+  },
+  "hostsFormat": "Hosts",
+  "dnsmasqFormat": "Dnsmasq",
+  "mergeStats": "Daftar Hitam: {blacklist} | Daftar Putih: {whitelist} | DNS Kustom: {customDns}",
+  "versionLabel": "Versi",
+  "languageSelectorAria": "Pilih bahasa",
+  "statsAria": "Statistik",
+  "editorActionsAria": "Aksi editor",
+  "outputActionsAria": "Aksi output",
+  "outputFormatAria": "Output format {format}",
+  "urlActionsAria": "Aksi URL",
+  "urlListAria": "Daftar URL",
+  "usageGuideAria": "Panduan Penggunaan"
 }
