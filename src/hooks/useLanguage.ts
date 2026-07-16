@@ -1,6 +1,6 @@
 // src/hooks/useLanguage.ts v3.4.0
 import { useState, useEffect } from 'react';
-import { supportedLanguages, getTranslation, isChineseLanguage } from '../utils/i18n';
+import { supportedLanguages, getTranslation } from '../utils/i18n';
 import { Translation } from '../types';
 
 export const useLanguage = () => {
@@ -15,9 +15,6 @@ export const useLanguage = () => {
   // 获取当前语言的翻译
   const t = getTranslation(currentLang) as Translation;
 
-  // 检查是否为中文语言
-  const isLangZh = isChineseLanguage(currentLang);
-
   // 切换语言
   const switchLang = (lang: string) => {
     setCurrentLang(lang);
@@ -30,7 +27,6 @@ export const useLanguage = () => {
     currentLang,
     supportedLanguages,
     t,
-    isLangZh,
     switchLang
   };
 };

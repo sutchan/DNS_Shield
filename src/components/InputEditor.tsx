@@ -34,7 +34,7 @@ const InputEditor: React.FC<InputEditorProps> = ({
           onScroll={syncScroll}
           ref={sourceTextareaRef}
           aria-describedby="sourceInput-help"
-          className="w-full min-h-[200px] py-3 pl-14 pr-3 text-sm font-mono bg-background resize-y focus:outline-none"
+          className="editor-textarea"
         />
       </div>
       <div id="sourceInput-help" className="sr-only">

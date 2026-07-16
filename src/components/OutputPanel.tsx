@@ -49,7 +49,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
       <div className="output-body">
         <div className="output-header">
           <div className="panel-title">
-            <FileCode className="h-4 w-4 text-primary" strokeWidth={1.8} />
+            <FileCode className="h-4 w-4 text-primary" strokeWidth={1.8} aria-hidden="true" />
             <h2 id="output-title">{t.outputTitle}</h2>
           </div>
           <div className="flex items-center gap-2">
@@ -71,7 +71,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
               aria-expanded={!isSettingsPanelCollapsed}
               aria-controls="settings-panel"
             >
-              <Settings className="h-4 w-4" strokeWidth={1.8} />
+              <Settings className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
             </Button>
           </div>
         </div>
@@ -102,7 +102,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
         <div className="editor-wrapper">
           <div className="line-numbers" id="outputLineNumbers" ref={outputLineNumbersRef} aria-hidden="true"></div>
           <div
-            className="editor-textarea overflow-auto whitespace-pre-wrap"
+            className="editor-preview"
             id="outputPreview"
             onScroll={syncOutputScroll}
             ref={outputPreviewRef}
@@ -116,15 +116,15 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-2 justify-end" id="output-actions" role="group" aria-label={t.outputActionsAria}>
           <Button type="button" variant="default" onClick={generateRules} id="generate-rules-btn">
-            <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} />
+            <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
             {t.generateBtn}
           </Button>
           <Button type="button" variant="default" onClick={downloadOutput} id="download-btn">
-            <Download className="h-4 w-4 mr-1" strokeWidth={1.8} />
+            <Download className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
             {t.downloadBtn}
           </Button>
           <Button type="button" variant="outline" onClick={copyOutput} id="copy-btn">
-            <Copy className="h-4 w-4 mr-1" strokeWidth={1.8} />
+            <Copy className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
             {t.copyBtn}
           </Button>
         </div>

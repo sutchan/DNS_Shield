@@ -104,14 +104,14 @@
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
-  "mergeStats": "Черный список: {blacklist} | Белый список: {whitelist} | Пользовательский DNS: {customDns}",
+  "mergeStats": "Чёрный список: {blacklist} | Белый список: {whitelist} | Пользовательский DNS: {customDns}",
   "versionLabel": "Версия",
   "languageSelectorAria": "Выбрать язык",
   "statsAria": "Статистика",
   "editorActionsAria": "Действия редактора",
   "outputActionsAria": "Действия вывода",
-  "outputFormatAria": "Вывод в формате {format}",
+  "outputFormatAria": "Вывод формата {format}",
   "urlActionsAria": "Действия URL",
   "urlListAria": "Список URL",
-  "usageGuideAria": "Руководство использования"
+  "usageGuideAria": "Руководство по использованию"
 }

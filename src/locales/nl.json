@@ -106,12 +106,12 @@
   "dnsmasqFormat": "Dnsmasq",
   "mergeStats": "Blacklist: {blacklist} | Whitelist: {whitelist} | Aangepaste DNS: {customDns}",
   "versionLabel": "Versie",
-  "languageSelectorAria": "Selecteer taal",
+  "languageSelectorAria": "Taal selecteren",
   "statsAria": "Statistieken",
-  "editorActionsAria": "Editor acties",
-  "outputActionsAria": "Uitvoer acties",
+  "editorActionsAria": "Editoracties",
+  "outputActionsAria": "Uitvoeracties",
   "outputFormatAria": "{format} formaat uitvoer",
-  "urlActionsAria": "URL acties",
-  "urlListAria": "URL lijst",
-  "usageGuideAria": "Gebruiksaanwijzing"
+  "urlActionsAria": "URL-acties",
+  "urlListAria": "URL-lijst",
+  "usageGuideAria": "Gebruikshandleiding"
 }

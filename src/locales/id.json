@@ -32,7 +32,7 @@
   "headerComment": "Komentar Header",
   "blockIPv6": "Blokir IPv6",
   "dedup": "Hapus Duplikat Otomatis",
-  "removeWildcard": "Hapus Karakter Kartu Wild",
+  "removeWildcard": "Hapus Karakter Pengganti",
   "lightMode": "Mode Terang",
   "darkMode": "Mode Gelap",
   "inputHelp": "Masukkan daftar domain, satu per baris",
@@ -104,7 +104,7 @@
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
-  "mergeStats": "Daftar Hitam: {blacklist} | Daftar Putih: {whitelist} | DNS Kustom: {customDns}",
+  "mergeStats": "Daftar hitam: {blacklist} | Daftar putih: {whitelist} | DNS kustom: {customDns}",
   "versionLabel": "Versi",
   "languageSelectorAria": "Pilih bahasa",
   "statsAria": "Statistik",
@@ -113,5 +113,5 @@
   "outputFormatAria": "Output format {format}",
   "urlActionsAria": "Aksi URL",
   "urlListAria": "Daftar URL",
-  "usageGuideAria": "Panduan Penggunaan"
+  "usageGuideAria": "Panduan penggunaan"
 }

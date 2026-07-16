@@ -108,10 +108,10 @@
   "versionLabel": "Version",
   "languageSelectorAria": "Välj språk",
   "statsAria": "Statistik",
-  "editorActionsAria": "Editoråtgärder",
-  "outputActionsAria": "Utdataåtgärder",
-  "outputFormatAria": "Utdata i {format}-format",
+  "editorActionsAria": "Redigeringsåtgärder",
+  "outputActionsAria": "Utdatasåtgärder",
+  "outputFormatAria": "{format}-formatutdata",
   "urlActionsAria": "URL-åtgärder",
   "urlListAria": "URL-lista",
-  "usageGuideAria": "Användarhandbok"
+  "usageGuideAria": "Användningsguide"
 }

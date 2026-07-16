@@ -37,10 +37,10 @@ const Header: React.FC<HeaderProps> = ({
       <div className="header-top">
         <div className="header-brand">
           <div className="brand-icon" aria-hidden="true">
-            <Shield className="h-5 w-5 text-primary" strokeWidth={2} />
+            <Shield className="h-5 w-5 text-primary" strokeWidth={2} aria-hidden="true" />
           </div>
           <div>
-            <h1 className="app-title">DNS Shield</h1>
+            <h1 className="app-title" aria-describedby="app-subtitle">DNS Shield</h1>
             <p className="app-subtitle" id="app-subtitle">
               {t.subtitle}
             </p>
@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({
                 aria-label={t.languageSelectorAria}
                 id="lang-selector-btn"
               >
-                <Globe className="h-3.5 w-3.5" strokeWidth={1.8} />
+                <Globe className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden="true" />
                 <span className="text-sm">{currentName}</span>
               </Button>
             </DropdownMenuTrigger>
@@ -73,7 +73,7 @@ const Header: React.FC<HeaderProps> = ({
                 >
                   <span className="flex-1">{lang.name}</span>
                   {currentLang === lang.code && (
-                    <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
+                    <Check className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
                   )}
                 </DropdownMenuItem>
               ))}
@@ -91,9 +91,9 @@ const Header: React.FC<HeaderProps> = ({
             id="theme-toggle-btn"
           >
             {theme === 'dark' ? (
-              <Sun className="h-4 w-4" strokeWidth={1.8} />
+              <Sun className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
             ) : (
-              <Moon className="h-4 w-4" strokeWidth={1.8} />
+              <Moon className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
             )}
           </Button>
         </div>

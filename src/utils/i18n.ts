@@ -61,8 +61,3 @@ export const supportedLanguages: Language[] = [
 export const getTranslation = (lang: string): Translation => {
   return translations[lang] || translations['zh-cn'];
 };
-
-// 检查是否为中文语言
-export const isChineseLanguage = (lang: string): boolean => {
-  return lang === 'zh-cn' || lang === 'zh-tw';
-};

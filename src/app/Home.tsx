@@ -156,7 +156,7 @@ export default function Home() {
           setUrls={setUrls}
         />
 
-        <OutputPanel 
+        <OutputPanel
           outputContent={outputContent}
           currentFormat={currentFormat}
           isSettingsPanelCollapsed={isSettingsPanelCollapsed}

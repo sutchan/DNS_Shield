@@ -1,4 +1,5 @@
 // src/components/Footer.tsx v3.4.0
+'use client';
 import React, { useState } from 'react';
 import { Translation } from '../types';
 
@@ -65,8 +66,8 @@ const Footer: React.FC<FooterProps> = ({
           </button>
           <span className="footer-version" id="version-display" aria-label={`${t.versionLabel} ${version}`}>v{version}</span>
         </div>
-        <div 
-          className={`usage-guide ${isUsageGuideCollapsed ? 'collapsed' : ''}`} 
+        <div
+          className={`usage-guide ${isUsageGuideCollapsed ? 'collapsed' : ''}`}
           id="usageGuide"
           aria-hidden={isUsageGuideCollapsed}
         >

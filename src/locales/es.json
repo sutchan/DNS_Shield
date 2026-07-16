@@ -110,7 +110,7 @@
   "statsAria": "Estadísticas",
   "editorActionsAria": "Acciones del editor",
   "outputActionsAria": "Acciones de salida",
-  "outputFormatAria": "Salida en formato {format}",
+  "outputFormatAria": "Salida de formato {format}",
   "urlActionsAria": "Acciones de URL",
   "urlListAria": "Lista de URL",
   "usageGuideAria": "Guía de uso"

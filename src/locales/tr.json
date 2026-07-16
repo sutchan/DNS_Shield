@@ -104,14 +104,14 @@
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
-  "mergeStats": "Siyah Liste: {blacklist} | Beyaz Liste: {whitelist} | Özel DNS: {customDns}",
+  "mergeStats": "Kara liste: {blacklist} | Beyaz liste: {whitelist} | Özel DNS: {customDns}",
   "versionLabel": "Sürüm",
-  "languageSelectorAria": "Dil seçin",
+  "languageSelectorAria": "Dil seç",
   "statsAria": "İstatistikler",
   "editorActionsAria": "Düzenleyici eylemleri",
   "outputActionsAria": "Çıktı eylemleri",
-  "outputFormatAria": "{format} biçim çıktısı",
+  "outputFormatAria": "{format} formatı çıktısı",
   "urlActionsAria": "URL eylemleri",
   "urlListAria": "URL listesi",
-  "usageGuideAria": "Kullanım Kılavuzu"
+  "usageGuideAria": "Kullanım kılavuzu"
 }

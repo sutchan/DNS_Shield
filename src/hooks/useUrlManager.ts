@@ -87,7 +87,9 @@ export const useUrlManager = (
     }
 
     setUrls((prev: string[]) => [...prev, url]);
-    urlInputRef.current!.value = '';
+    if (urlInputRef.current) {
+      urlInputRef.current.value = '';
+    }
     showToast('urlAdded');
   };
 

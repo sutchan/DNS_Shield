@@ -23,6 +23,7 @@ interface UrlSectionProps {
 
 const PRESETS = ['builtin', 'adguard', 'easylist', 'neohosts'] as const;
 
+// 预设标识符到翻译键的映射（config 用 'builtin'，Translation 接口用 'builtinAd'）
 const PRESET_LABEL_KEY: Record<typeof PRESETS[number], keyof Translation> = {
   builtin: 'builtinAd',
   adguard: 'adguard',
@@ -93,7 +94,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
           className="url-input"
         />
         <Button type="button" variant="default" size="sm" onClick={fetchFromUrl} id="fetch-url-btn" aria-describedby="url-help">
-          <ExternalLink className="h-3.5 w-3.5 mr-1" strokeWidth={1.8} />
+          <ExternalLink className="h-3.5 w-3.5 mr-1" strokeWidth={1.8} aria-hidden="true" />
           {t.fetchBtn}
         </Button>
       </div>
@@ -110,7 +111,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
       <div className="url-list" id="urlList" role="list" aria-label={t.urlListAria}>
         {urls.map((url: string, index: number) => (
           <div key={index} className="url-item" role="listitem">
-            <Link className="url-item-icon h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.8} />
+            <Link className="url-item-icon h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.8} aria-hidden="true" />
             <span className="url-item-text">{url}</span>
             <Button
               type="button"
@@ -120,7 +121,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
               onClick={() => setUrls(urls.filter((_: string, i: number) => i !== index))}
               aria-label={t.removeUrlAria.replace('{url}', url)}
             >
-              <X className="h-3.5 w-3.5" strokeWidth={1.8} />
+              <X className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden="true" />
             </Button>
           </div>
         ))}

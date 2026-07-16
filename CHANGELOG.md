@@ -7,6 +7,47 @@
 
 ## [Unreleased]
 
+### Added
+- 新增 12 个 i18n 翻译键（`hostsFormat`、`dnsmasqFormat`、`mergeStats`、`versionLabel`、`languageSelectorAria`、`statsAria`、`editorActionsAria`、`outputActionsAria`、`outputFormatAria`、`urlActionsAria`、`urlListAria`、`usageGuideAria`），覆盖全部 16 种语言
+
+### Changed
+- 统一原型文件（`prototype.html`、`prototype.canvas.tsx`、`components-showcase.html`）、安全审查报告、示例输出文件（`dnsmasq.conf`、`hosts.txt`、`adguard.txt`）、Bug 报告模板、SPEC.md 中的版本号至 v3.4.0
+- `manifest.json` 的 `theme_color` 与 `viewport.themeColor` 对齐为 `#007AFF`
+
+### Fixed
+- 修复 `UrlSection` 预设标签访问 `t.builtin`（不存在）导致"内置数据"标签在所有语言下显示空白的功能性 bug（改用 `builtinAd` 映射）
+- 修复 `Footer.tsx` 使用 `useState` 但缺少 `'use client'` 指令
+- 修复 `useDomainData` 自动保存在清空输入后会被重新加载覆盖用户清空操作的 bug（拆分 useEffect + ref 守卫）
+- 修复 `rulesGenerator` 中 `customDns` 在 `blockIPv6` 时硬编码 `::` 而非 `settings.ipv6` 的不一致
+- 修复 `useUrlManager` 中 `urlInputRef.current!.value` 非空断言
+- 修复翻译错误：`ar.json`（`removeWildcard`、`whitelistFormat`）、`id.json`（`removeWildcard`）、`cs.json`（`whitelistFormat`）
+- 移除 `OutputPanel` 中 `isLangZh` 三元硬编码，改用 `t.mergeStats` 模板支持 16 种语言
+- 移除 `OutputPanel` 中硬编码的 "Hosts"/"Dnsmasq" 标签，改用翻译键
+- 修复 `Header` 语言选择器误用 `t.settingsTitle` 作为 aria-label
+- 移除组件中所有硬编码的中文 aria-label（`统计信息`、`编辑操作`、`输出操作`、`URL操作`、`URL列表`、`使用指南`、`版本 x`、`{format} 格式输出`），改用翻译键
+- 为所有装饰性 Lucide 图标添加 `aria-hidden="true"`
+- `Loading` 组件添加 `role="status"`、`aria-live="polite"`、`aria-busy`、`aria-hidden` 无障碍属性
+- `UrlSection` 的 `defaultValue` 改用 `config.domainsUrl`，消除硬编码重复
+- 移除 `uiUtils` 中未被引用的 `syncScroll`/`syncOutputScroll` 死代码
+- 移除 `InputPanel` 中重复定义的 `Stats` 接口，改用 `types` 中导出
+- `useRules` 使用 `FormatType` 类型替代重复的字面量联合类型
+- 移除 `useLoading`、`useDomainData`、`useUrlManager`、`useLanguage` 中未使用的导出/参数（`setIsLoading`、`loadDomainData`、`isLangZh`、`isChineseLanguage`）
+
+### UI Layout Fixes
+- 修复 `globals.css` 中 30+ 个被组件使用但未定义的 CSS 类，导致页面布局完全错乱：
+  - 根容器：补全 `.container`、`.main-content`（输入/输出面板 grid 布局）
+  - 输入面板：补全 `.input-section`、`.section-header`、`.collapse-btn`、`.collapse-icon`、`.stats-compact`、`.stat-badge`、`.editor-actions`
+  - URL 区域：补全 `.url-input-row`、`.url-input`、`.url-actions`、`.url-list`、`.url-item`、`.url-item-icon`、`.url-item-text`、`.url-remove-btn`
+  - 预设标签：补全 `.preset-section`、`.preset-tags`、`.preset-tag`
+  - 编辑器：补全 `.editor-container`（与 `.editor-wrapper` 共享样式）、新增 `.editor-preview`（div-based 输出预览）
+  - 页脚：补全 `.footer-content`、`.footer-top`、`.footer-version`、`.usage-toggle`、`.toggle-arrow`、`.usage-guide`、`.usage-steps`、`.usage-step`、`.step-number`、`.step-content`、`.step-title`、`.step-desc`、`.usage-tip`、`.tip-label`、`.tip-content`
+  - 加载：补全 `.loading-text`、`.loading-content`（spinner 和文字垂直居中堆叠）
+- 统一折叠状态命名约定：组件使用 `collapsed` 修饰符（如 `class="url-section collapsed"`），CSS 改用组合选择器（如 `.url-section.collapsed`）替代不匹配的 `.url-section-collapsed`
+- 修复 `InputEditor` 的 textarea 缺失 `editor-textarea` 类导致无边框、无 padding、无行高对齐
+- 修复 `OutputPanel` 预览 div 误用 `editor-textarea` 类（已改为专用 `.editor-preview`，避免 resize 句柄出现在 div 上）
+- 修复 `Loading` 组件 spinner 和文字横向排列（已改为通过 `.loading-content` flex-col 垂直堆叠）
+- `header-top` 添加 `flex-wrap` 支持小屏幕品牌区和控制区换行
+
 ## [3.4.0] - 2026-07-03
 
 ### Added
