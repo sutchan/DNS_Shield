@@ -1,11 +1,10 @@
 // src/utils/fileUtils.ts v3.4.0
 
-// URL 最大长度限制（防止 DoS 攻击）
 const MAX_URL_LENGTH = 2048;
+const MAX_FILENAME_LENGTH = 255;
+const SAFE_FILENAME_PATTERN = /^[a-zA-Z0-9._-]+$/;
 
-// 验证 URL 是否为安全的 HTTP/HTTPS 协议
 export const isValidHttpUrl = (url: string): boolean => {
-  // 检查 URL 长度
   if (!url || url.length > MAX_URL_LENGTH) {
     return false;
   }
@@ -17,17 +16,38 @@ export const isValidHttpUrl = (url: string): boolean => {
   }
 };
 
-// 下载输出
+const sanitizeFilename = (filename: string): string => {
+  if (!filename) return 'download.txt';
+  let safeName = filename.replace(/[\/\\<>:"|?*\x00-\x1f]/g, '_');
+  safeName = safeName.replace(/\.+/g, '.').replace(/^\.+|\.+$/g, '');
+  if (!SAFE_FILENAME_PATTERN.test(safeName)) {
+    safeName = safeName.replace(/[^a-zA-Z0-9._-]/g, '_');
+  }
+  if (safeName.length > MAX_FILENAME_LENGTH) {
+    const extIndex = safeName.lastIndexOf('.');
+    if (extIndex > 0) {
+      const ext = safeName.substring(extIndex);
+      const name = safeName.substring(0, MAX_FILENAME_LENGTH - ext.length);
+      safeName = name + ext;
+    } else {
+      safeName = safeName.substring(0, MAX_FILENAME_LENGTH);
+    }
+  }
+  return safeName || 'download.txt';
+};
+
 export const downloadOutput = (content: string, filename: string): void => {
-  const blob = new Blob([content], { type: 'text/plain' });
+  const safeFilename = sanitizeFilename(filename);
+  const blob = new Blob([content], { type: 'text/plain; charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = filename;
+  a.download = safeFilename;
+  a.rel = 'noopener noreferrer';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
 
 // 复制到剪贴板

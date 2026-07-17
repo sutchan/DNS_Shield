@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--font-primary:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--font-mono:'SF Mono','JetBrains Mono','Fira Code',monospace;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;--radius-sm:6px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;--radius-full:9999px;--ease-out:cubic-bezier(0,0,.2,1);--duration-fast:150ms}
+:root{--font-primary:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;--font-mono:'SF Mono','JetBrains Mono','Fira Code',monospace;--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;--space-12:48px;--radius-sm:6px;--radius-md:8px;--radius-lg:12px;--radius-xl:16px;--radius-full:9999px;--ease-out:cubic-bezier(0.16,1,0.3,1);--duration-fast:150ms}
 [data-theme=dark]{--bg:#0A0A0F;--surface:#141419;--elevated:#1C1C24;--muted:#2C2C3A;--input:#1C1C24;--text:#F5F5F7;--text-secondary:#98989D;--text-tertiary:#6E6E73;--border:#2C2C3A;--border-hover:#3A3A4A;--primary:#0A84FF;--primary-hover:#4DA3FF;--primary-subtle:rgba(10,132,255,.15);--success:#30D158;--success-bg:rgba(48,209,88,.12);--warning:#FF9F0A;--warning-bg:rgba(255,159,10,.12);--error:#FF453A;--error-bg:rgba(255,69,58,.12);--shadow-sm:0 1px 2px rgba(0,0,0,.2);--shadow-md:0 4px 12px rgba(0,0,0,.3)}
 [data-theme=light]{--bg:#fff;--surface:#F5F5F7;--elevated:#fff;--muted:#E8E8ED;--input:#F5F5F7;--text:#1D1D1F;--text-secondary:#6E6E73;--text-tertiary:#A1A1A6;--border:#D2D2D7;--border-hover:#86868B;--primary:#007AFF;--primary-hover:#0056D3;--primary-subtle:rgba(0,122,255,.1);--success:#34C759;--success-bg:rgba(52,199,89,.1);--warning:#FF9500;--warning-bg:rgba(255,149,0,.1);--error:#FF3B30;--error-bg:rgba(255,59,48,.1);--shadow-sm:0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.06)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -39,6 +39,8 @@ body{font-family:var(--font-primary);color:var(--text);background:var(--bg);tran
 @media (max-width:640px){.demo-grid-2{grid-template-columns:1fr}}
 .demo-block{display:flex;flex-direction:column;gap:var(--space-2)}
 .demo-block-label{font-size:11px;color:var(--text-tertiary)}
+
+/* Button */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:var(--font-primary);font-weight:500;line-height:1;border:1px solid transparent;cursor:pointer;user-select:none;white-space:nowrap;transition:all var(--duration-fast) var(--ease-out);position:relative;overflow:hidden;text-decoration:none}
 .btn:disabled{opacity:.5;cursor:not-allowed;pointer-events:none}
 .btn--sm{height:28px;padding:0 var(--space-2);font-size:11px;border-radius:var(--radius-sm)}
@@ -58,7 +60,13 @@ body{font-family:var(--font-primary);color:var(--text);background:var(--bg);tran
 .btn--destructive:hover:not(:disabled){opacity:.9;box-shadow:var(--shadow-md)}
 .btn--outline{background:0 0;color:var(--primary);border:1px solid var(--primary)}
 .btn--outline:hover:not(:disabled){background:var(--primary-subtle)}
+.btn--loading{color:transparent;pointer-events:none}
+.btn--loading .btn-icon,.btn--loading .btn-text{visibility:hidden}
+.btn__spinner{width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:spin .8s cubic-bezier(0.16,1,0.3,1) infinite;position:absolute}
+@keyframes spin{to{transform:rotate(360deg)}}
 .btn-icon{width:14px;height:14px;flex-shrink:0}
+
+/* Input */
 .input{width:100%;height:36px;padding:0 var(--space-3);font-family:var(--font-primary);font-size:14px;color:var(--text);background:var(--input);border:1px solid var(--border);border-radius:var(--radius-md);outline:0;transition:all var(--duration-fast) var(--ease-out)}
 .input::placeholder{color:var(--text-tertiary)}
 .input:hover:not(:disabled):not(:focus){border-color:var(--border-hover)}
@@ -68,8 +76,13 @@ body{font-family:var(--font-primary);color:var(--text);background:var(--bg);tran
 .input--success{border-color:var(--success)}
 .input:disabled{opacity:.5;cursor:not-allowed}
 .input--with-left{padding-left:36px}
-.input-label{display:block;font-size:12px;font-weight:500;margin-bottom:6px}
+.input-wrapper{position:relative}
+.input-icon{position:absolute;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-tertiary);pointer-events:none}
+.input-icon--left{left:var(--space-3)}
+.input-label{display:block;font-size:12px;font-weight:500;margin-bottom:6px;color:var(--text)}
 .input-error{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--error);margin-top:4px}
+
+/* Badge */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:var(--radius-sm);font-size:11px;font-weight:500;line-height:1.4;letter-spacing:.02em;white-space:nowrap}
 .badge--default{background:var(--muted);color:var(--text-secondary)}
 .badge--primary{background:var(--primary-subtle);color:var(--primary)}
@@ -77,60 +90,86 @@ body{font-family:var(--font-primary);color:var(--text);background:var(--bg);tran
 .badge--warning{background:var(--warning-bg);color:var(--warning)}
 .badge--error{background:var(--error-bg);color:var(--error)}
 .badge--pill{border-radius:var(--radius-full)}
-.badge-sm{font-size:10px;padding:1px 6px}
+.badge-icon{width:12px;height:12px}
+
+/* Card */
 .card-demo{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-5);transition:background .3s,border-color .3s,box-shadow .2s;box-shadow:var(--shadow-sm)}
 .card-demo--elevated{background:var(--elevated)}
 .card-demo--bordered{border-width:2px}
 .card-demo:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
-.card-label{font-size:12px;font-weight:600;margin-bottom:4px}
+.card-label{font-size:12px;font-weight:600;margin-bottom:4px;color:var(--text)}
 .card-text{font-size:12px;color:var(--text-secondary)}
+
+/* Tabs */
 .tabs-wrapper{display:inline-flex;padding:2px;background:var(--muted);border-radius:var(--radius-md);gap:2px}
 .tab-item{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;font-size:12px;font-weight:500;color:var(--text-secondary);background:0 0;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:all var(--duration-fast) var(--ease-out);white-space:nowrap}
 .tab-item:hover{color:var(--text)}
 .tab-item--active{background:var(--elevated);color:var(--text);box-shadow:var(--shadow-sm)}
+
+/* Tags */
 .tag-demo{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:var(--radius-sm);font-size:12px;font-weight:500;cursor:pointer;transition:all var(--duration-fast) var(--ease-out);user-select:none}
 .tag-demo--default{background:var(--muted);color:var(--text-secondary);border:1px solid transparent}
 .tag-demo--default:hover{border-color:var(--border-hover);color:var(--text)}
 .tag-demo--active{background:var(--primary);color:#fff}
+
+/* Switch */
 .switch-demo{position:relative;width:36px;height:22px;cursor:pointer;display:inline-block}
 .switch-demo input{opacity:0;width:0;height:0}
 .switch-track{position:absolute;inset:0;background:var(--border);border-radius:var(--radius-full);transition:background var(--duration-fast) var(--ease-out)}
 .switch-demo input:checked+.switch-track{background:var(--primary)}
 .switch-thumb{position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform var(--duration-fast) var(--ease-out);box-shadow:var(--shadow-sm)}
 .switch-demo input:checked~.switch-thumb{transform:translateX(14px)}
+
+/* Editor */
+.editor-demo{border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden}
+.editor-demo-inner{display:flex;position:relative}
+.editor-gutter{display:flex;flex-direction:column;align-items:flex-end;padding:var(--space-3) var(--space-2);min-width:44px;background:var(--muted);border-right:1px solid var(--border);user-select:none;flex-shrink:0}
+.editor-gutter-line{font-family:var(--font-mono);font-size:12px;line-height:1.6;color:var(--text-tertiary);height:22px}
+.editor-textarea-demo{flex:1;width:100%;min-height:120px;padding:var(--space-3);font-family:var(--font-mono);font-size:13px;line-height:1.6;color:var(--text);background:var(--input);border:none;outline:0;resize:vertical}
+
+/* Empty State */
+.empty-state-demo{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:var(--space-12) var(--space-4);text-align:center;background:var(--surface);border:1px dashed var(--border);border-radius:var(--radius-lg)}
+.empty-state-icon{width:48px;height:48px;color:var(--text-tertiary);margin-bottom:var(--space-4)}
+.empty-state-title{font-size:18px;font-weight:600;color:var(--text);letter-spacing:-.01em}
+.empty-state-desc{font-size:14px;color:var(--text-secondary);margin-top:var(--space-2);max-width:280px}
+
+/* Skeleton */
 .skeleton{background:var(--muted);border-radius:var(--radius-sm);position:relative;overflow:hidden}
 .skeleton::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--elevated) 50%,transparent),transparent);animation:shimmer 1.5s infinite}
 @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.tooltip-demo{position:relative;display:inline-flex}
-.tooltip-demo::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%) scale(.9);padding:4px 8px;font-size:11px;font-weight:500;color:var(--text);background:var(--elevated);border:1px solid var(--border);border-radius:var(--radius-sm);white-space:nowrap;opacity:0;pointer-events:none;transition:all var(--duration-fast) var(--ease-out);box-shadow:var(--shadow-md)}
-.tooltip-demo:hover::after{opacity:1;transform:translateX(-50%) scale(1)}
-.toast-demo{display:inline-flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--elevated);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:360px}
+.skeleton--text{height:14px;width:100%;margin-bottom:var(--space-2)}
+.skeleton--text-short{height:14px;width:60%;margin-bottom:var(--space-2)}
+.skeleton--heading{height:22px;width:40%;margin-bottom:var(--space-3)}
+.skeleton--card{height:120px;width:100%}
+
+/* Toast */
+.toast-demo{display:inline-flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);background:var(--elevated);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);max-width:360px}
 .toast-icon{width:18px;height:18px;flex-shrink:0}
 .toast-icon--s{color:var(--success)}
 .toast-icon--e{color:var(--error)}
 .toast-icon--w{color:var(--warning)}
+.toast-icon--i{color:var(--primary)}
 .toast-demo-content{flex:1}
-.toast-demo-title{font-size:14px;font-weight:500}
+.toast-demo-title{font-size:14px;font-weight:500;color:var(--text)}
 .toast-demo-desc{font-size:12px;color:var(--text-secondary);margin-top:1px}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="header">
-    <div>
-      <div class="header-left">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-        <div>
-          <h1 style="font-size:20px;font-weight:700;letter-spacing:-.02em;">DNS Shield 组件库</h1>
-          <div class="header-meta">Design System v3.4.0 · Swiss Modernism 2.0 × Apple Precision</div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span id="themeBadge" class="badge badge--default" style="font-size:10px;letter-spacing:.05em;">深色模式</span>
-        <button onclick="toggleTheme()" class="btn btn--sm btn--ghost" aria-label="切换主题"><svg id="themeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>切换主题</button>
+    <div class="header-left">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      <div>
+        <h1 style="font-size:20px;font-weight:700;letter-spacing:-.02em;">DNS Shield 组件库</h1>
+        <div class="header-meta">Design System v3.4.0 · Swiss Modernism 2.0 × Apple Precision</div>
       </div>
     </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span id="themeBadge" class="badge badge--default" style="font-size:10px;letter-spacing:.05em;">深色模式</span>
+      <button onclick="toggleTheme()" class="btn btn--sm btn--ghost" aria-label="切换主题"><svg id="themeIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>切换主题</button>
+    </div>
   </header>
+
   <nav class="nav-tabs">
     <button class="nav-tab nav-tab--active" onclick="scrollToSection('buttons')">Buttons</button>
     <button class="nav-tab" onclick="scrollToSection('inputs')">Inputs</button>
@@ -143,16 +182,429 @@ body{font-family:var(--font-primary);color:var(--text);background:var(--bg);tran
     <button class="nav-tab" onclick="scrollToSection('skeleton')">Skeleton</button>
     <button class="nav-tab" onclick="scrollToSection('toast')">Toasts</button>
   </nav>
+
+  <!-- Buttons -->
   <section class="section" id="buttons">
-    <h2 class="section-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>Button <span class="section-desc">按钮 — 4 种变体 · 4 种尺寸 · 5 种状态</span></h2>
-    <div class="component-card"><div class="component-name">变体 <code>variant</code></div>
-      <div class="demo-row"><span class="demo-label">Primary</span><button class="btn btn--md btn--primary"><span class="btn-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>Primary</button><button class="btn btn--md btn--secondary">Secondary</button><button class="btn btn--md btn--ghost">Ghost</button><button class="btn btn--md btn--destructive">Destructive</button><button class="btn btn--md btn--outline">Outline</button></div>
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+      Button <span class="section-desc">按钮 — 5 种变体 · 4 种尺寸 · 5 种状态</span>
+    </h2>
+    <div class="component-card">
+      <div class="component-name">变体 <code>variant</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Primary</span>
+        <button class="btn btn--md btn--primary">Primary</button>
+        <button class="btn btn--md btn--secondary">Secondary</button>
+        <button class="btn btn--md btn--ghost">Ghost</button>
+        <button class="btn btn--md btn--destructive">Destructive</button>
+        <button class="btn btn--md btn--outline">Outline</button>
+      </div>
     </div>
-    <div class="component-card"><div class="component-name">尺寸 <code>size</code></div>
-      <div class="demo-row"><span class="demo-label">Sizes</span><button class="btn btn--sm btn--primary">Small</button><button class="btn btn--md btn--primary">Medium</button><button class="btn btn--lg btn--primary">Large</button><button class="btn btn--xl btn--primary">X-Large</button></div>
+    <div class="component-card">
+      <div class="component-name">尺寸 <code>size</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Sizes</span>
+        <button class="btn btn--sm btn--primary">Small</button>
+        <button class="btn btn--md btn--primary">Medium</button>
+        <button class="btn btn--lg btn--primary">Large</button>
+        <button class="btn btn--xl btn--primary">X-Large</button>
+      </div>
+    </div>
+    <div class="component-card">
+      <div class="component-name">状态 <code>state</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Default</span>
+        <button class="btn btn--md btn--primary">Default</button>
+        <button class="btn btn--md btn--secondary">Default</button>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Hover</span>
+        <button class="btn btn--md btn--primary" style="background:var(--primary-hover);transform:translateY(-1px);box-shadow:var(--shadow-md);">Hover</button>
+        <button class="btn btn--md btn--secondary" style="border-color:var(--border-hover);background:var(--muted);">Hover</button>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Active</span>
+        <button class="btn btn--md btn--primary" style="transform:translateY(0);box-shadow:none;">Active</button>
+        <button class="btn btn--md btn--secondary" style="background:var(--surface);">Active</button>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Disabled</span>
+        <button class="btn btn--md btn--primary" disabled>Disabled</button>
+        <button class="btn btn--md btn--secondary" disabled>Disabled</button>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Loading</span>
+        <button class="btn btn--md btn--primary btn--loading" disabled><span class="btn__spinner"></span><span class="btn-text">Loading</span></button>
+        <button class="btn btn--md btn--secondary btn--loading" disabled><span class="btn__spinner"></span><span class="btn-text">Loading</span></button>
+      </div>
+    </div>
+    <div class="component-card">
+      <div class="component-name">图标按钮 <code>icon</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Icon</span>
+        <button class="btn btn--md btn--icon btn--primary" aria-label="播放"><svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+        <button class="btn btn--md btn--icon btn--secondary" aria-label="设置"><svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33"/><path d="M5.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06c.26.26.7.44 1.12.33"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M6.34 17.66l-1.41 1.41"/><path d="M19.07 4.93l-1.41 1.41"/></svg></button>
+        <button class="btn btn--md btn--icon btn--ghost" aria-label="关闭"><svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
     </div>
   </section>
+
+  <!-- Inputs -->
+  <section class="section" id="inputs">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+      Input <span class="section-desc">输入框 — Default / Focused / Error / Success / Disabled</span>
+    </h2>
+    <div class="component-card">
+      <div class="component-name">状态 <code>state</code></div>
+      <div class="demo-row" style="align-items:flex-start;">
+        <span class="demo-label">Default</span>
+        <div class="demo-block" style="flex:1;max-width:280px;">
+          <label class="input-label">URL 地址</label>
+          <input class="input" type="text" placeholder="输入 URL...">
+        </div>
+      </div>
+      <div class="demo-row" style="align-items:flex-start;">
+        <span class="demo-label">Focused</span>
+        <div class="demo-block" style="flex:1;max-width:280px;">
+          <label class="input-label">URL 地址</label>
+          <input class="input" type="text" value="https://example.com" style="border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-subtle);">
+        </div>
+      </div>
+      <div class="demo-row" style="align-items:flex-start;">
+        <span class="demo-label">Error</span>
+        <div class="demo-block" style="flex:1;max-width:280px;">
+          <label class="input-label">URL 地址</label>
+          <input class="input input--error" type="text" value="invalid-url" aria-invalid="true">
+          <span class="input-error"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> 请输入有效的 URL</span>
+        </div>
+      </div>
+      <div class="demo-row" style="align-items:flex-start;">
+        <span class="demo-label">Success</span>
+        <div class="demo-block" style="flex:1;max-width:280px;">
+          <label class="input-label">URL 地址</label>
+          <input class="input input--success" type="text" value="https://example.com/list.txt">
+        </div>
+      </div>
+      <div class="demo-row" style="align-items:flex-start;">
+        <span class="demo-label">Disabled</span>
+        <div class="demo-block" style="flex:1;max-width:280px;">
+          <label class="input-label">URL 地址</label>
+          <input class="input" type="text" value="https://example.com" disabled>
+        </div>
+      </div>
+      <div class="demo-row" style="align-items:flex-start;">
+        <span class="demo-label">With Icon</span>
+        <div class="demo-block" style="flex:1;max-width:280px;">
+          <label class="input-label">搜索</label>
+          <div class="input-wrapper">
+            <svg class="input-icon input-icon--left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input class="input input--with-left" type="text" placeholder="搜索域名...">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards -->
+  <section class="section" id="cards">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+      Card <span class="section-desc">卡片 — Default / Elevated / Bordered</span>
+    </h2>
+    <div class="component-card">
+      <div class="component-name">变体 <code>variant</code></div>
+      <div class="demo-grid-2">
+        <div class="demo-block">
+          <span class="demo-block-label">Default</span>
+          <div class="card-demo">
+            <div class="card-label">默认卡片</div>
+            <div class="card-text">基础卡片样式，用于内容分组和层级展示。</div>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-block-label">Elevated</span>
+          <div class="card-demo card-demo--elevated">
+            <div class="card-label">浮层卡片</div>
+            <div class="card-text">带有轻微阴影，用于强调重要内容区域。</div>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-block-label">Bordered</span>
+          <div class="card-demo card-demo--bordered">
+            <div class="card-label">边框卡片</div>
+            <div class="card-text">加粗边框，用于表单面板和设置区域。</div>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-block-label">Hover</span>
+          <div class="card-demo" style="box-shadow:var(--shadow-md);transform:translateY(-2px);">
+            <div class="card-label">悬停状态</div>
+            <div class="card-text">鼠标悬停时提升阴影和位移效果。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Badges -->
+  <section class="section" id="badges">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Badge <span class="section-desc">徽标 — 5 种语义变体 + Pill + 图标</span>
+    </h2>
+    <div class="component-card">
+      <div class="component-name">语义变体 <code>variant</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Default</span>
+        <span class="badge badge--default">Default</span>
+        <span class="badge badge--primary">Primary</span>
+        <span class="badge badge--success">Success</span>
+        <span class="badge badge--warning">Warning</span>
+        <span class="badge badge--error">Error</span>
+      </div>
+    </div>
+    <div class="component-card">
+      <div class="component-name">形状 <code>shape</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Rounded</span>
+        <span class="badge badge--primary">Rounded</span>
+        <span class="demo-label">Pill</span>
+        <span class="badge badge--primary badge--pill">Pill</span>
+      </div>
+    </div>
+    <div class="component-card">
+      <div class="component-name">带图标 <code>with icon</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Icons</span>
+        <span class="badge badge--success"><svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>成功</span>
+        <span class="badge badge--warning"><svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>警告</span>
+        <span class="badge badge--error"><svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>错误</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tabs & Tags -->
+  <section class="section" id="tabs-tags">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Tabs & Tags <span class="section-desc">分段控制器 & 标签组</span>
+    </h2>
+    <div class="component-card">
+      <div class="component-name">Tabs <code>segmented control</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Default</span>
+        <div class="tabs-wrapper">
+          <button class="tab-item tab-item--active">Dnsmasq</button>
+          <button class="tab-item">Hosts</button>
+          <button class="tab-item">AdGuard</button>
+          <button class="tab-item">白名单</button>
+        </div>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">With Icon</span>
+        <div class="tabs-wrapper">
+          <button class="tab-item tab-item--active"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>Dnsmasq</button>
+          <button class="tab-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>Hosts</button>
+        </div>
+      </div>
+    </div>
+    <div class="component-card">
+      <div class="component-name">Tags <code>preset tags</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Default</span>
+        <span class="tag-demo tag-demo--active">内置数据</span>
+        <span class="tag-demo tag-demo--default">AdGuard</span>
+        <span class="tag-demo tag-demo--default">EasyList</span>
+        <span class="tag-demo tag-demo--default">NeoHosts</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Switches -->
+  <section class="section" id="switches">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/></svg>
+      Switch <span class="section-desc">开关 — ON / OFF 状态</span>
+    </h2>
+    <div class="component-card">
+      <div class="component-name">状态 <code>state</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Off</span>
+        <label class="switch-demo">
+          <input type="checkbox">
+          <span class="switch-track"></span>
+          <span class="switch-thumb"></span>
+        </label>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">On</span>
+        <label class="switch-demo">
+          <input type="checkbox" checked>
+          <span class="switch-track"></span>
+          <span class="switch-thumb"></span>
+        </label>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Disabled</span>
+        <label class="switch-demo" style="opacity:.5;cursor:not-allowed;">
+          <input type="checkbox" disabled>
+          <span class="switch-track"></span>
+          <span class="switch-thumb"></span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Editor -->
+  <section class="section" id="editor">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+      Editor <span class="section-desc">代码编辑器 — 行号 + 语法高亮</span>
+    </h2>
+    <div class="component-card">
+      <div class="component-name">可编辑 <code>editable</code></div>
+      <div class="editor-demo">
+        <div class="editor-demo-inner">
+          <div class="editor-gutter">
+            <span class="editor-gutter-line">1</span>
+            <span class="editor-gutter-line">2</span>
+            <span class="editor-gutter-line">3</span>
+            <span class="editor-gutter-line">4</span>
+          </div>
+          <textarea class="editor-textarea-demo" spellcheck="false"># 输入域名，每行一个
+ad.example.com
+tracker.example.com
+analytics.example.com</textarea>
+        </div>
+      </div>
+    </div>
+    <div class="component-card">
+      <div class="component-name">只读预览 <code>readonly preview</code></div>
+      <div class="editor-demo">
+        <div class="editor-demo-inner">
+          <div class="editor-gutter">
+            <span class="editor-gutter-line">1</span>
+            <span class="editor-gutter-line">2</span>
+            <span class="editor-gutter-line">3</span>
+          </div>
+          <div style="flex:1;padding:var(--space-3);font-family:var(--font-mono);font-size:13px;line-height:1.6;color:var(--text);background:var(--input);min-height:120px;">
+            <span style="color:var(--text-tertiary);font-style:italic;"># DNS Shield 规则</span><br>
+            <span style="color:var(--primary);">address</span>=/ad.example.com/<span style="color:var(--warning);">127.0.0.1</span><br>
+            <span style="color:var(--primary);">address</span>=/tracker.example.com/<span style="color:var(--warning);">127.0.0.1</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Empty States -->
+  <section class="section" id="empty">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+      Empty State <span class="section-desc">空状态 — 无数据 / 无输出 / 无 URL</span>
+    </h2>
+    <div class="component-card">
+      <div class="component-name">类型 <code>type</code></div>
+      <div class="demo-grid-2">
+        <div class="demo-block">
+          <span class="demo-block-label">无域名</span>
+          <div class="empty-state-demo">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <div class="empty-state-title">暂无域名</div>
+            <div class="empty-state-desc">输入域名或从 URL 导入后开始生成规则</div>
+            <button class="btn btn--md btn--primary" style="margin-top:var(--space-4);">导入示例</button>
+          </div>
+        </div>
+        <div class="demo-block">
+          <span class="demo-block-label">无输出</span>
+          <div class="empty-state-demo">
+            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+            <div class="empty-state-title">暂无输出</div>
+            <div class="empty-state-desc">点击"生成规则"按钮开始转换</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skeleton -->
+  <section class="section" id="skeleton">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Skeleton <span class="section-desc">骨架屏 — 文本 / 标题 / 卡片</span>
+    </h2>
+    <div class="component-card">
+      <div class="component-name">变体 <code>variant</code></div>
+      <div class="demo-row" style="flex-direction:column;align-items:stretch;max-width:400px;">
+        <span class="demo-label" style="margin-bottom:8px;">Text</span>
+        <div class="skeleton skeleton--heading"></div>
+        <div class="skeleton skeleton--text"></div>
+        <div class="skeleton skeleton--text-short"></div>
+      </div>
+      <div class="demo-row" style="flex-direction:column;align-items:stretch;">
+        <span class="demo-label" style="margin-bottom:8px;">Card</span>
+        <div class="skeleton skeleton--card"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toast -->
+  <section class="section" id="toast">
+    <h2 class="section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      Toast <span class="section-desc">通知 — Success / Error / Warning / Info</span>
+    </h2>
+    <div class="component-card">
+      <div class="component-name">类型 <code>type</code></div>
+      <div class="demo-row">
+        <span class="demo-label">Success</span>
+        <div class="toast-demo">
+          <svg class="toast-icon toast-icon--s" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <div class="toast-demo-content">
+            <div class="toast-demo-title">规则已生成</div>
+            <div class="toast-demo-desc">成功生成 6 条 Dnsmasq 规则</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Error</span>
+        <div class="toast-demo">
+          <svg class="toast-icon toast-icon--e" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          <div class="toast-demo-content">
+            <div class="toast-demo-title">生成失败</div>
+            <div class="toast-demo-desc">网络连接超时，请稍后重试</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Warning</span>
+        <div class="toast-demo">
+          <svg class="toast-icon toast-icon--w" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div class="toast-demo-content">
+            <div class="toast-demo-title">部分域名无效</div>
+            <div class="toast-demo-desc">已跳过 2 个无效域名</div>
+          </div>
+        </div>
+      </div>
+      <div class="demo-row">
+        <span class="demo-label">Info</span>
+        <div class="toast-demo">
+          <svg class="toast-icon toast-icon--i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <div class="toast-demo-content">
+            <div class="toast-demo-title">正在处理</div>
+            <div class="toast-demo-desc">正在从远程 URL 获取域名列表...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="margin-top:var(--space-12);padding-top:var(--space-6);border-top:1px solid var(--border);text-align:center;">
+    <p style="font-size:12px;color:var(--text-tertiary);">DNS Shield Component Library v3.4.0</p>
+  </footer>
 </div>
+
 <script>
 let isDark=!0;document.documentElement.setAttribute('data-theme','dark');
 function toggleTheme(){isDark=!isDark;document.documentElement.setAttribute('data-theme',isDark?'dark':'light');document.getElementById('themeBadge').textContent=isDark?'深色模式':'浅色模式'}

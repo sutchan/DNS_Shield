@@ -1,7 +1,7 @@
-// service-worker.js
-// PWA 服务 worker 实现
+// service-worker.js v3.4.0
+// PWA 服务 worker 实现 - 安全加固版
 
-const CACHE_NAME = 'dns-shield-cache-v1';
+const CACHE_NAME = 'dns-shield-cache-v2';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -16,7 +16,20 @@ const STATIC_ASSETS = [
   '/domains.txt'
 ];
 
-// 安装 service worker
+const CACHE_SAFE_EXTENSIONS = ['.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.json', '.txt'];
+
+const isSafeToCache = (request) => {
+  if (request.method !== 'GET') return false;
+  try {
+    const url = new URL(request.url);
+    if (url.origin !== self.location.origin) return false;
+    const pathname = url.pathname.toLowerCase();
+    return CACHE_SAFE_EXTENSIONS.some(ext => pathname.endsWith(ext)) || pathname === '/' || pathname.endsWith('/');
+  } catch {
+    return false;
+  }
+};
+
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -24,9 +37,9 @@ self.addEventListener('install', (event) => {
         return cache.addAll(STATIC_ASSETS);
       })
   );
+  self.skipWaiting();
 });
 
-// 激活 service worker
 self.addEventListener('activate', (event) => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -38,32 +51,31 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
 
-// 处理网络请求
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        // 如果缓存中有响应，则返回缓存的响应
         if (response) {
           return response;
         }
 
-        // 否则，发起网络请求
         return fetch(event.request)
           .then((response) => {
-            // 检查响应是否有效
             if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
             }
 
-            // 克隆响应，因为响应流只能使用一次
-            const responseToCache = response.clone();
+            if (!isSafeToCache(event.request)) {
+              return response;
+            }
 
-            // 将响应添加到缓存
+            const responseToCache = response.clone();
             caches.open(CACHE_NAME)
               .then((cache) => {
                 cache.put(event.request, responseToCache);
@@ -72,31 +84,32 @@ self.addEventListener('fetch', (event) => {
             return response;
           })
           .catch(() => {
-            // 如果网络请求失败，返回离线页面
             if (event.request.mode === 'navigate') {
               return caches.match('/');
             }
+            return new Response('', { status: 503, statusText: 'Service Unavailable' });
           });
       })
   );
 });
 
-// 后台同步功能
 self.addEventListener('sync', (event) => {
   if (event.tag === 'sync-domains') {
     event.waitUntil(syncDomains());
   }
 });
 
-// 同步域名数据
 async function syncDomains() {
   try {
-    const response = await fetch('/domains.txt');
+    const response = await fetch('/domains.txt', { credentials: 'same-origin' });
     if (response.ok) {
       const data = await response.text();
-      // 可以在这里处理同步逻辑
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put('/domains.txt', new Response(data, {
+        headers: { 'Content-Type': 'text/plain' }
+      }));
     }
   } catch (error) {
-    // 静默处理错误，生产环境中不输出错误信息
+    // 静默处理错误
   }
 }

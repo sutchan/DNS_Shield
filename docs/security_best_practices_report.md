@@ -1,7 +1,7 @@
 # DNS Shield - 安全审查报告 v3.4.0
 
 > 版本: v3.4.0 | 审查日期: 2026-07-05 | 审查人: Claude Code
-> 最后更新: 2026-07-05
+> 最后更新: 2026-07-17
 
 ---
 
@@ -15,6 +15,13 @@ DNS Shield v3.4.0 安全状况整体**优秀**。已实现：完整 CSP 安全�
 - 优化组件架构，使用 shadcn/ui 标准组件模式
 - 增强无障碍支持（ARIA 标签、键盘导航、焦点管理）
 
+**v3.4.0 安全加固（2026-07-17）**:
+- Service Worker 缓存策略安全加固：仅缓存同源静态资源，按扩展名白名单过滤
+- CSP 增强：新增 `frame-ancestors 'none'`、`worker-src 'self' blob:` 指令
+- 新增安全头部：HSTS、Cross-Origin-Opener-Policy、Cross-Origin-Resource-Policy
+- 文件名安全验证：downloadOutput 增加路径遍历防护和字符过滤
+- 移除 X-XSS-Protection 头部（现代浏览器已废弃，由 CSP 替代）
+
 ---
 
 ## 已确认的安全措施 ✅
@@ -22,18 +29,24 @@ DNS Shield v3.4.0 安全状况整体**优秀**。已实现：完整 CSP 安全�
 | 措施 | 状态 | 位置 | 说明 |
 |------|------|------|------|
 | CSP 配置（unsafe-eval 已移除） | ✅ | `next.config.js` | 安全头部完整 |
+| CSP frame-ancestors | ✅ | `next.config.js` | 点击劫持双重保护 |
+| CSP worker-src | ✅ | `next.config.js` | Service Worker 来源限制 |
 | URL 协议验证（仅 http/https） | ✅ | `src/utils/fileUtils.ts` | 严格协议白名单 |
 | URL 长度限制（2048 字符） | ✅ | `src/utils/fileUtils.ts` | 防止超长 URL 攻击 |
 | HTTP 请求超时控制（AbortController） | ✅ | `src/utils/fileUtils.ts` | 10 秒超时 |
 | XSS 防护（无 innerHTML） | ✅ | 全局 | React 自动转义 + 无 innerHTML |
-| 无 dangerouslySetInnerHTML | ✅ | 全局 | 搜索确认零使用 |
+| 无 dangerouslySetInnerHTML | ✅ | 全局 | 仅 JSON-LD 使用且内容为常量 |
 | 无 eval / Function 构造 | ✅ | 全局 | 搜索确认零使用 |
 | frame-src 'none' + object-src 'none' | ✅ | `next.config.js` | 防止点击劫持 |
 | X-Frame-Options: DENY | ✅ | `next.config.js` | 框架嵌入保护 |
 | X-Content-Type-Options: nosniff | ✅ | `next.config.js` | MIME 类型防护 |
+| HSTS | ✅ | `next.config.js` | 强制 HTTPS |
+| Cross-Origin-Opener-Policy | ✅ | `next.config.js` | 跨源隔离保护 |
+| Cross-Origin-Resource-Policy | ✅ | `next.config.js` | 资源访问限制 |
 | localStorage 无敏感数据 | ✅ | `src/hooks/` | 仅存储主题、语言、编辑内容 |
-| 文件名安全（无用户输入） | ✅ | `src/utils/fileUtils.ts` | 使用配置值生成文件名 |
+| 文件名安全（路径遍历防护） | ✅ | `src/utils/fileUtils.ts` | 白名单字符过滤 + 长度限制 |
 | 域名格式正则验证 | ✅ | `src/utils/parser.ts` | 严格格式校验 |
+| Service Worker 缓存安全 | ✅ | `public/service-worker.js` | 仅缓存同源静态资源 |
 
 ---
 
