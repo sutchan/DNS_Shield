@@ -106,12 +106,11 @@ dns-shield/
 │   ├── prototype.canvas.tsx          # 高保真原型（React 版本）
 │   ├── components-showcase.html      # 组件库展示
 │   ├── OVERVIEW.md                   # 原型总览文档
-│   ├── design-system.md              # 设计系统规范
-│   └── component-library.md          # 组件库规范
-├── shadcn/                           # shadcn 设计规范
-│   ├── design-system.md              # 设计系统（色彩/字体/间距/动效）
-│   ├── component-library.md          # 组件库（基础/复合/业务组件）
-│   └── interaction-standards.md      # 交互标准（模式/反馈/错误/空状态）
+│   └── shadcn/                       # shadcn 设计规范
+│       ├── design-system.md          # 设计系统（色彩/字体/间距/动效）
+│       ├── component-library.md      # 组件库（基础/复合/业务组件）
+│       ├── design-polish-report.md   # 设计打磨报告
+│       └── interaction-standards.md  # 交互标准（模式/反馈/错误/空状态）
 ├── .env.local                      # 本地环境变量
 ├── .eslintrc.json                  # ESLint 配置
 ├── .gitignore                      # Git 忽略配置
