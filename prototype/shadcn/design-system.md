@@ -1,75 +1,97 @@
 # DNS Shield — 设计系统规范 v3.4.0
 > 基于 shadcn/ui + Tailwind CSS + Radix UI 的完整设计系统
+> 色彩空间：oklch | 设计哲学：Swiss Modernism 2.0 × Apple Precision
 
 ---
 
 ## 1. 色彩系统
 
-### 1.1 CSS 变量（HSL 格式）
+### 1.1 CSS 变量（HSL 格式，兼容 Tailwind hsl() 函数）
 
 ```css
 :root {
   /* Background */
-  --background: 0 0% 100%;
-  --foreground: 240 6% 10%;
+  --background: 0 0% 98.5%;
+  --foreground: 240 8% 12%;
 
   /* Card */
   --card: 0 0% 100%;
-  --card-foreground: 240 6% 10%;
+  --card-foreground: 240 8% 12%;
 
   /* Popover */
   --popover: 0 0% 100%;
-  --popover-foreground: 240 6% 10%;
+  --popover-foreground: 240 8% 12%;
 
   /* Primary — Apple Blue */
-  --primary: 211 100% 50%;
+  --primary: 217 89% 47%;
   --primary-foreground: 0 0% 100%;
 
   /* Secondary */
-  --secondary: 240 5% 96%;
-  --secondary-foreground: 240 6% 10%;
+  --secondary: 220 6% 90%;
+  --secondary-foreground: 240 4% 16%;
 
   /* Muted */
-  --muted: 240 5% 96%;
-  --muted-foreground: 240 4% 46%;
+  --muted: 220 8% 94%;
+  --muted-foreground: 240 3% 46%;
 
   /* Accent */
-  --accent: 240 5% 96%;
-  --accent-foreground: 240 6% 10%;
+  --accent: 217 70% 94%;
+  --accent-foreground: 217 89% 47%;
 
   /* Destructive */
-  --destructive: 0 84% 60%;
+  --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
 
+  /* Success / Warning / Info */
+  --success: 142 71% 45%;
+  --warning: 38 92% 50%;
+  --info: 217 89% 47%;
+
   /* Border / Input / Ring */
-  --border: 240 6% 90%;
-  --input: 240 6% 90%;
-  --ring: 211 100% 50%;
+  --border: 220 6% 88%;
+  --input: 220 6% 88%;
+  --ring: 217 89% 47%;
 
   /* Radius */
-  --radius: 0.5rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
 }
 
 .dark {
-  --background: 240 14% 4%;
-  --foreground: 0 0% 96%;
-  --card: 240 14% 7%;
-  --card-foreground: 0 0% 96%;
-  --popover: 240 14% 7%;
-  --popover-foreground: 0 0% 96%;
-  --primary: 211 100% 52%;
+  --background: 240 6% 7%;
+  --foreground: 0 0% 95%;
+
+  --card: 240 4% 10%;
+  --card-foreground: 0 0% 95%;
+
+  --popover: 240 4% 10%;
+  --popover-foreground: 0 0% 95%;
+
+  --primary: 217 85% 55%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 240 6% 12%;
-  --secondary-foreground: 0 0% 96%;
-  --muted: 240 6% 12%;
-  --muted-foreground: 240 5% 65%;
-  --accent: 240 6% 12%;
-  --accent-foreground: 0 0% 96%;
-  --destructive: 0 72% 51%;
+
+  --secondary: 240 3% 18%;
+  --secondary-foreground: 0 0% 90%;
+
+  --muted: 240 3% 14%;
+  --muted-foreground: 240 2% 55%;
+
+  --accent: 217 40% 20%;
+  --accent-foreground: 217 85% 60%;
+
+  --destructive: 0 62% 35%;
   --destructive-foreground: 0 0% 100%;
-  --border: 240 6% 15%;
-  --input: 240 6% 15%;
-  --ring: 211 100% 52%;
+
+  --success: 142 70% 40%;
+  --warning: 38 90% 45%;
+  --info: 217 85% 55%;
+
+  --border: 240 3% 20%;
+  --input: 240 3% 20%;
+  --ring: 217 85% 55%;
 }
 ```
 
@@ -77,17 +99,17 @@
 
 | 语义 | Light 色值 | Dark 色值 | Tailwind |
 |------|-----------|-----------|----------|
-| 页面背景 | #FFFFFF | #0A0A0F | bg-background |
-| 卡片背景 | #F5F5F7 | #141419 | bg-card |
-| 浮层背景 | #FFFFFF | #1C1C24 | bg-popover |
-| 主按钮 | #007AFF | #0A84FF | bg-primary |
-| 次按钮 | #F5F5F7 | #1C1C24 | bg-secondary |
-| 主文字 | #1D1D1F | #F5F5F7 | text-foreground |
-| 次文字 | #6E6E73 | #98989D | text-muted-foreground |
-| 边框 | #D2D2D7 | #2C2C3A | border-border |
-| 成功 | #34C759 | #30D158 | text-green-500 |
-| 警告 | #FF9500 | #FF9F0A | text-orange-500 |
-| 错误 | #FF3B30 | #FF453A | text-red-500 |
+| 页面背景 | #FAFAFA | #111114 | bg-background |
+| 卡片背景 | #FFFFFF | #1A1A20 | bg-card |
+| 浮层背景 | #FFFFFF | #1A1A20 | bg-popover |
+| 主按钮 | #0D6EFD | #3B82F6 | bg-primary |
+| 次按钮 | #E4E5E9 | #2D2D36 | bg-secondary |
+| 主文字 | #1C1D21 | #F2F2F2 | text-foreground |
+| 次文字 | #71717A | #8C8C95 | text-muted-foreground |
+| 边框 | #DEE0E6 | #33333D | border-border |
+| 成功 | #16A34A | #16A34A | text-success |
+| 警告 | #F59E0B | #CA8A04 | text-warning |
+| 错误 | #DC2626 | #991B1B | text-destructive |
 
 ---
 
@@ -137,10 +159,11 @@ font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', sa
 
 | Token | 值 | Tailwind | 用途 |
 |-------|-----|----------|------|
-| sm | 6px | rounded-md | 小按钮、标签 |
-| md | 8px | rounded-lg | 按钮、输入框 |
-| lg | 12px | rounded-xl | 卡片、面板 |
-| xl | 16px | rounded-2xl | 大卡片、模态框 |
+| sm | 6px | rounded-sm | 小按钮、标签 |
+| md | 8px | rounded-md | 按钮、输入框 |
+| lg | 10px | rounded-lg | 卡片、面板 |
+| xl | 12px | rounded-xl | 大卡片、模态框 |
+| 2xl | 16px | rounded-2xl | 超大卡片 |
 | full | 9999px | rounded-full | 药丸按钮 |
 
 ---

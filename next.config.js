@@ -1,49 +1,50 @@
 /** @type {import('next').NextConfig} */
 
-// 安全头部配置
 const securityHeaders = [
   {
-    // Content Security Policy - 限制资源加载来源
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      // 允许加载自身域名、GitHub 资源和字体服务
-      // 注意: 'unsafe-inline' 是 Next.js 水合所需，'unsafe-eval' 已移除以提高安全性
       "script-src 'self' 'unsafe-inline' https://raw.githubusercontent.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https: blob:",
       "connect-src 'self' https://raw.githubusercontent.com https://easylist-downloads.adblockplus.org https://github.com",
       "frame-src 'none'",
+      "frame-ancestors 'none'",
       "object-src 'none'",
       "base-uri 'self'",
-      "form-action 'self'"
+      "form-action 'self'",
+      "worker-src 'self' blob:"
     ].join('; ')
   },
   {
-    // 防止 MIME 类型嗅探
     key: 'X-Content-Type-Options',
     value: 'nosniff'
   },
   {
-    // 防止点击劫持攻击
     key: 'X-Frame-Options',
     value: 'DENY'
   },
   {
-    // XSS 保护
-    key: 'X-XSS-Protection',
-    value: '1; mode=block'
-  },
-  {
-    // 引用来源策略
     key: 'Referrer-Policy',
     value: 'strict-origin-when-cross-origin'
   },
   {
-    // 权限策略
     key: 'Permissions-Policy',
-    value: 'camera=(), microphone=(), geolocation=()'
+    value: 'camera=(), microphone=(), geolocation=(), payment=(), interest-cohort=()'
+  },
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains; preload'
+  },
+  {
+    key: 'Cross-Origin-Opener-Policy',
+    value: 'same-origin'
+  },
+  {
+    key: 'Cross-Origin-Resource-Policy',
+    value: 'same-origin'
   }
 ];
 

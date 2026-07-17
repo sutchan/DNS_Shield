@@ -286,6 +286,7 @@ refactor: 优化规则生成逻辑
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| v3.4.0 | 2026-07-17 | 安全加固：Service Worker 缓存策略优化、CSP 增强新增 frame-ancestors/worker-src、新增 HSTS/COOP/CORP 安全头部、文件名安全验证；设计系统文档同步更新 |
 | v3.4.0 | 2026-07-03 | 项目目录整理：移除冗余文件，shadcn/ 归入 prototype/ 统一管理；完善 GitHub Issue 模板配置；根目录新增 CHANGELOG.md |
 | v3.3.0 | 2026-07-03 | 完成 4 个超过 200 行文件的模块拆分；新增 SettingsPanel/UrlSection/useSettings/useLoading 模块；移除所有 i18n 翻译中的 emoji 图标；版本统一 v3.4.0 |
 | v3.2.0 | 2026-07-03 | 新增 domainValidator.ts/InputEditor.tsx 模块拆分；清理废弃 i18n 键；版本统一 v3.2.0 |
