@@ -264,7 +264,7 @@ docker-compose up -d
 | `PORT` | 服务器端口 | 3000 |
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
-| `NEXT_PUBLIC_APP_VERSION | 应用版本 | 3.4.0 |
+| `NEXT_PUBLIC_APP_VERSION | 应用版本 | 3.5.0 |
 
 ### 2. Next.js 配置
 

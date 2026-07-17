@@ -1,4 +1,4 @@
-// service-worker.js v3.4.0
+// service-worker.js v3.5.0
 // PWA 服务 worker 实现 - 安全加固版
 
 const CACHE_NAME = 'dns-shield-cache-v2';

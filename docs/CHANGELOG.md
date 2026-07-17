@@ -7,12 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.5.0] - 2026-07-17
+
 ### Added
 - Added 12 i18n translation keys (`hostsFormat`, `dnsmasqFormat`, `mergeStats`, `versionLabel`, `languageSelectorAria`, `statsAria`, `editorActionsAria`, `outputActionsAria`, `outputFormatAria`, `urlActionsAria`, `urlListAria`, `usageGuideAria`) across all 16 languages
+- `Badge` component: added `success` and `warning` variants
+- `Button` component: added `isLoading` state with spinner animation
+- New HTTP security headers: HSTS, Cross-Origin-Opener-Policy, Cross-Origin-Resource-Policy
+- CSP enhanced with `frame-ancestors 'none'` and `worker-src 'self' blob:` directives
+- New `sanitizeFilename()` function to prevent path traversal attacks
+- OpenSpec SPEC.md: added security specification section (11.5)
 
 ### Changed
-- Unified version numbers in prototype files (`prototype.html`, `prototype.canvas.tsx`, `components-showcase.html`), security report, sample output files (`dnsmasq.conf`, `hosts.txt`, `adguard.txt`), bug report template, and SPEC.md to v3.4.0
+- Unified version numbers in prototype files (`prototype.html`, `prototype.canvas.tsx`, `components-showcase.html`), security report, sample output files (`dnsmasq.conf`, `hosts.txt`, `adguard.txt`), bug report template, and SPEC.md to v3.5.0
 - Aligned `manifest.json` `theme_color` with `viewport.themeColor` (`#007AFF`)
+- Service Worker cache security hardening: only cache same-origin GET requests with extension whitelist
+- Design system documentation color space corrected to HSL (matching actual CSS variables)
+- README documentation: added security features and security report link
+- All project version numbers unified to v3.5.0
 
 ### Fixed
 - Fixed functional bug where `UrlSection` preset label accessed non-existent `t.builtin`, causing the "Built-in" preset tag to render blank in all languages (now maps to `builtinAd`)
@@ -32,6 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed duplicate `Stats` interface in `InputPanel` (now imported from `types`)
 - `useRules` now uses `FormatType` instead of repeated literal unions
 - Removed unused exports/params (`setIsLoading`, `loadDomainData`, `isLangZh`, `isChineseLanguage`)
+- Fixed `prototype.canvas.tsx` TypeScript compilation error caused by Chinese quotes in JSX strings
+- Removed emoji icons from language list in `i18n.ts`
 
 ### UI Layout Fixes
 - Fixed 30+ CSS classes used by components but undefined in `globals.css`, which caused complete layout breakdown:

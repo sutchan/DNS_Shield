@@ -1,5 +1,5 @@
-# DNS Shield 高保真原型 v3.4.0
-> 基于 DNS Shield Design System v3.4.0 (Swiss Modernism 2.0 × Apple Precision)
+# DNS Shield 高保真原型 v3.5.0
+> 基于 DNS Shield Design System v3.5.0 (Swiss Modernism 2.0 × Apple Precision)
 
 ## 交付物
 
@@ -36,7 +36,7 @@
 
 ## 设计规范遵循
 
-- [x] 色彩系统：精确匹配 Design System v3.4.0 色板
+- [x] 色彩系统：精确匹配 Design System v3.5.0 色板
 - [x] 字体系统：Inter，严格使用 Display/H1/H2/H3/Body/Small/Caption
 - [x] 间距系统：4px 基数（space-1 ~ space-12）
 - [x] 圆角系统：sm=6px, md=8px, lg=12px, xl=16px

@@ -1,4 +1,4 @@
-// src/components/ui/Accordion.tsx v3.4.0
+// src/components/ui/Accordion.tsx v3.5.0
 "use client"
 
 import * as React from "react"

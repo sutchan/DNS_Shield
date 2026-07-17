@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.4.0 |
+| 当前版本 | v3.5.0 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -29,7 +29,7 @@ dns-shield/
 │   ├── DEPLOYMENT.md               # 部署指南
 │   ├── SECURITY.md                 # 安全指南
 │   ├── SUPPORT.md                  # 支持文档
-│   └── security_best_practices_report.md  # 安全审查报告 v3.4.0
+│   └── security_best_practices_report.md  # 安全审查报告 v3.5.0
 ├── openspec/                       # 项目规范文档
 │   ├── SPEC.md                     # 项目规范（本文件）
 │   ├── TASKS.md                    # 任务清单
@@ -174,7 +174,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.4.0 |
+| 版本号 | 3.5.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -282,11 +282,39 @@ refactor: 优化规则生成逻辑
 - 部分设备可能有 hosts 文件大小限制
 - 需要定期更新规则以应对新广告形式
 
+## 11.5 安全规范
+
+### 11.5.1 HTTP 安全头部
+
+| 头部 | 值 | 说明 |
+|------|-----|------|
+| Content-Security-Policy | default-src 'self'; script-src 'self' 'unsafe-inline' ...; frame-ancestors 'none'; worker-src 'self' blob: | 内容安全策略，防止 XSS 和数据注入 |
+| Strict-Transport-Security | max-age=63072000; includeSubDomains; preload | HSTS，强制 HTTPS |
+| Cross-Origin-Opener-Policy | same-origin | 防止跨窗口攻击 |
+| Cross-Origin-Resource-Policy | same-origin | 限制跨域资源加载 |
+| X-Content-Type-Options | nosniff | 防止 MIME 嗅探 |
+| X-Frame-Options | DENY | 防止点击劫持 |
+| Referrer-Policy | strict-origin-when-cross-origin | 控制 Referrer 信息泄露 |
+
+### 11.5.2 Service Worker 安全
+
+- 仅缓存同源 GET 请求
+- 按文件扩展名白名单过滤（.js/.css/.png/.jpg/.svg/.woff2 等）
+- 不缓存跨域资源或 API 请求
+- 缓存名称包含版本号，便于版本更新时清理
+
+### 11.5.3 文件操作安全
+
+- `sanitizeFilename()` 函数过滤危险字符（路径分隔符、控制字符等）
+- 限制文件名最大长度（255 字符）
+- 防止路径遍历攻击（../、..\\）
+- 文件名仅允许字母、数字、点、下划线、连字符
+
 ## 12. 版本历史
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
-| v3.4.0 | 2026-07-17 | 安全加固：Service Worker 缓存策略优化、CSP 增强新增 frame-ancestors/worker-src、新增 HSTS/COOP/CORP 安全头部、文件名安全验证；设计系统文档同步更新 |
+| v3.5.0 | 2026-07-17 | 安全加固：Service Worker 缓存策略优化（同源+扩展名白名单）、CSP 增强（frame-ancestors/worker-src）、新增 HSTS/COOP/CORP 安全头部、文件名安全验证（sanitizeFilename）；Badge 组件新增 success/warning 变体、Button 组件新增 loading 状态；设计系统文档同步更新（HSL 色彩空间修正）；README/CHANGELOG/openspec 规范文档全面同步更新；全项目版本号统一至 v3.5.0 |
 | v3.4.0 | 2026-07-03 | 项目目录整理：移除冗余文件，shadcn/ 归入 prototype/ 统一管理；完善 GitHub Issue 模板配置；根目录新增 CHANGELOG.md |
 | v3.3.0 | 2026-07-03 | 完成 4 个超过 200 行文件的模块拆分；新增 SettingsPanel/UrlSection/useSettings/useLoading 模块；移除所有 i18n 翻译中的 emoji 图标；版本统一 v3.4.0 |
 | v3.2.0 | 2026-07-03 | 新增 domainValidator.ts/InputEditor.tsx 模块拆分；清理废弃 i18n 键；版本统一 v3.2.0 |

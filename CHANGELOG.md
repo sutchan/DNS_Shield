@@ -7,12 +7,24 @@
 
 ## [Unreleased]
 
+## [3.5.0] - 2026-07-17
+
 ### Added
 - 新增 12 个 i18n 翻译键（`hostsFormat`、`dnsmasqFormat`、`mergeStats`、`versionLabel`、`languageSelectorAria`、`statsAria`、`editorActionsAria`、`outputActionsAria`、`outputFormatAria`、`urlActionsAria`、`urlListAria`、`usageGuideAria`），覆盖全部 16 种语言
+- `Badge` 组件新增 `success` 和 `warning` 变体
+- `Button` 组件新增 `isLoading` 状态（带 spinner 动画）
+- 新增 HTTP 安全头部：HSTS、Cross-Origin-Opener-Policy、Cross-Origin-Resource-Policy
+- CSP 新增 `frame-ancestors 'none'` 和 `worker-src 'self' blob:` 指令
+- 新增 `sanitizeFilename()` 函数，防止路径遍历攻击
+- OpenSpec SPEC.md 新增安全规范章节（11.5）
 
 ### Changed
-- 统一原型文件（`prototype.html`、`prototype.canvas.tsx`、`components-showcase.html`）、安全审查报告、示例输出文件（`dnsmasq.conf`、`hosts.txt`、`adguard.txt`）、Bug 报告模板、SPEC.md 中的版本号至 v3.4.0
+- 统一原型文件（`prototype.html`、`prototype.canvas.tsx`、`components-showcase.html`）、安全审查报告、示例输出文件（`dnsmasq.conf`、`hosts.txt`、`adguard.txt`）、Bug 报告模板、SPEC.md 中的版本号至 v3.5.0
 - `manifest.json` 的 `theme_color` 与 `viewport.themeColor` 对齐为 `#007AFF`
+- Service Worker 缓存策略安全加固：仅缓存同源 GET 请求，按扩展名白名单过滤
+- 设计系统文档色彩空间修正为 HSL（与实际 CSS 变量一致）
+- README 文档新增安全特性和安全审查报告链接
+- 全项目版本号统一至 v3.5.0
 
 ### Fixed
 - 修复 `UrlSection` 预设标签访问 `t.builtin`（不存在）导致"内置数据"标签在所有语言下显示空白的功能性 bug（改用 `builtinAd` 映射）
@@ -32,6 +44,8 @@
 - 移除 `InputPanel` 中重复定义的 `Stats` 接口，改用 `types` 中导出
 - `useRules` 使用 `FormatType` 类型替代重复的字面量联合类型
 - 移除 `useLoading`、`useDomainData`、`useUrlManager`、`useLanguage` 中未使用的导出/参数（`setIsLoading`、`loadDomainData`、`isLangZh`、`isChineseLanguage`）
+- 修复 `prototype.canvas.tsx` 中 JSX 字符串包含中文引号导致的 TypeScript 编译错误
+- 移除 `i18n.ts` 中语言列表的 emoji 图标
 
 ### UI Layout Fixes
 - 修复 `globals.css` 中 30+ 个被组件使用但未定义的 CSS 类，导致页面布局完全错乱：

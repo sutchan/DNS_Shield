@@ -88,4 +88,4 @@ components:
       file: "src/components/ui/Tooltip.tsx"
       parts: ["Tooltip", "TooltipTrigger", "TooltipContent"]
 
-version: "3.4.0"
+version: "3.5.0"

@@ -16,6 +16,7 @@
 - **自动保存/恢复** - 每 30 秒自动保存内容到浏览器
 - **国际化支持** - 支持 16 种语言
 - **深色/浅色模式** - 一键切换主题配色
+- **安全加固** - CSP 安全头部、HSTS、Service Worker 安全缓存策略、文件名安全验证
 
 ## 快速开始
 
@@ -75,6 +76,8 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf 
 - **SSR** - Next.js 框架支持服务端渲染
 - **16 种国际化语言** - 全球用户友好体验
 - **模块化架构** - 清晰的分层文件结构
+- **安全头部** - CSP、HSTS、COOP、CORP 等安全响应头
+- **PWA 安全** - Service Worker 仅缓存同源静态资源，扩展名白名单过滤
 
 ## 项目结构
 
@@ -154,10 +157,18 @@ npm run lint
 
 欢迎提交域名规则和问题反馈，请查看 [贡献指南](docs/CONTRIBUTING.md)。
 
+## 安全
+
+请查看 [安全审查报告](security_best_practices_report.md) 了解项目的安全最佳实践。
+
 ## 许可证
 
 MIT License
 
 ## 版本
 
-当前版本：v3.4.0
+当前版本：v3.5.0
+
+## 更新日志
+
+请查看 [CHANGELOG.md](CHANGELOG.md) 了解项目的版本历史和变更记录。

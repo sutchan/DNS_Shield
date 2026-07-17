@@ -28,7 +28,7 @@ assignees: ''
 
 - **操作系统**: <!-- 如 Windows 11 / macOS 14 / Ubuntu 22.04 -->
 - **浏览器**: <!-- 如 Chrome 120 / Firefox 121 / Safari 17 -->
-- **DNS Shield 版本**: <!-- 查看页面底部或 CHANGELOG.md，如 v3.4.0 -->
+- **DNS Shield 版本**: <!-- 查看页面底部或 CHANGELOG.md，如 v3.5.0 -->
 - **路由器型号**: <!-- 如 华硕 RT-AX86U / 小米 AX6000 / OpenWrt -->
 - **使用的规则格式**: <!-- Dnsmasq / Hosts / AdGuard / 白名单 -->
 

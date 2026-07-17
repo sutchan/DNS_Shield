@@ -1,21 +1,21 @@
-# DNS Shield - 安全审查报告 v3.4.0
+# DNS Shield - 安全审查报告 v3.5.0
 
-> 版本: v3.4.0 | 审查日期: 2026-07-05 | 审查人: Claude Code
+> 版本: v3.5.0 | 审查日期: 2026-07-05 | 审查人: Claude Code
 > 最后更新: 2026-07-17
 
 ---
 
 ## 执行摘要
 
-DNS Shield v3.4.0 安全状况整体**优秀**。已实现：完整 CSP 安全头部、`unsafe-eval` 已移除、URL 协议验证（http/https）、HTTP 请求超时控制（AbortController）、XSS 防护（innerText）。
+DNS Shield v3.5.0 安全状况整体**优秀**。已实现：完整 CSP 安全头部、`unsafe-eval` 已移除、URL 协议验证（http/https）、HTTP 请求超时控制（AbortController）、XSS 防护（innerText）。
 
-**关键改进（v3.4.0）**:
+**关键改进（v3.5.0）**:
 - 全面移除 emoji 图标，统一使用 Lucide SVG 图标
 - 升级设计系统，使用 CSS 变量管理颜色（无硬编码颜色）
 - 优化组件架构，使用 shadcn/ui 标准组件模式
 - 增强无障碍支持（ARIA 标签、键盘导航、焦点管理）
 
-**v3.4.0 安全加固（2026-07-17）**:
+**v3.5.0 安全加固（2026-07-17）**:
 - Service Worker 缓存策略安全加固：仅缓存同源静态资源，按扩展名白名单过滤
 - CSP 增强：新增 `frame-ancestors 'none'`、`worker-src 'self' blob:` 指令
 - 新增安全头部：HSTS、Cross-Origin-Opener-Policy、Cross-Origin-Resource-Policy
@@ -149,7 +149,7 @@ npm audit fix --force
 
 ## 总结
 
-DNS Shield v3.4.0 在 **XSS 防护**、**URL 安全验证**、**HTTP 安全配置** 方面表现优秀。所有已知安全问题已修复：
+DNS Shield v3.5.0 在 **XSS 防护**、**URL 安全验证**、**HTTP 安全配置** 方面表现优秀。所有已知安全问题已修复：
 
 - ✅ **L-001**: `fetchFromUrls` 错误处理已修复
 - ✅ **L-003**: `lang` 属性动态化已实现
