@@ -399,7 +399,7 @@ export default function PrototypeCanvas() {
                     <EmptyState
                       icon={<Icons.Code className="text-muted-foreground" />}
                       title="暂无输出"
-                      description="请在左侧面板输入域名并点击"解析域名"按钮"
+                      description="请在左侧面板输入域名并点击「解析域名」按钮"
                     />
                   )}
 
