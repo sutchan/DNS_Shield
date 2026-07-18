@@ -10,7 +10,15 @@ contact_links:
     url: https://github.com/sutchan/DNS_Shield/blob/main/docs/README.md
     about: 安装、使用和部署指南
 
-  - name: 📋 变更日志
+  - name: � 支持指南
+    url: https://github.com/sutchan/DNS_Shield/blob/main/SUPPORT.md
+    about: 常见问题、故障排除和技术支持
+
+  - name: 🚀 部署指南
+    url: https://github.com/sutchan/DNS_Shield/blob/main/DEPLOYMENT.md
+    about: 本地部署、服务器部署和容器化部署
+
+  - name: �📋 变更日志
     url: https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md
     about: 查看版本更新记录
 
