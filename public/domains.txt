@@ -496,13 +496,56 @@ yk-ssp-ad.cp31.ott.cibntv.net
 yximgs.com
 zeus-api.vemarsdev.com
 
-! 白名单 (允许这些域名)
-@@api.io.mi.com
-@@connectivitycheck.gstatic.com
-@@file.xmpush.xiaomi.com
-@@idm.iot.mi.com
-@@milink.pandora.xiaomi.com
-@@o2o.api.xiaomi.com
-@@tracker.xiaomixiaoai.com
-@@xx.market.mi-img.com
-@@xx.market.xiaomi.com
+# 白名单 (允许这些域名)
+
+# ========== 小米米家智能家居设备 ==========
+@@||ai.xiaomi.com^$important
+@@||api.io.mi.com^$important
+@@||api.ai.xiaomi.com^$important
+@@||access.speech.ai.xiaomi.com^$important
+@@||account-dcm.ai.xiaomi.com^$important
+@@||galleryapi.micloud.xiaomi.net^$important
+@@||tracker.ai.xiaomi.com^$important
+@@||resolver.mi.xiaomi.com^$important
+@@||api2.mina.mi.com^$important
+@@||lbs.mina.mi.com^$important
+@@||sts.api.io.mi.com^$important
+@@||api.micloud.xiaomi.net^$important
+@@||idm.iot.mi.com^$important
+@@||file.xmpush.xiaomi.com^$important
+@@||milink.pandora.xiaomi.com^$important
+@@||o2o.api.xiaomi.com^$important
+
+# ========== 小爱同学 / AI 相关 ==========
+@@||tracker.xiaomixiaoai.com^$important
+
+# ========== 小米账户与安全 ==========
+@@||account.xiaomi.com^$important
+@@||ak.lp.account.xiaomi.com^$important
+@@||auth.be.sec.miui.com^$important
+
+# ========== MIUI 系统服务 ==========
+@@||market.mi-img.com^$important
+@@||xx.market.mi-img.com^$important
+@@||xx.market.xiaomi.com^$important
+
+# ========== 小爱大屏 ==========
+@@||api.hybrid.xiaomi.com^$important
+
+# ========== Google Play ==========
+@@||connectivitycheck.gstatic.com^$important
+
+# ========== 快手 / 抖音 ==========
+@@||creator-api.kuaishouzt.com^$important
+@@||api.kuaishouzt.com^$important
+@@||push.ksapisrv.com^$important
+@@||api.e.kuaishou.cn^$important
+@@||mon.tiktokv.com^$important
+
+# ========== 其他工具 ==========
+@@||s.deepl.com^$important
+@@||talk.bz.gepush.com^$important
+@@||talk.bz.getui.net^$important
+
+# ========== 淘宝 ==========
+@@||adashx.m.taobao.com^$important
