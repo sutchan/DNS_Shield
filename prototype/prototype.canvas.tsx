@@ -178,7 +178,7 @@ function CodeEditor({ value, readOnly, onChange }: { value: string; readOnly?: b
         ))}
       </div>
       {readOnly ? (
-        <pre className="flex-1 min-h-[240px] p-3 text-[13px] font-mono bg-background m-0 overflow-auto whitespace-pre-wrap word-break-break-all">
+        <pre className="flex-1 min-h-[240px] p-3 text-[13px] leading-6 font-mono bg-background m-0 overflow-auto whitespace-pre-wrap word-break-break-all">
           {value}
         </pre>
       ) : (
@@ -188,7 +188,7 @@ function CodeEditor({ value, readOnly, onChange }: { value: string; readOnly?: b
           onChange={e => onChange?.(e.target.value)}
           onScroll={syncScroll}
           spellCheck={false}
-          className="flex-1 min-h-[240px] p-3 text-[13px] font-mono bg-background resize-y focus:outline-none"
+          className="flex-1 min-h-[240px] p-3 text-[13px] leading-6 font-mono bg-background resize-y focus:outline-none"
           aria-label="域名编辑器"
         />
       )}
