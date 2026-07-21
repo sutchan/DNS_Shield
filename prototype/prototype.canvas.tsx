@@ -330,7 +330,7 @@ export default function PrototypeCanvas() {
                       <input
                         type="text"
                         readOnly
-                        value="https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt"
+                        value="https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/domains.txt"
                         className="flex-1 h-9 px-3 text-sm rounded-lg border border-border bg-background text-foreground outline-none"
                         aria-label="URL 导入地址"
                       />

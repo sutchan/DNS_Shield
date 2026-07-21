@@ -273,7 +273,7 @@ refactor: 优化规则生成逻辑
 
 | 预设源 | URL |
 |--------|-----|
-| 内置数据 | https://raw.githubusercontent.com/sutchan/DNS_Shield/main/domains.txt |
+| 内置数据 | https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/domains.txt |
 | AdGuard DNS Filter | https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_15_DnsFilter/filter.txt |
 | EasyList | https://easylist-downloads.adblockplus.org/easylist.txt |
 | NeoHosts | https://raw.githubusercontent.com/neoHosts/neoHosts/master/data/adblock.txt |
