@@ -516,6 +516,12 @@ vamaker.com
 yigao.com
 youmi.net
 yoyi.com.cn
+oceanengine.com
+ad.oceanengine.com
+ad.bytedance.com
+ad.gifshow.com
+ad.weishi.qq.com
+ad.kwai.com
 
 # 白名单 (允许这些域名)
 
