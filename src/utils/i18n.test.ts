@@ -1,4 +1,4 @@
-// src/utils/i18n.test.ts v3.6.0
+// src/utils/i18n.test.ts v3.6.1
 import { describe, it, expect } from 'vitest';
 import { getTranslation } from './i18n';
 

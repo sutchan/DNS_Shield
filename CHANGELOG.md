@@ -7,6 +7,24 @@
 
 ## [Unreleased]
 
+## [3.6.1] - 2026-07-21
+
+### Fixed
+- 修复 `parser.sortDomains` 在大列表下比较器内重复解析域名的性能问题（改用 Schwartzian 变换，解析一次后排序）
+
+### Changed
+- 全项目代码审查与质量对齐：TypeScript 严格类型检查、ESLint、Vitest（31 项）全部通过
+- i18n 复核：16 种语言翻译键全覆盖，多语言切换验证正常
+- 对齐 `openspec/SPEC.md` 与 `prototype/` 规范文档版本号
+- 统一全项目版本号至 v3.6.1
+
+### Added
+- 新增 `rulesGenerator` 单元测试，覆盖 Dnsmasq/Hosts/AdGuard/白名单/自定义 DNS/去重/阻止 IPv6 等核心规则生成逻辑
+
+## [3.6.0] - 2026-07-21
+
+增量版本对齐：代码与文档版本号统一至 v3.6.0（未单独记录变更日志）。
+
 ## [3.5.0] - 2026-07-17
 
 ### Added

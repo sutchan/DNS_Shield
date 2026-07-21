@@ -1,4 +1,4 @@
-// src/utils/fileUtils.test.ts v3.6.0
+// src/utils/fileUtils.test.ts v3.6.1
 import { describe, it, expect } from 'vitest';
 import { isValidHttpUrl } from './fileUtils';
 

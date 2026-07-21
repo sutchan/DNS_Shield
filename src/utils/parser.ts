@@ -1,4 +1,4 @@
-// src/utils/parser.ts v3.6.0
+// src/utils/parser.ts v3.6.1
 import { CustomDnsEntry, ParsedData } from '../types';
 import { parseDomainLine, ParseStats, isValidDomain, normalizeDomain } from './domainValidator';
 
@@ -126,13 +126,11 @@ export const sortDomains = (sourceInput: string): string => {
     return p.type === 'comment';
   });
 
-  const sortedDomains = [...plainDomains].sort((a, b) => {
-    const aParsed = parseDomainLine(a);
-    const bParsed = parseDomainLine(b);
-    const aDomain = aParsed.domain || '';
-    const bDomain = bParsed.domain || '';
-    return aDomain.localeCompare(bDomain);
-  });
+  // Schwartzian 变换：先一次性解析出归一化域名，再排序，避免比较器内重复解析（O(n) 解析 + O(n log n) 比较）
+  const sortedDomains = plainDomains
+    .map((line) => ({ line, key: (parseDomainLine(line).domain || '').toLowerCase() }))
+    .sort((a, b) => a.key.localeCompare(b.key))
+    .map((item) => item.line);
 
   return [
     ...headerComments,

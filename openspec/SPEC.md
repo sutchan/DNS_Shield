@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.6.0 |
+| 当前版本 | v3.6.1 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -175,7 +175,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.5.0 |
+| 版本号 | 3.6.1 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -323,6 +323,8 @@ refactor: 优化规则生成逻辑
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| v3.6.1 | 2026-07-21 | 全项目代码审查与质量对齐：TypeScript 严格类型检查、ESLint、Vitest(31 项) 全部通过；i18n 16 种语言键全覆盖并验证多语言切换；parser.sortDomains 性能优化（Schwartzian 变换）；新增 rulesGenerator 单元测试覆盖核心规则生成；对齐 openspec/prototype 规范；统一全项目版本号至 v3.6.1 |
+| v3.6.0 | 2026-07-21 | 增量版本对齐：代码与文档版本号统一至 v3.6.0（未单独记录变更日志） |
 | v3.5.0 | 2026-07-17 | 安全加固：Service Worker 缓存策略优化（同源+扩展名白名单）、CSP 增强（frame-ancestors/worker-src）、新增 HSTS/COOP/CORP 安全头部、文件名安全验证（sanitizeFilename）；Badge 组件新增 success/warning 变体、Button 组件新增 loading 状态；设计系统文档同步更新（HSL 色彩空间修正）；README/CHANGELOG/openspec 规范文档全面同步更新；全项目版本号统一至 v3.5.0 |
 | v3.4.0 | 2026-07-03 | 项目目录整理：移除冗余文件，shadcn/ 归入 prototype/ 统一管理；完善 GitHub Issue 模板配置；根目录新增 CHANGELOG.md |
 | v3.3.0 | 2026-07-03 | 完成 4 个超过 200 行文件的模块拆分；新增 SettingsPanel/UrlSection/useSettings/useLoading 模块；移除所有 i18n 翻译中的 emoji 图标；版本统一 v3.4.0 |
