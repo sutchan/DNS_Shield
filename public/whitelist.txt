@@ -49,5 +49,18 @@
 @@||talk.bz.gepush.com^$important
 @@||talk.bz.getui.net^$important
 
+# ========== 光大银行 ==========
+@@||cebbank.com^$important
+@@||e.cebbank.com^$important
+@@||ebank.cebbank.com^$important
+@@||open.cebbank.com^$important
+@@||www.cebbank.com^$important
+
+# ========== 腾讯云 ==========
+@@||console.cloud.tencent.com^$important
+
+# ========== 本地开发 ==========
+@@||localhost^$important
+
 # ========== 淘宝 ==========
 @@||adashx.m.taobao.com^$important
