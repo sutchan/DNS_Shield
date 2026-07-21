@@ -553,6 +553,19 @@ zeus-api.vemarsdev.com
 @@||ebank.cebbank.com^$important
 @@||open.cebbank.com^$important
 @@||www.cebbank.com^$important
+@@||static.cebbank.com^$important
+@@||ehkg.cebbank.com^$important
+@@||auth.cebbank.com^$important
+@@||b2e.cebbank.com^$important
+@@||corp.cebbank.com^$important
+@@||pay.cebbank.com^$important
+@@||dns1.cebbank.com^$important
+@@||dns2.cebbank.com^$important
+@@||dns3.cebbank.com^$important
+@@||dns4.cebbank.com^$important
+@@||dns5.cebbank.com^$important
+@@||dns6.cebbank.com^$important
+@@||ns1.zcebbank.com.cn^$important
 
 # ========== 腾讯云 ==========
 @@||console.cloud.tencent.com^$important
