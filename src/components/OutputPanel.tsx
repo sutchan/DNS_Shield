@@ -100,16 +100,26 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
         {/* Output Preview */}
         <div className="editor-wrapper">
           <div className="line-numbers" id="outputLineNumbers" ref={outputLineNumbersRef} aria-hidden="true"></div>
-          <div
-            className="editor-preview"
-            id="outputPreview"
-            onScroll={syncOutputScroll}
-            ref={outputPreviewRef}
-            role="tabpanel"
-            aria-label={t.outputFormatAria.replace('{format}', currentFormat)}
-          >
-            {outputContent[currentFormat] || t.previewPlaceholder}
-          </div>
+          {outputContent[currentFormat] ? (
+            <div
+              className="editor-preview"
+              id="outputPreview"
+              onScroll={syncOutputScroll}
+              ref={outputPreviewRef}
+              role="tabpanel"
+              aria-label={t.outputFormatAria.replace('{format}', currentFormat)}
+            >
+              {outputContent[currentFormat]}
+            </div>
+          ) : (
+            <div
+              className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground"
+              aria-label={t.previewPlaceholder}
+            >
+              <FileCode className="h-12 w-12 mb-4 opacity-40" strokeWidth={1.2} aria-hidden="true" />
+              <p className="text-sm">{t.previewPlaceholder}</p>
+            </div>
+          )}
         </div>
 
         {/* Action Buttons */}

@@ -108,22 +108,22 @@ const UrlSection: React.FC<UrlSectionProps> = ({
 
       {/* URL 列表 */}
       <div className="url-list" id="urlList" role="list" aria-label={t.urlListAria}>
-        {urls.map((url: string, index: number) => (
-          <div key={index} className="url-item" role="listitem">
-            <Link className="url-item-icon h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.8} aria-hidden="true" />
-            <span className="url-item-text">{url}</span>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="url-remove-btn"
-              onClick={() => setUrls(urls.filter((_: string, i: number) => i !== index))}
-              aria-label={t.removeUrlAria.replace('{url}', url)}
-            >
-              <X className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden="true" />
-            </Button>
-          </div>
-        ))}
+        {urls.length > 0 && urls.map((url: string, index: number) => (
+            <div key={index} className="url-item" role="listitem">
+              <Link className="url-item-icon h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.8} aria-hidden="true" />
+              <span className="url-item-text">{url}</span>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="url-remove-btn"
+                onClick={() => setUrls(urls.filter((_: string, i: number) => i !== index))}
+                aria-label={t.removeUrlAria.replace('{url}', url)}
+              >
+                <X className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden="true" />
+              </Button>
+            </div>
+          ))}
       </div>
     </div>
   );
