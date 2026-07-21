@@ -495,6 +495,27 @@ yhqdashi.com
 yk-ssp-ad.cp31.ott.cibntv.net
 yximgs.com
 zeus-api.vemarsdev.com
+adsame.com
+adsmogo.com
+adview.cn
+adwo.com
+allyes.com
+baidumobads.baidu.com
+cl2.cn
+dataeye.com
+domob.cn
+domob.org
+inmobi.com
+madhouse.cn
+madserving.com
+mediav.com
+mediav.net
+talkingdata.com
+umtrack.com
+vamaker.com
+yigao.com
+youmi.net
+yoyi.com.cn
 
 # 白名单 (允许这些域名)
 
@@ -526,8 +547,7 @@ zeus-api.vemarsdev.com
 
 # ========== MIUI 系统服务 ==========
 @@||market.mi-img.com^$important
-@@||xx.market.mi-img.com^$important
-@@||xx.market.xiaomi.com^$important
+@@||market.xiaomi.com^$important
 
 # ========== 小爱大屏 ==========
 @@||api.hybrid.xiaomi.com^$important
@@ -572,6 +592,37 @@ zeus-api.vemarsdev.com
 
 # ========== 本地开发 ==========
 @@||localhost^$important
+
+# ========== 银行网银 ==========
+@@||icbc.com.cn^$important
+@@||ccb.com^$important
+@@||ccb.cn^$important
+@@||abchina.com^$important
+@@||boc.cn^$important
+@@||bankofchina.com^$important
+@@||bankcomm.com^$important
+@@||cmbchina.com^$important
+@@||citicbank.com^$important
+@@||ecitic.com^$important
+@@||spdb.com.cn^$important
+@@||cmbc.com.cn^$important
+@@||cib.com.cn^$important
+@@||hxb.com.cn^$important
+@@||cgbchina.com.cn^$important
+@@||psbc.com^$important
+@@||bankofbeijing.com.cn^$important
+@@||bosc.cn^$important
+@@||nbcb.com.cn^$important
+@@||czbank.com^$important
+@@||cbhb.com.cn^$important
+@@||bank.pingan.com^$important
+
+# ========== 主流访问入口 ==========
+@@||alipay.com^$important
+@@||12306.cn^$important
+@@||gjzwfw.gov.cn^$important
+@@||chinatax.gov.cn^$important
+@@||mps.gov.cn^$important
 
 # ========== 淘宝 ==========
 @@||adashx.m.taobao.com^$important
