@@ -8,7 +8,8 @@ export const useTheme = () => {
   // 1) 初始化主题（先读 localStorage → 浏览器偏好）
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const savedTheme = localStorage.getItem('theme');
+    let savedTheme = '';
+    try { savedTheme = localStorage.getItem('theme') ?? ''; } catch { /* 隐私模式不可用 */ }
     if (savedTheme === 'dark' || savedTheme === 'light') {
       setTheme(savedTheme);
     } else {
@@ -26,7 +27,7 @@ export const useTheme = () => {
     } else {
       root.classList.remove('dark');
     }
-    localStorage.setItem('theme', theme);
+    try { localStorage.setItem('theme', theme); } catch { /* 隐私模式不可用 */ }
   }, [theme]);
 
   const toggleTheme = () => {

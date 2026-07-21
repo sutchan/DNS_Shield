@@ -86,12 +86,14 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   // 恢复自动保存内容（仅在挂载时执行一次，避免清空后又被覆盖）
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const autosave = localStorage.getItem('dnsShield_autosave');
+    let autosave = '';
+    try { autosave = localStorage.getItem('dnsShield_autosave') ?? ''; } catch { /* 隐私模式不可用 */ }
     if (autosave && !sourceInputRef.current.trim()) {
       setSourceInput(autosave);
       parseSourceData(autosave);
       generateLineNumbers(autosave, lineNumbersRef);
-      const autoSaveTime = localStorage.getItem('dnsShield_autosave_time');
+      let autoSaveTime = '';
+      try { autoSaveTime = localStorage.getItem('dnsShield_autosave_time') ?? ''; } catch { /* 隐私模式不可用 */ }
       if (autoSaveTime && /^\d+$/.test(autoSaveTime)) {
         const timeAgo = Math.floor((Date.now() - parseInt(autoSaveTime)) / 60000);
         if (timeAgo > 0) {
@@ -107,8 +109,10 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     if (typeof window === 'undefined') return;
     const autoSaveInterval = setInterval(() => {
       if (sourceInputRef.current.trim()) {
-        localStorage.setItem('dnsShield_autosave', sourceInputRef.current);
-        localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
+        try {
+          localStorage.setItem('dnsShield_autosave', sourceInputRef.current);
+          localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
+        } catch { /* 隐私模式不可用 */ }
       }
     }, 30000);
     return () => clearInterval(autoSaveInterval);
@@ -143,8 +147,10 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
 
   const saveDomains = useCallback(() => {
     if (sourceInputRef.current.trim()) {
-      localStorage.setItem('dnsShield_autosave', sourceInputRef.current);
-      localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
+      try {
+        localStorage.setItem('dnsShield_autosave', sourceInputRef.current);
+        localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
+      } catch { /* 隐私模式不可用 */ }
     }
     showToastRef.current('domainsSaved');
   }, []);

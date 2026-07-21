@@ -179,7 +179,7 @@
 
 /* Input section — 输入面板的左边框强调 */
 .input-section {
-  @apply flex flex-col;
+  @apply flex flex-col p-4 sm:p-5;
 }
 
 /* Section header — 区段标题栏（含折叠按钮） */

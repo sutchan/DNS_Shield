@@ -8,7 +8,8 @@ export const useLanguage = () => {
 
   // 初始化语言
   useEffect(() => {
-    const savedLang = localStorage.getItem('lang');
+    let savedLang = '';
+    try { savedLang = localStorage.getItem('lang') ?? ''; } catch { /* 隐私模式不可用 */ }
     setCurrentLang(savedLang || 'zh-cn');
   }, []);
 
@@ -19,7 +20,7 @@ export const useLanguage = () => {
   const switchLang = (lang: string) => {
     setCurrentLang(lang);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('lang', lang);
+      try { localStorage.setItem('lang', lang); } catch { /* 隐私模式不可用 */ }
     }
   };
 

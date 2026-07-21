@@ -49,11 +49,15 @@ export const useRules = (parsedData: ParsedData, sourceInput: string, settings: 
 
   // 复制到剪贴板
   const copyOutput = async () => {
-    const content = outputContent[currentFormat] || '';
-    const success = await copyToClipboard(content);
-    if (success) {
-      showToast('copied');
-    } else {
+    try {
+      const content = outputContent[currentFormat] || '';
+      const success = await copyToClipboard(content);
+      if (success) {
+        showToast('copied');
+      } else {
+        showToast('copyFailed');
+      }
+    } catch {
       showToast('copyFailed');
     }
   };
