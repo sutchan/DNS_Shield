@@ -142,6 +142,10 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   }, [sourceInput, parseSourceData]);
 
   const saveDomains = useCallback(() => {
+    if (sourceInputRef.current.trim()) {
+      localStorage.setItem('dnsShield_autosave', sourceInputRef.current);
+      localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
+    }
     showToastRef.current('domainsSaved');
   }, []);
 

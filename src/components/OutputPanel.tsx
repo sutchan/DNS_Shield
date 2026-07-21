@@ -5,7 +5,8 @@ import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Tabs, TabsList, TabsTrigger } from './ui/Tabs';
 import SettingsPanel from './SettingsPanel';
-import { Settings as SettingsType, Translation, FormatType, OutputContent, ParsedData } from '../types';
+import { Settings as SettingsType, FormatType, OutputContent, ParsedData } from '../types';
+import { useT } from '../context/AppContext';
 
 interface OutputPanelProps {
   outputContent: OutputContent;
@@ -13,7 +14,6 @@ interface OutputPanelProps {
   isSettingsPanelCollapsed: boolean;
   settings: SettingsType;
   parsedData: ParsedData;
-  t: Translation;
   outputPreviewRef: React.RefObject<HTMLDivElement>;
   outputLineNumbersRef: React.RefObject<HTMLDivElement>;
   toggleSection: (section: string) => void;
@@ -32,7 +32,6 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
   isSettingsPanelCollapsed,
   settings,
   parsedData,
-  t,
   outputPreviewRef,
   outputLineNumbersRef,
   toggleSection,
@@ -44,6 +43,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
   updateSettings,
   setSettings,
 }) => {
+  const t = useT();
   return (
     <section className="panel" id="output-panel" aria-labelledby="output-title">
       <div className="output-body">
@@ -80,7 +80,6 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
         <SettingsPanel
           isCollapsed={isSettingsPanelCollapsed}
           settings={settings}
-          t={t}
           updateSettings={updateSettings}
           setSettings={setSettings}
         />

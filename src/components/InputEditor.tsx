@@ -2,11 +2,10 @@
 // 域名编辑器组件 —— 从 InputPanel 拆分
 'use client';
 import * as React from 'react';
-import { Translation } from '../types';
+import { useT } from '../context/AppContext';
 
 interface InputEditorProps {
   sourceInput: string;
-  t: Translation;
   lineNumbersRef: React.RefObject<HTMLDivElement>;
   sourceTextareaRef: React.RefObject<HTMLTextAreaElement>;
   handleSourceInput: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -15,12 +14,12 @@ interface InputEditorProps {
 
 const InputEditor: React.FC<InputEditorProps> = ({
   sourceInput,
-  t,
   lineNumbersRef,
   sourceTextareaRef,
   handleSourceInput,
   syncScroll,
 }) => {
+  const t = useT();
   return (
     <>
       <div className="editor-container">

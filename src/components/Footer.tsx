@@ -1,17 +1,16 @@
 // src/components/Footer.tsx v3.5.0
 'use client';
 import React, { useState } from 'react';
-import { Translation } from '../types';
+import { useT } from '../context/AppContext';
 
 interface FooterProps {
-  t: Translation;
   version: string;
 }
 
 const Footer: React.FC<FooterProps> = ({
-  t,
   version
 }) => {
+  const t = useT();
   const [isUsageGuideCollapsed, setIsUsageGuideCollapsed] = useState(true);
 
   const toggleUsageGuide = () => {

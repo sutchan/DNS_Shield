@@ -7,12 +7,12 @@ import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { Badge } from './ui/Badge';
 import { Translation } from '../types';
+import { useT } from '../context/AppContext';
 import { config } from '../config';
 
 interface UrlSectionProps {
   isCollapsed: boolean;
   urls: string[];
-  t: Translation;
   urlInputRef: React.RefObject<HTMLInputElement>;
   fetchFromUrl: () => void;
   addUrl: () => void;
@@ -33,15 +33,14 @@ const PRESET_LABEL_KEY: Record<typeof PRESETS[number], keyof Translation> = {
 
 interface PresetTagsProps {
   activePreset: string;
-  t: Translation;
   loadPreset: (preset: string) => void;
 }
 
 export const PresetTags: React.FC<PresetTagsProps> = ({
   activePreset,
-  t,
   loadPreset,
 }) => {
+  const t = useT();
   return (
     <div className="preset-section">
       <span className="preset-label" id="preset-label">{t.presetLabel}</span>
@@ -68,7 +67,6 @@ export const PresetTags: React.FC<PresetTagsProps> = ({
 const UrlSection: React.FC<UrlSectionProps> = ({
   isCollapsed,
   urls,
-  t,
   urlInputRef,
   fetchFromUrl,
   addUrl,
@@ -76,6 +74,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
   fetchAllUrls,
   setUrls,
 }) => {
+  const t = useT();
   return (
     <div
       className={`url-section ${isCollapsed ? 'collapsed' : ''}`}

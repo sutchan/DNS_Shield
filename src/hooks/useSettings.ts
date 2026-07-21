@@ -18,14 +18,25 @@ const DEFAULT_SETTINGS: Settings = {
   whitelistFilename: 'whitelist.txt'
 };
 
+// 输入框 id -> settings key 的显式映射，避免脆弱的字符串替换。
+// 提升为模块级常量，保持引用稳定（避免 useCallback 依赖告警）。
+const FIELD_MAP: Record<string, keyof Settings> = {
+  projectNameInput: 'projectName',
+  versionInput: 'version',
+  ipv4Input: 'ipv4',
+  ipv6Input: 'ipv6',
+};
+
 export const useSettings = () => {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
 
   const updateSettings = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
+    const key = FIELD_MAP[id];
+    if (!key) return;
     setSettings((prev: Settings) => ({
       ...prev,
-      [id.replace('Input', '')]: value
+      [key]: value
     }));
   }, []);
 

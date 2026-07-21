@@ -62,7 +62,14 @@ export const copyToClipboard = async (content: string): Promise<boolean> => {
 };
 
 // 从URL获取内容（带超时控制）
+// 说明：浏览器 CSP 的 connect-src 决定了哪些域名可被 fetch。
+// 若目标域名被 CSP 拦截，浏览器会抛出 TypeError（"Failed to fetch"），
+// 这里会将其归类为“网络/CSP 拦截”错误，便于给用户可读的提示。
 export const fetchFromUrl = async (url: string, timeout = 10000): Promise<string> => {
+  if (!isValidHttpUrl(url)) {
+    throw new Error(`无效的 URL（仅支持 http/https，且长度 ≤ ${MAX_URL_LENGTH}）：${url}`);
+  }
+
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
 
@@ -71,14 +78,18 @@ export const fetchFromUrl = async (url: string, timeout = 10000): Promise<string
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP ${response.status}${response.statusText ? ' ' + response.statusText : ''}`);
     }
     return await response.text();
   } catch (error) {
     clearTimeout(timeoutId);
 
     if (error instanceof Error && error.name === 'AbortError') {
-      throw new Error('Request timeout');
+      throw new Error(`请求超时（>${Math.round(timeout / 1000)}s）`);
+    }
+    // fetch 在网络失败 / CORS / CSP 拦截时统一抛 TypeError
+    if (error instanceof TypeError) {
+      throw new Error('网络请求失败：可能是网络不可用、目标站点未开启 CORS，或被内容安全策略(CSP)拦截');
     }
     throw error;
   }

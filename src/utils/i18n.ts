@@ -57,7 +57,29 @@ export const supportedLanguages: Language[] = [
   { code: 'vi', name: 'Tiếng Việt', icon: '' }
 ];
 
+// 深合并：以 zh-cn 为基准，叠加目标语言，确保嵌套键（header/toast/whitelist）始终存在，
+// 避免某个 locale 缺键时 t.header.dnsmasqTitle 等访问抛 undefined 崩溃。
+const deepMerge = <T>(base: T, override: Partial<T>): T => {
+  const result: any = Array.isArray(base) ? [...(base as any)] : { ...(base as any) };
+  for (const key of Object.keys(override) as (keyof T)[]) {
+    const ov = override[key] as any;
+    const bv = (base as any)[key];
+    if (
+      ov && typeof ov === 'object' && !Array.isArray(ov) &&
+      bv && typeof bv === 'object' && !Array.isArray(bv)
+    ) {
+      result[key] = deepMerge(bv, ov);
+    } else if (ov !== undefined) {
+      result[key] = ov;
+    }
+  }
+  return result;
+};
+
 // 获取翻译
 export const getTranslation = (lang: string): Translation => {
-  return translations[lang] || translations['zh-cn'];
+  const base = translations['zh-cn'];
+  const target = translations[lang];
+  if (!target || lang === 'zh-cn') return base;
+  return deepMerge(base, target) as Translation;
 };

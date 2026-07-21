@@ -27,6 +27,14 @@ export const isValidDomain = (domain: string): boolean => {
   return DOMAIN_REGEX.test(domain);
 };
 
+// IP 地址校验（IPv4 / IPv6）
+const IPV4_REGEX = /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/;
+const IPV6_REGEX = /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|::([0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4})$/;
+
+export const isValidIp = (ip: string): boolean => {
+  return IPV4_REGEX.test(ip) || IPV6_REGEX.test(ip);
+};
+
 // 规范化域名（去除通配符前缀并转为小写）
 export const normalizeDomain = (domain: string): string => {
   return domain.toLowerCase().replace(/^\*\./, '');
@@ -77,7 +85,7 @@ export const parseDomainLine = (line: string): ParseResult => {
         type: 'customDns',
         domain,
         ip,
-        isValid: isValidDomain(domain),
+        isValid: isValidDomain(domain) && isValidIp(ip),
         originalLine: line
       };
     }

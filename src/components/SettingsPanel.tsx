@@ -5,12 +5,12 @@ import * as React from 'react';
 import { Input } from './ui/Input';
 import { Label } from './ui/Label';
 import { Checkbox } from './ui/Checkbox';
-import { Settings as SettingsType, Translation } from '../types';
+import { Settings as SettingsType } from '../types';
+import { useT } from '../context/AppContext';
 
 interface SettingsPanelProps {
   isCollapsed: boolean;
   settings: SettingsType;
-  t: Translation;
   updateSettings: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
 }
@@ -18,10 +18,10 @@ interface SettingsPanelProps {
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
   isCollapsed,
   settings,
-  t,
   updateSettings,
   setSettings,
 }) => {
+  const t = useT();
   return (
     <div
       className={`settings-panel ${isCollapsed ? 'settings-collapsed' : 'settings-expanded'}`}

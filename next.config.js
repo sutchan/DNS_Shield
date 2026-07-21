@@ -9,7 +9,9 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https: blob:",
-      "connect-src 'self' https://raw.githubusercontent.com https://easylist-downloads.adblockplus.org https://github.com",
+      // 应用允许用户填入任意规则列表 URL 进行拉取，故 connect-src 放开到全部 https 源；
+      // 仅限 https，禁止明文 http/其它协议，兼顾功能与安全。
+      "connect-src 'self' https:",
       "frame-src 'none'",
       "frame-ancestors 'none'",
       "object-src 'none'",

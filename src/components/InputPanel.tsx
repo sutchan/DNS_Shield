@@ -6,6 +6,7 @@ import { Badge } from './ui/Badge';
 import InputEditor from './InputEditor';
 import UrlSection, { PresetTags } from './UrlSection';
 import { Translation, Stats } from '../types';
+import { useT } from '../context/AppContext';
 
 interface InputPanelProps {
   sourceInput: string;
@@ -13,7 +14,6 @@ interface InputPanelProps {
   isUrlSectionCollapsed: boolean;
   stats: Stats;
   activePreset: string;
-  t: Translation;
   lineNumbersRef: React.RefObject<HTMLDivElement>;
   sourceTextareaRef: React.RefObject<HTMLTextAreaElement>;
   urlInputRef: React.RefObject<HTMLInputElement>;
@@ -39,7 +39,6 @@ const InputPanel: React.FC<InputPanelProps> = ({
   isUrlSectionCollapsed,
   stats,
   activePreset,
-  t,
   lineNumbersRef,
   sourceTextareaRef,
   urlInputRef,
@@ -58,6 +57,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
   fetchAllUrls,
   setUrls,
 }) => {
+  const t = useT();
   const statItems = [
     { key: 'domainCount' as const, labelKey: 'domainCount' as keyof Translation },
     { key: 'blacklistCount' as const, labelKey: 'blacklistCount' as keyof Translation },
@@ -100,7 +100,6 @@ const InputPanel: React.FC<InputPanelProps> = ({
       <UrlSection
         isCollapsed={isUrlSectionCollapsed}
         urls={urls}
-        t={t}
         urlInputRef={urlInputRef}
         fetchFromUrl={fetchFromUrl}
         addUrl={addUrl}
@@ -113,7 +112,6 @@ const InputPanel: React.FC<InputPanelProps> = ({
       {!isUrlSectionCollapsed && (
         <PresetTags
           activePreset={activePreset}
-          t={t}
           loadPreset={loadPreset}
         />
       )}
@@ -121,7 +119,6 @@ const InputPanel: React.FC<InputPanelProps> = ({
       {/* 域名编辑器（提取为子组件） */}
       <InputEditor
         sourceInput={sourceInput}
-        t={t}
         lineNumbersRef={lineNumbersRef}
         sourceTextareaRef={sourceTextareaRef}
         handleSourceInput={handleSourceInput}

@@ -306,6 +306,7 @@
 
 .line-numbers {
   @apply absolute left-0 top-0 bottom-0 w-11 pt-3 pr-2 text-right text-[0.75rem] leading-6 text-muted-foreground/60 select-none bg-muted/40 font-mono overflow-hidden border-r border-border;
+  white-space: pre;
   pointer-events: none;
 }
 

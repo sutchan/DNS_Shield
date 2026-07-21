@@ -10,13 +10,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/DropdownMenu';
-import { Translation, Language } from '../types';
+import { Language } from '../types';
+import { useT } from '../context/AppContext';
 
 interface HeaderProps {
   theme: 'light' | 'dark';
   currentLang: string;
   supportedLanguages: Language[];
-  t: Translation;
   toggleTheme: () => void;
   switchLang: (lang: string) => void;
 }
@@ -25,10 +25,10 @@ const Header: React.FC<HeaderProps> = ({
   theme,
   currentLang,
   supportedLanguages,
-  t,
   toggleTheme,
   switchLang,
 }) => {
+  const t = useT();
   const current = supportedLanguages.find((lang) => lang.code === currentLang);
   const currentName = current?.name || currentLang;
 
