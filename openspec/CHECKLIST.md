@@ -52,12 +52,10 @@
 - [ ] 根目录文件结构符合 SPEC.md 定义
 - [ ] `prototype/` 目录存在且包含原型文件
 - [ ] `prototype/prototype.canvas.tsx` 存在且内容完整
-- [ ] `prototype/design-system.md` 设计系统规范完整
-- [ ] `prototype/component-library.md` 组件库规范完整
-- [ ] `shadcn/` 目录存在且包含设计规范
-- [ ] `shadcn/design-system.md` 设计系统规范完整
-- [ ] `shadcn/component-library.md` 组件库规范完整
-- [ ] `shadcn/interaction-standards.md` 交互标准完整
+- [ ] `prototype/shadcn/` 目录存在且包含设计规范
+- [ ] `prototype/shadcn/design-system.md` 设计系统规范完整
+- [ ] `prototype/shadcn/component-library.md` 组件库规范完整
+- [ ] `prototype/shadcn/interaction-standards.md` 交互标准完整
 - [ ] `public/domains.txt` 存在且格式正确
 - [ ] `public/adguard.txt` 存在且格式正确
 - [ ] `public/whitelist.txt` 存在且格式正确
