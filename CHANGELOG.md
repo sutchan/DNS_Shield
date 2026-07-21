@@ -7,6 +7,20 @@
 
 ## [Unreleased]
 
+## [3.7.0] - 2026-07-21
+
+### Security
+- `fetchFromUrl` 新增 10MB 响应体积上限，采用流式读取（ReadableStream + 中途中止），防止恶意/异常大响应耗尽内存（DoS 防护）
+- `isValidHttpUrl` 继续强制仅允许 http/https 协议，阻断 `javascript:`/`ftp:` 等危险协议
+
+### Performance
+- `fetchFromUrls` 由串行 `for` 循环改为 `Promise.allSettled` 并发抓取，多源导入速度显著提升
+
+### Changed
+- 补充 `fileUtils` 单元测试：响应体积上限、非法 URL 拦截、HTTP 非 2xx 报错、并发抓取容错（失败项进入 `failedUrls` 不中断整体）
+- i18n 复核：16 种语言翻译键 100% 覆盖，多语言切换与 fallback 验证正常
+- 统一全项目版本号至 v3.7.0
+
 ## [3.6.1] - 2026-07-21
 
 ### Fixed

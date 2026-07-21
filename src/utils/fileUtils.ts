@@ -1,4 +1,4 @@
-// src/utils/fileUtils.ts v3.6.1
+// src/utils/fileUtils.ts v3.7.0
 
 const MAX_URL_LENGTH = 2048;
 const MAX_FILENAME_LENGTH = 255;
@@ -61,7 +61,35 @@ export const copyToClipboard = async (content: string): Promise<boolean> => {
   }
 };
 
-// 从URL获取内容（带超时控制）
+// 单次响应体积上限（10MB），防止恶意/异常大响应耗尽内存（DoS 防护）
+const MAX_RESPONSE_SIZE = 10 * 1024 * 1024;
+
+// 以流式方式读取响应体，并在超过体积上限时立即中止，避免一次性载入大响应
+const readBodyWithSizeLimit = async (response: Response, maxSize: number): Promise<string> => {
+  const reader = response.body?.getReader();
+  if (!reader) {
+    return await response.text();
+  }
+  let received = 0;
+  let result = '';
+  const decoder = new TextDecoder();
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      received += value.byteLength;
+      if (received > maxSize) {
+        throw new Error(`响应体积超过上限（${Math.round(maxSize / 1024 / 1024)}MB）`);
+      }
+      result += decoder.decode(value, { stream: true });
+    }
+  } finally {
+    result += decoder.decode();
+  }
+  return result;
+};
+
+// 从URL获取内容（带超时与体积上限控制）
 // 说明：浏览器 CSP 的 connect-src 决定了哪些域名可被 fetch。
 // 若目标域名被 CSP 拦截，浏览器会抛出 TypeError（"Failed to fetch"），
 // 这里会将其归类为“网络/CSP 拦截”错误，便于给用户可读的提示。
@@ -80,7 +108,7 @@ export const fetchFromUrl = async (url: string, timeout = 10000): Promise<string
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}${response.statusText ? ' ' + response.statusText : ''}`);
     }
-    return await response.text();
+    return await readBodyWithSizeLimit(response, MAX_RESPONSE_SIZE);
   } catch (error) {
     clearTimeout(timeoutId);
 
@@ -95,24 +123,24 @@ export const fetchFromUrl = async (url: string, timeout = 10000): Promise<string
   }
 };
 
-// 从多个URL获取内容（带超时控制）
+// 从多个URL并发获取内容（带超时与体积上限控制）
 export interface FetchUrlsResult {
   content: string;
   failedUrls: { url: string; error: string }[];
 }
 export const fetchFromUrls = async (urls: string[], timeout = 10000): Promise<FetchUrlsResult> => {
+  const results = await Promise.allSettled(urls.map((url) => fetchFromUrl(url, timeout)));
   const failedUrls: { url: string; error: string }[] = [];
   let allContent = '';
-  for (const url of urls) {
-    try {
-      const content = await fetchFromUrl(url, timeout);
-      allContent += content + '\n';
-    } catch (error) {
+  results.forEach((result, index) => {
+    if (result.status === 'fulfilled') {
+      allContent += result.value + '\n';
+    } else {
       failedUrls.push({
-        url,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        url: urls[index],
+        error: result.reason instanceof Error ? result.reason.message : 'Unknown error',
       });
     }
-  }
+  });
   return { content: allContent, failedUrls };
 };

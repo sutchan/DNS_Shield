@@ -27,9 +27,9 @@
 
 | 路由器 | 下载文件 |
 |--------|----------|
-| 梅林/OpenWrt | [dnsmasq.conf](dnsmasq.conf) |
-| 小米/华硕/TP-Link | [hosts.txt](hosts.txt) |
-| AdGuard 用户 | [adguard.txt](adguard.txt) |
+| 梅林/OpenWrt | [dnsmasq.conf](public/dnsmasq.conf) |
+| 小米/华硕/TP-Link | [hosts.txt](public/hosts.txt) |
+| AdGuard 用户 | [adguard.txt](public/adguard.txt) |
 
 ### 第二步：导入路由器
 
@@ -39,7 +39,7 @@
 
 **OpenWrt**
 ```bash
-curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf >> /etc/dnsmasq.conf
+curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmasq.conf >> /etc/dnsmasq.conf
 ```
 
 **小米路由器**
@@ -120,19 +120,19 @@ src/
 
 ```bash
 # 安装依赖
-npm install
+pnpm install
 
 # 开发模式（端口 8082）
-npm run dev
+pnpm dev
 
 # 构建生产版本
-npm run build
+pnpm build
 
 # 代码检查
-npm run lint
+pnpm lint
 
 # 运行单元测试
-npm run test
+pnpm test
 ```
 
 ## 项目规范
@@ -173,7 +173,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.6.1
+当前版本：v3.7.0
 
 ## 更新日志
 

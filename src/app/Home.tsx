@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.6.1
+// src/app/Home.tsx v3.7.0
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import './globals.css';
