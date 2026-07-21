@@ -72,7 +72,7 @@ export default function Home() {
     copyOutput, 
     setFormat, 
     syncOutputScroll
-  } = useRules(parsedData, settings, t, showToast);
+  } = useRules(parsedData, sourceInput, settings, t, showToast);
 
   // URL管理
   const { 

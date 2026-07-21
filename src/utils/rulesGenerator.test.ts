@@ -1,6 +1,7 @@
 // src/utils/rulesGenerator.test.ts v3.6.1
 import { describe, it, expect } from 'vitest';
 import { generateRules, generateHeader } from './rulesGenerator';
+import { parseSource } from './parser';
 import { getTranslation } from './i18n';
 import type { Settings, CustomDnsEntry } from '../types';
 
@@ -67,6 +68,21 @@ describe('generateRules', () => {
     const out = generateRules(['ad.example.com', 'ad.example.com'], [], [], baseSettings, t);
     const matches = out.dnsmasq.match(/address=\/ad\.example\.com\//g) || [];
     expect(matches.length).toBe(1);
+  });
+
+  it('完整流水线：源文本含 + 前缀白名单时，生成能正确产出白名单规则', () => {
+    // 复现 bug：仅依赖解析后的 parsedData 时，若防抖解析尚未执行，白名单会丢失。
+    // 修复后 generateRules 实时解析 sourceInput，保证白名单被正确生成。
+    const source = 'ad.example.com\n+api.example.com\n+b.api.example.com';
+    const { data } = parseSource(source);
+    const out = generateRules(data.domains, data.whitelist, data.customDns, baseSettings, t);
+    expect(data.whitelist).toEqual(['api.example.com', 'b.api.example.com']);
+    expect(out.dnsmasq).toContain('server=/api.example.com/');
+    expect(out.adguard).toContain('@@||api.example.com^');
+    expect(out.whitelist).toContain('@@||b.api.example.com^');
+    // 白名单域名不应出现在黑名单中
+    expect(out.hosts).not.toContain('127.0.0.1 api.example.com');
+    expect(out.hosts).toContain('# 已白名单: api.example.com');
   });
 });
 

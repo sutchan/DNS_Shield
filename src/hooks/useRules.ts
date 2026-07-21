@@ -1,11 +1,12 @@
 // src/hooks/useRules.ts v3.6.1
 import { useState, useEffect, useRef } from 'react';
 import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
+import { parseSource } from '../utils/parser';
 import { downloadOutput as downloadOutputUtil, copyToClipboard } from '../utils/fileUtils';
 import { generateLineNumbers } from '../utils/uiUtils';
 import { OutputContent, Settings, ParsedData, Translation, FormatType } from '../types';
 
-export const useRules = (parsedData: ParsedData, settings: Settings, t: Translation, showToast: (key: string, params?: { [key: string]: string | number }) => void) => {
+export const useRules = (parsedData: ParsedData, sourceInput: string, settings: Settings, t: Translation, showToast: (key: string, params?: { [key: string]: string | number }) => void) => {
   const [outputContent, setOutputContent] = useState<OutputContent>({
     dnsmasq: '',
     hosts: '',
@@ -25,7 +26,9 @@ export const useRules = (parsedData: ParsedData, settings: Settings, t: Translat
 
   // 生成规则
   const generateRules = () => {
-    const { domains, whitelist, customDns } = parsedData;
+    // 实时解析最新输入，避免依赖防抖解析导致的陈旧 parsedData（如刚输入白名单立即点击生成时白名单为空）
+    const freshData = parseSource(sourceInput);
+    const { domains, whitelist, customDns } = freshData.data;
     const newOutputContent = generateRulesUtil(domains, whitelist, customDns, settings, t);
     setOutputContent(newOutputContent);
     
