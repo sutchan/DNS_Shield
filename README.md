@@ -14,9 +14,10 @@
 - **URL 导入** - 从远程 URL 获取域名列表（带超时控制）
 - **预设数据源** - 内置 AdGuard、EasyList、NeoHosts 等预设
 - **自动保存/恢复** - 每 30 秒自动保存内容到浏览器
-- **国际化支持** - 支持 16 种语言
+- **国际化支持** - 支持 16 种语言，翻译键全覆盖并带 zh-cn 兜底
 - **深色/浅色模式** - 一键切换主题配色
 - **安全加固** - CSP 安全头部、HSTS、Service Worker 安全缓存策略、文件名安全验证
+- **单元测试** - 基于 Vitest 覆盖核心纯函数（解析/校验/规则生成/国际化）
 
 ## 快速开始
 
@@ -53,7 +54,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf 
 
 访问 [https://dns.ewuse.com](https://dns.ewuse.com/) 在线使用。
 
-部署方法请查看 [部署指南](docs/DEPLOYMENT.md)。
+部署方法请查看 [部署指南](DEPLOYMENT.md)。
 
 ## 文件说明
 
@@ -93,6 +94,8 @@ src/
 │   ├── OutputPanel.tsx # 输出面板
 │   ├── SettingsPanel.tsx # 设置面板子组件
 │   └── UrlSection.tsx # URL 导入区域子组件
+├── context/          # 应用上下文
+│   └── AppContext.tsx # 集中提供 i18n 翻译 t（避免逐层透传）
 ├── hooks/            # 自定义 Hooks
 │   ├── useTheme.ts   # 主题切换
 │   ├── useLanguage.ts # 语言切换
@@ -103,7 +106,7 @@ src/
 │   └── useLoading.ts # 加载状态管理
 ├── locales/          # 16 种语言翻译文件
 ├── types/            # TypeScript 类型定义
-├── utils/            # 工具函数
+├── utils/            # 工具函数（含 *.test.ts 单元测试）
 │   ├── parser.ts     # 域名解析与排序去重
 │   ├── domainValidator.ts # 域名验证与行解析
 │   ├── rulesGenerator.ts  # 规则生成器
@@ -127,6 +130,9 @@ npm run build
 
 # 代码检查
 npm run lint
+
+# 运行单元测试
+npm run test
 ```
 
 ## 项目规范
@@ -155,11 +161,11 @@ npm run lint
 
 ## 参与贡献
 
-欢迎提交域名规则和问题反馈，请查看 [贡献指南](docs/CONTRIBUTING.md)。
+欢迎提交域名规则和问题反馈，请查看 [贡献指南](CONTRIBUTING.md)。
 
 ## 安全
 
-请查看 [安全审查报告](security_best_practices_report.md) 了解项目的安全最佳实践。
+请查看 [安全策略](SECURITY.md) 了解项目的安全最佳实践。
 
 ## 许可证
 
@@ -167,7 +173,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.5.0
+当前版本：v3.6.0
 
 ## 更新日志
 

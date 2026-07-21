@@ -1,6 +1,5 @@
-// src/hooks/useTheme.ts v3.5.0
-// - 支持 Tailwind 的 .dark 类（供 shadcn/ui 使用）
-// - 保持 data-theme 属性（供旧 CSS 变量使用）
+// src/hooks/useTheme.ts v3.6.0
+// 主题切换：通过在 <html> 上增删 Tailwind 的 .dark 类驱动明暗主题（shadcn/ui 约定）。
 import { useState, useEffect } from 'react';
 
 export const useTheme = () => {
@@ -18,7 +17,7 @@ export const useTheme = () => {
     }
   }, []);
 
-  // 2) 同步到 HTML 属性 —— 同时维护 .dark 类（Tailwind）和 data-theme（旧变量）
+  // 2) 同步到 HTML：切换 .dark 类并持久化到 localStorage
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const root = document.documentElement;

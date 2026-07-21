@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.ts v3.5.0
+// src/utils/rulesGenerator.ts v3.6.0
 import { CustomDnsEntry, Settings, OutputContent, Translation } from '../types';
 
 // 生成头部
@@ -37,7 +37,8 @@ export const generateHeader = (formatType: 'dnsmasq' | 'hosts' | 'adguard', tota
   lines.push(`${commentChar} ${settings.projectName} - ${title}`);
   lines.push(`${commentChar} ${separator}`);
   lines.push(`${commentChar}`);
-  lines.push(`${commentChar} ${t.header.description}: ${description}`);
+  // 输出格式专属描述（避免与 title 行重复标注）
+  lines.push(`${commentChar} ${description}`);
   lines.push(`${commentChar}`);
   lines.push(`${commentChar} ${t.header.version}: ${settings.version}`);
   lines.push(`${commentChar} ${t.header.update}: ${dateStr}`);

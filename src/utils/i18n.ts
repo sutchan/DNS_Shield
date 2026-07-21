@@ -1,4 +1,4 @@
-// src/utils/i18n.ts v3.5.0
+// src/utils/i18n.ts v3.6.0
 import ar from '../locales/ar.json';
 import cs from '../locales/cs.json';
 import en from '../locales/en.json';

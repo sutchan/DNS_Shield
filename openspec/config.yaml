@@ -39,9 +39,6 @@ rules:
 # Component registry
 components:
   ui:
-    - name: "Accordion"
-      file: "src/components/ui/Accordion.tsx"
-      parts: ["Accordion", "AccordionItem", "AccordionTrigger", "AccordionContent"]
     - name: "Badge"
       file: "src/components/ui/Badge.tsx"
       parts: ["Badge"]
@@ -54,9 +51,6 @@ components:
     - name: "Checkbox"
       file: "src/components/ui/Checkbox.tsx"
       parts: ["Checkbox"]
-    - name: "Dialog"
-      file: "src/components/ui/Dialog.tsx"
-      parts: ["Dialog", "DialogTrigger", "DialogContent", "DialogHeader", "DialogFooter", "DialogTitle", "DialogDescription"]
     - name: "DropdownMenu"
       file: "src/components/ui/DropdownMenu.tsx"
       parts: ["DropdownMenu", "DropdownMenuTrigger", "DropdownMenuContent", "DropdownMenuItem", "DropdownMenuLabel", "DropdownMenuSeparator"]
@@ -72,9 +66,6 @@ components:
     - name: "Select"
       file: "src/components/ui/Select.tsx"
       parts: ["Select", "SelectTrigger", "SelectValue", "SelectContent", "SelectItem"]
-    - name: "Skeleton"
-      file: "src/components/ui/Skeleton.tsx"
-      parts: ["Skeleton"]
     - name: "Switch"
       file: "src/components/ui/Switch.tsx"
       parts: ["Switch"]
@@ -84,8 +75,5 @@ components:
     - name: "Toast"
       file: "src/components/ui/Toast.tsx"
       parts: ["Toast", "toast"]
-    - name: "Tooltip"
-      file: "src/components/ui/Tooltip.tsx"
-      parts: ["Tooltip", "TooltipTrigger", "TooltipContent"]
 
-version: "3.5.0"
+version: "3.6.0"

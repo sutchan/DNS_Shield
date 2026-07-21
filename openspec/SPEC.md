@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.5.0 |
+| 当前版本 | v3.6.0 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -50,22 +50,18 @@ dns-shield/
 │   │   └── layout.tsx              # 根布局（Metadata + SEO）
 │   ├── components/                 # 业务组件
 │   │   ├── ui/                     # shadcn/ui 基础组件
-│   │   │   ├── Accordion.tsx
 │   │   │   ├── Badge.tsx
 │   │   │   ├── Button.tsx
 │   │   │   ├── Card.tsx
 │   │   │   ├── Checkbox.tsx
-│   │   │   ├── Dialog.tsx
 │   │   │   ├── DropdownMenu.tsx
 │   │   │   ├── Input.tsx
 │   │   │   ├── Label.tsx
 │   │   │   ├── Loading.tsx
 │   │   │   ├── Select.tsx
-│   │   │   ├── Skeleton.tsx
 │   │   │   ├── Switch.tsx
 │   │   │   ├── Tabs.tsx
-│   │   │   ├── Toast.tsx
-│   │   │   └── Tooltip.tsx
+│   │   │   └── Toast.tsx
 │   │   ├── Header.tsx              # 页头（Shield 图标 + 语言/主题切换）
 │   │   ├── Footer.tsx              # 页脚（链接 + 使用说明）
 │   │   ├── InputEditor.tsx          # 域名编辑器子组件
@@ -75,6 +71,8 @@ dns-shield/
 │   │   └── UrlSection.tsx          # URL 导入区域子组件
 │   ├── config/
 │   │   └── index.ts                # 应用配置（预设源 URL）
+│   ├── context/
+│   │   └── AppContext.tsx          # 应用上下文（集中提供 i18n 翻译 t）
 │   ├── hooks/                      # 自定义 Hooks
 │   │   ├── useDomainData.ts        # 域名数据管理
 │   │   ├── useLanguage.ts          # 语言切换
@@ -94,9 +92,13 @@ dns-shield/
 │   │   └── index.ts                # TypeScript 类型定义
 │   └── utils/                      # 工具函数
 │       ├── domainValidator.ts      # 域名验证与行解析
+│       ├── domainValidator.test.ts # 域名验证单元测试
 │       ├── fileUtils.ts            # 文件操作（下载、复制、URL 获取）
+│       ├── fileUtils.test.ts       # 文件操作单元测试
 │       ├── i18n.ts                 # 国际化配置
+│       ├── i18n.test.ts            # 国际化单元测试
 │       ├── parser.ts               # 域名解析器（排序、去重）
+│       ├── parser.test.ts          # 域名解析器单元测试
 │       ├── rulesGenerator.ts       # 规则生成器
 │       └── uiUtils.ts              # UI 工具（行号生成、滚动同步）
 ├── prototype/                        # 原型目录
@@ -119,6 +121,7 @@ dns-shield/
 ├── postcss.config.js               # PostCSS 配置
 ├── tailwind.config.js              # Tailwind CSS 配置
 ├── tsconfig.json                   # TypeScript 配置
+├── vitest.config.ts                # Vitest 单元测试配置
 └── pnpm-lock.yaml                  # pnpm 锁定文件
 ```
 
@@ -233,11 +236,18 @@ refactor: 优化规则生成逻辑
 
 | 依赖 | 版本 | 用途 |
 |------|------|------|
-| next | ^14 | Next.js 框架 |
+| next | ^14.2.25 | Next.js 框架（已固定至含安全补丁的版本） |
 | react | ^18 | React 核心库 |
 | react-dom | ^18 | React DOM 库 |
 | sonner | ^2.0.7 | Toast 通知 |
-| @radix-ui/* | various | shadcn/ui 基础组件 |
+| @radix-ui/react-checkbox | ^1.0.4 | Checkbox 组件 |
+| @radix-ui/react-dropdown-menu | ^2.0.6 | 下拉菜单组件 |
+| @radix-ui/react-label | ^2.0.2 | Label 组件 |
+| @radix-ui/react-select | ^2.0.0 | Select 组件 |
+| @radix-ui/react-slot | ^1.0.2 | Slot 组件 |
+| @radix-ui/react-switch | ^1.0.3 | Switch 组件 |
+| @radix-ui/react-tabs | ^1.0.4 | Tabs 组件 |
+| @radix-ui/react-toast | ^1.1.5 | Toast 组件 |
 | lucide-react | ^0.312.0 | 图标库 |
 | tailwind-merge | ^2.2.0 | Tailwind 类合并 |
 | class-variance-authority | ^0.7.0 | 组件变体管理 |
@@ -247,7 +257,7 @@ refactor: 优化规则生成逻辑
 
 | 依赖 | 版本 | 用途 |
 |------|------|------|
-| @types/node | ^25.5.0 | Node.js 类型定义 |
+| @types/node | ^20.14.0 | Node.js 类型定义（LTS） |
 | @types/react | ^18 | React 类型定义 |
 | @types/react-dom | ^18 | React DOM 类型定义 |
 | autoprefixer | ^10.4.19 | CSS 自动前缀 |
@@ -257,6 +267,7 @@ refactor: 优化规则生成逻辑
 | tailwindcss | ^3.4.3 | 实用优先 CSS 框架 |
 | tailwindcss-animate | ^1.0.7 | Tailwind 动画插件 |
 | typescript | ^5 | TypeScript 语言 |
+| vitest | ^2.1.9 | 单元测试框架 |
 
 ### 9.3 预设源 URL
 

@@ -1,25 +1,21 @@
-# DNS Shield — 组件库规范 v3.5.0
+# DNS Shield — 组件库规范 v3.6.0
 ## 1. 组件架构
 
 ```
 src/components/
-├── ui/                    # shadcn/ui 基础组件（原子层）
-│   ├── button.tsx
-│   ├── card.tsx
-│   ├── input.tsx
-│   ├── textarea.tsx
-│   ├── badge.tsx
-│   ├── tabs.tsx
-│   ├── dialog.tsx
-│   ├── dropdown-menu.tsx
-│   ├── tooltip.tsx
-│   ├── toast.tsx
-│   ├── skeleton.tsx
-│   ├── select.tsx
-│   ├── checkbox.tsx
-│   ├── switch.tsx
-│   ├── label.tsx
-│   └── separator.tsx
+├── ui/                    # shadcn/ui 基础组件（原子层，实际实现）
+│   ├── Badge.tsx
+│   ├── Button.tsx
+│   ├── Card.tsx
+│   ├── Checkbox.tsx
+│   ├── DropdownMenu.tsx
+│   ├── Input.tsx
+│   ├── Label.tsx
+│   ├── Loading.tsx
+│   ├── Select.tsx
+│   ├── Switch.tsx
+│   ├── Tabs.tsx
+│   └── Toast.tsx
 ├── composite/             # 复合组件（分子层）
 │   ├── code-editor.tsx    # 代码编辑器（行号 + 文本区）
 │   ├── stat-badge.tsx     # 统计徽章

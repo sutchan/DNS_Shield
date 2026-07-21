@@ -1,4 +1,4 @@
-// src/components/InputPanel.tsx v3.5.0
+// src/components/InputPanel.tsx v3.6.0
 'use client';
 import * as React from 'react';
 import { Button } from './ui/Button';
