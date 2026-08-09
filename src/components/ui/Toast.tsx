@@ -1,4 +1,4 @@
-// src/components/ui/Toast.tsx v3.7.2
+// src/components/ui/Toast.tsx v3.7.3
 'use client';
 
 import { Toaster } from 'sonner';

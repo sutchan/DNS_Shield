@@ -46,6 +46,8 @@ build
 *.tmp
 tmp/
 cache/
+dev_err.txt
+dev_out.txt
 
 # Package manager
 package-lock.json

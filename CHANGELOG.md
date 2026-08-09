@@ -7,6 +7,12 @@
 
 ## [Unreleased]
 
+## [3.7.3] - 2026-08-09
+
+### Changed
+- 统一全项目版本号至 v3.7.3（补齐 prototype 子文件、globals.css 设计系统注释、DEPLOYMENT 环境变量表、service-worker / vitest / SPEC / config.yaml 等位置的版本引用）
+
+
 ## [3.7.2] - 2026-08-09
 
 ### Fixed
