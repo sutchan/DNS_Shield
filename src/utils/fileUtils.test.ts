@@ -1,4 +1,4 @@
-// src/utils/fileUtils.test.ts v3.7.7
+// src/utils/fileUtils.test.ts v3.7.8
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { isValidHttpUrl, fetchFromUrl, fetchFromUrls } from './fileUtils';
 
@@ -84,5 +84,14 @@ describe('fetchFromUrls 并发与容错', () => {
     expect(result.failedUrls).toHaveLength(1);
     expect(result.failedUrls[0].url).toContain('bad');
     expect(result.content).toContain('aaaaa');
+  });
+
+  it('全部 URL 失败时 content 为空，failedUrls 与入参等长（供调用方避免清空用户输入）', async () => {
+    const bad = vi.fn().mockImplementation(() => makeStreamResponse(11 * 1024 * 1024));
+    vi.stubGlobal('fetch', (url: string) => bad(url));
+    const urls = ['https://example.com/a.txt', 'https://example.com/b.txt'];
+    const result = await fetchFromUrls(urls);
+    expect(result.content).toBe('');
+    expect(result.failedUrls).toHaveLength(urls.length);
   });
 });

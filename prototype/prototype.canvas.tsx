@@ -1,6 +1,6 @@
-// DNS Shield 高保真原型 v3.7.7
+// DNS Shield 高保真原型 v3.7.8
 // 设计规范：Swiss Modernism 2.0 × Apple Precision
-// 严格遵循 DNS Shield Design System v3.7.7
+// 严格遵循 DNS Shield Design System v3.7.8
 import React, { useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -23,7 +23,7 @@ log.bilibili.com`;
 
 const OUTPUT_SAMPLES: Record<string, string> = {
   dnsmasq: `# DNS Shield - Dnsmasq 广告过滤列表
-# 版本: 3.7.7 | 域名: 6 个
+# 版本: 3.7.8 | 域名: 6 个
 
 address=/ad.mi.com/127.0.0.1
 address=/ad.xiaomi.com/127.0.0.1
@@ -36,7 +36,7 @@ address=/ad.bilibili.com/127.0.0.1
 server=/mi.com/
 server=/iot.mi.com/`,
   hosts: `# DNS Shield - Hosts 广告过滤列表
-# 版本: 3.7.7
+# 版本: 3.7.8
 
 127.0.0.1 ad.mi.com
 127.0.0.1 ad.xiaomi.com
@@ -45,7 +45,7 @@ server=/iot.mi.com/`,
 127.0.0.1 ad.youku.com
 127.0.0.1 ad.bilibili.com`,
   adguard: `! DNS Shield - AdGuard 广告过滤规则
-! 版本: 3.7.7 | 域名: 6 个
+! 版本: 3.7.8 | 域名: 6 个
 
 ||ad.mi.com^
 ||ad.xiaomi.com^
@@ -276,7 +276,7 @@ export default function PrototypeCanvas() {
             <a href="#" className="flex items-center gap-2 no-underline text-foreground" aria-label="DNS Shield 首页">
               <Icons.Shield className="text-primary" />
               <span className="text-sm font-semibold tracking-tight">DNS Shield</span>
-              <span className="text-[11px] text-muted-foreground font-medium">v3.7.7</span>
+              <span className="text-[11px] text-muted-foreground font-medium">v3.7.8</span>
             </a>
             <div className="flex items-center gap-2">
               <button
@@ -319,7 +319,7 @@ export default function PrototypeCanvas() {
 
                   {showData && (
                     <div className="flex flex-wrap gap-2 mb-5">
-                      {[{ label: '域名', value: '6' }, { label: '黑名单', value: '6' }, { label: '白名单', value: '2' }, { label: '有效', value: '8' }, { label: '注释', value: '4' }].map(s => (
+                      {[{ label: '域名', value: '6' }, { label: '白名单', value: '2' }, { label: '有效', value: '8' }, { label: '注释', value: '4' }].map(s => (
                         <StatItem key={s.label} value={s.value} label={s.label} />
                       ))}
                     </div>
@@ -342,7 +342,7 @@ export default function PrototypeCanvas() {
                       </button>
                     </div>
                     <div className="flex flex-wrap gap-1.5">
-                      {['内置数据', 'AdGuard', 'EasyList', 'NeoHosts', 'StevenBlack'].map((name, i) => (
+                      {['内置数据', 'AdGuard', 'EasyList', 'NeoHosts'].map((name, i) => (
                         <span
                           key={name}
                           className={cn(
@@ -375,7 +375,7 @@ export default function PrototypeCanvas() {
                     <div className="flex flex-wrap gap-2 justify-end mt-3">
                       <button className="inline-flex items-center justify-center gap-2 h-9 px-4 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
                         <Icons.Play />
-                        解析域名
+                        生成规则
                       </button>
                     </div>
                   )}
@@ -399,7 +399,7 @@ export default function PrototypeCanvas() {
                     <EmptyState
                       icon={<Icons.Code className="text-muted-foreground" />}
                       title="暂无输出"
-                      description="请在左侧面板输入域名并点击「解析域名」按钮"
+                      description="请在左侧面板输入域名并点击「生成规则」按钮"
                     />
                   )}
 
@@ -435,7 +435,7 @@ export default function PrototypeCanvas() {
               <span className="w-[3px] h-[3px] rounded-full bg-muted-foreground" />
               <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors no-underline">文档</a>
               <span className="w-[3px] h-[3px] rounded-full bg-muted-foreground" />
-              <span className="text-xs text-muted-foreground/70 font-mono">v3.7.7</span>
+              <span className="text-xs text-muted-foreground/70 font-mono">v3.7.8</span>
             </div>
             <p className="text-xs text-muted-foreground/70">DNS Shield — 路由器级广告过滤规则生成工具</p>
           </div>

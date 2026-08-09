@@ -1,4 +1,4 @@
-// src/context/AppContext.tsx v3.7.7
+// src/context/AppContext.tsx v3.7.8
 // 应用级上下文：集中提供跨层共享的只读数据（当前为 i18n 翻译 t），
 // 避免将 t 逐层透传（prop drilling）到每个子组件，降低耦合。
 'use client';

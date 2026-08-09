@@ -1,4 +1,4 @@
-// src/components/ui/Select.tsx v3.7.7
+// src/components/ui/Select.tsx v3.7.8
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { ChevronDown } from "lucide-react"

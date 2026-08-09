@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.7.7</title>
+  <title>DNS Shield — 高保真原型 v3.7.8</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* ============================================
-       DNS Shield — Design System v3.7.7
+       DNS Shield — Design System v3.7.8
        Swiss Modernism 2.0 × Apple Precision
        ============================================ */
     :root {
@@ -359,7 +359,7 @@
             <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
           <!-- Data toggle (preview helper) -->
-          <button class="pill" id="toggleData" aria-label="切换数据状态" data-i18n="dataToggle">有数据</button>
+          <button class="pill" id="toggleData" aria-label="切换数据状态">有数据</button>
         </div>
       </div>
     </header>
@@ -387,9 +387,8 @@
                 </button>
               </div>
 
-              <div class="stats" id="inputStats" role="region" aria-label="统计信息">
+                <div class="stats" id="inputStats" role="region" aria-label="统计信息">
                 <div class="stat"><span class="stat-val" id="stat-domains">6</span><span class="stat-label" data-i18n="statDomains">域名</span></div>
-                <div class="stat"><span class="stat-val" id="stat-blacklist">6</span><span class="stat-label" data-i18n="statBlacklist">黑名单</span></div>
                 <div class="stat"><span class="stat-val" id="stat-whitelist">2</span><span class="stat-label" data-i18n="statWhitelist">白名单</span></div>
                 <div class="stat"><span class="stat-val" id="stat-valid">8</span><span class="stat-label" data-i18n="statValid">有效</span></div>
                 <div class="stat"><span class="stat-val" id="stat-comment">4</span><span class="stat-label" data-i18n="statComment">注释</span></div>
@@ -413,8 +412,8 @@
                     <span class="preset-label" data-i18n="presets">预设源:</span>
                     <div class="preset-tags" id="presets" role="group" aria-label="预设源">
                       <span class="preset active" data-preset="builtin" role="button" tabindex="0" aria-pressed="true" data-i18n="presetBuiltin">内置数据</span>
-                      <span class="preset" data-preset="adguard" role="button" tabindex="0" aria-pressed="false">AdGuard</span>
-                      <span class="preset" data-preset="easylist" role="button" tabindex="0" aria-pressed="false">EasyList</span>
+                      <span class="preset" data-preset="adguard" role="button" tabindex="0" aria-pressed="false" data-i18n="presetAdguard">AdGuard</span>
+                      <span class="preset" data-preset="easylist" role="button" tabindex="0" aria-pressed="false" data-i18n="presetEasylist">EasyList</span>
                       <span class="preset" data-preset="neohosts" role="button" tabindex="0" aria-pressed="false" data-i18n="presetNeohosts">NeoHosts</span>
                     </div>
                   </div>
@@ -437,10 +436,6 @@
               <div class="btn-actions" id="inputActions">
                 <button class="btn btn-outline btn-sm" id="clearBtn" data-i18n="clear">清空</button>
                 <button class="btn btn-outline btn-sm" id="sortBtn" data-i18n="sort">排序</button>
-                <button class="btn btn-primary" id="parseBtn">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  <span data-i18n="parse">解析域名</span>
-                </button>
                 <button class="btn btn-outline btn-sm" id="dedupeBtn" data-i18n="dedupe">去重</button>
                 <button class="btn btn-outline btn-sm" id="saveBtn" data-i18n="save">保存</button>
               </div>
@@ -473,7 +468,7 @@
                 <div class="settings-inner">
                   <div class="settings-grid">
                     <div class="field"><label for="projectNameInput" data-i18n="sProjectName">项目名称</label><input type="text" id="projectNameInput" value="DNS Shield" /></div>
-                    <div class="field"><label for="versionInput" data-i18n="sVersion">版本号</label><input type="text" id="versionInput" value="3.7.7" /></div>
+                    <div class="field"><label for="versionInput" data-i18n="sVersion">版本号</label><input type="text" id="versionInput" value="3.7.8" /></div>
                     <div class="field"><label for="ipv4Input" data-i18n="sIpv4">IPv4</label><input type="text" id="ipv4Input" value="127.0.0.1" /></div>
                     <div class="field"><label for="ipv6Input" data-i18n="sIpv6">IPv6</label><input type="text" id="ipv6Input" value="::" /></div>
                   </div>
@@ -530,7 +525,7 @@
           <span class="dot"></span>
           <a href="#" data-i18n="docs">文档</a>
           <span class="dot"></span>
-          <span class="footer-ver">v3.7.7</span>
+          <span class="footer-ver">v3.7.8</span>
         </div>
         <p class="footer-sub" data-i18n="footerSub">DNS Shield — 路由器级广告过滤规则生成工具</p>
       </div>
@@ -561,22 +556,25 @@
           chooseLang: '选择语言', toggleTheme: '切换深色/浅色主题',
           dataToggle: '有数据', heroDesc: '路由器级全局广告过滤规则生成工具 — 输入域名清单，自动生成 Dnsmasq / Hosts / AdGuard 格式规则',
           inputTitle: '输入域名清单', advanced: '高级选项',
-          statDomains: '域名', statBlacklist: '黑名单', statWhitelist: '白名单', statValid: '有效', statComment: '注释',
+          statDomains: '域名', statWhitelist: '白名单', statValid: '有效', statComment: '注释',
           urlPlaceholder: '输入 URL 导入域名列表...', fetch: '获取', addUrl: '添加URL', sortUrls: '前缀优先', fetchAll: '获取全部',
-          presets: '预设源:', presetBuiltin: '内置数据', presetNeohosts: 'NeoHosts',
+          presets: '预设源:', presetBuiltin: '内置数据', presetAdguard: 'AdGuard', presetEasylist: 'EasyList', presetNeohosts: 'NeoHosts',
           emptyTitle: '暂无域名', emptyDesc: '输入域名或从 URL 导入后开始生成过滤规则', importSample: '导入示例',
-          clear: '清空', sort: '排序', parse: '解析域名', dedupe: '去重', save: '保存',
+          clear: '清空', sort: '排序', dedupe: '去重', save: '保存',
           outputTitle: '生成过滤规则', fmtWhitelist: '白名单',
           sProjectName: '项目名称', sVersion: '版本号', sIpv4: 'IPv4', sIpv6: 'IPv6',
           sAddHeader: '头部注释', sBlockIpv6: '阻止 IPv6', sDedup: '自动去重', sRemoveWildcard: '移除通配符',
           mergeHint: '点击"生成规则"查看输出',
-          outEmptyTitle: '暂无输出', outEmptyDesc: '请在左侧面板输入域名并点击「解析域名」按钮',
+          outEmptyTitle: '暂无输出', outEmptyDesc: '请在左侧面板输入域名并点击「生成规则」按钮',
           generate: '生成规则', download: '下载', copy: '复制',
           github: 'GitHub', demo: 'Demo', docs: '文档', footerSub: 'DNS Shield — 路由器级广告过滤规则生成工具',
-          toastParsed: '解析完成', toastGenerated: '规则生成成功！', toastSorted: '域名已排序',
+          titleMap: { dnsmasq: 'Dnsmasq 广告过滤列表', hosts: 'Hosts 广告过滤列表', adguard: 'AdGuard 广告过滤规则' },
+          headerTitle: '路由器级广告过滤规则', headerProject: '项目', headerDemo: '演示',
+          headerUpdated: '更新', uniqueDomains: '个唯一域名',
+          toastGenerated: '规则生成成功！', toastSorted: '域名已排序',
           toastDeduped: '已去除 {n} 个重复项', toastSaved: '域名已保存', toastPreset: '已加载预设',
           toastNeedUrl: '请输入 URL', toastUrlAdded: 'URL 已添加', toastUrlsSorted: 'URLs 已排序',
-          toastNeedUrls: '请先添加 URL', toastFetching: '获取中...', toastFetchAll: '获取全部...',
+          toastNeedUrls: '请先添加 URL', toastFetching: '获取中...', toastFetchAll: '获取全部...', toastUrlFetched: 'URL 已获取并添加',
           toastCopied: '已复制到剪贴板', toastCopyFail: '复制失败', toastDownloaded: '已下载 {f}',
           toastNoOutput: '请先生成规则', toastEmptyState: '空状态', toastHasData: '有数据',
           emptyState: '空状态', hasData: '有数据'
@@ -586,22 +584,25 @@
           chooseLang: 'Choose language', toggleTheme: 'Toggle dark/light theme',
           dataToggle: 'With data', heroDesc: 'Router-level global ad-blocking rule generator — input domain lists, auto-generate Dnsmasq / Hosts / AdGuard rules',
           inputTitle: 'Input Domain List', advanced: 'Advanced',
-          statDomains: 'Domains', statBlacklist: 'Blacklist', statWhitelist: 'Whitelist', statValid: 'Valid', statComment: 'Comments',
+          statDomains: 'Domains', statWhitelist: 'Whitelist', statValid: 'Valid', statComment: 'Comments',
           urlPlaceholder: 'Enter URL to import domain list...', fetch: 'Fetch', addUrl: 'Add URL', sortUrls: 'Prefix-first', fetchAll: 'Fetch All',
-          presets: 'Presets:', presetBuiltin: 'Built-in', presetNeohosts: 'NeoHosts',
+          presets: 'Presets:', presetBuiltin: 'Built-in', presetAdguard: 'AdGuard', presetEasylist: 'EasyList', presetNeohosts: 'NeoHosts',
           emptyTitle: 'No domains', emptyDesc: 'Enter domains or import from URL to start generating rules', importSample: 'Import Sample',
-          clear: 'Clear', sort: 'Sort', parse: 'Parse Domains', dedupe: 'Dedupe', save: 'Save',
+          clear: 'Clear', sort: 'Sort', dedupe: 'Dedupe', save: 'Save',
           outputTitle: 'Generate Filter Rules', fmtWhitelist: 'Whitelist',
           sProjectName: 'Project Name', sVersion: 'Version', sIpv4: 'IPv4', sIpv6: 'IPv6',
           sAddHeader: 'Header Comment', sBlockIpv6: 'Block IPv6', sDedup: 'Auto Dedupe', sRemoveWildcard: 'Remove Wildcard',
           mergeHint: 'Click "Generate Rules" to view output',
-          outEmptyTitle: 'No output', outEmptyDesc: 'Enter domains on the left and click "Parse Domains"',
+          outEmptyTitle: 'No output', outEmptyDesc: 'Enter domains on the left and click "Generate Rules"',
           generate: 'Generate Rules', download: 'Download', copy: 'Copy',
           github: 'GitHub', demo: 'Demo', docs: 'Docs', footerSub: 'DNS Shield — Router-level ad-blocking rule generator',
-          toastParsed: 'Parsing complete', toastGenerated: 'Rules generated!', toastSorted: 'Domains sorted',
+          titleMap: { dnsmasq: 'Dnsmasq Ad Block List', hosts: 'Hosts Ad Block List', adguard: 'AdGuard Ad Block Rules' },
+          headerTitle: 'Router-level ad-blocking rules', headerProject: 'Project', headerDemo: 'Demo',
+          headerUpdated: 'Updated', uniqueDomains: 'unique domains',
+          toastGenerated: 'Rules generated!', toastSorted: 'Domains sorted',
           toastDeduped: 'Removed {n} duplicates', toastSaved: 'Domains saved', toastPreset: 'Preset loaded',
           toastNeedUrl: 'Please enter a URL', toastUrlAdded: 'URL added', toastUrlsSorted: 'URLs sorted',
-          toastNeedUrls: 'Add URLs first', toastFetching: 'Fetching...', toastFetchAll: 'Fetch all...',
+          toastNeedUrls: 'Add URLs first', toastFetching: 'Fetching...', toastFetchAll: 'Fetch all...', toastUrlFetched: 'URL fetched and added',
           toastCopied: 'Copied to clipboard', toastCopyFail: 'Copy failed', toastDownloaded: 'Downloaded {f}',
           toastNoOutput: 'Generate rules first', toastEmptyState: 'Empty', toastHasData: 'With data',
           emptyState: 'Empty', hasData: 'With data'
@@ -612,24 +613,62 @@
       // zh-tw uses en UI (real app fully translates; prototype demonstrates switching mechanism)
       I18N['zh-tw'] = I18N['en'];
 
-      var MOCK_DOMAINS = [
-        '# === 白名单 ===',
-        '+idm.iot.mi.com',
-        '+api.io.mi.com',
-        '',
-        '# === 小米 ===',
-        'bss.pandora.xiaomi.com',
-        'jellyfish.pandora.xiaomi.com',
-        'ad.mi.com',
-        'ad.xiaomi.com',
-        '',
-        '# === 视频平台 ===',
-        'ad.iqiyi.com',
-        'log.iqiyi.com',
-        'ad.youku.com',
-        'ad.bilibili.com',
-        'log.bilibili.com'
-      ].join('\n');
+      // 预设源示例数据（让切换预设真正改变输入内容，体现差异）
+      var PRESETS = {
+        builtin: [
+          '# === 白名单 ===',
+          '+idm.iot.mi.com',
+          '+api.io.mi.com',
+          '',
+          '# === 小米 ===',
+          'bss.pandora.xiaomi.com',
+          'jellyfish.pandora.xiaomi.com',
+          'ad.mi.com',
+          'ad.xiaomi.com',
+          '',
+          '# === 视频平台 ===',
+          'ad.iqiyi.com',
+          'log.iqiyi.com',
+          'ad.youku.com',
+          'ad.bilibili.com',
+          'log.bilibili.com'
+        ].join('\n'),
+        adguard: [
+          '# === AdGuard 基础广告 ===',
+          'pagead2.googlesyndication.com',
+          'securepubads.g.doubleclick.net',
+          'ads.yahoo.com',
+          'adservice.google.com',
+          'ad.doubleclick.net',
+          '',
+          '# === 追踪器 ===',
+          'analytics.twitter.com',
+          'connect.facebook.net'
+        ].join('\n'),
+        easylist: [
+          '# === EasyList 广告服务器 ===',
+          'ad.daum.net',
+          'ads.naver.com',
+          'adservice.amazon.com',
+          'pixel.mathtag.com',
+          '',
+          '# === 弹窗 ===',
+          'popads.net',
+          'cdn.popcash.net'
+        ].join('\n'),
+        neohosts: [
+          '# === NeoHosts 中国区 ===',
+          'ad.sohu.com',
+          'adserver.sina.com.cn',
+          'ads.qq.com',
+          'saxn.mobi',
+          '',
+          '# === 统计 ===',
+          'tajs.qq.com',
+          'hm.baidu.com'
+        ].join('\n')
+      };
+      var MOCK_DOMAINS = PRESETS.builtin;
 
       var DOMAIN_REGEX = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
 
@@ -640,7 +679,7 @@
         theme: 'dark', format: 'hosts', hasData: true, input: MOCK_DOMAINS,
         lang: 'zh-cn', urlCollapsed: true, settingsCollapsed: true,
         urls: [], activePreset: 'builtin', output: '',
-        settings: { projectName: 'DNS Shield', version: '3.7.7', ipv4: '127.0.0.1', ipv6: '::', addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true }
+        settings: { projectName: 'DNS Shield', version: '3.7.8', ipv4: '127.0.0.1', ipv6: '::', addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true }
       };
 
       var $ = function (id) { return document.getElementById(id); };
@@ -652,7 +691,7 @@
         var domains = [], whitelist = [], customDns = [], comments = 0;
         for (var i = 0; i < lines.length; i++) {
           var t = lines[i].trim();
-          if (!t) { comments++; continue; }
+          if (!t) continue; // 空行不计入注释（与真实 parser 一致）
           if (t.charAt(0) === '#' || t.charAt(0) === '!') { comments++; continue; }
           if (t.charAt(0) === '+') {
             var w = t.slice(1).trim().toLowerCase().replace(/^\*\./, '');
@@ -684,21 +723,21 @@
       function generateHeader(fmt, total, wlCount) {
         var sep = fmt === 'adguard' ? '================================' : '=====================================';
         var cc = fmt === 'adguard' ? '!' : '#';
-        var titleMap = { dnsmasq: 'Dnsmasq 广告过滤列表', hosts: 'Hosts 广告过滤列表', adguard: 'AdGuard 广告过滤规则' };
+        var titleMap = t('titleMap')[fmt];
         var lines = [];
         lines.push(cc + ' ' + sep);
-        lines.push(cc + ' ' + state.settings.projectName + ' - ' + titleMap[fmt]);
+        lines.push(cc + ' ' + state.settings.projectName + ' - ' + titleMap);
         lines.push(cc + ' ' + sep);
         lines.push(cc);
-        lines.push(cc + ' 路由器级广告过滤规则');
+        lines.push(cc + ' ' + t('headerTitle'));
         lines.push(cc);
-        lines.push(cc + ' 版本: ' + state.settings.version);
-        lines.push(cc + ' 更新: ' + todayStr());
-        lines.push(cc + ' 域名: ' + total + ' 个唯一域名');
-        if (wlCount > 0) lines.push(cc + ' 白名单: ' + wlCount + ' 个域名');
+        lines.push(cc + ' ' + t('sVersion') + ': ' + state.settings.version);
+        lines.push(cc + ' ' + t('headerUpdated') + ': ' + todayStr());
+        lines.push(cc + ' ' + t('statDomains') + ': ' + total + ' ' + t('uniqueDomains'));
+        if (wlCount > 0) lines.push(cc + ' ' + t('statWhitelist') + ': ' + wlCount + ' ' + t('uniqueDomains'));
         lines.push(cc);
-        lines.push(cc + ' 项目: https://github.com/sutchan/DNS_Shield');
-        lines.push(cc + ' 演示: https://dns.ewuse.com/');
+        lines.push(cc + ' ' + t('headerProject') + ': https://github.com/sutchan/DNS_Shield');
+        lines.push(cc + ' ' + t('headerDemo') + ': https://dns.ewuse.com/');
         lines.push(cc);
         lines.push(cc + ' ' + sep);
         return lines.join('\n') + '\n\n';
@@ -807,7 +846,6 @@
           renderGutter($('inputGutter'), state.input);
           var p = parseSource(state.input);
           $('stat-domains').textContent = p.domains.length;
-          $('stat-blacklist').textContent = p.domains.length;
           $('stat-whitelist').textContent = p.whitelist.length;
           $('stat-valid').textContent = p.domains.length + p.whitelist.length;
           $('stat-comment').textContent = p.comments;
@@ -827,7 +865,7 @@
           $('outputArea').textContent = out;
           renderGutter($('outputGutter'), out);
           var pp = state.output.parsed;
-          $('mergeInfo').textContent = t('statBlacklist') + ': ' + pp.domains.length + ' | ' + t('statWhitelist') + ': ' + pp.whitelist.length + ' | ' + t('presetNeohosts') + ' DNS: ' + pp.customDns.length;
+          $('mergeInfo').textContent = t('statDomains') + ': ' + pp.domains.length + ' | ' + t('statWhitelist') + ': ' + pp.whitelist.length + ' | ' + t('statValid') + ': ' + (pp.domains.length + pp.whitelist.length);
         } else if (state.hasData) {
           $('mergeInfo').textContent = t('mergeHint');
         }
@@ -891,13 +929,7 @@
       // Settings collapse
       $('toggleSettings').addEventListener('click', function () { state.settingsCollapsed = !state.settingsCollapsed; render(); });
 
-      // parse / generate
-      $('parseBtn').addEventListener('click', function () {
-        // real parse: recompute stats + auto-generate output (mirrors live behavior)
-        state.output = generateRules();
-        render();
-        toast(t('toastParsed'));
-      });
+      // parse / generate (single entry: live input already parsed on edit; generate produces output)
       $('generateBtn').addEventListener('click', function () { state.output = generateRules(); render(); toast(t('toastGenerated')); });
       $('clearBtn').addEventListener('click', function () { state.input = ''; state.output = ''; render(); });
       $('sortBtn').addEventListener('click', function () {
@@ -927,16 +959,29 @@
         });
       });
 
-      // presets (keyboard accessible)
+      // presets (keyboard accessible; switching truly loads preset sample data)
       var presets = document.querySelectorAll('#presets .preset');
       presets.forEach(function (el) {
-        function activate() { state.activePreset = el.getAttribute('data-preset'); state.output = ''; render(); toast(t('toastPreset')); }
+        function activate() {
+          var key = el.getAttribute('data-preset');
+          state.activePreset = key;
+          state.input = PRESETS[key] || PRESETS.builtin;
+          state.output = '';
+          render(); toast(t('toastPreset'));
+        }
         el.addEventListener('click', activate);
         el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
       });
 
       // url actions
-      $('fetchUrl').addEventListener('click', function () { var u = $('urlInput').value.trim(); if (!u) { toast(t('toastNeedUrl')); return; } toast(t('toastFetching')); });
+      $('fetchUrl').addEventListener('click', function () {
+        var u = $('urlInput').value.trim();
+        if (!u) { toast(t('toastNeedUrl')); return; }
+        // 原型内"获取"模拟真实：将 URL 加入列表（真实应用会拉取内容并合并）
+        if (state.urls.indexOf(u) === -1) state.urls.push(u);
+        $('urlInput').value = '';
+        render(); toast(t('toastUrlFetched'));
+      });
       $('addUrl').addEventListener('click', function () {
         var u = $('urlInput').value.trim();
         if (!u) { toast(t('toastNeedUrl')); return; }

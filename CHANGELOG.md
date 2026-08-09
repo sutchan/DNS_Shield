@@ -7,12 +7,25 @@
 
 ## [Unreleased]
 
+## [3.7.8] - 2026-08-09
+
+### Improved
+- 改进高保真原型 prototype.html 不合理设计：
+  - 预设切换真正加载对应示例数据（内置/AdGuard/EasyList/NeoHosts 各一套），而非始终显示内置 mock
+  - 头部注释改为多语言（`t('titleMap')`/`headerTitle`/`sVersion` 等），切换语言后输出注释同步翻译
+  - 移除与"域名"值重复的冗余"黑名单"统计项；`mergeInfo` 改用正确字段（域名/白名单/有效），去除误用的 `presetNeohosts`
+  - 移除冗余的"解析域名"按钮，保留单一"生成规则"入口（输入即实时解析统计）
+  - "获取"URL 点击后若 URL 有效自动加入列表（更贴近真实行为）
+  - `parseSource` 空行不再计为注释（与真实 parser 一致）
+- 同步 prototype.canvas.tsx：移除黑名单统计项、预设列表与 HTML 对齐为 4 个、按钮/空状态文案同步
+- 同步更新 prototype/OVERVIEW.md 描述
+- 统一全项目版本号至 v3.7.8
+
 ## [3.7.7] - 2026-08-09
 
 ### Fixed
 - 修复高保真原型 prototype.html 审查问题：语言切换器真正切换界面文案（zh/en 完整词典 + 其余语言回退英文演示机制）、设置开关/输入框变更后实时重算输出、解析按钮真正触发解析并自动生成、语言下拉选项点击同步 active 与 aria-selected、折叠按钮状态词随语言切换
-- 同步更新 prototype/OVERVIEW.md 描述
-- 统一全项目版本号至 v3.7.7
+- 修复 `src/hooks/useUrlManager.ts`：`withLoading<string>` 泛型错误（fetchFn 实际返回 `FetchUrlsResult`），改为 `withLoading<FetchUrlsResult>` 并导入 `type FetchUrlsResult`
 
 ## [3.7.6] - 2026-08-09
 
