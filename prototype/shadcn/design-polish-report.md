@@ -6,11 +6,10 @@
 
 ---
 
-### 1. 🎨 色彩系统 — oklch 色彩空间
+### 1. 色彩系统 — HSL 色彩空间
 
 | 改动 | 之前 | 之后 |
 |------|------|------|
-| 颜色格式 | HSL | oklch（更均匀的色相分布） |
 | 背景色 | 纯白 #fff → 98%灰 | 柔和的近白背景 |
 | 前景色 | 纯黑 #000 → 10%灰 | 更舒适的阅读灰 |
 | Border | 15%灰线 | 12%灰线，更细更轻 |
@@ -20,15 +19,16 @@
 - 避免了纯黑/纯白带来的视觉刺眼感
 - border 更细、更淡，减少视觉噪音
 - 深色模式背景从 `hsl(240 10% 3.9%)` 调整为更柔和的 `hsl(240 6% 7%)`
+- 注：设计系统实际采用 HSL 变量（见 design-system.md），未使用 oklch。
 
-### 2. 🔤 排版系统
+### 2. 排版系统
 
 - **字体增强**：启用 `cv02`, `cv03`, `cv04`, `cv11` OpenType 特性（Inter 数字等宽优化）
 - **标题优化**：`letter-spacing: -0.02em` 让大标题更紧凑
 - **字号系统**：代码编辑器使用 `0.8125rem (13px)` 优化阅读体验
 - **行高系统**：所有元素对齐 6 的倍数（24px 行高 = 6×4pt）
 
-### 3. 📐 间距与布局
+### 3. 间距与布局
 
 | 改动 | 之前 | 之后 |
 |------|------|------|
@@ -42,7 +42,7 @@
 - **增加留白**：让内容呼吸
 - **4pt 基数**：所有间距对齐 4, 8, 12, 16, 24 序列
 
-### 4. ✨ 动效系统
+### 4. 动效系统
 
 | 元素 | 缓动函数 | 时长 |
 |------|----------|------|
@@ -54,7 +54,7 @@
 
 使用 `cubic-bezier(0.16, 1, 0.3, 1)` — 这是 Apple 式的 **ease-out-quart**，比默认的 ease-out 更优雅。
 
-### 5. 🧊 去噪与极简（Distill）
+### 5. 去噪与极简（Distill）
 
 - 移除了 OutputPanel 底部多余的 theme toggle（已在 Header 中）
 - 简化了 Settings 面板的类名结构
@@ -63,20 +63,18 @@
 - 使用 `backdrop-filter: blur(4px)` 替代纯色遮罩
 - Loading spinner 使用 `border-top-color` 动画替代完整环
 
-### 6. 🎯 组件图标统一（emoji 清零）
+### 6. 组件图标统一（emoji 清零）
 
 | 之前 (emoji) | 之后 (Lucide SVG) |
 |-------------|-------------------|
-| 🛡️ | `Shield` |
-| ☀️ 🌙 | `Sun` / `Moon` |
-| 🌐 | `Globe` |
-| ⚙️ | `Settings` |
-| ❌ | `X` |
-| ▼ ▲ | `ChevronDown` / `ChevronUp` |
-| inline SVG（齿轮） | `Settings` |
-| inline SVG（外部链接） | `ExternalLink` |
+| Shield | `Shield` |
+| Sun / Moon | `Sun` / `Moon` |
+| Globe | `Globe` |
+| Settings | `Settings` |
+| X | `X` |
+| ChevronDown / ChevronUp | `ChevronDown` / `ChevronUp` |
 
-### 7. ♿ 无障碍增强
+### 7. 无障碍增强
 
 - `::selection` 样式：半透明蓝色高亮
 - Focus ring：2px solid ring-color + 2px offset

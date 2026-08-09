@@ -1,6 +1,6 @@
-# DNS Shield — 设计系统规范 v3.7.12
+# DNS Shield — 设计系统规范 v3.7.15
 > 基于 shadcn/ui + Tailwind CSS + Radix UI 的完整设计系统
-> 色彩空间：oklch | 设计哲学：Swiss Modernism 2.0 × Apple Precision
+> 色彩空间：HSL | 设计哲学：Swiss Modernism 2.0 × Apple Precision
 
 ---
 

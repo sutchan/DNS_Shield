@@ -7,6 +7,32 @@
 
 ## [Unreleased]
 
+## [3.7.15] - 2026-08-09
+
+### Refactor
+- 拆分 `useDomainData.ts`（206 行）超 200 行限制：`fetchDomainsText` 流式拉取逻辑抽离至 `src/utils/domainFetch.ts`，主 hook 仅保留状态与编排，公开 API（`useDomainData`）保持不变，依赖数组同步收敛
+
+## [3.7.14] - 2026-08-09
+
+### Fixed
+- `prototype.html` / `prototype.canvas.tsx` 的"数据切换"按钮补 `aria-pressed`（true=有数据），符合交互规范 §7 切换控件语义
+- `prototype.html` 语言下拉菜单支持 `Escape` 关闭并聚焦回触发按钮（键盘可达性，规范 §5.1）
+- `prototype.html` Toast warning 文字色由白改为 `foreground`，修复白字 on `--warning`(#F59E0B) 对比度 ~2.1:1 不达标 WCAG AA 的问题
+- 统一全项目版本号至 v3.7.14（package.json、next.config.js、源文件头部注释、README/openspec/prototype 文档）
+
+## [3.7.13] - 2026-08-09
+
+### Fixed
+- 修复 `prototype.canvas.tsx` 的 `toggleData` 闭包 bug（旧 `showData` 值导致空状态/有数据恢复逻辑错乱），改用 `prev` 推导
+- `prototype.html` 输出格式 tabs 补全 ARIA `tabpanel` 关联（`role="tabpanel"` + `aria-controls`/`aria-labelledby`），符合交互规范 §7.2
+- `prototype.html` 全局键盘快捷键对齐交互规范 §5.1（Ctrl/Cmd+Enter 生成、Ctrl/Cmd+S 保存、Ctrl/Cmd+D 下载、Ctrl/Cmd+Shift+C 复制）
+- `prototype.html` Toast 区分类型时长（success 3s / warning 4s / error 5s）并加错误/警告配色；fetch 加载态改用 Spinner（Button isLoading 规范）
+- `prototype/shadcn/design-polish-report.md` 修正色彩空间表述为 HSL（非 oklch），标题去除 emoji
+
+### Docs
+- `prototype/OVERVIEW.md` 明确 `prototype.canvas.tsx` 为"React 静态视觉示意原型"（不含交互逻辑），如实描述与 html 版的能力差异；修正圆角描述（lg=10px）与 oklch 措辞
+- 统一全项目版本号至 v3.7.13（package.json、next.config.js、源文件头部注释、README/openspec/prototype 文档）
+
 ## [3.7.12] - 2026-08-09
 
 ### Fixed

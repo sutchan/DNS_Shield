@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.7.12</title>
+  <title>DNS Shield — 高保真原型 v3.7.15</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* ============================================
-       DNS Shield — Design System v3.7.12
+       DNS Shield — Design System v3.7.15
        Swiss Modernism 2.0 × Apple Precision
        ============================================ */
     :root {
@@ -315,6 +315,12 @@
       box-shadow: var(--shadow-pop); opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; z-index: 50;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.toast-error { background-color: hsl(var(--destructive)); color: hsl(var(--destructive-foreground)); }
+    .toast.toast-warning { background-color: hsl(var(--warning)); color: hsl(var(--foreground)); }
+
+    /* Fetch spinner (Button isLoading) */
+    .spinner { width: 14px; height: 14px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 9999px; animation: spin .8s linear infinite; display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* Footer */
     .footer { border-top: 1px solid hsl(var(--border)); padding: 1.5rem 1rem; margin-top: auto; transition: border-color .3s ease; }
@@ -359,7 +365,7 @@
             <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
           <!-- Data toggle (preview helper) -->
-          <button class="pill" id="toggleData" aria-label="切换数据状态">有数据</button>
+          <button class="pill" id="toggleData" aria-label="切换数据状态" aria-pressed="true">有数据</button>
         </div>
       </div>
     </header>
@@ -452,11 +458,11 @@
                   <span data-i18n="outputTitle">生成过滤规则</span>
                 </h2>
                 <div style="display:flex; align-items:center; gap:.5rem">
-                  <div class="format-tabs" id="formatTabs" role="tablist">
-                    <button class="fmt" data-fmt="dnsmasq" role="tab" aria-selected="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>Dnsmasq</button>
-                    <button class="fmt active" data-fmt="hosts" role="tab" aria-selected="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>Hosts</button>
-                    <button class="fmt" data-fmt="adguard" role="tab" aria-selected="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>AdGuard</button>
-                    <button class="fmt" data-fmt="whitelist" role="tab" aria-selected="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="fmtWhitelist">白名单</span></button>
+                  <div class="format-tabs" id="formatTabs" role="tablist" aria-label="输出格式">
+                    <button class="fmt" data-fmt="dnsmasq" id="tab-dnsmasq" role="tab" aria-selected="false" aria-controls="outputPanel"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>Dnsmasq</button>
+                    <button class="fmt active" data-fmt="hosts" id="tab-hosts" role="tab" aria-selected="true" aria-controls="outputPanel"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>Hosts</button>
+                    <button class="fmt" data-fmt="adguard" id="tab-adguard" role="tab" aria-selected="false" aria-controls="outputPanel"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>AdGuard</button>
+                    <button class="fmt" data-fmt="whitelist" id="tab-whitelist" role="tab" aria-selected="false" aria-controls="outputPanel"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="fmtWhitelist">白名单</span></button>
                   </div>
                   <button class="icon-btn icon-only" id="toggleSettings" aria-expanded="false" aria-controls="settingsPanel" aria-label="设置" title="设置">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -469,7 +475,7 @@
                 <div class="settings-inner">
                   <div class="settings-grid">
                     <div class="field"><label for="projectNameInput" data-i18n="sProjectName">项目名称</label><input type="text" id="projectNameInput" value="DNS Shield" /></div>
-                    <div class="field"><label for="versionInput" data-i18n="sVersion">版本号</label><input type="text" id="versionInput" value="3.7.12" /></div>
+                    <div class="field"><label for="versionInput" data-i18n="sVersion">版本号</label><input type="text" id="versionInput" value="3.7.15" /></div>
                     <div class="field"><label for="ipv4Input" data-i18n="sIpv4">IPv4</label><input type="text" id="ipv4Input" value="127.0.0.1" /></div>
                     <div class="field"><label for="ipv6Input" data-i18n="sIpv6">IPv6</label><input type="text" id="ipv6Input" value="::" /></div>
                   </div>
@@ -484,7 +490,7 @@
 
               <div class="merge-info" id="mergeInfo" role="status" aria-live="polite" data-i18n="mergeHint">点击"生成规则"查看输出</div>
 
-              <div id="outputEditorWrap">
+              <div id="outputPanel" role="tabpanel" aria-labelledby="tab-hosts">
                 <div class="editor">
                   <div class="gutter" id="outputGutter" aria-hidden="true"></div>
                   <pre class="editor-area" id="outputArea" aria-label="规则输出预览"></pre>
@@ -526,7 +532,7 @@
           <span class="dot"></span>
           <a href="#" data-i18n="docs">文档</a>
           <span class="dot"></span>
-          <span class="footer-ver">v3.7.12</span>
+          <span class="footer-ver">v3.7.15</span>
         </div>
         <p class="footer-sub" data-i18n="footerSub">DNS Shield — 路由器级广告过滤规则生成工具</p>
       </div>
@@ -683,7 +689,7 @@
         theme: 'dark', format: 'hosts', hasData: true, input: MOCK_DOMAINS,
         lang: 'zh-cn', urlCollapsed: true, settingsCollapsed: true,
         urls: [], activePreset: 'builtin', output: '',
-        settings: { projectName: 'DNS Shield', version: '3.7.12', ipv4: '127.0.0.1', ipv6: '::', addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true }
+        settings: { projectName: 'DNS Shield', version: '3.7.15', ipv4: '127.0.0.1', ipv6: '::', addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true }
       };
 
       var $ = function (id) { return document.getElementById(id); };
@@ -809,6 +815,7 @@
         // data toggle label (special: reflects state)
         $('toggleData').textContent = state.hasData ? t('hasData') : t('emptyState');
         $('toggleData').setAttribute('aria-label', state.hasData ? t('toastHasData') : t('toastEmptyState'));
+        $('toggleData').setAttribute('aria-pressed', state.hasData ? 'true' : 'false');
       }
 
       /* ---------- render helpers ---------- */
@@ -822,9 +829,13 @@
         var src = $(srcId), gutter = $(gutterId);
         if (src && gutter) gutter.scrollTop = src.scrollTop;
       }
-      function toast(msg) {
-        var el = $('toast'); el.textContent = msg; el.classList.add('show');
-        clearTimeout(el._t); el._t = setTimeout(function () { el.classList.remove('show'); }, 1800);
+      function toast(msg, type) {
+        var el = $('toast');
+        el.textContent = msg;
+        el.className = 'toast show' + (type ? ' toast-' + type : '');
+        clearTimeout(el._t);
+        var dur = type === 'error' ? 5000 : type === 'warning' ? 4000 : 3000;
+        el._t = setTimeout(function () { el.classList.remove('show'); }, dur);
       }
 
       /* ---------- main render ---------- */
@@ -839,11 +850,13 @@
         $('inputEditorWrap').style.display = state.hasData ? 'block' : 'none';
         $('inputEmpty').style.display = state.hasData ? 'none' : 'flex';
         $('inputActions').style.display = state.hasData ? 'flex' : 'none';
-        $('outputEditorWrap').style.display = state.hasData ? 'block' : 'none';
+        $('outputPanel').style.display = state.hasData ? 'block' : 'none';
         $('outputEmpty').style.display = state.hasData ? 'none' : 'flex';
         $('outputActions').style.display = state.hasData ? 'flex' : 'none';
         $('toggleData').textContent = state.hasData ? t('hasData') : t('emptyState');
         $('toggleData').setAttribute('aria-label', state.hasData ? t('toastHasData') : t('toastEmptyState'));
+        $('toggleData').setAttribute('aria-pressed', state.hasData ? 'true' : 'false');
+        $('toggleData').setAttribute('aria-pressed', state.hasData ? 'true' : 'false');
 
         // input editor + stats
         if (state.hasData) {
@@ -864,6 +877,8 @@
           tabs[i].classList.toggle('active', on);
           tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
         }
+        var panel = $('outputPanel');
+        if (panel) panel.setAttribute('aria-labelledby', 'tab-' + state.format);
 
         // output
         if (state.hasData && state.output) {
@@ -981,12 +996,14 @@
 
       // url actions (fetch shows transient loading state, mirroring real withLoading)
       function withFetchLoading(btn, msg, done) {
-        btn.disabled = true; var old = btn.textContent; btn.textContent = t('toastFetching');
-        setTimeout(function () { btn.disabled = false; btn.textContent = old; done(); }, 350);
+        btn.disabled = true;
+        var old = btn.innerHTML;
+        btn.innerHTML = '<span class="spinner"></span>' + (msg || t('toastFetching'));
+        setTimeout(function () { btn.disabled = false; btn.innerHTML = old; done(); }, 350);
       }
       $('fetchUrl').addEventListener('click', function () {
         var u = $('urlInput').value.trim();
-        if (!u) { toast(t('toastNeedUrl')); return; }
+        if (!u) { toast(t('toastNeedUrl'), 'warning'); return; }
         var btn = this;
         withFetchLoading(btn, null, function () {
           if (state.urls.indexOf(u) === -1) state.urls.push(u);
@@ -996,13 +1013,13 @@
       });
       $('addUrl').addEventListener('click', function () {
         var u = $('urlInput').value.trim();
-        if (!u) { toast(t('toastNeedUrl')); return; }
+        if (!u) { toast(t('toastNeedUrl'), 'warning'); return; }
         if (state.urls.indexOf(u) === -1) state.urls.push(u);
         $('urlInput').value = ''; render(); toast(t('toastUrlAdded'));
       });
       $('sortUrls').addEventListener('click', function () { state.urls.sort(); render(); toast(t('toastUrlsSorted')); });
       $('fetchAll').addEventListener('click', function () {
-        if (state.urls.length === 0) { toast(t('toastNeedUrls')); return; }
+        if (state.urls.length === 0) { toast(t('toastNeedUrls'), 'warning'); return; }
         var btn = this;
         withFetchLoading(btn, null, function () { toast(t('toastFetchAll')); });
       });
@@ -1017,10 +1034,10 @@
 
       // copy / download
       $('copyBtn').addEventListener('click', function () {
-        if (!state.output) { toast(t('toastNoOutput')); return; }
+        if (!state.output) { toast(t('toastNoOutput'), 'warning'); return; }
         var text = state.output[state.format] || '';
         function ok() { toast(t('toastCopied')); }
-        function fail() { toast(t('toastCopyFail')); }
+        function fail() { toast(t('toastCopyFail'), 'error'); }
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(text).then(ok, function () { legacyCopy(text) ? ok() : fail(); });
         } else {
@@ -1036,7 +1053,7 @@
         } catch (e) { return false; }
       }
       $('downloadBtn').addEventListener('click', function () {
-        if (!state.output) { toast(t('toastNoOutput')); return; }
+        if (!state.output) { toast(t('toastNoOutput'), 'warning'); return; }
         var text = state.output[state.format] || '';
         var blob = new Blob([text], { type: 'text/plain' });
         var a = document.createElement('a');
@@ -1075,6 +1092,24 @@
         $('langBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
       });
       document.addEventListener('click', function () { langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false'); });
+      // 语言菜单键盘可达性：Escape 关闭（规范 §5.1）
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && langMenu.classList.contains('open')) {
+          langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false');
+          $('langBtn').focus();
+        }
+      });
+
+      // 全局键盘快捷键（规范 §5.1）
+      document.addEventListener('keydown', function (e) {
+        var mod = e.ctrlKey || e.metaKey;
+        if (!mod) return;
+        var k = e.key.toLowerCase();
+        if (k === 'enter') { e.preventDefault(); $('generateBtn').click(); }
+        else if (k === 's') { e.preventDefault(); $('saveBtn').click(); }
+        else if (k === 'd') { e.preventDefault(); if (state.output) $('downloadBtn').click(); else toast(t('toastNoOutput'), 'warning'); }
+        else if (k === 'c' && e.shiftKey) { e.preventDefault(); if (state.output) $('copyBtn').click(); else toast(t('toastNoOutput'), 'warning'); }
+      });
 
       render();
     })();

@@ -1,6 +1,6 @@
-// DNS Shield 高保真原型 v3.7.12
+// DNS Shield 高保真原型 v3.7.15
 // 设计规范：Swiss Modernism 2.0 × Apple Precision
-// 严格遵循 DNS Shield Design System v3.7.12
+// 严格遵循 DNS Shield Design System v3.7.15
 import React, { useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -23,7 +23,7 @@ log.bilibili.com`;
 
 const OUTPUT_SAMPLES: Record<string, string> = {
   dnsmasq: `# DNS Shield - Dnsmasq 广告过滤列表
-# 版本: 3.7.12 | 域名: 6 个
+# 版本: 3.7.15 | 域名: 6 个
 
 address=/ad.mi.com/127.0.0.1
 address=/ad.xiaomi.com/127.0.0.1
@@ -36,7 +36,7 @@ address=/ad.bilibili.com/127.0.0.1
 server=/mi.com/
 server=/iot.mi.com/`,
   hosts: `# DNS Shield - Hosts 广告过滤列表
-# 版本: 3.7.12
+# 版本: 3.7.15
 
 127.0.0.1 ad.mi.com
 127.0.0.1 ad.xiaomi.com
@@ -45,7 +45,7 @@ server=/iot.mi.com/`,
 127.0.0.1 ad.youku.com
 127.0.0.1 ad.bilibili.com`,
   adguard: `! DNS Shield - AdGuard 广告过滤规则
-! 版本: 3.7.12 | 域名: 6 个
+! 版本: 3.7.15 | 域名: 6 个
 
 ||ad.mi.com^
 ||ad.xiaomi.com^
@@ -262,10 +262,12 @@ export default function PrototypeCanvas() {
 
   const toggleTheme = useCallback(() => setTheme(prev => prev === 'dark' ? 'light' : 'dark'), []);
   const toggleData = useCallback(() => {
-    setShowData(prev => !prev);
-    if (showData) setInputValue('');
-    else setInputValue(MOCK_DOMAINS);
-  }, [showData]);
+    setShowData(prev => {
+      const next = !prev;
+      setInputValue(next ? MOCK_DOMAINS : '');
+      return next;
+    });
+  }, []);
 
   return (
     <div className={cn('min-h-dvh flex flex-col transition-colors duration-300', isDark ? 'dark' : '')}>
@@ -276,13 +278,14 @@ export default function PrototypeCanvas() {
             <a href="#" className="flex items-center gap-2 no-underline text-foreground" aria-label="DNS Shield 首页">
               <Icons.Shield className="text-primary" />
               <span className="text-sm font-semibold tracking-tight">DNS Shield</span>
-              <span className="text-[11px] text-muted-foreground font-medium">v3.7.12</span>
+              <span className="text-[11px] text-muted-foreground font-medium">v3.7.15</span>
             </a>
             <div className="flex items-center gap-2">
               <button
                 onClick={toggleData}
                 className="inline-flex items-center gap-1 h-7 px-2 text-[11px] font-medium text-muted-foreground bg-transparent border-none rounded-md cursor-pointer hover:bg-muted transition-colors"
                 aria-label="切换数据状态"
+                aria-pressed={showData}
               >
                 {showData ? '有数据' : '空状态'}
               </button>
@@ -435,7 +438,7 @@ export default function PrototypeCanvas() {
               <span className="w-[3px] h-[3px] rounded-full bg-muted-foreground" />
               <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors no-underline">文档</a>
               <span className="w-[3px] h-[3px] rounded-full bg-muted-foreground" />
-              <span className="text-xs text-muted-foreground/70 font-mono">v3.7.12</span>
+              <span className="text-xs text-muted-foreground/70 font-mono">v3.7.15</span>
             </div>
             <p className="text-xs text-muted-foreground/70">DNS Shield — 路由器级广告过滤规则生成工具</p>
           </div>
