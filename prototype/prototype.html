@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.7.8</title>
+  <title>DNS Shield — 高保真原型 v3.7.9</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* ============================================
-       DNS Shield — Design System v3.7.8
+       DNS Shield — Design System v3.7.9
        Swiss Modernism 2.0 × Apple Precision
        ============================================ */
     :root {
@@ -348,11 +348,11 @@
         <div class="header-actions">
           <!-- Language selector -->
           <div style="position:relative">
-            <button class="icon-btn" id="langBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="选择语言" data-i18n-aria="chooseLang">
+            <button class="icon-btn" id="langBtn" aria-haspopup="menu" aria-expanded="false" aria-label="选择语言" data-i18n-aria="chooseLang">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
               <span id="langName">中文简体</span>
             </button>
-            <div class="dropdown" id="langMenu" role="listbox" aria-label="语言列表"></div>
+            <div class="dropdown" id="langMenu" role="menu" aria-label="语言列表"></div>
           </div>
           <!-- Theme toggle -->
           <button class="icon-btn icon-only" id="toggleTheme" aria-label="切换深色/浅色主题" aria-pressed="true" data-i18n-aria="toggleTheme">
@@ -387,9 +387,10 @@
                 </button>
               </div>
 
-                <div class="stats" id="inputStats" role="region" aria-label="统计信息">
+                <div class="stats" id="inputStats" role="region" aria-label="统计信息" data-i18n-aria="statsLabel">
                 <div class="stat"><span class="stat-val" id="stat-domains">6</span><span class="stat-label" data-i18n="statDomains">域名</span></div>
                 <div class="stat"><span class="stat-val" id="stat-whitelist">2</span><span class="stat-label" data-i18n="statWhitelist">白名单</span></div>
+                <div class="stat"><span class="stat-val" id="stat-custom">0</span><span class="stat-label" data-i18n="statCustom">自定义DNS</span></div>
                 <div class="stat"><span class="stat-val" id="stat-valid">8</span><span class="stat-label" data-i18n="statValid">有效</span></div>
                 <div class="stat"><span class="stat-val" id="stat-comment">4</span><span class="stat-label" data-i18n="statComment">注释</span></div>
               </div>
@@ -468,7 +469,7 @@
                 <div class="settings-inner">
                   <div class="settings-grid">
                     <div class="field"><label for="projectNameInput" data-i18n="sProjectName">项目名称</label><input type="text" id="projectNameInput" value="DNS Shield" /></div>
-                    <div class="field"><label for="versionInput" data-i18n="sVersion">版本号</label><input type="text" id="versionInput" value="3.7.8" /></div>
+                    <div class="field"><label for="versionInput" data-i18n="sVersion">版本号</label><input type="text" id="versionInput" value="3.7.9" /></div>
                     <div class="field"><label for="ipv4Input" data-i18n="sIpv4">IPv4</label><input type="text" id="ipv4Input" value="127.0.0.1" /></div>
                     <div class="field"><label for="ipv6Input" data-i18n="sIpv6">IPv6</label><input type="text" id="ipv6Input" value="::" /></div>
                   </div>
@@ -525,7 +526,7 @@
           <span class="dot"></span>
           <a href="#" data-i18n="docs">文档</a>
           <span class="dot"></span>
-          <span class="footer-ver">v3.7.8</span>
+          <span class="footer-ver">v3.7.9</span>
         </div>
         <p class="footer-sub" data-i18n="footerSub">DNS Shield — 路由器级广告过滤规则生成工具</p>
       </div>
@@ -556,7 +557,7 @@
           chooseLang: '选择语言', toggleTheme: '切换深色/浅色主题',
           dataToggle: '有数据', heroDesc: '路由器级全局广告过滤规则生成工具 — 输入域名清单，自动生成 Dnsmasq / Hosts / AdGuard 格式规则',
           inputTitle: '输入域名清单', advanced: '高级选项',
-          statDomains: '域名', statWhitelist: '白名单', statValid: '有效', statComment: '注释',
+          statDomains: '域名', statWhitelist: '白名单', statCustom: '自定义DNS', statValid: '有效', statComment: '注释', statsLabel: '输入统计',
           urlPlaceholder: '输入 URL 导入域名列表...', fetch: '获取', addUrl: '添加URL', sortUrls: '前缀优先', fetchAll: '获取全部',
           presets: '预设源:', presetBuiltin: '内置数据', presetAdguard: 'AdGuard', presetEasylist: 'EasyList', presetNeohosts: 'NeoHosts',
           emptyTitle: '暂无域名', emptyDesc: '输入域名或从 URL 导入后开始生成过滤规则', importSample: '导入示例',
@@ -573,7 +574,7 @@
           headerUpdated: '更新', uniqueDomains: '个唯一域名',
           toastGenerated: '规则生成成功！', toastSorted: '域名已排序',
           toastDeduped: '已去除 {n} 个重复项', toastSaved: '域名已保存', toastPreset: '已加载预设',
-          toastNeedUrl: '请输入 URL', toastUrlAdded: 'URL 已添加', toastUrlsSorted: 'URLs 已排序',
+          toastNeedUrl: '请输入 URL', toastUrlAdded: 'URL 已添加', toastUrlsSorted: 'URLs 已排序', removeUrl: '移除 URL: ',
           toastNeedUrls: '请先添加 URL', toastFetching: '获取中...', toastFetchAll: '获取全部...', toastUrlFetched: 'URL 已获取并添加',
           toastCopied: '已复制到剪贴板', toastCopyFail: '复制失败', toastDownloaded: '已下载 {f}',
           toastNoOutput: '请先生成规则', toastEmptyState: '空状态', toastHasData: '有数据',
@@ -584,7 +585,7 @@
           chooseLang: 'Choose language', toggleTheme: 'Toggle dark/light theme',
           dataToggle: 'With data', heroDesc: 'Router-level global ad-blocking rule generator — input domain lists, auto-generate Dnsmasq / Hosts / AdGuard rules',
           inputTitle: 'Input Domain List', advanced: 'Advanced',
-          statDomains: 'Domains', statWhitelist: 'Whitelist', statValid: 'Valid', statComment: 'Comments',
+          statDomains: 'Domains', statWhitelist: 'Whitelist', statCustom: 'Custom DNS', statValid: 'Valid', statComment: 'Comments', statsLabel: 'Input statistics',
           urlPlaceholder: 'Enter URL to import domain list...', fetch: 'Fetch', addUrl: 'Add URL', sortUrls: 'Prefix-first', fetchAll: 'Fetch All',
           presets: 'Presets:', presetBuiltin: 'Built-in', presetAdguard: 'AdGuard', presetEasylist: 'EasyList', presetNeohosts: 'NeoHosts',
           emptyTitle: 'No domains', emptyDesc: 'Enter domains or import from URL to start generating rules', importSample: 'Import Sample',
@@ -601,7 +602,7 @@
           headerUpdated: 'Updated', uniqueDomains: 'unique domains',
           toastGenerated: 'Rules generated!', toastSorted: 'Domains sorted',
           toastDeduped: 'Removed {n} duplicates', toastSaved: 'Domains saved', toastPreset: 'Preset loaded',
-          toastNeedUrl: 'Please enter a URL', toastUrlAdded: 'URL added', toastUrlsSorted: 'URLs sorted',
+          toastNeedUrl: 'Please enter a URL', toastUrlAdded: 'URL added', toastUrlsSorted: 'URLs sorted', removeUrl: 'Remove URL: ',
           toastNeedUrls: 'Add URLs first', toastFetching: 'Fetching...', toastFetchAll: 'Fetch all...', toastUrlFetched: 'URL fetched and added',
           toastCopied: 'Copied to clipboard', toastCopyFail: 'Copy failed', toastDownloaded: 'Downloaded {f}',
           toastNoOutput: 'Generate rules first', toastEmptyState: 'Empty', toastHasData: 'With data',
@@ -631,7 +632,10 @@
           'log.iqiyi.com',
           'ad.youku.com',
           'ad.bilibili.com',
-          'log.bilibili.com'
+          'log.bilibili.com',
+          '',
+          '# === 自定义DNS(指向内网解析) ===',
+          '@analytics.example.com=10.0.0.1'
         ].join('\n'),
         adguard: [
           '# === AdGuard 基础广告 ===',
@@ -679,7 +683,7 @@
         theme: 'dark', format: 'hosts', hasData: true, input: MOCK_DOMAINS,
         lang: 'zh-cn', urlCollapsed: true, settingsCollapsed: true,
         urls: [], activePreset: 'builtin', output: '',
-        settings: { projectName: 'DNS Shield', version: '3.7.8', ipv4: '127.0.0.1', ipv6: '::', addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true }
+        settings: { projectName: 'DNS Shield', version: '3.7.9', ipv4: '127.0.0.1', ipv6: '::', addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true }
       };
 
       var $ = function (id) { return document.getElementById(id); };
@@ -750,7 +754,7 @@
         var wl = parsed.whitelist.slice();
         if (s.removeWildcard) { domains = domains.map(function (d) { return d.replace(/^\*\./, ''); }); wl = wl.map(function (d) { return d.replace(/^\*\./, ''); }); }
         if (s.dedupDomains) { domains = uniq(domains).sort(); wl = uniq(wl).sort(); }
-        var cd = parsed.customDns;
+        var cd = parsed.customDns.map(function (c) { return { domain: normKey(c.domain), ip: c.ip }; });
 
         var dns = '', hosts = '', adg = '', wlOut = '';
         if (s.addHeader) {
@@ -777,7 +781,8 @@
         return { dnsmasq: dns, hosts: hosts, adguard: adg, whitelist: wlOut, parsed: parsed };
       }
 
-      function uniq(arr) { var seen = {}, out = []; arr.forEach(function (x) { if (!seen[x]) { seen[x] = true; out.push(x); } }); return out; }
+      function normKey(x) { return x.toLowerCase().replace(/^\*\./, ''); }
+      function uniq(arr) { var seen = {}, out = []; arr.forEach(function (x) { var k = normKey(x); if (!seen[k]) { seen[k] = true; out.push(x); } }); return out; }
 
       /* ---------- i18n ---------- */
       function t(key, params) {
@@ -847,6 +852,7 @@
           var p = parseSource(state.input);
           $('stat-domains').textContent = p.domains.length;
           $('stat-whitelist').textContent = p.whitelist.length;
+          $('stat-custom').textContent = p.customDns.length;
           $('stat-valid').textContent = p.domains.length + p.whitelist.length;
           $('stat-comment').textContent = p.comments;
         }
@@ -898,7 +904,7 @@
           row.innerHTML = '<svg class="url-item-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' +
             '<span class="url-item-text">' + u + '</span>';
           var rm = document.createElement('button');
-          rm.className = 'url-remove'; rm.setAttribute('aria-label', t('addUrl') + ' ' + u);
+          rm.className = 'url-remove'; rm.setAttribute('aria-label', t('removeUrl') + u);
           rm.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
           rm.addEventListener('click', function () { state.urls.splice(idx, 1); render(); });
           row.appendChild(rm);
@@ -919,7 +925,7 @@
         render();
         toast(state.hasData ? t('toastHasData') : t('toastEmptyState'));
       });
-      $('importSample').addEventListener('click', function () { state.hasData = true; state.input = MOCK_DOMAINS; state.output = ''; render(); });
+      $('importSample').addEventListener('click', function () { state.hasData = true; state.activePreset = 'builtin'; state.input = PRESETS.builtin; state.output = ''; render(); });
 
       $('inputArea').addEventListener('input', function (e) { state.input = e.target.value; state.output = ''; renderGutter($('inputGutter'), state.input); });
       $('inputArea').addEventListener('scroll', function () { syncScroll('inputArea', 'inputGutter'); });
@@ -973,14 +979,20 @@
         el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
       });
 
-      // url actions
+      // url actions (fetch shows transient loading state, mirroring real withLoading)
+      function withFetchLoading(btn, msg, done) {
+        btn.disabled = true; var old = btn.textContent; btn.textContent = t('toastFetching');
+        setTimeout(function () { btn.disabled = false; btn.textContent = old; done(); }, 350);
+      }
       $('fetchUrl').addEventListener('click', function () {
         var u = $('urlInput').value.trim();
         if (!u) { toast(t('toastNeedUrl')); return; }
-        // 原型内"获取"模拟真实：将 URL 加入列表（真实应用会拉取内容并合并）
-        if (state.urls.indexOf(u) === -1) state.urls.push(u);
-        $('urlInput').value = '';
-        render(); toast(t('toastUrlFetched'));
+        var btn = this;
+        withFetchLoading(btn, null, function () {
+          if (state.urls.indexOf(u) === -1) state.urls.push(u);
+          $('urlInput').value = '';
+          render(); toast(t('toastUrlFetched'));
+        });
       });
       $('addUrl').addEventListener('click', function () {
         var u = $('urlInput').value.trim();
@@ -989,7 +1001,11 @@
         $('urlInput').value = ''; render(); toast(t('toastUrlAdded'));
       });
       $('sortUrls').addEventListener('click', function () { state.urls.sort(); render(); toast(t('toastUrlsSorted')); });
-      $('fetchAll').addEventListener('click', function () { if (state.urls.length === 0) { toast(t('toastNeedUrls')); return; } toast(t('toastFetchAll')); });
+      $('fetchAll').addEventListener('click', function () {
+        if (state.urls.length === 0) { toast(t('toastNeedUrls')); return; }
+        var btn = this;
+        withFetchLoading(btn, null, function () { toast(t('toastFetchAll')); });
+      });
 
       // format tabs (keyboard)
       var tabs = document.querySelectorAll('#formatTabs .fmt');
@@ -1003,9 +1019,22 @@
       $('copyBtn').addEventListener('click', function () {
         if (!state.output) { toast(t('toastNoOutput')); return; }
         var text = state.output[state.format] || '';
-        if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { toast(t('toastCopied')); }, function () { toast(t('toastCopyFail')); });
-        else toast(t('toastCopyFail'));
+        function ok() { toast(t('toastCopied')); }
+        function fail() { toast(t('toastCopyFail')); }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(ok, function () { legacyCopy(text) ? ok() : fail(); });
+        } else {
+          legacyCopy(text) ? ok() : fail();
+        }
       });
+      function legacyCopy(text) {
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          var r = document.execCommand('copy'); document.body.removeChild(ta); return r;
+        } catch (e) { return false; }
+      }
       $('downloadBtn').addEventListener('click', function () {
         if (!state.output) { toast(t('toastNoOutput')); return; }
         var text = state.output[state.format] || '';
@@ -1016,23 +1045,23 @@
         URL.revokeObjectURL(a.href); toast(t('toastDownloaded', { f: names[state.format] }));
       });
 
-      // language dropdown
+      // language dropdown (ARIA menu + menuitemradio)
       var langMenu = $('langMenu');
       LANGS.forEach(function (l) {
         var b = document.createElement('button');
-        b.setAttribute('role', 'option');
-        b.setAttribute('aria-selected', l.code === state.lang ? 'true' : 'false');
+        b.setAttribute('role', 'menuitemradio');
+        b.setAttribute('aria-checked', l.code === state.lang ? 'true' : 'false');
         b.innerHTML = '<span>' + l.name + '</span><svg class="check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
         if (l.code === state.lang) b.classList.add('active');
         b.addEventListener('click', function () {
           state.lang = l.code;
           document.documentElement.setAttribute('lang', l.code === 'zh-cn' ? 'zh-CN' : l.code);
-          // sync active state + aria-selected across options
+          // sync active state + aria-checked across options
           var opts = langMenu.querySelectorAll('button');
           for (var i = 0; i < opts.length; i++) {
             var sel = opts[i] === b;
             opts[i].classList.toggle('active', sel);
-            opts[i].setAttribute('aria-selected', sel ? 'true' : 'false');
+            opts[i].setAttribute('aria-checked', sel ? 'true' : 'false');
           }
           langMenu.classList.remove('open');
           $('langBtn').setAttribute('aria-expanded', 'false');

@@ -7,6 +7,16 @@
 
 ## [Unreleased]
 
+## [3.7.9] - 2026-08-09
+
+### Improved
+- 全面实施原型合理规范改进（17 项）：
+  - **保真度**：新增 `customDns` 统计项并参与输出（内置预设含 `@domain=ip` 示例）；去重归一为小写+去 `*.` 前缀（与真实 parser 一致）；`generateRules` 的 customDns 域名归一；白名单格式分支（`server=/`/`@@||`）本已正确保留
+  - **无障碍**：统计区 `aria-label` 随语言切换（`statsLabel`）；语言菜单升级为 `role="menu"`+`menuitemradio`+`aria-checked`；URL 删除按钮 `aria-label` 语义修正为"移除 URL"；`aria-live`（mergeInfo/toast）与 `aria-controls`（折叠面板）本已实现并确认
+  - **交互**：`fetchUrl`/`fetchAll` 增加 loading 态（禁用+文本切换，模拟 `withLoading`）；复制增加 `execCommand` 回退；`importSample` 与内置预设行为统一（消除重复入口歧义）
+  - **文档**：OVERVIEW.md 新增"已知简化项"清单（URL 抓取为模拟、customDns 仅在示例体现、多语言为演示机制、对比度/reduced-motion 说明）
+- 统一全项目版本号至 v3.7.9
+
 ## [3.7.8] - 2026-08-09
 
 ### Improved
@@ -19,7 +29,6 @@
   - `parseSource` 空行不再计为注释（与真实 parser 一致）
 - 同步 prototype.canvas.tsx：移除黑名单统计项、预设列表与 HTML 对齐为 4 个、按钮/空状态文案同步
 - 同步更新 prototype/OVERVIEW.md 描述
-- 统一全项目版本号至 v3.7.8
 
 ## [3.7.7] - 2026-08-09
 

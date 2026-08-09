@@ -1,4 +1,4 @@
-// src/utils/domainValidator.ts v3.7.8
+// src/utils/domainValidator.ts v3.7.9
 // 域名验证与行解析工具函数
 
 import { CustomDnsEntry, ParsedData } from '../types';
