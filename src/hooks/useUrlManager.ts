@@ -1,6 +1,6 @@
-// src/hooks/useUrlManager.ts v3.7.6
+// src/hooks/useUrlManager.ts v3.7.7
 import { useState, useRef } from 'react';
-import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl } from '../utils/fileUtils';
+import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
 import { generateLineNumbers } from '../utils/uiUtils';
 import { config } from '../config/index';
 import { useLoading } from './useLoading';
@@ -112,7 +112,7 @@ export const useUrlManager = (
       showToast('invalidUrlsFiltered', { count: urls.length - validUrls.length });
     }
 
-    await withLoading<string>({
+    await withLoading<FetchUrlsResult>({
       beforeLoad: () => true,
       loadingToast: { key: 'loading' },
       fetchFn: async () => {
@@ -121,12 +121,16 @@ export const useUrlManager = (
           const failedCount = result.failedUrls.length;
           showToast('invalidUrlsFiltered', { count: failedCount });
         }
-        return result.content;
+        return result;
       },
-      onSuccess: (content: string) => {
-        setSourceInput(content);
-        parseSourceData(content);
-        generateLineNumbers(content, lineNumbersRef);
+      onSuccess: (result: FetchUrlsResult) => {
+        // 全部 URL 失败时 content 为空，避免清空用户已有输入造成数据丢失
+        if (result.content.trim() === '' && result.failedUrls.length === validUrls.length) {
+          return;
+        }
+        setSourceInput(result.content);
+        parseSourceData(result.content);
+        generateLineNumbers(result.content, lineNumbersRef);
       },
       errorContext: 'fetchAllUrls',
       successToast: { key: 'urlsFetched' },

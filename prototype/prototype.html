@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.7.6</title>
+  <title>DNS Shield — 高保真原型 v3.7.7</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* ============================================
-       DNS Shield — Design System v3.7.6
+       DNS Shield — Design System v3.7.7
        Swiss Modernism 2.0 × Apple Precision
        ============================================ */
     :root {
@@ -129,7 +129,7 @@
     /* Lang dropdown */
     .dropdown {
       position: absolute; top: calc(100% + .5rem); right: 0; z-index: 40;
-      min-width: 11rem; padding: .375rem; border-radius: var(--radius-lg);
+      min-width: 11rem; max-height: 18rem; overflow-y: auto; padding: .375rem; border-radius: var(--radius-lg);
       border: 1px solid hsl(var(--border)); background-color: hsl(var(--popover));
       box-shadow: var(--shadow-pop); display: none;
     }
@@ -143,6 +143,8 @@
     .dropdown button.active { color: hsl(var(--primary)); font-weight: 600; }
     .dropdown .check { margin-left: auto; opacity: 0; }
     .dropdown button.active .check { opacity: 1; }
+    .dropdown button[aria-selected="true"] { color: hsl(var(--primary)); font-weight: 600; }
+    .dropdown button[aria-selected="true"] .check { opacity: 1; }
 
     /* Main */
     .main { flex: 1; padding: 1.5rem 1rem 2.5rem; }
@@ -340,24 +342,24 @@
           </span>
           <span class="brand-text">
             <span class="brand-name">DNS Shield</span>
-            <span class="brand-sub">路由器级全局广告过滤规则生成工具</span>
+            <span class="brand-sub" data-i18n="subtitle">路由器级全局广告过滤规则生成工具</span>
           </span>
         </a>
         <div class="header-actions">
           <!-- Language selector -->
           <div style="position:relative">
-            <button class="icon-btn" id="langBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="选择语言">
+            <button class="icon-btn" id="langBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="选择语言" data-i18n-aria="chooseLang">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
               <span id="langName">中文简体</span>
             </button>
             <div class="dropdown" id="langMenu" role="listbox" aria-label="语言列表"></div>
           </div>
           <!-- Theme toggle -->
-          <button class="icon-btn icon-only" id="toggleTheme" aria-label="切换深色/浅色主题" aria-pressed="true">
+          <button class="icon-btn icon-only" id="toggleTheme" aria-label="切换深色/浅色主题" aria-pressed="true" data-i18n-aria="toggleTheme">
             <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
           <!-- Data toggle (preview helper) -->
-          <button class="pill" id="toggleData" aria-label="切换数据状态">有数据</button>
+          <button class="pill" id="toggleData" aria-label="切换数据状态" data-i18n="dataToggle">有数据</button>
         </div>
       </div>
     </header>
@@ -367,7 +369,7 @@
       <div class="main-inner">
         <div class="hero">
           <h1>DNS Shield</h1>
-          <p>路由器级全局广告过滤规则生成工具 — 输入域名清单，自动生成 Dnsmasq / Hosts / AdGuard 格式规则</p>
+          <p data-i18n="heroDesc">路由器级全局广告过滤规则生成工具 — 输入域名清单，自动生成 Dnsmasq / Hosts / AdGuard 格式规则</p>
         </div>
 
         <div class="grid-2">
@@ -377,43 +379,43 @@
               <div class="section-header">
                 <h2 class="section-title">
                   <svg class="icon-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                  输入域名清单
+                  <span data-i18n="inputTitle">输入域名清单</span>
                 </h2>
                 <button class="collapse-btn" id="toggleUrl" aria-expanded="false" aria-controls="urlSection">
                   <span class="collapse-icon collapsed" id="urlIcon" aria-hidden="true">▼</span>
-                  <span>高级选项</span>
+                  <span id="urlToggleLabel" data-i18n="advanced">高级选项</span>
                 </button>
               </div>
 
               <div class="stats" id="inputStats" role="region" aria-label="统计信息">
-                <div class="stat"><span class="stat-val" id="stat-domains">6</span><span class="stat-label">域名</span></div>
-                <div class="stat"><span class="stat-val" id="stat-blacklist">6</span><span class="stat-label">黑名单</span></div>
-                <div class="stat"><span class="stat-val" id="stat-whitelist">2</span><span class="stat-label">白名单</span></div>
-                <div class="stat"><span class="stat-val" id="stat-valid">8</span><span class="stat-label">有效</span></div>
-                <div class="stat"><span class="stat-val" id="stat-comment">4</span><span class="stat-label">注释</span></div>
+                <div class="stat"><span class="stat-val" id="stat-domains">6</span><span class="stat-label" data-i18n="statDomains">域名</span></div>
+                <div class="stat"><span class="stat-val" id="stat-blacklist">6</span><span class="stat-label" data-i18n="statBlacklist">黑名单</span></div>
+                <div class="stat"><span class="stat-val" id="stat-whitelist">2</span><span class="stat-label" data-i18n="statWhitelist">白名单</span></div>
+                <div class="stat"><span class="stat-val" id="stat-valid">8</span><span class="stat-label" data-i18n="statValid">有效</span></div>
+                <div class="stat"><span class="stat-val" id="stat-comment">4</span><span class="stat-label" data-i18n="statComment">注释</span></div>
               </div>
 
               <!-- URL Section (collapsible advanced) -->
               <div class="url-section collapsed" id="urlSection" aria-hidden="true">
                 <div class="url-inner">
                   <div class="url-input-row">
-                    <input class="url-input" type="text" id="urlInput" placeholder="输入 URL 导入域名列表..." aria-label="URL 导入地址" />
-                    <button class="btn btn-primary btn-sm" id="fetchUrl">获取</button>
+                    <input class="url-input" type="text" id="urlInput" placeholder="输入 URL 导入域名列表..." aria-label="URL 导入地址" data-i18n-ph="urlPlaceholder" />
+                    <button class="btn btn-primary btn-sm" id="fetchUrl" data-i18n="fetch">获取</button>
                   </div>
                   <div class="url-actions">
-                    <button class="btn btn-outline btn-sm" id="addUrl">添加URL</button>
-                    <button class="btn btn-outline btn-sm" id="sortUrls">前缀优先</button>
-                    <button class="btn btn-outline btn-sm" id="fetchAll">获取全部</button>
+                    <button class="btn btn-outline btn-sm" id="addUrl" data-i18n="addUrl">添加URL</button>
+                    <button class="btn btn-outline btn-sm" id="sortUrls" data-i18n="sortUrls">前缀优先</button>
+                    <button class="btn btn-outline btn-sm" id="fetchAll" data-i18n="fetchAll">获取全部</button>
                   </div>
                   <div class="url-list" id="urlList" role="list" aria-label="URL列表"></div>
 
                   <div class="preset-section">
-                    <span class="preset-label">预设源:</span>
+                    <span class="preset-label" data-i18n="presets">预设源:</span>
                     <div class="preset-tags" id="presets" role="group" aria-label="预设源">
-                      <span class="preset active" data-preset="builtin" role="button" tabindex="0" aria-pressed="true">内置数据</span>
+                      <span class="preset active" data-preset="builtin" role="button" tabindex="0" aria-pressed="true" data-i18n="presetBuiltin">内置数据</span>
                       <span class="preset" data-preset="adguard" role="button" tabindex="0" aria-pressed="false">AdGuard</span>
                       <span class="preset" data-preset="easylist" role="button" tabindex="0" aria-pressed="false">EasyList</span>
-                      <span class="preset" data-preset="neohosts" role="button" tabindex="0" aria-pressed="false">NeoHosts</span>
+                      <span class="preset" data-preset="neohosts" role="button" tabindex="0" aria-pressed="false" data-i18n="presetNeohosts">NeoHosts</span>
                     </div>
                   </div>
                 </div>
@@ -427,20 +429,20 @@
               </div>
               <div id="inputEmpty" class="empty" style="display:none">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                <h3>暂无域名</h3>
-                <p>输入域名或从 URL 导入后开始生成过滤规则</p>
-                <button class="empty-btn" id="importSample">导入示例</button>
+                <h3 data-i18n="emptyTitle">暂无域名</h3>
+                <p data-i18n="emptyDesc">输入域名或从 URL 导入后开始生成过滤规则</p>
+                <button class="empty-btn" id="importSample" data-i18n="importSample">导入示例</button>
               </div>
 
               <div class="btn-actions" id="inputActions">
-                <button class="btn btn-outline btn-sm" id="clearBtn">清空</button>
-                <button class="btn btn-outline btn-sm" id="sortBtn">排序</button>
+                <button class="btn btn-outline btn-sm" id="clearBtn" data-i18n="clear">清空</button>
+                <button class="btn btn-outline btn-sm" id="sortBtn" data-i18n="sort">排序</button>
                 <button class="btn btn-primary" id="parseBtn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  解析域名
+                  <span data-i18n="parse">解析域名</span>
                 </button>
-                <button class="btn btn-outline btn-sm" id="dedupeBtn">去重</button>
-                <button class="btn btn-outline btn-sm" id="saveBtn">保存</button>
+                <button class="btn btn-outline btn-sm" id="dedupeBtn" data-i18n="dedupe">去重</button>
+                <button class="btn btn-outline btn-sm" id="saveBtn" data-i18n="save">保存</button>
               </div>
             </div>
           </section>
@@ -451,14 +453,14 @@
               <div class="section-header">
                 <h2 class="section-title">
                   <svg class="icon-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
-                  生成过滤规则
+                  <span data-i18n="outputTitle">生成过滤规则</span>
                 </h2>
                 <div style="display:flex; align-items:center; gap:.5rem">
                   <div class="format-tabs" id="formatTabs" role="tablist">
                     <button class="fmt" data-fmt="dnsmasq" role="tab" aria-selected="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>Dnsmasq</button>
                     <button class="fmt active" data-fmt="hosts" role="tab" aria-selected="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>Hosts</button>
                     <button class="fmt" data-fmt="adguard" role="tab" aria-selected="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>AdGuard</button>
-                    <button class="fmt" data-fmt="whitelist" role="tab" aria-selected="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>白名单</button>
+                    <button class="fmt" data-fmt="whitelist" role="tab" aria-selected="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="fmtWhitelist">白名单</span></button>
                   </div>
                   <button class="icon-btn icon-only" id="toggleSettings" aria-expanded="false" aria-controls="settingsPanel" aria-label="设置" title="设置">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -470,21 +472,21 @@
               <div class="settings-panel collapsed" id="settingsPanel" aria-hidden="true">
                 <div class="settings-inner">
                   <div class="settings-grid">
-                    <div class="field"><label for="projectNameInput">项目名称</label><input type="text" id="projectNameInput" value="DNS Shield" /></div>
-                    <div class="field"><label for="versionInput">版本号</label><input type="text" id="versionInput" value="3.7.6" /></div>
-                    <div class="field"><label for="ipv4Input">IPv4</label><input type="text" id="ipv4Input" value="127.0.0.1" /></div>
-                    <div class="field"><label for="ipv6Input">IPv6</label><input type="text" id="ipv6Input" value="::" /></div>
+                    <div class="field"><label for="projectNameInput" data-i18n="sProjectName">项目名称</label><input type="text" id="projectNameInput" value="DNS Shield" /></div>
+                    <div class="field"><label for="versionInput" data-i18n="sVersion">版本号</label><input type="text" id="versionInput" value="3.7.7" /></div>
+                    <div class="field"><label for="ipv4Input" data-i18n="sIpv4">IPv4</label><input type="text" id="ipv4Input" value="127.0.0.1" /></div>
+                    <div class="field"><label for="ipv6Input" data-i18n="sIpv6">IPv6</label><input type="text" id="ipv6Input" value="::" /></div>
                   </div>
                   <div class="checks">
-                    <label class="check-item"><span class="checkbox checked" id="chk-addHeader" data-key="addHeader"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>头部注释</label>
-                    <label class="check-item"><span class="checkbox" id="chk-blockIPv6" data-key="blockIPv6"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>阻止 IPv6</label>
-                    <label class="check-item"><span class="checkbox checked" id="chk-dedupDomains" data-key="dedupDomains"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>自动去重</label>
-                    <label class="check-item"><span class="checkbox checked" id="chk-removeWildcard" data-key="removeWildcard"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>移除通配符</label>
+                    <label class="check-item"><span class="checkbox checked" id="chk-addHeader" data-key="addHeader"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="sAddHeader">头部注释</span></label>
+                    <label class="check-item"><span class="checkbox" id="chk-blockIPv6" data-key="blockIPv6"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="sBlockIpv6">阻止 IPv6</span></label>
+                    <label class="check-item"><span class="checkbox checked" id="chk-dedupDomains" data-key="dedupDomains"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="sDedup">自动去重</span></label>
+                    <label class="check-item"><span class="checkbox checked" id="chk-removeWildcard" data-key="removeWildcard"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span data-i18n="sRemoveWildcard">移除通配符</span></label>
                   </div>
                 </div>
               </div>
 
-              <div class="merge-info" id="mergeInfo" role="status" aria-live="polite">点击"生成规则"查看输出</div>
+              <div class="merge-info" id="mergeInfo" role="status" aria-live="polite" data-i18n="mergeHint">点击"生成规则"查看输出</div>
 
               <div id="outputEditorWrap">
                 <div class="editor">
@@ -494,22 +496,22 @@
               </div>
               <div id="outputEmpty" class="empty" style="display:none">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
-                <h3>暂无输出</h3>
-                <p>请在左侧面板输入域名并点击「解析域名」按钮</p>
+                <h3 data-i18n="outEmptyTitle">暂无输出</h3>
+                <p data-i18n="outEmptyDesc">请在左侧面板输入域名并点击「解析域名」按钮</p>
               </div>
 
               <div class="btn-actions" id="outputActions">
                 <button class="btn btn-primary" id="generateBtn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3z"/></svg>
-                  生成规则
+                  <span data-i18n="generate">生成规则</span>
                 </button>
                 <button class="btn btn-primary" id="downloadBtn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  下载
+                  <span data-i18n="download">下载</span>
                 </button>
                 <button class="btn btn-outline" id="copyBtn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                  复制
+                  <span data-i18n="copy">复制</span>
                 </button>
               </div>
             </div>
@@ -522,15 +524,15 @@
     <footer class="footer">
       <div class="footer-inner">
         <div class="footer-links">
-          <a href="#">GitHub</a>
+          <a href="#" data-i18n="github">GitHub</a>
           <span class="dot"></span>
-          <a href="#">Demo</a>
+          <a href="#" data-i18n="demo">Demo</a>
           <span class="dot"></span>
-          <a href="#">文档</a>
+          <a href="#" data-i18n="docs">文档</a>
           <span class="dot"></span>
-          <span class="footer-ver">v3.7.6</span>
+          <span class="footer-ver">v3.7.7</span>
         </div>
-        <p class="footer-sub">DNS Shield — 路由器级广告过滤规则生成工具</p>
+        <p class="footer-sub" data-i18n="footerSub">DNS Shield — 路由器级广告过滤规则生成工具</p>
       </div>
     </footer>
   </div>
@@ -551,6 +553,64 @@
         { code: 'th', name: 'ไทย' }, { code: 'tr', name: 'Türkçe' },
         { code: 'ru', name: 'Русский' }, { code: 'vi', name: 'Tiếng Việt' }
       ];
+
+      // i18n dictionaries (UI text only; English + Chinese fully, others fall back to English label)
+      var I18N = {
+        'zh-cn': {
+          subtitle: '路由器级全局广告过滤规则生成工具',
+          chooseLang: '选择语言', toggleTheme: '切换深色/浅色主题',
+          dataToggle: '有数据', heroDesc: '路由器级全局广告过滤规则生成工具 — 输入域名清单，自动生成 Dnsmasq / Hosts / AdGuard 格式规则',
+          inputTitle: '输入域名清单', advanced: '高级选项',
+          statDomains: '域名', statBlacklist: '黑名单', statWhitelist: '白名单', statValid: '有效', statComment: '注释',
+          urlPlaceholder: '输入 URL 导入域名列表...', fetch: '获取', addUrl: '添加URL', sortUrls: '前缀优先', fetchAll: '获取全部',
+          presets: '预设源:', presetBuiltin: '内置数据', presetNeohosts: 'NeoHosts',
+          emptyTitle: '暂无域名', emptyDesc: '输入域名或从 URL 导入后开始生成过滤规则', importSample: '导入示例',
+          clear: '清空', sort: '排序', parse: '解析域名', dedupe: '去重', save: '保存',
+          outputTitle: '生成过滤规则', fmtWhitelist: '白名单',
+          sProjectName: '项目名称', sVersion: '版本号', sIpv4: 'IPv4', sIpv6: 'IPv6',
+          sAddHeader: '头部注释', sBlockIpv6: '阻止 IPv6', sDedup: '自动去重', sRemoveWildcard: '移除通配符',
+          mergeHint: '点击"生成规则"查看输出',
+          outEmptyTitle: '暂无输出', outEmptyDesc: '请在左侧面板输入域名并点击「解析域名」按钮',
+          generate: '生成规则', download: '下载', copy: '复制',
+          github: 'GitHub', demo: 'Demo', docs: '文档', footerSub: 'DNS Shield — 路由器级广告过滤规则生成工具',
+          toastParsed: '解析完成', toastGenerated: '规则生成成功！', toastSorted: '域名已排序',
+          toastDeduped: '已去除 {n} 个重复项', toastSaved: '域名已保存', toastPreset: '已加载预设',
+          toastNeedUrl: '请输入 URL', toastUrlAdded: 'URL 已添加', toastUrlsSorted: 'URLs 已排序',
+          toastNeedUrls: '请先添加 URL', toastFetching: '获取中...', toastFetchAll: '获取全部...',
+          toastCopied: '已复制到剪贴板', toastCopyFail: '复制失败', toastDownloaded: '已下载 {f}',
+          toastNoOutput: '请先生成规则', toastEmptyState: '空状态', toastHasData: '有数据',
+          emptyState: '空状态', hasData: '有数据'
+        },
+        'en': {
+          subtitle: 'Router-level global ad-blocking rule generator',
+          chooseLang: 'Choose language', toggleTheme: 'Toggle dark/light theme',
+          dataToggle: 'With data', heroDesc: 'Router-level global ad-blocking rule generator — input domain lists, auto-generate Dnsmasq / Hosts / AdGuard rules',
+          inputTitle: 'Input Domain List', advanced: 'Advanced',
+          statDomains: 'Domains', statBlacklist: 'Blacklist', statWhitelist: 'Whitelist', statValid: 'Valid', statComment: 'Comments',
+          urlPlaceholder: 'Enter URL to import domain list...', fetch: 'Fetch', addUrl: 'Add URL', sortUrls: 'Prefix-first', fetchAll: 'Fetch All',
+          presets: 'Presets:', presetBuiltin: 'Built-in', presetNeohosts: 'NeoHosts',
+          emptyTitle: 'No domains', emptyDesc: 'Enter domains or import from URL to start generating rules', importSample: 'Import Sample',
+          clear: 'Clear', sort: 'Sort', parse: 'Parse Domains', dedupe: 'Dedupe', save: 'Save',
+          outputTitle: 'Generate Filter Rules', fmtWhitelist: 'Whitelist',
+          sProjectName: 'Project Name', sVersion: 'Version', sIpv4: 'IPv4', sIpv6: 'IPv6',
+          sAddHeader: 'Header Comment', sBlockIpv6: 'Block IPv6', sDedup: 'Auto Dedupe', sRemoveWildcard: 'Remove Wildcard',
+          mergeHint: 'Click "Generate Rules" to view output',
+          outEmptyTitle: 'No output', outEmptyDesc: 'Enter domains on the left and click "Parse Domains"',
+          generate: 'Generate Rules', download: 'Download', copy: 'Copy',
+          github: 'GitHub', demo: 'Demo', docs: 'Docs', footerSub: 'DNS Shield — Router-level ad-blocking rule generator',
+          toastParsed: 'Parsing complete', toastGenerated: 'Rules generated!', toastSorted: 'Domains sorted',
+          toastDeduped: 'Removed {n} duplicates', toastSaved: 'Domains saved', toastPreset: 'Preset loaded',
+          toastNeedUrl: 'Please enter a URL', toastUrlAdded: 'URL added', toastUrlsSorted: 'URLs sorted',
+          toastNeedUrls: 'Add URLs first', toastFetching: 'Fetching...', toastFetchAll: 'Fetch all...',
+          toastCopied: 'Copied to clipboard', toastCopyFail: 'Copy failed', toastDownloaded: 'Downloaded {f}',
+          toastNoOutput: 'Generate rules first', toastEmptyState: 'Empty', toastHasData: 'With data',
+          emptyState: 'Empty', hasData: 'With data'
+        }
+      };
+      // All other languages fall back to English UI text
+      LANGS.forEach(function (l) { if (!I18N[l.code]) I18N[l.code] = I18N['en']; });
+      // zh-tw uses en UI (real app fully translates; prototype demonstrates switching mechanism)
+      I18N['zh-tw'] = I18N['en'];
 
       var MOCK_DOMAINS = [
         '# === 白名单 ===',
@@ -580,7 +640,7 @@
         theme: 'dark', format: 'hosts', hasData: true, input: MOCK_DOMAINS,
         lang: 'zh-cn', urlCollapsed: true, settingsCollapsed: true,
         urls: [], activePreset: 'builtin', output: '',
-        settings: { projectName: 'DNS Shield', version: '3.7.6', ipv4: '127.0.0.1', ipv6: '::', addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true }
+        settings: { projectName: 'DNS Shield', version: '3.7.7', ipv4: '127.0.0.1', ipv6: '::', addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true }
       };
 
       var $ = function (id) { return document.getElementById(id); };
@@ -608,7 +668,6 @@
           var d = t.toLowerCase().replace(/^\*\./, '');
           if (DOMAIN_REGEX.test(d)) domains.push(d); else comments++;
         }
-        // filter out whitelist/customDns from domains
         var exSet = {};
         whitelist.concat(customDns.map(function (c) { return c.domain; })).forEach(function (x) { exSet[x] = true; });
         domains = domains.filter(function (x) { return !exSet[x]; });
@@ -681,6 +740,33 @@
 
       function uniq(arr) { var seen = {}, out = []; arr.forEach(function (x) { if (!seen[x]) { seen[x] = true; out.push(x); } }); return out; }
 
+      /* ---------- i18n ---------- */
+      function t(key, params) {
+        var dict = I18N[state.lang] || I18N['en'];
+        var s = dict[key];
+        if (s == null) s = I18N['en'][key] || key;
+        if (params) s = s.replace(/\{(\w+)\}/g, function (_, k) { return params[k]; });
+        return s;
+      }
+      function applyI18n() {
+        var nodes = document.querySelectorAll('[data-i18n]');
+        for (var i = 0; i < nodes.length; i++) {
+          var key = nodes[i].getAttribute('data-i18n');
+          nodes[i].textContent = t(key);
+        }
+        var ariaNodes = document.querySelectorAll('[data-i18n-aria]');
+        for (var j = 0; j < ariaNodes.length; j++) {
+          ariaNodes[j].setAttribute('aria-label', t(ariaNodes[j].getAttribute('data-i18n-aria')));
+        }
+        var phNodes = document.querySelectorAll('[data-i18n-ph]');
+        for (var k = 0; k < phNodes.length; k++) {
+          phNodes[k].setAttribute('placeholder', t(phNodes[k].getAttribute('data-i18n-ph')));
+        }
+        // data toggle label (special: reflects state)
+        $('toggleData').textContent = state.hasData ? t('hasData') : t('emptyState');
+        $('toggleData').setAttribute('aria-label', state.hasData ? t('toastHasData') : t('toastEmptyState'));
+      }
+
       /* ---------- render helpers ---------- */
       function renderGutter(el, text) {
         var n = text ? text.split('\n').length : 1;
@@ -702,7 +788,7 @@
         if (state.theme === 'dark') root.classList.add('dark'); else root.classList.remove('dark');
         $('themeIcon').innerHTML = state.theme === 'dark' ? MOON : SUN;
         $('toggleTheme').setAttribute('aria-pressed', state.theme === 'dark' ? 'true' : 'false');
-        $('toggleTheme').setAttribute('aria-label', state.theme === 'dark' ? '切换到浅色主题' : '切换到深色主题');
+        $('toggleTheme').setAttribute('aria-label', t('toggleTheme'));
 
         // data visibility
         $('inputStats').style.display = state.hasData ? 'flex' : 'none';
@@ -712,7 +798,8 @@
         $('outputEditorWrap').style.display = state.hasData ? 'block' : 'none';
         $('outputEmpty').style.display = state.hasData ? 'none' : 'flex';
         $('outputActions').style.display = state.hasData ? 'flex' : 'none';
-        $('toggleData').textContent = state.hasData ? '有数据' : '空状态';
+        $('toggleData').textContent = state.hasData ? t('hasData') : t('emptyState');
+        $('toggleData').setAttribute('aria-label', state.hasData ? t('toastHasData') : t('toastEmptyState'));
 
         // input editor + stats
         if (state.hasData) {
@@ -739,10 +826,10 @@
           var out = state.output[state.format] || '';
           $('outputArea').textContent = out;
           renderGutter($('outputGutter'), out);
-          var pp = parseSource(state.input);
-          $('mergeInfo').textContent = '黑名单: ' + pp.domains.length + ' | 白名单: ' + pp.whitelist.length + ' | 自定义DNS: ' + pp.customDns.length;
+          var pp = state.output.parsed;
+          $('mergeInfo').textContent = t('statBlacklist') + ': ' + pp.domains.length + ' | ' + t('statWhitelist') + ': ' + pp.whitelist.length + ' | ' + t('presetNeohosts') + ' DNS: ' + pp.customDns.length;
         } else if (state.hasData) {
-          $('mergeInfo').textContent = '点击"生成规则"查看输出';
+          $('mergeInfo').textContent = t('mergeHint');
         }
 
         // url section collapse
@@ -773,7 +860,7 @@
           row.innerHTML = '<svg class="url-item-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' +
             '<span class="url-item-text">' + u + '</span>';
           var rm = document.createElement('button');
-          rm.className = 'url-remove'; rm.setAttribute('aria-label', '移除 ' + u);
+          rm.className = 'url-remove'; rm.setAttribute('aria-label', t('addUrl') + ' ' + u);
           rm.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
           rm.addEventListener('click', function () { state.urls.splice(idx, 1); render(); });
           row.appendChild(rm);
@@ -782,6 +869,8 @@
 
         // lang
         $('langName').textContent = (LANGS.filter(function (l) { return l.code === state.lang; })[0] || {}).name || state.lang;
+
+        applyI18n();
       }
 
       /* ---------- events ---------- */
@@ -790,6 +879,7 @@
         state.hasData = !state.hasData;
         if (state.hasData) { state.input = MOCK_DOMAINS; state.output = ''; }
         render();
+        toast(state.hasData ? t('toastHasData') : t('toastEmptyState'));
       });
       $('importSample').addEventListener('click', function () { state.hasData = true; state.input = MOCK_DOMAINS; state.output = ''; render(); });
 
@@ -802,52 +892,59 @@
       $('toggleSettings').addEventListener('click', function () { state.settingsCollapsed = !state.settingsCollapsed; render(); });
 
       // parse / generate
-      $('parseBtn').addEventListener('click', function () { toast('解析完成'); });
-      $('generateBtn').addEventListener('click', function () { state.output = generateRules(); render(); toast('规则生成成功！'); });
+      $('parseBtn').addEventListener('click', function () {
+        // real parse: recompute stats + auto-generate output (mirrors live behavior)
+        state.output = generateRules();
+        render();
+        toast(t('toastParsed'));
+      });
+      $('generateBtn').addEventListener('click', function () { state.output = generateRules(); render(); toast(t('toastGenerated')); });
       $('clearBtn').addEventListener('click', function () { state.input = ''; state.output = ''; render(); });
       $('sortBtn').addEventListener('click', function () {
         var lines = state.input.split('\n');
         var doms = lines.filter(function (l) { return DOMAIN_REGEX.test(l.trim().toLowerCase().replace(/^\*\./, '')); }).sort();
-        state.input = doms.join('\n'); state.output = ''; render(); toast('域名已排序');
+        state.input = doms.join('\n'); state.output = ''; render(); toast(t('toastSorted'));
       });
       $('dedupeBtn').addEventListener('click', function () {
         var seen = {}, out = [];
         state.input.split('\n').forEach(function (l) { var k = l.trim().toLowerCase(); if (!seen[k]) { seen[k] = true; out.push(l); } });
         var removed = state.input.split('\n').length - out.length;
-        state.input = out.join('\n'); state.output = ''; render(); toast('已去除 ' + removed + ' 个重复项');
+        state.input = out.join('\n'); state.output = ''; render(); toast(t('toastDeduped', { n: removed }));
       });
-      $('saveBtn').addEventListener('click', function () { toast('域名已保存'); });
+      $('saveBtn').addEventListener('click', function () { toast(t('toastSaved')); });
 
-      // settings inputs
-      $('projectNameInput').addEventListener('input', function (e) { state.settings.projectName = e.target.value; });
-      $('versionInput').addEventListener('input', function (e) { state.settings.version = e.target.value; });
-      $('ipv4Input').addEventListener('input', function (e) { state.settings.ipv4 = e.target.value; });
-      $('ipv6Input').addEventListener('input', function (e) { state.settings.ipv6 = e.target.value; });
+      // settings inputs + switches (live recompute if output exists)
+      function regenIfNeeded() { if (state.output) { state.output = generateRules(); render(); } }
+      $('projectNameInput').addEventListener('input', function (e) { state.settings.projectName = e.target.value; regenIfNeeded(); });
+      $('versionInput').addEventListener('input', function (e) { state.settings.version = e.target.value; regenIfNeeded(); });
+      $('ipv4Input').addEventListener('input', function (e) { state.settings.ipv4 = e.target.value; regenIfNeeded(); });
+      $('ipv6Input').addEventListener('input', function (e) { state.settings.ipv6 = e.target.value; regenIfNeeded(); });
       ['addHeader', 'blockIPv6', 'dedupDomains', 'removeWildcard'].forEach(function (key) {
         $('chk-' + key).addEventListener('click', function () {
           state.settings[key] = !state.settings[key];
           this.classList.toggle('checked', state.settings[key]);
+          regenIfNeeded();
         });
       });
 
       // presets (keyboard accessible)
       var presets = document.querySelectorAll('#presets .preset');
       presets.forEach(function (el) {
-        function activate() { state.activePreset = el.getAttribute('data-preset'); state.output = ''; render(); toast('已加载预设'); }
+        function activate() { state.activePreset = el.getAttribute('data-preset'); state.output = ''; render(); toast(t('toastPreset')); }
         el.addEventListener('click', activate);
         el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
       });
 
       // url actions
-      $('fetchUrl').addEventListener('click', function () { var u = $('urlInput').value.trim(); if (!u) { toast('请输入 URL'); return; } toast('获取中...'); });
+      $('fetchUrl').addEventListener('click', function () { var u = $('urlInput').value.trim(); if (!u) { toast(t('toastNeedUrl')); return; } toast(t('toastFetching')); });
       $('addUrl').addEventListener('click', function () {
         var u = $('urlInput').value.trim();
-        if (!u) { toast('请输入 URL'); return; }
+        if (!u) { toast(t('toastNeedUrl')); return; }
         if (state.urls.indexOf(u) === -1) state.urls.push(u);
-        $('urlInput').value = ''; render(); toast('URL 已添加');
+        $('urlInput').value = ''; render(); toast(t('toastUrlAdded'));
       });
-      $('sortUrls').addEventListener('click', function () { state.urls.sort(); render(); toast('URLs 已排序'); });
-      $('fetchAll').addEventListener('click', function () { if (state.urls.length === 0) { toast('请先添加 URL'); return; } toast('获取全部...'); });
+      $('sortUrls').addEventListener('click', function () { state.urls.sort(); render(); toast(t('toastUrlsSorted')); });
+      $('fetchAll').addEventListener('click', function () { if (state.urls.length === 0) { toast(t('toastNeedUrls')); return; } toast(t('toastFetchAll')); });
 
       // format tabs (keyboard)
       var tabs = document.querySelectorAll('#formatTabs .fmt');
@@ -859,19 +956,19 @@
 
       // copy / download
       $('copyBtn').addEventListener('click', function () {
-        if (!state.output) { toast('请先生成规则'); return; }
+        if (!state.output) { toast(t('toastNoOutput')); return; }
         var text = state.output[state.format] || '';
-        if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { toast('已复制到剪贴板'); }, function () { toast('复制失败'); });
-        else toast('复制失败');
+        if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { toast(t('toastCopied')); }, function () { toast(t('toastCopyFail')); });
+        else toast(t('toastCopyFail'));
       });
       $('downloadBtn').addEventListener('click', function () {
-        if (!state.output) { toast('请先生成规则'); return; }
+        if (!state.output) { toast(t('toastNoOutput')); return; }
         var text = state.output[state.format] || '';
         var blob = new Blob([text], { type: 'text/plain' });
         var a = document.createElement('a');
         var names = { dnsmasq: 'dnsmasq.conf', hosts: 'hosts.txt', adguard: 'adguard.txt', whitelist: 'whitelist.txt' };
         a.href = URL.createObjectURL(blob); a.download = names[state.format]; a.click();
-        URL.revokeObjectURL(a.href); toast('已下载 ' + names[state.format]);
+        URL.revokeObjectURL(a.href); toast(t('toastDownloaded', { f: names[state.format] }));
       });
 
       // language dropdown
@@ -885,6 +982,13 @@
         b.addEventListener('click', function () {
           state.lang = l.code;
           document.documentElement.setAttribute('lang', l.code === 'zh-cn' ? 'zh-CN' : l.code);
+          // sync active state + aria-selected across options
+          var opts = langMenu.querySelectorAll('button');
+          for (var i = 0; i < opts.length; i++) {
+            var sel = opts[i] === b;
+            opts[i].classList.toggle('active', sel);
+            opts[i].setAttribute('aria-selected', sel ? 'true' : 'false');
+          }
           langMenu.classList.remove('open');
           $('langBtn').setAttribute('aria-expanded', 'false');
           render();

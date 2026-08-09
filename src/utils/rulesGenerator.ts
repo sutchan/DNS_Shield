@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.ts v3.7.6
+// src/utils/rulesGenerator.ts v3.7.7
 import { CustomDnsEntry, Settings, OutputContent, Translation } from '../types';
 
 // 生成头部
