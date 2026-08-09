@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.7.0
+// src/app/Home.tsx v3.7.2
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import './globals.css';
@@ -72,7 +72,7 @@ export default function Home() {
     copyOutput, 
     setFormat, 
     syncOutputScroll
-  } = useRules(parsedData, sourceInput, settings, t, showToast);
+  } = useRules(parsedData, sourceInput, settings, t, showToast, parseSourceData);
 
   // URL管理
   const { 

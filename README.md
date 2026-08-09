@@ -86,12 +86,12 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmas
 src/
 ├── app/              # Next.js App Router（布局、页面、全局样式）
 ├── components/       # React 组件
-│   ├── ui/           # shadcn/ui 基础组件（Button、Input、Tabs 等）
-│   ├── Header.tsx    # 页头组件
+│   ├── ui/           # shadcn/ui 基础组件（12 个：Badge/Button/Card/Checkbox/DropdownMenu/Input/Label/Loading/Select/Switch/Tabs/Toast）
+│   ├── Header.tsx    # 页头组件（主题/语言切换）
 │   ├── Footer.tsx    # 页脚组件
 │   ├── InputPanel.tsx # 输入面板
-│   ├── InputEditor.tsx # 域名编辑器子组件
-│   ├── OutputPanel.tsx # 输出面板
+│   ├── InputEditor.tsx # 域名编辑器子组件（行号 + 自动保存）
+│   ├── OutputPanel.tsx # 输出面板（格式切换 + 空状态）
 │   ├── SettingsPanel.tsx # 设置面板子组件
 │   └── UrlSection.tsx # URL 导入区域子组件
 ├── context/          # 应用上下文
@@ -99,21 +99,29 @@ src/
 ├── hooks/            # 自定义 Hooks
 │   ├── useTheme.ts   # 主题切换
 │   ├── useLanguage.ts # 语言切换
-│   ├── useDomainData.ts # 域名数据管理
-│   ├── useRules.ts   # 规则生成
+│   ├── useDomainData.ts # 域名数据管理（含远端加载超时/兜底）
+│   ├── useRules.ts   # 规则生成（实时解析同步）
 │   ├── useUrlManager.ts # URL 管理
 │   ├── useSettings.ts # 设置管理
 │   └── useLoading.ts # 加载状态管理
-├── locales/          # 16 种语言翻译文件
+├── lib/              # 工具库（cn 类名合并等）
+├── locales/          # 16 种语言翻译文件（112 键 100% 覆盖）
 ├── types/            # TypeScript 类型定义
 ├── utils/            # 工具函数（含 *.test.ts 单元测试）
 │   ├── parser.ts     # 域名解析与排序去重
 │   ├── domainValidator.ts # 域名验证与行解析
 │   ├── rulesGenerator.ts  # 规则生成器
-│   ├── fileUtils.ts  # 文件操作
+│   ├── fileUtils.ts  # 文件操作（fetch 超时/体积上限）
 │   ├── i18n.ts       # 国际化配置
-│   └── uiUtils.ts    # UI 工具函数
+│   └── uiUtils.ts    # UI 工具函数（行号生成、滚动同步）
 └── config/           # 应用配置（预设源 URL）
+```
+
+```
+prototype/            # 高保真原型与设计规范
+├── prototype.canvas.tsx # React 高保真原型
+├── OVERVIEW.md       # 原型总览
+└── shadcn/           # shadcn 设计规范（design-system/component-library/interaction-standards/design-polish-report）
 ```
 
 ## 开发
@@ -173,7 +181,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.7.0
+当前版本：v3.7.2
 
 ## 更新日志
 

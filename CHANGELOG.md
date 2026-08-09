@@ -7,6 +7,15 @@
 
 ## [Unreleased]
 
+## [3.7.2] - 2026-08-09
+
+### Fixed
+- 修复白名单生成失效观感：生成规则时同步将实时解析结果写回 `parsedData`/`stats`，消除防抖延迟导致的"规则已生成但白名单计数仍为 0"的不一致
+- `useRules.generateRules` 新增 `syncParsedData` 回调，`Home` 传入 `parseSourceData` 复用既有解析逻辑
+
+### Changed
+- 统一全项目版本号至 v3.7.2（src 文件头注释 / package.json / next.config.js / layout.tsx / useSettings 默认值 / README / README.en）
+
 ## [3.7.1] - 2026-08-09
 
 ### Fixed

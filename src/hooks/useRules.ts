@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.7.0
+// src/hooks/useRules.ts v3.7.2
 import { useState, useEffect, useRef } from 'react';
 import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
@@ -6,7 +6,14 @@ import { downloadOutput as downloadOutputUtil, copyToClipboard } from '../utils/
 import { generateLineNumbers } from '../utils/uiUtils';
 import { OutputContent, Settings, ParsedData, Translation, FormatType } from '../types';
 
-export const useRules = (parsedData: ParsedData, sourceInput: string, settings: Settings, t: Translation, showToast: (key: string, params?: { [key: string]: string | number }) => void) => {
+export const useRules = (
+  parsedData: ParsedData,
+  sourceInput: string,
+  settings: Settings,
+  t: Translation,
+  showToast: (key: string, params?: { [key: string]: string | number }) => void,
+  syncParsedData: (text?: string) => void
+) => {
   const [outputContent, setOutputContent] = useState<OutputContent>({
     dnsmasq: '',
     hosts: '',
@@ -31,6 +38,9 @@ export const useRules = (parsedData: ParsedData, sourceInput: string, settings: 
     const { domains, whitelist, customDns } = freshData.data;
     const newOutputContent = generateRulesUtil(domains, whitelist, customDns, settings, t);
     setOutputContent(newOutputContent);
+    // 同步解析结果回 parsedData/stats，确保统计与合并信息立即反映本次生成内容
+    // （消除防抖延迟造成的"规则已生成但白名单计数仍为 0"的失效观感）
+    syncParsedData(sourceInput);
     
     // 生成输出行号 - 使用当前生成的内容
     const content = newOutputContent[currentFormat];

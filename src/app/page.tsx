@@ -1,4 +1,4 @@
-// src/app/page.tsx v3.7.0
+// src/app/page.tsx v3.7.2
 import React from 'react';
 import Home from './Home';
 
