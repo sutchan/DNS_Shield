@@ -1,4 +1,4 @@
-// src/utils/parser.test.ts v3.7.9
+// src/utils/parser.test.ts v3.7.10
 import { describe, it, expect } from 'vitest';
 import { parseSource, sortDomains, dedupeDomains } from './parser';
 

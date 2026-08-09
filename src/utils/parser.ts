@@ -1,4 +1,4 @@
-// src/utils/parser.ts v3.7.9
+// src/utils/parser.ts v3.7.10
 import { CustomDnsEntry, ParsedData } from '../types';
 import { parseDomainLine, ParseStats, isValidDomain, normalizeDomain } from './domainValidator';
 
@@ -56,7 +56,15 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
 
   // 去重和处理冲突
   const whitelistSet = new Set(whitelist.map(w => w.replace(/^\*\./, '')));
-  const customDnsSet = new Set(customDns.map(c => c.domain.replace(/^\*\./, '')));
+  // customDns 按 domain 去重（保留首次出现），避免生成重复 DNS 规则
+  const seenCustomDns = new Set<string>();
+  const uniqueCustomDns = customDns.filter((c) => {
+    const key = c.domain.replace(/^\*\./, '');
+    if (seenCustomDns.has(key)) return false;
+    seenCustomDns.add(key);
+    return true;
+  });
+  const customDnsSet = new Set(uniqueCustomDns.map(c => c.domain.replace(/^\*\./, '')));
   const excludeSet = new Set([...whitelistSet, ...customDnsSet]);
 
   const filteredDomains = domains.filter(d => !excludeSet.has(d.replace(/^\*\./, '')));
@@ -74,7 +82,7 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
     data: {
       domains: filteredDomains,
       whitelist: uniqueWhitelist,
-      customDns
+      customDns: uniqueCustomDns
     },
     stats
   };

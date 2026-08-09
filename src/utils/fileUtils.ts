@@ -1,4 +1,4 @@
-// src/utils/fileUtils.ts v3.7.9
+// src/utils/fileUtils.ts v3.7.10
 
 const MAX_URL_LENGTH = 2048;
 const MAX_FILENAME_LENGTH = 255;

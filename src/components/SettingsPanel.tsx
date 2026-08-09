@@ -1,4 +1,4 @@
-// src/components/SettingsPanel.tsx v3.7.9
+// src/components/SettingsPanel.tsx v3.7.10
 // 设置面板组件 —— 从 OutputPanel 拆分
 'use client';
 import * as React from 'react';

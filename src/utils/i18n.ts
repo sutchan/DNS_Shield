@@ -1,4 +1,4 @@
-// src/utils/i18n.ts v3.7.9
+// src/utils/i18n.ts v3.7.10
 import ar from '../locales/ar.json';
 import cs from '../locales/cs.json';
 import en from '../locales/en.json';
@@ -60,20 +60,23 @@ export const supportedLanguages: Language[] = [
 // 深合并：以 zh-cn 为基准，叠加目标语言，确保嵌套键（header/toast/whitelist）始终存在，
 // 避免某个 locale 缺键时 t.header.dnsmasqTitle 等访问抛 undefined 崩溃。
 const deepMerge = <T>(base: T, override: Partial<T>): T => {
-  const result: any = Array.isArray(base) ? [...(base as any)] : { ...(base as any) };
+  if (Array.isArray(base)) {
+    return [...(base as unknown as unknown[])] as unknown as T;
+  }
+  const result: Record<string, unknown> = { ...(base as unknown as Record<string, unknown>) };
   for (const key of Object.keys(override) as (keyof T)[]) {
-    const ov = override[key] as any;
-    const bv = (base as any)[key];
+    const ov = override[key] as unknown;
+    const bv = (base as unknown as Record<string, unknown>)[key as string];
     if (
       ov && typeof ov === 'object' && !Array.isArray(ov) &&
       bv && typeof bv === 'object' && !Array.isArray(bv)
     ) {
-      result[key] = deepMerge(bv, ov);
+      result[key as string] = deepMerge(bv as Record<string, unknown>, ov as Record<string, unknown>) as unknown;
     } else if (ov !== undefined) {
-      result[key] = ov;
+      result[key as string] = ov;
     }
   }
-  return result;
+  return result as unknown as T;
 };
 
 // 获取翻译

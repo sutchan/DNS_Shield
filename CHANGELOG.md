@@ -7,6 +7,18 @@
 
 ## [Unreleased]
 
+## [3.7.10] - 2026-08-09
+
+### Fixed
+- 修复自定义 DNS 规则生成重复：`parseSource` 对 `customDns` 按 domain 去重（保留首次），避免 `@domain=ip` 重复条目生成重复 `address=/domain/ip` 规则
+- 收紧 CSP：`next.config.js` 的 `script-src` 移除误加的 `https://raw.githubusercontent.com`（其为数据拉取源，已由 `connect-src 'self' https:` 覆盖），降低脚本注入面
+
+### Changed
+- `useRules.downloadOutput` 用显式 `filenameMap` 映射替代动态拼接 key + `as string` 强转，消除类型绕过
+- `i18n.deepMerge` 用 `Record<string, unknown>` 替代 `any`，符合 TypeScript strict 精神
+- 移除 `domainValidator.ts` 未使用的 `ParsedData` 导入
+- 统一全项目版本号至 v3.7.10
+
 ## [3.7.9] - 2026-08-09
 
 ### Improved

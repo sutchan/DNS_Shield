@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.7.9
+// src/hooks/useRules.ts v3.7.10
 import { useState, useEffect, useRef } from 'react';
 import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
@@ -52,7 +52,13 @@ export const useRules = (
   // 下载输出
   const downloadOutput = () => {
     const content = outputContent[currentFormat] || '';
-    const filename = settings[`${currentFormat}Filename` as keyof Settings] as string;
+    const filenameMap: Record<FormatType, keyof Settings> = {
+      hosts: 'hostsFilename',
+      dnsmasq: 'dnsmasqFilename',
+      adguard: 'adguardFilename',
+      whitelist: 'whitelistFilename'
+    };
+    const filename = settings[filenameMap[currentFormat]] as string;
     downloadOutputUtil(content, filename);
     showToast('downloaded', { filename });
   };

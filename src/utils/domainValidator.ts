@@ -1,7 +1,7 @@
-// src/utils/domainValidator.ts v3.7.9
+// src/utils/domainValidator.ts v3.7.10
 // 域名验证与行解析工具函数
 
-import { CustomDnsEntry, ParsedData } from '../types';
+import { CustomDnsEntry } from '../types';
 
 // 域名正则表达式
 const DOMAIN_REGEX = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
