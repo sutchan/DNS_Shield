@@ -48,6 +48,10 @@ tmp/
 cache/
 dev_err.txt
 dev_out.txt
+_build.txt
+_lint.txt
+_test.txt
+_tsc.txt
 
 # Package manager
 package-lock.json
