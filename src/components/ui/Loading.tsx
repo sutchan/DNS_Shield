@@ -1,4 +1,4 @@
-// src/components/ui/Loading.tsx v3.7.5
+// src/components/ui/Loading.tsx v3.7.6
 import React from 'react';
 
 interface LoadingProps {

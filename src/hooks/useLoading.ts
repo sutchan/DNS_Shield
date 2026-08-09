@@ -1,4 +1,4 @@
-// src/hooks/useLoading.ts v3.7.5
+// src/hooks/useLoading.ts v3.7.6
 // 加载状态管理 hook —— 从 useUrlManager 拆分
 import { useState, useCallback } from 'react';
 

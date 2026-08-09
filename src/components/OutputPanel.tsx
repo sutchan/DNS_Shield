@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.7.5
+// src/components/OutputPanel.tsx v3.7.6
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';

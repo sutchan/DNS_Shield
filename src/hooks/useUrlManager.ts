@@ -1,4 +1,4 @@
-// src/hooks/useUrlManager.ts v3.7.5
+// src/hooks/useUrlManager.ts v3.7.6
 import { useState, useRef } from 'react';
 import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl } from '../utils/fileUtils';
 import { generateLineNumbers } from '../utils/uiUtils';

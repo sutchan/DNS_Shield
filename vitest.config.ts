@@ -1,4 +1,4 @@
-// vitest.config.ts v3.7.5
+// vitest.config.ts v3.7.6
 // 纯函数单元测试配置：仅覆盖 src/utils 下的无副作用工具函数。
 import { defineConfig } from 'vitest/config';
 

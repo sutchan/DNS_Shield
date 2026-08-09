@@ -1,4 +1,4 @@
-// src/app/sitemap.ts v3.7.5
+// src/app/sitemap.ts v3.7.6
 import type { MetadataRoute } from 'next'
 
 const SITE_URL = 'https://dns.ewuse.com'
