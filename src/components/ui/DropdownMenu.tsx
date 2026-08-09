@@ -1,4 +1,4 @@
-// src/components/ui/DropdownMenu.tsx v3.7.3
+// src/components/ui/DropdownMenu.tsx v3.7.4
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { Check, ChevronRight, Circle } from "lucide-react"

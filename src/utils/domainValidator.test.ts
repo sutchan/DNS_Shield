@@ -1,4 +1,4 @@
-// src/utils/domainValidator.test.ts v3.7.3
+// src/utils/domainValidator.test.ts v3.7.4
 import { describe, it, expect } from 'vitest';
 import {
   isValidDomain,

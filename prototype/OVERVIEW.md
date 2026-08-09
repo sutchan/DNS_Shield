@@ -3,7 +3,16 @@
 
 ## 交付物
 
-### 1. `prototype.canvas.tsx` — React 高保真原型
+### 1. `prototype.html` — 独立高保真原型（无需构建）
+- 纯 HTML + CSS + 原生 JS，零依赖，双击即可在浏览器打开
+- 完整还原 Design System v3.7.3 色板（oklch → hsl 变量）、Inter 字体、4px 间距、Lucide 风格 SVG 图标
+- 深色/浅色主题切换、有数据 / 空状态切换
+- 格式切换（Dnsmasq / Hosts / AdGuard / 白名单），输出示例随切换实时更新
+- 行号编辑器（可编辑输入 + 只读输出，滚动同步）
+- 统计信息栏、URL 导入、预设标签、页脚版本号
+- 响应式布局（移动端单栏 → 桌面端双栏），`prefers-reduced-motion` 支持
+
+### 2. `prototype.canvas.tsx` — React 高保真原型
 - 完整的双栏布局应用界面（输入面板 + 输出面板）
 - 深色/浅色主题切换、有数据 / 空状态切换
 - 格式切换（Dnsmasq / Hosts / AdGuard / 白名单）

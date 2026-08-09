@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.7.3 |
+| 当前版本 | v3.7.4 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -102,6 +102,7 @@ dns-shield/
 │       ├── rulesGenerator.ts       # 规则生成器
 │       └── uiUtils.ts              # UI 工具（行号生成、滚动同步）
 ├── prototype/                        # 原型目录
+│   ├── prototype.html                # 高保真原型（独立 HTML 版本，可直接浏览器打开，含主题/数据/格式切换交互）
 │   ├── prototype.canvas.tsx          # 高保真原型（React 版本，lucide 图标）
 │   ├── OVERVIEW.md                   # 原型总览文档
 │   └── shadcn/                       # shadcn 设计规范

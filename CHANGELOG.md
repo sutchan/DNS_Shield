@@ -7,6 +7,16 @@
 
 ## [Unreleased]
 
+## [3.7.4] - 2026-08-09
+
+### Added
+- 新增独立高保真原型 prototype/prototype.html（纯 HTML+CSS+JS，零依赖可直接浏览器打开，含深/浅主题、有数据/空状态、四种格式切换、行号编辑器、响应式布局）
+
+### Changed
+- prototype/OVERVIEW.md 与 openspec/SPEC.md 文件结构新增 prototype.html 说明
+- 统一全项目版本号至 v3.7.4
+
+
 ## [3.7.3] - 2026-08-09
 
 ### Changed

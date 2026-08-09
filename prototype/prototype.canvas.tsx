@@ -1,6 +1,6 @@
-// DNS Shield 高保真原型 v3.7.3
+// DNS Shield 高保真原型 v3.7.4
 // 设计规范：Swiss Modernism 2.0 × Apple Precision
-// 严格遵循 DNS Shield Design System v3.7.3
+// 严格遵循 DNS Shield Design System v3.7.4
 import React, { useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -276,7 +276,7 @@ export default function PrototypeCanvas() {
             <a href="#" className="flex items-center gap-2 no-underline text-foreground" aria-label="DNS Shield 首页">
               <Icons.Shield className="text-primary" />
               <span className="text-sm font-semibold tracking-tight">DNS Shield</span>
-              <span className="text-[11px] text-muted-foreground font-medium">v3.7.3</span>
+              <span className="text-[11px] text-muted-foreground font-medium">v3.7.4</span>
             </a>
             <div className="flex items-center gap-2">
               <button
@@ -435,7 +435,7 @@ export default function PrototypeCanvas() {
               <span className="w-[3px] h-[3px] rounded-full bg-muted-foreground" />
               <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors no-underline">文档</a>
               <span className="w-[3px] h-[3px] rounded-full bg-muted-foreground" />
-              <span className="text-xs text-muted-foreground/70 font-mono">v3.7.3</span>
+              <span className="text-xs text-muted-foreground/70 font-mono">v3.7.4</span>
             </div>
             <p className="text-xs text-muted-foreground/70">DNS Shield — 路由器级广告过滤规则生成工具</p>
           </div>
