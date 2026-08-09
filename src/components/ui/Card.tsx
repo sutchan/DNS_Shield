@@ -1,4 +1,4 @@
-// src/components/ui/Card.tsx v3.7.10
+// src/components/ui/Card.tsx v3.7.12
 import * as React from "react"
 
 import { cn } from "@/lib/utils"

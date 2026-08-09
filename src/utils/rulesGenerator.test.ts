@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.test.ts v3.7.10
+// src/utils/rulesGenerator.test.ts v3.7.12
 import { describe, it, expect } from 'vitest';
 import { generateRules, generateHeader } from './rulesGenerator';
 import { parseSource } from './parser';

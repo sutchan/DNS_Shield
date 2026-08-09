@@ -7,6 +7,28 @@
 
 ## [Unreleased]
 
+## [3.7.12] - 2026-08-09
+
+### Fixed
+- 移除 61 个文件误写入的 UTF-8 BOM（根因：版本 bump 脚本以 BOM 模式写入 `package.json`，致 pnpm/build/lint/test 全部解析失败），构建与校验链路恢复
+- `useDomainData.fetchDomainsText` 改为流式读取并按累计字节强制截断（10MB），不再仅信任 `content-length` 头，关闭 DoS 体积绕过缺口
+- `UrlSection` URL 列表 `key` 由 `index` 改为 `url:index`，修复删除项重排错乱
+
+### Perf
+- `uiUtils.generateLineNumbers` 改用数组 `join` 替代循环字符串拼接，大文本下减少中间字符串分配
+- `i18n` 16 语言 × 109 键全覆盖校验通过；多语言切换经类型与文案一致性确认
+
+### Refactor
+- 拆分 `parser.ts`（201 行）超 200 行限制：`sortDomains`/`dedupeDomains` 抽离至 `src/utils/sortDedupe.ts`，主文件仅保留 `parseSource` 编排核心，公开 API 通过 re-export 保持兼容
+
+### Docs
+- 统一全项目版本号至 v3.7.12（package.json、next.config.js、源文件头部注释、README/openspec/prototype 文档）
+- `globals.css` 设计系统版本号（3.7.9 → 3.7.12）
+- 完善 `README.en.md`：域名数 473+ → 524+、预设源对齐（built-in/AdGuard/EasyList/NeoHosts）、补 URL 导入/自定义 DNS/自动保存等特性
+- 修正 `DEPLOYMENT.md`：Dockerfile 改用 pnpm 并启用 corepack；`next.config.js` 片段去除误导的 `output:'standalone'`，反映真实配置
+- `CONTRIBUTING.md` 开发流程命令统一为 pnpm
+- `openspec/SPEC.md` 版本历史补充 v3.7.10/v3.7.12 记录
+
 ## [3.7.10] - 2026-08-09
 
 ### Fixed

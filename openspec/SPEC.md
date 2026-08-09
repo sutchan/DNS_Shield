@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.7.10 |
+| 当前版本 | v3.7.12 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -174,7 +174,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.7.10 |
+| 版本号 | 3.7.12 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -322,6 +322,8 @@ refactor: 优化规则生成逻辑
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
+| v3.7.12 | 2026-08-09 | 文档同步与完善：统一全项目版本号至 v3.7.12；修正 openspec/config.yaml 版本、README.en 域名数与预设源、DEPLOYMENT Dockerfile(pnpm)、CONTRIBUTING 开发命令(pnpm)；对齐各文档与实际代码 |
+| v3.7.10 | 2026-08-09 | 修复 AdGuard 输出 IPv6 通配符前缀、Service Worker 缓存键改用 env.version、补充 fileUtils 流式读取单测；统一全项目版本号至 v3.7.10 |
 | v3.7.0 | 2026-07-21 | 安全与性能加固：fetchFromUrl 增加 10MB 响应体积上限（流式读取防大响应 DoS）、fetchFromUrls 改为并发抓取（Promise.allSettled）；补充 fileUtils 单元测试（体积上限/非法 URL/HTTP 错误/并发容错）；i18n 16 语言键 100% 覆盖验证；统一全项目版本号至 v3.7.0 |
 | v3.6.1 | 2026-07-21 | 全项目代码审查与质量对齐：TypeScript 严格类型检查、ESLint、Vitest(31 项) 全部通过；i18n 16 种语言键全覆盖并验证多语言切换；parser.sortDomains 性能优化（Schwartzian 变换）；新增 rulesGenerator 单元测试覆盖核心规则生成；对齐 openspec/prototype 规范；统一全项目版本号至 v3.6.1 |
 | v3.6.0 | 2026-07-21 | 增量版本对齐：代码与文档版本号统一至 v3.6.0（未单独记录变更日志） |

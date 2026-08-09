@@ -113,16 +113,16 @@ git push origin feature/your-feature-name
 
 ```bash
 # 安装依赖
-npm install
+pnpm install
 
 # 启动开发服务器
-npm run dev
+pnpm dev
 
 # 构建生产版本
-npm run build
+pnpm build
 
 # 运行生产服务器
-npm start
+pnpm start
 ```
 
 ### 2. 代码规范

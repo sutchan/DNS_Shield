@@ -1,6 +1,6 @@
 # DNS Shield
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.7.10-green)](https://github.com/sutchan/DNS_Shield)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.7.12-green)](https://github.com/sutchan/DNS_Shield)
 
 Router-level DNS-based ad blocking filter list with web management tool.
 
@@ -8,14 +8,14 @@ Router-level DNS-based ad blocking filter list with web management tool.
 
 This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 
-- **473+ blocked domains** - Local ad and tracking domain filter (can expand to 6766+ with preset sources)
+- **524+ blocked domains** - Local ad and tracking domain filter (can expand to 6766+ with preset sources)
 - **Web management tool** - Generate custom filter lists via browser
 - **Multiple output formats** - Supports Dnsmasq, Hosts, AdGuard, and whitelist formats
 - **Single source workflow** - One domain list generates all output formats
 - **Router compatible** - Works with Merlin, OpenWrt, Xiaomi, ASUS, TP-Link, and more
 - **Whitelist management** - Independent whitelist editing interface with import/export support
 - **Multi-language support** - Supports 16 languages, can be switched on the interface
-- **Next.js framework** - v3.7.10 version has migrated to modern Next.js framework and modular architecture
+- **Next.js framework** - v3.7.12 version has migrated to modern Next.js framework and modular architecture
 - **Security hardening** - CSP headers, HSTS, Service Worker secure caching, filename sanitization
 
 ## Usage
@@ -117,14 +117,16 @@ The `whitelist.txt` file contains domains that need to be allowed access, suitab
 
 The project is now based on Next.js. You can:
 
-- Load and parse domain lists from URL or local file
-- Choose preset sources (AdGuard, EasyList, NeoHosts, Xiaomi)
+- Load and parse domain lists from URL (10s timeout) or local file
+- Choose preset sources (built-in data, AdGuard, EasyList, NeoHosts)
 - Generate Dnsmasq, Hosts, AdGuard, and whitelist format output
-- Configure IP addresses (IPv4/IPv6)
+- Configure IP addresses (IPv4/IPv6), header comments, dedup, wildcard stripping
+- Support custom DNS pointing (`@domain=ip`) and whitelist (`+domain`) prefixes
+- Auto save to localStorage every 30s and restore on reload
 - Auto deduplicate and sort domains
 - Independent whitelist editing interface with import/export support
 - Multi-language support, can switch between 16 languages on the interface
-- Download generated files
+- Download or copy generated files to clipboard
 
 ## Single Source Workflow
 

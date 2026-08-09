@@ -42,8 +42,6 @@ cd DNS_Shield
 ```bash
 # 安装依赖
 pnpm install
-# 或
-npm install
 ```
 
 #### 1.3 构建项目
@@ -51,8 +49,6 @@ npm install
 ```bash
 # 构建生产版本
 pnpm build
-# 或
-npm run build
 ```
 
 #### 1.4 启动服务器
@@ -60,12 +56,10 @@ npm run build
 ```bash
 # 运行生产服务器
 pnpm start
-# 或
-npm start
 
 # 或使用 PM2 管理进程
-npm install -g pm2
-pm2 start npm --name "dns-shield" -- start
+pnpm add -g pm2
+pm2 start pnpm --name "dns-shield" -- start
 ```
 
 #### 1.5 访问 Web 管理工具
@@ -79,7 +73,7 @@ pm2 start npm --name "dns-shield" -- start
 #### 2.1 准备服务器
 
 - 选择云服务器或物理服务器
-- 安装 Node.js 和 npm
+- 安装 Node.js（建议启用 corepack 以使用 pnpm）
 - 配置防火墙，开放必要的端口
 
 #### 2.2 克隆仓库
@@ -97,8 +91,6 @@ cd DNS_Shield
 ```bash
 # 安装依赖
 pnpm install
-# 或
-npm install
 ```
 
 #### 2.4 构建项目
@@ -106,8 +98,6 @@ npm install
 ```bash
 # 构建生产版本
 pnpm build
-# 或
-npm run build
 ```
 
 #### 2.5 配置进程管理
@@ -116,12 +106,12 @@ npm run build
 
 ```bash
 # 安装 PM2
-npm install -g pm2
+pnpm add -g pm2
 
 # 启动应用
 pm2 start pnpm --name "dns-shield" -- start
 # 或使用 npm
-# pm2 start npm --name "dns-shield" -- start
+# pm2 start pnpm --name "dns-shield" -- start
 
 # 设置 PM2 开机自启
 pm2 startup
@@ -191,26 +181,29 @@ certbot renew --dry-run
 # 使用 Node.js 18 作为基础镜像
 FROM node:18-alpine
 
+# 启用 corepack 以使用 pnpm（项目依赖 pnpm-lock.yaml）
+RUN corepack enable
+
 # 设置工作目录
 WORKDIR /app
 
-# 复制 package.json 和 package-lock.json
-COPY package*.json ./
+# 复制清单与锁文件
+COPY package.json pnpm-lock.yaml ./
 
 # 安装依赖
-RUN npm install
+RUN pnpm install --frozen-lockfile
 
 # 复制项目文件
 COPY . .
 
 # 构建项目
-RUN npm run build
+RUN pnpm build
 
 # 暴露端口
 EXPOSE 3000
 
 # 启动应用
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]
 ```
 
 #### 3.2 构建 Docker 镜像
@@ -264,18 +257,30 @@ docker-compose up -d
 | `PORT` | 服务器端口 | 3000 |
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
-| `NEXT_PUBLIC_APP_VERSION` | 应用版本 | 3.7.10 |
+| `NEXT_PUBLIC_APP_VERSION` | 应用版本 | 3.7.12 |
 
 ### 2. Next.js 配置
 
-修改 `next.config.js` 文件：
+修改 `next.config.js` 文件（当前项目未启用 `output: 'standalone'`，使用默认构建产物并经由 `next start` 启动）：
 
 ```javascript
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 配置选项
-  output: 'standalone',
-  // 其他配置...
+  reactStrictMode: true,
+  trailingSlash: true,
+  env: {
+    version: '3.7.12'
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          // Content-Security-Policy、HSTS、COOP/CORP 等安全头部
+        ]
+      }
+    ]
+  }
 }
 
 module.exports = nextConfig
@@ -313,13 +318,9 @@ git pull origin main
 
 # 安装依赖
 pnpm install
-# 或
-npm install
 
 # 构建项目
 pnpm build
-# 或
-npm run build
 
 # 重启应用
 pm2 restart dns-shield

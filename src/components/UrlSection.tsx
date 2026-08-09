@@ -1,4 +1,4 @@
-// src/components/UrlSection.tsx v3.7.10
+// src/components/UrlSection.tsx v3.7.12
 // URL 导入区域组件 —— 从 InputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -109,7 +109,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
       {/* URL 列表 */}
       <div className="url-list" id="urlList" role="list" aria-label={t.urlListAria}>
         {urls.length > 0 && urls.map((url: string, index: number) => (
-            <div key={index} className="url-item" role="listitem">
+            <div key={`${url}:${index}`} className="url-item" role="listitem">
               <Link className="url-item-icon h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.8} aria-hidden="true" />
               <span className="url-item-text">{url}</span>
               <Button
