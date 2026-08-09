@@ -1,4 +1,4 @@
-// src/components/ui/Checkbox.tsx v3.7.4
+// src/components/ui/Checkbox.tsx v3.7.5
 import * as React from "react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { Check } from "lucide-react"

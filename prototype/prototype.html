@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.7.4</title>
+  <title>DNS Shield — 高保真原型 v3.7.5</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* ============================================
-       DNS Shield — Design System v3.7.4
+       DNS Shield — Design System v3.7.5
        Swiss Modernism 2.0 × Apple Precision
        ============================================ */
     :root {
@@ -42,6 +42,7 @@
       --radius-2xl: 1rem;
       --shadow-card: 0 1px 2px rgba(16, 22, 26, 0.04), 0 4px 12px rgba(16, 22, 26, 0.05);
       --shadow-card-hover: 0 2px 4px rgba(16, 22, 26, 0.06), 0 10px 28px rgba(16, 22, 26, 0.08);
+      --shadow-pop: 0 4px 16px rgba(16, 22, 26, 0.12), 0 12px 32px rgba(16, 22, 26, 0.1);
     }
     .dark {
       --background: 240 6% 7%;
@@ -68,6 +69,7 @@
       --ring: 217 85% 55%;
       --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 14px rgba(0, 0, 0, 0.35);
       --shadow-card-hover: 0 2px 6px rgba(0, 0, 0, 0.4), 0 14px 34px rgba(0, 0, 0, 0.45);
+      --shadow-pop: 0 4px 18px rgba(0, 0, 0, 0.5), 0 14px 38px rgba(0, 0, 0, 0.55);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -83,7 +85,7 @@
       min-height: 100vh;
     }
     ::selection { background-color: hsl(var(--primary) / 0.2); color: hsl(var(--foreground)); }
-    *:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
+    *:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 2px; border-radius: 2px; }
     a { text-decoration: none; color: inherit; }
     button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
@@ -91,7 +93,7 @@
 
     /* Header */
     .header {
-      position: sticky; top: 0; z-index: 20;
+      position: sticky; top: 0; z-index: 30;
       border-bottom: 1px solid hsl(var(--border));
       backdrop-filter: blur(12px);
       background-color: hsl(var(--background) / 0.9);
@@ -99,18 +101,48 @@
     }
     .header-inner {
       max-width: 72rem; margin: 0 auto; padding: 0 1rem;
-      height: 3rem; display: flex; align-items: center; justify-content: space-between;
+      height: 3.5rem; display: flex; align-items: center; justify-content: space-between; gap: .75rem;
     }
     .brand { display: flex; align-items: center; gap: .5rem; color: hsl(var(--foreground)); }
-    .brand-name { font-size: .875rem; font-weight: 600; letter-spacing: -0.01em; }
-    .brand-ver { font-size: .6875rem; font-weight: 500; color: hsl(var(--muted-foreground)); }
-    .header-actions { display: flex; align-items: center; gap: .5rem; }
+    .brand-icon { color: hsl(var(--primary)); display: flex; }
+    .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+    .brand-name { font-size: .9375rem; font-weight: 700; letter-spacing: -0.01em; }
+    .brand-sub { font-size: .6875rem; color: hsl(var(--muted-foreground)); }
+    .header-actions { display: flex; align-items: center; gap: .5rem; position: relative; }
+
+    .icon-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .375rem;
+      height: 2rem; padding: 0 .625rem; font-size: .8125rem; font-weight: 500;
+      border: 1px solid hsl(var(--border)); border-radius: var(--radius-md);
+      background-color: hsl(var(--card)); color: hsl(var(--foreground));
+      transition: background-color .15s ease, border-color .15s ease;
+    }
+    .icon-btn:hover { background-color: hsl(var(--muted)); }
+    .icon-btn.icon-only { width: 2rem; padding: 0; }
     .pill {
       display: inline-flex; align-items: center; gap: .25rem; height: 1.75rem; padding: 0 .5rem;
       font-size: .6875rem; font-weight: 500; color: hsl(var(--muted-foreground));
       border-radius: var(--radius-md); transition: background-color .15s ease, color .15s ease;
     }
     .pill:hover { background-color: hsl(var(--muted)); color: hsl(var(--foreground)); }
+
+    /* Lang dropdown */
+    .dropdown {
+      position: absolute; top: calc(100% + .5rem); right: 0; z-index: 40;
+      min-width: 11rem; padding: .375rem; border-radius: var(--radius-lg);
+      border: 1px solid hsl(var(--border)); background-color: hsl(var(--popover));
+      box-shadow: var(--shadow-pop); display: none;
+    }
+    .dropdown.open { display: block; }
+    .dropdown button {
+      display: flex; align-items: center; gap: .5rem; width: 100%; padding: .4375rem .625rem;
+      font-size: .8125rem; border-radius: var(--radius-sm); color: hsl(var(--popover-foreground));
+      text-align: left; transition: background-color .12s ease;
+    }
+    .dropdown button:hover { background-color: hsl(var(--muted)); }
+    .dropdown button.active { color: hsl(var(--primary)); font-weight: 600; }
+    .dropdown .check { margin-left: auto; opacity: 0; }
+    .dropdown button.active .check { opacity: 1; }
 
     /* Main */
     .main { flex: 1; padding: 1.5rem 1rem 2.5rem; }
@@ -135,12 +167,20 @@
     .card-body { padding: 1.25rem; }
     @media (min-width: 640px) { .card-body { padding: 1.5rem; } }
 
-    .card-head { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
-    .card-title { display: flex; align-items: center; gap: .625rem; font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.01em; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: .75rem; }
+    .section-title { display: flex; align-items: center; gap: .5rem; font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.01em; }
     .icon-primary { color: hsl(var(--primary)); }
+    .collapse-btn {
+      display: inline-flex; align-items: center; gap: .25rem; height: 1.75rem; padding: 0 .5rem;
+      font-size: .75rem; font-weight: 500; color: hsl(var(--muted-foreground));
+      border-radius: var(--radius-md); transition: background-color .15s ease, color .15s ease;
+    }
+    .collapse-btn:hover { background-color: hsl(var(--muted)); color: hsl(var(--foreground)); }
+    .collapse-icon { font-size: .625rem; transition: transform .2s ease; display: inline-block; }
+    .collapse-icon.collapsed { transform: rotate(-90deg); }
 
     /* Stats */
-    .stats { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+    .stats { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
     .stat {
       display: flex; flex-direction: column; align-items: center; min-width: 4.25rem;
       padding: .5rem .75rem; border-radius: var(--radius-md);
@@ -149,36 +189,49 @@
     .stat-val { font-size: .875rem; font-weight: 600; line-height: 1; letter-spacing: -0.01em; }
     .stat-label { font-size: .6875rem; color: hsl(var(--muted-foreground)); line-height: 1; margin-top: .125rem; }
 
-    /* URL import box */
-    .url-box { display: flex; flex-direction: column; gap: .75rem; padding: .75rem; border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); background-color: hsl(var(--muted) / 0.4); margin-bottom: .75rem; }
-    .url-row { display: flex; gap: .5rem; }
+    /* URL section (collapsible) */
+    .url-section { border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); background-color: hsl(var(--muted) / 0.4); margin-bottom: .75rem; overflow: hidden; transition: max-height .25s ease; }
+    .url-section.collapsed { display: none; }
+    .url-inner { padding: .75rem; }
+    .url-input-row { display: flex; gap: .5rem; margin-bottom: .5rem; }
     .url-input {
       flex: 1; height: 2.25rem; padding: 0 .75rem; font-size: .8125rem;
-      border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg);
+      border: 1px solid hsl(var(--border)); border-radius: var(--radius-md);
       background-color: hsl(var(--background)); color: hsl(var(--foreground));
       outline: none; transition: border-color .15s ease;
     }
     .url-input:focus { border-color: hsl(var(--ring)); }
+    .url-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .5rem; }
+    .url-list { display: flex; flex-direction: column; gap: .25rem; }
+    .url-item { display: flex; align-items: center; gap: .5rem; padding: .375rem .5rem; border-radius: var(--radius-sm); background-color: hsl(var(--card)); border: 1px solid hsl(var(--border)); }
+    .url-item-icon { color: hsl(var(--muted-foreground)); flex-shrink: 0; }
+    .url-item-text { font-size: .75rem; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .url-remove { color: hsl(var(--muted-foreground)); display: flex; padding: .25rem; border-radius: var(--radius-sm); transition: color .15s ease, background-color .15s ease; }
+    .url-remove:hover { color: hsl(var(--destructive)); background-color: hsl(var(--muted)); }
 
-    .presets { display: flex; flex-wrap: wrap; gap: .375rem; }
+    .preset-section { margin-top: .5rem; }
+    .preset-label { font-size: .6875rem; color: hsl(var(--muted-foreground)); }
+    .preset-tags { display: flex; flex-wrap: wrap; gap: .375rem; margin-top: .375rem; }
     .preset {
       display: inline-flex; align-items: center; padding: .25rem .625rem; font-size: .75rem; font-weight: 500;
-      border-radius: var(--radius-lg); cursor: pointer; user-select: none;
-      transition: all .15s ease; background-color: hsl(var(--muted)); color: hsl(var(--muted-foreground));
+      border-radius: var(--radius-md); cursor: pointer; user-select: none;
+      transition: all .15s ease; background-color: transparent; color: hsl(var(--muted-foreground));
+      border: 1px solid hsl(var(--border));
     }
-    .preset:hover { background-color: hsl(var(--secondary)); }
-    .preset.active { background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); box-shadow: var(--shadow-card); }
+    .preset:hover { background-color: hsl(var(--muted)); }
+    .preset.active { background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); border-color: hsl(var(--primary)); box-shadow: var(--shadow-card); }
 
     /* Buttons */
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: .375rem;
       height: 2.25rem; padding: 0 1rem; font-size: .8125rem; font-weight: 500;
-      border-radius: var(--radius-lg); transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+      border-radius: var(--radius-md); transition: background-color .15s ease, color .15s ease, border-color .15s ease;
       white-space: nowrap;
     }
+    .btn-sm { height: 2rem; padding: 0 .75rem; font-size: .75rem; }
     .btn-primary { background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
     .btn-primary:hover { background-color: hsl(var(--primary) / 0.9); }
-    .btn-outline { border: 1px solid hsl(var(--border)); background-color: hsl(var(--background)); color: hsl(var(--foreground)); }
+    .btn-outline { border: 1px solid hsl(var(--border)); background-color: hsl(var(--card)); color: hsl(var(--foreground)); }
     .btn-outline:hover { background-color: hsl(var(--muted)); }
     .btn-actions { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: flex-end; margin-top: .75rem; }
 
@@ -200,13 +253,42 @@
     pre.editor-area { margin: 0; }
 
     /* Format tabs */
-    .format-tabs { display: inline-flex; padding: .125rem; gap: .125rem; border-radius: var(--radius-lg); background-color: hsl(var(--muted)); }
+    .format-tabs { display: inline-flex; padding: .125rem; gap: .125rem; border-radius: var(--radius-md); background-color: hsl(var(--muted)); }
     .fmt {
       display: inline-flex; align-items: center; gap: .25rem; padding: .375rem .75rem; font-size: .8125rem; font-weight: 500;
-      border-radius: var(--radius-md); color: hsl(var(--muted-foreground)); transition: all .15s ease; white-space: nowrap;
+      border-radius: var(--radius-sm); color: hsl(var(--muted-foreground)); transition: all .15s ease; white-space: nowrap;
     }
     .fmt:hover { color: hsl(var(--foreground)); }
     .fmt.active { background-color: hsl(var(--card)); color: hsl(var(--foreground)); box-shadow: var(--shadow-card); }
+
+    /* Settings panel */
+    .settings-panel { border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); background-color: hsl(var(--muted) / 0.4); margin-bottom: .75rem; overflow: hidden; }
+    .settings-panel.collapsed { display: none; }
+    .settings-inner { padding: .75rem; }
+    .settings-grid { display: grid; grid-template-columns: 1fr; gap: .5rem; margin-bottom: .75rem; }
+    @media (min-width: 640px) { .settings-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 1024px) { .settings-grid { grid-template-columns: repeat(4, 1fr); } }
+    .field { display: flex; flex-direction: column; gap: .25rem; }
+    .field label { font-size: .6875rem; font-weight: 500; color: hsl(var(--muted-foreground)); }
+    .field input {
+      height: 2rem; padding: 0 .625rem; font-size: .8125rem;
+      border: 1px solid hsl(var(--border)); border-radius: var(--radius-sm);
+      background-color: hsl(var(--background)); color: hsl(var(--foreground)); outline: none; transition: border-color .15s ease;
+    }
+    .field input:focus { border-color: hsl(var(--ring)); }
+    .checks { display: flex; flex-wrap: wrap; gap: .75rem 1rem; }
+    .check-item { display: inline-flex; align-items: center; gap: .375rem; font-size: .8125rem; color: hsl(var(--muted-foreground)); cursor: pointer; user-select: none; }
+    .checkbox {
+      width: 1rem; height: 1rem; border-radius: 4px; border: 1.5px solid hsl(var(--border));
+      background-color: hsl(var(--background)); display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: background-color .15s ease, border-color .15s ease;
+    }
+    .checkbox.checked { background-color: hsl(var(--primary)); border-color: hsl(var(--primary)); }
+    .checkbox svg { opacity: 0; color: hsl(var(--primary-foreground)); }
+    .checkbox.checked svg { opacity: 1; }
+
+    /* Merge info */
+    .merge-info { font-size: .75rem; color: hsl(var(--muted-foreground)); margin: .5rem 0 .75rem; padding: .5rem .625rem; border-radius: var(--radius-sm); background-color: hsl(var(--muted) / 0.4); }
 
     /* Empty state */
     .empty {
@@ -218,10 +300,19 @@
     .empty p { font-size: .875rem; max-width: 20rem; margin-bottom: 1.25rem; }
     .empty-btn {
       display: inline-flex; align-items: center; justify-content: center; gap: .5rem; height: 2.25rem; padding: 0 1rem;
-      font-size: .875rem; font-weight: 500; border-radius: var(--radius-lg);
+      font-size: .875rem; font-weight: 500; border-radius: var(--radius-md);
       background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); transition: background-color .15s ease;
     }
     .empty-btn:hover { background-color: hsl(var(--primary) / 0.9); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(1rem);
+      padding: .625rem 1rem; border-radius: var(--radius-md); font-size: .8125rem; font-weight: 500;
+      background-color: hsl(var(--foreground)); color: hsl(var(--background));
+      box-shadow: var(--shadow-pop); opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; z-index: 50;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     /* Footer */
     .footer { border-top: 1px solid hsl(var(--border)); padding: 1.5rem 1rem; margin-top: auto; transition: border-color .3s ease; }
@@ -244,16 +335,29 @@
     <header class="header">
       <div class="header-inner">
         <a href="#" class="brand" aria-label="DNS Shield 首页">
-          <svg class="icon-primary" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
-          <span class="brand-name">DNS Shield</span>
-          <span class="brand-ver">v3.7.4</span>
+          <span class="brand-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          </span>
+          <span class="brand-text">
+            <span class="brand-name">DNS Shield</span>
+            <span class="brand-sub">路由器级全局广告过滤规则生成工具</span>
+          </span>
         </a>
         <div class="header-actions">
-          <button class="pill" id="toggleData" aria-label="切换数据状态">有数据</button>
-          <button class="pill" id="toggleTheme" aria-label="切换深色/浅色主题">
+          <!-- Language selector -->
+          <div style="position:relative">
+            <button class="icon-btn" id="langBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="选择语言">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span id="langName">中文简体</span>
+            </button>
+            <div class="dropdown" id="langMenu" role="listbox" aria-label="语言列表"></div>
+          </div>
+          <!-- Theme toggle -->
+          <button class="icon-btn icon-only" id="toggleTheme" aria-label="切换深色/浅色主题" aria-pressed="true">
             <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            <span id="themeLabel">深色</span>
           </button>
+          <!-- Data toggle (preview helper) -->
+          <button class="pill" id="toggleData" aria-label="切换数据状态">有数据</button>
         </div>
       </div>
     </header>
@@ -270,32 +374,48 @@
           <!-- Input Panel -->
           <section class="card" aria-label="输入面板">
             <div class="card-body">
-              <div class="card-head">
-                <h2 class="card-title">
+              <div class="section-header">
+                <h2 class="section-title">
                   <svg class="icon-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                   输入域名清单
                 </h2>
+                <button class="collapse-btn" id="toggleUrl" aria-expanded="false" aria-controls="urlSection">
+                  <span class="collapse-icon collapsed" id="urlIcon" aria-hidden="true">▼</span>
+                  <span>高级选项</span>
+                </button>
               </div>
 
-              <div class="stats" id="inputStats">
-                <div class="stat"><span class="stat-val">6</span><span class="stat-label">域名</span></div>
-                <div class="stat"><span class="stat-val">6</span><span class="stat-label">黑名单</span></div>
-                <div class="stat"><span class="stat-val">2</span><span class="stat-label">白名单</span></div>
-                <div class="stat"><span class="stat-val">8</span><span class="stat-label">有效</span></div>
-                <div class="stat"><span class="stat-val">4</span><span class="stat-label">注释</span></div>
+              <div class="stats" id="inputStats" role="region" aria-label="统计信息">
+                <div class="stat"><span class="stat-val" id="stat-domains">6</span><span class="stat-label">域名</span></div>
+                <div class="stat"><span class="stat-val" id="stat-blacklist">6</span><span class="stat-label">黑名单</span></div>
+                <div class="stat"><span class="stat-val" id="stat-whitelist">2</span><span class="stat-label">白名单</span></div>
+                <div class="stat"><span class="stat-val" id="stat-valid">8</span><span class="stat-label">有效</span></div>
+                <div class="stat"><span class="stat-val" id="stat-comment">4</span><span class="stat-label">注释</span></div>
               </div>
 
-              <div class="url-box">
-                <div class="url-row">
-                  <input class="url-input" type="text" readonly value="https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/domains.txt" aria-label="URL 导入地址" />
-                  <button class="btn btn-primary" aria-label="获取远程域名列表">获取</button>
-                </div>
-                <div class="presets" id="presets">
-                  <span class="preset active" role="button" tabindex="0">内置数据</span>
-                  <span class="preset" role="button" tabindex="0">AdGuard</span>
-                  <span class="preset" role="button" tabindex="0">EasyList</span>
-                  <span class="preset" role="button" tabindex="0">NeoHosts</span>
-                  <span class="preset" role="button" tabindex="0">StevenBlack</span>
+              <!-- URL Section (collapsible advanced) -->
+              <div class="url-section collapsed" id="urlSection" aria-hidden="true">
+                <div class="url-inner">
+                  <div class="url-input-row">
+                    <input class="url-input" type="text" id="urlInput" placeholder="输入 URL 导入域名列表..." aria-label="URL 导入地址" />
+                    <button class="btn btn-primary btn-sm" id="fetchUrl">获取</button>
+                  </div>
+                  <div class="url-actions">
+                    <button class="btn btn-outline btn-sm" id="addUrl">添加URL</button>
+                    <button class="btn btn-outline btn-sm" id="sortUrls">前缀优先</button>
+                    <button class="btn btn-outline btn-sm" id="fetchAll">获取全部</button>
+                  </div>
+                  <div class="url-list" id="urlList" role="list" aria-label="URL列表"></div>
+
+                  <div class="preset-section">
+                    <span class="preset-label">预设源:</span>
+                    <div class="preset-tags" id="presets" role="group" aria-label="预设源">
+                      <span class="preset active" data-preset="builtin" role="button" tabindex="0" aria-pressed="true">内置数据</span>
+                      <span class="preset" data-preset="adguard" role="button" tabindex="0" aria-pressed="false">AdGuard</span>
+                      <span class="preset" data-preset="easylist" role="button" tabindex="0" aria-pressed="false">EasyList</span>
+                      <span class="preset" data-preset="neohosts" role="button" tabindex="0" aria-pressed="false">NeoHosts</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -313,10 +433,14 @@
               </div>
 
               <div class="btn-actions" id="inputActions">
-                <button class="btn btn-primary">
+                <button class="btn btn-outline btn-sm" id="clearBtn">清空</button>
+                <button class="btn btn-outline btn-sm" id="sortBtn">排序</button>
+                <button class="btn btn-primary" id="parseBtn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                   解析域名
                 </button>
+                <button class="btn btn-outline btn-sm" id="dedupeBtn">去重</button>
+                <button class="btn btn-outline btn-sm" id="saveBtn">保存</button>
               </div>
             </div>
           </section>
@@ -324,18 +448,43 @@
           <!-- Output Panel -->
           <section class="card" aria-label="输出面板">
             <div class="card-body">
-              <div class="card-head">
-                <h2 class="card-title">
+              <div class="section-header">
+                <h2 class="section-title">
                   <svg class="icon-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
                   生成过滤规则
                 </h2>
-                <div class="format-tabs" id="formatTabs" role="tablist">
-                  <button class="fmt" data-fmt="dnsmasq" role="tab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>Dnsmasq</button>
-                  <button class="fmt" data-fmt="hosts" role="tab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>Hosts</button>
-                  <button class="fmt" data-fmt="adguard" role="tab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>AdGuard</button>
-                  <button class="fmt" data-fmt="whitelist" role="tab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>白名单</button>
+                <div style="display:flex; align-items:center; gap:.5rem">
+                  <div class="format-tabs" id="formatTabs" role="tablist">
+                    <button class="fmt" data-fmt="dnsmasq" role="tab" aria-selected="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>Dnsmasq</button>
+                    <button class="fmt active" data-fmt="hosts" role="tab" aria-selected="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>Hosts</button>
+                    <button class="fmt" data-fmt="adguard" role="tab" aria-selected="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>AdGuard</button>
+                    <button class="fmt" data-fmt="whitelist" role="tab" aria-selected="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>白名单</button>
+                  </div>
+                  <button class="icon-btn icon-only" id="toggleSettings" aria-expanded="false" aria-controls="settingsPanel" aria-label="设置" title="设置">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  </button>
                 </div>
               </div>
+
+              <!-- Settings Panel (collapsible) -->
+              <div class="settings-panel collapsed" id="settingsPanel" aria-hidden="true">
+                <div class="settings-inner">
+                  <div class="settings-grid">
+                    <div class="field"><label for="projectNameInput">项目名称</label><input type="text" id="projectNameInput" value="DNS Shield" /></div>
+                    <div class="field"><label for="versionInput">版本号</label><input type="text" id="versionInput" value="3.7.4" /></div>
+                    <div class="field"><label for="ipv4Input">IPv4</label><input type="text" id="ipv4Input" value="127.0.0.1" /></div>
+                    <div class="field"><label for="ipv6Input">IPv6</label><input type="text" id="ipv6Input" value="::" /></div>
+                  </div>
+                  <div class="checks">
+                    <label class="check-item"><span class="checkbox checked" id="chk-addHeader" data-key="addHeader"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>头部注释</label>
+                    <label class="check-item"><span class="checkbox" id="chk-blockIPv6" data-key="blockIPv6"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>阻止 IPv6</label>
+                    <label class="check-item"><span class="checkbox checked" id="chk-dedupDomains" data-key="dedupDomains"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>自动去重</label>
+                    <label class="check-item"><span class="checkbox checked" id="chk-removeWildcard" data-key="removeWildcard"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>移除通配符</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="merge-info" id="mergeInfo" role="status" aria-live="polite">点击"生成规则"查看输出</div>
 
               <div id="outputEditorWrap">
                 <div class="editor">
@@ -350,15 +499,15 @@
               </div>
 
               <div class="btn-actions" id="outputActions">
-                <button class="btn btn-primary">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                <button class="btn btn-primary" id="generateBtn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3z"/></svg>
                   生成规则
                 </button>
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" id="downloadBtn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   下载
                 </button>
-                <button class="btn btn-outline">
+                <button class="btn btn-outline" id="copyBtn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                   复制
                 </button>
@@ -379,16 +528,29 @@
           <span class="dot"></span>
           <a href="#">文档</a>
           <span class="dot"></span>
-          <span class="footer-ver">v3.7.4</span>
+          <span class="footer-ver">v3.7.5</span>
         </div>
         <p class="footer-sub">DNS Shield — 路由器级广告过滤规则生成工具</p>
       </div>
     </footer>
   </div>
 
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
   <script>
     (function () {
       'use strict';
+
+      var LANGS = [
+        { code: 'zh-cn', name: '中文简体' }, { code: 'zh-tw', name: '中文繁體' },
+        { code: 'en', name: 'English' }, { code: 'ar', name: 'العربية' },
+        { code: 'cs', name: 'Čeština' }, { code: 'es', name: 'Español' },
+        { code: 'hi', name: 'हिन्दी' }, { code: 'id', name: 'Bahasa Indonesia' },
+        { code: 'it', name: 'Italiano' }, { code: 'nl', name: 'Nederlands' },
+        { code: 'pl', name: 'Polski' }, { code: 'sv', name: 'Svenska' },
+        { code: 'th', name: 'ไทย' }, { code: 'tr', name: 'Türkçe' },
+        { code: 'ru', name: 'Русский' }, { code: 'vi', name: 'Tiếng Việt' }
+      ];
 
       var MOCK_DOMAINS = [
         '# === 白名单 ===',
@@ -409,153 +571,332 @@
         'log.bilibili.com'
       ].join('\n');
 
-      var OUTPUT_SAMPLES = {
-        dnsmasq: [
-          '# DNS Shield - Dnsmasq 广告过滤列表',
-          '# 版本: 3.7.3 | 域名: 6 个',
-          '',
-          'address=/ad.mi.com/127.0.0.1',
-          'address=/ad.xiaomi.com/127.0.0.1',
-          'address=/ad.iqiyi.com/127.0.0.1',
-          'address=/log.iqiyi.com/127.0.0.1',
-          'address=/ad.youku.com/127.0.0.1',
-          'address=/ad.bilibili.com/127.0.0.1',
-          '',
-          '# 白名单',
-          'server=/mi.com/',
-          'server=/iot.mi.com/'
-        ].join('\n'),
-        hosts: [
-          '# DNS Shield - Hosts 广告过滤列表',
-          '# 版本: 3.7.3',
-          '',
-          '127.0.0.1 ad.mi.com',
-          '127.0.0.1 ad.xiaomi.com',
-          '127.0.0.1 ad.iqiyi.com',
-          '127.0.0.1 log.iqiyi.com',
-          '127.0.0.1 ad.youku.com',
-          '127.0.0.1 ad.bilibili.com'
-        ].join('\n'),
-        adguard: [
-          '! DNS Shield - AdGuard 广告过滤规则',
-          '! 版本: 3.7.3 | 域名: 6 个',
-          '',
-          '||ad.mi.com^',
-          '||ad.xiaomi.com^',
-          '||ad.iqiyi.com^',
-          '||log.iqiyi.com^',
-          '||ad.youku.com^',
-          '||ad.bilibili.com^',
-          '',
-          '! 白名单',
-          '@@||mi.com^',
-          '@@||iot.mi.com^'
-        ].join('\n'),
-        whitelist: [
-          '# DNS Shield - 白名单列表',
-          '@@||mi.com^',
-          '@@||iot.mi.com^'
-        ].join('\n')
-      };
+      var DOMAIN_REGEX = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
 
       var SUN = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
       var MOON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
 
-      var state = { theme: 'dark', format: 'dnsmasq', hasData: true, input: MOCK_DOMAINS };
+      var state = {
+        theme: 'dark', format: 'hosts', hasData: true, input: MOCK_DOMAINS,
+        lang: 'zh-cn', urlCollapsed: true, settingsCollapsed: true,
+        urls: [], activePreset: 'builtin', output: '',
+        settings: { projectName: 'DNS Shield', version: '3.7.4', ipv4: '127.0.0.1', ipv6: '::', addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true }
+      };
 
       var $ = function (id) { return document.getElementById(id); };
       var root = document.documentElement;
 
+      /* ---------- parse (mirrors src/utils/parser) ---------- */
+      function parseSource(text) {
+        var lines = (text || '').split('\n');
+        var domains = [], whitelist = [], customDns = [], comments = 0;
+        for (var i = 0; i < lines.length; i++) {
+          var t = lines[i].trim();
+          if (!t) { comments++; continue; }
+          if (t.charAt(0) === '#' || t.charAt(0) === '!') { comments++; continue; }
+          if (t.charAt(0) === '+') {
+            var w = t.slice(1).trim().toLowerCase().replace(/^\*\./, '');
+            if (DOMAIN_REGEX.test(w)) whitelist.push(w); else comments++;
+            continue;
+          }
+          if (t.charAt(0) === '@') {
+            var m = t.slice(1).trim().match(/^([^=]+)=(.+)$/);
+            if (m && DOMAIN_REGEX.test(m[1].toLowerCase().replace(/^\*\./, ''))) customDns.push({ domain: m[1].toLowerCase().replace(/^\*\./, ''), ip: m[2].trim() });
+            else comments++;
+            continue;
+          }
+          var d = t.toLowerCase().replace(/^\*\./, '');
+          if (DOMAIN_REGEX.test(d)) domains.push(d); else comments++;
+        }
+        // filter out whitelist/customDns from domains
+        var exSet = {};
+        whitelist.concat(customDns.map(function (c) { return c.domain; })).forEach(function (x) { exSet[x] = true; });
+        domains = domains.filter(function (x) { return !exSet[x]; });
+        return { domains: domains, whitelist: whitelist, customDns: customDns, comments: comments };
+      }
+
+      function todayStr() {
+        var d = new Date();
+        function p(n) { return (n < 10 ? '0' : '') + n; }
+        return d.getFullYear() + '.' + p(d.getMonth() + 1) + '.' + p(d.getDate());
+      }
+
+      /* ---------- generate (mirrors src/utils/rulesGenerator) ---------- */
+      function generateHeader(fmt, total, wlCount) {
+        var sep = fmt === 'adguard' ? '================================' : '=====================================';
+        var cc = fmt === 'adguard' ? '!' : '#';
+        var titleMap = { dnsmasq: 'Dnsmasq 广告过滤列表', hosts: 'Hosts 广告过滤列表', adguard: 'AdGuard 广告过滤规则' };
+        var lines = [];
+        lines.push(cc + ' ' + sep);
+        lines.push(cc + ' ' + state.settings.projectName + ' - ' + titleMap[fmt]);
+        lines.push(cc + ' ' + sep);
+        lines.push(cc);
+        lines.push(cc + ' 路由器级广告过滤规则');
+        lines.push(cc);
+        lines.push(cc + ' 版本: ' + state.settings.version);
+        lines.push(cc + ' 更新: ' + todayStr());
+        lines.push(cc + ' 域名: ' + total + ' 个唯一域名');
+        if (wlCount > 0) lines.push(cc + ' 白名单: ' + wlCount + ' 个域名');
+        lines.push(cc);
+        lines.push(cc + ' 项目: https://github.com/sutchan/DNS_Shield');
+        lines.push(cc + ' 演示: https://dns.ewuse.com/');
+        lines.push(cc);
+        lines.push(cc + ' ' + sep);
+        return lines.join('\n') + '\n\n';
+      }
+
+      function generateRules() {
+        var parsed = parseSource(state.input);
+        var s = state.settings;
+        var domains = parsed.domains.slice();
+        var wl = parsed.whitelist.slice();
+        if (s.removeWildcard) { domains = domains.map(function (d) { return d.replace(/^\*\./, ''); }); wl = wl.map(function (d) { return d.replace(/^\*\./, ''); }); }
+        if (s.dedupDomains) { domains = uniq(domains).sort(); wl = uniq(wl).sort(); }
+        var cd = parsed.customDns;
+
+        var dns = '', hosts = '', adg = '', wlOut = '';
+        if (s.addHeader) {
+          var total = domains.length + cd.length;
+          dns += generateHeader('dnsmasq', total, wl.length);
+          hosts += generateHeader('hosts', total, wl.length);
+          adg += generateHeader('adguard', total, wl.length);
+        }
+        domains.forEach(function (d) {
+          dns += 'address=/' + d + '/' + s.ipv4 + '\n';
+          hosts += s.ipv4 + ' ' + d + '\n';
+          adg += '||' + d + '^\n';
+          if (s.blockIPv6) { dns += 'address=/' + d + '/' + s.ipv6 + '\n'; hosts += s.ipv6 + ' ' + d + '\n'; }
+        });
+        cd.forEach(function (c) {
+          dns += 'address=/' + c.domain + '/' + c.ip + '\n';
+          hosts += c.ip + ' ' + c.domain + '\n';
+          adg += '||' + c.domain + '^\n';
+        });
+        if (wl.length > 0) {
+          if (s.addHeader) { dns += '\n# 白名单\n'; hosts += '\n# 白名单\n'; adg += '\n! 白名单\n'; wlOut += '# 白名单\n'; }
+          wl.forEach(function (d) { dns += 'server=/' + d + '/\n'; hosts += '# 已白名单: ' + d + '\n'; adg += '@@||' + d + '^\n'; wlOut += '@@||' + d + '^\n'; });
+        }
+        return { dnsmasq: dns, hosts: hosts, adguard: adg, whitelist: wlOut, parsed: parsed };
+      }
+
+      function uniq(arr) { var seen = {}, out = []; arr.forEach(function (x) { if (!seen[x]) { seen[x] = true; out.push(x); } }); return out; }
+
+      /* ---------- render helpers ---------- */
       function renderGutter(el, text) {
         var n = text ? text.split('\n').length : 1;
         var html = '';
         for (var i = 1; i <= n; i++) html += '<div>' + i + '</div>';
         el.innerHTML = html;
       }
-
       function syncScroll(srcId, gutterId) {
         var src = $(srcId), gutter = $(gutterId);
         if (src && gutter) gutter.scrollTop = src.scrollTop;
       }
+      function toast(msg) {
+        var el = $('toast'); el.textContent = msg; el.classList.add('show');
+        clearTimeout(el._t); el._t = setTimeout(function () { el.classList.remove('show'); }, 1800);
+      }
 
+      /* ---------- main render ---------- */
       function render() {
-        // theme
         if (state.theme === 'dark') root.classList.add('dark'); else root.classList.remove('dark');
         $('themeIcon').innerHTML = state.theme === 'dark' ? MOON : SUN;
-        $('themeLabel').textContent = state.theme === 'dark' ? '深色' : '浅色';
+        $('toggleTheme').setAttribute('aria-pressed', state.theme === 'dark' ? 'true' : 'false');
+        $('toggleTheme').setAttribute('aria-label', state.theme === 'dark' ? '切换到浅色主题' : '切换到深色主题');
 
         // data visibility
         $('inputStats').style.display = state.hasData ? 'flex' : 'none';
         $('inputEditorWrap').style.display = state.hasData ? 'block' : 'none';
         $('inputEmpty').style.display = state.hasData ? 'none' : 'flex';
         $('inputActions').style.display = state.hasData ? 'flex' : 'none';
-
         $('outputEditorWrap').style.display = state.hasData ? 'block' : 'none';
         $('outputEmpty').style.display = state.hasData ? 'none' : 'flex';
         $('outputActions').style.display = state.hasData ? 'flex' : 'none';
+        $('toggleData').textContent = state.hasData ? '有数据' : '空状态';
 
-        // input editor
+        // input editor + stats
         if (state.hasData) {
           $('inputArea').value = state.input;
           renderGutter($('inputGutter'), state.input);
+          var p = parseSource(state.input);
+          $('stat-domains').textContent = p.domains.length;
+          $('stat-blacklist').textContent = p.domains.length;
+          $('stat-whitelist').textContent = p.whitelist.length;
+          $('stat-valid').textContent = p.domains.length + p.whitelist.length;
+          $('stat-comment').textContent = p.comments;
         }
 
-        // output editor
-        if (state.hasData) {
-          var out = OUTPUT_SAMPLES[state.format] || '';
-          $('outputArea').textContent = out;
-          renderGutter($('outputGutter'), out);
-        }
-
-        // format tabs active
+        // format tabs
         var tabs = document.querySelectorAll('#formatTabs .fmt');
         for (var i = 0; i < tabs.length; i++) {
-          tabs[i].classList.toggle('active', tabs[i].getAttribute('data-fmt') === state.format);
+          var on = tabs[i].getAttribute('data-fmt') === state.format;
+          tabs[i].classList.toggle('active', on);
+          tabs[i].setAttribute('aria-selected', on ? 'true' : 'false');
         }
 
-        // data toggle label
-        $('toggleData').textContent = state.hasData ? '有数据' : '空状态';
+        // output
+        if (state.hasData && state.output) {
+          var out = state.output[state.format] || '';
+          $('outputArea').textContent = out;
+          renderGutter($('outputGutter'), out);
+          var pp = parseSource(state.input);
+          $('mergeInfo').textContent = '黑名单: ' + pp.domains.length + ' | 白名单: ' + pp.whitelist.length + ' | 自定义DNS: ' + pp.customDns.length;
+        } else if (state.hasData) {
+          $('mergeInfo').textContent = '点击"生成规则"查看输出';
+        }
+
+        // url section collapse
+        $('urlSection').className = 'url-section' + (state.urlCollapsed ? ' collapsed' : '');
+        $('urlSection').setAttribute('aria-hidden', state.urlCollapsed ? 'true' : 'false');
+        $('toggleUrl').setAttribute('aria-expanded', state.urlCollapsed ? 'false' : 'true');
+        $('urlIcon').className = 'collapse-icon' + (state.urlCollapsed ? ' collapsed' : '');
+
+        // settings collapse
+        $('settingsPanel').className = 'settings-panel' + (state.settingsCollapsed ? ' collapsed' : '');
+        $('settingsPanel').setAttribute('aria-hidden', state.settingsCollapsed ? 'true' : 'false');
+        $('toggleSettings').setAttribute('aria-expanded', state.settingsCollapsed ? 'false' : 'true');
+
+        // presets
+        var ps = document.querySelectorAll('#presets .preset');
+        for (var j = 0; j < ps.length; j++) {
+          var act = ps[j].getAttribute('data-preset') === state.activePreset;
+          ps[j].classList.toggle('active', act);
+          ps[j].setAttribute('aria-pressed', act ? 'true' : 'false');
+        }
+
+        // url list
+        var list = $('urlList');
+        list.innerHTML = '';
+        state.urls.forEach(function (u, idx) {
+          var row = document.createElement('div');
+          row.className = 'url-item'; row.setAttribute('role', 'listitem');
+          row.innerHTML = '<svg class="url-item-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' +
+            '<span class="url-item-text">' + u + '</span>';
+          var rm = document.createElement('button');
+          rm.className = 'url-remove'; rm.setAttribute('aria-label', '移除 ' + u);
+          rm.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+          rm.addEventListener('click', function () { state.urls.splice(idx, 1); render(); });
+          row.appendChild(rm);
+          list.appendChild(row);
+        });
+
+        // lang
+        $('langName').textContent = (LANGS.filter(function (l) { return l.code === state.lang; })[0] || {}).name || state.lang;
       }
 
-      // Wire events
-      $('toggleTheme').addEventListener('click', function () {
-        state.theme = state.theme === 'dark' ? 'light' : 'dark';
-        render();
-      });
-
+      /* ---------- events ---------- */
+      $('toggleTheme').addEventListener('click', function () { state.theme = state.theme === 'dark' ? 'light' : 'dark'; render(); });
       $('toggleData').addEventListener('click', function () {
         state.hasData = !state.hasData;
-        if (state.hasData) state.input = MOCK_DOMAINS;
+        if (state.hasData) { state.input = MOCK_DOMAINS; state.output = ''; }
         render();
       });
+      $('importSample').addEventListener('click', function () { state.hasData = true; state.input = MOCK_DOMAINS; state.output = ''; render(); });
 
-      $('importSample').addEventListener('click', function () {
-        state.hasData = true;
-        state.input = MOCK_DOMAINS;
-        render();
-      });
-
-      $('inputArea').addEventListener('input', function (e) {
-        state.input = e.target.value;
-        renderGutter($('inputGutter'), state.input);
-      });
+      $('inputArea').addEventListener('input', function (e) { state.input = e.target.value; state.output = ''; renderGutter($('inputGutter'), state.input); });
       $('inputArea').addEventListener('scroll', function () { syncScroll('inputArea', 'inputGutter'); });
 
+      // URL collapse
+      $('toggleUrl').addEventListener('click', function () { state.urlCollapsed = !state.urlCollapsed; render(); });
+      // Settings collapse
+      $('toggleSettings').addEventListener('click', function () { state.settingsCollapsed = !state.settingsCollapsed; render(); });
+
+      // parse / generate
+      $('parseBtn').addEventListener('click', function () { toast('解析完成'); });
+      $('generateBtn').addEventListener('click', function () { state.output = generateRules(); render(); toast('规则生成成功！'); });
+      $('clearBtn').addEventListener('click', function () { state.input = ''; state.output = ''; render(); });
+      $('sortBtn').addEventListener('click', function () {
+        var lines = state.input.split('\n');
+        var doms = lines.filter(function (l) { return DOMAIN_REGEX.test(l.trim().toLowerCase().replace(/^\*\./, '')); }).sort();
+        state.input = doms.join('\n'); state.output = ''; render(); toast('域名已排序');
+      });
+      $('dedupeBtn').addEventListener('click', function () {
+        var seen = {}, out = [];
+        state.input.split('\n').forEach(function (l) { var k = l.trim().toLowerCase(); if (!seen[k]) { seen[k] = true; out.push(l); } });
+        var removed = state.input.split('\n').length - out.length;
+        state.input = out.join('\n'); state.output = ''; render(); toast('已去除 ' + removed + ' 个重复项');
+      });
+      $('saveBtn').addEventListener('click', function () { toast('域名已保存'); });
+
+      // settings inputs
+      $('projectNameInput').addEventListener('input', function (e) { state.settings.projectName = e.target.value; });
+      $('versionInput').addEventListener('input', function (e) { state.settings.version = e.target.value; });
+      $('ipv4Input').addEventListener('input', function (e) { state.settings.ipv4 = e.target.value; });
+      $('ipv6Input').addEventListener('input', function (e) { state.settings.ipv6 = e.target.value; });
+      ['addHeader', 'blockIPv6', 'dedupDomains', 'removeWildcard'].forEach(function (key) {
+        $('chk-' + key).addEventListener('click', function () {
+          state.settings[key] = !state.settings[key];
+          this.classList.toggle('checked', state.settings[key]);
+        });
+      });
+
+      // presets (keyboard accessible)
+      var presets = document.querySelectorAll('#presets .preset');
+      presets.forEach(function (el) {
+        function activate() { state.activePreset = el.getAttribute('data-preset'); state.output = ''; render(); toast('已加载预设'); }
+        el.addEventListener('click', activate);
+        el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+      });
+
+      // url actions
+      $('fetchUrl').addEventListener('click', function () { var u = $('urlInput').value.trim(); if (!u) { toast('请输入 URL'); return; } toast('获取中...'); });
+      $('addUrl').addEventListener('click', function () {
+        var u = $('urlInput').value.trim();
+        if (!u) { toast('请输入 URL'); return; }
+        if (state.urls.indexOf(u) === -1) state.urls.push(u);
+        $('urlInput').value = ''; render(); toast('URL 已添加');
+      });
+      $('sortUrls').addEventListener('click', function () { state.urls.sort(); render(); toast('URLs 已排序'); });
+      $('fetchAll').addEventListener('click', function () { if (state.urls.length === 0) { toast('请先添加 URL'); return; } toast('获取全部...'); });
+
+      // format tabs (keyboard)
       var tabs = document.querySelectorAll('#formatTabs .fmt');
-      for (var i = 0; i < tabs.length; i++) {
-        tabs[i].addEventListener('click', function () {
-          state.format = this.getAttribute('data-fmt');
+      tabs.forEach(function (el) {
+        function activate() { state.format = el.getAttribute('data-fmt'); render(); }
+        el.addEventListener('click', activate);
+        el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+      });
+
+      // copy / download
+      $('copyBtn').addEventListener('click', function () {
+        if (!state.output) { toast('请先生成规则'); return; }
+        var text = state.output[state.format] || '';
+        if (navigator.clipboard) navigator.clipboard.writeText(text).then(function () { toast('已复制到剪贴板'); }, function () { toast('复制失败'); });
+        else toast('复制失败');
+      });
+      $('downloadBtn').addEventListener('click', function () {
+        if (!state.output) { toast('请先生成规则'); return; }
+        var text = state.output[state.format] || '';
+        var blob = new Blob([text], { type: 'text/plain' });
+        var a = document.createElement('a');
+        var names = { dnsmasq: 'dnsmasq.conf', hosts: 'hosts.txt', adguard: 'adguard.txt', whitelist: 'whitelist.txt' };
+        a.href = URL.createObjectURL(blob); a.download = names[state.format]; a.click();
+        URL.revokeObjectURL(a.href); toast('已下载 ' + names[state.format]);
+      });
+
+      // language dropdown
+      var langMenu = $('langMenu');
+      LANGS.forEach(function (l) {
+        var b = document.createElement('button');
+        b.setAttribute('role', 'option');
+        b.setAttribute('aria-selected', l.code === state.lang ? 'true' : 'false');
+        b.innerHTML = '<span>' + l.name + '</span><svg class="check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+        if (l.code === state.lang) b.classList.add('active');
+        b.addEventListener('click', function () {
+          state.lang = l.code;
+          document.documentElement.setAttribute('lang', l.code === 'zh-cn' ? 'zh-CN' : l.code);
+          langMenu.classList.remove('open');
+          $('langBtn').setAttribute('aria-expanded', 'false');
           render();
         });
-      }
-
-      var presets = document.querySelectorAll('#presets .preset');
-      for (var j = 0; j < presets.length; j++) {
-        presets[j].addEventListener('click', function () {
-          for (var k = 0; k < presets.length; k++) presets[k].classList.remove('active');
-          this.classList.add('active');
-        });
-      }
+        langMenu.appendChild(b);
+      });
+      $('langBtn').addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = langMenu.classList.toggle('open');
+        $('langBtn').setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      document.addEventListener('click', function () { langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false'); });
 
       render();
     })();

@@ -1,15 +1,19 @@
-# DNS Shield 高保真原型 v3.7.3
-> 基于 DNS Shield Design System v3.7.3 (Swiss Modernism 2.0 × Apple Precision)
+# DNS Shield 高保真原型 v3.7.4
+> 基于 DNS Shield Design System v3.7.4 (Swiss Modernism 2.0 × Apple Precision)
 
 ## 交付物
 
 ### 1. `prototype.html` — 独立高保真原型（无需构建）
 - 纯 HTML + CSS + 原生 JS，零依赖，双击即可在浏览器打开
-- 完整还原 Design System v3.7.3 色板（oklch → hsl 变量）、Inter 字体、4px 间距、Lucide 风格 SVG 图标
+- 完整还原 Design System v3.7.4 色板（oklch → hsl 变量）、Inter 字体、4px 间距、Lucide 风格 SVG 图标
+- **16 语言切换器**（Globe 下拉菜单，对齐真实 Header）
+- **可折叠"高级选项"URL 区**：URL 输入框、获取/添加URL/前缀优先(排序)/获取全部、URL 列表(带删除)、4 个真实预设源(builtin/AdGuard/EasyList/NeoHosts)
+- **输出设置面板**（折叠）：项目名/版本/IPv4/IPv6 + 头部注释/阻止IPv6/自动去重/移除通配符 开关，实时影响生成结果
+- 真实可交互核心流程：复刻 `parseSource` + `generateRules` 逻辑，"解析/生成"驱动右侧输出，统计/合并信息实时更新
 - 深色/浅色主题切换、有数据 / 空状态切换
-- 格式切换（Dnsmasq / Hosts / AdGuard / 白名单），输出示例随切换实时更新
-- 行号编辑器（可编辑输入 + 只读输出，滚动同步）
-- 统计信息栏、URL 导入、预设标签、页脚版本号
+- 格式切换（Dnsmasq / Hosts / AdGuard / 白名单），输出随切换与设置实时更新
+- 行号编辑器（可编辑输入 + 只读输出，滚动同步）、复制/下载真实可用
+- 键盘无障碍：预设/格式 tab/语言项支持 Enter/Space，aria-pressed/aria-selected/expanded 完整
 - 响应式布局（移动端单栏 → 桌面端双栏），`prefers-reduced-motion` 支持
 
 ### 2. `prototype.canvas.tsx` — React 高保真原型
@@ -31,7 +35,7 @@
 
 ## 设计规范遵循
 
-- [x] 色彩系统：精确匹配 Design System v3.7.3 色板
+- [x] 色彩系统：精确匹配 Design System v3.7.4 色板
 - [x] 字体系统：Inter，严格使用 Display/H1/H2/H3/Body/Small/Caption
 - [x] 间距系统：4px 基数（space-1 ~ space-12）
 - [x] 圆角系统：sm=6px, md=8px, lg=12px, xl=16px

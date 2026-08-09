@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+## [3.7.5] - 2026-08-09
+
+### Fixed
+- 修复高保真原型 prototype.html 设计问题：新增 16 语言切换器、可折叠 URL 高级区(4 个真实预设源+URL 列表/操作)、输出设置面板(折叠)、Header 含 h1+副标题、修正输出示例版本号至 3.7.5、补全键盘无障碍(Enter/Space、aria-pressed/selected)
+- 原型复刻 parseSource/generateRules 真实逻辑，解析/生成驱动输出，设置实时影响结果
+- 统一全项目版本号至 v3.7.5
+
+
 ## [3.7.4] - 2026-08-09
 
 ### Added

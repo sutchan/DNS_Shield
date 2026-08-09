@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.7.4 |
+| 当前版本 | v3.7.5 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -45,7 +45,7 @@ dns-shield/
 ├── src/                            # Next.js 源代码
 │   ├── app/                        # App Router 目录
 │   │   ├── page.tsx                # 主页面入口
-│   │   ├── Home.tsx                # 主组件（包含所有功能逻辑）
+│   │   ├── Home.tsx                # 主组件（组合各业务组件与 hook）
 │   │   ├── globals.css             # 全局样式（CSS 变量 + Tailwind + 业务组件）
 │   │   └── layout.tsx              # 根布局（Metadata + SEO）
 │   ├── components/                 # 业务组件
@@ -174,7 +174,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.7.0 |
+| 版本号 | 3.7.4 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

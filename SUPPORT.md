@@ -8,7 +8,7 @@
 - **路由器 (Dnsmasq)**：使用 `dnsmasq.conf`
 - **通用设备**：使用 `hosts.txt`
 - **AdGuard 扩展/软件**：使用 `adguard.txt`
-- **AdGuard 白名单**：使用 `adguard_whitelist.txt`
+- **AdGuard 白名单**：使用 `whitelist.txt`
 
 详细使用方法请参考 [README.md](README.md)。
 
@@ -20,7 +20,7 @@
 
 ### 3. 如何添加域名到白名单？
 
-编辑 `adguard_whitelist.txt` 文件，每行添加一个域名。
+编辑 `whitelist.txt` 文件，每行添加一个域名。
 
 ### 4. 过滤列表更新频率是多少？
 
@@ -59,7 +59,7 @@
 
 ### 误屏蔽正常网站
 
-1. 将被误屏蔽的域名添加到 `adguard_whitelist.txt`
+1. 将被误屏蔽的域名添加到 `whitelist.txt`
 2. 重新生成过滤列表
 3. 部署更新后的文件
 
