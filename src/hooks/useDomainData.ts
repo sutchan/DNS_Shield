@@ -49,35 +49,46 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     return false;
   }, [parseSourceData]);
 
+  // 从指定 URL 拉取域名文本，带 10s 超时（AbortController）与体积安全上限
+  const fetchDomainsText = useCallback(async (url: string): Promise<string | null> => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    try {
+      const response = await fetch(url, { signal: controller.signal });
+      if (!response.ok) return null;
+      // 防御异常大响应（与 fileUtils 一致，10MB 上限防 DoS）
+      const contentLength = Number(response.headers.get('content-length') || 0);
+      if (contentLength > 10 * 1024 * 1024) return null;
+      return await response.text();
+    } catch {
+      return null;
+    } finally {
+      clearTimeout(timeout);
+    }
+  }, []);
+
   const loadDomainData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(config.domainsUrl);
-      if (response.ok) {
-        const text = await response.text();
-        await loadLocalDomains(text);
+      // 优先远端预设源，失败则回退同源 /domains.txt
+      const remote = await fetchDomainsText(config.domainsUrl);
+      if (remote && remote.trim()) {
+        await loadLocalDomains(remote);
         return;
       }
-      const localResponse = await fetch('/domains.txt');
-      if (localResponse.ok) {
-        const text = await localResponse.text();
-        await loadLocalDomains(text);
+      const local = await fetchDomainsText('/domains.txt');
+      if (local && local.trim()) {
+        await loadLocalDomains(local);
+        return;
       }
+      // 所有源均失败且无内容：保留空状态（loadAll 的 finally 会统一处理 UI）
+      console.warn('Could not load any domains source (remote and local both empty).');
     } catch (error) {
       console.warn('Could not load domains.txt:', error);
-      try {
-        const localResponse = await fetch('/domains.txt');
-        if (localResponse.ok) {
-          const text = await localResponse.text();
-          await loadLocalDomains(text);
-        }
-      } catch (localError) {
-        console.warn('Could not load local domains.txt:', localError);
-      }
     } finally {
       setIsLoading(false);
     }
-  }, [loadLocalDomains]);
+  }, [fetchDomainsText, loadLocalDomains]);
 
   useEffect(() => {
     loadDomainData();

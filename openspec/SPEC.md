@@ -102,9 +102,7 @@ dns-shield/
 │       ├── rulesGenerator.ts       # 规则生成器
 │       └── uiUtils.ts              # UI 工具（行号生成、滚动同步）
 ├── prototype/                        # 原型目录
-│   ├── prototype.html                # 高保真原型（HTML 版本）
-│   ├── prototype.canvas.tsx          # 高保真原型（React 版本）
-│   ├── components-showcase.html      # 组件库展示
+│   ├── prototype.canvas.tsx          # 高保真原型（React 版本，lucide 图标）
 │   ├── OVERVIEW.md                   # 原型总览文档
 │   └── shadcn/                       # shadcn 设计规范
 │       ├── design-system.md          # 设计系统（色彩/字体/间距/动效）

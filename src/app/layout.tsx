@@ -138,7 +138,7 @@ const jsonLd = {
   applicationCategory: 'UtilitiesApplication',
   operatingSystem: 'Web',
   applicationSubCategory: 'Ad Blocking',
-  softwareVersion: '3.6.1',
+  softwareVersion: '3.7.1',
   description:
     '路由器级全局广告过滤规则生成工具。基于 dnsmasq/hosts 的路由器广告过滤，支持梅林固件、小米路由器、OpenWrt 等设备。自动生成 AdBlock、DNS 过滤规则，轻松屏蔽广告域名。',
   url: 'https://dns.ewuse.com',

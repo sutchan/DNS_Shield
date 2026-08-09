@@ -7,6 +7,19 @@
 
 ## [Unreleased]
 
+## [3.7.1] - 2026-08-09
+
+### Fixed
+- 修复 `next.config.js` 与 `layout.tsx` 版本号漏改（3.6.1 → 3.7.1），统一全项目版本号
+- 修复 `loadDomainData` 鲁棒性：fetch 远端预设源新增 10s AbortController 超时与 10MB 体积上限，远端/本地均失败时不静默吞异常并保留空状态
+- 更新 `openspec/SPEC.md` 文件结构：移除已删除的 `prototype.html` 与 `components-showcase.html` 引用
+
+### Security
+- `loadDomainData` 同源 `/domains.txt` 回退同样受 10MB 体积上限保护，避免异常大响应耗尽内存
+
+### Changed
+- 统一全项目版本号至 v3.7.1（package.json / next.config.js / layout.tsx / 4 份设计文档）
+
 ## [3.7.0] - 2026-07-21
 
 ### Security
