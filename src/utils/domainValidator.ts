@@ -1,4 +1,4 @@
-// src/utils/domainValidator.ts v3.7.15
+// src/utils/domainValidator.ts v3.7.16
 // 域名验证与行解析工具函数
 
 import { CustomDnsEntry } from '../types';
@@ -75,8 +75,18 @@ export const parseDomainLine = (line: string): ParseResult => {
     };
   }
 
-  // 自定义 DNS (@)
+  // AdGuard 白名单 (@@) 或自定义 DNS (@)
   if (content.startsWith('@')) {
+    // AdGuard 例外规则 @@||domain^ 等价于白名单，按 whitelist 处理避免被静默丢弃
+    if (content.startsWith('@@') && content.startsWith('@@||') && content.endsWith('^')) {
+      const domain = normalizeDomain(content.substring(4, content.length - 1));
+      return {
+        type: 'whitelist',
+        domain,
+        isValid: isValidDomain(domain),
+        originalLine: line
+      };
+    }
     const match = content.substring(1).trim().match(/^([^=]+)=(.+)$/);
     if (match) {
       const domain = normalizeDomain(match[1]);

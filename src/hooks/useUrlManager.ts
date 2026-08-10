@@ -1,4 +1,4 @@
-// src/hooks/useUrlManager.ts v3.7.15
+// src/hooks/useUrlManager.ts v3.7.16
 import { useState, useRef } from 'react';
 import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
 import { generateLineNumbers } from '../utils/uiUtils';
@@ -62,8 +62,9 @@ export const useUrlManager = (
         return isValid;
       },
       fetchFn: async () => {
-        const { isValid, url } = validateUrlInput();
-        if (!isValid || !url) {
+        // beforeLoad 已校验通过，直接取输入框当前值，避免二次校验重复 toast
+        const url = urlInputRef.current?.value.trim();
+        if (!url) {
           throw new Error('URL not provided');
         }
         return fetchFromUrlUtil(url);

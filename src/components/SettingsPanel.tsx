@@ -1,4 +1,4 @@
-// src/components/SettingsPanel.tsx v3.7.15
+// src/components/SettingsPanel.tsx v3.7.16
 // 设置面板组件 —— 从 OutputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -35,7 +35,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             <Input
               type="text"
               id="projectNameInput"
-              defaultValue={settings.projectName}
+              name="projectName"
+              value={settings.projectName}
               onChange={updateSettings}
             />
           </div>
@@ -44,7 +45,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             <Input
               type="text"
               id="versionInput"
-              defaultValue={settings.version}
+              name="version"
+              value={settings.version}
               onChange={updateSettings}
             />
           </div>
@@ -53,7 +55,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             <Input
               type="text"
               id="ipv4Input"
-              defaultValue={settings.ipv4}
+              name="ipv4"
+              value={settings.ipv4}
               onChange={updateSettings}
             />
           </div>
@@ -62,7 +65,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             <Input
               type="text"
               id="ipv6Input"
-              defaultValue={settings.ipv6}
+              name="ipv6"
+              value={settings.ipv6}
               onChange={updateSettings}
             />
           </div>

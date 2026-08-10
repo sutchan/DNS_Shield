@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+## [3.7.16] - 2026-08-10
+
+### Fixed
+- `domainValidator.parseDomainLine` 识别 AdGuard 白名单语法 `@@||domain^`，转 `whitelist` 类型，避免导入 AdGuard 源时白名单被静默丢弃
+- `SettingsPanel` 4 个文本输入由 `defaultValue`（非受控）改为受控 `value`，确保程序化修改 `settings` 后正确回显
+- `useUrlManager.fetchFromUrl` 移除 `fetchFn` 内重复 `validateUrlInput()` 调用，避免校验失败 toast 重复弹出
+- `src/utils/domainFetch.ts` 文件头版本号 3.7.14 → 3.7.15（统一版本号口径）
+
 ## [3.7.15] - 2026-08-09
 
 ### Refactor

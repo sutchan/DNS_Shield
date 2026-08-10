@@ -1,4 +1,4 @@
-// src/components/UrlSection.tsx v3.7.15
+// src/components/UrlSection.tsx v3.7.16
 // URL 导入区域组件 —— 从 InputPanel 拆分
 'use client';
 import * as React from 'react';
