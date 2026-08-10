@@ -11,6 +11,7 @@
 
 ### Changed
 - 新增主题感知自定义滚动条：浅色用 border 系色，深色模式滑块降至 24% 亮度并加轨道内边距，消除右侧内容区滚动条突兀感
+- `prototype.html` 解析/生成逻辑对齐真实引擎（`parser.ts`/`rulesGenerator.ts`/`domainValidator.ts`）：支持 `@@||domain^` AdGuard 白名单、hosts(`0.0.0.0/`127.0.0.1`) 与 dnsmasq(`address=/`) 与 AdGuard(`||domain^`) 格式行解析；自定义 DNS 按 domain 去重（保留首次）；头部输出格式专属描述行（descMap）；白名单标题走 i18n（`whitelistTitle`）
 
 ## [3.7.18] - 2026-08-10
 
