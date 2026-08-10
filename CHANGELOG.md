@@ -7,6 +7,17 @@
 
 ## [Unreleased]
 
+## [3.7.21] - 2026-08-10
+
+### Changed
+- 为所有容器补充语义化 id：SettingsPanel 字段网格/各字段/复选项、UrlSection 预设区与列表项、Footer 内容/步骤/提示、Header 操作区、OutputPanel 空状态等
+
+## [3.7.20] - 2026-08-10
+
+### Style
+- 为所有组件与页面容器补齐语义化 `id`，便于调试与端到端测试定位
+- 涉及 InputEditor/InputPanel/Header/UrlSection/SettingsPanel/OutputPanel/Home 的块级容器（editor-container、input-section-header、input-editor-actions、header-top、header-brand、url-input-row、url-actions、settings-inner、output-body、output-header、output-panel-title、output-toolbar、output-editor-wrapper、main-content 等）
+
 ## [3.7.19] - 2026-08-10
 
 ### Changed

@@ -1,4 +1,4 @@
-// src/components/ui/Card.tsx v3.7.19
+// src/components/ui/Card.tsx v3.7.21
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -46,6 +46,7 @@ const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
 CardFooter.displayName = "CardFooter"
 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+
 
 
 

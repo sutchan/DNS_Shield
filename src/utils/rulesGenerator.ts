@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.ts v3.7.19
+// src/utils/rulesGenerator.ts v3.7.21
 import { CustomDnsEntry, Settings, OutputContent, Translation } from '../types';
 
 // 生成头部
@@ -139,5 +139,6 @@ export const generateRules = (domains: string[], whitelist: string[], customDns:
     whitelist: whitelistContent
   };
 };
+
 
 

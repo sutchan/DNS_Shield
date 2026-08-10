@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   DNS Shield — Design System v3.7.19
+   DNS Shield — Design System v3.7.21
    Designer: UI Designer
    Philosophy: Swiss Precision × Calm Technology
    ============================================ */
@@ -617,6 +617,7 @@
     scroll-behavior: auto !important;
   }
 }
+
 
 
 

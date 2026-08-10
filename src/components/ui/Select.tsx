@@ -1,4 +1,4 @@
-// src/components/ui/Select.tsx v3.7.19
+// src/components/ui/Select.tsx v3.7.21
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import { ChevronDown } from "lucide-react"
@@ -84,6 +84,7 @@ const SelectItem = React.forwardRef<
 SelectItem.displayName = SelectPrimitive.Item.displayName
 
 export { Select, SelectGroup, SelectValue, SelectTrigger, SelectContent, SelectItem }
+
 
 
 

@@ -1,4 +1,4 @@
-// src/components/InputPanel.tsx v3.7.19
+// src/components/InputPanel.tsx v3.7.21
 'use client';
 import * as React from 'react';
 import { Button } from './ui/Button';
@@ -69,7 +69,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
   return (
     <section className="panel input-section" id="input-panel" aria-labelledby="input-title">
       {/* 标题栏 */}
-      <div className="section-header">
+      <div className="section-header" id="input-section-header">
         <h2 id="input-title">{t.inputTitle}</h2>
         <Button
           type="button"
@@ -126,7 +126,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
       />
 
       {/* 编辑操作按钮 */}
-      <div className="editor-actions" role="group" aria-label={t.editorActionsAria}>
+      <div className="editor-actions" id="input-editor-actions" role="group" aria-label={t.editorActionsAria}>
         <Button type="button" variant="outline" size="sm" onClick={clearAll} id="clear-btn">{t.clearBtn}</Button>
         <Button type="button" variant="outline" size="sm" onClick={sortDomains} id="sort-btn">{t.sortBtn}</Button>
         <Button type="button" variant="default" onClick={parseSource} id="parse-btn">{t.parseBtn}</Button>
@@ -138,6 +138,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
 };
 
 export default InputPanel;
+
 
 
 

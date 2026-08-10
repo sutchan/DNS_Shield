@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.7.19
+// src/app/Home.tsx v3.7.21
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import './globals.css';
@@ -130,7 +130,7 @@ export default function Home() {
           switchLang={switchLang}
         />
 
-        <main className="main-content">
+        <main className="main-content" id="main-content">
           <InputPanel
             sourceInput={sourceInput}
             urls={urls}
@@ -183,6 +183,7 @@ export default function Home() {
     </AppProvider>
   );
 }
+
 
 
 

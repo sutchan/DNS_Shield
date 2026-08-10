@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.7.19
+// src/components/OutputPanel.tsx v3.7.21
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -46,13 +46,13 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
   const t = useT();
   return (
     <section className="panel" id="output-panel" aria-labelledby="output-title">
-      <div className="output-body">
-        <div className="output-header">
-          <div className="panel-title">
+      <div className="output-body" id="output-body">
+        <div className="output-header" id="output-header">
+          <div className="panel-title" id="output-panel-title">
             <FileCode className="h-4 w-4 text-primary" strokeWidth={1.8} aria-hidden="true" />
             <h2 id="output-title">{t.outputTitle}</h2>
           </div>
-          <div className="output-toolbar">
+          <div className="output-toolbar" id="output-toolbar">
             <Tabs value={currentFormat} onValueChange={(v) => setFormat(v as FormatType)}>
               <TabsList className="format-tabs">
                 <TabsTrigger value="hosts" id="format-hosts-btn">{t.hostsFormat}</TabsTrigger>
@@ -98,7 +98,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
         </div>
 
         {/* Output Preview */}
-        <div className="editor-wrapper">
+        <div className="editor-wrapper" id="output-editor-wrapper">
           <div className="line-numbers" id="outputLineNumbers" ref={outputLineNumbersRef} aria-hidden="true"></div>
           {outputContent[currentFormat] ? (
             <div
@@ -114,6 +114,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
           ) : (
             <div
               className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground"
+              id="output-preview-empty"
               aria-label={t.previewPlaceholder}
             >
               <FileCode className="h-12 w-12 mb-4 opacity-40" strokeWidth={1.2} aria-hidden="true" />
@@ -143,6 +144,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
 };
 
 export default OutputPanel;
+
 
 
 

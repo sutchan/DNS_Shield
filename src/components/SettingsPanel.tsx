@@ -1,4 +1,4 @@
-// src/components/SettingsPanel.tsx v3.7.19
+// src/components/SettingsPanel.tsx v3.7.21
 // 设置面板组件 —— 从 OutputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -28,9 +28,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
       id="settings-panel"
       aria-hidden={isCollapsed}
     >
-      <div className="settings-inner">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3">
-          <div className="flex flex-col gap-1.5">
+      <div className="settings-inner" id="settings-inner">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3" id="settings-fields-grid">
+          <div className="flex flex-col gap-1.5" id="settings-field-project">
             <Label htmlFor="projectNameInput" className="text-xs font-medium text-muted-foreground">{t.projectName}</Label>
             <Input
               type="text"
@@ -40,7 +40,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               onChange={updateSettings}
             />
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5" id="settings-field-version">
             <Label htmlFor="versionInput" className="text-xs font-medium text-muted-foreground">{t.version}</Label>
             <Input
               type="text"
@@ -50,7 +50,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               onChange={updateSettings}
             />
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5" id="settings-field-ipv4">
             <Label htmlFor="ipv4Input" className="text-xs font-medium text-muted-foreground">{t.ipV4}</Label>
             <Input
               type="text"
@@ -60,7 +60,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               onChange={updateSettings}
             />
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5" id="settings-field-ipv6">
             <Label htmlFor="ipv6Input" className="text-xs font-medium text-muted-foreground">{t.ipV6}</Label>
             <Input
               type="text"
@@ -71,8 +71,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             />
           </div>
         </div>
-        <div className="flex flex-wrap gap-4">
-          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
+        <div className="flex flex-wrap gap-4" id="settings-options-row">
+          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-addheader">
             <Checkbox
               id="addHeader"
               checked={settings.addHeader}
@@ -80,7 +80,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             />
             <Label htmlFor="addHeader" className="text-sm text-muted-foreground cursor-pointer">{t.headerComment}</Label>
           </div>
-          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
+          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-blockipv6">
             <Checkbox
               id="blockIPv6"
               checked={settings.blockIPv6}
@@ -88,7 +88,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             />
             <Label htmlFor="blockIPv6" className="text-sm text-muted-foreground cursor-pointer">{t.blockIPv6}</Label>
           </div>
-          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
+          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-dedup">
             <Checkbox
               id="dedupDomains"
               checked={settings.dedupDomains}
@@ -96,7 +96,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             />
             <Label htmlFor="dedupDomains" className="text-sm text-muted-foreground cursor-pointer">{t.dedup}</Label>
           </div>
-          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none">
+          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-removewildcard">
             <Checkbox
               id="removeWildcard"
               checked={settings.removeWildcard}
@@ -111,6 +111,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 };
 
 export default SettingsPanel;
+
 
 
 

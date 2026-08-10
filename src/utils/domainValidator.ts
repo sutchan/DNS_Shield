@@ -1,4 +1,4 @@
-// src/utils/domainValidator.ts v3.7.19
+// src/utils/domainValidator.ts v3.7.21
 // 域名验证与行解析工具函数
 
 import { CustomDnsEntry } from '../types';
@@ -148,6 +148,7 @@ export const parseDomainLine = (line: string): ParseResult => {
     originalLine: line
   };
 };
+
 
 
 

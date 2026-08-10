@@ -1,4 +1,4 @@
-// src/utils/fileUtils.test.ts v3.7.19
+// src/utils/fileUtils.test.ts v3.7.21
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { isValidHttpUrl, fetchFromUrl, fetchFromUrls } from './fileUtils';
 
@@ -95,6 +95,7 @@ describe('fetchFromUrls 并发与容错', () => {
     expect(result.failedUrls).toHaveLength(urls.length);
   });
 });
+
 
 
 

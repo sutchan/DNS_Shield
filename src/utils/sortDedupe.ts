@@ -1,4 +1,4 @@
-// src/utils/sortDedupe.ts v3.7.19
+// src/utils/sortDedupe.ts v3.7.21
 import { parseDomainLine, ParseResult } from './domainValidator';
 
 // 排序域名（保持表头注释在最前，白名单/自定义 DNS 等特殊行随后，注释在最后）
@@ -112,6 +112,7 @@ export const dedupeDomains = (sourceInput: string): { content: string; removedCo
     removedCount
   };
 };
+
 
 
 

@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v3.7.19
+// src/components/Footer.tsx v3.7.21
 'use client';
 import React, { useState } from 'react';
 import { useT } from '../context/AppContext';
@@ -19,8 +19,8 @@ const Footer: React.FC<FooterProps> = ({
 
   return (
     <footer className="app-footer" id="about-panel" role="contentinfo">
-      <div className="footer-content">
-        <div className="footer-top">
+      <div className="footer-content" id="footer-content">
+        <div className="footer-top" id="footer-top">
           <a 
             href="https://github.com/sutchan/DNS_Shield" 
             target="_blank" 
@@ -70,30 +70,30 @@ const Footer: React.FC<FooterProps> = ({
           id="usageGuide"
           aria-hidden={isUsageGuideCollapsed}
         >
-          <div className="usage-steps" role="region" aria-label={t.usageGuideAria}>
-            <div className="usage-step">
+          <div className="usage-steps" id="usage-steps" role="region" aria-label={t.usageGuideAria}>
+            <div className="usage-step" id="usage-step-1">
               <span className="step-number" aria-hidden="true">1</span>
-              <div className="step-content">
+              <div className="step-content" id="usage-step-1-content">
                 <span className="step-title">{t.usageStep1}</span>
                 <span className="step-desc">{t.usageStep1Desc}</span>
               </div>
             </div>
-            <div className="usage-step">
+            <div className="usage-step" id="usage-step-2">
               <span className="step-number" aria-hidden="true">2</span>
-              <div className="step-content">
+              <div className="step-content" id="usage-step-2-content">
                 <span className="step-title">{t.usageStep2}</span>
                 <span className="step-desc">{t.usageStep2Desc}</span>
               </div>
             </div>
-            <div className="usage-step">
+            <div className="usage-step" id="usage-step-3">
               <span className="step-number" aria-hidden="true">3</span>
-              <div className="step-content">
+              <div className="step-content" id="usage-step-3-content">
                 <span className="step-title">{t.usageStep3}</span>
                 <span className="step-desc">{t.usageStep3Desc}</span>
               </div>
             </div>
           </div>
-          <div className="usage-tip" role="note">
+          <div className="usage-tip" id="usage-tip" role="note">
             <span className="tip-label">{t.usageTip}</span>
             <span className="tip-content">{t.usageTipContent}</span>
           </div>
@@ -104,6 +104,7 @@ const Footer: React.FC<FooterProps> = ({
 };
 
 export default Footer;
+
 
 
 

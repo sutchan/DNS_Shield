@@ -1,4 +1,4 @@
-// src/components/Header.tsx v3.7.19
+// src/components/Header.tsx v3.7.21
 'use client';
 
 import * as React from 'react';
@@ -34,8 +34,8 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="app-header" id="app-header" role="banner">
-      <div className="header-top">
-        <div className="header-brand">
+      <div className="header-top" id="header-top">
+        <div className="header-brand" id="header-brand">
           <div className="brand-icon" aria-hidden="true">
             <Shield className="h-5 w-5 text-primary" strokeWidth={2} aria-hidden="true" />
           </div>
@@ -47,7 +47,7 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" id="header-actions">
           {/* Language Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -103,6 +103,7 @@ const Header: React.FC<HeaderProps> = ({
 };
 
 export default Header;
+
 
 
 

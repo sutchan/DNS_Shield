@@ -1,4 +1,4 @@
-// src/components/UrlSection.tsx v3.7.19
+// src/components/UrlSection.tsx v3.7.21
 // URL 导入区域组件 —— 从 InputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -42,7 +42,7 @@ export const PresetTags: React.FC<PresetTagsProps> = ({
 }) => {
   const t = useT();
   return (
-    <div className="preset-section">
+    <div className="preset-section" id="preset-section">
       <span className="preset-label" id="preset-label">{t.presetLabel}</span>
       <div className="preset-tags" role="group" aria-labelledby="preset-label">
         {PRESETS.map((preset) => (
@@ -81,7 +81,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
       id="url-section"
       aria-hidden={isCollapsed}
     >
-      <div className="url-input-row">
+      <div className="url-input-row" id="url-input-row">
         <label htmlFor="urlInput" className="sr-only">{t.urlPlaceholder}</label>
         <Input
           type="text"
@@ -100,7 +100,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
       <div id="url-help" className="sr-only">{t.urlHelp}</div>
 
       {/* URL 操作按钮 */}
-      <div className="url-actions" role="group" aria-label={t.urlActionsAria}>
+      <div className="url-actions" id="url-actions" role="group" aria-label={t.urlActionsAria}>
         <Button type="button" variant="outline" size="sm" onClick={addUrl} id="add-url-btn">{t.addUrl}</Button>
         <Button type="button" variant="outline" size="sm" onClick={sortUrls} id="sort-urls-btn">{t.sortUrlBtn}</Button>
         <Button type="button" variant="outline" size="sm" onClick={fetchAllUrls} id="fetch-all-urls-btn">{t.fetchAllUrls}</Button>
@@ -109,7 +109,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
       {/* URL 列表 */}
       <div className="url-list" id="urlList" role="list" aria-label={t.urlListAria}>
         {urls.length > 0 && urls.map((url: string, index: number) => (
-            <div key={`${url}:${index}`} className="url-item" role="listitem">
+            <div key={`${url}:${index}`} className="url-item" id={`url-item-${index}`} role="listitem">
               <Link className="url-item-icon h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.8} aria-hidden="true" />
               <span className="url-item-text">{url}</span>
               <Button
@@ -130,6 +130,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
 };
 
 export default UrlSection;
+
 
 
 
