@@ -1,4 +1,4 @@
-// src/components/ui/Loading.tsx v3.7.16
+// src/components/ui/Loading.tsx v3.7.19
 import React from 'react';
 
 interface LoadingProps {
@@ -20,3 +20,5 @@ const Loading: React.FC<LoadingProps> = ({ isLoading, loadingText }) => {
 };
 
 export default Loading;
+
+

@@ -1,4 +1,4 @@
-// src/components/ui/Label.tsx v3.7.16
+// src/components/ui/Label.tsx v3.7.19
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -23,3 +23,6 @@ const Label = React.forwardRef<
 Label.displayName = LabelPrimitive.Root.displayName
 
 export { Label }
+
+
+

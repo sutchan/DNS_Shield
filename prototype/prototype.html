@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.7.16</title>
+  <title>DNS Shield — 高保真原型 v3.7.19</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* ============================================
-       DNS Shield — Design System v3.7.16
+       DNS Shield — Design System v3.7.19
        Swiss Modernism 2.0 × Apple Precision
        ============================================ */
     :root {
@@ -475,7 +475,7 @@
                 <div class="settings-inner">
                   <div class="settings-grid">
                     <div class="field"><label for="projectNameInput" data-i18n="sProjectName">项目名称</label><input type="text" id="projectNameInput" value="DNS Shield" /></div>
-                    <div class="field"><label for="versionInput" data-i18n="sVersion">版本号</label><input type="text" id="versionInput" value="3.7.16" /></div>
+                    <div class="field"><label for="versionInput" data-i18n="sVersion">版本号</label><input type="text" id="versionInput" value="3.7.19" /></div>
                     <div class="field"><label for="ipv4Input" data-i18n="sIpv4">IPv4</label><input type="text" id="ipv4Input" value="127.0.0.1" /></div>
                     <div class="field"><label for="ipv6Input" data-i18n="sIpv6">IPv6</label><input type="text" id="ipv6Input" value="::" /></div>
                   </div>
@@ -532,7 +532,7 @@
           <span class="dot"></span>
           <a href="#" data-i18n="docs">文档</a>
           <span class="dot"></span>
-          <span class="footer-ver">v3.7.16</span>
+          <span class="footer-ver">v3.7.19</span>
         </div>
         <p class="footer-sub" data-i18n="footerSub">DNS Shield — 路由器级广告过滤规则生成工具</p>
       </div>
@@ -571,11 +571,13 @@
           outputTitle: '生成过滤规则', fmtWhitelist: '白名单',
           sProjectName: '项目名称', sVersion: '版本号', sIpv4: 'IPv4', sIpv6: 'IPv6',
           sAddHeader: '头部注释', sBlockIpv6: '阻止 IPv6', sDedup: '自动去重', sRemoveWildcard: '移除通配符',
+          whitelistTitle: '白名单',
           mergeHint: '点击"生成规则"查看输出',
           outEmptyTitle: '暂无输出', outEmptyDesc: '请在左侧面板输入域名并点击「生成规则」按钮',
           generate: '生成规则', download: '下载', copy: '复制',
           github: 'GitHub', demo: 'Demo', docs: '文档', footerSub: 'DNS Shield — 路由器级广告过滤规则生成工具',
           titleMap: { dnsmasq: 'Dnsmasq 广告过滤列表', hosts: 'Hosts 广告过滤列表', adguard: 'AdGuard 广告过滤规则' },
+          descMap: { dnsmasq: '适用于梅林/OpenWrt 等路由器的 Dnsmasq 配置', hosts: '适用于系统 Hosts 文件屏蔽', adguard: '适用于 AdGuard Home 过滤规则' },
           headerTitle: '路由器级广告过滤规则', headerProject: '项目', headerDemo: '演示',
           headerUpdated: '更新', uniqueDomains: '个唯一域名',
           toastGenerated: '规则生成成功！', toastSorted: '域名已排序',
@@ -599,11 +601,13 @@
           outputTitle: 'Generate Filter Rules', fmtWhitelist: 'Whitelist',
           sProjectName: 'Project Name', sVersion: 'Version', sIpv4: 'IPv4', sIpv6: 'IPv6',
           sAddHeader: 'Header Comment', sBlockIpv6: 'Block IPv6', sDedup: 'Auto Dedupe', sRemoveWildcard: 'Remove Wildcard',
+          whitelistTitle: 'Whitelist',
           mergeHint: 'Click "Generate Rules" to view output',
           outEmptyTitle: 'No output', outEmptyDesc: 'Enter domains on the left and click "Generate Rules"',
           generate: 'Generate Rules', download: 'Download', copy: 'Copy',
           github: 'GitHub', demo: 'Demo', docs: 'Docs', footerSub: 'DNS Shield — Router-level ad-blocking rule generator',
           titleMap: { dnsmasq: 'Dnsmasq Ad Block List', hosts: 'Hosts Ad Block List', adguard: 'AdGuard Ad Block Rules' },
+          descMap: { dnsmasq: 'For Merlin/OpenWrt routers running Dnsmasq', hosts: 'For system Hosts file blocking', adguard: 'For AdGuard Home filtering rules' },
           headerTitle: 'Router-level ad-blocking rules', headerProject: 'Project', headerDemo: 'Demo',
           headerUpdated: 'Updated', uniqueDomains: 'unique domains',
           toastGenerated: 'Rules generated!', toastSorted: 'Domains sorted',
@@ -689,7 +693,7 @@
         theme: 'dark', format: 'hosts', hasData: true, input: MOCK_DOMAINS,
         lang: 'zh-cn', urlCollapsed: true, settingsCollapsed: true,
         urls: [], activePreset: 'builtin', output: '',
-        settings: { projectName: 'DNS Shield', version: '3.7.16', ipv4: '127.0.0.1', ipv6: '::', addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true }
+        settings: { projectName: 'DNS Shield', version: '3.7.19', ipv4: '127.0.0.1', ipv6: '::', addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true }
       };
 
       var $ = function (id) { return document.getElementById(id); };
@@ -699,22 +703,39 @@
       function parseSource(text) {
         var lines = (text || '').split('\n');
         var domains = [], whitelist = [], customDns = [], comments = 0;
+        var seenCustom = {}, seenWl = {};
         for (var i = 0; i < lines.length; i++) {
           var t = lines[i].trim();
           if (!t) continue; // 空行不计入注释（与真实 parser 一致）
           if (t.charAt(0) === '#' || t.charAt(0) === '!') { comments++; continue; }
           if (t.charAt(0) === '+') {
-            var w = t.slice(1).trim().toLowerCase().replace(/^\*\./, '');
-            if (DOMAIN_REGEX.test(w)) whitelist.push(w); else comments++;
+            var w = normKey(t.slice(1).trim());
+            if (!seenWl[w]) { seenWl[w] = true; if (DOMAIN_REGEX.test(w)) whitelist.push(w); else comments++; }
+            else if (!DOMAIN_REGEX.test(w)) comments++;
+            continue;
+          }
+          // AdGuard 例外规则 @@||domain^ 等价于白名单（真实引擎 3.7.16 修复）
+          if (t.indexOf('@@||') === 0 && t.charAt(t.length - 1) === '^') {
+            var aw = normKey(t.slice(4, -1));
+            if (!seenWl[aw]) { seenWl[aw] = true; if (DOMAIN_REGEX.test(aw)) whitelist.push(aw); else comments++; }
             continue;
           }
           if (t.charAt(0) === '@') {
             var m = t.slice(1).trim().match(/^([^=]+)=(.+)$/);
-            if (m && DOMAIN_REGEX.test(m[1].toLowerCase().replace(/^\*\./, ''))) customDns.push({ domain: m[1].toLowerCase().replace(/^\*\./, ''), ip: m[2].trim() });
-            else comments++;
+            if (m) {
+              var cd = normKey(m[1]);
+              if (!seenCustom[cd]) { seenCustom[cd] = true; if (DOMAIN_REGEX.test(cd)) customDns.push({ domain: cd, ip: m[2].trim() }); else comments++; }
+            } else comments++;
             continue;
           }
-          var d = t.toLowerCase().replace(/^\*\./, '');
+          // hosts 格式 0.0.0.0/127.0.0.1 前缀（真实引擎支持）
+          var d = t;
+          if (/^(0\.0\.0\.0|127\.0\.0\.1)\s+/.test(d)) d = d.replace(/^(0\.0\.0\.0|127\.0\.0\.1)\s+/, '');
+          // dnsmasq address=/domain/ 与 adguard ||domain^ 格式（真实引擎支持）
+          var dm = d.match(/^address=\/([^\/]+)\//);
+          if (dm) d = dm[1];
+          else if (d.indexOf('||') === 0 && d.charAt(d.length - 1) === '^') d = d.slice(2, -1);
+          d = normKey(d);
           if (DOMAIN_REGEX.test(d)) domains.push(d); else comments++;
         }
         var exSet = {};
@@ -738,6 +759,8 @@
         lines.push(cc + ' ' + sep);
         lines.push(cc + ' ' + state.settings.projectName + ' - ' + titleMap);
         lines.push(cc + ' ' + sep);
+        lines.push(cc);
+        lines.push(cc + ' ' + t('descMap')[fmt]);
         lines.push(cc);
         lines.push(cc + ' ' + t('headerTitle'));
         lines.push(cc);
@@ -781,7 +804,7 @@
           adg += '||' + c.domain + '^\n';
         });
         if (wl.length > 0) {
-          if (s.addHeader) { dns += '\n# 白名单\n'; hosts += '\n# 白名单\n'; adg += '\n! 白名单\n'; wlOut += '# 白名单\n'; }
+          if (s.addHeader) { dns += '\n# ' + t('whitelistTitle') + '\n'; hosts += '\n# ' + t('whitelistTitle') + '\n'; adg += '\n! ' + t('whitelistTitle') + '\n'; wlOut += '# ' + t('whitelistTitle') + '\n'; }
           wl.forEach(function (d) { dns += 'server=/' + d + '/\n'; hosts += '# 已白名单: ' + d + '\n'; adg += '@@||' + d + '^\n'; wlOut += '@@||' + d + '^\n'; });
         }
         return { dnsmasq: dns, hosts: hosts, adguard: adg, whitelist: wlOut, parsed: parsed };

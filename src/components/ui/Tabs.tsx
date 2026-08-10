@@ -1,4 +1,4 @@
-// src/components/ui/Tabs.tsx v3.7.16
+// src/components/ui/Tabs.tsx v3.7.19
 import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 
@@ -52,3 +52,6 @@ const TabsContent = React.forwardRef<
 TabsContent.displayName = TabsPrimitive.Content.displayName
 
 export { Tabs, TabsList, TabsTrigger, TabsContent }
+
+
+

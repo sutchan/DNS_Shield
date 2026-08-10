@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.7.16
+// src/components/OutputPanel.tsx v3.7.19
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -52,7 +52,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
             <FileCode className="h-4 w-4 text-primary" strokeWidth={1.8} aria-hidden="true" />
             <h2 id="output-title">{t.outputTitle}</h2>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="output-toolbar">
             <Tabs value={currentFormat} onValueChange={(v) => setFormat(v as FormatType)}>
               <TabsList className="format-tabs">
                 <TabsTrigger value="hosts" id="format-hosts-btn">{t.hostsFormat}</TabsTrigger>
@@ -86,7 +86,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
 
         {/* Merge Info */}
         <div className="output-stats" id="mergeInfo" role="status" aria-live="polite">
-          {outputContent[currentFormat] ? (
+          {parsedData.domains.length > 0 || parsedData.whitelist.length > 0 || parsedData.customDns.length > 0 ? (
             <span>{t.mergeStats
               .replace('{blacklist}', String(parsedData.domains.length))
               .replace('{whitelist}', String(parsedData.whitelist.length))
@@ -143,3 +143,6 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
 };
 
 export default OutputPanel;
+
+
+

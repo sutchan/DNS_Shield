@@ -1,4 +1,4 @@
-// src/utils/parser.test.ts v3.7.16
+// src/utils/parser.test.ts v3.7.19
 import { describe, it, expect } from 'vitest';
 import { parseSource, sortDomains, dedupeDomains } from './parser';
 
@@ -55,3 +55,6 @@ describe('sortDomains', () => {
     expect(domainLines).toEqual(['a.example.com', 'b.example.com', 'c.example.com']);
   });
 });
+
+
+

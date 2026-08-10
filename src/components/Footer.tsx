@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v3.7.16
+// src/components/Footer.tsx v3.7.19
 'use client';
 import React, { useState } from 'react';
 import { useT } from '../context/AppContext';
@@ -104,3 +104,6 @@ const Footer: React.FC<FooterProps> = ({
 };
 
 export default Footer;
+
+
+

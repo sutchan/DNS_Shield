@@ -1,4 +1,4 @@
-// src/config/index.ts v3.7.16
+// src/config/index.ts v3.7.19
 // @types/node 已提供 process.env 类型，无需重复声明
 
 // 应用配置
@@ -11,3 +11,5 @@ export const config = {
     neohosts: process.env.NEXT_PUBLIC_PRESET_NEOHOSTS || 'https://raw.githubusercontent.com/neoHosts/neoHosts/master/data/adblock.txt'
   }
 };
+
+

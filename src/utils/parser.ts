@@ -1,4 +1,4 @@
-// src/utils/parser.ts v3.7.16
+// src/utils/parser.ts v3.7.19
 import { parseDomainLine, ParseStats } from './domainValidator';
 import { CustomDnsEntry, ParsedData } from '../types';
 
@@ -90,3 +90,6 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
     stats
   };
 };
+
+
+

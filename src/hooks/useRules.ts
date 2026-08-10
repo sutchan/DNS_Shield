@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.7.16
+// src/hooks/useRules.ts v3.7.19
 import { useState, useEffect, useRef } from 'react';
 import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
@@ -102,3 +102,5 @@ export const useRules = (
     syncOutputScroll
   };
 };
+
+

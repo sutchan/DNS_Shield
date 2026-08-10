@@ -1,4 +1,4 @@
-// src/components/SettingsPanel.tsx v3.7.16
+// src/components/SettingsPanel.tsx v3.7.19
 // 设置面板组件 —— 从 OutputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -111,3 +111,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 };
 
 export default SettingsPanel;
+
+
+
