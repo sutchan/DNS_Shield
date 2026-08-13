@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.7.21
+// src/components/OutputPanel.tsx v3.7.23
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -109,6 +109,11 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
               role="tabpanel"
               aria-label={t.outputFormatAria.replace('{format}', currentFormat)}
             >
+              {/* 安全约束：outputContent 由 useRules 经 generateRulesUtil 生成，
+                  其来源（sourceInput 域名、customDns 的 IP、设置项）均已在
+                  parser.ts / domainValidator.ts / rulesGenerator.ts 中严格清洗与校验，
+                  此处作为 React 文本节点渲染（非 dangerouslySetInnerHTML），不存在 XSS 面。
+                  如后续放开任意文本注入，必须先经 sanitize 处理。 */}
               {outputContent[currentFormat]}
             </div>
           ) : (
@@ -144,7 +149,5 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
 };
 
 export default OutputPanel;
-
-
 
 

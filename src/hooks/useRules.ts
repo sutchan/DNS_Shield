@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.7.21
+// src/hooks/useRules.ts v3.7.23
 import { useState, useEffect, useRef } from 'react';
 import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';

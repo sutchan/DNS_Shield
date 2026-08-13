@@ -7,6 +7,26 @@
 
 ## [Unreleased]
 
+## [3.7.23] - 2026-08-13
+
+### Fixed
+- `next.config.js` 强化 CSP：新增 `upgrade-insecure-requests` 与 `require-trusted-types-for 'script'`，收紧 DOM XSS 注入面
+- `OutputPanel` 输出渲染处补充内容清洗安全约束注释（outputContent 来源均经 parser/rulesGenerator 校验，以文本节点渲染而非 dangerouslySetInnerHTML）
+- `Home.showToast` 缺少翻译键时输出 `console.warn`，便于发现漏翻
+- 裁剪 AppContext/OutputPanel/useTheme/useLanguage/useRules/i18n/useUrlManager/useSettings/useLoading 末尾多余空行
+- 升级全项目单一来源版本号至 v3.7.23（package.json / next.config.js / src 文件头注释）
+
+### Added
+- 新增 `scripts/check-locales.mjs`：以 zh-cn.json 为基准递归校验所有 locale 键一致性，并加入 `npm run check:locales`（CI 友好）
+
+## [3.7.22] - 2026-08-13
+
+### Docs
+- 完善项目文档：README 补充架构与数据流、配置项、SEO 与元数据章节，更新项目结构树
+- 同步 openspec/SPEC.md 目录结构与版本号，修正缺失的 domainFetch/sortDedupe/rulesGenerator.test 与 app 下 robots/sitemap/manifest/sw 文件，移除不存在的 .env.local 与误列的测试文件
+- 修正 DEPLOYMENT.md 版本号与 Docker 启动模式说明（默认 next start，非 standalone）
+- 升级全项目单一来源版本号至 v3.7.22（package.json / next.config.js / layout.tsx 头注释 / openspec/config.yaml）
+
 ## [3.7.21] - 2026-08-10
 
 ### Changed

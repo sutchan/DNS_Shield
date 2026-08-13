@@ -1,4 +1,4 @@
-// src/hooks/useSettings.ts v3.7.21
+// src/hooks/useSettings.ts v3.7.23
 // 设置管理 hook —— 从 Home.tsx 拆分
 import { useState, useCallback } from 'react';
 import { Settings } from '../types';
@@ -46,6 +46,7 @@ export const useSettings = () => {
     updateSettings
   };
 };
+
 
 
 

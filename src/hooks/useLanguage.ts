@@ -1,4 +1,4 @@
-// src/hooks/useLanguage.ts v3.7.21
+// src/hooks/useLanguage.ts v3.7.23
 import { useState, useEffect } from 'react';
 import { supportedLanguages, getTranslation } from '../utils/i18n';
 import { Translation } from '../types';
@@ -31,6 +31,7 @@ export const useLanguage = () => {
     switchLang
   };
 };
+
 
 
 

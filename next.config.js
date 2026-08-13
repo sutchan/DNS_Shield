@@ -17,7 +17,11 @@ const securityHeaders = [
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
-      "worker-src 'self' blob:"
+      "worker-src 'self' blob:",
+      // 强制 https，避免任何明文 http 子资源被加载
+      "upgrade-insecure-requests",
+      // 启用 Trusted Types，配合输出渲染清洗（见 OutputPanel），杜绝 DOM XSS 注入面
+      "require-trusted-types-for 'script'"
     ].join('; ')
   },
   {
@@ -54,7 +58,7 @@ const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
   env: {
-    version: '3.7.21'
+    version: '3.7.23'
   },
   devIndicators: {
     buildActivity: false

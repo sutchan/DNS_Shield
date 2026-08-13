@@ -1,6 +1,6 @@
 {
   "name": "dns-shield",
-  "version": "3.7.21",
+  "version": "3.7.23",
   "private": true,
   "scripts": {
     "dev": "next dev --port 8082",
@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "check:locales": "node scripts/check-locales.mjs"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.4",

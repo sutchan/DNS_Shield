@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.7.21
+// src/app/Home.tsx v3.7.23
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import './globals.css';
@@ -35,6 +35,10 @@ export default function Home() {
   const showToast = (key: string, params?: Record<string, string | number>) => {
     const toastMessages = t.toast as Record<string, string>;
     let message = toastMessages[key] || key;
+    // 缺翻译键时告警，便于发现漏翻（不影响功能，回退显示原始 key）
+    if (!toastMessages[key]) {
+      console.warn(`[i18n] 缺少 toast 翻译键: "${key}"（语言 ${currentLang}），已回退为原始 key`);
+    }
     if (params) {
       Object.entries(params).forEach(([k, v]) => {
         message = message.replace(`{${k}}`, String(v));
