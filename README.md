@@ -108,14 +108,28 @@ src/
 ├── locales/          # 16 种语言翻译文件（112 键 100% 覆盖）
 ├── types/            # TypeScript 类型定义
 ├── utils/            # 工具函数（含 *.test.ts 单元测试）
-│   ├── parser.ts     # 域名解析与排序去重
+│   ├── parser.ts     # 域名解析与排序去重（行级解析、提取域名）
+│   ├── sortDedupe.ts # 域名排序与去重（纯函数，含测试）
 │   ├── domainValidator.ts # 域名验证与行解析
-│   ├── rulesGenerator.ts  # 规则生成器
-│   ├── fileUtils.ts  # 文件操作（fetch 超时/体积上限）
+│   ├── rulesGenerator.ts  # 规则生成器（Dnsmasq/Hosts/AdGuard/白名单）
+│   ├── rulesGenerator.test.ts # 规则生成器单元测试（Vitest）
+│   ├── domainFetch.ts # 远程域名列表拉取（超时/兜底/体积上限）
+│   ├── fileUtils.ts  # 文件操作（下载/复制）
 │   ├── i18n.ts       # 国际化配置
 │   └── uiUtils.ts    # UI 工具函数（行号生成、滚动同步）
-└── config/           # 应用配置（预设源 URL）
+├── config/           # 应用配置（预设源 URL、构建信息）
+└── ...
 ```
+
+`src/app/` 下还包含：
+
+- `page.tsx` / `Home.tsx` — 主页面与首页编排组件
+- `layout.tsx` — 根布局（元数据、主题 Provider、安全/SEO 基础）
+- `robots.ts` — 自动生成 `robots.txt`（含 sitemap 索引）
+- `sitemap.ts` — 自动生成 `sitemap.xml`（站点地图）
+- `manifest.ts` — PWA manifest 配置
+- `sw.js` / `sw-register.ts` — Service Worker 注册与安全缓存
+- `globals.css`、`i18n.ts` — 全局样式与路由级国际化
 
 ```
 prototype/            # 高保真原型与设计规范
@@ -123,6 +137,54 @@ prototype/            # 高保真原型与设计规范
 ├── OVERVIEW.md       # 原型总览
 └── shadcn/           # shadcn 设计规范（design-system/component-library/interaction-standards/design-polish-report）
 ```
+
+## 架构与数据流
+
+DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域名数据源转换为多种路由器可识别的过滤规则**。
+
+```
+统一数据源（public/domains.txt、whitelist.txt、各格式输出文件）
+        │  useDomainData（远端拉取 + 超时/兜底）
+        ▼
+  域名解析（utils/parser.ts + domainValidator.ts）
+        │  提取域名 / 白名单(+) / 自定义 DNS(@) / 注释(#)
+        ▼
+  排序去重（utils/sortDedupe.ts）
+        ▼
+  规则生成（utils/rulesGenerator.ts）
+        │  useRules 实时同步解析
+        ▼
+  输出（Dnsmasq / Hosts / AdGuard / 白名单） → 复制 / 下载
+```
+
+关键设计要点：
+
+- **单一数据源**：所有格式均由 `domains.txt` 派生，`whitelist.txt` 用于放行误拦截域名。
+- **纯函数可测**：解析、校验、排序去重、规则生成均为纯函数，由 Vitest 覆盖（`*.test.ts`）。
+- **上下文复用**：`AppContext` 集中提供 i18n 翻译 `t`，避免逐层透传。
+- **本地优先**：每 30 秒自动保存编辑内容到浏览器 `localStorage`，刷新不丢失。
+- **安全边界**：远程 URL 拉取带超时与体积上限；Service Worker 仅缓存同源静态资源并做扩展名白名单过滤。
+
+## 配置项
+
+应用行为可通过以下维度配置：
+
+| 配置项 | 位置 | 说明 |
+|--------|------|------|
+| 预设数据源 | `src/config/index.ts` | AdGuard、EasyList、NeoHosts 等内置预设源 URL |
+| 输出格式 | UI 切换（Tabs） | Dnsmasq / Hosts / AdGuard / 白名单 |
+| 自定义 DNS 指向 | 输入语法 `@domain=ip` | 自定义域名解析目标 IP |
+| 白名单 | 输入语法 `+domain` | 放行指定域名 |
+| 自动保存间隔 | `useDomainData` 内部 | 默认 30 秒 |
+| 远程拉取超时 | `domainFetch.ts` | 远端 URL 拉取超时与体积上限 |
+| 构建版本号 | `next.config.js` → `env.version` | 注入运行时的应用版本 |
+
+## SEO 与元数据
+
+- `src/app/robots.ts` 自动生成 `robots.txt`，并声明 sitemap 索引地址。
+- `src/app/sitemap.ts` 自动生成 `sitemap.xml`，登记站点地图。
+- `src/app/layout.tsx` 定义页面元数据（标题、描述、Open Graph、主题色），并注入安全响应头（CSP/HSTS/COOP/CORP，见 `next.config.js`）。
+- `src/app/manifest.ts` 提供 PWA manifest，支持安装到桌面与离线可用。
 
 ## 开发
 
@@ -181,7 +243,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.7.21
+当前版本：v3.7.23
 
 ## 更新日志
 

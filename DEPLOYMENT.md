@@ -246,6 +246,8 @@ services:
 docker-compose up -d
 ```
 
+> 说明：当前 `next.config.js` 未启用 `output: 'standalone'`，使用默认构建产物并经由 `next start` 启动。`Dockerfile` 已正确启用 corepack 以使用 `pnpm-lock.yaml` 安装依赖。
+
 ## 配置选项
 
 ### 1. 环境变量
@@ -257,7 +259,7 @@ docker-compose up -d
 | `PORT` | 服务器端口 | 3000 |
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
-| `NEXT_PUBLIC_APP_VERSION` | 应用版本 | 3.7.16 |
+| `NEXT_PUBLIC_APP_VERSION` | 应用版本 | 3.7.23 |
 
 ### 2. Next.js 配置
 
@@ -269,7 +271,7 @@ const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
   env: {
-    version: '3.7.16'
+    version: '3.7.23'
   },
   async headers() {
     return [

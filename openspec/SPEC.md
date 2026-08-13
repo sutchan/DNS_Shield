@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.7.16 |
+| 当前版本 | v3.7.23 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -47,7 +47,13 @@ dns-shield/
 │   │   ├── page.tsx                # 主页面入口
 │   │   ├── Home.tsx                # 主组件（组合各业务组件与 hook）
 │   │   ├── globals.css             # 全局样式（CSS 变量 + Tailwind + 业务组件）
-│   │   └── layout.tsx              # 根布局（Metadata + SEO）
+│   │   ├── layout.tsx              # 根布局（Metadata + SEO + 安全头部接入）
+│   │   ├── robots.ts               # 自动生成 robots.txt（含 sitemap 索引）
+│   │   ├── sitemap.ts              # 自动生成 sitemap.xml
+│   │   ├── manifest.ts             # PWA manifest 配置
+│   │   ├── sw.js                   # Service Worker（安全缓存策略）
+│   │   ├── sw-register.ts          # Service Worker 注册
+│   │   └── i18n.ts                 # 路由级国际化配置
 │   ├── components/                 # 业务组件
 │   │   ├── ui/                     # shadcn/ui 基础组件
 │   │   │   ├── Badge.tsx
@@ -92,14 +98,13 @@ dns-shield/
 │   │   └── index.ts                # TypeScript 类型定义
 │   └── utils/                      # 工具函数
 │       ├── domainValidator.ts      # 域名验证与行解析
-│       ├── domainValidator.test.ts # 域名验证单元测试
+│       ├── domainFetch.ts          # 远程域名列表拉取（超时/兜底/体积上限）
+│       ├── parser.ts               # 域名解析器（行级解析、提取域名）
+│       ├── sortDedupe.ts           # 域名排序与去重（纯函数）
+│       ├── rulesGenerator.ts       # 规则生成器（Dnsmasq/Hosts/AdGuard/白名单）
+│       ├── rulesGenerator.test.ts  # 规则生成器单元测试（Vitest）
 │       ├── fileUtils.ts            # 文件操作（下载、复制、URL 获取）
-│       ├── fileUtils.test.ts       # 文件操作单元测试
 │       ├── i18n.ts                 # 国际化配置
-│       ├── i18n.test.ts            # 国际化单元测试
-│       ├── parser.ts               # 域名解析器（排序、去重）
-│       ├── parser.test.ts          # 域名解析器单元测试
-│       ├── rulesGenerator.ts       # 规则生成器
 │       └── uiUtils.ts              # UI 工具（行号生成、滚动同步）
 ├── prototype/                        # 原型目录
 │   ├── prototype.html                # 高保真原型（独立 HTML 版本，可直接浏览器打开，含主题/数据/格式切换交互）
@@ -110,7 +115,6 @@ dns-shield/
 │       ├── component-library.md      # 组件库（基础/复合/业务组件）
 │       ├── design-polish-report.md   # 设计打磨报告
 │       └── interaction-standards.md  # 交互标准（模式/反馈/错误/空状态）
-├── .env.local                      # 本地环境变量
 ├── .eslintrc.json                  # ESLint 配置
 ├── .gitignore                      # Git 忽略配置
 ├── components.json                 # shadcn/ui 配置
@@ -174,7 +178,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.7.16 |
+| 版本号 | 3.7.22 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
