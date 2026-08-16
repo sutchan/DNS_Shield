@@ -9,6 +9,13 @@
 
 ## [3.7.23] - 2026-08-13
 
+### Docs
+- 将 Community Health Files（CONTRIBUTING/SECURITY/SUPPORT）从仓库根目录移入 `.github/` 集中管理
+- 新增 `CODE_OF_CONDUCT.md`（Contributor Covenant 2.1）、`PULL_REQUEST_TEMPLATE.md`、`FUNDING.yml`、`.github/README.md`
+- 补全缺失的 `ISSUE_TEMPLATE/bug_report.md`；修正 `ISSUE_TEMPLATE/config.yml` 失效的 `docs/` 路径与仓库链接
+- 统一社区文档仓库链接为 `ArcesTeam/DNS_Shield`，SECURITY.md 命令由 npm 改为 pnpm，移除 SUPPORT.md 占位邮箱
+- 同步 openspec 版本号（config.yaml / SPEC.md）至 v3.7.23
+
 ### Fixed
 - `next.config.js` 强化 CSP：新增 `upgrade-insecure-requests` 与 `require-trusted-types-for 'script'`，收紧 DOM XSS 注入面
 - `OutputPanel` 输出渲染处补充内容清洗安全约束注释（outputContent 来源均经 parser/rulesGenerator 校验，以文本节点渲染而非 dangerouslySetInnerHTML）
