@@ -179,7 +179,7 @@ export default function Home() {
           />
         </main>
 
-        <Footer version={settings.version} />
+        <Footer />
 
         <Loading isLoading={isLoading} loadingText={t.toast.loading} />
         <ToastProvider />

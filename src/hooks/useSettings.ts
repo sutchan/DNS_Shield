@@ -1,11 +1,12 @@
-// src/hooks/useSettings.ts v3.7.23
+// src/hooks/useSettings.ts v3.7.26
 // 设置管理 hook —— 从 Home.tsx 拆分
 import { useState, useCallback } from 'react';
 import { Settings } from '../types';
+import { APP_VERSION } from '../config/version';
 
 const DEFAULT_SETTINGS: Settings = {
   projectName: 'DNS Shield',
-  version: '3.7.21',
+  version: APP_VERSION,
   ipv4: '127.0.0.1',
   ipv6: '::',
   addHeader: true,
