@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.7.23 |
+| 当前版本 | v3.7.26 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -76,7 +76,8 @@ dns-shield/
 │   │   ├── SettingsPanel.tsx       # 设置面板子组件
 │   │   └── UrlSection.tsx          # URL 导入区域子组件
 │   ├── config/
-│   │   └── index.ts                # 应用配置（预设源 URL）
+│   │   ├── index.ts                # 应用配置（预设源 URL、多镜像）
+│   │   └── version.ts              # 版本号单一来源（APP_VERSION，派生自 package.json）
 │   ├── context/
 │   │   └── AppContext.tsx          # 应用上下文（集中提供 i18n 翻译 t）
 │   ├── hooks/                      # 自定义 Hooks
@@ -160,6 +161,7 @@ dns-shield/
 | 本地加载 | 自动加载 domains.txt 文件 |
 | 自动保存 | 每 30 秒自动保存到 localStorage |
 | 自动恢复 | 页面加载时恢复未保存内容 |
+| 隐私统计 | 可选接入 Google Analytics 4（衡量 ID 经 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 注入，留空不启用；CSP 已放通 gtag 域名） |
 
 ### 4.2 输出功能
 
@@ -178,7 +180,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.7.23 |
+| 版本号 | 3.7.26 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

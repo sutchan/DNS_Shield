@@ -259,7 +259,8 @@ docker-compose up -d
 | `PORT` | 服务器端口 | 3000 |
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
-| `NEXT_PUBLIC_APP_VERSION` | 应用版本 | 3.7.23 |
+| `NEXT_PUBLIC_APP_VERSION` | 应用版本 | 3.7.26 |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（留空则不启用统计） | 空 |
 
 ### 2. Next.js 配置
 
@@ -271,7 +272,7 @@ const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
   env: {
-    version: '3.7.23'
+    version: '3.7.26'
   },
   async headers() {
     return [

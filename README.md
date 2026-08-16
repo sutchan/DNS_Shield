@@ -178,6 +178,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
 | 自动保存间隔 | `useDomainData` 内部 | 默认 30 秒 |
 | 远程拉取超时 | `domainFetch.ts` | 远端 URL 拉取超时与体积上限 |
 | 构建版本号 | `next.config.js` → `env.version` | 注入运行时的应用版本 |
+| 隐私统计 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID，留空则不启用统计；CSP 已放通 gtag 域名 |
 
 ## SEO 与元数据
 
@@ -243,7 +244,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.7.23
+当前版本：v3.7.26
 
 ## 更新日志
 

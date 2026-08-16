@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.7.24
+// src/hooks/useRules.ts v3.7.26
 import { useState, useEffect, useRef } from 'react';
 import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
@@ -31,8 +31,8 @@ export const useRules = (
     generateLineNumbers(outputContent[currentFormat] || '', outputLineNumbersRef);
   }, [outputContent, currentFormat]);
 
-  // 生成规则
-  const generateRules = () => {
+  // 生成规则的核心逻辑（不含 toast），供按钮点击与自动同步复用
+  const runGenerate = (notify: boolean) => {
     // 必须本地重新 parseSource(sourceInput) 而非复用传入的 parsedData：
     // 1) 避开 useDomainData 的 300ms 防抖延迟（刚输入即点击生成时 parsedData 尚未更新）；
     // 2) 避免 React state 闭包捕获的旧值。此为有意设计，非冗余双解析。
@@ -43,12 +43,28 @@ export const useRules = (
     // 同步解析结果回 parsedData/stats，确保统计与合并信息立即反映本次生成内容
     // （消除防抖延迟造成的"规则已生成但白名单计数仍为 0"的失效观感）
     syncParsedData(sourceInput);
-    
+
     // 生成输出行号 - 使用当前生成的内容
     const content = newOutputContent[currentFormat];
     generateLineNumbers(content || '', outputLineNumbersRef);
 
-    showToast('rulesGenerated');
+    if (notify) showToast('rulesGenerated');
+  };
+
+  // 监听 sourceInput：只要存在可解析内容即自动生成，确保右侧预览（含白名单标签页）
+  // 始终反映当前数据，避免"左侧有白名单但右侧生成窗口为空"的失效观感。
+  // 使用 ref 记录上一次实际内容，仅在内容变化时重新生成，避免无谓重渲染。
+  const lastSourceRef = useRef<string>('');
+  useEffect(() => {
+    if (sourceInput && sourceInput !== lastSourceRef.current) {
+      lastSourceRef.current = sourceInput;
+      runGenerate(false);
+    }
+  }, [sourceInput]);
+
+  // 生成规则（按钮触发，带提示）
+  const generateRules = () => {
+    runGenerate(true);
   };
 
   // 下载输出
