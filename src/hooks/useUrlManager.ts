@@ -40,7 +40,7 @@ export const useUrlManager = (
     await withLoading<string>({
       fetchFn: async () => {
         const mirrors = presetMirrors[preset as PresetName];
-        if (!mirrors || mirrors.length === 0) {
+        if (!mirrors) {
           throw new Error('Preset not found');
         }
         // 依次尝试各镜像，返回第一个成功获取的文本内容
