@@ -8,7 +8,7 @@
 
 如果你发现了 bug 或有新功能建议，请在 GitHub 上创建一个 issue：
 
-1. 访问 [GitHub Issues](https://github.com/sutchan/DNS_Shield/issues)
+1. 访问 [GitHub Issues](https://github.com/ArcesTeam/DNS_Shield/issues)
 2. 点击 "New Issue"
 3. 选择合适的模板（Bug 报告或功能请求）
 4. 填写详细信息，包括：
@@ -25,7 +25,7 @@
 
 #### 2.1  Fork 仓库
 
-1. 访问 [DNS Shield 仓库](https://github.com/sutchan/DNS_Shield)
+1. 访问 [DNS Shield 仓库](https://github.com/ArcesTeam/DNS_Shield)
 2. 点击右上角的 "Fork" 按钮，将仓库复制到你的 GitHub 账户
 
 #### 2.2  克隆仓库
@@ -38,7 +38,7 @@ git clone https://github.com/YOUR_USERNAME/DNS_Shield.git
 cd DNS_Shield
 
 # 添加 upstream 远程仓库
-git remote add upstream https://github.com/sutchan/DNS_Shield.git
+git remote add upstream https://github.com/ArcesTeam/DNS_Shield.git
 ```
 
 #### 2.3  创建分支
@@ -165,6 +165,6 @@ pnpm start
 
 如果有任何问题或建议，可以通过以下方式联系项目维护者：
 
-- GitHub Issues：[https://github.com/sutchan/DNS_Shield/issues](https://github.com/sutchan/DNS_Shield/issues)
+- GitHub Issues：[https://github.com/ArcesTeam/DNS_Shield/issues](https://github.com/ArcesTeam/DNS_Shield/issues)
 
 感谢你的贡献！
