@@ -1,10 +1,18 @@
-// src/hooks/useDomainData.ts v3.7.24
+// src/hooks/useDomainData.ts v3.7.26
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
 import { fetchDomainsText } from '../utils/domainFetch';
 import { generateLineNumbers } from '../utils/uiUtils';
 import { ParsedData, Stats } from '../types';
 import { config } from '../config';
+
+// 自动保存内容字符上限（与 domainFetch 的 10MB 字节上限同量级，防止 localStorage 脏数据撑爆内存）
+const AUTOSAVE_MAX_LENGTH = 5_000_000;
+
+// 校验 localStorage 自动保存内容是否为合法字符串且长度合理，拒绝脏数据
+const isValidAutosave = (value: unknown): value is string => {
+  return typeof value === 'string' && value.length > 0 && value.length <= AUTOSAVE_MAX_LENGTH;
+};
 
 export const useDomainData = (showToast: (key: string, params?: { [key: string]: string | number }) => void) => {
   const [sourceInput, setSourceInput] = useState('');
@@ -45,6 +53,9 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   }, [sourceInput]);
 
   const loadLocalDomains = useCallback(async (text: string) => {
+    if (!isValidAutosave(text)) {
+      return false;
+    }
     if (text.trim()) {
       setSourceInput(text);
       parseSourceData(text);
@@ -89,9 +100,10 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   // 恢复自动保存内容（仅在挂载时执行一次，避免清空后又被覆盖）
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    let autosave = '';
-    try { autosave = localStorage.getItem('dnsShield_autosave') ?? ''; } catch { /* 隐私模式不可用 */ }
-    if (autosave && !sourceInputRef.current.trim()) {
+    let autosave: unknown = '';
+    try { autosave = localStorage.getItem('dnsShield_autosave'); } catch { /* 隐私模式不可用 */ }
+    // schema 校验：仅接受合法字符串且非空，防止脏数据/超长内容进入应用
+    if (isValidAutosave(autosave) && !sourceInputRef.current.trim()) {
       setSourceInput(autosave);
       parseSourceData(autosave);
       generateLineNumbers(autosave, lineNumbersRef);

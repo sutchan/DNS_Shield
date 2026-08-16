@@ -83,7 +83,8 @@ export default function Home() {
     urls, 
     isLoading, 
     activePreset, 
-    urlInputRef, 
+    urlInput, 
+    setUrlInput, 
     loadPreset, 
     fetchFromUrl, 
     addUrl, 
@@ -143,7 +144,8 @@ export default function Home() {
             activePreset={activePreset}
             lineNumbersRef={lineNumbersRef}
             sourceTextareaRef={sourceTextareaRef}
-            urlInputRef={urlInputRef}
+            urlInput={urlInput}
+            setUrlInput={setUrlInput}
             toggleSection={toggleSection}
             handleSourceInput={handleSourceInput}
             syncScroll={syncScroll}

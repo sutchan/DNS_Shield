@@ -1,5 +1,5 @@
-// src/hooks/useUrlManager.ts v3.7.24
-import { useState, useRef } from 'react';
+// src/hooks/useUrlManager.ts v3.7.26
+import { useState } from 'react';
 import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
 import { fetchDomainsText } from '../utils/domainFetch';
 import { generateLineNumbers } from '../utils/uiUtils';
@@ -14,13 +14,14 @@ export const useUrlManager = (
 ) => {
   const [urls, setUrls] = useState<string[]>([]);
   const [activePreset, setActivePreset] = useState('builtin');
-  
-  const urlInputRef = useRef<HTMLInputElement>(null);
+  // 受控 URL 输入框状态：避免非受控 defaultValue 导致清空/回显不同步
+  const [urlInput, setUrlInput] = useState(config.domainsUrl);
+
   const { isLoading, withLoading } = useLoading(showToast);
 
-  // URL 验证函数
+  // URL 验证函数（从受控状态读取）
   const validateUrlInput = (): { isValid: boolean; url?: string } => {
-    const url = urlInputRef.current?.value.trim();
+    const url = urlInput.trim();
     if (!url) {
       showToast('urlEnter');
       return { isValid: false };
@@ -70,8 +71,8 @@ export const useUrlManager = (
         return isValid;
       },
       fetchFn: async () => {
-        // beforeLoad 已校验通过，直接取输入框当前值，避免二次校验重复 toast
-        const url = urlInputRef.current?.value.trim();
+        // beforeLoad 已校验通过，直接取受控值，避免二次校验重复 toast
+        const url = urlInput.trim();
         if (!url) {
           throw new Error('URL not provided');
         }
@@ -96,9 +97,7 @@ export const useUrlManager = (
     }
 
     setUrls((prev: string[]) => [...prev, url]);
-    if (urlInputRef.current) {
-      urlInputRef.current.value = '';
-    }
+    setUrlInput('');
     showToast('urlAdded');
   };
 
@@ -151,7 +150,8 @@ export const useUrlManager = (
     urls,
     isLoading,
     activePreset,
-    urlInputRef,
+    urlInput,
+    setUrlInput,
     loadPreset,
     fetchFromUrl,
     addUrl,

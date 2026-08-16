@@ -1,4 +1,4 @@
-// src/utils/parser.test.ts v3.7.21
+// src/utils/parser.test.ts v3.7.26
 import { describe, it, expect } from 'vitest';
 import { parseSource, sortDomains, dedupeDomains } from './parser';
 
@@ -19,8 +19,8 @@ describe('parseSource', () => {
     expect(data.whitelist).toEqual(['white.example.com']);
     expect(data.customDns).toEqual([{ domain: 'custom.example.com', ip: '1.2.3.4' }]);
     expect(stats.whitelistCount).toBe(1);
-    // invalid_domain 计入注释/无效
-    expect(stats.commentCount).toBeGreaterThanOrEqual(1);
+    // invalid_domain 计入 invalidCount（而非被错误统计为注释）
+    expect(stats.invalidCount).toBe(1);
   });
 
   it('白名单域名从黑名单中排除', () => {

@@ -1,4 +1,4 @@
-// src/components/InputPanel.tsx v3.7.21
+// src/components/InputPanel.tsx v3.7.26
 'use client';
 import * as React from 'react';
 import { Button } from './ui/Button';
@@ -16,7 +16,8 @@ interface InputPanelProps {
   activePreset: string;
   lineNumbersRef: React.RefObject<HTMLDivElement>;
   sourceTextareaRef: React.RefObject<HTMLTextAreaElement>;
-  urlInputRef: React.RefObject<HTMLInputElement>;
+  urlInput: string;
+  setUrlInput: (value: string) => void;
   toggleSection: (section: string) => void;
   handleSourceInput: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   syncScroll: () => void;
@@ -41,7 +42,8 @@ const InputPanel: React.FC<InputPanelProps> = ({
   activePreset,
   lineNumbersRef,
   sourceTextareaRef,
-  urlInputRef,
+  urlInput,
+  setUrlInput,
   toggleSection,
   handleSourceInput,
   syncScroll,
@@ -100,7 +102,8 @@ const InputPanel: React.FC<InputPanelProps> = ({
       <UrlSection
         isCollapsed={isUrlSectionCollapsed}
         urls={urls}
-        urlInputRef={urlInputRef}
+        urlInput={urlInput}
+        setUrlInput={setUrlInput}
         fetchFromUrl={fetchFromUrl}
         addUrl={addUrl}
         sortUrls={sortUrls}

@@ -1,4 +1,4 @@
-// src/components/UrlSection.tsx v3.7.21
+// src/components/UrlSection.tsx v3.7.26
 // URL 导入区域组件 —— 从 InputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -13,7 +13,8 @@ import { config } from '../config';
 interface UrlSectionProps {
   isCollapsed: boolean;
   urls: string[];
-  urlInputRef: React.RefObject<HTMLInputElement>;
+  urlInput: string;
+  setUrlInput: (value: string) => void;
   fetchFromUrl: () => void;
   addUrl: () => void;
   sortUrls: () => void;
@@ -67,7 +68,8 @@ export const PresetTags: React.FC<PresetTagsProps> = ({
 const UrlSection: React.FC<UrlSectionProps> = ({
   isCollapsed,
   urls,
-  urlInputRef,
+  urlInput,
+  setUrlInput,
   fetchFromUrl,
   addUrl,
   sortUrls,
@@ -86,9 +88,9 @@ const UrlSection: React.FC<UrlSectionProps> = ({
         <Input
           type="text"
           id="urlInput"
-          ref={urlInputRef as React.RefObject<HTMLInputElement>}
+          value={urlInput}
+          onChange={(e) => setUrlInput(e.target.value)}
           placeholder={t.urlPlaceholder}
-          defaultValue={config.domainsUrl}
           aria-describedby="url-help"
           className="url-input"
         />

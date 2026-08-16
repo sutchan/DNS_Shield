@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+## [3.7.26] - 2026-08-16
+
+### Fixed
+- `useUrlManager` URL 输入框由非受控 `defaultValue` 改为受控 `urlInput` 状态：清空/回显一致，避免依赖 ref.value 造成的不同步
+- `useSettings` 与 `Footer` 统一引用单一版本来源 `src/config/version.ts` 的 `APP_VERSION`，消除硬编码版本号滞后（此前 Footer 显示 3.7.21）
+- `useDomainData` 恢复本地自动保存时增加 schema 校验（仅接受合法非空字符串且 ≤5MB），拒绝 localStorage 脏数据/超长内容
+- 补充 `domainFetch` 结构化结果单测（成功/空/超长/网络错误）与 `parser` 的 `invalidCount` 断言，提升关键路径覆盖
+
 ## [3.7.25] - 2026-08-16
 
 ### Added
