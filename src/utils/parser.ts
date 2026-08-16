@@ -1,4 +1,4 @@
-// src/utils/parser.ts v3.7.21
+// src/utils/parser.ts v3.7.24
 import { parseDomainLine, ParseStats } from './domainValidator';
 import { CustomDnsEntry, ParsedData } from '../types';
 
@@ -13,6 +13,7 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
   const whitelist: string[] = [];
   const customDns: CustomDnsEntry[] = [];
   let commentCount = 0;
+  let invalidCount = 0;
 
   for (const line of lines) {
     const parsed = parseDomainLine(line);
@@ -31,7 +32,8 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
       if (parsed.isValid && parsed.domain) {
         whitelist.push(parsed.domain);
       } else {
-        commentCount++;
+        // 格式无效的白名单（如 @@||not a domain）计入无效行，而非真实注释
+        invalidCount++;
       }
       continue;
     }
@@ -40,7 +42,7 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
       if (parsed.isValid && parsed.domain && parsed.ip) {
         customDns.push({ domain: parsed.domain, ip: parsed.ip });
       } else {
-        commentCount++;
+        invalidCount++;
       }
       continue;
     }
@@ -49,12 +51,13 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
       if (parsed.isValid && parsed.domain) {
         domains.push(parsed.domain);
       } else {
-        commentCount++;
+        invalidCount++;
       }
       continue;
     }
 
-    commentCount++;
+    // 其余无法识别的行同样计入无效行
+    invalidCount++;
   }
 
   // 去重和处理冲突
@@ -78,7 +81,8 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
     validCount: filteredDomains.length + uniqueWhitelist.length,
     commentCount,
     blacklistCount: filteredDomains.length,
-    whitelistCount: uniqueWhitelist.length
+    whitelistCount: uniqueWhitelist.length,
+    invalidCount
   };
 
   return {
@@ -90,7 +94,4 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
     stats
   };
 };
-
-
-
 

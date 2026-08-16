@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.7.23
+// src/hooks/useRules.ts v3.7.24
 import { useState, useEffect, useRef } from 'react';
 import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
@@ -33,7 +33,9 @@ export const useRules = (
 
   // 生成规则
   const generateRules = () => {
-    // 实时解析最新输入，避免依赖防抖解析导致的陈旧 parsedData（如刚输入白名单立即点击生成时白名单为空）
+    // 必须本地重新 parseSource(sourceInput) 而非复用传入的 parsedData：
+    // 1) 避开 useDomainData 的 300ms 防抖延迟（刚输入即点击生成时 parsedData 尚未更新）；
+    // 2) 避免 React state 闭包捕获的旧值。此为有意设计，非冗余双解析。
     const freshData = parseSource(sourceInput);
     const { domains, whitelist, customDns } = freshData.data;
     const newOutputContent = generateRulesUtil(domains, whitelist, customDns, settings, t);

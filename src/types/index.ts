@@ -1,4 +1,4 @@
-// src/types/index.ts v3.7.21
+// src/types/index.ts v3.7.24
 
 export type FormatType = 'hosts' | 'dnsmasq' | 'adguard' | 'whitelist';
 
@@ -26,6 +26,7 @@ export interface Stats {
   commentCount: number;
   blacklistCount: number;
   whitelistCount: number;
+  invalidCount: number;
 }
 
 export interface Settings {

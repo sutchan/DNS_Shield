@@ -1,8 +1,9 @@
-// src/hooks/useUrlManager.ts v3.7.23
+// src/hooks/useUrlManager.ts v3.7.24
 import { useState, useRef } from 'react';
 import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
+import { fetchDomainsText } from '../utils/domainFetch';
 import { generateLineNumbers } from '../utils/uiUtils';
-import { config } from '../config/index';
+import { config, presetMirrors, type PresetName } from '../config/index';
 import { useLoading } from './useLoading';
 
 export const useUrlManager = (
@@ -31,17 +32,24 @@ export const useUrlManager = (
     return { isValid: true, url };
   };
 
-  // 加载预设
+  // 加载预设（多镜像降级：主源失败时自动尝试后续镜像）
   const loadPreset = async (preset: string) => {
     setActivePreset(preset);
 
     await withLoading<string>({
       fetchFn: async () => {
-        const url = config.presets[preset as keyof typeof config.presets];
-        if (!url) {
-          throw new Error('Preset URL not found');
+        const mirrors = presetMirrors[preset as PresetName];
+        if (!mirrors || mirrors.length === 0) {
+          throw new Error('Preset not found');
         }
-        return fetchFromUrlUtil(url);
+        // 依次尝试各镜像，返回第一个成功获取的文本内容
+        for (const url of mirrors) {
+          const res = await fetchDomainsText(url);
+          if (res.ok && res.text) {
+            return res.text;
+          }
+        }
+        throw new Error('All preset mirrors failed');
       },
       onSuccess: (content: string) => {
         setSourceInput(content);
@@ -152,8 +160,6 @@ export const useUrlManager = (
     setUrls
   };
 };
-
-
 
 
 

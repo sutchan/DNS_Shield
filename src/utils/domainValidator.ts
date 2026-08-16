@@ -1,7 +1,5 @@
-// src/utils/domainValidator.ts v3.7.21
+// src/utils/domainValidator.ts v3.7.24
 // 域名验证与行解析工具函数
-
-import { CustomDnsEntry } from '../types';
 
 // 域名正则表达式
 const DOMAIN_REGEX = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
@@ -20,6 +18,9 @@ export interface ParseStats {
   commentCount: number;
   blacklistCount: number;
   whitelistCount: number;
+  // 解析失败/格式无效的行数（如非法白名单、非法 customDns、非法域名），
+  // 与真实注释/空行分开统计，避免 stats 数字失真
+  invalidCount: number;
 }
 
 // 验证域名格式
@@ -148,7 +149,4 @@ export const parseDomainLine = (line: string): ParseResult => {
     originalLine: line
   };
 };
-
-
-
 

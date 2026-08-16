@@ -7,6 +7,29 @@
 
 ## [Unreleased]
 
+## [3.7.25] - 2026-08-16
+
+### Added
+- 全站接入 Google Analytics 4（衡量 ID `G-1VNKFYGRXR`）：于根布局注入 gtag 脚本，覆盖所有页面
+- `.env.local` 新增 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 配置项
+- `next.config.js` 的 CSP 放开 `www.googletagmanager.com` / `www.google-analytics.com` 脚本与上报域名
+- 升级全项目单一来源版本号至 v3.7.25
+
+## [3.7.24] - 2026-08-16
+
+### Fixed
+- `useDomainData` 远端加载与本地自动保存恢复串行化：引入 `autosaveRestoredRef`，远端内容不再覆盖用户本地草稿
+- `domainFetch` 返回结构化结果（ok/text/error），区分 network/timeout/too_large/empty 失败原因，便于精准提示
+- `useUrlManager.loadPreset` 多镜像降级：预设源提供 github 主源 + jsdelivr 镜像，主源被墙时自动切换
+- `parser` 无效行（非法白名单/customDns/域名）从 commentCount 拆分到独立 invalidCount，统计数字不再失真
+
+### Refactor
+- `domainValidator.ParseStats` 与 `types.Stats` 新增 `invalidCount` 字段（向后兼容）
+- `config.presets` 重构为多镜像数组（`presetMirrors`），公开类型 `PresetName`
+- 裁剪 domainFetch/parser/domainValidator/config/useUrlManager 末尾多余空行
+- 删除 domainValidator 未使用的 `CustomDnsEntry` 导入
+- 升级全项目单一来源版本号至 v3.7.24
+
 ## [3.7.23] - 2026-08-13
 
 ### Docs

@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.ts v3.7.23
+// src/hooks/useDomainData.ts v3.7.24
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
 import { fetchDomainsText } from '../utils/domainFetch';
@@ -18,7 +18,8 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     validCount: 0,
     commentCount: 0,
     blacklistCount: 0,
-    whitelistCount: 0
+    whitelistCount: 0,
+    invalidCount: 0
   });
   const [isLoading, setIsLoading] = useState(false);
   
@@ -27,6 +28,9 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   showToastRef.current = showToast;
   const sourceInputRef = useRef(sourceInput);
   sourceInputRef.current = sourceInput;
+  // 标记挂载阶段是否已恢复本地自动保存内容：远端加载完成后不应再用远端内容
+  // 覆盖用户本地草稿（否则异步返回的远端数据会覆盖刚恢复的 autosave）。
+  const autosaveRestoredRef = useRef(false);
 
   const parseSourceData = useCallback((text?: string) => {
     try {
@@ -54,15 +58,19 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   const loadDomainData = useCallback(async () => {
     setIsLoading(true);
     try {
+      // 若用户已有本地自动保存草稿，则不拉取远端覆盖（优先本地草稿）
+      if (autosaveRestoredRef.current && sourceInputRef.current.trim()) {
+        return;
+      }
       // 优先远端预设源，失败则回退同源 /domains.txt
       const remote = await fetchDomainsText(config.domainsUrl);
-      if (remote && remote.trim()) {
-        await loadLocalDomains(remote);
+      if (remote.ok && remote.text && remote.text.trim()) {
+        await loadLocalDomains(remote.text);
         return;
       }
       const local = await fetchDomainsText('/domains.txt');
-      if (local && local.trim()) {
-        await loadLocalDomains(local);
+      if (local.ok && local.text && local.text.trim()) {
+        await loadLocalDomains(local.text);
         return;
       }
       // 所有源均失败且无内容：保留空状态（loadAll 的 finally 会统一处理 UI）
@@ -87,6 +95,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
       setSourceInput(autosave);
       parseSourceData(autosave);
       generateLineNumbers(autosave, lineNumbersRef);
+      autosaveRestoredRef.current = true;
       let autoSaveTime = '';
       try { autoSaveTime = localStorage.getItem('dnsShield_autosave_time') ?? ''; } catch { /* 隐私模式不可用 */ }
       if (autoSaveTime && /^\d+$/.test(autoSaveTime)) {
@@ -123,7 +132,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
 
   const clearAll = useCallback(() => {
     setSourceInput('');
-    setStats({ domainCount: 0, validCount: 0, commentCount: 0, blacklistCount: 0, whitelistCount: 0 });
+    setStats({ domainCount: 0, validCount: 0, commentCount: 0, blacklistCount: 0, whitelistCount: 0, invalidCount: 0 });
   }, []);
 
   const sortDomains = useCallback(() => {
