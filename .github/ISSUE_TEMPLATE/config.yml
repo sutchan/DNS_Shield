@@ -7,29 +7,29 @@ blank_issues_enabled: false
 # 联系链接 — 在 Issue 选择页面显示
 contact_links:
   - name: 📖 项目文档
-    url: https://github.com/sutchan/DNS_Shield/blob/main/docs/README.md
+    url: https://github.com/ArcesTeam/DNS_Shield/blob/main/README.md
     about: 安装、使用和部署指南
 
-  - name: � 支持指南
-    url: https://github.com/sutchan/DNS_Shield/blob/main/SUPPORT.md
+  - name: 🆘 支持指南
+    url: https://github.com/ArcesTeam/DNS_Shield/blob/main/.github/SUPPORT.md
     about: 常见问题、故障排除和技术支持
 
   - name: 🚀 部署指南
-    url: https://github.com/sutchan/DNS_Shield/blob/main/DEPLOYMENT.md
+    url: https://github.com/ArcesTeam/DNS_Shield/blob/main/DEPLOYMENT.md
     about: 本地部署、服务器部署和容器化部署
 
-  - name: �📋 变更日志
-    url: https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md
+  - name: 📋 变更日志
+    url: https://github.com/ArcesTeam/DNS_Shield/blob/main/CHANGELOG.md
     about: 查看版本更新记录
 
   - name: 🤝 贡献指南
-    url: https://github.com/sutchan/DNS_Shield/blob/main/docs/CONTRIBUTING.md
+    url: https://github.com/ArcesTeam/DNS_Shield/blob/main/.github/CONTRIBUTING.md
     about: 参与项目开发和维护
 
   - name: 🔒 安全指南
-    url: https://github.com/sutchan/DNS_Shield/blob/main/docs/SECURITY.md
+    url: https://github.com/ArcesTeam/DNS_Shield/blob/main/.github/SECURITY.md
     about: 安全最佳实践和漏洞报告流程
 
   - name: 💬 讨论区
-    url: https://github.com/sutchan/DNS_Shield/discussions
+    url: https://github.com/ArcesTeam/DNS_Shield/discussions
     about: 提问、讨论和功能建议

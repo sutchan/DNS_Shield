@@ -30,7 +30,7 @@
 
 ### 报告问题
 
-如果您遇到任何问题，请在 [GitHub Issues](https://github.com/sutchan/DNS_Shield/issues) 中报告，包括：
+如果您遇到任何问题，请在 [GitHub Issues](https://github.com/ArcesTeam/DNS_Shield/issues) 中报告，包括：
 - 问题描述
 - 设备类型和操作系统
 - 错误日志（如果有）
@@ -45,8 +45,8 @@
 
 ### 联系我们
 
-- **GitHub**：[https://github.com/sutchan/DNS_Shield](https://github.com/sutchan/DNS_Shield)
-- **电子邮件**：sutchan@example.com
+- **GitHub**：[https://github.com/ArcesTeam/DNS_Shield](https://github.com/ArcesTeam/DNS_Shield)
+- **Issues**：[提交问题](https://github.com/ArcesTeam/DNS_Shield/issues)
 
 ## 故障排除
 

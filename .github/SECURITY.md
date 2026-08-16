@@ -28,10 +28,10 @@
 
 ```bash
 # 检查依赖安全
-npm audit
+pnpm audit
 
 # 更新依赖
-npm update
+pnpm update
 ```
 
 ### 3. 版本控制安全
@@ -74,10 +74,10 @@ npm update
 
 ```bash
 # 使用 ESLint 进行代码分析
-npm run lint
+pnpm lint
 
-# 使用 npm audit 扫描依赖
-npm audit
+# 使用 pnpm audit 扫描依赖
+pnpm audit
 ```
 
 ### 2. 动态安全测试
@@ -164,7 +164,7 @@ npm audit
 ### 1. 安全工具
 
 - **ESLint**：代码分析工具
-- **npm audit**：依赖安全扫描
+- **pnpm audit**：依赖安全扫描
 - **OWASP ZAP**：Web 应用安全扫描器
 - **Nmap**：网络扫描工具
 
@@ -184,7 +184,7 @@ npm audit
 
 如果发现安全漏洞，请通过以下方式联系项目维护者：
 
-- GitHub Issues：[https://github.com/sutchan/DNS_Shield/issues](https://github.com/sutchan/DNS_Shield/issues)
+- GitHub Issues：[https://github.com/ArcesTeam/DNS_Shield/issues](https://github.com/ArcesTeam/DNS_Shield/issues)
 
 请提供详细的漏洞描述和复现步骤，以便我们能够及时修复。
 
