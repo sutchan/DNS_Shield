@@ -39,7 +39,6 @@
   "urlHelp": "Zadejte URL pro získání seznamu domén",
   "removeUrlAria": "Odstranit {url}",
   "githubLinkAria": "Navštívit repozitář GitHub (otevře v novém okně)",
-  "demoLinkAria": "Navštívit demo stránky (otevře v novém okně)",
   "mergeInfo": "Klikněte na \"Vygenerovat pravidla\" pro zobrazení výstupu",
   "previewPlaceholder": "// Vygenerovaná pravidla se zobrazí zde",
   "generateBtn": "Vygenerovat pravidla",
@@ -113,5 +112,6 @@
   "outputFormatAria": "Výstup formátu {format}",
   "urlActionsAria": "Akce URL",
   "urlListAria": "Seznam URL",
-  "usageGuideAria": "Průvodce použitím"
+  "usageGuideAria": "Průvodce použitím",
+  "changelogLinkAria": "View changelog (opens in new window)"
 }

@@ -1,4 +1,4 @@
-// src/config/index.ts v3.7.24
+// src/config/index.ts v3.7.30
 // @types/node 已提供 process.env 类型，无需重复声明
 
 // 预设源：每个 preset 提供多个镜像（github 主源 + jsdelivr 镜像），

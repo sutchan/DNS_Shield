@@ -39,7 +39,6 @@
   "urlHelp": "Masukkan URL untuk mengambil daftar domain",
   "removeUrlAria": "Hapus {url}",
   "githubLinkAria": "Kunjungi repositori GitHub (buka di jendela baru)",
-  "demoLinkAria": "Kunjungi situs demo (buka di jendela baru)",
   "mergeInfo": "Klik \"Generate Aturan\" untuk melihat output",
   "previewPlaceholder": "// Aturan yang dihasilkan akan muncul di sini",
   "generateBtn": "Generate Aturan",
@@ -113,5 +112,6 @@
   "outputFormatAria": "Output format {format}",
   "urlActionsAria": "Aksi URL",
   "urlListAria": "Daftar URL",
-  "usageGuideAria": "Panduan penggunaan"
+  "usageGuideAria": "Panduan penggunaan",
+  "changelogLinkAria": "View changelog (opens in new window)"
 }

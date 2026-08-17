@@ -39,7 +39,6 @@
   "urlHelp": "輸入URL地址取得域名列表",
   "removeUrlAria": "移除 {url}",
   "githubLinkAria": "造訪 GitHub 儲存庫（開啟新視窗）",
-  "demoLinkAria": "造訪演示站點（開啟新視窗）",
   "mergeInfo": "點擊\"生成規則\"查看輸出",
   "previewPlaceholder": "// 生成的規則將顯示在這裡",
   "generateBtn": "生成規則",
@@ -113,5 +112,6 @@
   "outputFormatAria": "{format} 格式輸出",
   "urlActionsAria": "URL操作",
   "urlListAria": "URL列表",
-  "usageGuideAria": "使用指南"
+  "usageGuideAria": "使用指南",
+  "changelogLinkAria": "查看更新日誌（新視窗開啟）"
 }

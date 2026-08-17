@@ -39,7 +39,6 @@
   "urlHelp": "Введите URL для получения списка доменов",
   "removeUrlAria": "Удалить {url}",
   "githubLinkAria": "Посетить репозиторий GitHub (открывается в новом окне)",
-  "demoLinkAria": "Посетить демо-сайт (открывается в новом окне)",
   "mergeInfo": "Нажмите \"Сгенерировать правила\" для просмотра вывода",
   "previewPlaceholder": "// Сгенерированные правила будут отображаться здесь",
   "generateBtn": "Сгенерировать правила",
@@ -113,5 +112,6 @@
   "outputFormatAria": "Вывод формата {format}",
   "urlActionsAria": "Действия URL",
   "urlListAria": "Список URL",
-  "usageGuideAria": "Руководство по использованию"
+  "usageGuideAria": "Руководство по использованию",
+  "changelogLinkAria": "View changelog (opens in new window)"
 }

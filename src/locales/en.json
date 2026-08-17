@@ -39,7 +39,6 @@
   "urlHelp": "Enter URL to fetch domain list",
   "removeUrlAria": "Remove {url}",
   "githubLinkAria": "Visit GitHub repository (opens in new window)",
-  "demoLinkAria": "Visit demo site (opens in new window)",
   "mergeInfo": "Click \"Generate Rules\" to view output",
   "previewPlaceholder": "// Generated rules will appear here",
   "generateBtn": "Generate Rules",
@@ -114,5 +113,6 @@
   "outputFormatAria": "{format} format output",
   "urlActionsAria": "URL actions",
   "urlListAria": "URL list",
-  "usageGuideAria": "Usage guide"
+  "usageGuideAria": "Usage guide",
+  "changelogLinkAria": "View changelog (opens in new window)"
 }

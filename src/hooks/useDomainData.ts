@@ -1,18 +1,17 @@
-// src/hooks/useDomainData.ts v3.7.29
+// src/hooks/useDomainData.ts v3.7.30
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
 import { fetchDomainsText } from '../utils/domainFetch';
 import { generateLineNumbers } from '../utils/uiUtils';
 import { ParsedData, Stats } from '../types';
 import { config } from '../config';
-
-// 自动保存内容字符上限（与 domainFetch 的 10MB 字节上限同量级，防止 localStorage 脏数据撑爆内存）
-const AUTOSAVE_MAX_LENGTH = 5_000_000;
-
-// 校验 localStorage 自动保存内容是否为合法字符串且长度合理，拒绝脏数据
-const isValidAutosave = (value: unknown): value is string => {
-  return typeof value === 'string' && value.length > 0 && value.length <= AUTOSAVE_MAX_LENGTH;
-};
+import {
+  isValidAutosave,
+  readAutosave,
+  readAutosaveTime,
+  writeAutosave,
+  clearAutosave
+} from './autosaveStorage';
 
 export const useDomainData = (showToast: (key: string, params?: { [key: string]: string | number }) => void) => {
   const [sourceInput, setSourceInput] = useState('');
@@ -30,7 +29,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     invalidCount: 0
   });
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const showToastRef = useRef(showToast);
   showToastRef.current = showToast;
@@ -102,18 +101,16 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   // 恢复自动保存内容（仅在挂载时执行一次，避免清空后又被覆盖）
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    let autosave: unknown = '';
-    try { autosave = localStorage.getItem('dnsShield_autosave'); } catch { /* 隐私模式不可用 */ }
     // schema 校验：仅接受合法字符串且非空，防止脏数据/超长内容进入应用
-    if (isValidAutosave(autosave) && !sourceInputRef.current.trim()) {
+    const autosave = readAutosave();
+    if (autosave && !sourceInputRef.current.trim()) {
       setSourceInput(autosave);
       parseSourceData(autosave);
       generateLineNumbers(autosave, lineNumbersRef);
       autosaveRestoredRef.current = true;
-      let autoSaveTime = '';
-      try { autoSaveTime = localStorage.getItem('dnsShield_autosave_time') ?? ''; } catch { /* 隐私模式不可用 */ }
-      if (autoSaveTime && /^\d+$/.test(autoSaveTime)) {
-        const timeAgo = Math.floor((Date.now() - parseInt(autoSaveTime)) / 60000);
+      const autoSaveTime = readAutosaveTime();
+      if (autoSaveTime) {
+        const timeAgo = Math.floor((Date.now() - autoSaveTime) / 60000);
         if (timeAgo > 0) {
           showToastRef.current('autosaveRestored', { time: timeAgo });
         }
@@ -127,10 +124,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     if (typeof window === 'undefined') return;
     const autoSaveInterval = setInterval(() => {
       if (sourceInputRef.current.trim()) {
-        try {
-          localStorage.setItem('dnsShield_autosave', sourceInputRef.current);
-          localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
-        } catch { /* 隐私模式不可用 */ }
+        writeAutosave(sourceInputRef.current);
       }
     }, 30000);
     return () => clearInterval(autoSaveInterval);
@@ -149,14 +143,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     setParsedData({ domains: [], whitelist: [], customDns: [] });
     setStats({ domainCount: 0, validCount: 0, commentCount: 0, blacklistCount: 0, whitelistCount: 0, invalidCount: 0 });
     // 同步清除本地自动保存与时间戳，避免清空后加载/刷新时旧内容复现
-    try {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('dnsShield_autosave');
-        localStorage.removeItem('dnsShield_autosave_time');
-      }
-    } catch {
-      /* localStorage 不可用时忽略 */
-    }
+    clearAutosave();
     showToastRef.current('cleared');
   }, []);
 
@@ -176,10 +163,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
 
   const saveDomains = useCallback(() => {
     if (sourceInputRef.current.trim()) {
-      try {
-        localStorage.setItem('dnsShield_autosave', sourceInputRef.current);
-        localStorage.setItem('dnsShield_autosave_time', Date.now().toString());
-      } catch { /* 隐私模式不可用 */ }
+      writeAutosave(sourceInputRef.current);
     }
     showToastRef.current('domainsSaved');
   }, []);
@@ -204,7 +188,3 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     setSourceInput
   };
 };
-
-
-
-

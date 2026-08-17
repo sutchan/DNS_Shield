@@ -1,4 +1,4 @@
-// src/utils/parser.ts v3.7.24
+// src/utils/parser.ts v3.7.30
 import { parseDomainLine, ParseStats } from './domainValidator';
 import { CustomDnsEntry, ParsedData } from '../types';
 

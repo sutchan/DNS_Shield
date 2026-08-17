@@ -1,4 +1,4 @@
-// src/hooks/useUrlManager.ts v3.7.26
+// src/hooks/useUrlManager.ts v3.7.30
 import { useState } from 'react';
 import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
 import { fetchDomainsText } from '../utils/domainFetch';

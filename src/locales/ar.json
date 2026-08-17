@@ -39,7 +39,6 @@
   "urlHelp": "أدخل عنوان URL للحصول على قائمة النطاقات",
   "removeUrlAria": "إزالة {url}",
   "githubLinkAria": "زيارة مستودع GitHub (يفتح في نافذة جديدة)",
-  "demoLinkAria": "زيارة موقع العرض التوضيحي (يفتح في نافذة جديدة)",
   "mergeInfo": "انقر على \"إنشاء القواعد\" لعرض الناتج",
   "previewPlaceholder": "// ستظهر القواعد المولدة هنا",
   "generateBtn": "إنشاء القواعد",
@@ -113,5 +112,6 @@
   "outputFormatAria": "إخراج تنسيق {format}",
   "urlActionsAria": "إجراءات URL",
   "urlListAria": "قائمة URL",
-  "usageGuideAria": "دليل الاستخدام"
+  "usageGuideAria": "دليل الاستخدام",
+  "changelogLinkAria": "View changelog (opens in new window)"
 }

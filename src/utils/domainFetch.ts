@@ -1,4 +1,4 @@
-// src/utils/domainFetch.ts v3.7.24
+// src/utils/domainFetch.ts v3.7.30
 // 从指定 URL 拉取域名文本，带 10s 超时（AbortController）与体积安全上限。
 // 流式读取并按累计字节数强制截断（不信任 content-length 头，防 DoS）。
 // 返回结构化结果，便于调用方区分「网络错误 / 超时 / 超大 / 空响应」等不同失败原因。

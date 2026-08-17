@@ -39,7 +39,6 @@
   "urlHelp": "Inserisci URL per ottenere lista domini",
   "removeUrlAria": "Rimuovi {url}",
   "githubLinkAria": "Visita repository GitHub (si apre in nuova finestra)",
-  "demoLinkAria": "Visita sito demo (si apre in nuova finestra)",
   "mergeInfo": "Fai clic su \"Genera Regole\" per visualizzare l'output",
   "previewPlaceholder": "// Le regole generate appariranno qui",
   "generateBtn": "Genera Regole",
@@ -113,5 +112,6 @@
   "outputFormatAria": "Output formato {format}",
   "urlActionsAria": "Azioni URL",
   "urlListAria": "Elenco URL",
-  "usageGuideAria": "Guida all'uso"
+  "usageGuideAria": "Guida all'uso",
+  "changelogLinkAria": "View changelog (opens in new window)"
 }

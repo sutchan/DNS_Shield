@@ -39,7 +39,6 @@
   "urlHelp": "ป้อน URL เพื่อรับรายการโดเมน",
   "removeUrlAria": "ลบ {url}",
   "githubLinkAria": "เยี่ยมชมที่เก็บ GitHub (เปิดในหน้าต่างใหม่)",
-  "demoLinkAria": "เยี่ยมชมเว็บไซต์สาธิต (เปิดในหน้าต่างใหม่)",
   "mergeInfo": "คลิก \"สร้างกฎ\" เพื่อดูผลลัพธ์",
   "previewPlaceholder": "// กฎที่สร้างขึ้นจะปรากฏที่นี่",
   "generateBtn": "สร้างกฎ",
@@ -113,5 +112,6 @@
   "outputFormatAria": "เอาต์พุตรูปแบบ {format}",
   "urlActionsAria": "การดำเนินการ URL",
   "urlListAria": "รายการ URL",
-  "usageGuideAria": "คู่มือการใช้งาน"
+  "usageGuideAria": "คู่มือการใช้งาน",
+  "changelogLinkAria": "View changelog (opens in new window)"
 }

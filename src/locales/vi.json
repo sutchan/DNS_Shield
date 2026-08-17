@@ -39,7 +39,6 @@
   "urlHelp": "Nhập URL để lấy danh sách tên miền",
   "removeUrlAria": "Xóa {url}",
   "githubLinkAria": "Truy cập kho lưu trữ GitHub (mở trong cửa sổ mới)",
-  "demoLinkAria": "Truy cập trang demo (mở trong cửa sổ mới)",
   "mergeInfo": "Nhấn \"Tạo quy tắc\" để xem đầu ra",
   "previewPlaceholder": "// Quy tắc được tạo sẽ xuất hiện ở đây",
   "generateBtn": "Tạo quy tắc",
@@ -113,5 +112,6 @@
   "outputFormatAria": "Đầu ra định dạng {format}",
   "urlActionsAria": "Hành động URL",
   "urlListAria": "Danh sách URL",
-  "usageGuideAria": "Hướng dẫn sử dụng"
+  "usageGuideAria": "Hướng dẫn sử dụng",
+  "changelogLinkAria": "View changelog (opens in new window)"
 }

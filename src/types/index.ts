@@ -1,4 +1,4 @@
-// src/types/index.ts v3.7.24
+// src/types/index.ts v3.7.30
 
 export type FormatType = 'hosts' | 'dnsmasq' | 'adguard' | 'whitelist';
 
@@ -101,7 +101,7 @@ export interface Translation {
   urlHelp: string;
   removeUrlAria: string;
   githubLinkAria: string;
-  demoLinkAria: string;
+  changelogLinkAria: string;
   hostsFormat: string;
   dnsmasqFormat: string;
   mergeStats: string;

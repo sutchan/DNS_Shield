@@ -39,7 +39,6 @@
   "urlHelp": "Ange URL för att hämta domänlista",
   "removeUrlAria": "Ta bort {url}",
   "githubLinkAria": "Besök GitHub-arkiv (öppnas i nytt fönster)",
-  "demoLinkAria": "Besök demosida (öppnas i nytt fönster)",
   "mergeInfo": "Klicka på \"Generera regler\" för att visa utdata",
   "previewPlaceholder": "// Genererade regler visas här",
   "generateBtn": "Generera regler",
@@ -113,5 +112,6 @@
   "outputFormatAria": "{format}-formatutdata",
   "urlActionsAria": "URL-åtgärder",
   "urlListAria": "URL-lista",
-  "usageGuideAria": "Användningsguide"
+  "usageGuideAria": "Användningsguide",
+  "changelogLinkAria": "View changelog (opens in new window)"
 }

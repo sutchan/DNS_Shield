@@ -39,7 +39,6 @@
   "urlHelp": "Voer URL in om domeinlijst op te halen",
   "removeUrlAria": "Verwijder {url}",
   "githubLinkAria": "Bezoek GitHub repository (opent in nieuw venster)",
-  "demoLinkAria": "Bezoek demosite (opent in nieuw venster)",
   "mergeInfo": "Klik op \"Genereer regels\" om uitvoer weer te geven",
   "previewPlaceholder": "// Gegenereerde regels worden hier weergegeven",
   "generateBtn": "Genereer regels",
@@ -113,5 +112,6 @@
   "outputFormatAria": "{format} formaat uitvoer",
   "urlActionsAria": "URL-acties",
   "urlListAria": "URL-lijst",
-  "usageGuideAria": "Gebruikshandleiding"
+  "usageGuideAria": "Gebruikshandleiding",
+  "changelogLinkAria": "View changelog (opens in new window)"
 }

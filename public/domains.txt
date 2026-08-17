@@ -572,6 +572,7 @@ ad.kwai.com
 +talk.bz.getui.net
 
 # ========== 银行网银 ==========
++cfca.com.cn
 +auth.cebbank.com
 +b2e.cebbank.com
 +cebbank.com

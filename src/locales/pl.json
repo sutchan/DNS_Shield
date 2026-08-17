@@ -39,7 +39,6 @@
   "urlHelp": "Wprowadź URL, aby pobrać listę domen",
   "removeUrlAria": "Usuń {url}",
   "githubLinkAria": "Odwiedź repozytorium GitHub (otwiera się w nowym oknie)",
-  "demoLinkAria": "Odwiedź stronę demo (otwiera się w nowym oknie)",
   "mergeInfo": "Kliknij \"Wygeneruj reguły\" aby wyświetlić wynik",
   "previewPlaceholder": "// Wygenerowane reguły pojawią się tutaj",
   "generateBtn": "Wygeneruj reguły",
@@ -113,5 +112,6 @@
   "outputFormatAria": "Wyjście formatu {format}",
   "urlActionsAria": "Akcje URL",
   "urlListAria": "Lista URL",
-  "usageGuideAria": "Przewodnik użytkowania"
+  "usageGuideAria": "Przewodnik użytkowania",
+  "changelogLinkAria": "View changelog (opens in new window)"
 }

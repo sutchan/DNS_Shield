@@ -1,4 +1,4 @@
-// src/app/robots.ts v3.7.21
+// src/app/robots.ts v3.7.30
 import type { MetadataRoute } from 'next'
 
 const SITE_URL = 'https://dns.ewuse.com'
