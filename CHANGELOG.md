@@ -7,6 +7,16 @@
 
 ## [Unreleased]
 
+## [3.7.34] - 2026-08-17
+
+### Added
+- 品牌资产归集至仓库根 `/brand` 目录（权威源）：`logo.svg`、`favicon.svg`、`logo-mono.svg` 反白版、`brand-colors.md` 调色板规范、`README.md` 资产索引与使用规则
+- 应用级 logo/favicon 置于 `public/`（与 `brand/` 同源同步），符合"应用 logo 放应用同目录"约定
+- `brand/brand-colors.md` 完整品牌调色板：主蓝（Light #0D5FE2 / Dark #2674F2）、蓝色阶 50→900、中性色、语义色
+
+### Changed
+- `shadcn/design-system.md` §9 与 `prototype/README.md` 品牌形象章节更新为 `brand/` 权威源 + `public/` 应用副本结构，补充反白标志与禁区规则
+
 ## [3.7.33] - 2026-08-17
 
 ### Added

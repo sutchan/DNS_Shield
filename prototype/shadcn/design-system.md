@@ -1,4 +1,4 @@
-# DNS Shield — 设计系统规范 v3.7.33
+# DNS Shield — 设计系统规范 v3.7.34
 > 基于 shadcn/ui + Tailwind CSS + Radix UI 的完整设计系统
 > 色彩空间：HSL | 设计哲学：Swiss Modernism 2.0 × Apple Precision
 
@@ -254,11 +254,16 @@ font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', sa
 
 ### 9.1 Logo 资产
 
-| 资源 | 路径 | 格式 | 用途 |
-|------|------|------|------|
-| 品牌 Logo | `public/logo.svg` | SVG 矢量 | 盾牌图标 + "DNS Shield" 文字；用于 README / OG / 文档 |
-| 网站图标 | `public/favicon.svg` | SVG 矢量 | 盾牌 + 防护对勾，浅底主蓝；用于浏览器标签 `<link rel="icon" type="image/svg+xml">` |
-| PWA 图标集 | `public/assets/icons/icon-{72,96,128,144,152,192,384,512}.png` | PNG | 安装到主屏、manifest 引用 |
+品牌资产统一归集于仓库根 `/brand`（权威源），应用运行时副本位于 `public/`：
+
+| 资源 | 权威源（`brand/`） | 应用副本（`public/`） | 格式 | 用途 |
+|------|------|------|------|------|
+| 品牌 Logo | `brand/logo.svg` | `public/logo.svg` | SVG 矢量 | 盾牌图标 + "DNS Shield" 文字；README / OG / 文档 / 页眉 |
+| 网站图标 | `brand/favicon.svg` | `public/favicon.svg` | SVG 矢量 | 盾牌 + 防护对勾，浅底主蓝；浏览器标签 `<link rel="icon" type="image/svg+xml">` |
+| 反白标志 | `brand/logo-mono.svg` | — | SVG 矢量 | 深色背景 / 单色印刷 |
+| PWA 图标集 | 由 `brand/favicon.svg` 导出 | `public/assets/icons/icon-{72,96,128,144,152,192,384,512}.png` | PNG | 安装到主屏、manifest 引用 |
+
+> 修改标志时先更新 `brand/` 权威源，再同步复制到 `public/` 对应文件。
 
 ### 9.2 品牌主色（与 `--primary` 严格一致）
 
@@ -267,11 +272,14 @@ font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', sa
 | Light | `hsl(217 89% 47%)` | `#0D5FE2` |
 | Dark | `hsl(217 85% 55%)` | `#2674F2` |
 
+完整蓝色阶与中性 / 语义色见 `brand/brand-colors.md`（50 `#EAF2FE` → 900 `#1E3A8A`）。
+
 > `manifest.json` 的 `theme_color` 与 `layout.tsx` 的 `viewport.themeColor` 已统一使用上述值；旧蓝 `#007AFF` 已弃用。
 
 ### 9.3 使用规则
 
-- 优先使用矢量 `logo.svg` / `favicon.svg`（任意缩放清晰锐利）；PNG 仅用于需要位图的场景（PWA / 旧客户端）。
-- Logo 主色始终取自品牌主蓝，禁止随意改色；深色背景下保持同一 HSL 变量。
+- 优先使用矢量 `brand/logo.svg` / `brand/favicon.svg`（任意缩放清晰锐利）；PNG 仅用于需要位图的场景（PWA / 旧客户端）。
+- Logo 主色始终取自品牌主蓝，禁止随意改色；深色背景用 `brand/logo-mono.svg`。
 - 应用内导航栏 Logo 复用 `lucide-react` 的 `Shield` 图标（`text-primary`），与 `favicon.svg` 视觉一致，形成统一认知。
 - SVG 源文件为权威版本，如需其他尺寸 PNG 由 SVG 导出，避免位图放大失真。
+- 禁区：不得拉伸变形、改色（除 mono 反白）、加阴影 / 描边、旋转、低透明度弱化至不可辨识。

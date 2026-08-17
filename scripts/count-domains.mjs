@@ -58,7 +58,7 @@ if (process.argv.includes('--write')) {
     content = content
       .replace(new RegExp(`^${escapeReg(t.dprefix)}.*$`, 'm'), `${t.dprefix} ${blocklist} 个唯一域名`)
       .replace(new RegExp(`^${escapeReg(t.wprefix)}.*$`, 'm'), `${t.wprefix} ${whitelist} 个域名`)
-      .replace(new RegExp(`^${escapeReg(t.vprefix)}.*$`, 'm'), `${t.vprefix} 3.7.33`);
+      .replace(new RegExp(`^${escapeReg(t.vprefix)}.*$`, 'm'), `${t.vprefix} 3.7.34`);
     if (content.includes('# 更新::') || content.includes('! 更新::')) {
       const uprefix = t.vprefix.startsWith('!') ? '! 更新::' : '# 更新::';
       content = content.replace(new RegExp(`^${escapeReg(uprefix)}.*$`, 'm'), `${uprefix} ${stamp}`);
