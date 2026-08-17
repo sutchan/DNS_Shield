@@ -10,7 +10,6 @@ const securityHeaders = [
       "img-src 'self' data: https: blob: https://www.google-analytics.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "img-src 'self' data: https: blob:",
       // 应用允许用户填入任意规则列表 URL 进行拉取，故 connect-src 放开到全部 https 源；
       // 仅限 https，禁止明文 http/其它协议，兼顾功能与安全。
       "connect-src 'self' https:",
@@ -60,7 +59,7 @@ const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
   env: {
-    version: '3.7.29'
+    version: '3.7.30'
   },
   devIndicators: {
     buildActivity: false

@@ -35,13 +35,13 @@
 
 ## 文档完整性
 
-- [ ] `docs/README.md` 存在且内容完整
-- [ ] `docs/README.en.md` 存在且英文内容完整
-- [ ] `docs/CHANGELOG.md` 变更记录完整
-- [ ] `docs/CONTRIBUTING.md` 贡献指南完整
-- [ ] `docs/DEPLOYMENT.md` 部署指南完整
-- [ ] `docs/SECURITY.md` 安全指南完整
-- [ ] `docs/SUPPORT.md` 支持文档完整
+- [ ] `README.md` 存在且内容完整
+- [ ] `README.en.md` 存在且英文内容完整
+- [ ] `CHANGELOG.md` 变更记录完整
+- [ ] `CONTRIBUTING.md` 贡献指南完整
+- [ ] `DEPLOYMENT.md` 部署指南完整
+- [ ] `SECURITY.md` 安全指南完整
+- [ ] `SUPPORT.md` 支持文档完整
 - [ ] `openspec/SPEC.md` 规范文档完整
 - [ ] `openspec/TASKS.md` 任务清单完整
 - [ ] `openspec/CHECKLIST.md` 检查清单完整

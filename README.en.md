@@ -1,6 +1,6 @@
 # DNS Shield
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.7.29-green)](https://github.com/sutchan/DNS_Shield)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.7.30-green)](https://github.com/sutchan/DNS_Shield)
 
 Router-level DNS-based ad blocking filter list with web management tool.
 

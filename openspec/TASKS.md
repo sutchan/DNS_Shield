@@ -24,10 +24,10 @@
 ## 版本发布
 
 - [ ] 递增版本号 (SemVer) — 同步更新所有文件
-- [ ] 更新 `docs/CHANGELOG.md` 变更记录
+- [ ] 更新 `CHANGELOG.md` 变更记录
 - [ ] 更新输出文件头部版本号
-- [ ] 更新 `docs/README.md` 版本号
-- [ ] 更新 `docs/README.en.md` 版本号
+- [ ] 更新 `README.md` 版本号
+- [ ] 更新 `README.en.md` 版本号
 - [ ] 创建 GitHub Release
 
 ## 开发任务

@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+## [3.7.30] - 2026-08-17
+
+### Fixed
+- 修复 `next.config.js` CSP 中重复的 `img-src` 指令（删除冗余行，避免后一条覆盖前一条导致 GA 图片域名失效）
+- 同步文档与展示版本号至 v3.7.30：README.md、README.en.md、DEPLOYMENT.md、openspec/SPEC.md、openspec/TASKS.md、openspec/CHECKLIST.md、`layout.tsx` 元数据/JSON-LD、prototype 标题
+- 修正 openspec/TASKS.md、CHECKLIST.md 中将根目录文档误写为 `docs/` 子目录路径的描述
+- 补全 openspec/SPEC.md 中 Content-Security-Policy 模板为 `next.config.js` 实际完整指令，便于安全审计对齐
+
 ## [3.7.29] - 2026-08-17
 
 ### Fixed

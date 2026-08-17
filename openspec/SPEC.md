@@ -10,7 +10,7 @@
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
 | 项目地址 | https://github.com/sutchan/DNS_Shield |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.7.29 |
+| 当前版本 | v3.7.30 |
 | 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -180,7 +180,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.7.29 |
+| 版本号 | 3.7.30 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -302,7 +302,7 @@ refactor: 优化规则生成逻辑
 
 | 头部 | 值 | 说明 |
 |------|-----|------|
-| Content-Security-Policy | default-src 'self'; script-src 'self' 'unsafe-inline' ...; frame-ancestors 'none'; worker-src 'self' blob: | 内容安全策略，防止 XSS 和数据注入 |
+| Content-Security-Policy | default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https: blob: https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; upgrade-insecure-requests; require-trusted-types-for 'script' | 内容安全策略，防止 XSS 和数据注入 |
 | Strict-Transport-Security | max-age=63072000; includeSubDomains; preload | HSTS，强制 HTTPS |
 | Cross-Origin-Opener-Policy | same-origin | 防止跨窗口攻击 |
 | Cross-Origin-Resource-Policy | same-origin | 限制跨域资源加载 |
