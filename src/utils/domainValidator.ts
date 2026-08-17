@@ -1,4 +1,4 @@
-// src/utils/domainValidator.ts v3.7.24
+// src/utils/domainValidator.ts v3.7.28
 // 域名验证与行解析工具函数
 
 // 域名正则表达式
@@ -78,9 +78,16 @@ export const parseDomainLine = (line: string): ParseResult => {
 
   // AdGuard 白名单 (@@) 或自定义 DNS (@)
   if (content.startsWith('@')) {
-    // AdGuard 例外规则 @@||domain^ 等价于白名单，按 whitelist 处理避免被静默丢弃
-    if (content.startsWith('@@') && content.startsWith('@@||') && content.endsWith('^')) {
-      const domain = normalizeDomain(content.substring(4, content.length - 1));
+    // AdGuard 例外规则 @@||domain^$options 等价于白名单，按 whitelist 处理避免被静默丢弃
+    // 兼容带修饰符的规则（如 @@||domain^$important），域名取 || 与首个 ^/$/行尾之间部分
+    if (content.startsWith('@@') && content.startsWith('@@||')) {
+      const afterMarker = content.substring(4); // 去掉 "@@||"
+      const endIdx = Math.min(
+        ...[afterMarker.indexOf('^'), afterMarker.indexOf('$'), afterMarker.length].filter(
+          (i) => i > 0
+        )
+      );
+      const domain = normalizeDomain(afterMarker.substring(0, endIdx));
       return {
         type: 'whitelist',
         domain,

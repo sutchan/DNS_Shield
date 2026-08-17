@@ -1,4 +1,4 @@
-// src/utils/domainValidator.test.ts v3.7.21
+// src/utils/domainValidator.test.ts v3.7.28
 import { describe, it, expect } from 'vitest';
 import {
   isValidDomain,
@@ -75,6 +75,20 @@ describe('parseDomainLine', () => {
     const badIp = parseDomainLine('@example.com=999.1.1.1');
     expect(badIp.type).toBe('customDns');
     expect(badIp.isValid).toBe(false);
+  });
+
+  it('解析 AdGuard 白名单例外规则（含 $important 修饰符）', () => {
+    const r = parseDomainLine('@@||api.io.mi.com^$important');
+    expect(r.type).toBe('whitelist');
+    expect(r.domain).toBe('api.io.mi.com');
+    expect(r.isValid).toBe(true);
+  });
+
+  it('解析 AdGuard 白名单例外规则（无修饰符）', () => {
+    const r = parseDomainLine('@@||api.io.mi.com^');
+    expect(r.type).toBe('whitelist');
+    expect(r.domain).toBe('api.io.mi.com');
+    expect(r.isValid).toBe(true);
   });
 
   it('解析 hosts / dnsmasq / adguard', () => {

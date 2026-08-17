@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+## [3.7.28] - 2026-08-17
+
+### Fixed
+- 修复 AdGuard 白名单例外规则 `@@||domain^$important` 无法识别的问题
+- `parseDomainLine` 放宽 AdGuard 例外规则匹配：支持带 `$` 修饰符（如 `$important`）的规则，正确提取域名归入 whitelist
+- 新增对应单元测试并全部通过
+- 升级全项目单一来源版本号至 v3.7.28
+
 ## [3.7.27] - 2026-08-16
 
 ### Fixed
