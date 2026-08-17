@@ -113,14 +113,12 @@ dns-shield/
 │       ├── fileUtils.ts            # 文件操作（下载、复制、URL 获取）
 │       ├── i18n.ts                 # 国际化配置
 │       └── uiUtils.ts              # UI 工具（行号生成、滚动同步）
-├── prototype/                        # 原型目录
-│   ├── prototype.html                # 高保真原型（独立 HTML 版本，可直接浏览器打开，含主题/数据/格式切换交互）
-│   ├── prototype.canvas.tsx          # 高保真原型（React 版本，lucide 图标）
-│   ├── OVERVIEW.md                   # 原型总览文档
-│   └── shadcn/                       # shadcn 设计规范
-│       ├── design-system.md          # 设计系统（色彩/字体/间距/动效）
+├── prototype/                        # 原型目录（高保真可交互 + 真实数据 + 设计规范）
+│   ├── index.html                   # 高保真原型（独立 HTML，极简风格/真实数据/响应式，可直接浏览器打开）
+│   ├── README.md                    # 原型总览与设计规范索引
+│   └── shadcn/                       # 设计规范（单一来源，对齐 globals.css token）
+│       ├── design-system.md          # 设计系统（色彩/字体/间距/图标/动效）
 │       ├── component-library.md      # 组件库（基础/复合/业务组件）
-│       ├── design-polish-report.md   # 设计打磨报告
 │       └── interaction-standards.md  # 交互标准（模式/反馈/错误/空状态）
 ├── .eslintrc.json                  # ESLint 配置
 ├── .gitignore                      # Git 忽略配置

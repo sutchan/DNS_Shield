@@ -415,7 +415,6 @@ rp.mobile.youku.com
 rt.applovin.com
 rtb.ads.cn.miaozhen.com
 s1.hdslb.com
-s2.zdmimg.com
 s3-fe-scm.pglstatp-toutiao.com
 s3a.pstatp.com
 sayhi.360.cn

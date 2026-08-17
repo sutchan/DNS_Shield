@@ -1,65 +1,54 @@
 // src/utils/sortDedupe.ts v3.7.30
 import { parseDomainLine, ParseResult } from './domainValidator';
 
-// 排序域名（保持表头注释在最前，白名单/自定义 DNS 等特殊行随后，注释在最后）
+// 排序域名：按"块"处理，每段注释（分组标题）及其下方数据行作为一个块，
+// 块内数据行单独排序，注释与块顺序保持不变；空行作为独立分隔块原样保留。
 export const sortDomains = (sourceInput: string): string => {
   const lines = sourceInput.split('\n');
 
-  const headerComments: string[] = [];
-  const bodyLines: string[] = [];
-  const specialLines: string[] = [];
+  type Block = { headers: string[]; body: string[] };
+  const blocks: Block[] = [];
+  let curHeaders: string[] = [];
+  let curBody: string[] = [];
 
-  let inHeader = true;
+  const flush = () => {
+    if (curHeaders.length > 0 || curBody.length > 0) {
+      blocks.push({ headers: [...curHeaders], body: [...curBody] });
+    }
+    curHeaders = [];
+    curBody = [];
+  };
 
   for (const line of lines) {
     const parsed = parseDomainLine(line);
-
-    if (parsed.type === 'empty') {
-      bodyLines.push(line);
-      continue;
-    }
-
-    if (parsed.type === 'whitelist' || parsed.type === 'customDns') {
-      specialLines.push(line);
-      continue;
-    }
-
     if (parsed.type === 'comment') {
-      if (inHeader) {
-        headerComments.push(line);
-      } else {
-        bodyLines.push(line);
-      }
-      continue;
+      // 注释行作为新块的分组标题；若当前已有数据，先结束上一块
+      if (curBody.length > 0) flush();
+      curHeaders.push(line);
+    } else if (parsed.type === 'empty') {
+      // 空行：结束当前块，自身作为独立分隔块
+      flush();
+      blocks.push({ headers: [], body: [line] });
+    } else {
+      // 数据行（域名 / 白名单 / 自定义 DNS 等）
+      curBody.push(line);
     }
-
-    inHeader = false;
-    bodyLines.push(line);
   }
+  flush();
 
-  // 一次性解析并缓存，避免后续多次重复 parseDomainLine
-  const parsedBody = bodyLines.map((line) => ({ line, parsed: parseDomainLine(line) }));
+  // 块内数据按其归一化域名排序，注释头与块顺序保持原样
+  const sortedBlocks = blocks.map((blk) => {
+    if (blk.body.length === 0) {
+      return blk.headers.concat(blk.body);
+    }
+    const sortedBody = blk.body
+      .map((line) => ({ line, key: (parseDomainLine(line).domain || '').toLowerCase() }))
+      .sort((a, b) => a.key.localeCompare(b.key))
+      .map((item) => item.line);
+    return blk.headers.concat(sortedBody);
+  });
 
-  const plainDomains = parsedBody
-    .filter(({ parsed }) => parsed.type === 'domain' || parsed.type === 'hosts' || parsed.type === 'dnsmasq')
-    .map(({ line }) => line);
-
-  const comments = parsedBody
-    .filter(({ parsed }) => parsed.type === 'comment')
-    .map(({ line }) => line);
-
-  // Schwartzian 变换：提前解析出归一化域名用于比较，避免比较器内重复解析
-  const sortedDomains = plainDomains
-    .map((line) => ({ line, key: (parseDomainLine(line).domain || '').toLowerCase() }))
-    .sort((a, b) => a.key.localeCompare(b.key))
-    .map((item) => item.line);
-
-  return [
-    ...headerComments,
-    ...sortedDomains,
-    ...specialLines,
-    ...comments
-  ].join('\n');
+  return sortedBlocks.flat().join('\n');
 };
 
 // 去重域名（保留首次出现，返回去除行数与去重后文本）

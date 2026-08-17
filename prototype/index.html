@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<!-- prototype/index.html v3.7.31 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DNS Shield — 高保真原型 v3.7.31</title>
+  <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard 的 DNS 广告过滤规则生成器" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* --- Color tokens (HSL, 与 design-system.md / globals.css 对齐) --- */
+    :root {
+      --background: 0 0% 98.5%;
+      --foreground: 240 8% 12%;
+      --card: 0 0% 100%;
+      --card-foreground: 240 8% 12%;
+      --popover: 0 0% 100%;
+      --popover-foreground: 240 8% 12%;
+      --primary: 217 89% 47%;
+      --primary-foreground: 0 0% 100%;
+      --secondary: 220 6% 90%;
+      --secondary-foreground: 240 4% 16%;
+      --muted: 220 8% 94%;
+      --muted-foreground: 240 3% 46%;
+      --accent: 217 70% 94%;
+      --accent-foreground: 217 89% 47%;
+      --destructive: 0 72% 51%;
+      --destructive-foreground: 0 0% 100%;
+      --success: 142 71% 45%;
+      --warning: 38 92% 50%;
+      --info: 217 89% 47%;
+      --border: 220 6% 88%;
+      --input: 220 6% 88%;
+      --ring: 217 89% 47%;
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.625rem;
+      --radius-xl: 0.75rem;
+    }
+    .dark {
+      --background: 240 6% 7%;
+      --foreground: 0 0% 95%;
+      --card: 240 4% 10%;
+      --card-foreground: 0 0% 95%;
+      --popover: 240 4% 10%;
+      --popover-foreground: 0 0% 95%;
+      --primary: 217 85% 55%;
+      --primary-foreground: 0 0% 100%;
+      --secondary: 240 3% 18%;
+      --secondary-foreground: 0 0% 90%;
+      --muted: 240 3% 14%;
+      --muted-foreground: 240 2% 55%;
+      --accent: 217 40% 20%;
+      --accent-foreground: 217 85% 60%;
+      --destructive: 0 62% 35%;
+      --destructive-foreground: 0 0% 100%;
+      --success: 142 70% 40%;
+      --warning: 38 90% 45%;
+      --info: 217 85% 55%;
+      --border: 240 3% 20%;
+      --input: 240 3% 20%;
+      --ring: 217 85% 55%;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: hsl(var(--background));
+      color: hsl(var(--foreground));
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      transition: background-color .2s cubic-bezier(0.16,1,0.3,1), color .2s cubic-bezier(0.16,1,0.3,1);
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+    /* Header */
+    .app-header {
+      position: sticky; top: 0; z-index: 10;
+      background: hsl(var(--card) / .8);
+      backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-icon {
+      width: 32px; height: 32px; border-radius: var(--radius-md);
+      background: hsl(var(--primary)); color: hsl(var(--primary-foreground));
+      display: grid; place-items: center;
+    }
+    .brand-title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+    .brand-sub { font-size: 11px; color: hsl(var(--muted-foreground)); font-weight: 500; }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      height: 36px; padding: 0 14px; border-radius: var(--radius-md);
+      font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid transparent;
+      transition: background-color .15s cubic-bezier(0.16,1,0.3,1), transform .1s, border-color .15s, opacity .15s;
+      white-space: nowrap; user-select: none;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+    .btn-primary:hover { background: hsl(var(--primary) / .9); }
+    .btn-ghost { background: transparent; color: hsl(var(--foreground)); border-color: transparent; }
+    .btn-ghost:hover { background: hsl(var(--secondary)); }
+    .btn-outline { background: hsl(var(--card)); color: hsl(var(--foreground)); border-color: hsl(var(--border)); }
+    .btn-outline:hover { background: hsl(var(--secondary)); }
+    .btn-sm { height: 30px; padding: 0 10px; font-size: 12px; }
+    .icon-btn { width: 36px; height: 36px; padding: 0; border-radius: var(--radius-md); }
+
+    /* Layout */
+    .main-content { padding: 24px 0 48px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media (min-width: 768px) { .grid { grid-template-columns: 1fr 1fr; gap: 24px; } }
+
+    .card {
+      background: hsl(var(--card)); border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg); padding: 16px;
+      box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    }
+    .dark .card { box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+    .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 8px; }
+    .card-title { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .card-title svg { color: hsl(var(--primary)); }
+
+    /* Stats */
+    .stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .stat {
+      display: flex; flex-direction: column; gap: 1px;
+      background: hsl(var(--muted)); border-radius: var(--radius-md);
+      padding: 8px 12px; min-width: 64px;
+    }
+    .stat-value { font-size: 16px; font-weight: 700; line-height: 1.1; }
+    .stat-label { font-size: 11px; color: hsl(var(--muted-foreground)); }
+
+    /* Editor */
+    .editor-row { display: flex; gap: 8px; }
+    .gutter {
+      flex: 0 0 36px; padding: 10px 6px 10px 0; text-align: right;
+      font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.6;
+      color: hsl(var(--muted-foreground)); background: hsl(var(--muted));
+      border: 1px solid hsl(var(--border)); border-right: none;
+      border-radius: var(--radius-md) 0 0 var(--radius-md); overflow: hidden; user-select: none;
+    }
+    textarea#editor {
+      flex: 1; min-height: 320px; resize: vertical;
+      font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.6;
+      padding: 10px 12px; border: 1px solid hsl(var(--border)); border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      background: hsl(var(--card)); color: hsl(var(--foreground)); outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    textarea#editor:focus { border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / .2); }
+
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+    /* Presets */
+    .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .preset {
+      font-size: 12px; padding: 4px 10px; border-radius: 9999px; cursor: pointer;
+      background: hsl(var(--accent)); color: hsl(var(--accent-foreground));
+      border: 1px solid transparent; transition: background .15s, transform .1s;
+    }
+    .preset:hover { background: hsl(var(--primary) / .15); }
+    .preset:active { transform: scale(.96); }
+    .preset.active { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+
+    /* Tabs */
+    .tabs { display: inline-flex; background: hsl(var(--muted)); border-radius: var(--radius-md); padding: 3px; gap: 2px; }
+    .tab {
+      font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: var(--radius-sm);
+      cursor: pointer; color: hsl(var(--muted-foreground)); border: none; background: transparent;
+      transition: background .15s, color .15s;
+    }
+    .tab.active { background: hsl(var(--card)); color: hsl(var(--foreground)); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+
+    /* Preview */
+    .preview {
+      margin-top: 12px; min-height: 320px; max-height: 460px; overflow: auto;
+      font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.6;
+      background: hsl(var(--muted)); border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md); padding: 12px 14px; white-space: pre; color: hsl(var(--foreground));
+    }
+    .preview .cmt { color: hsl(var(--muted-foreground)); }
+    .preview .wl { color: hsl(var(--success)); }
+
+    /* Dropdown */
+    .dd { position: relative; }
+    .dd-menu {
+      position: absolute; right: 0; top: calc(100% + 6px); min-width: 160px; z-index: 50;
+      background: hsl(var(--popover)); border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-md); box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      padding: 4px; max-height: 280px; overflow: auto; display: none;
+    }
+    .dark .dd-menu { box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+    .dd-menu.open { display: block; animation: fadeIn .15s cubic-bezier(0.16,1,0.3,1); }
+    .dd-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 8px 10px; border-radius: var(--radius-sm); font-size: 13px; cursor: pointer;
+    }
+    .dd-item:hover { background: hsl(var(--secondary)); }
+    .dd-item.active { color: hsl(var(--primary)); font-weight: 600; }
+
+    /* Toast */
+    .toast {
+      position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(12px);
+      background: hsl(var(--foreground)); color: hsl(var(--background));
+      padding: 10px 16px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,.25); opacity: 0; pointer-events: none;
+      transition: opacity .2s, transform .2s cubic-bezier(0.16,1,0.3,1); z-index: 200;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .footer-ver { font-size: 11px; color: hsl(var(--muted-foreground)); }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { width: 16px; height: 16px; border: 2px solid hsl(var(--muted-foreground) / .3); border-top-color: hsl(var(--primary)); border-radius: 50%; animation: spin .7s linear infinite; }
+  </style>
+</head>
+<body>
+  <header class="app-header" id="app-header">
+    <div class="wrap header-inner">
+      <div class="brand">
+        <div class="brand-icon" id="brandIcon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div class="brand-title">DNS Shield</div>
+          <div class="brand-sub" id="brandSub">DNS 广告过滤规则生成器</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="dd" id="langDd">
+          <button class="btn btn-ghost btn-sm" id="langBtn" aria-haspopup="true" aria-expanded="false">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span id="langLabel">中文</span>
+          </button>
+          <div class="dd-menu" id="langMenu" role="menu"></div>
+        </div>
+        <button class="btn btn-ghost icon-btn" id="themeBtn" aria-label="切换主题">
+          <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content" id="main-content">
+    <div class="wrap grid">
+      <!-- 输入面板 -->
+      <section class="card" id="input-panel" aria-label="域名输入">
+        <div class="card-head">
+          <div class="card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            <span id="inputTitle">域名输入</span>
+          </div>
+        </div>
+
+        <div class="stats" id="stats">
+          <div class="stat"><span class="stat-value" id="statDomains">0</span><span class="stat-label" id="lblDomains">黑名单</span></div>
+          <div class="stat"><span class="stat-value" id="statWhitelist">0</span><span class="stat-label" id="lblWhitelist">白名单</span></div>
+          <div class="stat"><span class="stat-value" id="statCustom">0</span><span class="stat-label" id="lblCustom">自定义DNS</span></div>
+          <div class="stat"><span class="stat-value" id="statComments">0</span><span class="stat-label" id="lblComments">注释</span></div>
+        </div>
+
+        <div class="editor-row">
+          <div class="gutter" id="gutter" aria-hidden="true">1</div>
+          <textarea id="editor" spellcheck="false" aria-label="域名编辑区"></textarea>
+        </div>
+
+        <div class="toolbar">
+          <button class="btn btn-primary btn-sm" id="parseBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
+            <span id="lblParse">生成规则</span>
+          </button>
+          <button class="btn btn-outline btn-sm" id="sortBtn"><span id="lblSort">排序</span></button>
+          <button class="btn btn-outline btn-sm" id="dedupeBtn"><span id="lblDedupe">去重</span></button>
+          <button class="btn btn-ghost btn-sm" id="clearBtn"><span id="lblClear">清空</span></button>
+        </div>
+
+        <div class="presets" id="presets">
+          <span class="preset" data-preset="builtin" id="presetBuiltin">内置数据</span>
+          <span class="preset" data-preset="adguard" id="presetAdguard">AdGuard</span>
+          <span class="preset" data-preset="easylist" id="presetEasylist">EasyList</span>
+          <span class="preset" data-preset="neohosts" id="presetNeohosts">NeoHosts</span>
+        </div>
+      </section>
+
+      <!-- 输出面板 -->
+      <section class="card" id="output-panel" aria-label="规则输出">
+        <div class="card-head">
+          <div class="card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+            <span id="outputTitle">规则输出</span>
+          </div>
+          <div class="tabs" id="formatTabs" role="tablist">
+            <button class="tab active" data-fmt="dnsmasq" role="tab" id="tabDnsmasq">Dnsmasq</button>
+            <button class="tab" data-fmt="hosts" role="tab" id="tabHosts">Hosts</button>
+            <button class="tab" data-fmt="adguard" role="tab" id="tabAdguard">AdGuard</button>
+            <button class="tab" data-fmt="whitelist" role="tab" id="tabWhitelist">白名单</button>
+          </div>
+        </div>
+
+        <div class="toolbar" style="margin-bottom:12px">
+          <button class="btn btn-outline btn-sm" id="copyBtn"><span id="lblCopy">复制</span></button>
+          <button class="btn btn-outline btn-sm" id="downloadBtn"><span id="lblDownload">下载</span></button>
+        </div>
+
+        <pre class="preview" id="preview" aria-live="polite"></pre>
+      </section>
+    </div>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <footer class="wrap" style="padding:16px; text-align:center"><span class="footer-ver" id="footerVer">v3.7.31</span></div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ---- 国际化 (原型最小集，对齐 src/locales) ----
+    var I18N = {
+      'zh-cn': { name: '中文', sub: 'DNS 广告过滤规则生成器', input: '域名输入', output: '规则输出',
+        blacklist: '黑名单', whitelist: '白名单', custom: '自定义DNS', comments: '注释',
+        parse: '生成规则', sort: '排序', dedupe: '去重', clear: '清空', copy: '复制', download: '下载',
+        copied: '已复制到剪贴板', noData: '没有可复制的内容' },
+      'en': { name: 'English', sub: 'DNS Ad-blocking Rule Generator', input: 'Domain Input', output: 'Rule Output',
+        blacklist: 'Blacklist', whitelist: 'Whitelist', custom: 'Custom DNS', comments: 'Comments',
+        parse: 'Generate', sort: 'Sort', dedupe: 'Dedupe', clear: 'Clear', copy: 'Copy', download: 'Download',
+        copied: 'Copied to clipboard', noData: 'Nothing to copy' }
+    };
+    var LANGS = [['zh-cn','中文'],['en','English'],['ja','日本語'],['ko','한국어'],['ru','Русский'],['es','Español'],['fr','Français'],['de','Deutsch']];
+
+    // ---- 真实数据样本 (对齐 public/domains.txt 语法) ----
+    var SAMPLE = [
+      '# DNS Shield 示例域名',
+      'doubleclick.net',
+      'googleadservices.com',
+      'googlesyndication.com',
+      'adservice.google.com',
+      '+mi.com',
+      '+iot.mi.com',
+      '@cdn.example.com=1.2.3.4',
+      '!adblock-analytics.example.com',
+      'ad.example.com'
+    ].join('\n');
+
+    var PRESETS = {
+      builtin: SAMPLE,
+      adguard: '||doubleclick.net^\n||googleadservices.com^\n+google-analytics.com',
+      easylist: '||ads.example.com^\n||tracker.example.org^\n+trusted.example.com',
+      neohosts: 'ad.neohost.cn\nbanner.neohost.cn\n+api.neohost.cn'
+    };
+
+    var settings = { projectName: 'DNS Shield', version: '3.7.31', ipv4: '127.0.0.1', ipv6: '::',
+      addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true };
+
+    var DOMAIN_REGEX = /^(?=.{1,253}$)([a-z0-9](-?[a-z0-9])*\.)+[a-z]{2,}$/i;
+    var currentLang = localStorage.getItem('ds_lang') || 'zh-cn';
+    var currentTheme = localStorage.getItem('ds_theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var currentFmt = 'dnsmasq';
+    var parsed = null;
+
+    // ---- 解析 (对齐 src/utils/parser.ts + 3.7.29 白名单剔除语义) ----
+    function normKey(d) { return d.trim().toLowerCase().replace(/^\*\./, ''); }
+    function parseSource(src) {
+      var lines = src.replace(/\r/g, '').split('\n');
+      var domains = [], wl = [], custom = [], comments = 0;
+      var seenWl = {};
+      for (var i = 0; i < lines.length; i++) {
+        var raw = lines[i].trim();
+        if (raw === '') continue;
+        if (raw.charAt(0) === '#') { comments++; continue; }
+        if (raw.charAt(0) === '!') { comments++; continue; }
+        if (raw.charAt(0) === '+') {
+          var w = normKey(raw.slice(1));
+          if (!seenWl[w]) { seenWl[w] = true; if (DOMAIN_REGEX.test(w)) wl.push(w); else comments++; }
+          continue;
+        }
+        if (raw.charAt(0) === '@') {
+          var eq = raw.indexOf('=');
+          if (eq > 1) { var cd = normKey(raw.slice(1, eq)); if (DOMAIN_REGEX.test(cd)) custom.push({ domain: cd, ip: raw.slice(eq + 1).trim() }); else comments++; }
+          continue;
+        }
+        if (raw.indexOf('@@||') === 0) {
+          var aw = raw.slice(4).replace(/\^\$?.*$/, ''); aw = normKey(aw);
+          if (!seenWl[aw]) { seenWl[aw] = true; if (DOMAIN_REGEX.test(aw)) wl.push(aw); else comments++; }
+          continue;
+        }
+        var d = normKey(raw);
+        if (DOMAIN_REGEX.test(d)) domains.push(d); else comments++;
+      }
+      if (settings.dedupDomains) { domains = uniq(domains).sort(); wl = uniq(wl).sort(); }
+      // 3.7.29: 白名单域名不进入拦截列表
+      var wlSet = {}; wl.forEach(function (x) { wlSet[x] = true; });
+      domains = domains.filter(function (x) { return !wlSet[x]; });
+      return { domains: domains, whitelist: wl, customDns: custom, comments: comments };
+    }
+    function uniq(a) { var s = {}, r = []; a.forEach(function (x) { if (!s[x]) { s[x] = 1; r.push(x); } }); return r; }
+
+    // ---- 生成 (对齐 src/utils/rulesGenerator.ts) ----
+    function header(title) {
+      return settings.addHeader
+        ? '# ' + settings.projectName + ' - ' + title + '\n# 版本: ' + settings.version + ' | 域名: ' + parsed.domains.length + ' 个\n'
+        : '';
+    }
+    function genDnsmasq() {
+      var out = header('Dnsmasq 格式 (address=/domain/ip)') + '\n';
+      parsed.domains.forEach(function (d) { out += 'address=/' + d + '/' + settings.ipv4 + '\n'; });
+      if (settings.blockIPv6 && settings.ipv6) parsed.domains.forEach(function (d) { out += 'address=/' + d + '/' + settings.ipv6 + '\n'; });
+      parsed.customDns.forEach(function (c) { out += 'address=/' + c.domain + '/' + c.ip + '\n'; });
+      parsed.whitelist.forEach(function (d) { out += 'server=/' + d + '/  # 已白名单\n'; });
+      return out;
+    }
+    function genHosts() {
+      var out = header('Hosts 格式 (ip domain)') + '\n';
+      parsed.domains.forEach(function (d) { out += settings.ipv4 + ' ' + d + '\n'; });
+      if (settings.blockIPv6 && settings.ipv6) parsed.domains.forEach(function (d) { out += settings.ipv6 + ' ' + d + '\n'; });
+      parsed.customDns.forEach(function (c) { out += c.ip + ' ' + c.domain + '\n'; });
+      parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      return out;
+    }
+    function genAdguard() {
+      var out = header('AdGuard 格式 (||domain^)') + '\n';
+      parsed.domains.forEach(function (d) { out += '||' + d + '^\n'; });
+      parsed.customDns.forEach(function (c) { out += '||' + c.domain + '^$dnsrewrite=NOERROR;A;' + c.ip + '\n'; });
+      return out;
+    }
+    function genWhitelist() {
+      var out = header('白名单列表') + '\n';
+      parsed.whitelist.forEach(function (d) { out += '@@||' + d + '^$important\n'; });
+      return out;
+    }
+    function generate() {
+      switch (currentFmt) {
+        case 'dnsmasq': return genDnsmasq();
+        case 'hosts': return genHosts();
+        case 'adguard': return genAdguard();
+        case 'whitelist': return genWhitelist();
+      }
+      return '';
+    }
+
+    // ---- 渲染 ----
+    var $ = function (id) { return document.getElementById(id); };
+    function renderStats() {
+      $('statDomains').textContent = parsed.domains.length;
+      $('statWhitelist').textContent = parsed.whitelist.length;
+      $('statCustom').textContent = parsed.customDns.length;
+      $('statComments').textContent = parsed.comments;
+    }
+    function renderGutter() {
+      var n = $('editor').value.split('\n').length;
+      var s = ''; for (var i = 1; i <= n; i++) s += i + '\n';
+      $('gutter').textContent = s.trim();
+    }
+    function renderPreview() {
+      var txt = generate();
+      // 轻量高亮（仅注释/白名单），无 XSS 风险（textContent）
+      var esc = txt.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      esc = esc.replace(/^(#.*)$/gm, '<span class="cmt">$1</span>')
+               .replace(/^(@@\|\|.*)$/gm, '<span class="wl">$1</span>')
+               .replace(/^(# 已白名单:.*)$/gm, '<span class="wl">$1</span>');
+      $('preview').innerHTML = esc;
+    }
+    function renderAll() {
+      parsed = parseSource($('editor').value);
+      renderStats(); renderPreview();
+    }
+
+    function applyI18n() {
+      var t = I18N[currentLang] || I18N['en'];
+      $('brandSub').textContent = t.sub;
+      $('inputTitle').textContent = t.input;
+      $('outputTitle').textContent = t.output;
+      $('lblDomains').textContent = t.blacklist;
+      $('lblWhitelist').textContent = t.whitelist;
+      $('lblCustom').textContent = t.custom;
+      $('lblComments').textContent = t.comments;
+      $('lblParse').textContent = t.parse;
+      $('lblSort').textContent = t.sort;
+      $('lblDedupe').textContent = t.dedupe;
+      $('lblClear').textContent = t.clear;
+      $('lblCopy').textContent = t.copy;
+      $('lblDownload').textContent = t.download;
+      $('langLabel').textContent = (I18N[currentLang] || I18N['en']).name;
+    }
+    function applyTheme() {
+      document.documentElement.classList.toggle('dark', currentTheme === 'dark');
+      var icon = $('themeIcon');
+      icon.innerHTML = currentTheme === 'dark'
+        ? '<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>'
+        : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+    }
+
+    function toast(msg) {
+      var el = $('toast'); el.textContent = msg; el.classList.add('show');
+      setTimeout(function () { el.classList.remove('show'); }, 1800);
+    }
+    function download() {
+      var fmt = currentFmt === 'whitelist' ? 'whitelist' : currentFmt;
+      var name = fmt === 'whitelist' ? 'whitelist.txt' : 'dns-shield.' + fmt;
+      var blob = new Blob([generate()], { type: 'text/plain' });
+      var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    // ---- 事件 ----
+    $('editor').addEventListener('input', function () { renderGutter(); renderAll(); });
+    $('editor').addEventListener('scroll', function () { $('gutter').scrollTop = this.scrollTop; });
+    $('parseBtn').addEventListener('click', renderAll);
+    $('sortBtn').addEventListener('click', function () {
+      var p = parseSource($('editor').value);
+      var lines = [].concat(p.domains, p.whitelist.map(function (d) { return '+' + d; }),
+        p.customDns.map(function (c) { return '@' + c.domain + '=' + c.ip; }));
+      $('editor').value = lines.join('\n'); renderGutter(); renderAll();
+    });
+    $('dedupeBtn').addEventListener('click', renderAll);
+    $('clearBtn').addEventListener('click', function () { $('editor').value = ''; renderGutter(); renderAll(); });
+    $('copyBtn').addEventListener('click', function () {
+      var txt = generate(); if (!txt.trim()) { toast((I18N[currentLang]||I18N.en).noData); return; }
+      navigator.clipboard.writeText(txt).then(function () { toast((I18N[currentLang]||I18N.en).copied); });
+    });
+    $('downloadBtn').addEventListener('click', download);
+
+    Array.prototype.forEach.call(document.querySelectorAll('#formatTabs .tab'), function (tab) {
+      tab.addEventListener('click', function () {
+        document.querySelectorAll('#formatTabs .tab').forEach(function (t) { t.classList.remove('active'); });
+        tab.classList.add('active'); currentFmt = tab.dataset.fmt; renderPreview();
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('#presets .preset'), function (p) {
+      p.addEventListener('click', function () {
+        document.querySelectorAll('#presets .preset').forEach(function (x) { x.classList.remove('active'); });
+        p.classList.add('active');
+        $('editor').value = PRESETS[p.dataset.preset] || SAMPLE; renderGutter(); renderAll();
+      });
+    });
+
+    $('themeBtn').addEventListener('click', function () {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('ds_theme', currentTheme); applyTheme();
+    });
+
+    // 语言下拉
+    var langMenu = $('langMenu');
+    LANGS.forEach(function (l) {
+      var item = document.createElement('div');
+      item.className = 'dd-item' + (l[0] === currentLang ? ' active' : '');
+      item.setAttribute('role', 'menuitem');
+      item.innerHTML = '<span>' + l[1] + '</span>' + (l[0] === currentLang ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : '');
+      item.addEventListener('click', function () {
+        currentLang = l[0]; localStorage.setItem('ds_lang', currentLang);
+        langMenu.querySelectorAll('.dd-item').forEach(function (x) { x.classList.remove('active'); x.querySelector('svg') && x.removeChild(x.querySelector('svg')); });
+        item.classList.add('active');
+        var chk = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        chk.setAttribute('width', '14'); chk.setAttribute('height', '14'); chk.setAttribute('viewBox', '0 0 24 24');
+        chk.setAttribute('fill', 'none'); chk.setAttribute('stroke', 'currentColor'); chk.setAttribute('stroke-width', '3');
+        chk.setAttribute('stroke-linecap', 'round'); chk.setAttribute('stroke-linejoin', 'round');
+        chk.innerHTML = '<path d="M20 6 9 17l-5-5"/>'; item.appendChild(chk);
+        langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false');
+        applyI18n();
+      });
+      langMenu.appendChild(item);
+    });
+    $('langBtn').addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = langMenu.classList.toggle('open');
+      $('langBtn').setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('click', function () { langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false'); });
+
+    // ---- 初始化 ----
+    document.documentElement.lang = currentLang;
+    $('editor').value = SAMPLE;
+    applyTheme(); applyI18n(); renderGutter(); renderAll();
+  })();
+  </script>
+</body>
+</html>

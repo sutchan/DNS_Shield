@@ -6,7 +6,7 @@
 #
 # 版本:: 3.7.31
 # 更新:: 2026.08.17
-# 域名:: 524 个唯一域名
+# 域名:: 522 个唯一域名
 # 白名单:: 232 个域名
 #
 使用方法: 导入到路由器广告过滤设置
@@ -454,7 +454,6 @@
 127.0.0.1 rt.applovin.com
 127.0.0.1 rtb.ads.cn.miaozhen.com
 127.0.0.1 s1.hdslb.com
-127.0.0.1 s2.zdmimg.com
 127.0.0.1 s3-fe-scm.pglstatp-toutiao.com
 127.0.0.1 s3a.pstatp.com
 127.0.0.1 sayhi.360.cn
@@ -541,6 +540,7 @@
 127.0.0.1 zeus-api.vemarsdev.com
 
 # 白名单 (允许这些域名)
+# hosts 格式原生不支持白名单语法；以下域名已从拦截列表中排除，完整放行规则请使用 AdGuard 格式
 # 已白名单: 12306.cn
 # 已白名单: 163.com
 # 已白名单: 360.cn
@@ -584,6 +584,7 @@
 # 已白名单: ccbank.cn
 # 已白名单: cctv.com
 # 已白名单: cebbank.com
+# 已白名单: cfca.com.cn
 # 已白名单: cgbchina.com.cn
 # 已白名单: chinanews.com.cn
 # 已白名单: chinatax.gov.cn
