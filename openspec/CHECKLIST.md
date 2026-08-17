@@ -1,5 +1,7 @@
 # 质量检查清单
 
+> 最后审查：2026-08-17（与 package.json v3.7.31 对齐）
+
 ## UI/UX 设计规范
 
 - [ ] 无 emoji 作为 UI 图标（使用 Lucide SVG）
@@ -38,49 +40,30 @@
 - [ ] `README.md` 存在且内容完整
 - [ ] `README.en.md` 存在且英文内容完整
 - [ ] `CHANGELOG.md` 变更记录完整
-- [ ] `CONTRIBUTING.md` 贡献指南完整
+- [ ] `.github/CONTRIBUTING.md` 贡献指南完整
+- [ ] `.github/SECURITY.md` 安全指南完整
+- [ ] `.github/SUPPORT.md` 支持文档完整
+- [ ] `.github/CODE_OF_CONDUCT.md` 行为准则完整
+- [ ] `.github/PULL_REQUEST_TEMPLATE.md` PR 模板完整
+- [ ] `.github/FUNDING.yml` 赞助配置完整
+- [ ] `.github/ISSUE_TEMPLATE/` 含 bug_report 与 feature_request 模板
 - [ ] `DEPLOYMENT.md` 部署指南完整
-- [ ] `SECURITY.md` 安全指南完整
-- [ ] `SUPPORT.md` 支持文档完整
 - [ ] `openspec/SPEC.md` 规范文档完整
 - [ ] `openspec/TASKS.md` 任务清单完整
 - [ ] `openspec/CHECKLIST.md` 检查清单完整
-- [ ] `openspec/config.yaml` 配置文件完整
+- [ ] `openspec/config.yaml` 配置文件完整且 version 与 package.json 一致
 
 ## 文件结构
 
-- [ ] 根目录文件结构符合 SPEC.md 定义
-- [ ] `prototype/` 目录存在且包含原型文件
-- [ ] `prototype/prototype.canvas.tsx` 存在且内容完整
-- [ ] `prototype/shadcn/` 目录存在且包含设计规范
-- [ ] `prototype/shadcn/design-system.md` 设计系统规范完整
-- [ ] `prototype/shadcn/component-library.md` 组件库规范完整
-- [ ] `prototype/shadcn/interaction-standards.md` 交互标准完整
-- [ ] `public/domains.txt` 存在且格式正确
-- [ ] `public/adguard.txt` 存在且格式正确
-- [ ] `public/whitelist.txt` 存在且格式正确
-- [ ] `public/dnsmasq.conf` 存在且格式正确
-- [ ] `public/hosts.txt` 存在且格式正确
-- [ ] `public/manifest.json` 配置正确
-- [ ] `src/app/page.tsx` 存在且功能完整
-- [ ] `src/app/Home.tsx` 存在且逻辑完整
-- [ ] `src/app/globals.css` 存在且样式完整
-- [ ] `src/app/layout.tsx` 存在且布局完整
-- [ ] `src/components/Header.tsx` 存在且功能完整
-- [ ] `src/components/Footer.tsx` 存在且功能完整
-- [ ] `src/components/InputPanel.tsx` 存在且功能完整
-- [ ] `src/components/OutputPanel.tsx` 存在且功能完整
-- [ ] `src/components/ui/` 所有 shadcn 组件存在
-- [ ] `src/hooks/` 所有自定义 Hooks 存在
-- [ ] `src/utils/` 所有工具函数存在
-- [ ] `src/types/index.ts` 类型定义完整
-- [ ] `src/config/index.ts` 配置完整
-- [ ] `src/locales/` 16 种语言文件完整
-- [ ] `package.json` 配置正确且依赖完整
-- [ ] `next.config.js` 配置正确
-- [ ] `tsconfig.json` 配置正确
-- [ ] `tailwind.config.js` 配置正确
-- [ ] `postcss.config.js` 配置正确
+文件结构以 **SPEC.md §2** 为权威定义，下列清单仅作存在性/正确性抽查，避免与 SPEC 重复维护导致漂移：
+
+- [ ] 根目录文件结构符合 [SPEC.md §2](./SPEC.md#2-文件结构) 定义
+- [ ] `.github/` 目录 Community Health Files 完整（见文档完整性清单）
+- [ ] `public/` 静态产出（domains.txt / whitelist.txt / hosts.txt / dnsmasq.conf / adguard.txt / manifest.json / service-worker.js）存在且格式正确
+- [ ] `src/app/` 路由文件（page.tsx / Home.tsx / globals.css / layout.tsx / robots.ts / sitemap.ts）存在且功能完整
+- [ ] `src/components/`、`src/hooks/`、`src/utils/`、`src/types/`、`src/config/`、`src/locales/` 模块齐全
+- [ ] `prototype/` 目录及 `prototype/shadcn/` 设计规范完整
+- [ ] 根配置文件（`package.json` / `next.config.js` / `tsconfig.json` / `tailwind.config.js` / `postcss.config.js`）正确且依赖完整
 
 ## 功能验证
 

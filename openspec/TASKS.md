@@ -1,5 +1,7 @@
 # 任务清单
 
+> 最后审查：2026-08-17（与 package.json v3.7.31 对齐）
+
 ## 日常维护
 
 - [ ] 检查现有规则有效性
@@ -23,12 +25,19 @@
 
 ## 版本发布
 
-- [ ] 递增版本号 (SemVer) — 同步更新所有文件
-- [ ] 更新 `CHANGELOG.md` 变更记录
-- [ ] 更新输出文件头部版本号
-- [ ] 更新 `README.md` 版本号
-- [ ] 更新 `README.en.md` 版本号
-- [ ] 创建 GitHub Release
+- [ ] 递增版本号 (SemVer) — 同步更新所有单一来源（全量 `search_content` 核对，勿漏）
+- [ ] `package.json` version（权威源）
+- [ ] `src/config/version.ts` APP_VERSION（派生源）
+- [ ] `next.config.js` env.version
+- [ ] `src/app/layout.tsx` metadata / JSON-LD / 头注释
+- [ ] `openspec/config.yaml` version
+- [ ] `openspec/SPEC.md` 当前版本 + 第4.3节版本号
+- [ ] `README.md` 当前版本
+- [ ] `README.en.md` 版本徽章
+- [ ] `DEPLOYMENT.md` 变量表 + 示例
+- [ ] `public/*.txt` 静态样例头部版本号（`# 版本::` / `! 版本::`）
+- [ ] 更新 `CHANGELOG.md` 变更记录（新增 `## [x.y.z]` 小节，分类 feat/fix/docs/...）
+- [ ] 创建 GitHub Release（含 tag vX.Y.Z 与 release 锚点）
 
 ## 开发任务
 
@@ -45,9 +54,9 @@
 - [x] 创建高保真原型目录（/prototype/）
 - [x] 全面使用 Lucide 图标替换 emoji
 - [x] 升级 shadcn/ui 组件（Button isLoading / Badge 变体 / Tabs 圆角）
-- [ ] 添加单元测试
+- [x] 添加单元测试（Vitest：rulesGenerator.test.ts 等）
 - [x] 优化浏览器兼容性
 - [x] 完善国际化支持（16 种语言）
 - [x] 改进文档质量和完整性
-- [ ] 优化构建和部署流程
+- [x] 优化构建和部署流程（corepack + pnpm，Dockerfile 对齐）
 - [x] 增强安全性和性能（CSP 头部、URL 验证）

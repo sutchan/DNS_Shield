@@ -1,5 +1,7 @@
 # DNS Shield 项目规范
 
+> 最后审查：2026-08-17（与 package.json v3.7.31 对齐）
+
 ## 1. 项目概述
 
 | 属性 | 值 |
@@ -8,10 +10,11 @@
 | 项目类型 | DNS 广告过滤规则库 + Web 管理工具 |
 | 核心功能 | 基于 dnsmasq/hosts 的路由器全局广告防护 |
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
-| 项目地址 | https://github.com/sutchan/DNS_Shield |
+| 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
+| 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
 | 当前版本 | v3.7.31 |
-| 拦截域名 | 425+ (本地) / 6766+ (含预设源) |
+| 拦截域名 | 524 (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
 | 通知组件 | sonner |
@@ -24,15 +27,22 @@ dns-shield/
 ├── README.md                       # 中文说明文档
 ├── README.en.md                    # 英文说明文档
 ├── CHANGELOG.md                    # 变更日志
-├── CONTRIBUTING.md                 # 贡献指南
 ├── DEPLOYMENT.md                   # 部署指南
-├── SECURITY.md                     # 安全指南
-├── SUPPORT.md                      # 支持文档
+├── .github/                        # Community Health Files（已迁至此，非根目录）
+│   ├── CONTRIBUTING.md             # 贡献指南
+│   ├── SECURITY.md                 # 安全指南
+│   ├── SUPPORT.md                  # 支持文档
+│   ├── CODE_OF_CONDUCT.md          # 行为准则（Contributor Covenant 2.1）
+│   ├── PULL_REQUEST_TEMPLATE.md    # PR 模板
+│   ├── FUNDING.yml                 # 赞助配置
+│   └── ISSUE_TEMPLATE/             # Issue 模板（bug_report / feature_request）
 ├── openspec/                       # 项目规范文档
 │   ├── SPEC.md                     # 项目规范（本文件）
 │   ├── TASKS.md                    # 任务清单
 │   ├── CHECKLIST.md                # 质量检查清单
 │   └── config.yaml                 # 规范配置
+├── scripts/                        # 构建/校验脚本
+│   └── check-locales.mjs           # 国际化键覆盖校验（pnpm check:locales）
 ├── public/                         # 静态资源
 │   ├── assets/icons/               # PWA 图标（72x72 ~ 512x512）
 │   ├── domains.txt                 # 本地域名列表（供前端加载）
@@ -49,11 +59,7 @@ dns-shield/
 │   │   ├── globals.css             # 全局样式（CSS 变量 + Tailwind + 业务组件）
 │   │   ├── layout.tsx              # 根布局（Metadata + SEO + 安全头部接入）
 │   │   ├── robots.ts               # 自动生成 robots.txt（含 sitemap 索引）
-│   │   ├── sitemap.ts              # 自动生成 sitemap.xml
-│   │   ├── manifest.ts             # PWA manifest 配置
-│   │   ├── sw.js                   # Service Worker（安全缓存策略）
-│   │   ├── sw-register.ts          # Service Worker 注册
-│   │   └── i18n.ts                 # 路由级国际化配置
+│   │   └── sitemap.ts              # 自动生成 sitemap.xml
 │   ├── components/                 # 业务组件
 │   │   ├── ui/                     # shadcn/ui 基础组件
 │   │   │   ├── Badge.tsx
@@ -296,9 +302,9 @@ refactor: 优化规则生成逻辑
 - 部分设备可能有 hosts 文件大小限制
 - 需要定期更新规则以应对新广告形式
 
-## 11.5 安全规范
+## 12. 安全规范
 
-### 11.5.1 HTTP 安全头部
+### 12.1 HTTP 安全头部
 
 | 头部 | 值 | 说明 |
 |------|-----|------|
@@ -310,14 +316,14 @@ refactor: 优化规则生成逻辑
 | X-Frame-Options | DENY | 防止点击劫持 |
 | Referrer-Policy | strict-origin-when-cross-origin | 控制 Referrer 信息泄露 |
 
-### 11.5.2 Service Worker 安全
+### 12.2 Service Worker 安全
 
 - 仅缓存同源 GET 请求
 - 按文件扩展名白名单过滤（.js/.css/.png/.jpg/.svg/.woff2 等）
 - 不缓存跨域资源或 API 请求
 - 缓存名称包含版本号，便于版本更新时清理
 
-### 11.5.3 文件操作安全
+### 12.3 文件操作安全
 
 - `sanitizeFilename()` 函数过滤危险字符（路径分隔符、控制字符等）
 - 限制文件名最大长度（255 字符）

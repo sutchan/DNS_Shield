@@ -343,7 +343,9 @@
 }
 
 .editor-textarea {
-  @apply w-full min-h-[320px] pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent resize-y;
+  /* 固定高度 = 20 行（24px × 20）+ 上下内边距（12px × 2）= 504px，
+     避免内容增减导致输入框忽高忽低；禁止拖拽 resize */
+  @apply w-full h-[504px] pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent resize-none;
   line-height: 1.5rem;
   tab-size: 2;
 }
@@ -358,7 +360,8 @@
 
 /* Output preview (div-based, no resize, allow scroll) */
 .editor-preview {
-  @apply w-full min-h-[320px] max-h-[560px] pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent overflow-auto whitespace-pre-wrap;
+  /* 与输入区一致固定 20 行高度（504px），内容超出内部滚动，避免面板忽高忽低 */
+  @apply w-full h-[504px] pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent overflow-auto whitespace-pre-wrap;
   line-height: 1.5rem;
   tab-size: 2;
 }

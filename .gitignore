@@ -46,8 +46,8 @@ build
 *.tmp
 tmp/
 cache/
-dev_err.txt
-dev_out.txt
+*err.txt
+*out.txt
 _build.txt
 _lint.txt
 _test.txt

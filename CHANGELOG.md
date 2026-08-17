@@ -14,6 +14,13 @@
 - 修复 `useRules.ts` 中 `useEffect` 的 `react-hooks/exhaustive-deps` 警告：将 `runGenerate` 纳入依赖数组
 - 同步全部源文件头注释与展示版本号至 v3.7.31
 
+### Changed
+- `layout.tsx` JSON-LD `softwareVersion` 与 `public/*.txt` 样例头版本号对齐至 v3.7.31
+- `openspec/SPEC.md` 本地拦截域名计数更新为脚本统计值 524（原手填 425+）
+- 新增 `scripts/count-domains.mjs`，将域名计数脚本化并支持 `--write` 同步样例头部，避免手动维护漂移
+- `openspec/CHECKLIST.md` 文件结构清单改为引用 `SPEC.md §2`，消除与规范重复维护
+- `openspec/{SPEC,CHECKLIST,TASKS}.md` 新增「最后审查」日期锚点（2026-08-17）
+
 ## [3.7.30] - 2026-08-17
 
 ### Fixed
