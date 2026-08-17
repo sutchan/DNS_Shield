@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.test.ts v3.7.21
+// src/utils/rulesGenerator.test.ts v3.7.29
 import { describe, it, expect } from 'vitest';
 import { generateRules, generateHeader } from './rulesGenerator';
 import { parseSource } from './parser';
@@ -68,6 +68,25 @@ describe('generateRules', () => {
     const out = generateRules(['ad.example.com', 'ad.example.com'], [], [], baseSettings, t);
     const matches = out.dnsmasq.match(/address=\/ad\.example\.com\//g) || [];
     expect(matches.length).toBe(1);
+  });
+
+  it('白名单域名被排除出 dnsmasq/hosts 黑洞规则（真正生效）', () => {
+    const out = generateRules(
+      ['ad.example.com', 'api.example.com'],
+      ['api.example.com'],
+      [],
+      baseSettings,
+      t
+    );
+    // dnsmasq 不应为白名单域名生成 address= 黑洞
+    expect(out.dnsmasq).not.toContain('address=/api.example.com/');
+    // hosts 不应为白名单域名生成拦截行
+    expect(out.hosts).not.toContain('127.0.0.1 api.example.com');
+    // 白名单域名仍保留在白名单区块（含说明注释）
+    expect(out.hosts).toContain('# 已白名单: api.example.com');
+    expect(out.hosts).toContain(t.whitelist.hostsNote);
+    // 非白名单域名照常拦截
+    expect(out.dnsmasq).toContain('address=/ad.example.com/127.0.0.1');
   });
 
   it('完整流水线：源文本含 + 前缀白名单时，生成能正确产出白名单规则', () => {

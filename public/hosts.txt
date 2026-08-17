@@ -2,17 +2,17 @@
 # DNS Shield - Hosts 广告过滤列表
 # =====================================
 #
-# 路由器级广告过滤规则: 路由器级广告过滤 hosts 文件
+# 路由器级广告过滤 hosts 文件
 #
-# 版本:: 3.6.1
-# 更新:: 2026.07.21
-# 域名:: 497 个唯一域名
-# 白名单:: 9 个域名
+# 版本:: 3.7.26
+# 更新:: 2026.08.17
+# 域名:: 523 个唯一域名
+# 白名单:: 231 个域名
 #
 使用方法: 导入到路由器广告过滤设置
 #
-# 项目:https://github.com/sutchan/DNS_Shield
-# 演示:https://dns.ewuse.com/
+# 项目: https://github.com/sutchan/DNS_Shield
+# 演示: https://dns.ewuse.com/
 #
 # =====================================
 
@@ -39,6 +39,7 @@
 127.0.0.1 ad.88765.com
 127.0.0.1 ad.bestv.com.cn
 127.0.0.1 ad.bilibili.com
+127.0.0.1 ad.bytedance.com
 127.0.0.1 ad.cctv.com
 127.0.0.1 ad.cdntv.com
 127.0.0.1 ad.cmvideo.cn
@@ -48,6 +49,7 @@
 127.0.0.1 ad.douyin.com
 127.0.0.1 ad.ffalcon.com
 127.0.0.1 ad.fun.tv
+127.0.0.1 ad.gifshow.com
 127.0.0.1 ad.haokan.com
 127.0.0.1 ad.hisense.com
 127.0.0.1 ad.hpplay.cn
@@ -55,11 +57,13 @@
 127.0.0.1 ad.iqiyi.com
 127.0.0.1 ad.ixigua.com
 127.0.0.1 ad.kuaishou.com
+127.0.0.1 ad.kwai.com
 127.0.0.1 ad.letv.com
 127.0.0.1 ad.m.taobao.com
 127.0.0.1 ad.mgtv.com
 127.0.0.1 ad.mi.com
 127.0.0.1 ad.miguvideo.com
+127.0.0.1 ad.oceanengine.com
 127.0.0.1 ad.pptv.com
 127.0.0.1 ad.qq.com
 127.0.0.1 ad.sohu.com
@@ -67,6 +71,7 @@
 127.0.0.1 ad.toutiao.com
 127.0.0.1 ad.tv.sohu.com
 127.0.0.1 ad.video.qq.com
+127.0.0.1 ad.weishi.qq.com
 127.0.0.1 ad.weixin.qq.com
 127.0.0.1 ad.xelements.cn
 127.0.0.1 ad.xiaohongshu.com
@@ -106,6 +111,7 @@
 127.0.0.1 ads.pptv.com
 127.0.0.1 ads.sohu.com
 127.0.0.1 ads.xiaohongshu.com
+127.0.0.1 adsame.com
 127.0.0.1 adsclick.qq.com
 127.0.0.1 adsfile.qq.com
 127.0.0.1 adshmct.qq.com
@@ -114,18 +120,22 @@
 127.0.0.1 adslvseed.qq.com
 127.0.0.1 adsmind.gdtimg.com
 127.0.0.1 adsmind.ugdtimg.com
+127.0.0.1 adsmogo.com
 127.0.0.1 adsmoloco.com
 127.0.0.1 adsqqclick.qq.com
 127.0.0.1 adsrich.qq.com
 127.0.0.1 adstats.tencentmusic.com
 127.0.0.1 adv.sec.miui.com
 127.0.0.1 advertising.com
+127.0.0.1 adview.cn
+127.0.0.1 adwo.com
 127.0.0.1 adx.tv.mi.com
 127.0.0.1 affise.com
 127.0.0.1 afp.iqiyi.com
 127.0.0.1 afp.qiyi.com
 127.0.0.1 alert.kuyun.com
 127.0.0.1 ali-ad.a.yximgs.com
+127.0.0.1 allyes.com
 127.0.0.1 alog.umeng.com
 127.0.0.1 amdc.m.taobao.com
 127.0.0.1 analytics.rayjump.com
@@ -174,6 +184,7 @@
 127.0.0.1 baidu.new1cloud.com
 127.0.0.1 baiducdncmn3.inter.iqiyi.com
 127.0.0.1 baiducdncnc.inter.ptqy.gitv.tv
+127.0.0.1 baidumobads.baidu.com
 127.0.0.1 baidutv.baidu.com
 127.0.0.1 bar.baidu.com
 127.0.0.1 bdbus-turbonet.baidu.com
@@ -203,6 +214,7 @@
 127.0.0.1 centertime.ksyun.com
 127.0.0.1 chartboost.com
 127.0.0.1 chaturbate.com
+127.0.0.1 cl2.cn
 127.0.0.1 cm.bilibili.com
 127.0.0.1 cm.cn.miaozhen.com
 127.0.0.1 cm.ipinyou.com
@@ -222,6 +234,7 @@
 127.0.0.1 cupid.ptqy.gitv.tv
 127.0.0.1 d.cntv.cn
 127.0.0.1 data.mistat.xiaomi.com
+127.0.0.1 dataeye.com
 127.0.0.1 datahub.zhihu.com
 127.0.0.1 daup.map.baidu.com
 127.0.0.1 de.pandora.xiaomi.com
@@ -234,6 +247,8 @@
 127.0.0.1 dm.pstatp.com
 127.0.0.1 dm.toutiao.com
 127.0.0.1 dnkeeper.platform.dbankcloud.com
+127.0.0.1 domob.cn
+127.0.0.1 domob.org
 127.0.0.1 duga.zhihu.com
 127.0.0.1 dvb.pandora.xiaomi.com
 127.0.0.1 ef-dongfeng.tanx.com
@@ -270,6 +285,7 @@
 127.0.0.1 imdns.hpplay.cn
 127.0.0.1 imp.ad.xelements.cn
 127.0.0.1 init.supersonicads.com
+127.0.0.1 inmobi.com
 127.0.0.1 ip.ptqy.gitv.tv
 127.0.0.1 ironsrc.com
 127.0.0.1 is-gateway.supersonicads.com
@@ -314,11 +330,15 @@
 127.0.0.1 m.pcv.iqiyi.com
 127.0.0.1 m.reachmax.cn
 127.0.0.1 ma.baidu.com
+127.0.0.1 madhouse.cn
+127.0.0.1 madserving.com
 127.0.0.1 mairuanwang.com
 127.0.0.1 makeding.com
 127.0.0.1 mb.cctv.com
 127.0.0.1 mb.cdntv.com
 127.0.0.1 mc.corel.com
+127.0.0.1 mediav.com
+127.0.0.1 mediav.net
 127.0.0.1 metok.sys.miui.com
 127.0.0.1 mgtv-ad.cdn.mgtv.com
 127.0.0.1 miaozhen.com
@@ -344,6 +364,7 @@
 127.0.0.1 nstat.tudou.com
 127.0.0.1 o1098464.ingest.sentry.io
 127.0.0.1 oauth-login-drcn.platform.dbankcloud.com
+127.0.0.1 oceanengine.com
 127.0.0.1 official-t.720static.com
 127.0.0.1 omgmta.play.aiseet.atianqi.com
 127.0.0.1 open.e.kuaishou.cn
@@ -452,13 +473,13 @@
 127.0.0.1 t.track.ad.xiaomi.com
 127.0.0.1 t7z.cupid.iqiyi.com
 127.0.0.1 t7z.cupid.ptqy.gitv.tv
+127.0.0.1 talkingdata.com
 127.0.0.1 tapjoy.com
 127.0.0.1 theqoo.net
 127.0.0.1 time.video.ptqy.gitv.tv
 127.0.0.1 toblog.ctobsnssdk.com
 127.0.0.1 tosv.boe.byted.org
 127.0.0.1 tosv.byted.org
-127.0.0.1 toutiao.com
 127.0.0.1 trace.rtbasia.com
 127.0.0.1 tracking.miui.com
 127.0.0.1 tv.aiseet.atianqi.com
@@ -472,6 +493,7 @@
 127.0.0.1 ulogs.umengcloud.com
 127.0.0.1 umeng.com
 127.0.0.1 umengcloud.com
+127.0.0.1 umtrack.com
 127.0.0.1 union.gdtimg.com
 127.0.0.1 unityads.unity3d.com
 127.0.0.1 unityads.unitychina.cn
@@ -479,6 +501,7 @@
 127.0.0.1 utk.baidu.com
 127.0.0.1 v.admaster.com.cn
 127.0.0.1 v2.reachmax.cn
+127.0.0.1 vamaker.com
 127.0.0.1 vdn.cdntv.com
 127.0.0.1 videocontent-dra.himovie.hicloud.com
 127.0.0.1 view.adjust.com
@@ -510,17 +533,242 @@
 127.0.0.1 wxsnsdy.tc.qq.com
 127.0.0.1 xiaomi-dtv.m.cn.miaozhen.com
 127.0.0.1 yhqdashi.com
+127.0.0.1 yigao.com
 127.0.0.1 yk-ssp-ad.cp31.ott.cibntv.net
+127.0.0.1 youmi.net
+127.0.0.1 yoyi.com.cn
 127.0.0.1 yximgs.com
 127.0.0.1 zeus-api.vemarsdev.com
 
 # 白名单 (允许这些域名)
+# 已白名单: 12306.cn
+# 已白名单: 163.com
+# 已白名单: 360.cn
+# 已白名单: abchina.com
+# 已白名单: access.speech.ai.xiaomi.com
+# 已白名单: account-dcm.ai.xiaomi.com
+# 已白名单: account.xiaomi.com
+# 已白名单: acfun.com
+# 已白名单: ai.xiaomi.com
+# 已白名单: ak.lp.account.xiaomi.com
+# 已白名单: alipay.com
+# 已白名单: aliyun.com
+# 已白名单: amazon.cn
+# 已白名单: api.ai.xiaomi.com
+# 已白名单: api.e.kuaishou.cn
+# 已白名单: api.hybrid.xiaomi.com
 # 已白名单: api.io.mi.com
+# 已白名单: api.kuaishouzt.com
+# 已白名单: api.micloud.xiaomi.net
+# 已白名单: api2.mina.mi.com
+# 已白名单: auth.be.sec.miui.com
+# 已白名单: auth.cebbank.com
+# 已白名单: b2e.cebbank.com
+# 已白名单: baidu.com
+# 已白名单: baiducloud.com
+# 已白名单: bank.pingan.com
+# 已白名单: bankcomm.com
+# 已白名单: bankofbeijing.com.cn
+# 已白名单: bankofchina.com
+# 已白名单: bilibili.com
+# 已白名单: bing.com
+# 已白名单: boc.cn
+# 已白名单: bohs.com.cn
+# 已白名单: bosc.cn
+# 已白名单: bsb.cn
+# 已白名单: canva.cn
+# 已白名单: caocaokeji.cn
+# 已白名单: cbhb.com.cn
+# 已白名单: ccb.cn
+# 已白名单: ccb.com
+# 已白名单: ccbank.cn
+# 已白名单: cctv.com
+# 已白名单: cebbank.com
+# 已白名单: cgbchina.com.cn
+# 已白名单: chinanews.com.cn
+# 已白名单: chinatax.gov.cn
+# 已白名单: cib.com.cn
+# 已白名单: citicbank.com
+# 已白名单: cloud.tencent.com
+# 已白名单: cmbc.com.cn
+# 已白名单: cmbchina.com
+# 已白名单: cn.bing.com
+# 已白名单: cnblogs.com
+# 已白名单: cnki.net
 # 已白名单: connectivitycheck.gstatic.com
+# 已白名单: console.cloud.tencent.com
+# 已白名单: corp.cebbank.com
+# 已白名单: cqcbank.com.cn
+# 已白名单: creator-api.kuaishouzt.com
+# 已白名单: cscb.cn
+# 已白名单: csdn.net
+# 已白名单: ctrip.com
+# 已白名单: czbank.com
+# 已白名单: dangdang.com
+# 已白名单: developer.aliyun.com
+# 已白名单: dianping.com
+# 已白名单: didichuxing.com
+# 已白名单: didiglobal.com
+# 已白名单: dingtalk.com
+# 已白名单: dns1.cebbank.com
+# 已白名单: dns2.cebbank.com
+# 已白名单: dns3.cebbank.com
+# 已白名单: dns4.cebbank.com
+# 已白名单: dns5.cebbank.com
+# 已白名单: dns6.cebbank.com
+# 已白名单: docer.com
+# 已白名单: dongguanbank.cn
+# 已白名单: douban.com
+# 已白名单: douyin.com
+# 已白名单: douyu.com
+# 已白名单: dyccb.com
+# 已白名单: e.cebbank.com
+# 已白名单: ebank.cebbank.com
+# 已白名单: ecitic.com
+# 已白名单: egbank.com.cn
+# 已白名单: ehkg.cebbank.com
+# 已白名单: ele.me
+# 已白名单: feishu.cn
 # 已白名单: file.xmpush.xiaomi.com
+# 已白名单: fliggy.com
+# 已白名单: foxmail.com
+# 已白名单: fudianbank.com
+# 已白名单: galleryapi.micloud.xiaomi.net
+# 已白名单: gitee.com
+# 已白名单: github.com
+# 已白名单: gitlab.com
+# 已白名单: gjzwfw.gov.cn
+# 已白名单: gome.com.cn
+# 已白名单: gycbank.com
+# 已白名单: gzccb.com.cn
+# 已白名单: h3cb.com
+# 已白名单: hebbank.com
+# 已白名单: hkbchina.com
+# 已白名单: hljbank.com
+# 已白名单: hrbank.com.cn
+# 已白名单: huaweicloud.com
+# 已白名单: husbank.com
+# 已白名单: huya.com
+# 已白名单: hxb.com.cn
+# 已白名单: hzbank.com.cn
+# 已白名单: icbc.com.cn
+# 已白名单: icourse163.org
 # 已白名单: idm.iot.mi.com
+# 已白名单: ifeng.com
+# 已白名单: im.qq.com
+# 已白名单: iqiyi.com
+# 已白名单: izhihu.com
+# 已白名单: jd.com
+# 已白名单: jhbchina.com
+# 已白名单: jinzhoubank.com.cn
+# 已白名单: jsbchina.cn
+# 已白名单: jshbank.com
+# 已白名单: juejin.cn
+# 已白名单: jx-bank.com
+# 已白名单: jxbank.com
+# 已白名单: kaola.com
+# 已白名单: kuaishou.com
+# 已白名单: kugou.com
+# 已白名单: kuwo.cn
+# 已白名单: larksuite.com
+# 已白名单: lbs.mina.mi.com
+# 已白名单: letv.com
+# 已白名单: lnbank.com.cn
+# 已白名单: lycb.com.cn
+# 已白名单: lzbank.com.cn
+# 已白名单: mail.163.com
+# 已白名单: mail.qq.com
+# 已白名单: mail.sina.com.cn
+# 已白名单: market.mi-img.com
+# 已白名单: market.xiaomi.com
+# 已白名单: meituan.com
+# 已白名单: mgtv.com
+# 已白名单: miguvideo.com
 # 已白名单: milink.pandora.xiaomi.com
+# 已白名单: mon.tiktokv.com
+# 已白名单: mooc.com
+# 已白名单: mps.gov.cn
+# 已白名单: music.163.com
+# 已白名单: nbcb.com.cn
+# 已白名单: njcb.com.cn
+# 已白名单: npmjs.com
+# 已白名单: npmjs.org
+# 已白名单: ns1.zcebbank.com.cn
+# 已白名单: nxbank.com
 # 已白名单: o2o.api.xiaomi.com
+# 已白名单: open.cebbank.com
+# 已白名单: oschina.net
+# 已白名单: pan.baidu.com
+# 已白名单: pay.cebbank.com
+# 已白名单: people.com.cn
+# 已白名单: pinduoduo.com
+# 已白名单: pptv.com
+# 已白名单: processon.com
+# 已白名单: psbc.com
+# 已白名单: push.ksapisrv.com
+# 已白名单: qdbank.cn
+# 已白名单: qhrcb.com
+# 已白名单: qiniu.com
+# 已白名单: qlbank.com
+# 已白名单: qq.com
+# 已白名单: qunar.com
+# 已白名单: qzone.qq.com
+# 已白名单: renren.com
+# 已白名单: resolver.mi.xiaomi.com
+# 已白名单: runoob.com
+# 已白名单: s.deepl.com
+# 已白名单: shengjingbank.com.cn
+# 已白名单: shouqi.com
+# 已白名单: sina.com
+# 已白名单: sina.com.cn
+# 已白名单: smzdm.com
+# 已白名单: so.com
+# 已白名单: sogou.com
+# 已白名单: spdb.com.cn
+# 已白名单: srcb.com.cn
+# 已白名单: stackoverflow.com
+# 已白名单: static.cebbank.com
+# 已白名单: sts.api.io.mi.com
+# 已白名单: suning.com
+# 已白名单: szbank.cn
+# 已白名单: talk.bz.gepush.com
+# 已白名单: talk.bz.getui.net
+# 已白名单: taobao.com
+# 已白名单: tccb.com.cn
+# 已白名单: tcrbank.com
+# 已白名单: teambition.com
+# 已白名单: thepaper.cn
+# 已白名单: tieba.baidu.com
+# 已白名单: tim.qq.com
+# 已白名单: tmall.com
+# 已白名单: toutiao.com
+# 已白名单: tracker.ai.xiaomi.com
 # 已白名单: tracker.xiaomixiaoai.com
-# 已白名单: xx.market.mi-img.com
-# 已白名单: xx.market.xiaomi.com
+# 已白名单: trip.com
+# 已白名单: tv.sohu.com
+# 已白名单: uber.com
+# 已白名单: upyun.com
+# 已白名单: vip.com
+# 已白名单: w3school.com.cn
+# 已白名单: wangfangdata.com.cn
+# 已白名单: weibo.com
+# 已白名单: weixin.qq.com
+# 已白名单: weiyun.com
+# 已白名单: wps.cn
+# 已白名单: www.cebbank.com
+# 已白名单: wx.qq.com
+# 已白名单: wzcb.com.cn
+# 已白名单: xacbank.com
+# 已白名单: xigua.com
+# 已白名单: xinhuanet.com
+# 已白名单: xmbank.com.cn
+# 已白名单: xuetangx.com
+# 已白名单: y.qq.com
+# 已白名单: ynbank.com
+# 已白名单: youdao.com
+# 已白名单: youku.com
+# 已白名单: zhihu.com
+# 已白名单: zhihuishu.com
+# 已白名单: zhongchou.com
+# 已白名单: zybank.com.cn
+# 已白名单: zzbank.cn

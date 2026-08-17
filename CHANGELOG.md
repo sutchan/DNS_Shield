@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+## [3.7.29] - 2026-08-17
+
+### Fixed
+- 白名单在 dnsmasq/hosts 格式下真正生效：黑名单生成时剔除白名单域名，dnsmasq 不再对白名单域名写入 `address=/domain/IP` 黑洞规则，hosts 不再写入拦截行
+- hosts 白名单区块追加说明注释（hosts 原生不支持白名单语法，完整放行规则请使用 AdGuard 格式）
+- 补正 `src/config/version.ts` 的 `APP_VERSION` 单一来源版本滞后（此前停留在 3.7.26）
+- 升级全项目单一来源版本号至 v3.7.29
+
 ## [3.7.28] - 2026-08-17
 
 ### Fixed

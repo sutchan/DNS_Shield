@@ -100,7 +100,8 @@
   },
   "whitelist": {
     "title": "Whitelist (allow these domains)",
-    "label": "Whitelisted:"
+    "label": "Whitelisted:",
+    "hostsNote": "The hosts format has no native whitelist syntax; the following domains are excluded from blocking. Use the AdGuard format for real allow rules"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",

@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.ts v3.7.21
+// src/utils/rulesGenerator.ts v3.7.29
 import { CustomDnsEntry, Settings, OutputContent, Translation } from '../types';
 
 // 生成头部
@@ -79,6 +79,12 @@ export const generateRules = (domains: string[], whitelist: string[], customDns:
     filteredWhitelist = [...new Set(filteredWhitelist)].sort();
   }
 
+  // 黑名单生成时必须剔除白名单域名：dnsmasq 的 address=/domain/IP 黑洞规则
+  // 无法被后续 server=/domain/ 可靠覆盖，hosts 也无白名单语义，因此直接从拦截
+  // 列表中排除白名单域名，使白名单在 dnsmasq/hosts 格式下真正生效（而非仅注释）。
+  const whitelistSet = new Set(filteredWhitelist);
+  const blockedDomains = filteredDomains.filter(domain => !whitelistSet.has(domain));
+
   const now = new Date();
   const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
 
@@ -88,7 +94,7 @@ export const generateRules = (domains: string[], whitelist: string[], customDns:
   let whitelistContent = '';
 
   if (addHeader) {
-    const totalDomains = filteredDomains.length + customDns.length;
+    const totalDomains = blockedDomains.length + customDns.length;
     const whitelistCount = filteredWhitelist.length;
 
     dnsmasqContent += generateHeader('dnsmasq', totalDomains, whitelistCount, dateStr, settings, t);
@@ -96,7 +102,7 @@ export const generateRules = (domains: string[], whitelist: string[], customDns:
     adguardContent += generateHeader('adguard', totalDomains, whitelistCount, dateStr, settings, t);
   }
 
-  filteredDomains.forEach(domain => {
+  blockedDomains.forEach(domain => {
     dnsmasqContent += `address=/${domain}/${settings.ipv4}\n`;
     hostsContent += `${settings.ipv4} ${domain}\n`;
     adguardContent += `||${domain}^\n`;
@@ -120,7 +126,9 @@ export const generateRules = (domains: string[], whitelist: string[], customDns:
   if (filteredWhitelist.length > 0) {
     if (addHeader) {
       dnsmasqContent += `\n# ${t.whitelist.title}\n`;
+      // hosts 原生不支持白名单语法：注明限制，但逐行列出已排除的域名供参考
       hostsContent += `\n# ${t.whitelist.title}\n`;
+      hostsContent += `# ${t.whitelist.hostsNote}\n`;
       adguardContent += `\n! ${t.whitelist.title}\n`;
       whitelistContent += `# ${t.whitelist.title}\n`;
     }

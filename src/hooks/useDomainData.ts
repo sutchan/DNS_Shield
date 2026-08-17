@@ -42,7 +42,9 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
 
   const parseSourceData = useCallback((text?: string) => {
     try {
-      const input = text || sourceInput;
+      // 优先使用显式传入的文本；否则读取 ref 中的最新输入，避免闭包依赖 sourceInput
+      // （否则 parseSourceData 随 sourceInput 重建会触发 loadDomainData effect 反复执行并覆盖清空）
+      const input = text ?? sourceInputRef.current;
       const { data, stats: newStats } = parseSource(input);
       setParsedData(data);
       setStats(newStats);
@@ -50,7 +52,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
       console.error('Error parsing source:', error);
       showToastRef.current('parseFailed');
     }
-  }, [sourceInput]);
+  }, []);
 
   const loadLocalDomains = useCallback(async (text: string) => {
     if (!isValidAutosave(text)) {
@@ -145,6 +147,16 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   const clearAll = useCallback(() => {
     setSourceInput('');
     setStats({ domainCount: 0, validCount: 0, commentCount: 0, blacklistCount: 0, whitelistCount: 0, invalidCount: 0 });
+    // 同步清除本地自动保存与时间戳，避免清空后加载/刷新时旧内容复现
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('dnsShield_autosave');
+        localStorage.removeItem('dnsShield_autosave_time');
+      }
+    } catch {
+      /* localStorage 不可用时忽略 */
+    }
+    showToastRef.current('cleared');
   }, []);
 
   const sortDomains = useCallback(() => {

@@ -100,7 +100,8 @@
   },
   "whitelist": {
     "title": "白名单 (允许这些域名)",
-    "label": "已白名单:"
+    "label": "已白名单:",
+    "hostsNote": "hosts 格式原生不支持白名单语法；以下域名已从拦截列表中排除，完整放行规则请使用 AdGuard 格式"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
