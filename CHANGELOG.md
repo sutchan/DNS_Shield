@@ -11,6 +11,11 @@
 
 ### Fixed
 - 白名单在 dnsmasq/hosts 格式下真正生效：黑名单生成时剔除白名单域名，dnsmasq 不再对白名单域名写入 `address=/domain/IP` 黑洞规则，hosts 不再写入拦截行
+
+### Docs
+- 同步文档单一来源版本号至 v3.7.29：DEPLOYMENT.md、openspec/config.yaml、openspec/SPEC.md、README.md、README.en.md 版本号/徽章统一
+- 同步 `next.config.js` env.version 与 `layout.tsx` 元数据/JSON-LD 展示版本至 v3.7.29
+- 更新 public 静态样例（hosts.txt/dnsmasq.conf/adguard.txt）版本头至 v3.7.29
 - hosts 白名单区块追加说明注释（hosts 原生不支持白名单语法，完整放行规则请使用 AdGuard 格式）
 - 补正 `src/config/version.ts` 的 `APP_VERSION` 单一来源版本滞后（此前停留在 3.7.26）
 - 升级全项目单一来源版本号至 v3.7.29
