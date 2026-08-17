@@ -1,4 +1,4 @@
-# DNS Shield — 设计系统规范 v3.7.31
+# DNS Shield — 设计系统规范 v3.7.33
 > 基于 shadcn/ui + Tailwind CSS + Radix UI 的完整设计系统
 > 色彩空间：HSL | 设计哲学：Swiss Modernism 2.0 × Apple Precision
 
@@ -102,7 +102,7 @@
 | 页面背景 | #FAFAFA | #111114 | bg-background |
 | 卡片背景 | #FFFFFF | #1A1A20 | bg-card |
 | 浮层背景 | #FFFFFF | #1A1A20 | bg-popover |
-| 主按钮 | #0D6EFD | #3B82F6 | bg-primary |
+| 主按钮 | #0D5FE2 | #2674F2 | bg-primary |
 | 次按钮 | #E4E5E9 | #2D2D36 | bg-secondary |
 | 主文字 | #1C1D21 | #F2F2F2 | text-foreground |
 | 次文字 | #71717A | #8C8C95 | text-muted-foreground |
@@ -247,3 +247,31 @@ font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', sa
 | Large | 1024px+ | lg: | 双栏固定 |
 | XL | 1280px+ | xl: | 最大宽度限制 |
 | 2XL | 1536px+ | 2xl: | 超大屏适配 |
+
+---
+
+## 9. 品牌形象（Brand Identity）
+
+### 9.1 Logo 资产
+
+| 资源 | 路径 | 格式 | 用途 |
+|------|------|------|------|
+| 品牌 Logo | `public/logo.svg` | SVG 矢量 | 盾牌图标 + "DNS Shield" 文字；用于 README / OG / 文档 |
+| 网站图标 | `public/favicon.svg` | SVG 矢量 | 盾牌 + 防护对勾，浅底主蓝；用于浏览器标签 `<link rel="icon" type="image/svg+xml">` |
+| PWA 图标集 | `public/assets/icons/icon-{72,96,128,144,152,192,384,512}.png` | PNG | 安装到主屏、manifest 引用 |
+
+### 9.2 品牌主色（与 `--primary` 严格一致）
+
+| 环境 | HSL Token | Hex |
+|------|-----------|-----|
+| Light | `hsl(217 89% 47%)` | `#0D5FE2` |
+| Dark | `hsl(217 85% 55%)` | `#2674F2` |
+
+> `manifest.json` 的 `theme_color` 与 `layout.tsx` 的 `viewport.themeColor` 已统一使用上述值；旧蓝 `#007AFF` 已弃用。
+
+### 9.3 使用规则
+
+- 优先使用矢量 `logo.svg` / `favicon.svg`（任意缩放清晰锐利）；PNG 仅用于需要位图的场景（PWA / 旧客户端）。
+- Logo 主色始终取自品牌主蓝，禁止随意改色；深色背景下保持同一 HSL 变量。
+- 应用内导航栏 Logo 复用 `lucide-react` 的 `Shield` 图标（`text-primary`），与 `favicon.svg` 视觉一致，形成统一认知。
+- SVG 源文件为权威版本，如需其他尺寸 PNG 由 SVG 导出，避免位图放大失真。

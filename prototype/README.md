@@ -1,4 +1,4 @@
-# DNS Shield — 项目原型 (Prototype) v3.7.31
+# DNS Shield — 项目原型 (Prototype) v3.7.33
 
 > 高保真、可交互、内联真实数据的产品原型，与真实引擎 `src/` 及 OpenSpec 规范保持最小颗粒度对齐。
 
@@ -37,7 +37,25 @@ prototype/
 | `shadcn/component-library.md` | 基础组件（Button/Card/Input/Badge/Tabs）、复合组件（CodeEditor/StatBadge/EmptyState）、使用规则（cn/forwardRef/Lucide/无 any） |
 | `shadcn/interaction-standards.md` | 交互模式、反馈（即时/进度/完成/Toast）、错误处理、空状态、键盘导航、a11y、响应式状态机 |
 
-## 与真实引擎的同步状态（v3.7.31）
+## 品牌形象（Brand Assets）
+
+| 资源 | 路径 | 用途 |
+|------|------|------|
+| 品牌 Logo | `public/logo.svg` | 盾牌图标 + "DNS Shield" 文字，用于 README / OG / 文档 |
+| 网站图标 | `public/favicon.svg` | 盾牌 + 防护对勾，浅底主蓝，用于浏览器标签（`<link rel="icon" type="image/svg+xml">`） |
+| PWA 图标集 | `public/assets/icons/icon-{72,96,128,144,152,192,384,512}.png` | 安装到主屏、manifest 引用 |
+
+**品牌色（与 `shadcn/design-system.md` 的 `--primary` 严格一致）**
+- 主蓝（Light）：`hsl(217 89% 47%)` ≈ `#0D5FE2`
+- 主蓝（Dark）：`hsl(217 85% 55%)` ≈ `#2674F2`
+- 语义：保护 / 防护 / 可信。`manifest` 与 `viewport.themeColor` 已统一使用上述值（旧 `#007AFF` 已弃用）。
+
+**使用规则**
+- 优先使用矢量 `logo.svg` / `favicon.svg`（任意缩放清晰）；PNG 仅用于需要位图的场景（PWA / 旧客户端）。
+- 图标主色始终取品牌主蓝，禁止随意改色；深色背景下保持同一 HSL 变量。
+- 应用内导航栏 Logo 复用 `lucide-react` 的 `Shield` 图标（`text-primary`），与 `favicon.svg` 视觉一致。
+
+## 与真实引擎的同步状态（v3.7.33）
 
 `index.html` 的解析/生成逻辑对齐 `src/utils/parser.ts`、`rulesGenerator.ts`、`domainValidator.ts`：
 
@@ -53,4 +71,4 @@ prototype/
 
 ## 版本
 
-当前原型版本 **v3.7.31**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。
+当前原型版本 **v3.7.33**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。

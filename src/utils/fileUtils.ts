@@ -83,8 +83,14 @@ const readBodyWithSizeLimit = async (response: Response, maxSize: number): Promi
       }
       result += decoder.decode(value, { stream: true });
     }
-  } finally {
+    // 仅在正常结束时解码尾部，避免超体积抛错后 finally 中 decode 抛异常
+    // 掩盖原始"响应过大"错误信息
     result += decoder.decode();
+  } catch (err) {
+    if (received > maxSize) {
+      throw new Error(`响应体积超过上限（${Math.round(maxSize / 1024 / 1024)}MB）`);
+    }
+    throw err;
   }
   return result;
 };
@@ -92,7 +98,7 @@ const readBodyWithSizeLimit = async (response: Response, maxSize: number): Promi
 // 从URL获取内容（带超时与体积上限控制）
 // 说明：浏览器 CSP 的 connect-src 决定了哪些域名可被 fetch。
 // 若目标域名被 CSP 拦截，浏览器会抛出 TypeError（"Failed to fetch"），
-// 这里会将其归类为“网络/CSP 拦截”错误，便于给用户可读的提示。
+// 这里会将其归类为"网络/CSP 拦截"错误，便于给用户可读的提示。
 export const fetchFromUrl = async (url: string, timeout = 10000): Promise<string> => {
   if (!isValidHttpUrl(url)) {
     throw new Error(`无效的 URL（仅支持 http/https，且长度 ≤ ${MAX_URL_LENGTH}）：${url}`);

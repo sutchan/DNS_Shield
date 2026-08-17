@@ -1,4 +1,4 @@
-// src/utils/parser.test.ts v3.7.30
+// src/utils/parser.test.ts v3.7.32
 import { describe, it, expect } from 'vitest';
 import { parseSource, sortDomains, dedupeDomains } from './parser';
 
@@ -34,6 +34,21 @@ describe('parseSource', () => {
     const { data, stats } = parseSource('');
     expect(data.domains).toEqual([]);
     expect(stats.domainCount).toBe(0);
+  });
+
+  it('空行不计入注释统计，仅真实注释计入 commentCount', () => {
+    const input = [
+      '# 真实注释',
+      'ads.example.com',
+      '',
+      '',
+      '# 另一注释',
+      '  ',
+    ].join('\n');
+    const { stats } = parseSource(input);
+    // 仅 2 行真实注释计入，空行/纯空白行不计入
+    expect(stats.commentCount).toBe(2);
+    expect(stats.invalidCount).toBe(0);
   });
 });
 

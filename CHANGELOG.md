@@ -7,6 +7,26 @@
 
 ## [Unreleased]
 
+## [3.7.33] - 2026-08-17
+
+### Added
+- 完善品牌形象资料：新增矢量 `public/logo.svg`（盾牌+文字）与 `public/favicon.svg`（盾牌+防护对勾，品牌主蓝 #0D5FE2）
+- `layout.tsx` 增加 SVG favicon 引用（`<link rel="icon" type="image/svg+xml">`），PWA PNG 图标集保留
+- 统一品牌主色：manifest 与 `viewport.themeColor` 由旧蓝 `#007AFF` 改为设计系统 primary 的 `#0D5FE2`（浅色）/ `#2674F2`（深色）
+- 原型（`prototype/`）品牌色与版本号同步至 v3.7.33，与设计系统 token 完全一致
+
+### Changed
+- 品牌色语义对齐 `shadcn/design-system.md` 的 `--primary`（HSL 217 89% 47%），消除与原设计系统的色差
+
+## [3.7.32] - 2026-08-17
+
+### Fixed
+- 修复 `parser.ts` 统计 bug：空行被误计入 `commentCount`，导致统计面板注释数失真（空行不再计入注释统计）
+- 修复 `fileUtils.ts` 错误掩盖 bug：超体积（`readBodyWithSizeLimit` 抛出"响应过大"）后 `finally` 中 `decoder.decode()` 在流被 `abort` 时可能抛异常，覆盖原始错误信息；改为仅在正常结束时解码尾部，并显式保留"响应过大"错误
+- 修正 `sortDedupe.test.ts` 排序断言以匹配真实块级排序语义（注释分组保持原序、块内数据按归一化域名排序）
+- 新增 `parser.test.ts` 空行统计用例，明确空行不计入 `commentCount`
+- 同步滞后源文件头注释（parser/sortDedupe/useDomainData/useSettings/useUrlManager/config/index/app/Home 等）与全局展示位至 v3.7.32
+
 ## [3.7.31] - 2026-08-17
 
 ### Fixed

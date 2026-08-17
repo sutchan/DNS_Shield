@@ -1,4 +1,4 @@
-// src/utils/parser.ts v3.7.30
+// src/utils/parser.ts v3.7.32
 import { parseDomainLine, ParseStats } from './domainValidator';
 import { CustomDnsEntry, ParsedData } from '../types';
 
@@ -19,7 +19,7 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
     const parsed = parseDomainLine(line);
 
     if (parsed.type === 'empty') {
-      commentCount++;
+      // 空行不计入注释统计，避免统计面板数字失真
       continue;
     }
 

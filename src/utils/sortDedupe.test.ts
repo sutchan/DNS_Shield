@@ -1,4 +1,4 @@
-// src/utils/sortDedupe.test.ts v3.7.31
+// src/utils/sortDedupe.test.ts v3.7.32
 import { describe, it, expect } from 'vitest';
 import { sortDomains, dedupeDomains } from './sortDedupe';
 
@@ -11,21 +11,42 @@ describe('sortDomains', () => {
     expect(domainLines).toEqual(['a.example.com', 'b.example.com', 'c.example.com']);
   });
 
-  it('白名单与自定义 DNS 特殊行置于域名之后、注释之前', () => {
+  it('同一注释分组下的数据行按归一化域名排序（忽略+/@前缀），注释标题保持原位', () => {
     const input = [
       '# 头部说明',
-      'ads.example.com',
-      '+good.example.com',
       'zoo.example.com',
+      '+good.example.com',
+      'ads.example.com',
       '@cdn.example.com=10.0.0.1',
-      '# 尾部注释',
     ].join('\n');
     const out = sortDomains(input);
     const idx = (s: string) => out.split('\n').indexOf(s);
-    expect(idx('# 头部说明')).toBeLessThan(idx('ads.example.com'));
-    expect(idx('zoo.example.com')).toBeLessThan(idx('+good.example.com'));
-    expect(idx('+good.example.com')).toBeLessThan(idx('# 尾部注释'));
-    expect(idx('@cdn.example.com=10.0.0.1')).toBeLessThan(idx('# 尾部注释'));
+    // 注释标题保持在该块最前
+    expect(idx('# 头部说明')).toBe(0);
+    // 块内按 domain 排序（忽略前缀）：ads < cdn < good < zoo
+    const ordered = ['ads.example.com', '@cdn.example.com=10.0.0.1', '+good.example.com', 'zoo.example.com'];
+    const actual = out.split('\n').slice(1);
+    expect(actual).toEqual(ordered);
+  });
+
+  it('多个注释分组各自独立排序，块顺序与标题保持不变', () => {
+    const input = [
+      'b.example.com',
+      '# 分组二',
+      'y.example.com',
+      'x.example.com',
+      '# 分组一',
+      'm.example.com',
+      'a.example.com',
+    ].join('\n');
+    const out = sortDomains(input);
+    const lines = out.split('\n');
+    // 无标题的首块排最前
+    expect(lines[0]).toBe('b.example.com');
+    expect(lines.indexOf('# 分组二')).toBeLessThan(lines.indexOf('x.example.com'));
+    expect(lines.indexOf('x.example.com')).toBeLessThan(lines.indexOf('y.example.com'));
+    expect(lines.indexOf('# 分组一')).toBeLessThan(lines.indexOf('a.example.com'));
+    expect(lines.indexOf('a.example.com')).toBeLessThan(lines.indexOf('m.example.com'));
   });
 
   it('空输入返回空字符串', () => {

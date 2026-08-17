@@ -1,4 +1,4 @@
-// src/utils/sortDedupe.ts v3.7.30
+// src/utils/sortDedupe.ts v3.7.32
 import { parseDomainLine, ParseResult } from './domainValidator';
 
 // 排序域名：按"块"处理，每段注释（分组标题）及其下方数据行作为一个块，
