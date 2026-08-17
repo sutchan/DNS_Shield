@@ -1,11 +1,11 @@
-# DNS Shield 高保真原型 v3.7.21
-> 基于 DNS Shield Design System v3.7.21 (Swiss Modernism 2.0 × Apple Precision)
+# DNS Shield 高保真原型 v3.7.29
+> 基于 DNS Shield Design System v3.7.29 (Swiss Modernism 2.0 × Apple Precision)
 
 ## 交付物
 
 ### 1. `prototype.html` — 独立高保真原型（可交互，无需构建）
 - 纯 HTML + CSS + 原生 JS，零依赖，双击即可在浏览器打开
-- 完整还原 Design System v3.7.21 色板（HSL 变量）、Inter 字体、4px 间距、Lucide 风格 SVG 图标
+- 完整还原 Design System v3.7.29 色板（HSL 变量）、Inter 字体、4px 间距、Lucide 风格 SVG 图标
 - **16 语言切换器**（Globe 下拉菜单，role=menu/menuitemradio；切换即时翻译界面文案，含 zh/en 完整词典，其余语言回退英文以演示多语言机制）
 - **可折叠"高级选项"URL 区**：URL 输入框、获取/添加URL/前缀优先(排序)/获取全部、URL 列表(带删除)、4 个真实预设源(builtin/AdGuard/EasyList/NeoHosts)
 - **输出设置面板**（折叠）：项目名/版本/IPv4/IPv6 + 头部注释/阻止IPv6/自动去重/移除通配符 开关，修改后若已生成则**实时重算**输出
@@ -37,7 +37,7 @@
 
 ## 设计规范遵循
 
-- [x] 色彩系统：精确匹配 Design System v3.7.21 色板（HSL 变量）
+- [x] 色彩系统：精确匹配 Design System v3.7.29 色板（HSL 变量）
 - [x] 字体系统：Inter，严格使用 Display/H1/H2/H3/Body/Small/Caption
 - [x] 间距系统：4px 基数（space-1 ~ space-12）
 - [x] 圆角系统：sm=6px, md=8px, lg=10px, xl=12px, 2xl=16px
@@ -55,11 +55,12 @@
 - **reduced-motion**：已通过 `@media (prefers-reduced-motion: reduce) { * { transition: none } }` 真正禁用过渡。
 - **canvas 版为静态示意**：`prototype.canvas.tsx` 仅展示视觉结构，不含交互逻辑（见上文"与 html 版的差异"）。
 
-## 原型与真实引擎的同步状态（v3.7.21）
+## 原型与真实引擎的同步状态（v3.7.29）
 
 `prototype.html` 的 `parseSource` / `generateRules` / `generateHeader` 已对齐真实引擎（`src/utils/parser.ts`、`rulesGenerator.ts`、`domainValidator.ts`）：
 
-- **解析**：支持纯域名、`+` 白名单、`@domain=ip` 自定义 DNS、`@@||domain^` AdGuard 白名单（3.7.16 修复）、`0.0.0.0/127.0.0.1` hosts 行、`address=/domain/` dnsmasq 行、`||domain^` AdGuard 行；无效行计入注释统计。
+- **解析**：支持纯域名、`+` 白名单、`@domain=ip` 自定义 DNS、`@@||domain^$important` AdGuard 白名单（3.7.28 修复 `$important` 修饰符，原型已支持尾部 `^` 与 `^$important`）、`0.0.0.0/127.0.0.1` hosts 行、`address=/domain/` dnsmasq 行、`||domain^` AdGuard 行；无效行计入注释统计。
 - **去重**：自定义 DNS 按 domain 去重（保留首次，3.7.10 修复）；白名单/域名按归一化键去重。
+- **白名单语义（3.7.29）**：黑名单拦截列表（Dnsmasq/Hosts/AdGuard）剔除白名单域名，白名单域名不再生成黑洞规则，仅以 `server=/`、`# 已白名单:`、`@@||...^$important` 形式出现在白名单区。
 - **头部**：每种格式输出专属描述行（descMap），白名单标题走 i18n（`whitelistTitle`）。
 - **未同步（原型边界）**：URL 真实抓取合并、流式读取、统计 `blacklistCount` 字段、完整 usage 多行（merlin/openwrt）。

@@ -1,4 +1,4 @@
-# DNS Shield — 设计系统规范 v3.7.16
+# DNS Shield — 设计系统规范 v3.7.29
 > 基于 shadcn/ui + Tailwind CSS + Radix UI 的完整设计系统
 > 色彩空间：HSL | 设计哲学：Swiss Modernism 2.0 × Apple Precision
 
@@ -107,7 +107,7 @@
 | 主文字 | #1C1D21 | #F2F2F2 | text-foreground |
 | 次文字 | #71717A | #8C8C95 | text-muted-foreground |
 | 边框 | #DEE0E6 | #33333D | border-border |
-| 成功 | #16A34A | #16A34A | text-success |
+| 成功 | #16A34A | #15803D | text-success |
 | 警告 | #F59E0B | #CA8A04 | text-warning |
 | 错误 | #DC2626 | #991B1B | text-destructive |
 
@@ -184,7 +184,7 @@ font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', sa
 ### 6.1 缓动函数
 
 ```css
---ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+--ease-default: cubic-bezier(0.16, 1, 0.3, 1);
 --ease-in: cubic-bezier(0.4, 0, 1, 1);
 --ease-out: cubic-bezier(0, 0, 0.2, 1);
 --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);

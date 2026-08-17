@@ -54,8 +54,8 @@
   "usageStep3Desc": "Klik tombol \"Generate Aturan\", pratinjau hasilnya lalu unduh ke perangkat lokal, atau salin ke clipboard",
   "usageTip": "Tip",
   "usageTipContent": "Aturan yang dihasilkan dapat digunakan langsung untuk filtering iklan router, mendukung firmware Asus, Merlin, OpenWrt, dan lainnya",
-  "adguardFormat": "AdGuard",
-  "whitelistFormat": "Daftar Putih",
+  "adguardFormat": "ADGuard Blacklist",
+  "whitelistFormat": "ADGuard Whitelist",
   "toast": {
     "autosaveRestored": "Konten autosave telah dipulihkan ({time} menit yang lalu)",
     "parseFailed": "Parsing gagal, silakan periksa format input",

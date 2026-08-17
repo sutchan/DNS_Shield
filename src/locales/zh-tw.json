@@ -54,8 +54,8 @@
   "usageStep3Desc": "點擊\"生成規則\"按鈕，預覽效果後下載到本機，或複製到剪貼板",
   "usageTip": "提示",
   "usageTipContent": "生成的規則可直接用於路由器廣告過濾，支援華碩、梅林、OpenWrt 等韌體",
-  "adguardFormat": "AdGuard 格式",
-  "whitelistFormat": "白名單",
+  "adguardFormat": "ADGuard 黑名單",
+  "whitelistFormat": "ADGuard 白名單",
   "toast": {
     "autosaveRestored": "已恢復上次自動儲存的內容 ({time}分鐘前)",
     "parseFailed": "解析失敗，請檢查輸入格式",

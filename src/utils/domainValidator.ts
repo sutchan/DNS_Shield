@@ -1,4 +1,4 @@
-// src/utils/domainValidator.ts v3.7.28
+// src/utils/domainValidator.ts v3.7.29
 // 域名验证与行解析工具函数
 
 // 域名正则表达式
@@ -136,9 +136,14 @@ export const parseDomainLine = (line: string): ParseResult => {
     return { type: 'comment', originalLine: line };
   }
 
-  // AdGuard 格式
-  if (content.startsWith('||') && content.endsWith('^')) {
-    const domain = normalizeDomain(content.substring(2, content.length - 1));
+  // AdGuard 格式：||domain^ 或带修饰符 ||domain^$options
+  // 取 || 之后到首个 ^ / $ / 行尾之间的部分作为域名，兼容 $important 等修饰符
+  if (content.startsWith('||')) {
+    const after = content.substring(2);
+    const endIdx = Math.min(
+      ...[after.indexOf('^'), after.indexOf('$'), after.length].filter((i) => i > 0)
+    );
+    const domain = normalizeDomain(after.substring(0, endIdx));
     return {
       type: 'adguard',
       domain,

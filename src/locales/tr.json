@@ -54,8 +54,8 @@
   "usageStep3Desc": "\"Kuralları Üret\" düğmesine tıklayın, sonucu önizleyin ve yerel cihazınıza indirin veya panoya kopyalayın",
   "usageTip": "İpucu",
   "usageTipContent": "Üretilen kurallar, Asus, Merlin, OpenWrt ve diğer donanımları destekleyen router reklam filtrelemesi için doğrudan kullanılabilir",
-  "adguardFormat": "AdGuard",
-  "whitelistFormat": "Beyaz Liste",
+  "adguardFormat": "ADGuard Blacklist",
+  "whitelistFormat": "ADGuard Whitelist",
   "toast": {
     "autosaveRestored": "Otomatik kaydedilen içerik geri yüklendi ({time} dakika önce)",
     "parseFailed": "Çözümleme başarısız, lütfen giriş biçimini kontrol edin",

@@ -54,8 +54,8 @@
   "usageStep3Desc": "คลิกปุ่ม \"สร้างกฎ\" แสดงตัวอย่างผลลัพธ์แล้วดาวน์โหลดไปยังอุปกรณ์ในเครื่องของคุณ หรือคัดลอกไปยังคลิปบอร์ด",
   "usageTip": "แนะนำ",
   "usageTipContent": "กฎที่สร้างขึ้นสามารถใช้โดยตรงสำหรับการกรองโฆษณาในเราเตอร์ รองรับเฟิร์มแวร์ Asus, Merlin, OpenWrt และอื่นๆ",
-  "adguardFormat": "AdGuard",
-  "whitelistFormat": "รายการขาว",
+  "adguardFormat": "ADGuard Blacklist",
+  "whitelistFormat": "ADGuard Whitelist",
   "toast": {
     "autosaveRestored": "คืนค่าคอนเทนต์ที่บันทึกอัตโนมัติ ({time} นาทีที่แล้ว)",
     "parseFailed": "การวิเคราะห์ล้มเหลว โปรดตรวจสอบรูปแบบอินพุต",

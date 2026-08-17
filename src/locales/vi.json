@@ -54,8 +54,8 @@
   "usageStep3Desc": "Nhấn nút \"Tạo quy tắc\", xem trước kết quả sau đó tải xuống thiết bị cục bộ, hoặc sao chép vào bộ nhớ tạm",
   "usageTip": "Mẹo",
   "usageTipContent": "Quy tắc được tạo có thể được sử dụng trực tiếp cho việc lọc quảng cáo router, hỗ trợ firmware Asus, Merlin, OpenWrt và các firmware khác",
-  "adguardFormat": "AdGuard",
-  "whitelistFormat": "Danh sách trắng",
+  "adguardFormat": "ADGuard Blacklist",
+  "whitelistFormat": "ADGuard Whitelist",
   "toast": {
     "autosaveRestored": "Khôi phục nội dung tự động lưu ({time} phút trước)",
     "parseFailed": "Phân tích thất bại, vui lòng kiểm tra định dạng đầu vào",

@@ -54,8 +54,8 @@
   "usageStep3Desc": "Klicka på knappen \"Generera regler\", förhandsvisa resultatet och ladda ner det till din lokala enhet, eller kopiera det till urklipp",
   "usageTip": "Tips",
   "usageTipContent": "Genererade regler kan användas direkt för routerannonsfiltrering, stödjer firmware för Asus, Merlin, OpenWrt och andra",
-  "adguardFormat": "AdGuard",
-  "whitelistFormat": "Vitlista",
+  "adguardFormat": "ADGuard Blacklist",
+  "whitelistFormat": "ADGuard Whitelist",
   "toast": {
     "autosaveRestored": "Återställd autosparad innehåll ({time} minuter sedan)",
     "parseFailed": "Analys misslyckades, kontrollera indataformat",

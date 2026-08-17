@@ -54,8 +54,8 @@
   "usageStep3Desc": "点击\"生成规则\"按钮，预览效果后下载到本地，或复制到剪贴板",
   "usageTip": "提示",
   "usageTipContent": "生成的规则可直接用于路由器广告过滤，支持华硕、梅林、OpenWrt 等固件",
-  "adguardFormat": "AdGuard 格式",
-  "whitelistFormat": "白名单",
+  "adguardFormat": "ADGuard 黑名单",
+  "whitelistFormat": "ADGuard 白名单",
   "toast": {
     "autosaveRestored": "已恢复上次自动保存的内容 ({time}分钟前)",
     "parseFailed": "解析失败，请检查输入格式",

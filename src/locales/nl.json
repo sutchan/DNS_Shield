@@ -54,8 +54,8 @@
   "usageStep3Desc": "Klik op de knop \"Genereer regels\", bekijk de voorvertoning en download deze naar uw lokale apparaat, of kopieer deze naar het klembord",
   "usageTip": "Tip",
   "usageTipContent": "Gegenereerde regels kunnen direct worden gebruikt voor routeradvertentiefiltering, ondersteunt Asus, Merlin, OpenWrt en andere firmware",
-  "adguardFormat": "AdGuard",
-  "whitelistFormat": "Whitelist",
+  "adguardFormat": "ADGuard Blacklist",
+  "whitelistFormat": "ADGuard Whitelist",
   "toast": {
     "autosaveRestored": "Automatisch opgeslagen inhoud hersteld ({time} minuten geleden)",
     "parseFailed": "Analyse mislukt, controleer invoerformaat",

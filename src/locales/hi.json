@@ -54,8 +54,8 @@
   "usageStep3Desc": "\"नियम जनरेट करें\" बटन पर क्लिक करें, परिणाम पूर्वावलोकन करें और इसे स्थानीय डिवाइस पर डाउनलोड करें, या क्लिपबोर्ड पर कॉपी करें",
   "usageTip": "सुझाव",
   "usageTipContent": "जनरेट किए गए नियमों का उपयोग सीधे राउटर विज्ञापन फ़िल्टरिंग के लिए किया जा सकता है, Asus, Merlin, OpenWrt और अन्य फर्मवेयर का समर्थन करता है",
-  "adguardFormat": "AdGuard",
-  "whitelistFormat": "व्हाइटलिस्ट",
+  "adguardFormat": "ADGuard Blacklist",
+  "whitelistFormat": "ADGuard Whitelist",
   "toast": {
     "autosaveRestored": "ऑटो-सेव्ड सामग्री पुनर्स्थापित की गई (पिछले {time} मिनट पहले)",
     "parseFailed": "विश्लेषण विफल, कृपया इनपुट प्रारूप की जाँच करें",

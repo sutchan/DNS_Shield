@@ -107,6 +107,18 @@ describe('parseDomainLine', () => {
       domain: 'ads.example.com',
       isValid: true,
     });
+    // 带 $ 修饰符的 AdGuard 黑名单（修复前会被误判为无效域名）
+    expect(parseDomainLine('||ads.example.com^$important')).toMatchObject({
+      type: 'adguard',
+      domain: 'ads.example.com',
+      isValid: true,
+    });
+    // 无 ^ 结尾的 AdGuard 规则也应被识别
+    expect(parseDomainLine('||ads.example.com')).toMatchObject({
+      type: 'adguard',
+      domain: 'ads.example.com',
+      isValid: true,
+    });
   });
 
   it('剥离行内注释后解析纯域名', () => {

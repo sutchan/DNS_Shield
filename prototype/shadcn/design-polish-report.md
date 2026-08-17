@@ -1,4 +1,4 @@
-# DNS Shield — 设计复盘报告 (v3.0 UI Designer Polish)
+# DNS Shield — 设计复盘报告 (v3.7.29 设计系统对齐)
 
 ## 执行的设计优化
 
@@ -19,7 +19,7 @@
 - 避免了纯黑/纯白带来的视觉刺眼感
 - border 更细、更淡，减少视觉噪音
 - 深色模式背景从 `hsl(240 10% 3.9%)` 调整为更柔和的 `hsl(240 6% 7%)`
-- 注：设计系统实际采用 HSL 变量（见 design-system.md），未使用 oklch。
+- 注：设计系统采用 HSL 变量（见 design-system.md）；`globals.css` 顶部注释虽写作 `Color tokens (oklch)`，但实际 token 值仍为 HSL，变量值与设计系统一致。
 
 ### 2. 排版系统
 

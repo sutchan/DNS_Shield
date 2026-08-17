@@ -54,8 +54,8 @@
   "usageStep3Desc": "انقر على زر \"إنشاء القواعد\"، قم بعرض النتيجة ثم قم بتنزيلها إلى الجهاز المحلي، أو نسخها إلى الحافظة",
   "usageTip": "تلميح",
   "usageTipContent": "يمكن استخدام القواعد المولدة مباشرةً لفلترة الإعلانات على الراوتر، مما يدعم أجهزة Asus، Merlin، OpenWrt وغيرها",
-  "adguardFormat": "AdGuard",
-  "whitelistFormat": "قائمة بيضاء",
+  "adguardFormat": "ADGuard Blacklist",
+  "whitelistFormat": "ADGuard Whitelist",
   "toast": {
     "autosaveRestored": "تم استعادة المحتوى المحفوظ تلقائيًا (منذ {time} دقيقة)",
     "parseFailed": "فشل التحليل، يرجى التحقق من تنسيق الإدخال",

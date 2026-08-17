@@ -54,8 +54,8 @@
   "usageStep3Desc": "Haz clic en el botón \"Generar reglas\", previsualiza el resultado y descargalo en tu dispositivo local, o copialo al portapapeles",
   "usageTip": "Consejo",
   "usageTipContent": "Las reglas generadas se pueden usar directamente para filtrar anuncios en routers, compatible con firmware Asus, Merlin, OpenWrt y otros",
-  "adguardFormat": "AdGuard",
-  "whitelistFormat": "Lista blanca",
+  "adguardFormat": "ADGuard Blacklist",
+  "whitelistFormat": "ADGuard Whitelist",
   "toast": {
     "autosaveRestored": "Se ha restaurado el contenido guardado automáticamente (hace {time} minutos)",
     "parseFailed": "Error de análisis, por favor verifica el formato de entrada",

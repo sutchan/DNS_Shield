@@ -54,8 +54,8 @@
   "usageStep3Desc": "Klikněte na tlačítko \"Vygenerovat pravidla\", zkontrolujte výsledek a stáhněte ho do lokálního zařízení nebo zkopírujte do schránky",
   "usageTip": "Tip",
   "usageTipContent": "Vygenerovaná pravidla lze přímo použít pro filtrování reklam na routeru, podporuje firmware Asus, Merlin, OpenWrt a další",
-  "adguardFormat": "AdGuard",
-  "whitelistFormat": "Bílý seznam",
+  "adguardFormat": "ADGuard Blacklist",
+  "whitelistFormat": "ADGuard Whitelist",
   "toast": {
     "autosaveRestored": "Obnoveno automaticky uložený obsah (před {time} minutami)",
     "parseFailed": "Analýza selhala, prosím zkontrolujte formát vstupu",

@@ -14,6 +14,8 @@
 - hosts 白名单区块追加说明注释（hosts 原生不支持白名单语法，完整放行规则请使用 AdGuard 格式）
 - 补正 `src/config/version.ts` 的 `APP_VERSION` 单一来源版本滞后（此前停留在 3.7.26）
 - 升级全项目单一来源版本号至 v3.7.29
+- 修复 `clearAll` 未重置 `parsedData` 导致清空后右侧合并统计（mergeInfo）残留旧域名/白名单数据的不一致问题
+- 修复 AdGuard 黑名单规则 `||domain^$important` 等带 `$` 修饰符或缺失 `^` 结尾时被误判为无效域名、丢失拦截的问题
 
 ## [3.7.28] - 2026-08-17
 

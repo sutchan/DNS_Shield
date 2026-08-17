@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.ts v3.7.26
+// src/hooks/useDomainData.ts v3.7.29
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
 import { fetchDomainsText } from '../utils/domainFetch';
@@ -146,6 +146,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
 
   const clearAll = useCallback(() => {
     setSourceInput('');
+    setParsedData({ domains: [], whitelist: [], customDns: [] });
     setStats({ domainCount: 0, validCount: 0, commentCount: 0, blacklistCount: 0, whitelistCount: 0, invalidCount: 0 });
     // 同步清除本地自动保存与时间戳，避免清空后加载/刷新时旧内容复现
     try {
