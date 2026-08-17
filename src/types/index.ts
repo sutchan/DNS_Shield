@@ -1,4 +1,4 @@
-// src/types/index.ts v3.7.30
+// src/types/index.ts v3.7.31
 
 export type FormatType = 'hosts' | 'dnsmasq' | 'adguard' | 'whitelist';
 
@@ -137,6 +137,7 @@ export interface Translation {
   whitelist: {
     title: string;
     label: string;
+    hostsNote?: string;
   };
   toast: {
     rulesGenerated: string;

@@ -7,6 +7,13 @@
 
 ## [Unreleased]
 
+## [3.7.31] - 2026-08-17
+
+### Fixed
+- 修复生产构建 Type 错误：`src/types/index.ts` 的 i18n 类型缺失 `whitelist.hostsNote` 字段（`rulesGenerator.ts` 引用导致 `next build` 失败）
+- 修复 `useRules.ts` 中 `useEffect` 的 `react-hooks/exhaustive-deps` 警告：将 `runGenerate` 纳入依赖数组
+- 同步全部源文件头注释与展示版本号至 v3.7.31
+
 ## [3.7.30] - 2026-08-17
 
 ### Fixed

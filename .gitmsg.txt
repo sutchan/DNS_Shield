@@ -1,0 +1,10 @@
+fix: 修复生产构建类型错误并升级至v3.7.31
+
+- 根因：15 个非中英文 locale JSON 的 whitelist 缺 hostsNote 键，
+  导致 Translation 类型不成立、next build 失败
+- 将 types/index.ts 的 whitelist.hostsNote 改为可选，
+  rulesGenerator.ts 用 ?? '' 兜底（运行时由 deepMerge 继承 zh-cn）
+- 修复 useRules.ts useEffect exhaustive-deps 警告：runGenerate 包装 useCallback
+- 同步全部源文件头注释与展示版本号至 v3.7.31
+
+版本: v3.7.31

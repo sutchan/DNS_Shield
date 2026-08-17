@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.ts v3.7.30
+// src/utils/rulesGenerator.ts v3.7.31
 import { CustomDnsEntry, Settings, OutputContent, Translation } from '../types';
 
 // 生成头部
@@ -128,7 +128,7 @@ export const generateRules = (domains: string[], whitelist: string[], customDns:
       dnsmasqContent += `\n# ${t.whitelist.title}\n`;
       // hosts 原生不支持白名单语法：注明限制，但逐行列出已排除的域名供参考
       hostsContent += `\n# ${t.whitelist.title}\n`;
-      hostsContent += `# ${t.whitelist.hostsNote}\n`;
+      hostsContent += `# ${t.whitelist.hostsNote ?? ''}\n`;
       adguardContent += `\n! ${t.whitelist.title}\n`;
       whitelistContent += `# ${t.whitelist.title}\n`;
     }

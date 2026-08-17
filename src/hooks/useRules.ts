@@ -1,5 +1,5 @@
-// src/hooks/useRules.ts v3.7.30
-import { useState, useEffect, useRef } from 'react';
+// src/hooks/useRules.ts v3.7.31
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
 import { downloadOutput as downloadOutputUtil, copyToClipboard } from '../utils/fileUtils';
@@ -32,7 +32,8 @@ export const useRules = (
   }, [outputContent, currentFormat]);
 
   // 生成规则的核心逻辑（不含 toast），供按钮点击与自动同步复用
-  const runGenerate = (notify: boolean) => {
+  // 用 useCallback 稳定引用，避免 useEffect 依赖抖动触发 exhaustive-deps 警告
+  const runGenerate = useCallback((notify: boolean) => {
     // 必须本地重新 parseSource(sourceInput) 而非复用传入的 parsedData：
     // 1) 避开 useDomainData 的 300ms 防抖延迟（刚输入即点击生成时 parsedData 尚未更新）；
     // 2) 避免 React state 闭包捕获的旧值。此为有意设计，非冗余双解析。
@@ -49,7 +50,7 @@ export const useRules = (
     generateLineNumbers(content || '', outputLineNumbersRef);
 
     if (notify) showToast('rulesGenerated');
-  };
+  }, [sourceInput, settings, t, currentFormat, syncParsedData, showToast]);
 
   // 监听 sourceInput：只要存在可解析内容即自动生成，确保右侧预览（含白名单标签页）
   // 始终反映当前数据，避免"左侧有白名单但右侧生成窗口为空"的失效观感。
@@ -60,7 +61,7 @@ export const useRules = (
       lastSourceRef.current = sourceInput;
       runGenerate(false);
     }
-  }, [sourceInput]);
+  }, [sourceInput, runGenerate]);
 
   // 生成规则（按钮触发，带提示）
   const generateRules = () => {
