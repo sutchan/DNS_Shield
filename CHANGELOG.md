@@ -7,6 +7,33 @@
 
 ## [Unreleased]
 
+## [3.7.37] - 2026-08-17
+
+### Added
+- 页脚新增 GitHub Star 引导按钮：在 GitHub 链接旁以主色高亮胶囊样式展示"如果对你有帮助，请给项目点个 Star ⭐"，引导用户为仓库标星
+- 新增 `starLink` / `starLinkAria` 国际化文案（中英文提供，其余语言经 deepMerge 兜底 zh-cn）
+- 补充 `footer-star-link` 语义化样式与 `github-star-link` id
+
+## [3.7.36] - 2026-08-17
+
+### Changed
+- 更新项目字体风格，参考 Claude Code 官方排版（Anthropic 品牌观感）
+  - 引入设计令牌 `--font-sans`（Inter）与 `--font-mono`（JetBrains Mono 几何等宽），统一正文与代码字体栈
+  - `tailwind.config.js` 的 `fontFamily` 映射至上述 CSS 变量，使 `font-sans`/`font-mono` 工具类全局一致
+  - 正文强化 Inter 字符变体（`ss01`）与 `optimizeLegibility`，标题沿用 `tracking-tight`
+  - `layout.tsx` 预连接并加载 Google Fonts（Inter + JetBrains Mono），离线时回退系统字体保证可用
+  - 同步全局版本展示位至 v3.7.36
+
+## [3.7.35] - 2026-08-17
+
+### Changed
+- 品牌资产迁移至 `public/`：根 `brand/` 目录资产整合进应用资源目录，消除重复源
+  - `logo.svg` / `favicon.svg` 同步至 `public/` 根（应用页眉与浏览器 favicon）
+  - 新增 `public/logo-mono.svg`（单色反白标志，深色背景/单色印刷用）
+  - 品牌文档（`brand-colors.md`、说明）移入 `public/brand/`（线上可访问）
+  - 删除根 `brand/` 目录，品牌资源统一以 `public/` 为运行时读取位置
+- 同步全局版本展示位至 v3.7.35
+
 ## [3.7.34] - 2026-08-17
 
 ### Added

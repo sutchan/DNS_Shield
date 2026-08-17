@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   DNS Shield — Design System v3.7.30
+   DNS Shield — Design System v3.7.36
    Designer: UI Designer
    Philosophy: Swiss Precision × Calm Technology
    ============================================ */
@@ -53,6 +53,15 @@
     --radius-lg: 0.625rem;
     --radius-xl: 0.75rem;
     --radius-2xl: 1rem;
+
+    /* --- Typography tokens (参考 Claude Code 官方风格) --- */
+    /* 正文：Inter，清晰现代中性，贴近 Anthropic/Claude 品牌观感 */
+    --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto,
+      'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    /* 等宽/代码：JetBrains Mono 几何等宽，强化 Claude Code 终端美学，
+       回退系统字体栈以保证离线构建可用 */
+    --font-mono: 'JetBrains Mono', 'Berkeley Mono', ui-monospace, SFMono-Regular,
+      'SF Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
   }
 
   .dark {
@@ -100,10 +109,12 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    font-family: var(--font-sans);
+    /* Inter 字符变体：优化数字、括号与连字，贴近 Claude Code 排版细节 */
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   ::selection {
@@ -485,6 +496,10 @@
 
 .footer-link {
   @apply inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-150;
+}
+
+.footer-star-link {
+  @apply inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors duration-150 px-2.5 py-1 rounded-full border border-primary/30 bg-primary/5;
 }
 
 .footer-version {

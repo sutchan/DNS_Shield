@@ -114,5 +114,7 @@
   "urlActionsAria": "URL actions",
   "urlListAria": "URL list",
   "usageGuideAria": "Usage guide",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starLink": "If this helps, please star the project ⭐",
+  "starLinkAria": "Star this project on GitHub (opens in new window)"
 }

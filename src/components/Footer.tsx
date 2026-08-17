@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v3.7.30
+// src/components/Footer.tsx v3.7.36
 'use client';
 import React, { useState } from 'react';
 import { useT } from '../context/AppContext';
@@ -36,6 +36,20 @@ const Footer: React.FC<FooterProps> = ({
               <polyline points="15 3 21 3 21 9"></polyline>
               <line x1="10" y1="14" x2="21" y2="3"></line>
             </svg>
+          </a>
+          <a
+            href="https://github.com/sutchan/DNS_Shield"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-star-link"
+            id="github-star-link"
+            aria-label={t.starLinkAria ?? t.githubLinkAria}
+            title={t.starLinkAria ?? t.githubLinkAria}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span>{t.starLink ?? 'Star'}</span>
           </a>
           <a 
             href="https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md" 

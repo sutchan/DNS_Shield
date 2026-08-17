@@ -114,5 +114,7 @@
   "urlActionsAria": "URL操作",
   "urlListAria": "URL列表",
   "usageGuideAria": "使用指南",
-  "changelogLinkAria": "查看更新日志（新窗口打开）"
+  "changelogLinkAria": "查看更新日志（新窗口打开）",
+  "starLink": "如果对你有帮助，请给项目点个 Star ⭐",
+  "starLinkAria": "在 GitHub 上为本项目标星（新窗口打开）"
 }

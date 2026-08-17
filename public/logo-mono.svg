@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="40" viewBox="0 0 180 40" role="img" aria-label="DNS Shield">
+  <g>
+    <path d="M20 4 6 9v9c0 6.5 5 11 14 13 9-2 14-6.5 14-13V9L20 4z" fill="#ffffff"/>
+    <path d="M15.5 20.2l4.3 4.3 8.2-8.2" fill="none" stroke="#0D5FE2" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="44" y="27" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="20" font-weight="700" letter-spacing="-0.4" fill="#ffffff">DNS&#160;Shield</text>
+</svg>

@@ -59,7 +59,7 @@ const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
   env: {
-    version: '3.7.34'
+    version: '3.7.37'
   },
   devIndicators: {
     buildActivity: false

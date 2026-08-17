@@ -102,6 +102,8 @@ export interface Translation {
   removeUrlAria: string;
   githubLinkAria: string;
   changelogLinkAria: string;
+  starLink?: string;
+  starLinkAria?: string;
   hostsFormat: string;
   dnsmasqFormat: string;
   mergeStats: string;
