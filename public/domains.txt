@@ -523,112 +523,271 @@ ad.gifshow.com
 ad.weishi.qq.com
 ad.kwai.com
 
-# 白名单 (允许这些域名)
+# 白名单 (允许这些域名，格式：+domain)
 
-# ========== 小米米家智能家居设备 ==========
-@@||ai.xiaomi.com^$important
-@@||api.io.mi.com^$important
-@@||api.ai.xiaomi.com^$important
-@@||access.speech.ai.xiaomi.com^$important
-@@||account-dcm.ai.xiaomi.com^$important
-@@||galleryapi.micloud.xiaomi.net^$important
-@@||tracker.ai.xiaomi.com^$important
-@@||resolver.mi.xiaomi.com^$important
-@@||api2.mina.mi.com^$important
-@@||lbs.mina.mi.com^$important
-@@||sts.api.io.mi.com^$important
-@@||api.micloud.xiaomi.net^$important
-@@||idm.iot.mi.com^$important
-@@||file.xmpush.xiaomi.com^$important
-@@||milink.pandora.xiaomi.com^$important
-@@||o2o.api.xiaomi.com^$important
+# ========== 小米米家智能家居 ==========
++access.speech.ai.xiaomi.com
++account-dcm.ai.xiaomi.com
++ai.xiaomi.com
++api.ai.xiaomi.com
++api.io.mi.com
++api.micloud.xiaomi.net
++api2.mina.mi.com
++file.xmpush.xiaomi.com
++galleryapi.micloud.xiaomi.net
++idm.iot.mi.com
++lbs.mina.mi.com
++milink.pandora.xiaomi.com
++o2o.api.xiaomi.com
++resolver.mi.xiaomi.com
++sts.api.io.mi.com
++tracker.ai.xiaomi.com
 
-# ========== 小爱同学 / AI 相关 ==========
-@@||tracker.xiaomixiaoai.com^$important
-
-# ========== 小米账户与安全 ==========
-@@||account.xiaomi.com^$important
-@@||ak.lp.account.xiaomi.com^$important
-@@||auth.be.sec.miui.com^$important
+# ========== 小米 ==========
++tracker.xiaomixiaoai.com
++account.xiaomi.com
++ak.lp.account.xiaomi.com
++auth.be.sec.miui.com
 
 # ========== MIUI 系统服务 ==========
-@@||market.mi-img.com^$important
-@@||market.xiaomi.com^$important
++market.mi-img.com
++market.xiaomi.com
 
 # ========== 小爱大屏 ==========
-@@||api.hybrid.xiaomi.com^$important
++api.hybrid.xiaomi.com
 
-# ========== Google Play ==========
-@@||connectivitycheck.gstatic.com^$important
+# ========== Google Play 连通性检测 ==========
++connectivitycheck.gstatic.com
 
 # ========== 快手 / 抖音 ==========
-@@||creator-api.kuaishouzt.com^$important
-@@||api.kuaishouzt.com^$important
-@@||push.ksapisrv.com^$important
-@@||api.e.kuaishou.cn^$important
-@@||mon.tiktokv.com^$important
++api.e.kuaishou.cn
++api.kuaishouzt.com
++creator-api.kuaishouzt.com
++mon.tiktokv.com
++push.ksapisrv.com
 
 # ========== 其他工具 ==========
-@@||s.deepl.com^$important
-@@||talk.bz.gepush.com^$important
-@@||talk.bz.getui.net^$important
-
-# ========== 光大银行 ==========
-@@||cebbank.com^$important
-@@||e.cebbank.com^$important
-@@||ebank.cebbank.com^$important
-@@||open.cebbank.com^$important
-@@||www.cebbank.com^$important
-@@||static.cebbank.com^$important
-@@||ehkg.cebbank.com^$important
-@@||auth.cebbank.com^$important
-@@||b2e.cebbank.com^$important
-@@||corp.cebbank.com^$important
-@@||pay.cebbank.com^$important
-@@||dns1.cebbank.com^$important
-@@||dns2.cebbank.com^$important
-@@||dns3.cebbank.com^$important
-@@||dns4.cebbank.com^$important
-@@||dns5.cebbank.com^$important
-@@||dns6.cebbank.com^$important
-@@||ns1.zcebbank.com.cn^$important
-
-# ========== 腾讯云 ==========
-@@||console.cloud.tencent.com^$important
-
-# ========== 本地开发 ==========
-@@||localhost^$important
++s.deepl.com
++talk.bz.gepush.com
++talk.bz.getui.net
 
 # ========== 银行网银 ==========
-@@||icbc.com.cn^$important
-@@||ccb.com^$important
-@@||ccb.cn^$important
-@@||abchina.com^$important
-@@||boc.cn^$important
-@@||bankofchina.com^$important
-@@||bankcomm.com^$important
-@@||cmbchina.com^$important
-@@||citicbank.com^$important
-@@||ecitic.com^$important
-@@||spdb.com.cn^$important
-@@||cmbc.com.cn^$important
-@@||cib.com.cn^$important
-@@||hxb.com.cn^$important
-@@||cgbchina.com.cn^$important
-@@||psbc.com^$important
-@@||bankofbeijing.com.cn^$important
-@@||bosc.cn^$important
-@@||nbcb.com.cn^$important
-@@||czbank.com^$important
-@@||cbhb.com.cn^$important
-@@||bank.pingan.com^$important
++auth.cebbank.com
++b2e.cebbank.com
++cebbank.com
++corp.cebbank.com
++dns1.cebbank.com
++dns2.cebbank.com
++dns3.cebbank.com
++dns4.cebbank.com
++dns5.cebbank.com
++dns6.cebbank.com
++e.cebbank.com
++ebank.cebbank.com
++ehkg.cebbank.com
++ns1.zcebbank.com.cn
++open.cebbank.com
++pay.cebbank.com
++static.cebbank.com
++www.cebbank.com
++abchina.com
++bank.pingan.com
++bankcomm.com
++bankofbeijing.com.cn
++bankofchina.com
++boc.cn
++bosc.cn
++cbhb.com.cn
++ccb.cn
++ccb.com
++cgbchina.com.cn
++cib.com.cn
++citicbank.com
++cmbc.com.cn
++cmbchina.com
++czbank.com
++ecitic.com
++hxb.com.cn
++icbc.com.cn
++nbcb.com.cn
++psbc.com
++spdb.com.cn
++bohs.com.cn
++bsb.cn
++ccbank.cn
++cqcbank.com.cn
++cscb.cn
++dongguanbank.cn
++dyccb.com
++egbank.com.cn
++fudianbank.com
++gycbank.com
++gzccb.com.cn
++h3cb.com
++hebbank.com
++hkbchina.com
++hljbank.com
++hrbank.com.cn
++husbank.com
++hzbank.com.cn
++jhbchina.com
++jinzhoubank.com.cn
++jsbchina.cn
++jshbank.com
++jx-bank.com
++jxbank.com
++lnbank.com.cn
++lycb.com.cn
++lzbank.com.cn
++njcb.com.cn
++nxbank.com
++qdbank.cn
++qhrcb.com
++qlbank.com
++shengjingbank.com.cn
++srcb.com.cn
++szbank.cn
++tccb.com.cn
++tcrbank.com
++wzcb.com.cn
++xacbank.com
++xmbank.com.cn
++ynbank.com
++zybank.com.cn
++zzbank.cn
 
 # ========== 主流访问入口 ==========
-@@||alipay.com^$important
-@@||12306.cn^$important
-@@||gjzwfw.gov.cn^$important
-@@||chinatax.gov.cn^$important
-@@||mps.gov.cn^$important
++12306.cn
++alipay.com
++chinatax.gov.cn
++gjzwfw.gov.cn
++mps.gov.cn
 
-# ========== 淘宝 ==========
-@@||adashx.m.taobao.com^$important
+# ========== 综合电商 ==========
++amazon.cn
++dangdang.com
++gome.com.cn
++jd.com
++kaola.com
++pinduoduo.com
++suning.com
++taobao.com
++tmall.com
++vip.com
+
+# ========== 社交 / 通讯 ==========
++douban.com
++im.qq.com
++qq.com
++qzone.qq.com
++renren.com
++tieba.baidu.com
++tim.qq.com
++weibo.com
++weixin.qq.com
++wx.qq.com
++zhihu.com
+
+# ========== 短视频 / 直播 ==========
++acfun.com
++bilibili.com
++douyin.com
++douyu.com
++huya.com
++kuaishou.com
++xigua.com
+
+# ========== 长视频 / 音乐 ==========
++iqiyi.com
++kugou.com
++kuwo.cn
++letv.com
++mgtv.com
++miguvideo.com
++music.163.com
++pptv.com
++tv.sohu.com
++y.qq.com
++youku.com
+
+# ========== 搜索 / 门户 / 资讯 ==========
++163.com
++360.cn
++baidu.com
++cctv.com
++chinanews.com.cn
++ifeng.com
++people.com.cn
++sina.com
++sina.com.cn
++so.com
++sogou.com
++thepaper.cn
++toutiao.com
++xinhuanet.com
+
+# ========== 出行 / 旅游 / 外卖 ==========
++caocaokeji.cn
++ctrip.com
++dianping.com
++didichuxing.com
++didiglobal.com
++ele.me
++fliggy.com
++meituan.com
++qunar.com
++shouqi.com
++trip.com
++uber.com
+
+# ========== 办公 / 邮箱 / 云盘 ==========
++aliyun.com
++dingtalk.com
++docer.com
++feishu.cn
++foxmail.com
++larksuite.com
++mail.163.com
++mail.qq.com
++mail.sina.com.cn
++pan.baidu.com
++qiniu.com
++teambition.com
++upyun.com
++weiyun.com
++wps.cn
+
+# ========== 开发 / 技术 ==========
++console.cloud.tencent.com
++cloud.tencent.com
++baiducloud.com
++bing.com
++cn.bing.com
++cnblogs.com
++csdn.net
++developer.aliyun.com
++gitee.com
++github.com
++gitlab.com
++huaweicloud.com
++juejin.cn
++npmjs.com
++npmjs.org
++oschina.net
++stackoverflow.com
+
+# ========== 教育 / 工具 ==========
++canva.cn
++cnki.net
++icourse163.org
++izhihu.com
++mooc.com
++processon.com
++runoob.com
++smzdm.com
++w3school.com.cn
++wangfangdata.com.cn
++xuetangx.com
++youdao.com
++zhihuishu.com
++zhongchou.com
