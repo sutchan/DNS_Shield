@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "Generator reguł filtrowania reklam na poziomie routera",
   "inputTitle": "Wprowadź listę domen",
   "advanced": "Zaawansowane",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "Pobierz wszystkie",
   "presetLabel": "Predefiniowane:",
   "builtinAd": "Wbudowane",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# Wprowadź domeny, po jednej na wiersz\nad.example.com\nads.example.com\n# Prefiks + dla białej listy\n# @domain=ip dla niestandardowego DNS",
@@ -33,6 +33,7 @@
   "blockIPv6": "Blokuj IPv6",
   "dedup": "Automatycznie usuń duplikaty",
   "removeWildcard": "Usuń znaki wildcard",
+  "AdGuardIncludeWhitelist": "Uwzględnij whitelist w AdGuard Blacklist",
   "lightMode": "Tryb jasny",
   "darkMode": "Tryb ciemny",
   "inputHelp": "Wprowadź listę domen, jedną na wiersz",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "Kliknij przycisk \"Wygeneruj reguły\", wyświetl podgląd wyniku, a następnie pobierz go na lokalne urządzenie lub skopiuj do schowka",
   "usageTip": "Wskazówka",
   "usageTipContent": "Wygenerowane reguły mogą być używane bezpośrednio do filtrowania reklam na routerze, obsługuje firmware Asus, Merlin, OpenWrt i inne",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "Odtworzono automatycznie zapisany zawartość ({time} minut temu)",
     "parseFailed": "Przetworzenie nie powiodło się, sprawdź format wejściowy",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "Lista blokowania reklam Dnsmasq",
     "hostsTitle": "Lista blokowania reklam Hosts",
-    "adguardTitle": "Filtr blokowania reklam AdGuard",
+    "AdGuardTitle": "Filtr blokowania reklam AdGuard",
     "description": "Filtr blokowania reklam na poziomie routera",
     "hostsDescription": "Plik hosts do blokowania reklam na poziomie routera",
-    "adguardDescription": "Filtr blokowania reklam zgodny z AdGuard",
+    "AdGuardDescription": "Filtr blokowania reklam zgodny z AdGuard",
     "usage": "Użycie:",
     "merlinUsage": "- Merlin: Software Center -> Ustawienia DNS",
     "openwrtUsage": "- OpenWrt: Usługi -> DHCP i DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "Akcje URL",
   "urlListAria": "Lista URL",
   "usageGuideAria": "Przewodnik użytkowania",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starPrompt": "Jeśli to pomaga, oceń projekt Star ⭐"
 }

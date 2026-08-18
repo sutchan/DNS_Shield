@@ -1,21 +1,23 @@
-// src/utils/rulesGenerator.test.ts v3.7.30
+// src/utils/rulesGenerator.test.ts v3.7.39
 import { describe, it, expect } from 'vitest';
 import { generateRules, generateHeader } from './rulesGenerator';
 import { parseSource } from './parser';
 import { getTranslation } from './i18n';
+import { APP_VERSION } from '../config/version';
 import type { Settings, CustomDnsEntry } from '../types';
 
 const t = getTranslation('zh-cn');
 
 const baseSettings: Settings = {
   projectName: 'DNS Shield',
-  version: '3.6.1',
+  version: APP_VERSION,
   ipv4: '127.0.0.1',
   ipv6: '::',
   addHeader: true,
   blockIPv6: false,
   dedupDomains: true,
   removeWildcard: true,
+  adguardIncludeWhitelist: true,
   dnsmasqFilename: 'dnsmasq.conf',
   hostsFilename: 'hosts.txt',
   adguardFilename: 'adguard.txt',
@@ -109,7 +111,7 @@ describe('generateHeader', () => {
   it('hosts 头部包含项目名与版本', () => {
     const header = generateHeader('hosts', 10, 2, '2026.07.21', baseSettings, t);
     expect(header).toContain('DNS Shield');
-    expect(header).toContain('3.6.1');
+    expect(header).toContain(APP_VERSION);
     expect(header).toContain('10 个唯一域名');
   });
 

@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-08-17（与 package.json v3.7.34 对齐）
+> 最后审查：2026-08-17（与 package.json v3.7.41 对齐）
 
 ## 1. 项目概述
 
@@ -13,7 +13,7 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.7.34 |
+| 当前版本 | v3.7.41 |
 | 拦截域名 | 524 (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |

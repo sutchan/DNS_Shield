@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "Router-level ad filtering rule generator",
   "inputTitle": "Input Domain List",
   "advanced": "Advanced",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "Fetch All",
   "presetLabel": "Presets:",
   "builtinAd": "Built-in",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# Enter domains, one per line\nad.example.com\nads.example.com\n# + prefix for whitelist\n# @domain=ip for custom DNS",
@@ -33,6 +33,7 @@
   "blockIPv6": "Block IPv6",
   "dedup": "Auto Deduplicate",
   "removeWildcard": "Remove Wildcards",
+  "AdGuardIncludeWhitelist": "Include Whitelist in AdGuard Blacklist",
   "lightMode": "Light Mode",
   "darkMode": "Dark Mode",
   "inputHelp": "Enter domain list, one per line",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "Click \"Generate Rules\" button, preview the result, then download to local or copy to clipboard",
   "usageTip": "Tip",
   "usageTipContent": "Generated rules can be directly used for router ad filtering, supporting Asus, Merlin, OpenWrt and other firmware",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "Restored auto-saved content ({time} min ago)",
     "parseFailed": "Parsing failed, please check input format",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "Dnsmasq Ad Block List",
     "hostsTitle": "Hosts Ad Block List",
-    "adguardTitle": "AdGuard Ad Block Filter",
+    "AdGuardTitle": "AdGuard Ad Block Filter",
     "description": "Router-level ad blocking filter",
     "hostsDescription": "Router-level ad blocking hosts file",
-    "adguardDescription": "AdGuard-compatible ad blocking filter",
+    "AdGuardDescription": "AdGuard-compatible ad blocking filter",
     "usage": "Usage:",
     "merlinUsage": "- Merlin: Software Center -> DNS Settings",
     "openwrtUsage": "- OpenWrt: Services -> DHCP and DNS",
@@ -115,6 +116,7 @@
   "urlListAria": "URL list",
   "usageGuideAria": "Usage guide",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starLink": "If this helps, please star the project ⭐",
-  "starLinkAria": "Star this project on GitHub (opens in new window)"
+  "starLink": "Star",
+  "starLinkAria": "Star this project on GitHub (opens in new window)",
+  "starPrompt": "If this helps, please give the project a Star ⭐"
 }

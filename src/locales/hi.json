@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "राउटर स्तर पर विज्ञापन फ़िल्टरिंग नियम जनरेटर",
   "inputTitle": "डोमेन सूची दर्ज करें",
   "advanced": "उन्नत",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "सभी प्राप्त करें",
   "presetLabel": "पूर्वनिर्धारित:",
   "builtinAd": "निहित",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# डोमेन दर्ज करें, प्रत्येक पंक्ति में एक\nad.example.com\nads.example.com\n# व्हाइटलिस्ट के लिए + उपसर्ग\n# कस्टम DNS के लिए @domain=ip",
@@ -33,6 +33,7 @@
   "blockIPv6": "IPv6 को अवरुद्ध करें",
   "dedup": "स्वचालित रूप से डुप्लिकेट हटाएं",
   "removeWildcard": "वाइल्डकार्ड हटाएं",
+  "AdGuardIncludeWhitelist": "AdGuard ब्लैकलिस्ट में व्हाइटलिस्ट शामिल करें",
   "lightMode": "लाइट मोड",
   "darkMode": "डार्क मोड",
   "inputHelp": "डोमेन सूची दर्ज करें, प्रति पंक्ति एक",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "\"नियम जनरेट करें\" बटन पर क्लिक करें, परिणाम पूर्वावलोकन करें और इसे स्थानीय डिवाइस पर डाउनलोड करें, या क्लिपबोर्ड पर कॉपी करें",
   "usageTip": "सुझाव",
   "usageTipContent": "जनरेट किए गए नियमों का उपयोग सीधे राउटर विज्ञापन फ़िल्टरिंग के लिए किया जा सकता है, Asus, Merlin, OpenWrt और अन्य फर्मवेयर का समर्थन करता है",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "ऑटो-सेव्ड सामग्री पुनर्स्थापित की गई (पिछले {time} मिनट पहले)",
     "parseFailed": "विश्लेषण विफल, कृपया इनपुट प्रारूप की जाँच करें",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "Dnsmasq विज्ञापन ब्लॉक सूची",
     "hostsTitle": "Hosts विज्ञापन ब्लॉक सूची",
-    "adguardTitle": "AdGuard विज्ञापन ब्लॉक फ़िल्टर",
+    "AdGuardTitle": "AdGuard विज्ञापन ब्लॉक फ़िल्टर",
     "description": "राउटर स्तर पर विज्ञापन ब्लॉकिंग फ़िल्टर",
     "hostsDescription": "राउटर स्तर पर विज्ञापन ब्लॉकिंग hosts फ़ाइल",
-    "adguardDescription": "AdGuard के साथ संगत विज्ञापन ब्लॉकिंग फ़िल्टर",
+    "AdGuardDescription": "AdGuard के साथ संगत विज्ञापन ब्लॉकिंग फ़िल्टर",
     "usage": "उपयोग:",
     "merlinUsage": "- Merlin: सॉफ़्टवेयर सेंटर -> DNS सेटिंग्स",
     "openwrtUsage": "- OpenWrt: सेवाएँ -> DHCP और DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "URL क्रियाएँ",
   "urlListAria": "URL सूची",
   "usageGuideAria": "उपयोग गाइड",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starPrompt": "अगर यह मददगार है, तो प्रोजेक्ट को Star दें ⭐"
 }

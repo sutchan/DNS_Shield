@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "Генератор правил фильтрации рекламы на уровне маршрутизатора",
   "inputTitle": "Введите список доменов",
   "advanced": "Расширенные",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "Получить все",
   "presetLabel": "Предустановки:",
   "builtinAd": "Встроенные",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# Введите домены, по одному на строку\nad.example.com\nads.example.com\n# Префикс + для белого списка\n# @domain=ip для пользовательского DNS",
@@ -33,6 +33,7 @@
   "blockIPv6": "Блокировать IPv6",
   "dedup": "Автоматически удалять дубликаты",
   "removeWildcard": "Удалить подстановочные знаки",
+  "AdGuardIncludeWhitelist": "Включить whitelist в AdGuard Blacklist",
   "lightMode": "Светлая тема",
   "darkMode": "Тёмная тема",
   "inputHelp": "Введите список доменов, по одному на строку",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "Нажмите кнопку \"Сгенерировать правила\", предварительно просмотрите результат, а затем скачайте его на локальное устройство или скопируйте в буфер обмена",
   "usageTip": "Совет",
   "usageTipContent": "Сгенерированные правила можно использовать напрямую для фильтрации рекламы на маршрутизаторе, поддерживает прошивки Asus, Merlin, OpenWrt и другие",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "Восстановлено автосохраненное содержимое ({time} минут назад)",
     "parseFailed": "Разбор не удался, проверьте формат входных данных",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "Список блокировки рекламы Dnsmasq",
     "hostsTitle": "Список блокировки рекламы Hosts",
-    "adguardTitle": "Фильтр блокировки рекламы AdGuard",
+    "AdGuardTitle": "Фильтр блокировки рекламы AdGuard",
     "description": "Фильтр блокировки рекламы на уровне маршрутизатора",
     "hostsDescription": "Файл hosts для блокировки рекламы на уровне маршрутизатора",
-    "adguardDescription": "Фильтр блокировки рекламы, совместимый с AdGuard",
+    "AdGuardDescription": "Фильтр блокировки рекламы, совместимый с AdGuard",
     "usage": "Использование:",
     "merlinUsage": "- Merlin: Центр программ -> Настройки DNS",
     "openwrtUsage": "- OpenWrt: Сервисы -> DHCP и DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "Действия URL",
   "urlListAria": "Список URL",
   "usageGuideAria": "Руководство по использованию",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starPrompt": "Если помогло, поставьте проекту Star ⭐"
 }

@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "Generator aturan filtering iklan tingkat router",
   "inputTitle": "Masukkan Daftar Domain",
   "advanced": "Lanjutan",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "Ambil Semua",
   "presetLabel": "Preset:",
   "builtinAd": "Bawaan",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# Masukkan domain, satu per baris\nad.example.com\nads.example.com\n# Awalan + untuk daftar putih\n# @domain=ip untuk DNS kustom",
@@ -33,6 +33,7 @@
   "blockIPv6": "Blokir IPv6",
   "dedup": "Hapus Duplikat Otomatis",
   "removeWildcard": "Hapus Karakter Pengganti",
+  "AdGuardIncludeWhitelist": "Sertakan Whitelist di AdGuard Blacklist",
   "lightMode": "Mode Terang",
   "darkMode": "Mode Gelap",
   "inputHelp": "Masukkan daftar domain, satu per baris",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "Klik tombol \"Generate Aturan\", pratinjau hasilnya lalu unduh ke perangkat lokal, atau salin ke clipboard",
   "usageTip": "Tip",
   "usageTipContent": "Aturan yang dihasilkan dapat digunakan langsung untuk filtering iklan router, mendukung firmware Asus, Merlin, OpenWrt, dan lainnya",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "Konten autosave telah dipulihkan ({time} menit yang lalu)",
     "parseFailed": "Parsing gagal, silakan periksa format input",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "Daftar Blok Iklan Dnsmasq",
     "hostsTitle": "Daftar Blok Iklan Hosts",
-    "adguardTitle": "Filter Blok Iklan AdGuard",
+    "AdGuardTitle": "Filter Blok Iklan AdGuard",
     "description": "Filter blokir iklan tingkat router",
     "hostsDescription": "File hosts untuk blokir iklan tingkat router",
-    "adguardDescription": "Filter blokir iklan yang kompatibel dengan AdGuard",
+    "AdGuardDescription": "Filter blokir iklan yang kompatibel dengan AdGuard",
     "usage": "Penggunaan:",
     "merlinUsage": "- Merlin: Software Center -> Pengaturan DNS",
     "openwrtUsage": "- OpenWrt: Layanan -> DHCP dan DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "Aksi URL",
   "urlListAria": "Daftar URL",
   "usageGuideAria": "Panduan penggunaan",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starPrompt": "Jika membantu, mohon berikan Star pada proyek ⭐"
 }

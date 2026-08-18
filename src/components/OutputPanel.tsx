@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.7.30
+// src/components/OutputPanel.tsx v3.7.41
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -130,7 +130,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-2 justify-end" id="output-actions" role="group" aria-label={t.outputActionsAria}>
-          <Button type="button" variant="default" onClick={generateRules} id="generate-rules-btn">
+          <Button type="button" variant="default" onClick={generateRules} id="generate-rules-btn" className="font-semibold shadow-md">
             <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
             {t.generateBtn}
           </Button>

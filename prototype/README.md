@@ -1,4 +1,4 @@
-# DNS Shield — 项目原型 (Prototype) v3.7.34
+# DNS Shield — 项目原型 (Prototype) v3.7.41
 
 > 高保真、可交互、内联真实数据的产品原型，与真实引擎 `src/` 及 OpenSpec 规范保持最小颗粒度对齐。
 
@@ -39,28 +39,28 @@ prototype/
 
 ## 品牌形象（Brand Assets）
 
-品牌资产统一归集于仓库根 `/brand`（权威源），应用运行时副本位于 `public/`：
+品牌资产统一存放于 `public/`（应用运行时直接读取），线上品牌说明位于 `public/brand/`：
 
-| 资源 | 权威源（`brand/`） | 应用副本（`public/`） | 用途 |
-|------|------|------|------|
-| 品牌 Logo | `brand/logo.svg` | `public/logo.svg` | 盾牌图标 + "DNS Shield" 文字，用于 README / OG / 文档 |
-| 网站图标 | `brand/favicon.svg` | `public/favicon.svg` | 盾牌 + 防护对勾，浅底主蓝，浏览器标签（`<link rel="icon" type="image/svg+xml">`） |
-| 反白标志 | `brand/logo-mono.svg` | — | 深色背景 / 单色印刷 |
-| PWA 图标集 | 由 `brand/favicon.svg` 导出 | `public/assets/icons/icon-{72,96,128,144,152,192,384,512}.png` | 安装到主屏、manifest 引用 |
-| 调色板规范 | `brand/brand-colors.md` | — | 主色 / 色阶 / 中性 / 语义色 |
+| 资源 | 应用路径（`public/`） | 用途 |
+|------|------|------|
+| 品牌 Logo | `public/logo.svg` | 盾牌图标 + "DNS Shield" 文字，用于 README / OG / 文档 |
+| 网站图标 | `public/favicon.svg` | 盾牌 + 防护对勾，浅底主蓝，浏览器标签（`<link rel="icon" type="image/svg+xml">`） |
+| 反白标志 | `public/logo-mono.svg` | 深色背景 / 单色印刷 |
+| PWA 图标集 | `public/assets/icons/icon-{72,96,128,144,152,192,384,512}.png` | 安装到主屏、manifest 引用 |
+| 调色板规范 | `public/brand/brand-colors.md` | 主色 / 色阶 / 中性 / 语义色 |
 
 **品牌色（与 `shadcn/design-system.md` 的 `--primary` 严格一致）**
 - 主蓝（Light）：`hsl(217 89% 47%)` ≈ `#0D5FE2`
 - 主蓝（Dark）：`hsl(217 85% 55%)` ≈ `#2674F2`
-- 语义：保护 / 防护 / 可信。`manifest` 与 `viewport.themeColor` 已统一使用上述值（旧 `#007AFF` 已弃用）。完整色阶见 `brand/brand-colors.md`。
+- 语义：保护 / 防护 / 可信。`manifest` 与 `viewport.themeColor` 已统一使用上述值（旧 `#007AFF` 已弃用）。完整色阶见 `public/brand/brand-colors.md`。
 
 **使用规则**
-- 优先使用矢量 `brand/logo.svg` / `brand/favicon.svg`（任意缩放清晰）；PNG 仅用于需要位图的场景（PWA / 旧客户端）。
-- 图标主色始终取品牌主蓝，禁止随意改色；深色背景用 `brand/logo-mono.svg`。
+- 优先使用矢量 `public/logo.svg` / `public/favicon.svg`（任意缩放清晰）；PNG 仅用于需要位图的场景（PWA / 旧客户端）。
+- 图标主色始终取品牌主蓝，禁止随意改色；深色背景用 `public/logo-mono.svg`。
 - 应用内导航栏 Logo 复用 `lucide-react` 的 `Shield` 图标（`text-primary`），与 `favicon.svg` 视觉一致。
-- 修改标志时先更新 `brand/` 权威源，再同步复制到 `public/`。
+- 修改标志时直接更新 `public/` 下对应资产，并保持 `public/brand/` 文档同步。
 
-## 与真实引擎的同步状态（v3.7.34）
+## 与真实引擎的同步状态（v3.7.41）
 
 `index.html` 的解析/生成逻辑对齐 `src/utils/parser.ts`、`rulesGenerator.ts`、`domainValidator.ts`：
 
@@ -76,4 +76,4 @@ prototype/
 
 ## 版本
 
-当前原型版本 **v3.7.34**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。
+当前原型版本 **v3.7.41**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。

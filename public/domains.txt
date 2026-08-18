@@ -524,7 +524,7 @@ ad.kwai.com
 
 # 白名单 (允许这些域名，格式：+domain)
 
-# ========== 小米米家智能家居 ==========
+# ========== 小米 ==========
 +access.speech.ai.xiaomi.com
 +account-dcm.ai.xiaomi.com
 +ai.xiaomi.com
@@ -541,22 +541,13 @@ ad.kwai.com
 +resolver.mi.xiaomi.com
 +sts.api.io.mi.com
 +tracker.ai.xiaomi.com
-
-# ========== 小米 ==========
 +tracker.xiaomixiaoai.com
 +account.xiaomi.com
 +ak.lp.account.xiaomi.com
 +auth.be.sec.miui.com
-
-# ========== MIUI 系统服务 ==========
 +market.mi-img.com
 +market.xiaomi.com
-
-# ========== 小爱大屏 ==========
 +api.hybrid.xiaomi.com
-
-# ========== Google Play 连通性检测 ==========
-+connectivitycheck.gstatic.com
 
 # ========== 快手 / 抖音 ==========
 +api.e.kuaishou.cn
@@ -566,6 +557,7 @@ ad.kwai.com
 +push.ksapisrv.com
 
 # ========== 其他工具 ==========
++connectivitycheck.gstatic.com
 +s.deepl.com
 +talk.bz.gepush.com
 +talk.bz.getui.net
@@ -688,7 +680,7 @@ ad.kwai.com
 +wx.qq.com
 +zhihu.com
 
-# ========== 短视频 / 直播 ==========
+# ========== 短视频平台 ==========
 +acfun.com
 +bilibili.com
 +douyin.com
@@ -696,8 +688,6 @@ ad.kwai.com
 +huya.com
 +kuaishou.com
 +xigua.com
-
-# ========== 长视频 / 音乐 ==========
 +iqiyi.com
 +kugou.com
 +kuwo.cn

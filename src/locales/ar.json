@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "مولد قواعد فلترة الإعلانات على مستوى الراوتر",
   "inputTitle": "إدخال قائمة النطاقات",
   "advanced": "متقدم",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "جلب الكل",
   "presetLabel": "الإعدادات المسبقة:",
   "builtinAd": "مدمج",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# أدخل النطاقات، واحدة في كل سطر\nad.example.com\nads.example.com\n# بادئة + للقائمة البيضاء\n# @domain=ip لل DNS المخصص",
@@ -33,6 +33,7 @@
   "blockIPv6": "حظر IPv6",
   "dedup": "إزالة التكرارات التلقائية",
   "removeWildcard": "إزالة أحرف البدل",
+  "AdGuardIncludeWhitelist": "تضمين القائمة البيضاء في AdGuard Blacklist",
   "lightMode": "الوضع الفاتح",
   "darkMode": "الوضع الداكن",
   "inputHelp": "أدخل قائمة النطاقات، واحدة لكل سطر",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "انقر على زر \"إنشاء القواعد\"، قم بعرض النتيجة ثم قم بتنزيلها إلى الجهاز المحلي، أو نسخها إلى الحافظة",
   "usageTip": "تلميح",
   "usageTipContent": "يمكن استخدام القواعد المولدة مباشرةً لفلترة الإعلانات على الراوتر، مما يدعم أجهزة Asus، Merlin، OpenWrt وغيرها",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "تم استعادة المحتوى المحفوظ تلقائيًا (منذ {time} دقيقة)",
     "parseFailed": "فشل التحليل، يرجى التحقق من تنسيق الإدخال",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "قائمة فلترة Ad Block لـ Dnsmasq",
     "hostsTitle": "قائمة فلترة Ad Block لـ Hosts",
-    "adguardTitle": "قاعدة فلترة Ad Block لـ AdGuard",
+    "AdGuardTitle": "قاعدة فلترة Ad Block لـ AdGuard",
     "description": "قاعدة فلترة إعلانات على مستوى الراوتر",
     "hostsDescription": "ملف hosts لفلترة الإعلانات على مستوى الراوتر",
-    "adguardDescription": "قاعدة فلترة إعلانات متوافقة مع AdGuard",
+    "AdGuardDescription": "قاعدة فلترة إعلانات متوافقة مع AdGuard",
     "usage": "الاستخدام:",
     "merlinUsage": "- Merlin: مركز البرامج -> إعدادات DNS",
     "openwrtUsage": "- OpenWrt: الخدمات -> DHCP و DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "إجراءات URL",
   "urlListAria": "قائمة URL",
   "usageGuideAria": "دليل الاستخدام",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starPrompt": "إذا كان مفيدًا لك، يرجى منح المشروع Star ⭐"
 }

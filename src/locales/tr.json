@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "Router seviyesinde reklam filtreleme kuralı üretici",
   "inputTitle": "Alan Adı Listesi Girin",
   "advanced": "Gelişmiş",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "Hepsi Al",
   "presetLabel": "Ön Ayarlar:",
   "builtinAd": "Yerleşik",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# Alan adlarını girin, her satıra bir tane\nad.example.com\nads.example.com\n# Beyaz liste için + öneki\n# Özel DNS için @domain=ip",
@@ -33,6 +33,7 @@
   "blockIPv6": "IPv6'yi Engelle",
   "dedup": "Otomatik Tekrarları Kaldır",
   "removeWildcard": "Joker Karakterleri Kaldır",
+  "AdGuardIncludeWhitelist": "AdGuard Blacklist'e whitelist'i dahil et",
   "lightMode": "Açık Mod",
   "darkMode": "Koyu Mod",
   "inputHelp": "Alan adı listesini girin, her satıra bir tane",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "\"Kuralları Üret\" düğmesine tıklayın, sonucu önizleyin ve yerel cihazınıza indirin veya panoya kopyalayın",
   "usageTip": "İpucu",
   "usageTipContent": "Üretilen kurallar, Asus, Merlin, OpenWrt ve diğer donanımları destekleyen router reklam filtrelemesi için doğrudan kullanılabilir",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "Otomatik kaydedilen içerik geri yüklendi ({time} dakika önce)",
     "parseFailed": "Çözümleme başarısız, lütfen giriş biçimini kontrol edin",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "Dnsmasq Reklam Engelleme Listesi",
     "hostsTitle": "Hosts Reklam Engelleme Listesi",
-    "adguardTitle": "AdGuard Reklam Engelleme Filtresi",
+    "AdGuardTitle": "AdGuard Reklam Engelleme Filtresi",
     "description": "Router seviyesinde reklam engelleme filtresi",
     "hostsDescription": "Router seviyesinde reklam engelleme hosts dosyası",
-    "adguardDescription": "AdGuard ile uyumlu reklam engelleme filtresi",
+    "AdGuardDescription": "AdGuard ile uyumlu reklam engelleme filtresi",
     "usage": "Kullanım:",
     "merlinUsage": "- Merlin: Yazılım Merkezi -> DNS Ayarları",
     "openwrtUsage": "- OpenWrt: Hizmetler -> DHCP ve DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "URL eylemleri",
   "urlListAria": "URL listesi",
   "usageGuideAria": "Kullanım kılavuzu",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starPrompt": "Yardımcı olduysa, projeye bir Star verin ⭐"
 }

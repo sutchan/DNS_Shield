@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.ts v3.7.31
+// src/utils/rulesGenerator.ts v3.7.39
 import { CustomDnsEntry, Settings, OutputContent, Translation } from '../types';
 
 // 生成头部
@@ -129,13 +129,19 @@ export const generateRules = (domains: string[], whitelist: string[], customDns:
       // hosts 原生不支持白名单语法：注明限制，但逐行列出已排除的域名供参考
       hostsContent += `\n# ${t.whitelist.title}\n`;
       hostsContent += `# ${t.whitelist.hostsNote ?? ''}\n`;
-      adguardContent += `\n! ${t.whitelist.title}\n`;
+      if (settings.adguardIncludeWhitelist) {
+        adguardContent += `\n! ${t.whitelist.title}\n`;
+      }
       whitelistContent += `# ${t.whitelist.title}\n`;
     }
     filteredWhitelist.forEach(domain => {
       dnsmasqContent += `server=/${domain}/\n`;
       hostsContent += `# ${t.whitelist.label} ${domain}\n`;
-      adguardContent += `@@||${domain}^\n`;
+      // ADGuard 黑名单是否附带白名单豁免规则由开关控制：关闭时仅生成拦截规则，
+      // 保留纯黑名单语义（白名单仍可在独立“ADGuard 白名单”清单中单独导出）。
+      if (settings.adguardIncludeWhitelist) {
+        adguardContent += `@@||${domain}^\n`;
+      }
       whitelistContent += `@@||${domain}^\n`;
     });
   }

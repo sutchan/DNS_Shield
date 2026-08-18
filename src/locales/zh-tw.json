@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "路由器級全局廣告過濾規則生成工具",
   "inputTitle": "輸入域名清單",
   "advanced": "高級選項",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "獲取全部",
   "presetLabel": "預設源:",
   "builtinAd": "內建數據",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# 輸入域名，每行一個\nad.example.com\nads.example.com\n# + 開頭為白名單\n# @domain=ip 為自定義DNS",
@@ -33,6 +33,7 @@
   "blockIPv6": "阻止 IPv6",
   "dedup": "自動去重",
   "removeWildcard": "移除萬用字元",
+  "AdGuardIncludeWhitelist": "包含白名單(AdGuard黑名單)",
   "lightMode": "淺色模式",
   "darkMode": "深色模式",
   "inputHelp": "輸入域名列表，每行一個",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "點擊\"生成規則\"按鈕，預覽效果後下載到本機，或複製到剪貼板",
   "usageTip": "提示",
   "usageTipContent": "生成的規則可直接用於路由器廣告過濾，支援華碩、梅林、OpenWrt 等韌體",
-  "adguardFormat": "ADGuard 黑名單",
-  "whitelistFormat": "ADGuard 白名單",
+  "AdGuardFormat": "AdGuard 黑名單",
+  "whitelistFormat": "AdGuard 白名單",
   "toast": {
     "autosaveRestored": "已恢復上次自動儲存的內容 ({time}分鐘前)",
     "parseFailed": "解析失敗，請檢查輸入格式",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "Dnsmasq 廣告過濾列表",
     "hostsTitle": "Hosts 廣告過濾列表",
-    "adguardTitle": "AdGuard 廣告過濾規則",
+    "AdGuardTitle": "AdGuard 廣告過濾規則",
     "description": "路由器級廣告過濾規則",
     "hostsDescription": "路由器級廣告過濾 hosts 檔案",
-    "adguardDescription": "相容 AdGuard 的廣告過濾規則",
+    "AdGuardDescription": "相容 AdGuard 的廣告過濾規則",
     "usage": "使用方法:",
     "merlinUsage": "- 梅林: 軟體中心 -> DNS 設定",
     "openwrtUsage": "- OpenWrt: 服務 -> DHCP 和 DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "URL操作",
   "urlListAria": "URL列表",
   "usageGuideAria": "使用指南",
-  "changelogLinkAria": "查看更新日誌（新視窗開啟）"
+  "changelogLinkAria": "查看更新日誌（新視窗開啟）",
+  "starPrompt": "如果對你有幫助，請給專案點個 Star ⭐"
 }

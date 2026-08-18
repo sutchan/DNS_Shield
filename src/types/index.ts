@@ -1,4 +1,4 @@
-// src/types/index.ts v3.7.31
+// src/types/index.ts v3.7.41
 
 export type FormatType = 'hosts' | 'dnsmasq' | 'adguard' | 'whitelist';
 
@@ -38,6 +38,9 @@ export interface Settings {
   blockIPv6: boolean;
   dedupDomains: boolean;
   removeWildcard: boolean;
+  // AdGuard 黑名单是否包含白名单豁免规则（@@||domain^）。
+  // 默认 true（保持向后兼容：历史版本始终在 AdGuard 黑名单中附带白名单）。
+  adguardIncludeWhitelist: boolean;
   dnsmasqFilename: string;
   hostsFilename: string;
   adguardFilename: string;
@@ -102,6 +105,8 @@ export interface Translation {
   removeUrlAria: string;
   githubLinkAria: string;
   changelogLinkAria: string;
+  // 悬停在 GitHub 链接上时显示的提示文案（如「如果对你有帮助，请给项目点个 Star ⭐」）
+  starPrompt: string;
   starLink?: string;
   starLinkAria?: string;
   hostsFormat: string;

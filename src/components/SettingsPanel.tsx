@@ -1,4 +1,4 @@
-// src/components/SettingsPanel.tsx v3.7.30
+// src/components/SettingsPanel.tsx v3.7.39
 // 设置面板组件 —— 从 OutputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -103,6 +103,14 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, removeWildcard: checked === true }))}
             />
             <Label htmlFor="removeWildcard" className="text-sm text-muted-foreground cursor-pointer">{t.removeWildcard}</Label>
+          </div>
+          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-adguard-include-whitelist">
+            <Checkbox
+              id="adguardIncludeWhitelist"
+              checked={settings.adguardIncludeWhitelist}
+              onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, adguardIncludeWhitelist: checked === true }))}
+            />
+            <Label htmlFor="adguardIncludeWhitelist" className="text-sm text-muted-foreground cursor-pointer">{t.adguardIncludeWhitelist}</Label>
           </div>
         </div>
       </div>

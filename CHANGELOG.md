@@ -7,6 +7,32 @@
 
 ## [Unreleased]
 
+## [3.7.41] - 2026-08-18
+
+### Added
+- Star 提示文案改为悬停 GitHub 链接时显示（`starPrompt`，16 语言）：指针悬停 GitHub/Star 链接触发 tooltip
+
+### Changed
+- 全局按钮圆角加大至 `rounded-xl`，强化主按钮阴影层级与「生成过滤规则」视觉权重
+- 页脚链接、使用说明折叠按钮增加圆角与 hover 背景反馈，统一视觉语言
+- 同步全局版本展示位至 v3.7.41
+
+## [3.7.40] - 2026-08-18
+
+### Changed
+- 精简输出格式标签文案，减少宽度占用：
+  - ADGuard 黑名单 → ADG 黑名单
+  - ADGuard 白名单 → ADG 白名单（16 种语言同步）
+- 同步全局版本展示位至 v3.7.40
+
+## [3.7.39] - 2026-08-18
+
+### Added
+- 设置面板新增「ADGuard 黑名单是否包含白名单」开关（`adguardIncludeWhitelist`）
+- 关闭时 ADGuard 黑名单仅生成拦截规则（纯黑名单语义），白名单仍可经独立「ADGuard 白名单」清单导出
+- 16 种语言 i18n 文案同步
+- 同步全局版本展示位至 v3.7.39
+
 ## [3.7.38] - 2026-08-18
 
 ### Changed
@@ -830,7 +856,52 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.4.0...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.7.41...HEAD
+[3.7.41]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.41
+[3.7.40]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.40
+[3.7.39]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.39
+[3.7.38]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.38
+[3.7.37]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.37
+[3.7.36]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.36
+[3.7.35]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.35
+[3.7.34]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.34
+[3.7.33]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.33
+[3.7.32]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.32
+[3.7.31]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.31
+[3.7.30]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.30
+[3.7.29]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.29
+[3.7.28]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.28
+[3.7.27]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.27
+[3.7.26]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.26
+[3.7.25]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.25
+[3.7.24]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.24
+[3.7.23]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.23
+[3.7.22]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.22
+[3.7.21]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.21
+[3.7.20]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.20
+[3.7.19]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.19
+[3.7.18]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.18
+[3.7.17]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.17
+[3.7.16]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.16
+[3.7.15]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.15
+[3.7.14]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.14
+[3.7.13]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.13
+[3.7.12]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.12
+[3.7.11]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.11
+[3.7.10]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.10
+[3.7.9]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.9
+[3.7.8]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.8
+[3.7.7]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.7
+[3.7.6]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.6
+[3.7.5]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.5
+[3.7.4]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.4
+[3.7.3]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.3
+[3.7.2]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.2
+[3.7.1]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.1
+[3.7.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.0
+[3.6.1]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.6.1
+[3.6.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.6.0
+[3.5.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.5.0
 [3.4.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.4.0
 [3.3.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.3.0
 [3.2.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.2.0

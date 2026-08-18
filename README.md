@@ -133,9 +133,9 @@ src/
 
 ```
 prototype/            # 高保真原型与设计规范
-├── prototype.canvas.tsx # React 高保真原型
-├── OVERVIEW.md       # 原型总览
-└── shadcn/           # shadcn 设计规范（design-system/component-library/interaction-standards/design-polish-report）
+├── index.html        # 自包含高保真原型（HTML/CSS/JS）
+├── README.md         # 原型总览与使用说明
+└── shadcn/           # shadcn 设计规范（design-system/component-library/interaction-standards）
 ```
 
 ## 架构与数据流
@@ -244,7 +244,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.7.37
+当前版本：v3.7.41
 
 ## 更新日志
 

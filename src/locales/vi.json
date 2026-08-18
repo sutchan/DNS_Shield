@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "Trình tạo quy tắc lọc quảng cáo cấp router",
   "inputTitle": "Nhập danh sách miền",
   "advanced": "Nâng cao",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "Lấy tất cả",
   "presetLabel": "Tùy chọn sẵn:",
   "builtinAd": "Đã tích hợp",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# Nhập miền, một hàng một\nad.example.com\nads.example.com\n# Tiền tố + cho danh sách trắng\n# @domain=ip cho DNS tùy chỉnh",
@@ -33,6 +33,7 @@
   "blockIPv6": "Chặn IPv6",
   "dedup": "Loại bỏ trùng lặp tự động",
   "removeWildcard": "Loại bỏ ký tự đại diện",
+  "AdGuardIncludeWhitelist": "Bao gồm whitelist trong AdGuard Blacklist",
   "lightMode": "Chế độ sáng",
   "darkMode": "Chế độ tối",
   "inputHelp": "Nhập danh sách tên miền, mỗi dòng một",
@@ -45,7 +46,7 @@
   "downloadBtn": "Tải xuống",
   "copyBtn": "Sao chép",
   "usageToggle": "Hướng dẫn sử dụng",
-  "usageStep1": "1. Nhập hoặc nhập miền",
+  "usageStep1": "1. Nhập hoặc nhập khẩu miền",
   "usageStep1Desc": "Nhập danh sách miền vào hộp văn bản bên trái, hoặc nhập từ các tùy chọn sẵn (AdGuard, EasyList, v.v.), hoặc dán trực tiếp URL để lấy miền",
   "usageStep2": "2. Cấu hình tùy chọn tạo",
   "usageStep2Desc": "Chọn định dạng đầu ra (Dnsmasq/Hosts), đặt địa chỉ IP đích, loại bỏ trùng lặp tùy chọn, sắp xếp, thêm bình luận, v.v.",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "Nhấn nút \"Tạo quy tắc\", xem trước kết quả sau đó tải xuống thiết bị cục bộ, hoặc sao chép vào bộ nhớ tạm",
   "usageTip": "Mẹo",
   "usageTipContent": "Quy tắc được tạo có thể được sử dụng trực tiếp cho việc lọc quảng cáo router, hỗ trợ firmware Asus, Merlin, OpenWrt và các firmware khác",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "Khôi phục nội dung tự động lưu ({time} phút trước)",
     "parseFailed": "Phân tích thất bại, vui lòng kiểm tra định dạng đầu vào",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "Danh sách chặn quảng cáo Dnsmasq",
     "hostsTitle": "Danh sách chặn quảng cáo Hosts",
-    "adguardTitle": "Bộ lọc chặn quảng cáo AdGuard",
+    "AdGuardTitle": "Bộ lọc chặn quảng cáo AdGuard",
     "description": "Bộ lọc chặn quảng cáo cấp router",
     "hostsDescription": "Tệp hosts cho chặn quảng cáo cấp router",
-    "adguardDescription": "Bộ lọc chặn quảng cáo tương thích với AdGuard",
+    "AdGuardDescription": "Bộ lọc chặn quảng cáo tương thích với AdGuard",
     "usage": "Sử dụng:",
     "merlinUsage": "- Merlin: Trung tâm phần mềm -> Cài đặt DNS",
     "openwrtUsage": "- OpenWrt: Dịch vụ -> DHCP và DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "Hành động URL",
   "urlListAria": "Danh sách URL",
   "usageGuideAria": "Hướng dẫn sử dụng",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starPrompt": "Nếu hữu ích, hãy tặng dự án một Star ⭐"
 }

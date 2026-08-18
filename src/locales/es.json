@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "Generador de reglas de filtrado de anuncios a nivel de router",
   "inputTitle": "Lista de dominios de entrada",
   "advanced": "Avanzado",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "Obtener todo",
   "presetLabel": "Preestablecidos:",
   "builtinAd": "Integrado",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# Introduce dominios, uno por línea\nad.example.com\nads.example.com\n# Prefijo + para lista blanca\n# @domain=ip para DNS personalizado",
@@ -33,6 +33,7 @@
   "blockIPv6": "Bloquear IPv6",
   "dedup": "Eliminación automática de duplicados",
   "removeWildcard": "Eliminar caracteres comodín",
+  "AdGuardIncludeWhitelist": "Incluir lista blanca en AdGuard Blacklist",
   "lightMode": "Modo claro",
   "darkMode": "Modo oscuro",
   "inputHelp": "Ingrese lista de dominios, uno por línea",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "Haz clic en el botón \"Generar reglas\", previsualiza el resultado y descargalo en tu dispositivo local, o copialo al portapapeles",
   "usageTip": "Consejo",
   "usageTipContent": "Las reglas generadas se pueden usar directamente para filtrar anuncios en routers, compatible con firmware Asus, Merlin, OpenWrt y otros",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "Se ha restaurado el contenido guardado automáticamente (hace {time} minutos)",
     "parseFailed": "Error de análisis, por favor verifica el formato de entrada",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "Lista de bloqueo de anuncios Dnsmasq",
     "hostsTitle": "Lista de bloqueo de anuncios Hosts",
-    "adguardTitle": "Filtro de bloqueo de anuncios AdGuard",
+    "AdGuardTitle": "Filtro de bloqueo de anuncios AdGuard",
     "description": "Filtro de bloqueo de anuncios a nivel de router",
     "hostsDescription": "Archivo hosts para bloqueo de anuncios a nivel de router",
-    "adguardDescription": "Filtro de bloqueo de anuncios compatible con AdGuard",
+    "AdGuardDescription": "Filtro de bloqueo de anuncios compatible con AdGuard",
     "usage": "Uso:",
     "merlinUsage": "- Merlin: Software Center -> Configuración DNS",
     "openwrtUsage": "- OpenWrt: Servicios -> DHCP y DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "Acciones de URL",
   "urlListAria": "Lista de URL",
   "usageGuideAria": "Guía de uso",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starPrompt": "Si te ayuda, por favor dale una Star al proyecto ⭐"
 }

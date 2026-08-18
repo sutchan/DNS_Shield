@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   DNS Shield — Design System v3.7.38
+   DNS Shield — Design System v3.7.41
    Designer: UI Designer
    Philosophy: Swiss Precision × Calm Technology
    ============================================ */
@@ -498,11 +498,11 @@
 }
 
 .footer-link {
-  @apply inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-150;
+  @apply inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-lg px-2 py-1 -mx-2 transition-all duration-150;
 }
 
 .footer-star-link {
-  @apply inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors duration-150 px-2.5 py-1 rounded-full border border-primary/30 bg-primary/5;
+  @apply inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 hover:bg-primary/10 transition-all duration-150 px-2.5 py-1 rounded-full border border-primary/30 bg-primary/5;
 }
 
 .footer-version {
@@ -511,7 +511,7 @@
 
 /* Usage guide — 使用指南（可折叠） */
 .usage-toggle {
-  @apply inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors duration-150 cursor-pointer bg-transparent border-0;
+  @apply inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-lg px-2 py-1 -mx-2 transition-all duration-150 cursor-pointer bg-transparent border-0;
 }
 
 .toggle-arrow {

@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "Router-nivå annonsfiltreringsregelgenerator",
   "inputTitle": "Ange domänlista",
   "advanced": "Avancerat",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "Hämta alla",
   "presetLabel": "Förinställningar:",
   "builtinAd": "Inbyggd",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# Ange domäner, en per rad\nad.example.com\nads.example.com\n# + prefix för vitlista\n# @domain=ip för anpassad DNS",
@@ -33,6 +33,7 @@
   "blockIPv6": "Blockera IPv6",
   "dedup": "Ta automatiskt bort dubbletter",
   "removeWildcard": "Ta bort jokertecken",
+  "AdGuardIncludeWhitelist": "Inkludera vitlista i AdGuard Blacklist",
   "lightMode": "Ljust läge",
   "darkMode": "Mörkt läge",
   "inputHelp": "Ange domänlista, en per rad",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "Klicka på knappen \"Generera regler\", förhandsvisa resultatet och ladda ner det till din lokala enhet, eller kopiera det till urklipp",
   "usageTip": "Tips",
   "usageTipContent": "Genererade regler kan användas direkt för routerannonsfiltrering, stödjer firmware för Asus, Merlin, OpenWrt och andra",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "Återställd autosparad innehåll ({time} minuter sedan)",
     "parseFailed": "Analys misslyckades, kontrollera indataformat",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "Dnsmasq annonsblockeringslista",
     "hostsTitle": "Hosts annonsblockeringslista",
-    "adguardTitle": "AdGuard annonsblockeringsfilter",
+    "AdGuardTitle": "AdGuard annonsblockeringsfilter",
     "description": "Router-nivå annonsblockeringsfilter",
     "hostsDescription": "Hosts-fil för annonsblockering på router-nivå",
-    "adguardDescription": "AdGuard-kompatibelt annonsblockeringsfilter",
+    "AdGuardDescription": "AdGuard-kompatibelt annonsblockeringsfilter",
     "usage": "Användning:",
     "merlinUsage": "- Merlin: Software Center -> DNS-inställningar",
     "openwrtUsage": "- OpenWrt: Tjänster -> DHCP och DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "URL-åtgärder",
   "urlListAria": "URL-lista",
   "usageGuideAria": "Användningsguide",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starPrompt": "Om det hjälper, ge projektet en Star ⭐"
 }

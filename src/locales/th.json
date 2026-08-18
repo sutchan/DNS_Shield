@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "เครื่องสร้างกฎการกรองโฆษณาที่ระดับเราเตอร์",
   "inputTitle": "ป้อนรายการโดเมน",
   "advanced": "ขั้นสูง",
@@ -14,10 +14,10 @@
   "fetchAllUrls": "ดึงทั้งหมด",
   "presetLabel": "การตั้งค่าตั้งต้น:",
   "builtinAd": "ติดตั้งไว้",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
-  "inputPlaceholder": "# ป้อนโดเมน หนึ่งรายการต่อแถว\nad.example.com\nads.example.com\n# คำนำหน้า + สำหรับรายการขาว\n# @domain=ip สำหรับ DNS ปกติ",
+  "inputPlaceholder": "# ป้อนโดเมน หนึ่งรายการต่อแถว\nad.example.com\nads.example.com\n# คำนำหน้า + สำหรับรายการขาว\n# @domain=ip สำหรับ DNS แบบกำหนดเอง",
   "clearBtn": "ล้าง",
   "sortBtn": "เรียงลำดับ",
   "parseBtn": "วิเคราะห์โดเมน",
@@ -33,6 +33,7 @@
   "blockIPv6": "ปิดใช้ IPv6",
   "dedup": "ลบทับซ้อนอัตโนมัติ",
   "removeWildcard": "ลบเครื่องหมายสัญลักษณ์แทน",
+  "AdGuardIncludeWhitelist": "รวม whitelist ใน AdGuard Blacklist",
   "lightMode": "โหมดสว่าง",
   "darkMode": "โหมดมืด",
   "inputHelp": "ป้อนรายการโดเมน ทีละบรรทัด",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "คลิกปุ่ม \"สร้างกฎ\" แสดงตัวอย่างผลลัพธ์แล้วดาวน์โหลดไปยังอุปกรณ์ในเครื่องของคุณ หรือคัดลอกไปยังคลิปบอร์ด",
   "usageTip": "แนะนำ",
   "usageTipContent": "กฎที่สร้างขึ้นสามารถใช้โดยตรงสำหรับการกรองโฆษณาในเราเตอร์ รองรับเฟิร์มแวร์ Asus, Merlin, OpenWrt และอื่นๆ",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "คืนค่าคอนเทนต์ที่บันทึกอัตโนมัติ ({time} นาทีที่แล้ว)",
     "parseFailed": "การวิเคราะห์ล้มเหลว โปรดตรวจสอบรูปแบบอินพุต",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "รายการบล็อกโฆษณา Dnsmasq",
     "hostsTitle": "รายการบล็อกโฆษณา Hosts",
-    "adguardTitle": "ตัวกรองบล็อกโฆษณา AdGuard",
+    "AdGuardTitle": "ตัวกรองบล็อกโฆษณา AdGuard",
     "description": "ตัวกรองบล็อกโฆษณาที่ระดับเราเตอร์",
     "hostsDescription": "ไฟล์ hosts สำหรับบล็อกโฆษณาที่ระดับเราเตอร์",
-    "adguardDescription": "ตัวกรองบล็อกโฆษณาที่เข้ากันได้กับ AdGuard",
+    "AdGuardDescription": "ตัวกรองบล็อกโฆษณาที่เข้ากันได้กับ AdGuard",
     "usage": "การใช้งาน:",
     "merlinUsage": "- Merlin: Software Center -> การตั้งค่า DNS",
     "openwrtUsage": "- OpenWrt: Services -> DHCP และ DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "การดำเนินการ URL",
   "urlListAria": "รายการ URL",
   "usageGuideAria": "คู่มือการใช้งาน",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starPrompt": "หากมีประโยชน์ โปรดกด Star ให้โปรเจกต์ ⭐"
 }

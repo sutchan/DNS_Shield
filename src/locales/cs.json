@@ -1,4 +1,4 @@
-{
+﻿{
   "subtitle": "Generátor pravidel pro filtrování reklam na úrovni routeru",
   "inputTitle": "Vstup seznamu domén",
   "advanced": "Pokročilé",
@@ -14,7 +14,7 @@
   "fetchAllUrls": "Načíst všechny",
   "presetLabel": "Přednastavené:",
   "builtinAd": "Vestavěné",
-  "adguard": "AdGuard",
+  "AdGuard": "AdGuard",
   "easylist": "EasyList",
   "neohosts": "NeoHosts",
   "inputPlaceholder": "# Zadejte domény, jedna na řádek\nad.example.com\nads.example.com\n# Předpona + pro bílou listu\n# @domain=ip pro vlastní DNS",
@@ -33,6 +33,7 @@
   "blockIPv6": "Blokovat IPv6",
   "dedup": "Automaticky odebrat duplikáty",
   "removeWildcard": "Odebrat zástupné znaky",
+  "AdGuardIncludeWhitelist": "Zahrnout whitelist do AdGuard Blacklist",
   "lightMode": "Světlý režim",
   "darkMode": "Tmavý režim",
   "inputHelp": "Zadejte seznam domén, jednu na řádek",
@@ -53,8 +54,8 @@
   "usageStep3Desc": "Klikněte na tlačítko \"Vygenerovat pravidla\", zkontrolujte výsledek a stáhněte ho do lokálního zařízení nebo zkopírujte do schránky",
   "usageTip": "Tip",
   "usageTipContent": "Vygenerovaná pravidla lze přímo použít pro filtrování reklam na routeru, podporuje firmware Asus, Merlin, OpenWrt a další",
-  "adguardFormat": "ADGuard Blacklist",
-  "whitelistFormat": "ADGuard Whitelist",
+  "AdGuardFormat": "AdGuard Blacklist",
+  "whitelistFormat": "AdGuard Whitelist",
   "toast": {
     "autosaveRestored": "Obnoveno automaticky uložený obsah (před {time} minutami)",
     "parseFailed": "Analýza selhala, prosím zkontrolujte formát vstupu",
@@ -80,10 +81,10 @@
   "header": {
     "dnsmasqTitle": "Seznam blokování reklam Dnsmasq",
     "hostsTitle": "Seznam blokování reklam Hosts",
-    "adguardTitle": "Filter blokování reklam AdGuard",
+    "AdGuardTitle": "Filter blokování reklam AdGuard",
     "description": "Filter blokování reklam na úrovni routeru",
     "hostsDescription": "Soubor hosts pro blokování reklam na úrovni routeru",
-    "adguardDescription": "Filter blokování reklam kompatibilní s AdGuard",
+    "AdGuardDescription": "Filter blokování reklam kompatibilní s AdGuard",
     "usage": "Použití:",
     "merlinUsage": "- Merlin: Software Center -> Nastavení DNS",
     "openwrtUsage": "- OpenWrt: Služby -> DHCP a DNS",
@@ -113,5 +114,6 @@
   "urlActionsAria": "Akce URL",
   "urlListAria": "Seznam URL",
   "usageGuideAria": "Průvodce použitím",
-  "changelogLinkAria": "View changelog (opens in new window)"
+  "changelogLinkAria": "View changelog (opens in new window)",
+  "starPrompt": "Pokud se vám to hodí, dejte projektu Star ⭐"
 }
