@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   DNS Shield — Design System v3.7.36
+   DNS Shield — Design System v3.7.38
    Designer: UI Designer
    Philosophy: Swiss Precision × Calm Technology
    ============================================ */
@@ -193,7 +193,7 @@
    Panel — the container for input/output
    ============================================ */
 .panel {
-  @apply flex-1 rounded-2xl border border-border bg-card shadow-[0_1px_3px_0_hsl(var(--border)_/_0.3)] overflow-hidden;
+  @apply flex flex-col flex-1 rounded-2xl border border-border bg-card shadow-[0_1px_3px_0_hsl(var(--border)_/_0.3)] overflow-hidden;
   transition: box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1),
               transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -220,9 +220,10 @@
   @apply text-[1.0625rem] font-semibold tracking-tight;
 }
 
-/* Input section — 输入面板的左边框强调 */
+/* Input section — 输入面板的左边框强调；
+   内边距与 output-body（p-5 sm:p-6）保持一致，使左右面板文本框在同一基线对齐 */
 .input-section {
-  @apply flex flex-col p-4 sm:p-5;
+  @apply flex flex-col p-5 sm:p-6;
 }
 
 /* Section header — 区段标题栏（含折叠按钮） */
@@ -337,7 +338,7 @@
    ============================================ */
 .editor-container,
 .editor-wrapper {
-  @apply relative mb-5 border border-border rounded-xl overflow-hidden;
+  @apply relative mt-auto mb-5 border border-border rounded-xl overflow-hidden h-[504px];
   transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -355,8 +356,9 @@
 
 .editor-textarea {
   /* 固定高度 = 20 行（24px × 20）+ 上下内边距（12px × 2）= 504px，
-     避免内容增减导致输入框忽高忽低；禁止拖拽 resize */
-  @apply w-full h-[504px] pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent resize-none;
+     避免内容增减导致输入框忽高忽低；禁止拖拽 resize。
+     容器已固定 h-[504px]，此处同步高度保证左右严格对齐 */
+  @apply w-full h-full pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent resize-none;
   line-height: 1.5rem;
   tab-size: 2;
 }
@@ -371,8 +373,9 @@
 
 /* Output preview (div-based, no resize, allow scroll) */
 .editor-preview {
-  /* 与输入区一致固定 20 行高度（504px），内容超出内部滚动，避免面板忽高忽低 */
-  @apply w-full h-[504px] pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent overflow-auto whitespace-pre-wrap;
+  /* 与输入区一致固定 20 行高度（504px），内容超出内部滚动，避免面板忽高忽低。
+     容器已固定 h-[504px]，此处 h-full 保证与左侧输入框严格等高对齐 */
+  @apply w-full h-full pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent overflow-auto whitespace-pre-wrap;
   line-height: 1.5rem;
   tab-size: 2;
 }
@@ -414,7 +417,7 @@
    Output Panel Specific
    ============================================ */
 .output-body {
-  @apply p-5 sm:p-6;
+  @apply flex flex-1 flex-col p-5 sm:p-6;
 }
 
 .output-header {
