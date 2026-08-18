@@ -15,7 +15,7 @@
 
 | 应用路径 | 说明 | 用途 |
 |----------|------|------|
-| `/logo.svg` | 标准品牌标志（蓝色盾牌 #0D5FE2 + 白色防护勾 + "DNS Shield" 浅灰文字 #8A94A6，横版衬线 Georgia） | 应用页眉 / OG 引用 |
+| `/brand-banner.svg` | 品牌横幅（蓝渐变 #0D5FE2→#0A1124 背景 + 白色盾牌母版 + "DNS Shield" 白字 + 标语，960×240） | README / 仓库首页 |
 | `/favicon.svg` | 网站图标（蓝色盾牌 #0D5FE2 + 白色防护勾） | 浏览器标签 `<link rel="icon">` |
 | `/logo-mono.svg` | 单色反白标志 | 深色背景、单色印刷 |
 | `/assets/icons/icon-*.png` | 由 24×24 盾牌母版同源生成 | PWA 主屏图标 |

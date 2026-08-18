@@ -2,6 +2,8 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
+> 当前版本：**v3.7.46**。项目同时部署于 **腾讯云 EdgeOne（EO）** 与 **Vercel** 双平台，二者均通过平台级配置文件（`edgeone.json` / `vercel.json`）声明构建命令与安全响应头（CSP/HSTS/COOP/CORP 等），策略保持一致。
+
 ## 部署环境
 
 ### 1. 系统要求
@@ -248,6 +250,32 @@ docker-compose up -d
 
 > 说明：当前 `next.config.js` 未启用 `output: 'standalone'`，使用默认构建产物并经由 `next start` 启动。`Dockerfile` 已正确启用 corepack 以使用 `pnpm-lock.yaml` 安装依赖。
 
+### 4. 腾讯云 EdgeOne（EO）部署
+
+EO 通过 `@edgeone/opennextjs-pages` 进行**静态导出**（生成 `out/` 目录），此时 `next.config.js` 的 `headers()` 不会被应用。安全响应头改由 `edgeone.json` 的 `headers` 字段声明，与 Vercel 策略一致。
+
+在 EO 控制台创建项目时选择「导入 Git 仓库」，构建配置会自动读取 `edgeone.json`：
+
+- **构建命令**：`pnpm build`
+- **输出目录**：`out`
+- **静态导出**：已启用（`staticExport: true`）
+- **安全响应头**：CSP / HSTS / X-Frame-Options / COOP / CORP 等已在 `edgeone.json` 声明
+
+> 注意：EO 静态导出环境下，自定义字体需经 `next/font`（本项目已在 `layout.tsx` 用 `next/font/google` 注入 Inter 与 JetBrains Mono），不可使用 `<link>` 引入外部字体，否则构建会报 `no-page-custom-font` 警告。
+
+### 5. Vercel 部署
+
+Vercel 使用标准 Next.js 构建流程，`next.config.js` 的 `headers()` 默认生效；为双平台策略一致，`vercel.json` 也显式声明了相同的安全响应头。
+
+在 Vercel 控制台导入 Git 仓库即可，构建配置自动读取 `vercel.json`：
+
+- **框架预设**：`nextjs`（自动识别）
+- **构建命令**：`pnpm build`
+- **安装命令**：`pnpm install`
+- **安全响应头**：与 EO 完全一致的 CSP / HSTS / COOP / CORP 策略
+
+两平台共用同一份源码与同一套安全头策略，无需为不同平台维护不同分支。
+
 ## 配置选项
 
 ### 1. 环境变量
@@ -259,8 +287,9 @@ docker-compose up -d
 | `PORT` | 服务器端口 | 3000 |
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
-| `NEXT_PUBLIC_APP_VERSION` | 应用版本 | 3.7.34 |
+| `NEXT_PUBLIC_APP_VERSION` | 应用版本 | 3.7.46 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（留空则不启用统计） | 空 |
+| `NEXT_PUBLIC_GOOGLE_VERIFICATION` | Google Search Console 验证代码（覆盖默认值占位符） | google-site-verification-code |
 
 ### 2. Next.js 配置
 
@@ -272,7 +301,7 @@ const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
   env: {
-    version: '3.7.34'
+    version: '3.7.46'
   },
   async headers() {
     return [

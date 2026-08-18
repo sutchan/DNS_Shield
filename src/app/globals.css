@@ -55,12 +55,11 @@
     --radius-2xl: 1rem;
 
     /* --- Typography tokens (参考 Claude Code 官方风格) --- */
-    /* 正文：Inter，清晰现代中性，贴近 Anthropic/Claude 品牌观感 */
-    --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto,
+    /* 正文：Inter（由 next/font 注入，变量 --font-inter），回退系统栈 */
+    --font-sans: var(--font-inter), system-ui, -apple-system, 'Segoe UI', Roboto,
       'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-    /* 等宽/代码：JetBrains Mono 几何等宽，强化 Claude Code 终端美学，
-       回退系统字体栈以保证离线构建可用 */
-    --font-mono: 'JetBrains Mono', 'Berkeley Mono', ui-monospace, SFMono-Regular,
+    /* 等宽/代码：JetBrains Mono（由 next/font 注入，变量 --font-jetbrains-mono），回退系统栈 */
+    --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular,
       'SF Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
   }
 

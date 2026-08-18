@@ -7,6 +7,25 @@
 
 ## [Unreleased]
 
+## [3.7.46] - 2026-08-18
+
+### Added
+- 新增品牌横幅 `public/brand-banner.svg`（蓝渐变背景 + 盾牌母版 + DNS Shield 字标 + 标语），置入 README 顶部
+- `public/README.md` 品牌资产索引新增 brand-banner.svg
+- 同步全局版本展示位至 v3.7.46
+
+## [3.7.45] - 2026-08-18
+
+### Fixed
+- 消除 EO 静态导出下的 `no-page-custom-font` 警告：用 `next/font/google` 注入 Inter 与 JetBrains Mono，移除 `layout.tsx` 中的 `<link>` Google Fonts 标签，`globals.css` 字体变量改为引用 next/font 生成的 CSS 变量
+- 修复 EO 静态导出忽略 `next.config.js` 的 `headers()` 安全头问题：新增 `edgeone.json` 配置安全响应头（CSP/HSTS/COOP/CORP 等），与 Vercel 策略一致
+
+### Added
+- 新增 `edgeone.json`（EO 静态导出 + 安全响应头）与 `vercel.json`（框架声明 + 统一安全头），协调腾讯云 EO 与 Vercel 双平台部署
+
+### Changed
+- 同步全局版本展示位至 v3.7.45
+
 ## [3.7.44] - 2026-08-18
 
 ### Fixed
@@ -881,7 +900,11 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.7.41...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.7.45...HEAD
+[3.7.45]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.45
+[3.7.44]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.44
+[3.7.43]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.43
+[3.7.42]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.42
 [3.7.41]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.41
 [3.7.40]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.40
 [3.7.39]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.39
