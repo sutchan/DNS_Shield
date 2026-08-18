@@ -2,7 +2,7 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
-> 当前版本：**v3.7.46**。项目同时部署于 **腾讯云 EdgeOne（EO）** 与 **Vercel** 双平台，二者均通过平台级配置文件（`edgeone.json` / `vercel.json`）声明构建命令与安全响应头（CSP/HSTS/COOP/CORP 等），策略保持一致。
+> 当前版本：**v3.7.47**。项目同时部署于 **腾讯云 EdgeOne（EO）** 与 **Vercel** 双平台，二者均通过平台级配置文件（`edgeone.json` / `vercel.json`）声明构建命令与安全响应头（CSP/HSTS/COOP/CORP 等），策略保持一致。
 
 ## 部署环境
 
@@ -287,7 +287,7 @@ Vercel 使用标准 Next.js 构建流程，`next.config.js` 的 `headers()` 默�
 | `PORT` | 服务器端口 | 3000 |
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
-| `NEXT_PUBLIC_APP_VERSION` | 应用版本 | 3.7.46 |
+| `NEXT_PUBLIC_APP_VERSION` | 应用版本 | 3.7.47 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（留空则不启用统计） | 空 |
 | `NEXT_PUBLIC_GOOGLE_VERIFICATION` | Google Search Console 验证代码（覆盖默认值占位符） | google-site-verification-code |
 
@@ -301,7 +301,7 @@ const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
   env: {
-    version: '3.7.46'
+    version: '3.7.47'
   },
   async headers() {
     return [

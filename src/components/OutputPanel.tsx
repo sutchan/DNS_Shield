@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.7.41
+// src/components/OutputPanel.tsx v3.7.42
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -59,6 +59,11 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
                 <TabsTrigger value="dnsmasq" id="format-dnsmasq-btn">{t.dnsmasqFormat}</TabsTrigger>
                 <TabsTrigger value="adguard" id="format-adguard-btn">{t.adguardFormat}</TabsTrigger>
                 <TabsTrigger value="whitelist" id="format-whitelist-btn">{t.whitelistFormat}</TabsTrigger>
+                <TabsTrigger value="unbound" id="format-unbound-btn">{t.unboundFormat}</TabsTrigger>
+                <TabsTrigger value="pihole" id="format-pihole-btn">{t.piholeFormat}</TabsTrigger>
+                <TabsTrigger value="domains" id="format-domains-btn">{t.domainsFormat}</TabsTrigger>
+                <TabsTrigger value="bind" id="format-bind-btn">{t.bindFormat}</TabsTrigger>
+                <TabsTrigger value="smartdns" id="format-smartdns-btn">{t.smartdnsFormat}</TabsTrigger>
               </TabsList>
             </Tabs>
             <Button

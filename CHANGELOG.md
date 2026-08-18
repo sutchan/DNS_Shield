@@ -7,6 +7,12 @@
 
 ## [Unreleased]
 
+## [3.7.47] - 2026-08-18
+
+### Changed
+- 品牌横幅 `public/brand-banner.svg` 移除版本号（避免版本频繁变更需同步），改为展示 5 种生成清单胶囊：Dnsmasq / Hosts / AdGuard / 白名单 / 自定义 DNS
+- 同步全局版本展示位至 v3.7.47
+
 ## [3.7.46] - 2026-08-18
 
 ### Added

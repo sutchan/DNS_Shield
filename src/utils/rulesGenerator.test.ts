@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.test.ts v3.7.39
+// src/utils/rulesGenerator.test.ts v3.7.42
 import { describe, it, expect } from 'vitest';
 import { generateRules, generateHeader } from './rulesGenerator';
 import { parseSource } from './parser';
@@ -22,6 +22,11 @@ const baseSettings: Settings = {
   hostsFilename: 'hosts.txt',
   adguardFilename: 'adguard.txt',
   whitelistFilename: 'whitelist.txt',
+  unboundFilename: 'unbound.conf',
+  piholeFilename: 'pihole.txt',
+  domainsFilename: 'domains.txt',
+  bindFilename: 'rpz.db',
+  smartdnsFilename: 'smartdns.conf',
 };
 
 describe('generateRules', () => {
@@ -104,6 +109,47 @@ describe('generateRules', () => {
     // 白名单域名不应出现在黑名单中
     expect(out.hosts).not.toContain('127.0.0.1 api.example.com');
     expect(out.hosts).toContain('# 已白名单: api.example.com');
+  });
+});
+
+  it('生成 5 种新增格式（unbound/pihole/domains/bind/smartdns）规则', () => {
+    const out = generateRules(['ad.example.com'], [], [], baseSettings, t);
+    // Unbound: local-zone refuse
+    expect(out.unbound).toContain('local-zone: "ad.example.com" refuse');
+    // Pi-hole: 0.0.0.0 domain
+    expect(out.pihole).toContain('0.0.0.0 ad.example.com');
+    // 纯域名列表：仅域名本身
+    expect(out.domains).toContain('ad.example.com');
+    expect(out.domains).not.toContain('0.0.0.0');
+    // Bind RPZ: CNAME . 含通配子域
+    expect(out.bind).toContain('ad.example.com CNAME .');
+    expect(out.bind).toContain('*.ad.example.com CNAME .');
+    // SmartDNS: address /domain/#
+    expect(out.smartdns).toContain('address /ad.example.com/#');
+  });
+
+  it('白名单在 unbound 生成 transparent、在 domains/smartdns 仅注释', () => {
+    const out = generateRules(['ad.example.com', 'api.example.com'], ['api.example.com'], [], baseSettings, t);
+    expect(out.unbound).toContain('local-zone: "api.example.com" transparent');
+    expect(out.domains).toContain(`# ${t.whitelist.label} api.example.com`);
+    expect(out.domains).not.toContain('\napi.example.com\n');
+    expect(out.smartdns).toContain(`# ${t.whitelist.label} api.example.com`);
+    // 白名单域名不出现在纯域名黑名单中
+    const blocked = out.domains.split('\n').filter(l => l === 'api.example.com');
+    expect(blocked.length).toBe(0);
+  });
+
+  it('自定义 DNS 生成 pihole 与 smartdns 规则', () => {
+    const customDns: CustomDnsEntry[] = [{ domain: 'cdn.example.com', ip: '10.0.0.1' }];
+    const out = generateRules([], [], customDns, baseSettings, t);
+    expect(out.pihole).toContain('10.0.0.1 cdn.example.com');
+    expect(out.smartdns).toContain('server /cdn.example.com/10.0.0.1');
+  });
+
+  it('新增格式头部使用对应注释符（bind 用 ;）', () => {
+    const header = generateHeader('bind', 5, 0, '2026.07.21', baseSettings, t);
+    expect(header.startsWith(';')).toBe(true);
+    expect(header).toContain('Bind');
   });
 });
 

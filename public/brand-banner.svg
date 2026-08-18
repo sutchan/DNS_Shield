@@ -10,7 +10,13 @@
     <path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z" fill="#ffffff"/>
     <path d="M8.5 12.2l2.3 2.3 4.4-4.4" fill="none" stroke="#0D5FE2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <text x="368" y="118" font-family="Georgia, 'Times New Roman', 'Songti SC', serif" font-size="56" font-weight="700" fill="#ffffff">DNS Shield</text>
-  <text x="370" y="162" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="22" fill="#C9D6F0">路由器级 DNS 广告过滤规则生成工具</text>
-  <text x="368" y="200" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="16" fill="#8A94A6">hosts / dnsmasq / AdGuard - v3.7.46</text>
+  <text x="368" y="112" font-family="Georgia, 'Times New Roman', 'Songti SC', serif" font-size="56" font-weight="700" fill="#ffffff">DNS Shield</text>
+  <text x="370" y="152" font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="22" fill="#C9D6F0">路由器级 DNS 广告过滤规则生成工具</text>
+  <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="18" font-weight="600" fill="#0D5FE2">
+    <rect x="368" y="178" width="112" height="36" rx="18" fill="#ffffff"/><text x="384" y="202" fill="#0D5FE2">Dnsmasq</text>
+    <rect x="492" y="178" width="92" height="36" rx="18" fill="#ffffff"/><text x="508" y="202" fill="#0D5FE2">Hosts</text>
+    <rect x="596" y="178" width="116" height="36" rx="18" fill="#ffffff"/><text x="612" y="202" fill="#0D5FE2">AdGuard</text>
+    <rect x="724" y="178" width="104" height="36" rx="18" fill="#ffffff"/><text x="740" y="202" fill="#0D5FE2">白名单</text>
+    <rect x="840" y="178" width="116" height="36" rx="18" fill="#ffffff"/><text x="856" y="202" fill="#0D5FE2">自定义 DNS</text>
+  </g>
 </svg>

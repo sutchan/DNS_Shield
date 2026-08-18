@@ -1,12 +1,26 @@
-// src/types/index.ts v3.7.41
+// src/types/index.ts v3.7.42
 
-export type FormatType = 'hosts' | 'dnsmasq' | 'adguard' | 'whitelist';
+export type FormatType =
+  | 'hosts'
+  | 'dnsmasq'
+  | 'adguard'
+  | 'whitelist'
+  | 'unbound'
+  | 'pihole'
+  | 'domains'
+  | 'bind'
+  | 'smartdns';
 
 export interface OutputContent {
   dnsmasq: string;
   hosts: string;
   adguard: string;
   whitelist: string;
+  unbound: string;
+  pihole: string;
+  domains: string;
+  bind: string;
+  smartdns: string;
 }
 
 export interface CustomDnsEntry {
@@ -45,6 +59,11 @@ export interface Settings {
   hostsFilename: string;
   adguardFilename: string;
   whitelistFilename: string;
+  unboundFilename: string;
+  piholeFilename: string;
+  domainsFilename: string;
+  bindFilename: string;
+  smartdnsFilename: string;
 }
 
 export interface Translation {
@@ -112,6 +131,11 @@ export interface Translation {
   starLinkAria?: string;
   hostsFormat: string;
   dnsmasqFormat: string;
+  unboundFormat: string;
+  piholeFormat: string;
+  domainsFormat: string;
+  bindFormat: string;
+  smartdnsFormat: string;
   mergeStats: string;
   versionLabel: string;
   languageSelectorAria: string;
@@ -129,10 +153,25 @@ export interface Translation {
     hostsDescription: string;
     adguardTitle: string;
     adguardDescription: string;
+    unboundTitle: string;
+    unboundDescription: string;
+    piholeTitle: string;
+    piholeDescription: string;
+    domainsTitle: string;
+    domainsDescription: string;
+    bindTitle: string;
+    bindDescription: string;
+    smartdnsTitle: string;
+    smartdnsDescription: string;
     usage: string;
     merlinUsage: string;
     openwrtUsage: string;
     hostsUsage: string;
+    unboundUsage: string;
+    piholeUsage: string;
+    domainsUsage: string;
+    bindUsage: string;
+    smartdnsUsage: string;
     version: string;
     update: string;
     domains: string;

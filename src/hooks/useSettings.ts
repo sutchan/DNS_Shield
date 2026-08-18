@@ -1,4 +1,4 @@
-// src/hooks/useSettings.ts v3.7.39
+// src/hooks/useSettings.ts v3.7.42
 // 设置管理 hook —— 从 Home.tsx 拆分
 import { useState, useCallback } from 'react';
 import { Settings } from '../types';
@@ -17,7 +17,12 @@ const DEFAULT_SETTINGS: Settings = {
   dnsmasqFilename: 'dnsmasq.conf',
   hostsFilename: 'hosts.txt',
   adguardFilename: 'adguard.txt',
-  whitelistFilename: 'whitelist.txt'
+  whitelistFilename: 'whitelist.txt',
+  unboundFilename: 'unbound.conf',
+  piholeFilename: 'pihole.txt',
+  domainsFilename: 'domains.txt',
+  bindFilename: 'rpz.db',
+  smartdnsFilename: 'smartdns.conf'
 };
 
 // 输入框 id -> settings key 的显式映射，避免脆弱的字符串替换。

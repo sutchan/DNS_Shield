@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.7.31
+// src/hooks/useRules.ts v3.7.42
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
@@ -18,7 +18,12 @@ export const useRules = (
     dnsmasq: '',
     hosts: '',
     adguard: '',
-    whitelist: ''
+    whitelist: '',
+    unbound: '',
+    pihole: '',
+    domains: '',
+    bind: '',
+    smartdns: ''
   });
   const [currentFormat, setCurrentFormat] = useState<FormatType>('hosts');
   
@@ -75,7 +80,12 @@ export const useRules = (
       hosts: 'hostsFilename',
       dnsmasq: 'dnsmasqFilename',
       adguard: 'adguardFilename',
-      whitelist: 'whitelistFilename'
+      whitelist: 'whitelistFilename',
+      unbound: 'unboundFilename',
+      pihole: 'piholeFilename',
+      domains: 'domainsFilename',
+      bind: 'bindFilename',
+      smartdns: 'smartdnsFilename'
     };
     const filename = settings[filenameMap[currentFormat]] as string;
     downloadOutputUtil(content, filename);
