@@ -18,7 +18,7 @@
 | `/logo.svg` | 品牌标志（盾牌 + "DNS Shield" 文字，横版） | 应用页眉 / OG 引用 |
 | `/favicon.svg` | 网站图标（盾牌 + 防护对勾） | 浏览器标签 `<link rel="icon">` |
 | `/logo-mono.svg` | 单色反白标志 | 深色背景、单色印刷 |
-| `/assets/icons/icon-*.png` | 由 `favicon.svg` 导出 | PWA 主屏图标 |
+| `/assets/icons/icon-*.png` | 由 24×24 盾牌母版同源生成 | PWA 主屏图标 |
 
 ## 品牌主色
 
@@ -33,6 +33,6 @@
 
 - 优先使用矢量 SVG（任意缩放清晰）；PNG 仅用于需要位图的场景（PWA / 旧客户端）。
 - 标志主色始终取品牌主蓝，禁止随意改色；深色背景用 `logo-mono.svg`。
-- 应用内导航栏 Logo 复用 `lucide-react` 的 `Shield` 图标（`text-primary`），与 `favicon.svg` 视觉一致。
+- 应用内导航栏 Logo 复用 `favicon.svg` 同源的内联盾牌 SVG（`text-primary` 着色），与 `favicon.svg` 逐像素一致。
 - SVG 为权威版本，其他尺寸 PNG 由 SVG 导出，避免位图放大失真。
 - 禁区：不得拉伸变形、改色（除 mono 反白）、添加阴影/描边、旋转、低透明度弱化至不可辨识。

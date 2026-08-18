@@ -1,6 +1,6 @@
 # DNS Shield — 品牌调色板（Brand Colors）
 
-> 版本：v3.7.34 | 与 `src/app/globals.css` 的 CSS 变量 `--primary` 严格一致
+> 版本：v3.7.41 | 与 `src/app/globals.css` 的 CSS 变量 `--primary` 严格一致
 
 品牌色是 DNS Shield 视觉识别的核心。所有标志、UI 主色、链接、强调元素均取自下方主蓝色阶，禁止随意使用其他蓝色。
 

@@ -1,8 +1,8 @@
-// src/components/Header.tsx v3.7.30
+// src/components/Header.tsx v3.7.41
 'use client';
 
 import * as React from 'react';
-import { Shield, Sun, Moon, Globe, Check } from 'lucide-react';
+import { Sun, Moon, Globe, Check } from 'lucide-react';
 import { Button } from './ui/Button';
 import {
   DropdownMenu,
@@ -37,7 +37,23 @@ const Header: React.FC<HeaderProps> = ({
       <div className="header-top" id="header-top">
         <div className="header-brand" id="header-brand">
           <div className="brand-icon" aria-hidden="true">
-            <Shield className="h-5 w-5 text-primary" strokeWidth={2} aria-hidden="true" />
+            <svg
+              viewBox="0 0 24 24"
+              className="h-5 w-5 text-primary"
+              fill="currentColor"
+              role="img"
+              aria-label="DNS Shield"
+            >
+              <path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z" />
+              <path
+                d="M8.5 12.2l2.3 2.3 4.4-4.4"
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </div>
           <div>
             <h1 className="app-title" aria-describedby="app-subtitle">DNS Shield</h1>

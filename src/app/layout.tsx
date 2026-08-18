@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     description: '路由器级全局广告过滤规则生成工具，支持 Dnsmasq 和 Hosts 格式',
     images: [
       {
-        url: 'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/preview.png',
+        url: 'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/assets/icons/icon-512x512.png',
         width: 1200,
         height: 630,
         alt: 'DNS Shield - 路由器广告过滤工具',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'DNS Shield - 路由器广告过滤',
     description: '路由器级全局广告过滤规则生成工具',
-    images: ['https://raw.githubusercontent.com/sutchan/DNS_Shield/main/preview.png'],
+    images: ['https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/assets/icons/icon-512x512.png'],
     creator: '@sutchan',
   },
   alternates: {
@@ -169,7 +169,7 @@ const jsonLd = {
     '一键复制/下载规则文件',
   ],
   inLanguage: ['zh-CN', 'en-US'],
-  screenshot: 'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/preview.png',
+  screenshot: 'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/assets/icons/icon-512x512.png',
 }
 
 export default function RootLayout({
