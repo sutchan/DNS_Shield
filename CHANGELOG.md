@@ -7,6 +7,13 @@
 
 ## [Unreleased]
 
+## [3.7.48] - 2026-08-18
+
+### Added
+- 新增 5 种输出格式：Unbound（`local-zone refuse`）、Pi-hole（`0.0.0.0` gravity 兼容）、纯域名列表、Bind RPZ（`CNAME .` 响应策略区）、SmartDNS（`address /domain/#`）
+- 各格式独立下载文件名设置与语义化导出 Tab
+- 头部元信息覆盖全部 9 种格式，含对应部署用法说明
+
 ## [3.7.47] - 2026-08-18
 
 ### Changed

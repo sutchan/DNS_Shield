@@ -110,7 +110,6 @@ describe('generateRules', () => {
     expect(out.hosts).not.toContain('127.0.0.1 api.example.com');
     expect(out.hosts).toContain('# 已白名单: api.example.com');
   });
-});
 
   it('生成 5 种新增格式（unbound/pihole/domains/bind/smartdns）规则', () => {
     const out = generateRules(['ad.example.com'], [], [], baseSettings, t);

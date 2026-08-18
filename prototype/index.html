@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DNS Shield — 高保真原型 v3.7.34</title>
-  <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard 的 DNS 广告过滤规则生成器" />
+  <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS 的 DNS 广告过滤规则生成器" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -301,6 +301,11 @@
             <button class="tab" data-fmt="hosts" role="tab" id="tabHosts">Hosts</button>
             <button class="tab" data-fmt="adguard" role="tab" id="tabAdguard">AdGuard</button>
             <button class="tab" data-fmt="whitelist" role="tab" id="tabWhitelist">白名单</button>
+            <button class="tab" data-fmt="unbound" role="tab" id="tabUnbound">Unbound</button>
+            <button class="tab" data-fmt="pihole" role="tab" id="tabPihole">Pi-hole</button>
+            <button class="tab" data-fmt="domains" role="tab" id="tabDomains">Domains</button>
+            <button class="tab" data-fmt="bind" role="tab" id="tabBind">Bind</button>
+            <button class="tab" data-fmt="smartdns" role="tab" id="tabSmartdns">SmartDNS</button>
           </div>
         </div>
 
@@ -315,7 +320,7 @@
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <footer class="wrap" style="padding:16px; text-align:center"><span class="footer-ver" id="footerVer">v3.7.34</span></div>
+  <footer class="wrap" style="padding:16px; text-align:center"><span class="footer-ver" id="footerVer">v3.7.48</span></div>
 
   <script>
   (function () {
@@ -355,7 +360,7 @@
       neohosts: 'ad.neohost.cn\nbanner.neohost.cn\n+api.neohost.cn'
     };
 
-    var settings = { projectName: 'DNS Shield', version: '3.7.33', ipv4: '127.0.0.1', ipv6: '::',
+    var settings = { projectName: 'DNS Shield', version: '3.7.48', ipv4: '127.0.0.1', ipv6: '::',
       addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true };
 
     var DOMAIN_REGEX = /^(?=.{1,253}$)([a-z0-9](-?[a-z0-9])*\.)+[a-z]{2,}$/i;
@@ -434,12 +439,48 @@
       parsed.whitelist.forEach(function (d) { out += '@@||' + d + '^$important\n'; });
       return out;
     }
+    // 3.7.48 新增 5 种格式
+    function genUnbound() {
+      var out = header('Unbound 格式 (local-zone refuse)') + '\n';
+      parsed.domains.forEach(function (d) { out += 'local-zone: "' + d + '" refuse\n'; });
+      parsed.whitelist.forEach(function (d) { out += 'local-zone: "' + d + '" transparent\n'; });
+      return out;
+    }
+    function genPihole() {
+      var out = header('Pi-hole 格式 (0.0.0.0 domain)') + '\n';
+      parsed.domains.forEach(function (d) { out += '0.0.0.0 ' + d + '\n'; });
+      parsed.customDns.forEach(function (c) { out += c.ip + ' ' + c.domain + '\n'; });
+      return out;
+    }
+    function genDomains() {
+      var out = header('纯域名列表') + '\n';
+      parsed.domains.forEach(function (d) { out += d + '\n'; });
+      parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      return out;
+    }
+    function genBind() {
+      var out = header('Bind RPZ (CNAME .)') + '\n';
+      parsed.domains.forEach(function (d) { out += d + ' CNAME .\n*.' + d + ' CNAME .\n'; });
+      return out;
+    }
+    function genSmartdns() {
+      var out = header('SmartDNS 格式 (address /domain/#)') + '\n';
+      parsed.domains.forEach(function (d) { out += 'address /' + d + '/#\n'; });
+      parsed.customDns.forEach(function (c) { out += 'server /' + c.domain + '/' + c.ip + '\n'; });
+      parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      return out;
+    }
     function generate() {
       switch (currentFmt) {
         case 'dnsmasq': return genDnsmasq();
         case 'hosts': return genHosts();
         case 'adguard': return genAdguard();
         case 'whitelist': return genWhitelist();
+        case 'unbound': return genUnbound();
+        case 'pihole': return genPihole();
+        case 'domains': return genDomains();
+        case 'bind': return genBind();
+        case 'smartdns': return genSmartdns();
       }
       return '';
     }
