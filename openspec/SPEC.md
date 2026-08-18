@@ -270,7 +270,7 @@ refactor: 优化规则生成逻辑
 
 | 依赖 | 版本 | 用途 |
 |------|------|------|
-| @types/node | ^20.14.0 | Node.js 类型定义（LTS） |
+| @types/node | ^24.0.0 | Node.js 类型定义（匹配运行环境 Node 24） |
 | @types/react | ^18 | React 类型定义 |
 | @types/react-dom | ^18 | React DOM 类型定义 |
 | autoprefixer | ^10.4.19 | CSS 自动前缀 |

@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+## [3.7.51] - 2026-08-18
+
+### Changed
+- 适配腾讯云 EdgeOne 构建环境 Node.js 24.11.0：新增 `.nvmrc` 锁定 24.11.0，并在 `package.json` 声明 `engines.node: ">=24.11.0"`
+- 升级 `@types/node` 至 `^24` 匹配运行环境 Node 24（原 `^20`）
+- `next.config.js` 新增 `images.unoptimized: true`，静态导出下避免 Node 24 环境 sharp 缺失告警
+- 同步全局版本展示位至 v3.7.51（package.json / version.ts / README 徽章 / DEPLOYMENT / openspec）
+
 ## [3.7.50] - 2026-08-18
 
 ### Added

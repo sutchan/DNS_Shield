@@ -58,8 +58,12 @@ const securityHeaders = [
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
+  // 静态导出 + Node 24 环境下禁用 next/image 优化，避免 sharp 缺失告警
+  images: {
+    unoptimized: true
+  },
   env: {
-    version: '3.7.50'
+    version: '3.7.51'
   },
   devIndicators: {
     buildActivity: false
