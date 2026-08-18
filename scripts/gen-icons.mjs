@@ -1,4 +1,4 @@
-// scripts/gen-icons.mjs v3.7.42
+// scripts/gen-icons.mjs v3.7.43
 // 从盾牌母版 (public/favicon.svg，与 public/logo.svg 盾牌逐像素一致) 重新生成 PWA 图标。
 // 蓝盾 #0D5FE2 + 白勾，正方形留白居中 (12.5% 安全边距，maskable 友好)。
 // 依赖 sharp：执行前需 `npm i -D sharp`（本仓库用 pnpm-lock，sharp 装于临时目录亦可）。

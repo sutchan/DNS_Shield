@@ -33,7 +33,7 @@
   "blockIPv6": "Blocca IPv6",
   "dedup": "Rimuovi Duplicati Automaticamente",
   "removeWildcard": "Rimuovi Caratteri Jolly",
-  "AdGuardIncludeWhitelist": "Includi whitelist in AdGuard Blacklist",
+  "adguardIncludeWhitelist": "Includi whitelist in AdGuard Blacklist",
   "lightMode": "Modalità Chiara",
   "darkMode": "Modalità Scura",
   "inputHelp": "Inserisci lista domini, uno per riga",

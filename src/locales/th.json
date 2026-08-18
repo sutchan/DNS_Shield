@@ -33,7 +33,7 @@
   "blockIPv6": "ปิดใช้ IPv6",
   "dedup": "ลบทับซ้อนอัตโนมัติ",
   "removeWildcard": "ลบเครื่องหมายสัญลักษณ์แทน",
-  "AdGuardIncludeWhitelist": "รวม whitelist ใน AdGuard Blacklist",
+  "adguardIncludeWhitelist": "รวม whitelist ใน AdGuard Blacklist",
   "lightMode": "โหมดสว่าง",
   "darkMode": "โหมดมืด",
   "inputHelp": "ป้อนรายการโดเมน ทีละบรรทัด",

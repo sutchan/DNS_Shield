@@ -33,7 +33,7 @@
   "blockIPv6": "Blokovat IPv6",
   "dedup": "Automaticky odebrat duplikáty",
   "removeWildcard": "Odebrat zástupné znaky",
-  "AdGuardIncludeWhitelist": "Zahrnout whitelist do AdGuard Blacklist",
+  "adguardIncludeWhitelist": "Zahrnout whitelist do AdGuard Blacklist",
   "lightMode": "Světlý režim",
   "darkMode": "Tmavý režim",
   "inputHelp": "Zadejte seznam domén, jednu na řádek",

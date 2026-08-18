@@ -33,7 +33,7 @@
   "blockIPv6": "Blockera IPv6",
   "dedup": "Ta automatiskt bort dubbletter",
   "removeWildcard": "Ta bort jokertecken",
-  "AdGuardIncludeWhitelist": "Inkludera vitlista i AdGuard Blacklist",
+  "adguardIncludeWhitelist": "Inkludera vitlista i AdGuard Blacklist",
   "lightMode": "Ljust läge",
   "darkMode": "Mörkt läge",
   "inputHelp": "Ange domänlista, en per rad",

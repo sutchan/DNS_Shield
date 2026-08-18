@@ -7,6 +7,15 @@
 
 ## [Unreleased]
 
+## [3.7.43] - 2026-08-18
+
+### Fixed
+- 修复构建类型错误：`SettingsPanel` 引用 `t.adguardIncludeWhitelist` 但 `Translation` 类型缺失该键、各 locale 键名为 `AdGuardIncludeWhitelist`（大小写不一致）导致 `next build` 失败
+- 在 `Translation` 类型补充 `adguardIncludeWhitelist` 键，并将 16 个 locale 文件的 `AdGuardIncludeWhitelist` 统一重命名为 `adguardIncludeWhitelist`
+
+### Changed
+- 同步全局版本展示位至 v3.7.43
+
 ## [3.7.42] - 2026-08-18
 
 ### Changed

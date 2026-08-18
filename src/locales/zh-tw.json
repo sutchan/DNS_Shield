@@ -33,7 +33,7 @@
   "blockIPv6": "阻止 IPv6",
   "dedup": "自動去重",
   "removeWildcard": "移除萬用字元",
-  "AdGuardIncludeWhitelist": "包含白名單(AdGuard黑名單)",
+  "adguardIncludeWhitelist": "包含白名單(AdGuard黑名單)",
   "lightMode": "淺色模式",
   "darkMode": "深色模式",
   "inputHelp": "輸入域名列表，每行一個",

@@ -33,7 +33,7 @@
   "blockIPv6": "IPv6'yi Engelle",
   "dedup": "Otomatik Tekrarları Kaldır",
   "removeWildcard": "Joker Karakterleri Kaldır",
-  "AdGuardIncludeWhitelist": "AdGuard Blacklist'e whitelist'i dahil et",
+  "adguardIncludeWhitelist": "AdGuard Blacklist'e whitelist'i dahil et",
   "lightMode": "Açık Mod",
   "darkMode": "Koyu Mod",
   "inputHelp": "Alan adı listesini girin, her satıra bir tane",

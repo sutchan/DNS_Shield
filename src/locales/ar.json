@@ -33,7 +33,7 @@
   "blockIPv6": "حظر IPv6",
   "dedup": "إزالة التكرارات التلقائية",
   "removeWildcard": "إزالة أحرف البدل",
-  "AdGuardIncludeWhitelist": "تضمين القائمة البيضاء في AdGuard Blacklist",
+  "adguardIncludeWhitelist": "تضمين القائمة البيضاء في AdGuard Blacklist",
   "lightMode": "الوضع الفاتح",
   "darkMode": "الوضع الداكن",
   "inputHelp": "أدخل قائمة النطاقات، واحدة لكل سطر",

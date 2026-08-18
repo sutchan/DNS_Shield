@@ -33,7 +33,7 @@
   "blockIPv6": "Блокировать IPv6",
   "dedup": "Автоматически удалять дубликаты",
   "removeWildcard": "Удалить подстановочные знаки",
-  "AdGuardIncludeWhitelist": "Включить whitelist в AdGuard Blacklist",
+  "adguardIncludeWhitelist": "Включить whitelist в AdGuard Blacklist",
   "lightMode": "Светлая тема",
   "darkMode": "Тёмная тема",
   "inputHelp": "Введите список доменов, по одному на строку",

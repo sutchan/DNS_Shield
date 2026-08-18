@@ -33,7 +33,7 @@
   "blockIPv6": "Bloquear IPv6",
   "dedup": "Eliminación automática de duplicados",
   "removeWildcard": "Eliminar caracteres comodín",
-  "AdGuardIncludeWhitelist": "Incluir lista blanca en AdGuard Blacklist",
+  "adguardIncludeWhitelist": "Incluir lista blanca en AdGuard Blacklist",
   "lightMode": "Modo claro",
   "darkMode": "Modo oscuro",
   "inputHelp": "Ingrese lista de dominios, uno por línea",

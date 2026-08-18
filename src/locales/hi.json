@@ -33,7 +33,7 @@
   "blockIPv6": "IPv6 को अवरुद्ध करें",
   "dedup": "स्वचालित रूप से डुप्लिकेट हटाएं",
   "removeWildcard": "वाइल्डकार्ड हटाएं",
-  "AdGuardIncludeWhitelist": "AdGuard ब्लैकलिस्ट में व्हाइटलिस्ट शामिल करें",
+  "adguardIncludeWhitelist": "AdGuard ब्लैकलिस्ट में व्हाइटलिस्ट शामिल करें",
   "lightMode": "लाइट मोड",
   "darkMode": "डार्क मोड",
   "inputHelp": "डोमेन सूची दर्ज करें, प्रति पंक्ति एक",

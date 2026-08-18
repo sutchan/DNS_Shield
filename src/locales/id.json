@@ -33,7 +33,7 @@
   "blockIPv6": "Blokir IPv6",
   "dedup": "Hapus Duplikat Otomatis",
   "removeWildcard": "Hapus Karakter Pengganti",
-  "AdGuardIncludeWhitelist": "Sertakan Whitelist di AdGuard Blacklist",
+  "adguardIncludeWhitelist": "Sertakan Whitelist di AdGuard Blacklist",
   "lightMode": "Mode Terang",
   "darkMode": "Mode Gelap",
   "inputHelp": "Masukkan daftar domain, satu per baris",

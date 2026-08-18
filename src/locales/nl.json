@@ -33,7 +33,7 @@
   "blockIPv6": "Blokkeer IPv6",
   "dedup": "Automatisch dubbels verwijderen",
   "removeWildcard": "Jokertekens verwijderen",
-  "AdGuardIncludeWhitelist": "Whitelist opnemen in AdGuard Blacklist",
+  "adguardIncludeWhitelist": "Whitelist opnemen in AdGuard Blacklist",
   "lightMode": "Lichte modus",
   "darkMode": "Donkere modus",
   "inputHelp": "Voer domeinlijst in, één per regel",

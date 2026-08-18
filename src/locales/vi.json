@@ -33,7 +33,7 @@
   "blockIPv6": "Chặn IPv6",
   "dedup": "Loại bỏ trùng lặp tự động",
   "removeWildcard": "Loại bỏ ký tự đại diện",
-  "AdGuardIncludeWhitelist": "Bao gồm whitelist trong AdGuard Blacklist",
+  "adguardIncludeWhitelist": "Bao gồm whitelist trong AdGuard Blacklist",
   "lightMode": "Chế độ sáng",
   "darkMode": "Chế độ tối",
   "inputHelp": "Nhập danh sách tên miền, mỗi dòng một",

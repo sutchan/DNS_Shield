@@ -84,6 +84,7 @@ export interface Translation {
   blockIPv6: string;
   dedup: string;
   removeWildcard: string;
+  adguardIncludeWhitelist: string;
   mergeInfo: string;
   previewPlaceholder: string;
   generateBtn: string;
