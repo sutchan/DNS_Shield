@@ -1,4 +1,4 @@
-// src/components/Header.tsx v3.7.41
+// src/components/Header.tsx v3.7.50
 'use client';
 
 import * as React from 'react';
@@ -36,24 +36,15 @@ const Header: React.FC<HeaderProps> = ({
     <header className="app-header" id="app-header" role="banner">
       <div className="header-top" id="header-top">
         <div className="header-brand" id="header-brand">
+          {/* 品牌图标：统一引用品牌单一来源 /logo.svg（与 brand/logo.svg 同源） */}
           <div className="brand-icon" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              className="h-5 w-5 text-primary"
-              fill="currentColor"
-              role="img"
-              aria-label="DNS Shield"
-            >
-              <path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z" />
-              <path
-                d="M8.5 12.2l2.3 2.3 4.4-4.4"
-                fill="none"
-                stroke="#ffffff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <img
+              src="/logo.svg"
+              alt="DNS Shield"
+              className="h-6 w-6"
+              width={24}
+              height={24}
+            />
           </div>
           <div>
             <h1 className="app-title" aria-describedby="app-subtitle">DNS Shield</h1>

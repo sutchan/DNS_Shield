@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.ts v3.7.32
+// src/hooks/useDomainData.ts v3.7.50
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
 import { fetchDomainsText } from '../utils/domainFetch';
@@ -177,6 +177,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     sourceInput,
     parsedData,
     stats,
+    setStats,
     isLoading,
     lineNumbersRef,
     parseSourceData,

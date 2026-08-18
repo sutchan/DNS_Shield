@@ -1,235 +1,56 @@
-// src/app/layout.tsx v3.7.48
-import React from 'react'
-import type { Metadata, Viewport } from 'next'
-import Script from 'next/script'
-import { Inter, JetBrains_Mono } from 'next/font/google'
-import './globals.css'
+// src/app/layout.tsx v3.7.50
+import type { ReactNode } from 'react';
+import './globals.css';
+import { Inter, JetBrains_Mono, Noto_Sans_SC } from 'next/font/google';
+import { metadata, viewport, jsonLd } from './site-meta';
+import { APP_VERSION } from '../config/version';
+import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
+import { loadDictionary } from '../utils/i18n';
 
-// 用 next/font 注入字体，避免 EO 静态导出下的 no-page-custom-font 警告，
-// 同时获得字体预加载与消除布局抖动（CLS）的收益。
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-inter',
-  display: 'swap',
-})
-
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
   variable: '--font-jetbrains-mono',
   display: 'swap',
-})
+});
+const notoSansSC = Noto_Sans_SC({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-noto-sans-sc',
+  display: 'swap',
+});
 
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
+export { metadata, viewport };
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://dns.ewuse.com'),
-  title: {
-    default: 'DNS Shield v3.7.48 - 路由器级广告过滤规则生成工具',
-    template: '%s | DNS Shield',
-  },
-  description: 'DNS Shield v3.7.48 - 路由器级全局广告过滤规则生成工具。基于 dnsmasq/hosts 的路由器广告过滤，支持梅林固件、小米路由器、OpenWrt 等设备。自动生成 AdBlock、DNS 过滤规则，轻松屏蔽广告域名。',
-  keywords: ['DNS广告过滤', 'dnsmasq', 'hosts', '广告拦截', '路由器', '梅林固件', '小米路由器', 'OpenWrt', '广告过滤规则', 'DNS Shield', 'ad blocking', 'router firmware', 'AdBlock', 'DNS filter', '广告屏蔽', '去广告'],
-  authors: [{ name: 'sutchan', url: 'https://github.com/sutchan' }],
-  creator: 'sutchan',
-  publisher: 'DNS Shield',
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'zh_CN',
-    alternateLocale: ['en_US', 'zh_TW'],
-    url: 'https://dns.ewuse.com',
-    siteName: 'DNS Shield',
-    title: 'DNS Shield v3.7.48 - 路由器级广告过滤规则生成工具',
-    description: '路由器级全局广告过滤规则生成工具，支持 Dnsmasq 和 Hosts 格式',
-    images: [
-      {
-        url: 'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/assets/icons/icon-512x512.png',
-        width: 1200,
-        height: 630,
-        alt: 'DNS Shield - 路由器广告过滤工具',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'DNS Shield - 路由器广告过滤',
-    description: '路由器级全局广告过滤规则生成工具',
-    images: ['https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/assets/icons/icon-512x512.png'],
-    creator: '@sutchan',
-  },
-  alternates: {
-    canonical: 'https://dns.ewuse.com',
-    languages: {
-      'en-US': 'https://dns.ewuse.com/en',
-      'zh-TW': 'https://dns.ewuse.com/zh-TW',
-    },
-  },
-  verification: {
-    // TODO: 生产环境部署前，请替换为您实际的 Google Search Console 验证代码
-    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || 'google-site-verification-code',
-  },
-  other: {
-    'geo.region': 'CN',
-    'geo.placename': 'DNS Shield',
-  },
-  icons: [
-    {
-      rel: 'icon',
-      type: 'image/svg+xml',
-      url: '/favicon.svg',
-    },
-    {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '72x72',
-      url: '/assets/icons/icon-72x72.png',
-    },
-    {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '96x96',
-      url: '/assets/icons/icon-96x96.png',
-    },
-    {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '128x128',
-      url: '/assets/icons/icon-128x128.png',
-    },
-    {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '144x144',
-      url: '/assets/icons/icon-144x144.png',
-    },
-    {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '152x152',
-      url: '/assets/icons/icon-152x152.png',
-    },
-    {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '192x192',
-      url: '/assets/icons/icon-192x192.png',
-    },
-    {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '384x384',
-      url: '/assets/icons/icon-384x384.png',
-    },
-    {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '512x512',
-      url: '/assets/icons/icon-512x512.png',
-    },
-    {
-      rel: 'apple-touch-icon',
-      url: '/assets/icons/icon-192x192.png',
-    },
-  ],
-  manifest: '/manifest.json',
-}
+const dictionary = loadDictionary();
+const defaultLang = 'zh-cn';
 
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#0D5FE2' },
-    { media: '(prefers-color-scheme: dark)', color: '#2674F2' },
-  ],
-}
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'SoftwareApplication',
-  name: 'DNS Shield',
-  applicationCategory: 'UtilitiesApplication',
-  operatingSystem: 'Web',
-  applicationSubCategory: 'Ad Blocking',
-  softwareVersion: '3.7.48',
-  description:
-    '路由器级全局广告过滤规则生成工具。基于 dnsmasq/hosts 的路由器广告过滤，支持梅林固件、小米路由器、OpenWrt 等设备。自动生成 AdBlock、DNS 过滤规则，轻松屏蔽广告域名。',
-  url: 'https://dns.ewuse.com',
-  downloadUrl: 'https://github.com/sutchan/DNS_Shield',
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'CNY',
-  },
-  author: {
-    '@type': 'Person',
-    name: 'sutchan',
-    url: 'https://github.com/sutchan',
-  },
-  featureList: [
-    '支持 Dnsmasq 和 Hosts 格式规则生成',
-    '兼容梅林固件、小米路由器、OpenWrt',
-    '自定义黑白名单管理',
-    '实时预览过滤规则',
-    '一键复制/下载规则文件',
-  ],
-  inLanguage: ['zh-CN', 'en-US'],
-  screenshot: 'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/assets/icons/icon-512x512.png',
-}
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html
-      lang="zh-CN"
-      suppressHydrationWarning
-      className={`${inter.variable} ${jetbrainsMono.variable}`}
-    >
+    <html lang="zh-CN">
       <head>
-        {GA_MEASUREMENT_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_MEASUREMENT_ID}', {
-                  page_path: window.location.pathname,
-                });
-              `}
-            </Script>
-          </>
-        )}
-      </head>
-      <body>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="version" content={APP_VERSION} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+      </head>
+      <body
+        className={`${inter.variable} ${jetbrainsMono.variable} ${notoSansSC.variable}`}
+        id="app-body"
+      >
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:shadow">
+          跳到主要内容
+        </a>
+        <Header dictionary={dictionary} defaultLang={defaultLang} />
+        <main id="main-content" className="flex min-h-screen flex-col">
+          {children}
+        </main>
+        <Footer version={APP_VERSION} />
       </body>
     </html>
-  )
+  );
 }
-
-
-

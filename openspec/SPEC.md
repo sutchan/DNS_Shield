@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-08-17（与 package.json v3.7.48 对齐）
+> 最后审查：2026-08-18（与 package.json v3.7.50 对齐）
 
 ## 1. 项目概述
 
@@ -13,7 +13,7 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.7.47 |
+| 当前版本 | v3.7.50 |
 | 拦截域名 | 524 (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -51,7 +51,11 @@ dns-shield/
 │   ├── service-worker.js           # Service Worker
 │   ├── adguard.txt                 # 预生成 AdGuard 格式
 │   ├── dnsmasq.conf                # 预生成 Dnsmasq 格式
-│   └── hosts.txt                   # 预生成 Hosts 格式
+│   ├── hosts.txt                   # 预生成 Hosts 格式
+│   ├── unbound.conf                # 预生成 Unbound 格式（local-zone refuse）
+│   ├── pihole.txt                  # 预生成 Pi-hole 格式（0.0.0.0 gravity）
+│   ├── rpz.db                      # 预生成 Bind RPZ 格式
+│   └── smartdns.conf               # 预生成 SmartDNS 格式（address /domain/#）
 ├── src/                            # Next.js 源代码
 │   ├── app/                        # App Router 目录
 │   │   ├── page.tsx                # 主页面入口
@@ -184,7 +188,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.7.47 |
+| 版本号 | 3.7.50 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

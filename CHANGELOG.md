@@ -7,6 +7,27 @@
 
 ## [Unreleased]
 
+## [3.7.50] - 2026-08-18
+
+### Added
+- 建立品牌资产单一来源 `brand/` 目录（logo.svg / logo-mono.svg / favicon.svg / brand-banner.svg），与 public/ 同源
+- 新增源文件模块拆分：`src/types/formats.ts`（FormatType 与格式常量）、`src/utils/headerConfigs.ts`（各格式头部注释配置）、`src/app/site-meta.ts`（metadata/jsonLd 常量）
+
+### Changed
+- Header 品牌图标改为引用 `/logo.svg`，统一品牌资产来源（移除内联 SVG）
+- README 的 logo 与品牌横幅引用路径统一指向 `brand/`
+- 代码审查对齐：`layout.tsx` 元数据版本号改为引用 `APP_VERSION` 单一来源，消除硬编码漂移
+- 统一同步全仓库源文件头注释版本至 v3.7.50
+- openspec/SPEC.md、config.yaml、README、prototype 补充 5 种新增输出格式（Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS）说明
+- 同步全局版本展示位至 v3.7.50
+
+## [3.7.49] - 2026-08-18
+
+### Fixed
+- 修复导出头部用法说明在非 dnsmasq 格式下输出字面量 i18n 路径（如 `header.hostsUsage`）而非真实文案
+- 修复统计数字与实际导出结果不符：UI 展示的黑名单/白名单/有效计数现已应用「去通配」「去重」「白名单剔除」设置，与生成规则一致
+- 核实多源 URL 加载已采用 `Promise.allSettled` 部分容错，非缺陷（保留既有 failedUrls 提示）
+
 ## [3.7.48] - 2026-08-18
 
 ### Added

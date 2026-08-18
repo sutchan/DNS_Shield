@@ -1,4 +1,4 @@
-// src/hooks/autosaveStorage.ts v3.7.30
+// src/hooks/autosaveStorage.ts v3.7.50
 // 自动保存（autosave）的 localStorage 读写与 schema 校验纯逻辑，
 // 从 useDomainData 抽离以保持单一职责，主 hook 仅负责编排。
 

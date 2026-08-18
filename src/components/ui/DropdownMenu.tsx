@@ -1,8 +1,8 @@
-// src/components/ui/DropdownMenu.tsx v3.7.30
+// src/components/ui/DropdownMenu.tsx v3.7.50
+// shadcn/ui 标准 Radix 封装（原子组件聚合，单一文件导出契约，不拆分）。
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { Check, ChevronRight, Circle } from "lucide-react"
-
 import { cn } from "@/lib/utils"
 
 const DropdownMenu = DropdownMenuPrimitive.Root
@@ -197,7 +197,3 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
 }
-
-
-
-

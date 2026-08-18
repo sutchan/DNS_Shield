@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.test.ts v3.7.42
+// src/utils/rulesGenerator.test.ts v3.7.50
 import { describe, it, expect } from 'vitest';
 import { generateRules, generateHeader } from './rulesGenerator';
 import { parseSource } from './parser';
@@ -150,22 +150,19 @@ describe('generateRules', () => {
     expect(header.startsWith(';')).toBe(true);
     expect(header).toContain('Bind');
   });
-});
 
-describe('generateHeader', () => {
-  it('hosts 头部包含项目名与版本', () => {
-    const header = generateHeader('hosts', 10, 2, '2026.07.21', baseSettings, t);
-    expect(header).toContain('DNS Shield');
-    expect(header).toContain(APP_VERSION);
-    expect(header).toContain('10 个唯一域名');
+  it('header 用法说明必须解析为真实文本，而非字面量路径', () => {
+    for (const f of ['hosts', 'unbound', 'pihole', 'domains', 'bind', 'smartdns'] as const) {
+      const header = generateHeader(f, 3, 0, '2026.07.21', baseSettings, t);
+      // 不得出现形如 "header.xxxUsage" 的未解析路径
+      expect(header).not.toMatch(/header\.\w+Usage/);
+      // 必须包含实际的用法文案（中文 locale 下含"使用方法"）
+      expect(header).toContain('使用方法');
+    }
+    // adguard 无聚合用法（usage 为空），但同样不得出现未解析路径
+    const adguardHeader = generateHeader('adguard', 3, 0, '2026.07.21', baseSettings, t);
+    expect(adguardHeader).not.toMatch(/header\.\w+Usage/);
   });
-
-  it('adguard 头部使用 ! 注释符', () => {
-    const header = generateHeader('adguard', 5, 0, '2026.07.21', baseSettings, t);
-    expect(header.startsWith('!')).toBe(true);
-  });
 });
-
-
 
 

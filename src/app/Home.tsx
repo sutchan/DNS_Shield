@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.7.32
+// src/app/Home.tsx v3.7.50
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import './globals.css';
@@ -52,6 +52,7 @@ export default function Home() {
     sourceInput, 
     parsedData, 
     stats, 
+    setStats, 
     lineNumbersRef, 
     clearAll, 
     sortDomains, 
@@ -76,7 +77,10 @@ export default function Home() {
     copyOutput, 
     setFormat, 
     syncOutputScroll
-  } = useRules(parsedData, sourceInput, settings, t, showToast, parseSourceData);
+  } = useRules(parsedData, sourceInput, settings, t, showToast, parseSourceData,
+    // 将「生效后统计」合并进展示用的 stats（保留 domainCount/commentCount/invalidCount）
+    (partial) => setStats((prev) => ({ ...prev, ...partial }))
+  );
 
   // URL管理
   const { 

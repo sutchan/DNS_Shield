@@ -1,10 +1,10 @@
-// src/hooks/useRules.ts v3.7.42
+// src/hooks/useRules.ts v3.7.50
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { generateRules as generateRulesUtil } from '../utils/rulesGenerator';
+import { generateRules as generateRulesUtil, computeEffectiveStats } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
 import { downloadOutput as downloadOutputUtil, copyToClipboard } from '../utils/fileUtils';
 import { generateLineNumbers } from '../utils/uiUtils';
-import { OutputContent, Settings, ParsedData, Translation, FormatType } from '../types';
+import { OutputContent, Settings, ParsedData, Translation, FormatType, Stats } from '../types';
 
 export const useRules = (
   parsedData: ParsedData,
@@ -12,7 +12,8 @@ export const useRules = (
   settings: Settings,
   t: Translation,
   showToast: (key: string, params?: { [key: string]: string | number }) => void,
-  syncParsedData: (text?: string) => void
+  syncParsedData: (text?: string) => void,
+  onEffectiveStats?: (stats: Pick<Stats, 'blacklistCount' | 'whitelistCount' | 'validCount'>) => void
 ) => {
   const [outputContent, setOutputContent] = useState<OutputContent>({
     dnsmasq: '',
@@ -46,6 +47,9 @@ export const useRules = (
     const { domains, whitelist, customDns } = freshData.data;
     const newOutputContent = generateRulesUtil(domains, whitelist, customDns, settings, t);
     setOutputContent(newOutputContent);
+    // 同步「生效后的实际统计」到 UI：与本次生成的变换（去通配/去重/白名单剔除）完全一致，
+    // 修复统计数字与实际导出结果不符的问题（#2）
+    onEffectiveStats?.(computeEffectiveStats(freshData.data, settings));
     // 同步解析结果回 parsedData/stats，确保统计与合并信息立即反映本次生成内容
     // （消除防抖延迟造成的"规则已生成但白名单计数仍为 0"的失效观感）
     syncParsedData(sourceInput);
@@ -55,7 +59,7 @@ export const useRules = (
     generateLineNumbers(content || '', outputLineNumbersRef);
 
     if (notify) showToast('rulesGenerated');
-  }, [sourceInput, settings, t, currentFormat, syncParsedData, showToast]);
+  }, [sourceInput, settings, t, currentFormat, syncParsedData, showToast, onEffectiveStats]);
 
   // 监听 sourceInput：只要存在可解析内容即自动生成，确保右侧预览（含白名单标签页）
   // 始终反映当前数据，避免"左侧有白名单但右侧生成窗口为空"的失效观感。

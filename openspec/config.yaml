@@ -8,7 +8,7 @@ context: |
   Project structure follows Next.js App Router conventions
   We use SemVer for versioning
   We maintain a single source of truth in public/domains.txt
-  We support multiple output formats: dnsmasq, hosts, AdGuard, and whitelist
+  We support multiple output formats: dnsmasq, hosts, AdGuard, whitelist, Unbound, Pi-hole, plain domains, Bind RPZ, and SmartDNS
   We follow strict file header format with version and date
   We maintain whitelist.txt for whitelist rules
   We use Next.js App Router with page.tsx, layout.tsx, and Home.tsx components
@@ -76,4 +76,4 @@ components:
       file: "src/components/ui/Toast.tsx"
       parts: ["Toast", "toast"]
 
-version: "3.7.47"
+version: "3.7.50"

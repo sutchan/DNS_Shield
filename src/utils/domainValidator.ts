@@ -1,4 +1,4 @@
-// src/utils/domainValidator.ts v3.7.30
+// src/utils/domainValidator.ts v3.7.50
 // 域名验证与行解析工具函数
 
 // 域名正则表达式

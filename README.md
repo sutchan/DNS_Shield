@@ -1,10 +1,10 @@
-![DNS Shield 品牌横幅](public/brand-banner.svg)
+![DNS Shield 品牌横幅](brand/brand-banner.svg)
 
-![DNS Shield](public/logo.svg)
+![DNS Shield](brand/logo.svg)
 
 # DNS Shield - 路由器广告过滤工具
 
-[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.7.48-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.7.50-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告和保护隐私。
 
@@ -14,7 +14,7 @@
 - **支付保护** - 屏蔽扫码支付跳转链接（微信、支付宝）
 - **隐私防护** - 阻止追踪器和数据采集
 - **多设备生效** - 路由器设置一次，所有连接设备自动生效
-- **多种格式支持** - Dnsmasq、Hosts、AdGuard、白名单等格式
+- **多种格式支持** - Dnsmasq、Hosts、AdGuard、Unbound、Pi-hole、Bind RPZ、SmartDNS、白名单等格式
 - **白名单管理** - 自定义白名单，避免误拦截关键服务
 - **自定义 DNS 指向** - 支持 @domain=ip 语法，自定义域名解析
 - **URL 导入** - 从远程 URL 获取域名列表（带超时控制）
@@ -71,6 +71,10 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmas
 | `adguard.txt` | AdGuard 格式 |
 | `whitelist.txt` | 白名单（需要放行的域名） |
 | `domains.txt` | 统一域名数据源 |
+| `unbound.conf` | Unbound 格式（local-zone refuse） |
+| `pihole.txt` | Pi-hole 格式（0.0.0.0 gravity） |
+| `rpz.db` | Bind RPZ 响应策略区格式 |
+| `smartdns.conf` | SmartDNS 格式（address /domain/#） |
 
 ## 技术特性
 
@@ -160,7 +164,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
   规则生成（utils/rulesGenerator.ts）
         │  useRules 实时同步解析
         ▼
-  输出（Dnsmasq / Hosts / AdGuard / 白名单） → 复制 / 下载
+  输出（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS） → 复制 / 下载
 ```
 
 关键设计要点：
@@ -178,7 +182,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
 | 配置项 | 位置 | 说明 |
 |--------|------|------|
 | 预设数据源 | `src/config/index.ts` | AdGuard、EasyList、NeoHosts 等内置预设源 URL |
-| 输出格式 | UI 切换（Tabs） | Dnsmasq / Hosts / AdGuard / 白名单 |
+| 输出格式 | UI 切换（Tabs） | Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS |
 | 自定义 DNS 指向 | 输入语法 `@domain=ip` | 自定义域名解析目标 IP |
 | 白名单 | 输入语法 `+domain` | 放行指定域名 |
 | 自动保存间隔 | `useDomainData` 内部 | 默认 30 秒 |
@@ -217,7 +221,7 @@ pnpm test
 项目严格遵循 [openspec/SPEC.md](openspec/SPEC.md) 定义的规范，包括：
 
 - 域名格式规范（`+` 白名单、`@` 自定义 DNS、`#` 注释）
-- 输出格式规范（Dnsmasq、Hosts、AdGuard、白名单）
+- 输出格式规范（Dnsmasq、Hosts、AdGuard、白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS）
 - Git 提交规范（feat/fix/docs/chore/refactor）
 - 版本管理规范（SemVer 语义化版本）
 - 组件分层规范（UI 基础组件 → 业务组件 → 页面组件）
@@ -250,7 +254,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.7.48
+当前版本：v3.7.50
 
 ## 更新日志
 
