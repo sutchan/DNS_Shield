@@ -7,6 +7,15 @@
 
 ## [Unreleased]
 
+## [3.7.44] - 2026-08-18
+
+### Fixed
+- 修复构建类型错误：`Translation` 类型要求 `adguard`/`adguardFormat`/`adguardTitle`/`adguardDescription` 等 camelCase 键，但 16 个 locale 文件使用大写 `AdGuard*` 键名，导致 `i18n.ts` 类型不匹配（`next build` 失败）
+- 将 16 个 locale 文件的 `AdGuard`/`AdGuardFormat`/`AdGuardTitle`/`AdGuardDescription` 键统一重命名为 camelCase
+
+### Changed
+- 同步全局版本展示位至 v3.7.44
+
 ## [3.7.43] - 2026-08-18
 
 ### Fixed

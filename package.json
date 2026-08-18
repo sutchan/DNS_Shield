@@ -1,6 +1,6 @@
 {
   "name": "dns-shield",
-  "version": "3.7.43",
+  "version": "3.7.44",
   "private": true,
   "scripts": {
     "dev": "next dev --port 8082",
