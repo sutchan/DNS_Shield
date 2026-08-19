@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+## [3.7.56] - 2026-08-19
+
+### Changed
+- 同步全局版本展示位至 v3.7.56（package.json / version.ts / next.config.js / README / README.en / DEPLOYMENT / openspec config.yaml / SPEC.md / prototype / public 格式文件头注释）
+- 修复 prototype 内部 `settings.version` 运行时默认值滞后（原 3.7.53）
+- 修复 CHANGELOG `[Unreleased]` 锚点指向过旧版本（原 v3.7.45...HEAD → v3.7.56...HEAD）
+- 刷新 public 预生成格式文件头注释至 v3.7.56
+
 ## [3.7.55] - 2026-08-19
 
 ### Changed
@@ -976,7 +984,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.7.45...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.7.56...HEAD
+[3.7.56]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.56
 [3.7.45]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.45
 [3.7.44]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.44
 [3.7.43]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.43
