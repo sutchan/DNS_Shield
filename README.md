@@ -121,7 +121,7 @@ src/
 │   ├── parser.ts     # 域名解析与排序去重（行级解析、提取域名）
 │   ├── sortDedupe.ts # 域名排序与去重（纯函数，含测试）
 │   ├── domainValidator.ts # 域名验证与行解析
-│   ├── rulesGenerator.ts  # 规则生成器（Dnsmasq/Hosts/AdGuard/白名单）
+│   ├── rulesGenerator.ts  # 规则生成器（Dnsmasq/Hosts/AdGuard/白名单/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS）
 │   ├── rulesGenerator.test.ts # 规则生成器单元测试（Vitest）
 │   ├── domainFetch.ts # 远程域名列表拉取（超时/兜底/体积上限）
 │   ├── fileUtils.ts  # 文件操作（下载/复制）
