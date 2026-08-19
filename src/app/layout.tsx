@@ -1,12 +1,9 @@
-// src/app/layout.tsx v3.7.53
+// src/app/layout.tsx v3.7.54
 import type { ReactNode } from 'react';
 import './globals.css';
 import { Inter, JetBrains_Mono, Noto_Sans_SC } from 'next/font/google';
 import { metadata, viewport, jsonLd } from './site-meta';
 import { APP_VERSION } from '../config/version';
-import { Header } from '../components/Header';
-import { Footer } from '../components/Footer';
-import { loadDictionary } from '../utils/i18n';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const jetbrainsMono = JetBrains_Mono({
@@ -22,9 +19,6 @@ const notoSansSC = Noto_Sans_SC({
 });
 
 export { metadata, viewport };
-
-const dictionary = loadDictionary();
-const defaultLang = 'zh-cn';
 
 // Google Analytics 4 衡量 ID：优先取环境变量，缺省回退到项目约定 ID
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-1VNKFYGRXR';
@@ -58,11 +52,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:shadow">
           跳到主要内容
         </a>
-        <Header dictionary={dictionary} defaultLang={defaultLang} />
-        <main id="main-content" className="flex min-h-screen flex-col">
+        <div id="app-shell" className="flex min-h-screen flex-col">
           {children}
-        </main>
-        <Footer version={APP_VERSION} />
+        </div>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-// src/utils/domainValidator.test.ts v3.7.50
+// src/utils/domainValidator.test.ts v3.7.54
 import { describe, it, expect } from 'vitest';
 import {
   isValidDomain,
@@ -44,8 +44,8 @@ describe('isValidIp', () => {
 });
 
 describe('normalizeDomain', () => {
-  it('转小写并去除通配符前缀', () => {
-    expect(normalizeDomain('*.Example.COM')).toBe('example.com');
+  it('转小写并保留通配符前缀（去留由 settings 决定）', () => {
+    expect(normalizeDomain('*.Example.COM')).toBe('*.example.com');
     expect(normalizeDomain('Ads.Example.com')).toBe('ads.example.com');
   });
 });
@@ -126,6 +126,51 @@ describe('parseDomainLine', () => {
     expect(r.type).toBe('domain');
     expect(r.domain).toBe('ads.example.com');
     expect(r.isValid).toBe(true);
+  });
+
+  it('解析 Pi-hole 格式（0.0.0.0/127.0.0.1 + 行尾注释）', () => {
+    expect(parseDomainLine('0.0.0.0 ads.example.com').type).toBe('hosts');
+    expect(parseDomainLine('127.0.0.1 ads.example.com').type).toBe('hosts');
+    // 行尾 # 注释应被剥离
+    const r = parseDomainLine('0.0.0.0 ads.example.com # block');
+    expect(r.type).toBe('hosts');
+    expect(r.domain).toBe('ads.example.com');
+  });
+
+  it('解析 Bind RPZ 格式（CNAME .，保留通配符）', () => {
+    const r1 = parseDomainLine('ads.example.com CNAME .');
+    expect(r1.type).toBe('adguard');
+    expect(r1.domain).toBe('ads.example.com');
+    expect(r1.isValid).toBe(true);
+
+    const r2 = parseDomainLine('*.ads.example.com CNAME .');
+    expect(r2.type).toBe('adguard');
+    expect(r2.domain).toBe('*.ads.example.com');
+    expect(r2.isValid).toBe(true);
+  });
+
+  it('解析 SmartDNS 格式（address/server 黑名单，nameserver 白名单）', () => {
+    const r1 = parseDomainLine('address /ads.example.com/#');
+    expect(r1.type).toBe('adguard');
+    expect(r1.domain).toBe('ads.example.com');
+
+    const r2 = parseDomainLine('server /ads.example.com/1.2.3.4');
+    expect(r2.type).toBe('adguard');
+    expect(r2.domain).toBe('ads.example.com');
+
+    const r3 = parseDomainLine('nameserver /good.example.com/#');
+    expect(r3.type).toBe('whitelist');
+    expect(r3.domain).toBe('good.example.com');
+  });
+
+  it('解析 Unbound 格式（refuse 黑名单，transparent 白名单）', () => {
+    const r1 = parseDomainLine('local-zone: "ads.example.com" refuse');
+    expect(r1.type).toBe('adguard');
+    expect(r1.domain).toBe('ads.example.com');
+
+    const r2 = parseDomainLine('local-zone: "good.example.com" transparent');
+    expect(r2.type).toBe('whitelist');
+    expect(r2.domain).toBe('good.example.com');
   });
 });
 

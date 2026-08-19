@@ -7,6 +7,19 @@
 
 ## [Unreleased]
 
+## [3.7.54] - 2026-08-19
+
+### Added
+- 增强格式转换入站解析：parseDomainLine 现支持 BIND RPZ（`domain CNAME .` / `*.domain CNAME .`）、
+  SmartDNS（`address /domain/#` / `server /domain/ip` / `nameserver /domain/#`）、
+  Unbound（`local-zone "domain" refuse|transparent`）三种新格式，Pi-hole 复用 hosts 解析
+- 支持粘贴上述任意格式清单自动解析为统一结构并互转输出，补齐文档 4.1「不同格式互转」能力
+- 为新增格式解析补充 vitest 用例（Pi-hole / RPZ / SmartDNS / Unbound）
+
+### Fixed
+- 修复 EdgeOne 构建失败：移除 `layout.tsx` 中错误的 `Header`/`Footer`/`loadDictionary` 命名导入与重复渲染（`loadDictionary` 不存在，且 layout 为 server component 无法提供交互 props，Header/Footer 由 Home 页面负责）；布局 main 改 div 避免嵌套重复 id
+- 修复 `edgeone.json` 的 `root.headers.[0].source` 类型错误：EO 要求 `source` 字段，原 `path` 字段被拒
+
 ## [3.7.53] - 2026-08-19
 
 ### Added

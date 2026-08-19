@@ -7,7 +7,7 @@
   },
   "headers": [
     {
-      "path": "/*",
+      "source": "/*",
       "headers": [
         {
           "key": "Content-Security-Policy",

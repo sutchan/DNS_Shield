@@ -1,8 +1,10 @@
-// src/utils/domainValidator.ts v3.7.50
+// src/utils/domainValidator.ts v3.7.54
 // 域名验证与行解析工具函数
+// 支持 9 种过滤格式的入站解析（hosts/dnsmasq/AdGuard/Pi-hole/Bind RPZ/
+// SmartDNS/Unbound/纯域名/白名单），实现「粘贴任意格式 → 统一结构 → 互转」。
 
-// 域名正则表达式
-const DOMAIN_REGEX = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
+// 域名正则表达式（允许可选通配符前缀 *.，供 RPZ 等格式保留子域通配语义）
+const DOMAIN_REGEX = /^(?:\*\.)?[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
 
 export interface ParseResult {
   type: 'empty' | 'comment' | 'whitelist' | 'customDns' | 'hosts' | 'dnsmasq' | 'adguard' | 'domain';
@@ -36,9 +38,9 @@ export const isValidIp = (ip: string): boolean => {
   return IPV4_REGEX.test(ip) || IPV6_REGEX.test(ip);
 };
 
-// 规范化域名（去除通配符前缀并转为小写）
+// 规范化域名（仅转小写，保留可选通配符前缀 *.，由 settings.removeWildcard 决定去留）
 export const normalizeDomain = (domain: string): string => {
-  return domain.toLowerCase().replace(/^\*\./, '');
+  return domain.toLowerCase();
 };
 
 // 解析单行域名
@@ -144,6 +146,50 @@ export const parseDomainLine = (line: string): ParseResult => {
       ...[after.indexOf('^'), after.indexOf('$'), after.length].filter((i) => i > 0)
     );
     const domain = normalizeDomain(after.substring(0, endIdx));
+    return {
+      type: 'adguard',
+      domain,
+      isValid: isValidDomain(domain),
+      originalLine: line
+    };
+  }
+
+  // Unbound 格式：local-zone: "domain" refuse（黑名单） / transparent（白名单）
+  if (content.startsWith('local-zone:')) {
+    const m = content.match(/^local-zone:\s*"([^"]+)"\s+(refuse|transparent|always_refuse|always_transparent)\s*$/);
+    if (m) {
+      const domain = normalizeDomain(m[1]);
+      const isWl = m[2].startsWith('transparent');
+      return {
+        type: isWl ? 'whitelist' : 'adguard',
+        domain,
+        isValid: isValidDomain(domain),
+        originalLine: line
+      };
+    }
+    return { type: 'comment', originalLine: line };
+  }
+
+  // SmartDNS 格式：address /domain/#（黑名单） / server /domain/ip（黑名单） / nameserver /domain/#（白名单）
+  if (content.startsWith('address /') || content.startsWith('server /') || content.startsWith('nameserver /')) {
+    const m = content.match(/^(?:address|server|nameserver)\s+\/([^/]+)\//);
+    if (m) {
+      const domain = normalizeDomain(m[1]);
+      const isWl = content.startsWith('nameserver');
+      return {
+        type: isWl ? 'whitelist' : 'adguard',
+        domain,
+        isValid: isValidDomain(domain),
+        originalLine: line
+      };
+    }
+    return { type: 'comment', originalLine: line };
+  }
+
+  // Bind RPZ 格式：domain CNAME . 或 *.domain CNAME .（黑名单，保留通配符）
+  if (/\s+CNAME\s+\.\s*$/.test(content)) {
+    const dom = content.split(/\s+/)[0];
+    const domain = normalizeDomain(dom);
     return {
       type: 'adguard',
       domain,
