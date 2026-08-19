@@ -80,15 +80,15 @@ export const parseDomainLine = (line: string): ParseResult => {
 
   // AdGuard 白名单 (@@) 或自定义 DNS (@)
   if (content.startsWith('@')) {
-    // AdGuard 例外规则 @@||domain^$options 等价于白名单，按 whitelist 处理避免被静默丢弃
-    // 兼容带修饰符的规则（如 @@||domain^$important），域名取 || 与首个 ^/$/行尾之间部分
-    if (content.startsWith('@@') && content.startsWith('@@||')) {
-      const afterMarker = content.substring(4); // 去掉 "@@||"
-      const endIdx = Math.min(
-        ...[afterMarker.indexOf('^'), afterMarker.indexOf('$'), afterMarker.length].filter(
-          (i) => i > 0
-        )
-      );
+    // AdGuard 例外规则 @@domain 与 @@||domain^$options 均等价于白名单，按 whitelist 处理避免被静默丢弃。
+    // 注意：@@domain（无 || 前缀）也必须识别，原 && 条件误将其漏掉、被当成自定义 DNS 而丢弃。
+    // 兼容带修饰符的规则（如 @@||domain^$important），域名取 || 与首个 ^/$/行尾之间部分。
+    if (content.startsWith('@@')) {
+      const hasPipe = content.startsWith('@@||');
+      const afterMarker = hasPipe ? content.substring(4) : content.substring(2);
+      const candidates = [afterMarker.indexOf('^'), afterMarker.indexOf('$'), afterMarker.length];
+      const positives = candidates.filter((i) => i > 0);
+      const endIdx = positives.length > 0 ? Math.min(...positives) : afterMarker.length;
       const domain = normalizeDomain(afterMarker.substring(0, endIdx));
       return {
         type: 'whitelist',
