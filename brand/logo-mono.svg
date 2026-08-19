@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="224" height="56" viewBox="0 0 224 56" role="img" aria-label="DNS Shield">
-  <g transform="translate(4,4) scale(2)">
-    <path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z" fill="#ffffff"/>
-    <path d="M8.5 12.2l2.3 2.3 4.4-4.4" fill="none" stroke="#0D5FE2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </g>
-  <text x="62" y="37" font-family="Georgia, 'Times New Roman', 'Songti SC', serif" font-size="26" font-weight="700" letter-spacing="0" fill="#ffffff">DNS&#160;Shield</text>
-</svg>

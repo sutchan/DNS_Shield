@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- prototype/index.html v3.7.34 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
+<!-- prototype/index.html v3.7.55 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.7.34</title>
+  <title>DNS Shield — 高保真原型 v3.7.55</title>
   <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS 的 DNS 广告过滤规则生成器" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -168,14 +168,25 @@
     .preset:active { transform: scale(.96); }
     .preset.active { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
 
-    /* Tabs */
-    .tabs { display: inline-flex; background: hsl(var(--muted)); border-radius: var(--radius-md); padding: 3px; gap: 2px; }
-    .tab {
-      font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: var(--radius-sm);
-      cursor: pointer; color: hsl(var(--muted-foreground)); border: none; background: transparent;
-      transition: background .15s, color .15s;
+    /* Tabs（统一风格：对齐真实应用 .format-tabs / .format-tab） */
+    .tabs {
+      display: inline-flex; align-items: center; flex-wrap: wrap;
+      background: hsl(var(--muted)); border-radius: var(--radius-lg);
+      padding: 3px; gap: 2px;
     }
-    .tab.active { background: hsl(var(--card)); color: hsl(var(--foreground)); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+    .tab {
+      font-size: 12px; font-weight: 500; padding: 6px 12px;
+      border-radius: var(--radius-md);
+      cursor: pointer; color: hsl(var(--muted-foreground));
+      border: none; background: transparent;
+      transition: background .15s ease, color .15s ease, box-shadow .15s ease;
+    }
+    .tab:hover:not(.active) { color: hsl(var(--foreground)); background: hsl(var(--accent) / .5); }
+    .tab.active {
+      background: hsl(var(--card)); color: hsl(var(--foreground));
+      box-shadow: 0 1px 2px rgba(0,0,0,.10);
+    }
+    .tab:focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 1px; }
 
     /* Preview */
     .preview {
@@ -320,7 +331,7 @@
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <footer class="wrap" style="padding:16px; text-align:center"><span class="footer-ver" id="footerVer">v3.7.53</span></div>
+  <footer class="wrap" style="padding:16px; text-align:center"><span class="footer-ver" id="footerVer">v3.7.55</span></div>
 
   <script>
   (function () {

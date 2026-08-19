@@ -1,7 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="224" height="56" viewBox="0 0 224 56" role="img" aria-label="DNS Shield">
-  <g transform="translate(4,4) scale(2)">
-    <path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z" fill="#0D5FE2"/>
-    <path d="M8.5 12.2l2.3 2.3 4.4-4.4" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="8.4666mm" height="10.5834mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 135.46 169.33"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:white;stroke-width:16.93;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:22.9256}
+    .fil1 {fill:none;fill-rule:nonzero}
+    .fil0 {fill:#0D5FE2;fill-rule:nonzero}
+   ]]>
+  </style>
+ </defs>
+ <g id="圖層_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_2024256090784">
+   <path class="fil0" d="M67.73 0l-67.73 25.4 0 59.27c0,42.33 29.63,71.97 67.73,84.67 38.1,-12.7 67.73,-42.33 67.73,-84.67l0 -59.27 -67.73 -25.4z"/>
+   <polyline class="fil1 str0" points="38.1,86.36 57.57,105.83 94.82,68.58 "/>
   </g>
-  <text x="62" y="37" font-family="Georgia, 'Times New Roman', 'Songti SC', serif" font-size="26" font-weight="700" letter-spacing="0" fill="#8A94A6">DNS&#160;Shield</text>
+ </g>
 </svg>

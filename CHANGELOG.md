@@ -7,6 +7,12 @@
 
 ## [Unreleased]
 
+## [3.7.55] - 2026-08-19
+
+### Changed
+- 改进并统一 prototype 中 `.tablist`（role=tablist）的标签样式，对齐真实应用 `.format-tabs` / `.format-tab`：
+  容器改 `rounded-lg`、选中态 `rounded-md` 加阴影、新增 hover 态与 `focus-visible` 焦点环、支持 `flex-wrap` 响应式换行
+
 ## [3.7.54] - 2026-08-19
 
 ### Added

@@ -1,6 +1,6 @@
 {
   "name": "dns-shield",
-  "version": "3.7.54",
+  "version": "3.7.55",
   "private": true,
   "engines": {
     "node": ">=24.11.0"
