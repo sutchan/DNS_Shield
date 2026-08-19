@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-08-18（与 package.json v3.7.50 对齐）
+> 最后审查：2026-08-19（与 package.json v3.7.53 对齐）
 
 ## 1. 项目概述
 
@@ -13,7 +13,7 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.7.50 |
+| 当前版本 | v3.7.53 |
 | 拦截域名 | 524 (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -167,6 +167,8 @@ dns-shield/
 | 预设源 | 内置数据、AdGuard、EasyList、NeoHosts |
 | 手动编辑 | 直接在文本框编辑域名 |
 | 本地加载 | 自动加载 domains.txt 文件 |
+| 多格式解析 | 输入支持 hosts / dnsmasq / AdGuard / 纯域名混合，`parseDomainLine` 逐行识别格式并提取域名、白名单(`+domain`)、自定义 DNS(`@domain=ip`)、注释(`#`) |
+| 格式转换 | 粘贴任意格式清单，自动解析为统一域名条目结构后再输出为目标格式，实现不同格式互转 |
 | 自动保存 | 每 30 秒自动保存到 localStorage |
 | 自动恢复 | 页面加载时恢复未保存内容 |
 | 隐私统计 | 可选接入 Google Analytics 4（衡量 ID 经 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 注入，留空不启用；CSP 已放通 gtag 域名） |
@@ -179,6 +181,7 @@ dns-shield/
 | Hosts 格式 | `IP domain` |
 | AdGuard 格式 | `\|\|domain^` |
 | 白名单格式 | `@@\|\|domain^` |
+| 九种目标格式 | Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS，由统一中间结构生成 |
 | 头部注释 | 自动生成项目信息头 |
 | 一键下载 | 下载生成的文件 |
 | 剪贴板复制 | 复制生成的内容 |
@@ -188,7 +191,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.7.50 |
+| 版本号 | 3.7.53 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

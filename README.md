@@ -4,9 +4,9 @@
 
 # DNS Shield - 路由器广告过滤工具
 
-[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.7.51-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.7.53-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告和保护隐私。
+基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告和保护隐私。既支持从统一域名数据源**生成**多种格式规则，也支持将已有清单在**不同格式间互相转换**。
 
 ## 功能简介
 
@@ -15,6 +15,7 @@
 - **隐私防护** - 阻止追踪器和数据采集
 - **多设备生效** - 路由器设置一次，所有连接设备自动生效
 - **多种格式支持** - Dnsmasq、Hosts、AdGuard、Unbound、Pi-hole、Bind RPZ、SmartDNS、白名单等格式
+- **格式互转** - 粘贴任意格式（hosts / dnsmasq / AdGuard / 纯域名）清单，自动解析并转换为目标格式
 - **白名单管理** - 自定义白名单，避免误拦截关键服务
 - **自定义 DNS 指向** - 支持 @domain=ip 语法，自定义域名解析
 - **URL 导入** - 从远程 URL 获取域名列表（带超时控制）
@@ -75,6 +76,16 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmas
 | `pihole.txt` | Pi-hole 格式（0.0.0.0 gravity） |
 | `rpz.db` | Bind RPZ 响应策略区格式 |
 | `smartdns.conf` | SmartDNS 格式（address /domain/#） |
+
+## 格式转换
+
+除从统一域名数据源生成规则外，DNS Shield 也支持**将已有的域名清单在不同格式之间互相转换**。
+
+- **输入识别**：粘贴 hosts、dnsmasq、AdGuard 或纯域名文本时，`parseDomainLine` 会自动识别每行格式，提取域名 / 白名单（`+domain`）/ 自定义 DNS（`@domain=ip`）/ 注释（`#`）。
+- **统一中间结构**：无论来源格式如何，先解析为统一的域名条目结构（是否拦截、目标 IP、白名单标记）。
+- **任意格式输出**：在输出面板切换目标格式即可生成对应清单（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS）。
+
+典型场景：把一份 AdGuard 规则粘贴进输入框，一键转换为 dnsmasq 或 Pi-hole 格式；或把旧 hosts 清单转为 SmartDNS / Bind RPZ。
 
 ## 技术特性
 
@@ -254,7 +265,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.7.51
+当前版本：v3.7.53
 
 ## 更新日志
 

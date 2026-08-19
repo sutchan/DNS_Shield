@@ -1,8 +1,8 @@
 # =====================================
-# DNS Shield - Hosts 广告过滤列表
+# DNS Shield - Pi-hole 广告过滤列表
 # =====================================
 #
-# 路由器级广告过滤 hosts 文件
+# 路由器级广告过滤列表（0.0.0.0 gravity）
 #
 # 版本:: 3.7.52
 # 更新:: 2026.08.19
@@ -539,7 +539,6 @@
 0.0.0.0 ad.kwai.com
 
 # 白名单 (允许这些域名)
-# hosts 原生不支持白名单语法，仅作参考标注
 # 白名单 access.speech.ai.xiaomi.com
 # 白名单 account-dcm.ai.xiaomi.com
 # 白名单 ai.xiaomi.com

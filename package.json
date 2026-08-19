@@ -1,6 +1,6 @@
 {
   "name": "dns-shield",
-  "version": "3.7.51",
+  "version": "3.7.53",
   "private": true,
   "engines": {
     "node": ">=24.11.0"
@@ -15,7 +15,8 @@
     "test:coverage": "vitest run --coverage",
     "check:locales": "node scripts/check-locales.mjs",
     "count:domains": "node scripts/count-domains.mjs",
-    "icons:gen": "node scripts/gen-icons.mjs"
+    "icons:gen": "node scripts/gen-icons.mjs",
+    "build:formats": "node scripts/gen-format-files.mjs"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.4",

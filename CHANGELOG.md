@@ -7,6 +7,21 @@
 
 ## [Unreleased]
 
+## [3.7.53] - 2026-08-19
+
+### Added
+- 补齐文档规定的 9 种过滤规则预生成静态产出：新增 unbound.conf / pihole.txt / rpz.db / smartdns.conf
+- 新增 scripts/gen-format-files.mjs，从 public/domains.txt 派生全部格式文件（对齐 formatGenerators.ts 逻辑）
+- package.json 增加 build:formats 命令；刷新现存格式文件版本至 v3.7.53
+- 同步全局版本展示位至 v3.7.53
+- 更新全部项目文档：明确工具既支持从统一数据源生成规则，也支持不同格式域名清单互相转换（README / README.en / SPEC / prototype / DEPLOYMENT 新增格式转换说明）
+
+## [3.7.52] - 2026-08-19
+
+### Added
+- 在 layout 注入 Google Analytics 4（gtag）脚本，衡量 ID G-1VNKFYGRXR（取 NEXT_PUBLIC_GA_MEASUREMENT_ID，缺省回退约定 ID）
+- 同步全局版本展示位至 v3.7.52
+
 ## [3.7.51] - 2026-08-18
 
 ### Changed

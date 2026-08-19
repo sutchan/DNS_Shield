@@ -1,4 +1,4 @@
-// src/app/layout.tsx v3.7.50
+// src/app/layout.tsx v3.7.53
 import type { ReactNode } from 'react';
 import './globals.css';
 import { Inter, JetBrains_Mono, Noto_Sans_SC } from 'next/font/google';
@@ -26,6 +26,9 @@ export { metadata, viewport };
 const dictionary = loadDictionary();
 const defaultLang = 'zh-cn';
 
+// Google Analytics 4 衡量 ID：优先取环境变量，缺省回退到项目约定 ID
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-1VNKFYGRXR';
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="zh-CN">
@@ -36,6 +39,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        {/* Google Analytics 4（gtag）：在合适位置注入分析脚本，衡量站点流量 */}
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_MEASUREMENT_ID}');`,
+          }}
         />
       </head>
       <body

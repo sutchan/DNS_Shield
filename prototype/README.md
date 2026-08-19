@@ -1,4 +1,4 @@
-# DNS Shield — 项目原型 (Prototype) v3.7.50
+# DNS Shield — 项目原型 (Prototype) v3.7.53
 
 > 高保真、可交互、内联真实数据的产品原型，与真实引擎 `src/` 及 OpenSpec 规范保持最小颗粒度对齐。
 
@@ -18,6 +18,7 @@ prototype/
 
 - **极简视觉**：严格复用 `shadcn/design-system.md` 的 HSL token 与 Inter 字体、4px 间距、Apple ease-out-quart 缓动。
 - **真实数据**：内置与 `public/domains.txt` 语法一致的样本（黑名单 / `+` 白名单 / `@domain=ip` 自定义 DNS / `!` 注释），输出逻辑 1:1 对齐 `src/utils/parser.ts` 与 `rulesGenerator.ts`。
+- **格式转换**：粘贴 hosts / dnsmasq / AdGuard / 纯域名任意格式清单，`parseDomainLine` 逐行识别并解析为统一中间结构，再输出为目标格式，支持不同格式互转。
 - **高保真交互**：
   - 主题切换（Light/Dark，持久化 `localStorage` + `prefers-color-scheme`）
   - 8 语言下拉（i18n 最小集，对齐 `src/locales`）
@@ -60,7 +61,7 @@ prototype/
 - 应用内导航栏 Logo 复用 `lucide-react` 的 `Shield` 图标（`text-primary`），与 `favicon.svg` 视觉一致。
 - 修改标志时直接更新 `public/` 下对应资产，并保持 `public/brand/` 文档同步。
 
-## 与真实引擎的同步状态（v3.7.50）
+## 与真实引擎的同步状态（v3.7.53）
 
 `index.html` 的解析/生成逻辑对齐 `src/utils/parser.ts`、`rulesGenerator.ts`、`domainValidator.ts`：
 
@@ -76,4 +77,4 @@ prototype/
 
 ## 版本
 
-当前原型版本 **v3.7.50**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。
+当前原型版本 **v3.7.53**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。

@@ -2,9 +2,9 @@
 
 ![DNS Shield](brand/logo.svg)
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.7.51-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.7.53-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-Router-level DNS-based ad blocking filter list with web management tool.
+Router-level DNS-based ad blocking filter list with web management tool. It both **generates** rule lists from a unified domain source and **converts** existing lists between different formats.
 
 ## Overview
 
@@ -13,6 +13,7 @@ This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 - **Blocked domains** - Local ad and tracking domain filter (expandable via preset sources like AdGuard, EasyList, NeoHosts)
 - **Web management tool** - Generate custom filter lists via browser
 - **Multiple output formats** - Dnsmasq, Hosts, AdGuard, Whitelist, Unbound, Pi-hole, Domains, Bind RPZ, SmartDNS
+- **Format conversion** - Paste a list in any format (hosts / dnsmasq / AdGuard / plain domains) and convert it to your target format
 - **Single source workflow** - One domain list generates all output formats
 - **Router compatible** - Works with Merlin, OpenWrt, Xiaomi, ASUS, TP-Link, and more
 - **Whitelist management** - Independent whitelist editing interface with import/export support
@@ -89,6 +90,16 @@ Most routers with custom hosts support can use the same method:
 | `rpz.db` | Bind RPZ response policy zone format |
 | `smartdns.conf` | SmartDNS format (`address /domain/#`) |
 | `src/app/` | Next.js source code directory with management interface logic |
+
+## Format Conversion
+
+Besides generating rules from a unified domain source, DNS Shield also **converts existing lists between different formats**.
+
+- **Input detection** - When you paste hosts, dnsmasq, AdGuard or plain-domain text, `parseDomainLine` automatically detects each line's format and extracts domains / whitelist (`+domain`) / custom DNS (`@domain=ip`) / comments (`#`).
+- **Unified intermediate model** - Regardless of the source format, entries are parsed into a unified domain-item model (blocked or not, target IP, whitelist flag).
+- **Any-format output** - Switch the target format in the output panel to generate the corresponding list (Dnsmasq / Hosts / AdGuard / Whitelist / Unbound / Pi-hole / Domains / Bind RPZ / SmartDNS).
+
+Typical use: paste an AdGuard rule list into the input box and convert it to dnsmasq or Pi-hole in one click; or turn a legacy hosts list into SmartDNS / Bind RPZ.
 
 ### Using Pre-generated Files
 
