@@ -136,6 +136,7 @@
   "urlListAria": "URL list",
   "usageGuideAria": "Usage guide",
   "changelogLinkAria": "View changelog (opens in new window)",
+  "changelogLabel": "Changelog",
   "starLink": "Star",
   "starLinkAria": "Star this project on GitHub (opens in new window)",
   "starPrompt": "If this helps, please give the project a Star ⭐"

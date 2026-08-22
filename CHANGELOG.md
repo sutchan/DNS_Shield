@@ -35,6 +35,11 @@
 - 设置面板新增「AdGuard 含白名单」开关；i18n 下拉扩至真实 16 语言，阿拉伯语标记 RTL 并切换 `dir`
 - 新增 Hero 签名元素「DNS 拦截流可视化」（拦截/放行/自定义三类流动态）
 
+### Changed（审查修复 v3.7.61）
+- 拆分超 200 行的 `domainValidator.ts`（原 268 行）：`parseDomainLine` 单行解析抽至 `parseLine.ts`、`parseSource` 跨行混排预览聚合抽至 `parseSource.ts`，`domainValidator.ts` 改为 re-export 兼容层（公开 API 不变，避免大范围改 import）
+- `Home.tsx`：`syncScroll`/`toggleSection` 加 `useCallback`（函数式 setState 稳定依赖），移除纯转发 Middle Man `parseSource`，直接传 `parseSourceData`
+- `Footer.tsx`：「更新日志」硬编码改为 `t.changelogLabel` 翻译键，新增 `changelogLabel` 键（zh-cn/en，Translation 接口设为可选，其他语言回退基准）
+
 ### Fixed（原型体系 v3.7.59）
 - 修正 `wireframes.html` wlHeader 逻辑错误；移除装饰性章节序号；补齐 InputPanel/OutputPanel 语义化 id
 - 预览区空状态引导文案；`prefers-reduced-motion` 降级（原型三件套）；flows 格式切换扩至 9 种

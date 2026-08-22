@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.7.50
+// src/types/translation.ts v3.7.61
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 export interface Translation {
   subtitle: string;
@@ -59,6 +59,7 @@ export interface Translation {
   removeUrlAria: string;
   githubLinkAria: string;
   changelogLinkAria: string;
+  changelogLabel?: string;
   // 悬停在 GitHub 链接上时显示的提示文案（如「如果对你有帮助，请给项目点个 Star ⭐」）
   starPrompt: string;
   starLink?: string;

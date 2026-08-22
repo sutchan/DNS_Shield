@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.7.60
+// src/app/Home.tsx v3.7.61
 'use client';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './globals.css';
@@ -104,29 +104,24 @@ export default function Home() {
   // 引用
   const sourceTextareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // 同步滚动
-  const syncScroll = () => {
+  // 同步滚动（仅用 ref，依赖为空，useCallback 稳定引用）
+  const syncScroll = useCallback(() => {
     if (sourceTextareaRef.current && lineNumbersRef.current) {
       lineNumbersRef.current.scrollTop = sourceTextareaRef.current.scrollTop;
     }
-  };
+  }, []);
 
-  // 切换区域
-  const toggleSection = (section: string) => {
+  // 切换区域（函数式 setState 使依赖为空，useCallback 稳定引用，避免下游重渲染）
+  const toggleSection = useCallback((section: string) => {
     switch (section) {
       case 'url-section':
-        setIsUrlSectionCollapsed(!isUrlSectionCollapsed);
+        setIsUrlSectionCollapsed(prev => !prev);
         break;
       case 'settings-panel':
-        setIsSettingsPanelCollapsed(!isSettingsPanelCollapsed);
+        setIsSettingsPanelCollapsed(prev => !prev);
         break;
     }
-  };
-
-  // 解析域名
-  const parseSource = () => {
-    parseSourceData();
-  };
+  }, []);
 
   return (
     <AppProvider value={{ t }}>
@@ -155,7 +150,7 @@ export default function Home() {
             syncScroll={syncScroll}
             clearAll={clearAll}
             sortDomains={sortDomains}
-            parseSource={parseSource}
+            parseSource={parseSourceData}
             dedupeDomains={dedupeDomains}
             saveDomains={saveDomains}
             loadPreset={loadPreset}

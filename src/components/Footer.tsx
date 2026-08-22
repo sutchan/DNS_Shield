@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v3.7.50
+// src/components/Footer.tsx v3.7.61
 'use client';
 import React, { useState } from 'react';
 import { useT } from '../context/AppContext';
@@ -60,7 +60,7 @@ const Footer: React.FC<FooterProps> = ({
             id="changelog-link"
             aria-label={t.changelogLinkAria}
           >
-            更新日志
+            {t.changelogLabel ?? '更新日志'}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
               <polyline points="15 3 21 3 21 9"></polyline>
