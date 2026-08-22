@@ -465,10 +465,10 @@
     <div class="about" id="about-panel">
       <div class="about-top">
         <div class="about-links">
-          <a class="about-link" id="linkGithub">GitHub ↗</a>
-          <a class="about-link" id="linkStar">★ Star</a>
-          <a class="about-link" id="linkChangelog">更新日志 ↗</a>
-          <a class="about-link" id="linkGuide">使用指南 ▾</a>
+          <a class="about-link" id="linkGithub" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">GitHub ↗</a>
+          <a class="about-link" id="linkStar" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">★ Star</a>
+          <a class="about-link" id="linkChangelog" href="https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md" target="_blank" rel="noopener">更新日志 ↗</a>
+          <a class="about-link" id="linkGuide" href="#settings-panel">使用指南 ▾</a>
         </div>
         <span class="badge badge-outline mono" style="margin-left:auto" id="aboutVer">v3.7.60</span>
       </div>
@@ -595,14 +595,32 @@
       if (!settings.addHeader) return '';
       var total = parsed.domains.length;
       var wcount = parsed.whitelist.length;
-      var tag = '# 版本::' + settings.version + ' 项目:' + settings.projectName;
-      var cnt = '# 域名:' + total + ' 白名单:' + wcount;
-      var head = '# ' + fmtName + '\n' + tag + '\n' + cnt + '\n';
-      return head;
+      var sep = '========================================';
+      // 对齐真实引擎 rulesGenerator.ts:generateHeader（9 类格式统一多行注释结构）
+      var lines = [
+        '# ' + sep,
+        '# ' + settings.projectName + ' - ' + fmtName,
+        '# ' + sep,
+        '#',
+        '# DNS Shield 域名广告拦截规则',
+        '#',
+        '# 版本: ' + settings.version,
+        '# 更新: ' + new Date().toISOString().slice(0, 10),
+        '# 域名: ' + total + ' 个',
+        '# 白名单: ' + wcount + ' 个'
+      ];
+      if (wcount > 0) lines.push('# 白名单域名已从上述拦截列表中剔除');
+      lines.push('#');
+      lines.push('# 项目主页: https://github.com/sutchan/DNS_Shield');
+      lines.push('# 在线演示: https://dns.ewuse.com/');
+      lines.push('#');
+      lines.push('# ' + sep);
+      lines.push('');
+      return lines.join('\n');
     }
     function wlHeader(fmtName) {
       if (!settings.addHeader) return '';
-      return '# ' + fmtName + '\n# 版本::' + settings.version + ' 项目:' + settings.projectName + '\n';
+      return header(fmtName);
     }
     function genDnsmasq() {
       var out = header('Dnsmasq 格式 (address=/domain/ip)') + '\n';
@@ -645,7 +663,8 @@
     }
     function genWhitelist() {
       var out = wlHeader('白名单列表') + '\n';
-      parsed.whitelist.forEach(function (d) { out += '@@||' + d + '^$important\n'; });
+      // 对齐真实引擎 formatGenerators.ts:93 → 白名单输出 @@||domain^（无 $important 修饰符）
+      parsed.whitelist.forEach(function (d) { out += '@@||' + d + '^\n'; });
       return out;
     }
     function genUnbound() {

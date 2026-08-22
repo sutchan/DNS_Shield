@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.7.59
+// src/hooks/useRules.ts v3.7.60
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateRules as generateRulesUtil, computeEffectiveStats } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
@@ -73,12 +73,12 @@ export const useRules = (
   }, [sourceInput, runGenerate]);
 
   // 生成规则（按钮触发，带提示）
-  const generateRules = () => {
+  const generateRules = useCallback(() => {
     runGenerate(true);
-  };
+  }, [runGenerate]);
 
   // 下载输出
-  const downloadOutput = () => {
+  const downloadOutput = useCallback(() => {
     const content = outputContent[currentFormat] || '';
     const filenameMap: Record<FormatType, keyof Settings> = {
       hosts: 'hostsFilename',
@@ -94,10 +94,10 @@ export const useRules = (
     const filename = settings[filenameMap[currentFormat]] as string;
     downloadOutputUtil(content, filename);
     showToast('downloaded', { filename });
-  };
+  }, [outputContent, currentFormat, settings, showToast]);
 
   // 复制到剪贴板
-  const copyOutput = async () => {
+  const copyOutput = useCallback(async () => {
     try {
       const content = outputContent[currentFormat] || '';
       const success = await copyToClipboard(content);
@@ -109,19 +109,19 @@ export const useRules = (
     } catch {
       showToast('copyFailed');
     }
-  };
+  }, [outputContent, currentFormat, showToast]);
 
   // 设置格式
-  const setFormat = (format: FormatType) => {
+  const setFormat = useCallback((format: FormatType) => {
     setCurrentFormat(format);
-  };
+  }, []);
 
   // 同步输出滚动
-  const syncOutputScroll = () => {
+  const syncOutputScroll = useCallback(() => {
     if (outputPreviewRef.current && outputLineNumbersRef.current) {
       outputLineNumbersRef.current.scrollTop = outputPreviewRef.current.scrollTop;
     }
-  };
+  }, []);
 
   return {
     outputContent,

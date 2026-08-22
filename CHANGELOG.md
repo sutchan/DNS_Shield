@@ -24,6 +24,13 @@
 
 ### Changed（原型体系 v3.7.59）
 - 原型生成引擎对齐真实 `src/utils`（rulesGenerator / parser / formatGenerators）：白名单从黑名单剔除、自定义 DNS 按 domain 去重、blockIPv6 追加 IPv6 拦截、removeWildcard 控制通配符剥离、头部含版本+域名+白名单计数
+
+### Changed（前端审查修复，v3.7.60）
+- React 渲染性能：为 `useRules`/`useUrlManager` 的导出回调函数加 `useCallback` 稳定引用，避免下游 hook 与组件依赖链抖动触发无谓重渲染
+- `Home.tsx` 的 `showToast` 改为 `useCallback` 包裹，切断 `useDomainData`/`useRules`/`useUrlManager` 依赖抖动
+- `useLanguage` 的翻译对象 `t` 改用 `useMemo` 缓存，避免每次渲染深合并计算
+- `OutputPanel` 用 `React.memo` 包裹，仅在 props 实际变化时重渲染
+- `globals.css` 的 `.editor-preview` 增加 `content-visibility: auto` + `contain-intrinsic-size`，长文本预览跳过屏外渲染以降低首次绘制成本
 - 补齐 9 种格式真实输出（含 Bind RPZ / 纯域名 / AdGuard 白名单段 `@@||domain^`），AdGuard 自定义 DNS 由 `||domain^$dnsrewrite` 修正为 `||domain^`
 - 设置面板新增「AdGuard 含白名单」开关；i18n 下拉扩至真实 16 语言，阿拉伯语标记 RTL 并切换 `dir`
 - 新增 Hero 签名元素「DNS 拦截流可视化」（拦截/放行/自定义三类流动态）

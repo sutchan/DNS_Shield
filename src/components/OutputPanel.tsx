@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.7.50
+// src/components/OutputPanel.tsx v3.7.60
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -26,7 +26,7 @@ interface OutputPanelProps {
   setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
 }
 
-const OutputPanel: React.FC<OutputPanelProps> = ({
+const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   outputContent,
   currentFormat,
   isSettingsPanelCollapsed,
@@ -151,7 +151,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
       </div>
     </section>
   );
-};
+});
 
 export default OutputPanel;
 

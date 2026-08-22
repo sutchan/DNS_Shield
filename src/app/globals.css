@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   DNS Shield — Design System v3.7.41
+   DNS Shield — Design System v3.7.60
    Designer: UI Designer
    Philosophy: Swiss Precision × Calm Technology
    ============================================ */
@@ -377,6 +377,9 @@
   @apply w-full h-full pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent overflow-auto whitespace-pre-wrap;
   line-height: 1.5rem;
   tab-size: 2;
+  /* 长文本预览：屏外跳过渲染，降低首次布局/绘制成本（contain-intrinsic-size 防止滚动条抖动） */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 504px;
 }
 
 .editor-actions {

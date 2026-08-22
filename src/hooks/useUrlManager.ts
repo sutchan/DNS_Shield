@@ -1,5 +1,5 @@
-// src/hooks/useUrlManager.ts v3.7.59
-import { useState } from 'react';
+// src/hooks/useUrlManager.ts v3.7.60
+import { useState, useCallback } from 'react';
 import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
 import { fetchDomainsText } from '../utils/domainFetch';
 import { generateLineNumbers } from './useLineNumbers';
@@ -20,7 +20,7 @@ export const useUrlManager = (
   const { isLoading, withLoading } = useLoading(showToast);
 
   // URL 验证函数（从受控状态读取）
-  const validateUrlInput = (): { isValid: boolean; url?: string } => {
+  const validateUrlInput = useCallback((): { isValid: boolean; url?: string } => {
     const url = urlInput.trim();
     if (!url) {
       showToast('urlEnter');
@@ -31,10 +31,10 @@ export const useUrlManager = (
       return { isValid: false };
     }
     return { isValid: true, url };
-  };
+  }, [urlInput, showToast]);
 
   // 加载预设（多镜像降级：主源失败时自动尝试后续镜像）
-  const loadPreset = async (preset: string) => {
+  const loadPreset = useCallback(async (preset: string) => {
     setActivePreset(preset);
 
     await withLoading<string>({
@@ -61,10 +61,10 @@ export const useUrlManager = (
       successToast: { key: 'presetLoaded', params: { preset } },
       errorToast: { key: 'presetFailed' }
     });
-  };
+  }, [setSourceInput, parseSourceData, lineNumbersRef, withLoading]);
 
   // 从 URL 获取域名（带 URL 验证）
-  const fetchFromUrl = async () => {
+  const fetchFromUrl = useCallback(async () => {
     await withLoading<string>({
       beforeLoad: () => {
         const { isValid } = validateUrlInput();
@@ -87,10 +87,10 @@ export const useUrlManager = (
       successToast: { key: 'domainsFetched' },
       errorToast: { key: 'fetchFailed' }
     });
-  };
+  }, [urlInput, validateUrlInput, setSourceInput, parseSourceData, lineNumbersRef, withLoading]);
 
   // 添加 URL（带 URL 验证）
-  const addUrl = () => {
+  const addUrl = useCallback(() => {
     const { isValid, url } = validateUrlInput();
     if (!isValid || !url) {
       return;
@@ -99,16 +99,16 @@ export const useUrlManager = (
     setUrls((prev: string[]) => [...prev, url]);
     setUrlInput('');
     showToast('urlAdded');
-  };
+  }, [validateUrlInput, setUrls, setUrlInput, showToast]);
 
   // 排序 URLs
-  const sortUrls = () => {
+  const sortUrls = useCallback(() => {
     setUrls((prev: string[]) => [...prev].sort());
     showToast('urlsSorted');
-  };
+  }, [setUrls, showToast]);
 
   // 获取全部 URLs（仅处理有效的 HTTP/HTTPS URLs）
-  const fetchAllUrls = async () => {
+  const fetchAllUrls = useCallback(async () => {
     const validUrls = urls.filter(url => isValidHttpUrl(url));
 
     if (validUrls.length === 0) {
@@ -144,7 +144,7 @@ export const useUrlManager = (
       successToast: { key: 'urlsFetched' },
       errorToast: { key: 'fetchFailed' }
     });
-  };
+  }, [urls, setSourceInput, parseSourceData, lineNumbersRef, withLoading, showToast]);
 
   return {
     urls,
