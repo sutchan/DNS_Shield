@@ -7,6 +7,10 @@
 
 ## [Unreleased]
 
+### Fixed（CI 构建修复 v3.7.62）
+- 修复 Vercel 构建失败：`pnpm-lock.yaml` 的 `@types/node` specifier（`^20.14.0`）与 `package.json`（`^24.0.0`）脱节导致 `frozen-lockfile` 校验失败
+- 将 lock 的 `@types/node` 解析对齐至 `24.13.3`，新增对应 packages 条目，恢复 lock 与 manifest 一致
+
 ### Added
 - 扩充 `public/domains.txt` 广告域名清单（v3.7.60）
   - 从权威 blocklist 源（pgl.yoyo.org、anudeepND）筛选 106 个品牌级稳定广告/追踪基础设施域名，补齐 Google 广告分析栈、主流 SSP/DSP（criteo/pubmatic/rubiconproject/taboola/outbrain/adform 等）
