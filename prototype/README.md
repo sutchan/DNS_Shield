@@ -1,4 +1,4 @@
-# DNS Shield — 项目原型 (Prototype) v3.7.56
+# DNS Shield — 项目原型 (Prototype) v3.7.58
 
 > 高保真、可交互、内联真实数据的产品原型，与真实引擎 `src/` 及 OpenSpec 规范保持最小颗粒度对齐。
 
@@ -6,7 +6,9 @@
 
 ```
 prototype/
-├── index.html                 # 高保真可交互原型（极简风格 / 真实数据 / 响应式 PC+移动）
+├── prototype.html             # 高保真可交互原型（主页：极简风格 / 真实数据 / 响应式 PC+移动）
+├── wireframes.html            # 组件库规范：基础 / 复合 / 业务组件 + 设计令牌 + 使用规则
+├── flows.html                 # 关键业务流程交互原型（URL导入 / 格式切换 / 设置 / 主题语言，带动效）
 ├── README.md                  # 本文件：原型说明与索引
 └── shadcn/
     ├── design-system.md       # 设计系统：色彩 / 字体 / 间距 / 图标 / 动效（token 单一来源）
@@ -26,6 +28,25 @@ prototype/
   - 9 种格式输出（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS）Tab 切换
   - 行号编辑器、排序、去重、清空、复制、下载
   - 预设数据（内置 / AdGuard / EasyList / NeoHosts）
+  - **设置面板**（项目名 / 版本 / IPv4 / IPv6 / 头部注释 / IPv6 屏蔽 / 去重 / 通配符，实时驱动生成，对齐 `src/components/SettingsPanel.tsx`）
+  - **URL 批量导入**（流式读取 + 加载态 + 10MB 上限模拟，对齐 `src/components/UrlSection.tsx`）
+  - **About 业务组件**（GitHub / Star / 更新日志 / 使用指南三步，对齐 `src/components/Footer.tsx`）
+
+## 组件库规范（`wireframes.html`）
+
+按层级定义全部组件，与 `src/components/ui/` 的 shadcn 封装 1:1 对齐：
+
+- **基础组件（Atoms）**：Button（6 变体 / 4 尺寸）、Input、Label、Textarea、Checkbox、Switch、Badge（6 变体）、Select、Tabs、DropdownMenu、Loading（Spinner / Skeleton / Indeterminate Bar）、Toast。
+- **复合组件（Composite）**：Card（header/body/footer）、Form（字段组）、List（域名条目）、Stat（统计卡）、Code Preview（注释/白名单着色）。
+- **业务组件（Business）**：AppHeader（语言+主题）、SettingsPanel、InputPanel+UrlSection、OutputPanel、AppFooter（使用指南）。
+- **设计令牌**：Light/Dark HSL 通道值表，圆角四级，与 `globals.css` 同源。
+- **使用规则**：语义化 id、单一数据源、变体契约、a11y、动效规范、文件头注释。
+
+## 业务流程原型（`flows.html`）
+
+纯前端可交互流程，带动效：① URL 导入→解析（步进器 + 加载态）；② 9 格式切换（淡入 + 复制）；③ 设置变更→实时重生成（双向绑定）；④ 主题 / 语言切换（整体缓动过渡）。
+
+## 设计规范索引
 - **3.7.29 语义**：白名单域名不进入黑名单拦截列表，仅以 `server=/`（Dnsmasq）、`# 已白名单:`（Hosts）、`@@||domain^$important`（AdGuard 白名单）呈现。
 - **响应式**：≥768px 双栏，移动端单列堆叠；sticky 顶栏；Toast 反馈。
 - **语义化 id / 无障碍**：主要容器与控件均带 `id`（`app-header`/`main-content`/`input-panel`/`output-panel`/`langBtn`/`themeBtn` 等），支持键盘与 ARIA。
@@ -61,20 +82,21 @@ prototype/
 - 应用内导航栏 Logo 复用 `lucide-react` 的 `Shield` 图标（`text-primary`），与 `favicon.svg` 视觉一致。
 - 修改标志时直接更新 `public/` 下对应资产，并保持 `public/brand/` 文档同步。
 
-## 与真实引擎的同步状态（v3.7.56）
+## 与真实引擎的同步状态（v3.7.58）
 
-`index.html` 的解析/生成逻辑对齐 `src/utils/parser.ts`、`rulesGenerator.ts`、`domainValidator.ts`：
+`prototype.html` 的解析/生成逻辑对齐 `src/utils/parser.ts`、`rulesGenerator.ts`、`domainValidator.ts`：
 
 - **解析**：纯域名、`+` 白名单、`@domain=ip` 自定义 DNS、`@@||domain^$important` AdGuard 白名单（3.7.28 `$important`）、`0.0.0.0/127.0.0.1` hosts、`address=/domain/` dnsmasq、`||domain^` AdGuard；无效行计入注释统计。
 - **去重**：自定义 DNS 按 domain 去重（3.7.10）；域名/白名单按归一化键去重。
 - **白名单语义（3.7.29）**：黑名单拦截列表剔除白名单域名。
 - **头部**：每种格式输出版本与域名计数（对齐 `generateHeader`）。
-- **未同步（原型边界）**：URL 真实抓取合并、流式读取、统计 `blacklistCount` 字段、完整 merlin/openwrt usage 多行。
+- **组件对齐**：`wireframes.html` 组件库对齐 `src/components/ui/` 全部 12 个 shadcn 封装；`flows.html` 业务流程对齐 `SettingsPanel` / `UrlSection` / `Footer` 交互语义。
+- **未同步（原型边界）**：URL 为模拟 fetch（真实实现见 `src/utils/domainFetch.ts` 流式读取 + 10MB 上限）、完整 merlin/openwrt usage 多行。
 
 ## 使用方式
 
-直接用浏览器打开 `prototype/index.html` 即可预览；无需构建。所有交互在纯前端（vanilla JS）实现，数据内联，零外部运行时依赖。
+直接用浏览器打开 `prototype/prototype.html` 即可预览；无需构建。所有交互在纯前端（vanilla JS）实现，数据内联，零外部运行时依赖。`wireframes.html` / `flows.html` 同理。
 
 ## 版本
 
-当前原型版本 **v3.7.56**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。
+当前原型版本 **v3.7.58**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。

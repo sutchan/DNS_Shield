@@ -16,6 +16,9 @@ activate-sjc0.adobe.com
 activate.adobe.com
 activate.wip3.adobe.com
 ad-api.bilibili.com
+wxa.wxs.qq.com
+wximg.wxs.qq.com
+wxsmw.wxs.qq.com
 ad-pc.iqiyi.com
 ad-static.iqiyi.com
 ad.88765.com

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- prototype/index.html v3.7.56 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
+<!-- prototype/prototype.html v3.7.58 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.7.56</title>
+  <title>DNS Shield — 高保真原型 v3.7.58</title>
   <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS 的 DNS 广告过滤规则生成器" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -230,6 +230,48 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes spin { to { transform: rotate(360deg); } }
     .spinner { width: 16px; height: 16px; border: 2px solid hsl(var(--muted-foreground) / .3); border-top-color: hsl(var(--primary)); border-radius: 50%; animation: spin .7s linear infinite; }
+
+    /* ---- Settings panel (对齐 src/components/SettingsPanel.tsx) ---- */
+    .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 14px; }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field label { font-size: 12px; font-weight: 500; color: hsl(var(--foreground)); }
+    .input {
+      height: 34px; padding: 0 10px; border: 1px solid hsl(var(--input)); background: hsl(var(--background));
+      border-radius: var(--radius-md); font-size: 13px; color: hsl(var(--foreground)); outline: none; width: 100%;
+      transition: border-color .15s, box-shadow .15s; font-family: inherit;
+    }
+    .input:focus { border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / .2); }
+    .opt-row { display: flex; flex-wrap: wrap; gap: 14px 20px; }
+    .check { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; cursor: pointer; user-select: none; }
+    .box {
+      width: 16px; height: 16px; border: 1.5px solid hsl(var(--primary)); border-radius: 4px;
+      display: grid; place-items: center; background: transparent; transition: background .15s;
+    }
+    .box.on { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+    .box svg { width: 11px; height: 11px; opacity: 0; }
+    .box.on svg { opacity: 1; }
+
+    /* ---- URL import section (对齐 src/components/UrlSection.tsx) ---- */
+    .editor-row { display: flex; gap: 8px; align-items: stretch; }
+    .editor-row .input { flex: 1; }
+    .url-bar { margin-bottom: 12px; }
+    .url-bar .hint { font-size: 11.5px; color: hsl(var(--muted-foreground)); margin-top: 5px; }
+    .loading-bar { height: 3px; width: 100%; background: hsl(var(--muted)); border-radius: 2px; overflow: hidden; margin-top: 8px; display: none; }
+    .loading-bar.on { display: block; }
+    .loading-bar .fill { height: 100%; width: 40%; background: hsl(var(--primary)); animation: indet 1.2s ease-in-out infinite; }
+    @keyframes indet { 0% { transform: translateX(-100%); } 100% { transform: translateX(350%); } }
+
+    /* ---- About / footer business component ---- */
+    .about { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); padding: 16px; }
+    .about-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .about-links { display: flex; gap: 6px; flex-wrap: wrap; }
+    .about-link { font-size: 12.5px; color: hsl(var(--muted-foreground)); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-md); }
+    .about-link:hover { background: hsl(var(--secondary)); color: hsl(var(--foreground)); }
+    .usage { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 14px; }
+    .step { display: flex; gap: 10px; align-items: flex-start; }
+    .step .n { width: 22px; height: 22px; flex: 0 0 22px; border-radius: 50%; background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); display: grid; place-items: center; font-size: 11px; font-weight: 700; }
+    .step .st { font-size: 12.5px; font-weight: 600; }
+    .step .sd { font-size: 11.5px; color: hsl(var(--muted-foreground)); }
   </style>
 </head>
 <body>
@@ -275,6 +317,16 @@
           <div class="stat"><span class="stat-value" id="statWhitelist">0</span><span class="stat-label" id="lblWhitelist">白名单</span></div>
           <div class="stat"><span class="stat-value" id="statCustom">0</span><span class="stat-label" id="lblCustom">自定义DNS</span></div>
           <div class="stat"><span class="stat-value" id="statComments">0</span><span class="stat-label" id="lblComments">注释</span></div>
+        </div>
+
+        <!-- URL 批量导入 (对齐 src/components/UrlSection.tsx) -->
+        <div class="url-bar" id="urlSection">
+          <div class="editor-row">
+            <input class="input" id="urlInput" placeholder="从 URL 批量导入域名，例如 https://example.com/ads.txt" />
+            <button class="btn btn-primary btn-sm" id="urlFetchBtn"><span id="lblFetch">获取</span></button>
+          </div>
+          <div class="loading-bar" id="urlLoading"><div class="fill"></div></div>
+          <div class="hint" id="urlHint">支持 hosts / dnsmasq / AdGuard / 纯域名 混合格式，单行 10MB 上限</div>
         </div>
 
         <div class="editor-row">
@@ -327,11 +379,55 @@
 
         <pre class="preview" id="preview" aria-live="polite"></pre>
       </section>
+
+      <!-- 设置面板 (对齐 src/components/SettingsPanel.tsx) -->
+      <section class="card" id="settings-panel" aria-label="设置" style="grid-column: 1 / -1">
+        <div class="card-head">
+          <div class="card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span id="settingsTitle">设置</span>
+          </div>
+        </div>
+        <div class="card-body" style="padding:18px">
+          <div class="settings-grid">
+            <div class="field"><label id="lblProjName">项目名</label><input class="input" id="projName" value="DNS Shield" /></div>
+            <div class="field"><label id="lblVer">版本</label><input class="input" id="projVer" value="3.7.58" /></div>
+            <div class="field"><label id="lblIpv4">IPv4 重定向</label><input class="input" id="ipv4" value="127.0.0.1" /></div>
+            <div class="field"><label id="lblIpv6">IPv6 重定向</label><input class="input" id="ipv6" value="::" /></div>
+          </div>
+          <div class="opt-row">
+            <label class="check" data-opt="addHeader"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptHeader">添加头部注释</span></label>
+            <label class="check" data-opt="blockIPv6"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptIpv6">屏蔽 IPv6</span></label>
+            <label class="check" data-opt="dedupDomains"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptDedupe">去重域名</span></label>
+            <label class="check" data-opt="removeWildcard"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptWild">移除通配符</span></label>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 
+  <!-- About 业务组件 (对齐 src/components/Footer.tsx) -->
+  <section class="wrap" style="padding-bottom:40px">
+    <div class="about" id="about-panel">
+      <div class="about-top">
+        <div class="about-links">
+          <a class="about-link" id="linkGithub">GitHub ↗</a>
+          <a class="about-link" id="linkStar">★ Star</a>
+          <a class="about-link" id="linkChangelog">更新日志 ↗</a>
+          <a class="about-link" id="linkGuide">使用指南 ▾</a>
+        </div>
+        <span class="badge badge-outline mono" style="margin-left:auto" id="aboutVer">v3.7.58</span>
+      </div>
+      <div class="usage" id="usageGuide">
+        <div class="step"><span class="n">1</span><div><div class="st" id="step1t">输入域名</div><div class="sd" id="step1d">粘贴或导入广告域名</div></div></div>
+        <div class="step"><span class="n">2</span><div><div class="st" id="step2t">选择格式</div><div class="sd" id="step2d">dnsmasq / hosts / AdGuard…</div></div></div>
+        <div class="step"><span class="n">3</span><div><div class="st" id="step3t">导出部署</div><div class="sd" id="step3d">复制到路由器或 DNS 服务</div></div></div>
+      </div>
+    </div>
+  </section>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <footer class="wrap" style="padding:16px; text-align:center"><span class="footer-ver" id="footerVer">v3.7.56</span></div>
+  <footer class="wrap" style="padding:16px; text-align:center"><span class="footer-ver" id="footerVer">v3.7.58</span></div>
 
   <script>
   (function () {
@@ -342,11 +438,19 @@
       'zh-cn': { name: '中文', sub: 'DNS 广告过滤规则生成器', input: '域名输入', output: '规则输出',
         blacklist: '黑名单', whitelist: '白名单', custom: '自定义DNS', comments: '注释',
         parse: '生成规则', sort: '排序', dedupe: '去重', clear: '清空', copy: '复制', download: '下载',
-        copied: '已复制到剪贴板', noData: '没有可复制的内容' },
+        copied: '已复制到剪贴板', noData: '没有可复制的内容', settings: '设置', projName: '项目名', ver: '版本',
+        ipv4: 'IPv4 重定向', ipv6: 'IPv6 重定向', optHeader: '添加头部注释', optIpv6: '屏蔽 IPv6',
+        optDedupe: '去重域名', optWild: '移除通配符', fetch: '获取', fetching: '获取中…', fetched: '已导入域名',
+        step1t: '输入域名', step1d: '粘贴或导入广告域名', step2t: '选择格式', step2d: 'dnsmasq / hosts / AdGuard…',
+        step3t: '导出部署', step3d: '复制到路由器或 DNS 服务' },
       'en': { name: 'English', sub: 'DNS Ad-blocking Rule Generator', input: 'Domain Input', output: 'Rule Output',
         blacklist: 'Blacklist', whitelist: 'Whitelist', custom: 'Custom DNS', comments: 'Comments',
         parse: 'Generate', sort: 'Sort', dedupe: 'Dedupe', clear: 'Clear', copy: 'Copy', download: 'Download',
-        copied: 'Copied to clipboard', noData: 'Nothing to copy' }
+        copied: 'Copied to clipboard', noData: 'Nothing to copy', settings: 'Settings', projName: 'Project',
+        ver: 'Version', ipv4: 'IPv4 Redirect', ipv6: 'IPv6 Redirect', optHeader: 'Add Header', optIpv6: 'Block IPv6',
+        optDedupe: 'Dedupe', optWild: 'Remove Wildcard', fetch: 'Fetch', fetching: 'Fetching…', fetched: 'Domains imported',
+        step1t: 'Input Domains', step1d: 'Paste or import ad domains', step2t: 'Pick Format', step2d: 'dnsmasq / hosts / AdGuard…',
+        step3t: 'Export', step3d: 'Copy to router or DNS service' }
     };
     var LANGS = [['zh-cn','中文'],['en','English'],['ja','日本語'],['ko','한국어'],['ru','Русский'],['es','Español'],['fr','Français'],['de','Deutsch']];
 
@@ -371,7 +475,7 @@
       neohosts: 'ad.neohost.cn\nbanner.neohost.cn\n+api.neohost.cn'
     };
 
-    var settings = { projectName: 'DNS Shield', version: '3.7.56', ipv4: '127.0.0.1', ipv6: '::',
+    var settings = { projectName: 'DNS Shield', version: '3.7.58', ipv4: '127.0.0.1', ipv6: '::',
       addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true };
 
     var DOMAIN_REGEX = /^(?=.{1,253}$)([a-z0-9](-?[a-z0-9])*\.)+[a-z]{2,}$/i;
@@ -539,6 +643,20 @@
       $('lblCopy').textContent = t.copy;
       $('lblDownload').textContent = t.download;
       $('langLabel').textContent = (I18N[currentLang] || I18N['en']).name;
+      // 设置面板 + About
+      $('settingsTitle').textContent = t.settings;
+      $('lblProjName').textContent = t.projName;
+      $('lblVer').textContent = t.ver;
+      $('lblIpv4').textContent = t.ipv4;
+      $('lblIpv6').textContent = t.ipv6;
+      $('lblOptHeader').textContent = t.optHeader;
+      $('lblOptIpv6').textContent = t.optIpv6;
+      $('lblOptDedupe').textContent = t.optDedupe;
+      $('lblOptWild').textContent = t.optWild;
+      $('lblFetch').textContent = t.fetch;
+      $('step1t').textContent = t.step1t; $('step1d').textContent = t.step1d;
+      $('step2t').textContent = t.step2t; $('step2d').textContent = t.step2d;
+      $('step3t').textContent = t.step3t; $('step3d').textContent = t.step3d;
     }
     function applyTheme() {
       document.documentElement.classList.toggle('dark', currentTheme === 'dark');
@@ -624,6 +742,47 @@
       $('langBtn').setAttribute('aria-expanded', String(open));
     });
     document.addEventListener('click', function () { langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false'); });
+
+    // ---- 设置面板：真实驱动生成 (对齐 src/components/SettingsPanel.tsx) ----
+    function bindSetting(k, id, isText) {
+      $(id).addEventListener(isText ? 'input' : 'click', function () {
+        if (isText) { settings[k] = this.value; renderPreview(); }
+        else {
+          var on = this.classList.toggle('on');
+          settings[k] = on; renderPreview();
+        }
+      });
+    }
+    bindSetting('projectName', 'projName', true);
+    bindSetting('version', 'projVer', true);
+    bindSetting('ipv4', 'ipv4', true);
+    bindSetting('ipv6', 'ipv6', true);
+    ['addHeader', 'blockIPv6', 'dedupDomains', 'removeWildcard'].forEach(function (opt) {
+      var box = document.querySelector('#settings-panel .check[data-opt="' + opt + '"] .box');
+      box.addEventListener('click', function () {
+        var on = box.classList.toggle('on'); settings[opt] = on; renderPreview();
+      });
+    });
+    $('aboutVer').textContent = 'v' + settings.version;
+
+    // ---- URL 批量导入 (对齐 src/components/UrlSection.tsx, 模拟 fetch + 加载态) ----
+    $('urlFetchBtn').addEventListener('click', function () {
+      var url = $('urlInput').value.trim();
+      if (!url) { toast((I18N[currentLang] || I18N.en).noData); return; }
+      $('urlLoading').classList.add('on');
+      var btn = $('urlFetchBtn'); btn.disabled = true; var old = btn.querySelector('span').textContent;
+      btn.querySelector('span').textContent = (I18N[currentLang] || I18N.en).fetching;
+      // 模拟流式读取（真实实现 domainFetch 含 10MB 字节上限）
+      setTimeout(function () {
+        var extra = 'ad.example.org\n||track.example.net^\n+boot.example.com';
+        var cur = $('editor').value.trim();
+        $('editor').value = (cur ? cur + '\n' : '') + extra;
+        renderGutter(); renderAll();
+        $('urlLoading').classList.remove('on');
+        btn.disabled = false; btn.querySelector('span').textContent = old;
+        toast((I18N[currentLang] || I18N.en).fetched);
+      }, 700);
+    });
 
     // ---- 初始化 ----
     document.documentElement.lang = currentLang;

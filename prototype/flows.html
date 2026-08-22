@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<!-- prototype/flows.html v3.7.58 — DNS Shield 关键业务流程交互原型 (Interactive Flows) -->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DNS Shield — 业务流程原型 v3.7.58</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --background: 0 0% 98.5%; --foreground: 240 8% 12%; --card: 0 0% 100%;
+      --card-foreground: 240 8% 12%; --popover: 0 0% 100%; --popover-foreground: 240 8% 12%;
+      --primary: 217 89% 47%; --primary-foreground: 0 0% 100%; --secondary: 220 6% 90%;
+      --secondary-foreground: 240 4% 16%; --muted: 220 8% 94%; --muted-foreground: 240 3% 46%;
+      --accent: 217 70% 94%; --accent-foreground: 217 89% 47%; --destructive: 0 72% 51%;
+      --destructive-foreground: 0 0% 100%; --success: 142 71% 45%; --warning: 38 92% 50%;
+      --info: 217 89% 47%; --border: 220 6% 88%; --input: 220 6% 88%; --ring: 217 89% 47%;
+      --radius-sm: 0.375rem; --radius-md: 0.5rem; --radius-lg: 0.625rem; --radius-xl: 0.75rem;
+    }
+    .dark {
+      --background: 240 6% 7%; --foreground: 0 0% 95%; --card: 240 4% 10%;
+      --card-foreground: 0 0% 95%; --popover: 240 4% 10%; --popover-foreground: 0 0% 95%;
+      --primary: 217 85% 55%; --primary-foreground: 0 0% 100%; --secondary: 240 3% 18%;
+      --secondary-foreground: 0 0% 90%; --muted: 240 3% 14%; --muted-foreground: 240 2% 55%;
+      --accent: 217 40% 20%; --accent-foreground: 217 85% 60%; --destructive: 0 62% 35%;
+      --destructive-foreground: 0 0% 100%; --success: 142 70% 40%; --warning: 38 90% 45%;
+      --info: 217 85% 55%; --border: 240 3% 20%; --input: 240 3% 20%; --ring: 217 85% 55%;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: hsl(var(--background)); color: hsl(var(--foreground)); line-height: 1.6; -webkit-font-smoothing: antialiased; transition: background-color .2s, color .2s; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 32px 20px 64px; }
+    .doc-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+    .doc-h h1 { font-size: 20px; font-weight: 700; }
+    .doc-h .ver { font-size: 12px; color: hsl(var(--muted-foreground)); font-family: 'JetBrains Mono', monospace; }
+    .doc-sub { color: hsl(var(--muted-foreground)); font-size: 13.5px; margin-bottom: 28px; }
+
+    .flow { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 24px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .dark .flow { box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+    .flow-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+    .flow-num { width: 24px; height: 24px; border-radius: 50%; background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: grid; place-items: center; font-size: 12px; font-weight: 700; }
+    .flow-head h3 { font-size: 15px; font-weight: 600; }
+    .flow-desc { font-size: 12.5px; color: hsl(var(--muted-foreground)); margin-bottom: 16px; }
+
+    /* stepper */
+    .stepper { display: flex; align-items: center; gap: 0; margin-bottom: 18px; flex-wrap: wrap; }
+    .step-node { display: flex; align-items: center; gap: 8px; }
+    .step-dot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid hsl(var(--border)); display: grid; place-items: center; font-size: 11px; font-weight: 700; color: hsl(var(--muted-foreground)); background: hsl(var(--card)); transition: all .25s cubic-bezier(0.16,1,0.3,1); }
+    .step-node.active .step-dot { border-color: hsl(var(--primary)); color: hsl(var(--primary)); background: hsl(var(--accent)); }
+    .step-node.done .step-dot { border-color: hsl(var(--success)); background: hsl(var(--success)); color: #fff; }
+    .step-line { width: 36px; height: 2px; background: hsl(var(--border)); margin: 0 4px; transition: background .3s; }
+    .step-line.done { background: hsl(var(--success)); }
+    .step-label { font-size: 11.5px; color: hsl(var(--muted-foreground)); }
+    .step-node.active .step-label, .step-node.done .step-label { color: hsl(var(--foreground)); }
+
+    /* interactive bits */
+    .btn { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid transparent; transition: background-color .15s, transform .1s; user-select: none; }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+    .btn-primary:hover { background: hsl(var(--primary) / .9); }
+    .btn-outline { background: hsl(var(--card)); color: hsl(var(--foreground)); border-color: hsl(var(--border)); }
+    .btn-outline:hover { background: hsl(var(--secondary)); }
+    .btn:disabled { opacity: .5; pointer-events: none; }
+    .input { height: 34px; padding: 0 10px; border: 1px solid hsl(var(--input)); border-radius: var(--radius-md); font-size: 13px; background: hsl(var(--background)); color: hsl(var(--foreground)); outline: none; width: 100%; transition: border-color .15s, box-shadow .15s; }
+    .input:focus { border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / .2); }
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; }
+
+    .stage { border: 1px dashed hsl(var(--border)); border-radius: var(--radius-md); padding: 16px; background: hsl(var(--muted) / .4); min-height: 120px; display: flex; flex-direction: column; gap: 12px; }
+    .loading-bar { height: 3px; background: hsl(var(--muted)); border-radius: 2px; overflow: hidden; display: none; }
+    .loading-bar.on { display: block; }
+    .loading-bar .fill { height: 100%; width: 40%; background: hsl(var(--primary)); animation: indet 1.2s ease-in-out infinite; }
+    @keyframes indet { 0% { transform: translateX(-100%); } 100% { transform: translateX(350%); } }
+    .spinner { width: 15px; height: 15px; border: 2px solid hsl(var(--muted-foreground) / .3); border-top-color: hsl(var(--primary)); border-radius: 50%; animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(12px); background: hsl(var(--foreground)); color: hsl(var(--background)); padding: 10px 16px; border-radius: var(--radius-md); font-size: 13px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s cubic-bezier(0.16,1,0.3,1); z-index: 200; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    .code { background: hsl(var(--muted)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-md); padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; white-space: pre; overflow: auto; max-height: 180px; color: hsl(var(--foreground)); transition: opacity .25s; }
+    .code .cmt { color: hsl(var(--muted-foreground)); }
+    .code .wl { color: hsl(var(--success)); }
+    .fade-in { animation: fadeIn .25s cubic-bezier(0.16,1,0.3,1); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .tabs { display: inline-flex; background: hsl(var(--muted)); border-radius: var(--radius-md); padding: 3px; gap: 2px; }
+    .tab { font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; color: hsl(var(--muted-foreground)); border: none; background: transparent; transition: background .15s, color .15s; }
+    .tab.active { background: hsl(var(--card)); color: hsl(var(--foreground)); box-shadow: 0 1px 2px rgba(0,0,0,.1); }
+    .preview-pane { margin-top: 12px; }
+
+    .pill { display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 9999px; font-size: 11px; font-weight: 600; }
+    .pill.idle { background: hsl(var(--muted)); color: hsl(var(--muted-foreground)); }
+    .pill.run { background: hsl(var(--info) / .12); color: hsl(var(--info)); }
+    .pill.ok { background: hsl(var(--success) / .12); color: hsl(var(--success)); }
+    .sw { width: 44px; height: 24px; border-radius: 9999px; background: hsl(var(--input)); position: relative; cursor: pointer; transition: background .2s; border: none; padding: 0; }
+    .sw.on { background: hsl(var(--primary)); }
+    .sw .thumb { width: 20px; height: 20px; border-radius: 50%; background: hsl(var(--card)); position: absolute; top: 2px; left: 2px; transition: transform .2s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+    .sw.on .thumb { transform: translateX(20px); }
+    .check { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; cursor: pointer; }
+    .box { width: 16px; height: 16px; border: 1.5px solid hsl(var(--primary)); border-radius: 4px; display: grid; place-items: center; background: transparent; transition: background .15s; }
+    .box.on { background: hsl(var(--primary)); color: #fff; }
+    .box svg { width: 11px; height: 11px; opacity: 0; }
+    .box.on svg { opacity: 1; }
+    .callout { border: 1px solid hsl(var(--primary) / .3); background: hsl(var(--accent)); border-radius: var(--radius-md); padding: 10px 12px; font-size: 12px; color: hsl(var(--accent-foreground)); margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="doc-h">
+      <h1>DNS Shield · 业务流程原型</h1>
+      <span class="ver">v3.7.58</span>
+    </div>
+    <p class="doc-sub">聚焦关键交互流程的真实可交互原型（带动效），与 <code class="mono">prototype.html</code>、<code class="mono">wireframes.html</code> 协同呈现。点击下列按钮体验完整状态转换。</p>
+
+    <!-- Flow 1: URL 导入 -->
+    <div class="flow" id="flow-url">
+      <div class="flow-head"><span class="flow-num">1</span><h3>URL 批量导入 → 解析</h3></div>
+      <p class="flow-desc">从远程 URL 流式读取域名（含 10MB 字节上限防 DoS），解析并合并入编辑区，实时更新统计。</p>
+      <div class="stepper" id="urlSteps">
+        <div class="step-node active" data-step="1"><span class="step-dot">1</span><span class="step-label">输入 URL</span></div>
+        <div class="step-line"></div>
+        <div class="step-node" data-step="2"><span class="step-dot">2</span><span class="step-label">获取中</span></div>
+        <div class="step-line"></div>
+        <div class="step-node" data-step="3"><span class="step-dot">3</span><span class="step-label">已解析</span></div>
+      </div>
+      <div class="stage">
+        <div class="row">
+          <input class="input" id="fUrl" value="https://example.com/ads.txt" style="flex:1" />
+          <button class="btn btn-primary" id="fUrlBtn">获取</button>
+        </div>
+        <div class="loading-bar" id="fUrlLoad"><div class="fill"></div></div>
+        <div class="row" style="font-size:12px">
+          <span class="pill idle" id="fUrlPill">待操作</span>
+          <span class="mono" id="fUrlCount" style="color:hsl(var(--muted-foreground))">已导入 0 行</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flow 2: 格式切换 -->
+    <div class="flow" id="flow-fmt">
+      <div class="flow-head"><span class="flow-num">2</span><h3>输出格式切换</h3></div>
+      <p class="flow-desc">9 种格式实时生成预览，切换有淡入动效。点击 Tab 体验状态转换。</p>
+      <div class="row">
+        <div class="tabs" id="fFmtTabs">
+          <button class="tab active" data-f="dnsmasq">Dnsmasq</button>
+          <button class="tab" data-f="hosts">Hosts</button>
+          <button class="tab" data-f="adguard">AdGuard</button>
+          <button class="tab" data-f="unbound">Unbound</button>
+          <button class="tab" data-f="pihole">Pi-hole</button>
+          <button class="tab" data-f="smartdns">SmartDNS</button>
+        </div>
+        <button class="btn btn-outline" id="fCopyBtn">复制</button>
+      </div>
+      <div class="preview-pane"><div class="code" id="fPreview"></div></div>
+    </div>
+
+    <!-- Flow 3: 设置驱动生成 -->
+    <div class="flow" id="flow-set">
+      <div class="flow-head"><span class="flow-num">3</span><h3>设置变更 → 实时重生成</h3></div>
+      <p class="flow-desc">修改项目名 / 版本 / 重定向 IP，切换头部注释与 IPv6 开关，预览即时重渲染（双向绑定）。</p>
+      <div class="stage">
+        <div class="row">
+          <input class="input" id="fName" value="家庭网络屏蔽" style="width:180px" placeholder="项目名" />
+          <input class="input" id="fIp" value="0.0.0.0" style="width:130px" placeholder="IPv4" />
+        </div>
+        <div class="row">
+          <label class="check"><span class="box on" id="fHeadBox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>添加头部注释</label>
+          <label class="check"><span class="box" id="fIp6Box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>屏蔽 IPv6</label>
+        </div>
+        <div class="preview-pane"><div class="code" id="fSetPreview"></div></div>
+      </div>
+    </div>
+
+    <!-- Flow 4: 主题 / 语言切换 -->
+    <div class="flow" id="flow-theme">
+      <div class="flow-head"><span class="flow-num">4</span><h3>主题 / 语言切换</h3></div>
+      <p class="flow-desc">暗色模式整体缓动过渡；语言切换即时重渲染文案（对齐 src/locales 多语言）。</p>
+      <div class="row">
+        <span class="mono" style="color:hsl(var(--muted-foreground))">主题：</span>
+        <button class="sw on" id="fTheme" aria-label="切换主题"><span class="thumb"></span></button>
+        <span class="mono" id="fThemeLabel">Dark</span>
+        <span style="width:1px;height:20px;background:hsl(var(--border));margin:0 8px"></span>
+        <span class="mono" style="color:hsl(var(--muted-foreground))">语言：</span>
+        <button class="btn btn-outline btn-sm" id="fLang">中文 / English</button>
+        <span class="mono" id="fLangLabel">当前：中文</span>
+      </div>
+      <div class="callout" id="fThemeCallout">主题与语言偏好持久化至 localStorage，刷新保持。</div>
+    </div>
+
+    <div class="callout">全部流程为纯前端原型，无后端依赖；动效时长与缓动曲线对齐 <code class="mono">wireframes.html</code> 动效规范。</div>
+  </div>
+  <div class="toast" id="flowToast" role="status" aria-live="polite"></div>
+
+  <script>
+  (function () {
+    'use strict';
+    var $ = function (id) { return document.getElementById(id); };
+    var I18N = {
+      'zh': { copy: '已复制', copied: '已复制到剪贴板', gen: '正在生成', theme: 'Dark', lang: '当前：中文', fetched: '已导入域名' },
+      'en': { copy: 'Copy', copied: 'Copied to clipboard', gen: 'Generating', theme: 'Light', lang: 'Current: English', fetched: 'Domains imported' }
+    };
+    var lang = 'zh'; var theme = 'dark';
+    var SAMPLE = ['doubleclick.net','google-analytics.com','adservice.google.com','+github.com','@cdn.example.com=1.2.3.4'].join('\n');
+
+    function toast(m) { var t = $('flowToast'); t.textContent = m; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 1800); }
+
+    /* Flow 1: URL import */
+    $('fUrlBtn').addEventListener('click', function () {
+      var nodes = $('urlSteps').querySelectorAll('.step-node');
+      var lines = $('urlSteps').querySelectorAll('.step-line');
+      nodes[0].classList.remove('active','done'); nodes[0].classList.add('done');
+      nodes[1].classList.add('active'); lines[0].classList.add('done');
+      $('fUrlPill').className = 'pill run'; $('fUrlPill').textContent = I18N[lang].gen;
+      $('fUrlLoad').classList.add('on'); $('fUrlBtn').disabled = true;
+      setTimeout(function () {
+        nodes[1].classList.remove('active'); nodes[1].classList.add('done');
+        nodes[2].classList.add('active','done'); lines[1].classList.add('done');
+        $('fUrlLoad').classList.remove('on'); $('fUrlBtn').disabled = false;
+        $('fUrlPill').className = 'pill ok'; $('fUrlPill').textContent = I18N[lang].fetched;
+        $('fUrlCount').textContent = '已导入 ' + 5 + ' 行';
+        toast(I18N[lang].fetched);
+      }, 900);
+    });
+
+    /* Flow 2: format switch */
+    var fmtGen = {
+      dnsmasq: '# 版本::3.7.58 项目:家庭网络屏蔽\naddress=/doubleclick.net/0.0.0.0\naddress=/google-analytics.com/0.0.0.0\n<span class="wl">server=/github.com/#</span>',
+      hosts: '0.0.0.0 doubleclick.net\n0.0.0.0 google-analytics.com\n<span class="wl"># 已白名单: github.com</span>',
+      adguard: '||doubleclick.net^\n||google-analytics.com^\n<span class="wl">@@||github.com^$important</span>',
+      unbound: 'local-zone: "doubleclick.net" refuse\nlocal-zone: "google-analytics.com" refuse',
+      pihole: '0.0.0.0 doubleclick.net\n0.0.0.0 google-analytics.com',
+      smartdns: 'address /doubleclick.net/#\naddress /google-analytics.com/#'
+    };
+    function renderFmt(f) {
+      $('fPreview').innerHTML = '<span class="fade-in">' + fmtGen[f] + '</span>';
+    }
+    renderFmt('dnsmasq');
+    $('fFmtTabs').querySelectorAll('.tab').forEach(function (t) {
+      t.addEventListener('click', function () {
+        $('fFmtTabs').querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active'); });
+        t.classList.add('active'); renderFmt(t.dataset.f);
+      });
+    });
+    $('fCopyBtn').addEventListener('click', function () { toast(I18N[lang].copied); });
+
+    /* Flow 3: settings */
+    function renderSet() {
+      var name = $('fName').value || 'DNS Shield';
+      var ip = $('fIp').value || '0.0.0.0';
+      var head = $('fHeadBox').classList.contains('on');
+      var ip6 = $('fIp6Box').classList.contains('on');
+      var out = (head ? '# 版本::3.7.58 项目:' + name + '\n' : '') + 'address=/doubleclick.net/' + ip + '\n';
+      if (ip6) out += 'address=/doubleclick.net/::\n';
+      $('fSetPreview').innerHTML = out;
+    }
+    ['fName','fIp'].forEach(function (id) { $(id).addEventListener('input', renderSet); });
+    ['fHeadBox','fIp6Box'].forEach(function (id) {
+      $(id).addEventListener('click', function () { $(id).classList.toggle('on'); renderSet(); });
+    });
+    renderSet();
+
+    /* Flow 4: theme / lang */
+    function applyTheme() {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      $('fTheme').classList.toggle('on', theme === 'dark');
+      $('fThemeLabel').textContent = I18N[lang].theme;
+    }
+    $('fTheme').addEventListener('click', function () {
+      theme = theme === 'dark' ? 'light' : 'dark'; applyTheme();
+    });
+    $('fLang').addEventListener('click', function () {
+      lang = lang === 'zh' ? 'en' : 'zh';
+      $('fLangLabel').textContent = lang === 'zh' ? I18N.zh.lang : I18N.en.lang;
+      $('fThemeLabel').textContent = I18N[lang].theme;
+    });
+    applyTheme();
+  })();
+  </script>
+</body>
+</html>

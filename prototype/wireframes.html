@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<!-- prototype/wireframes.html v3.7.58 — DNS Shield 组件库规范 (Wireframes & Component Library) -->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DNS Shield — 组件库规范 v3.7.58</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== Design tokens (与 design-system.md / globals.css 对齐) ===== */
+    :root {
+      --background: 0 0% 98.5%;
+      --foreground: 240 8% 12%;
+      --card: 0 0% 100%;
+      --card-foreground: 240 8% 12%;
+      --popover: 0 0% 100%;
+      --popover-foreground: 240 8% 12%;
+      --primary: 217 89% 47%;
+      --primary-foreground: 0 0% 100%;
+      --secondary: 220 6% 90%;
+      --secondary-foreground: 240 4% 16%;
+      --muted: 220 8% 94%;
+      --muted-foreground: 240 3% 46%;
+      --accent: 217 70% 94%;
+      --accent-foreground: 217 89% 47%;
+      --destructive: 0 72% 51%;
+      --destructive-foreground: 0 0% 100%;
+      --success: 142 71% 45%;
+      --warning: 38 92% 50%;
+      --info: 217 89% 47%;
+      --border: 220 6% 88%;
+      --input: 220 6% 88%;
+      --ring: 217 89% 47%;
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.625rem;
+      --radius-xl: 0.75rem;
+    }
+    .dark {
+      --background: 240 6% 7%;
+      --foreground: 0 0% 95%;
+      --card: 240 4% 10%;
+      --card-foreground: 0 0% 95%;
+      --popover: 240 4% 10%;
+      --popover-foreground: 0 0% 95%;
+      --primary: 217 85% 55%;
+      --primary-foreground: 0 0% 100%;
+      --secondary: 240 3% 18%;
+      --secondary-foreground: 0 0% 90%;
+      --muted: 240 3% 14%;
+      --muted-foreground: 240 2% 55%;
+      --accent: 217 40% 20%;
+      --accent-foreground: 217 85% 60%;
+      --destructive: 0 62% 35%;
+      --destructive-foreground: 0 0% 100%;
+      --success: 142 70% 40%;
+      --warning: 38 90% 45%;
+      --info: 217 85% 55%;
+      --border: 240 3% 20%;
+      --input: 240 3% 20%;
+      --ring: 217 85% 55%;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: hsl(var(--background)); color: hsl(var(--foreground));
+      line-height: 1.6; -webkit-font-smoothing: antialiased; padding-bottom: 64px;
+    }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+    /* ===== Layout ===== */
+    .doc-header {
+      position: sticky; top: 0; z-index: 20;
+      background: hsl(var(--card) / .85); backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid hsl(var(--border));
+    }
+    .doc-header-inner { max-width: 1180px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 12px; justify-content: space-between; }
+    .doc-brand { display: flex; align-items: center; gap: 10px; }
+    .doc-brand .logo { width: 30px; height: 30px; border-radius: var(--radius-md); background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+    .doc-brand h1 { font-size: 15px; font-weight: 600; }
+    .doc-brand p { font-size: 11px; color: hsl(var(--muted-foreground)); }
+    .doc-nav { display: flex; gap: 4px; flex-wrap: wrap; }
+    .doc-nav a { font-size: 12px; color: hsl(var(--muted-foreground)); text-decoration: none; padding: 5px 9px; border-radius: var(--radius-md); transition: background .15s, color .15s; }
+    .doc-nav a:hover { background: hsl(var(--secondary)); color: hsl(var(--foreground)); }
+
+    .container { max-width: 1180px; margin: 0 auto; padding: 32px 20px; }
+    .section { margin-bottom: 52px; scroll-margin-top: 72px; }
+    .section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+    .section-head .num { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: hsl(var(--primary)); font-weight: 600; }
+    .section-head h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+    .section-desc { color: hsl(var(--muted-foreground)); font-size: 13.5px; margin-bottom: 22px; max-width: 760px; }
+
+    .sub { font-size: 14px; font-weight: 600; margin: 26px 0 12px; color: hsl(var(--foreground)); display: flex; align-items: center; gap: 8px; }
+    .sub::before { content: ""; width: 3px; height: 14px; background: hsl(var(--primary)); border-radius: 2px; }
+
+    /* ===== Showcase grid ===== */
+    .showcase { display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)); gap: 16px; }
+    .cell {
+      background: hsl(var(--card)); border: 1px solid hsl(var(--border));
+      border-radius: var(--radius-lg); padding: 18px;
+      display: flex; flex-direction: column; gap: 12px; min-height: 132px;
+    }
+    .cell .label { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: hsl(var(--muted-foreground)); }
+    .cell .stage { flex: 1; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }
+    .cell .meta { font-size: 11px; color: hsl(var(--muted-foreground)); font-family: 'JetBrains Mono', monospace; }
+
+    /* ===== Atoms ===== */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      height: 36px; padding: 0 14px; border-radius: var(--radius-md);
+      font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid transparent;
+      transition: background-color .15s, transform .1s, border-color .15s, opacity .15s; white-space: nowrap; user-select: none;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+    .btn-primary:hover { background: hsl(var(--primary) / .9); }
+    .btn-secondary { background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); }
+    .btn-secondary:hover { background: hsl(var(--secondary) / .8); }
+    .btn-destructive { background: hsl(var(--destructive)); color: hsl(var(--destructive-foreground)); }
+    .btn-destructive:hover { background: hsl(var(--destructive) / .9); }
+    .btn-outline { background: hsl(var(--card)); color: hsl(var(--foreground)); border-color: hsl(var(--border)); }
+    .btn-outline:hover { background: hsl(var(--secondary)); }
+    .btn-ghost { background: transparent; color: hsl(var(--foreground)); }
+    .btn-ghost:hover { background: hsl(var(--secondary)); }
+    .btn-link { background: transparent; color: hsl(var(--primary)); text-decoration: underline; text-underline-offset: 4px; padding: 0 4px; height: auto; }
+    .btn-sm { height: 30px; padding: 0 10px; font-size: 12px; border-radius: var(--radius-md); }
+    .btn-lg { height: 44px; padding: 0 32px; font-size: 14px; }
+    .btn-icon { width: 36px; height: 36px; padding: 0; }
+    .btn:disabled { opacity: .5; pointer-events: none; }
+
+    .inp {
+      height: 36px; width: 200px; max-width: 100%;
+      border: 1px solid hsl(var(--input)); background: hsl(var(--background));
+      border-radius: var(--radius-md); padding: 0 12px; font-size: 13px;
+      color: hsl(var(--foreground)); outline: none; transition: border-color .15s, box-shadow .15s;
+    }
+    .inp::placeholder { color: hsl(var(--muted-foreground)); }
+    .inp:focus { border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / .2); }
+    .inp:disabled { opacity: .5; cursor: not-allowed; }
+    .inp.error { border-color: hsl(var(--destructive)); }
+    .lbl { font-size: 12.5px; font-weight: 500; color: hsl(var(--foreground)); display: block; }
+    .lbl.req::after { content: "*"; color: hsl(var(--destructive)); margin-left: 3px; }
+
+    textarea.inp-area { height: 84px; padding: 10px 12px; resize: vertical; line-height: 1.5; }
+
+    /* Checkbox */
+    .chk { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; }
+    .chk-box {
+      width: 16px; height: 16px; border: 1.5px solid hsl(var(--primary)); border-radius: 4px;
+      display: grid; place-items: center; background: transparent; transition: background .15s;
+    }
+    .chk-box.on { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+    .chk-box svg { width: 12px; height: 12px; opacity: 0; }
+    .chk-box.on svg { opacity: 1; }
+
+    /* Switch */
+    .sw { width: 44px; height: 24px; border-radius: 9999px; background: hsl(var(--input)); position: relative; cursor: pointer; transition: background .2s; border: none; padding: 0; }
+    .sw.on { background: hsl(var(--primary)); }
+    .sw .thumb { width: 20px; height: 20px; border-radius: 50%; background: hsl(var(--card)); box-shadow: 0 1px 3px rgba(0,0,0,.3); position: absolute; top: 2px; left: 2px; transition: transform .2s cubic-bezier(0.16,1,0.3,1); }
+    .sw.on .thumb { transform: translateX(20px); }
+    .sw:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* Badge */
+    .badge { display: inline-flex; align-items: center; border-radius: 9999px; padding: 2px 10px; font-size: 11px; font-weight: 600; border: 1px solid transparent; }
+    .badge-default { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+    .badge-secondary { background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); }
+    .badge-destructive { background: hsl(var(--destructive)); color: hsl(var(--destructive-foreground)); }
+    .badge-outline { color: hsl(var(--foreground)); border-color: hsl(var(--border)); }
+    .badge-success { background: hsl(var(--success) / .12); color: hsl(var(--success)); }
+    .badge-warning { background: hsl(var(--warning) / .14); color: hsl(var(--warning)); }
+
+    /* Select (native styled) */
+    .sel { position: relative; display: inline-block; }
+    .sel-trigger {
+      height: 40px; min-width: 160px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      border: 1px solid hsl(var(--input)); background: hsl(var(--background)); border-radius: var(--radius-md);
+      padding: 0 12px; font-size: 13px; cursor: pointer; color: hsl(var(--foreground));
+    }
+    .sel-trigger:focus { outline: none; border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / .2); }
+    .sel-trigger svg { width: 16px; height: 16px; opacity: .5; }
+    .sel-panel { position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 30;
+      background: hsl(var(--popover)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-md);
+      box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 4px; min-width: 160px; }
+    .sel-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; }
+    .sel-item:hover, .sel-item.active { background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); }
+    .sel-item .check { width: 14px; }
+
+    /* Tabs */
+    .tabs { display: inline-flex; background: hsl(var(--muted)); border-radius: var(--radius-md); padding: 3px; gap: 2px; }
+    .tab { font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; color: hsl(var(--muted-foreground)); border: none; background: transparent; transition: background .15s, color .15s; }
+    .tab:hover:not(.active) { color: hsl(var(--foreground)); background: hsl(var(--accent) / .5); }
+    .tab.active { background: hsl(var(--card)); color: hsl(var(--foreground)); box-shadow: 0 1px 2px rgba(0,0,0,.1); }
+
+    /* Dropdown */
+    .dropdown-panel { background: hsl(var(--popover)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-md); box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 4px; min-width: 160px; }
+    .dd-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; }
+    .dd-item:hover { background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); }
+    .dd-item .check { width: 14px; color: hsl(var(--primary)); }
+    .dd-sep { height: 1px; background: hsl(var(--muted)); margin: 4px 0; }
+    .dd-label { padding: 6px 10px; font-size: 12px; font-weight: 600; color: hsl(var(--muted-foreground)); }
+
+    /* Toast */
+    .toast {
+      display: flex; align-items: center; gap: 10px; min-width: 260px;
+      background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-md);
+      padding: 12px 14px; box-shadow: 0 8px 24px rgba(0,0,0,.14); font-size: 13px;
+    }
+    .toast .ic { width: 18px; height: 18px; flex: 0 0 18px; }
+    .toast.success .ic { color: hsl(var(--success)); }
+    .toast.error .ic { color: hsl(var(--destructive)); }
+    .toast.info .ic { color: hsl(var(--info)); }
+    .toast .close { margin-left: auto; color: hsl(var(--muted-foreground)); cursor: pointer; }
+
+    /* Loading */
+    .spinner { width: 18px; height: 18px; border: 2px solid hsl(var(--primary) / .3); border-top-color: hsl(var(--primary)); border-radius: 50%; animation: spin .7s linear infinite; }
+    .skeleton { height: 14px; border-radius: var(--radius-sm); background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--secondary)) 50%, hsl(var(--muted)) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+    .loading-bar { height: 3px; width: 100%; background: hsl(var(--muted)); overflow: hidden; border-radius: 2px; }
+    .loading-bar .fill { height: 100%; width: 40%; background: hsl(var(--primary)); animation: indet 1.2s ease-in-out infinite; }
+    @keyframes indet { 0% { transform: translateX(-100%); } 100% { transform: translateX(350%); } }
+
+    /* ===== Composite components ===== */
+    .card { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); box-shadow: 0 1px 2px rgba(0,0,0,.04); overflow: hidden; }
+    .dark .card { box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+    .card-header { padding: 16px 18px; border-bottom: 1px solid hsl(var(--border)); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .card-title { font-size: 14px; font-weight: 600; }
+    .card-desc { font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 2px; }
+    .card-body { padding: 18px; }
+    .card-footer { padding: 14px 18px; border-top: 1px solid hsl(var(--border)); display: flex; gap: 8px; justify-content: flex-end; }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 560px) { .form-grid { grid-template-columns: 1fr; } }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+
+    .list { border: 1px solid hsl(var(--border)); border-radius: var(--radius-md); overflow: hidden; }
+    .list-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid hsl(var(--border)); font-size: 13px; }
+    .list-row:last-child { border-bottom: none; }
+    .list-row .x { margin-left: auto; color: hsl(var(--muted-foreground)); cursor: pointer; }
+
+    .stat-card { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); padding: 14px 16px; }
+    .stat-card .v { font-size: 20px; font-weight: 700; line-height: 1.1; }
+    .stat-card .l { font-size: 11px; color: hsl(var(--muted-foreground)); margin-top: 2px; }
+
+    .codeblock { background: hsl(var(--muted)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-md); padding: 12px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; white-space: pre; overflow: auto; color: hsl(var(--foreground)); max-height: 200px; }
+    .codeblock .cmt { color: hsl(var(--muted-foreground)); }
+    .codeblock .wl { color: hsl(var(--success)); }
+
+    /* ===== Business ===== */
+    .biz-header { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); }
+    .biz-header .top { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; }
+    .biz-brand { display: flex; align-items: center; gap: 10px; }
+    .biz-brand .ic { width: 30px; height: 30px; border-radius: var(--radius-md); background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); display: grid; place-items: center; }
+    .biz-brand .t { font-size: 14px; font-weight: 600; }
+    .biz-brand .s { font-size: 11px; color: hsl(var(--muted-foreground)); }
+
+    .settings-panel { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); padding: 18px; }
+    .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 16px; }
+    .opt-row { display: flex; flex-wrap: wrap; gap: 16px; }
+
+    .preview-shell { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); overflow: hidden; }
+    .preview-bar { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid hsl(var(--border)); }
+
+    .footer-biz { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); padding: 14px 16px; }
+    .footer-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .footer-link { font-size: 12.5px; color: hsl(var(--muted-foreground)); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+    .footer-link:hover { color: hsl(var(--foreground)); }
+    .usage-guide { margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+    .usage-step { display: flex; gap: 10px; align-items: flex-start; }
+    .usage-step .n { width: 22px; height: 22px; flex: 0 0 22px; border-radius: 50%; background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); display: grid; place-items: center; font-size: 11px; font-weight: 700; }
+    .usage-step .st { font-size: 12.5px; font-weight: 600; }
+    .usage-step .sd { font-size: 11.5px; color: hsl(var(--muted-foreground)); }
+
+    /* ===== Rules doc ===== */
+    .rules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .rule-card { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); padding: 16px; }
+    .rule-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .rule-card .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .rule-card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .rule-card li { font-size: 12.5px; color: hsl(var(--muted-foreground)); padding-left: 16px; position: relative; }
+    .rule-card li::before { content: ""; position: absolute; left: 2px; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: hsl(var(--primary) / .6); }
+    .rule-card code { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; background: hsl(var(--muted)); padding: 1px 5px; border-radius: 4px; color: hsl(var(--foreground)); }
+
+    table.tokens { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    table.tokens th, table.tokens td { text-align: left; padding: 8px 10px; border-bottom: 1px solid hsl(var(--border)); }
+    table.tokens th { color: hsl(var(--muted-foreground)); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+    table.tokens td.font-mono { font-family: 'JetBrains Mono', monospace; }
+    .swatch { width: 20px; height: 20px; border-radius: 5px; border: 1px solid hsl(var(--border)); display: inline-block; vertical-align: middle; margin-right: 8px; }
+
+    .callout { border: 1px solid hsl(var(--primary) / .3); background: hsl(var(--accent)); border-radius: var(--radius-md); padding: 12px 14px; font-size: 12.5px; color: hsl(var(--accent-foreground)); margin: 14px 0; }
+    .callout b { font-weight: 700; }
+    .footer-note { text-align: center; color: hsl(var(--muted-foreground)); font-size: 12px; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <!-- ============ DOC HEADER ============ -->
+  <header class="doc-header">
+    <div class="doc-header-inner">
+      <div class="doc-brand">
+        <div class="logo">DS</div>
+        <div>
+          <h1>DNS Shield · 组件库规范</h1>
+          <p>Wireframes &amp; Component Library · v3.7.58</p>
+        </div>
+      </div>
+      <nav class="doc-nav">
+        <a href="#atoms">基础组件</a>
+        <a href="#composite">复合组件</a>
+        <a href="#business">业务组件</a>
+        <a href="#tokens">设计令牌</a>
+        <a href="#rules">使用规则</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ============ INTRO ============ -->
+    <section class="section">
+      <div class="section-head"><span class="num">00</span><h2>概述</h2></div>
+      <p class="section-desc">
+        本文档为 DNS Shield 的组件库规范（Wireframes），与 <code class="mono">prototype.html</code> 高保真原型、
+        <code class="mono">shadcn/</code> 设计系统三位一体。所有组件均基于真实的 <code class="mono">src/components/ui/</code>
+        Radix 封装实现（shadcn/ui 衍生），保证原型与最终代码视觉、交互、API 契约一致。
+        组件按层级分为：<b>基础组件（Atoms）</b>、<b>复合组件（Composite）</b>、<b>业务组件（Business）</b>。
+      </p>
+      <div class="callout">
+        <b>契约约束：</b>组件文件头注释遵循 <code class="mono">// path vX.Y.Z</code> 格式；主要容器须加 kebab-case 语义化
+        <code class="mono">id</code>（如 <code class="mono">#app-header</code>、<code class="mono">#settings-panel</code>）；
+        每次改动仅更新被改文件的头注释版本号。
+      </div>
+    </section>
+
+    <!-- ============ ATOMS ============ -->
+    <section class="section" id="atoms">
+      <div class="section-head"><span class="num">01</span><h2>基础组件（Atoms）</h2></div>
+      <p class="section-desc">不可再拆分的原子级 UI 单元，对应 <code class="mono">src/components/ui/</code> 中的 shadcn 封装，是所有复合与业务组件的构建块。</p>
+
+      <div class="sub">Button 按钮</div>
+      <div class="showcase">
+        <div class="cell"><span class="label">Variants</span><div class="stage">
+          <button class="btn btn-primary">Primary</button>
+          <button class="btn btn-secondary">Secondary</button>
+          <button class="btn btn-destructive">Destructive</button>
+        </div><span class="meta">default / secondary / destructive</span></div>
+        <div class="cell"><span class="label">Outline · Ghost · Link</span><div class="stage">
+          <button class="btn btn-outline">Outline</button>
+          <button class="btn btn-ghost">Ghost</button>
+          <button class="btn btn-link">Link</button>
+        </div><span class="meta">outline / ghost / link</span></div>
+        <div class="cell"><span class="label">Sizes</span><div class="stage">
+          <button class="btn btn-primary btn-sm">SM</button>
+          <button class="btn btn-primary">Default</button>
+          <button class="btn btn-primary btn-lg">LG</button>
+        </div><span class="meta">sm 30px / 36px / lg 44px</span></div>
+        <div class="cell"><span class="label">Icon Button · Disabled</span><div class="stage">
+          <button class="btn btn-outline btn-icon" aria-label="设置">⚙</button>
+          <button class="btn btn-primary" disabled>Disabled</button>
+        </div><span class="meta">icon 36px / disabled</span></div>
+      </div>
+
+      <div class="sub">Input 输入框 · Label 标签</div>
+      <div class="showcase">
+        <div class="cell"><span class="label">Default &amp; Focus</span><div class="stage" style="flex-direction:column;align-items:stretch">
+          <label class="lbl" for="demo-inp">项目名</label>
+          <input class="inp" id="demo-inp" placeholder="例如：家庭网络屏蔽" />
+        </div><span class="meta">h-9 · focus ring</span></div>
+        <div class="cell"><span class="label">Required &amp; Error</span><div class="stage" style="flex-direction:column;align-items:stretch">
+          <label class="lbl req" for="demo-inp2">IPv4 地址</label>
+          <input class="inp error" id="demo-inp2" value="999.1.1" />
+        </div><span class="meta">req * / error 红边</span></div>
+        <div class="cell"><span class="label">Disabled</span><div class="stage" style="flex-direction:column;align-items:stretch">
+          <label class="lbl" for="demo-inp3">版本（锁定）</label>
+          <input class="inp" id="demo-inp3" value="3.7.58" disabled />
+        </div><span class="meta">disabled 半透明</span></div>
+        <div class="cell"><span class="label">Textarea</span><div class="stage" style="flex-direction:column;align-items:stretch">
+          <label class="lbl" for="demo-ta">自定义规则</label>
+          <textarea class="inp inp-area" id="demo-ta" placeholder="每行一个域名…"></textarea>
+        </div><span class="meta">resize 垂直</span></div>
+      </div>
+
+      <div class="sub">Checkbox 复选框 · Switch 开关</div>
+      <div class="showcase">
+        <div class="cell"><span class="label">Checkbox</span><div class="stage" style="flex-direction:column;align-items:flex-start;gap:10px">
+          <label class="chk"><span class="chk-box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>添加头部注释</label>
+          <label class="chk"><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>屏蔽 IPv6</label>
+        </div><span class="meta">primary 填充</span></div>
+        <div class="cell"><span class="label">Switch</span><div class="stage" style="flex-direction:column;align-items:flex-start;gap:12px">
+          <button class="sw on" aria-pressed="true"><span class="thumb"></span></button>
+          <button class="sw" aria-pressed="false"><span class="thumb"></span></button>
+        </div><span class="meta">on / off 滑动</span></div>
+      </div>
+
+      <div class="sub">Badge 徽章</div>
+      <div class="showcase">
+        <div class="cell"><span class="label">Variants</span><div class="stage">
+          <span class="badge badge-default">Default</span>
+          <span class="badge badge-secondary">Secondary</span>
+          <span class="badge badge-destructive">Error</span>
+        </div><span class="meta">default / secondary / destructive</span></div>
+        <div class="cell"><span class="label">Status</span><div class="stage">
+          <span class="badge badge-success">已生成</span>
+          <span class="badge badge-warning">待处理</span>
+          <span class="badge badge-outline">Outline</span>
+        </div><span class="meta">success / warning / outline</span></div>
+      </div>
+
+      <div class="sub">Select 选择器 · Tabs 选项卡</div>
+      <div class="showcase">
+        <div class="cell"><span class="label">Select</span><div class="stage" style="flex-direction:column;align-items:stretch">
+          <div class="sel">
+            <div class="sel-trigger">dnsmasq <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+          </div>
+          <div class="sel"><div class="sel-panel">
+            <div class="sel-item active">dnsmasq <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="sel-item">hosts</div>
+            <div class="sel-item">AdGuard</div>
+          </div></div>
+        </div><span class="meta">Radix Select 封装</span></div>
+        <div class="cell"><span class="label">Tabs</span><div class="stage">
+          <div class="tabs">
+            <button class="tab active">输入</button>
+            <button class="tab">输出</button>
+            <button class="tab">设置</button>
+          </div>
+        </div><span class="meta">muted 底 · active 浮起</span></div>
+      </div>
+
+      <div class="sub">DropdownMenu 下拉菜单</div>
+      <div class="showcase">
+        <div class="cell"><span class="label">Dropdown</span><div class="stage">
+          <div class="dropdown-panel">
+            <div class="dd-label">语言</div>
+            <div class="dd-item">简体中文 <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div class="dd-item">English</div>
+            <div class="dd-sep"></div>
+            <div class="dd-item">日本語</div>
+          </div>
+        </div><span class="meta">Radix DropdownMenu</span></div>
+      </div>
+
+      <div class="sub">Loading 加载态 · Toast 提示</div>
+      <div class="showcase">
+        <div class="cell"><span class="label">Spinner</span><div class="stage"><div class="spinner"></div></div><span class="meta">fetch 中</span></div>
+        <div class="cell"><span class="label">Skeleton</span><div class="stage" style="flex-direction:column;align-items:stretch;gap:8px">
+          <div class="skeleton" style="width:80%"></div>
+          <div class="skeleton" style="width:60%"></div>
+          <div class="skeleton" style="width:90%"></div>
+        </div><span class="meta">内容占位</span></div>
+        <div class="cell"><span class="label">Indeterminate Bar</span><div class="stage" style="align-items:stretch"><div class="loading-bar"><div class="fill"></div></div></div><span class="meta">进度未知</span></div>
+        <div class="cell"><span class="label">Toast</span><div class="stage" style="flex-direction:column;align-items:stretch">
+          <div class="toast success"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg><span>规则已复制到剪贴板</span><span class="close">✕</span></div>
+          <div class="toast error"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>域名获取失败</span><span class="close">✕</span></div>
+        </div><span class="meta">sonner · top-right</span></div>
+      </div>
+    </section>
+
+    <!-- ============ COMPOSITE ============ -->
+    <section class="section" id="composite">
+      <div class="section-head"><span class="num">02</span><h2>复合组件（Composite）</h2></div>
+      <p class="section-desc">由多个基础组件组合，承载明确交互意图的模块。对应原型中的卡片、表单、列表、统计、代码预览等区块。</p>
+
+      <div class="sub">Card 卡片</div>
+      <div class="showcase">
+        <div class="cell" style="grid-column: span 2">
+          <span class="label">Card with header / body / footer</span>
+          <div class="card" style="width:100%">
+            <div class="card-header">
+              <div><div class="card-title">输出设置</div><div class="card-desc">配置生成规则的目标格式</div></div>
+              <span class="badge badge-success">已就绪</span>
+            </div>
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="field"><label class="lbl">项目名</label><input class="inp" value="家庭网络屏蔽" /></div>
+                <div class="field"><label class="lbl">版本</label><input class="inp" value="3.7.58" /></div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-ghost btn-sm">重置</button>
+              <button class="btn btn-primary btn-sm">应用</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">Form 表单（字段组）</div>
+      <div class="showcase">
+        <div class="cell" style="grid-column: span 2">
+          <span class="label">Settings Form（示例）</span>
+          <div class="card" style="width:100%">
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="field"><label class="lbl req">项目名</label><input class="inp" placeholder="必填" /></div>
+                <div class="field"><label class="lbl">版本号</label><input class="inp" value="1.0.0" /></div>
+                <div class="field"><label class="lbl">IPv4 重定向</label><input class="inp" value="0.0.0.0" /></div>
+                <div class="field"><label class="lbl">IPv6 重定向</label><input class="inp" value="::" /></div>
+              </div>
+              <div class="opt-row" style="margin-top:14px">
+                <label class="chk"><span class="chk-box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>添加头部注释</label>
+                <label class="chk"><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>屏蔽 IPv6</label>
+                <label class="chk"><span class="chk-box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>去重</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">List 列表（域名条目）</div>
+      <div class="showcase">
+        <div class="cell" style="grid-column: span 2">
+          <span class="label">Domain List</span>
+          <div class="list">
+            <div class="list-row"><span class="badge badge-outline mono">ad</span> doubleclick.net <span class="x">✕</span></div>
+            <div class="list-row"><span class="badge badge-outline mono">track</span> google-analytics.com <span class="x">✕</span></div>
+            <div class="list-row"><span class="badge badge-success mono">wl</span> github.com <span class="x">✕</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">Stat 统计卡 · Code Preview 代码预览</div>
+      <div class="showcase">
+        <div class="cell"><span class="label">Stat Cards</span><div class="stage" style="flex-direction:column;align-items:stretch;gap:10px">
+          <div class="stat-card"><div class="v">1,284</div><div class="l">有效域名</div></div>
+          <div class="stat-card"><div class="v">9</div><div class="l">支持格式</div></div>
+        </div><span class="meta">实时聚合</span></div>
+        <div class="cell" style="grid-column: span 2"><span class="label">Code Preview</span>
+          <div class="preview-shell" style="width:100%">
+            <div class="preview-bar"><span class="badge badge-secondary">dnsmasq</span><button class="btn btn-outline btn-sm">复制</button></div>
+            <div class="codeblock"># 版本::3.7.58 项目:家庭网络屏蔽
+<span class="cmt"># 头部注释已注入</span>
+server=/doubleclick.net/0.0.0.0
+server=/google-analytics.com/0.0.0.0
+<span class="wl"># 白名单放行
+server=/github.com/#</span></div>
+          </div>
+        <span class="meta">mono · 注释/白名单着色</span></div>
+      </div>
+    </section>
+
+    <!-- ============ BUSINESS ============ -->
+    <section class="section" id="business">
+      <div class="section-head"><span class="num">03</span><h2>业务组件（Business）</h2></div>
+      <p class="section-desc">由复合组件组装、承载 DNS Shield 核心业务流程的页面级区块。对应 <code class="mono">src/components/</code> 中的 Header / Footer / SettingsPanel / InputPanel / OutputPanel / UrlSection。</p>
+
+      <div class="sub">AppHeader 顶栏（语言 + 主题切换）</div>
+      <div class="biz-header" id="app-header-biz">
+        <div class="top">
+          <div class="biz-brand">
+            <div class="ic">🛡</div>
+            <div><div class="t">DNS Shield</div><div class="s">DNS 广告过滤规则生成器</div></div>
+          </div>
+          <div class="header-actions" style="display:flex;gap:8px;align-items:center">
+            <button class="btn btn-outline btn-sm">🌐 简体中文</button>
+            <button class="btn btn-outline btn-icon" aria-label="切换主题">🌙</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">SettingsPanel 设置面板</div>
+      <div class="settings-panel" id="settings-panel-biz" style="margin-top:16px">
+        <div class="settings-grid">
+          <div class="field"><label class="lbl">项目名</label><input class="inp" value="家庭网络屏蔽" /></div>
+          <div class="field"><label class="lbl">版本</label><input class="inp" value="3.7.58" /></div>
+          <div class="field"><label class="lbl">IPv4</label><input class="inp" value="0.0.0.0" /></div>
+          <div class="field"><label class="lbl">IPv6</label><input class="inp" value="::" /></div>
+        </div>
+        <div class="opt-row">
+          <label class="chk"><span class="chk-box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>添加头部注释</label>
+          <label class="chk"><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>屏蔽 IPv6</label>
+          <label class="chk"><span class="chk-box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>去重域名</label>
+          <label class="chk"><span class="chk-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>移除通配符</label>
+          <label class="chk"><span class="chk-box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>AdGuard 含白名单</label>
+        </div>
+      </div>
+
+      <div class="sub">InputPanel + UrlSection（域名输入 / URL 批量导入）</div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-header"><div class="card-title">域名输入</div><span class="badge badge-secondary">1,284 行</span></div>
+        <div class="card-body">
+          <div class="field" style="margin-bottom:12px">
+            <label class="lbl">从 URL 批量导入</label>
+            <div class="editor-row">
+              <input class="inp" style="flex:1" placeholder="https://example.com/ads.txt" />
+              <button class="btn btn-primary btn-sm">获取</button>
+            </div>
+            <div class="loading-bar" style="margin-top:8px;display:none"><div class="fill"></div></div>
+          </div>
+          <div class="codeblock" style="min-height:120px">doubleclick.net
+google-analytics.com
+<span class="cmt"># 支持 hosts / dnsmasq / AdGuard / 纯域名混合输入</span>
+127.0.0.1 adservice.google.com
+||ads.example.com^
+<span class="wl">+github.com</span></div>
+          <div class="presets" style="margin-top:12px">
+            <span class="badge badge-outline" style="cursor:pointer">EasyList</span>
+            <span class="badge badge-outline" style="cursor:pointer">AdGuard Base</span>
+            <span class="badge badge-outline" style="cursor:pointer">China List</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">OutputPanel（格式切换 + 预览 + 导出）</div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-header">
+          <div class="card-title">规则输出</div>
+          <div class="tabs">
+            <button class="tab active">dnsmasq</button>
+            <button class="tab">hosts</button>
+            <button class="tab">AdGuard</button>
+            <button class="tab">Unbound</button>
+            <button class="tab">Pi-hole</button>
+            <button class="tab">RPZ</button>
+            <button class="tab">SmartDNS</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="codeblock" style="min-height:140px"># 版本::3.7.58 项目:家庭网络屏蔽
+server=/doubleclick.net/0.0.0.0
+server=/google-analytics.com/0.0.0.0
+<span class="wl">server=/github.com/#</span></div>
+          <div class="toolbar" style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <button class="btn btn-primary btn-sm">复制</button>
+            <button class="btn btn-outline btn-sm">下载</button>
+            <button class="btn btn-ghost btn-sm">保存草稿</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">AppFooter（GitHub / 更新日志 / 使用指南）</div>
+      <div class="footer-biz" id="about-panel-biz" style="margin-top:16px">
+        <div class="footer-top">
+          <a class="footer-link">GitHub ↗</a>
+          <a class="footer-link">★ Star</a>
+          <a class="footer-link">更新日志 ↗</a>
+          <button class="footer-link" style="border:none;background:none">使用指南 ▾</button>
+          <span class="badge badge-outline mono" style="margin-left:auto">v3.7.58</span>
+        </div>
+        <div class="usage-guide" style="margin-top:14px">
+          <div class="usage-step"><span class="n">1</span><div><div class="st">输入域名</div><div class="sd">粘贴或导入广告域名</div></div></div>
+          <div class="usage-step"><span class="n">2</span><div><div class="st">选择格式</div><div class="sd">dnsmasq / hosts / AdGuard…</div></div></div>
+          <div class="usage-step"><span class="n">3</span><div><div class="st">导出部署</div><div class="sd">复制到路由器或 DNS 服务</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TOKENS ============ -->
+    <section class="section" id="tokens">
+      <div class="section-head"><span class="num">04</span><h2>设计令牌（Design Tokens）</h2></div>
+      <p class="section-desc">所有颜色以 HSL 通道值定义（与 <code class="mono">globals.css</code> 一致），支持 <code class="mono">.dark</code> 主题切换。圆角分四级，间距 4px 基准。</p>
+      <table class="tokens">
+        <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td class="font-mono">--primary</td><td><span class="swatch" style="background:hsl(217 89% 47%)"></span>217 89% 47%</td><td><span class="swatch" style="background:hsl(217 85% 55%)"></span>217 85% 55%</td><td>主操作 / 强调</td></tr>
+          <tr><td class="font-mono">--secondary</td><td><span class="swatch" style="background:hsl(220 6% 90%)"></span>220 6% 90%</td><td><span class="swatch" style="background:hsl(240 3% 18%)"></span>240 3% 18%</td><td>次操作背景</td></tr>
+          <tr><td class="font-mono">--muted</td><td><span class="swatch" style="background:hsl(220 8% 94%)"></span>220 8% 94%</td><td><span class="swatch" style="background:hsl(240 3% 14%)"></span>240 3% 14%</td><td>占位 / 禁用</td></tr>
+          <tr><td class="font-mono">--accent</td><td><span class="swatch" style="background:hsl(217 70% 94%)"></span>217 70% 94%</td><td><span class="swatch" style="background:hsl(217 40% 20%)"></span>217 40% 20%</td><td>选中 / hover</td></tr>
+          <tr><td class="font-mono">--destructive</td><td><span class="swatch" style="background:hsl(0 72% 51%)"></span>0 72% 51%</td><td><span class="swatch" style="background:hsl(0 62% 35%)"></span>0 62% 35%</td><td>删除 / 错误</td></tr>
+          <tr><td class="font-mono">--success</td><td><span class="swatch" style="background:hsl(142 71% 45%)"></span>142 71% 45%</td><td><span class="swatch" style="background:hsl(142 70% 40%)"></span>142 70% 40%</td><td>白名单 / 成功</td></tr>
+          <tr><td class="font-mono">--warning</td><td><span class="swatch" style="background:hsl(38 92% 50%)"></span>38 92% 50%</td><td><span class="swatch" style="background:hsl(38 90% 45%)"></span>38 90% 45%</td><td>待处理 / 提醒</td></tr>
+          <tr><td class="font-mono">--border</td><td><span class="swatch" style="background:hsl(220 6% 88%)"></span>220 6% 88%</td><td><span class="swatch" style="background:hsl(240 3% 20%)"></span>240 3% 20%</td><td>描边 / 分隔</td></tr>
+          <tr><td class="font-mono">--radius-*</td><td colspan="2">sm .375 / md .5 / lg .625 / xl .75 rem</td><td>圆角梯度</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ============ RULES ============ -->
+    <section class="section" id="rules">
+      <div class="section-head"><span class="num">05</span><h2>组件使用规则（Rules）</h2></div>
+      <p class="section-desc">组件落地与组合须遵循的硬性规范，确保跨页面一致性与可维护性。</p>
+      <div class="rules-grid">
+        <div class="rule-card">
+          <h4><span class="dot" style="background:hsl(var(--primary))"></span>语义化 id</h4>
+          <ul>
+            <li>所有块级容器（div/section/header/main）须加 kebab-case <code>id</code></li>
+            <li>与 className 语义一致：<code>#app-header</code>、<code>#input-panel</code></li>
+            <li>交互元素尽量带 <code>id</code>，便于 ARIA 关联与测试定位</li>
+          </ul>
+        </div>
+        <div class="rule-card">
+          <h4><span class="dot" style="background:hsl(var(--success))"></span>单一数据源</h4>
+          <ul>
+            <li>版本号仅来自 <code>src/config/version.ts</code> 的 <code>APP_VERSION</code></li>
+            <li>域名源为 <code>public/domains.txt</code> 单一事实来源</li>
+            <li>组件状态统一经 AppContext（useT）注入，禁止硬编码文案</li>
+          </ul>
+        </div>
+        <div class="rule-card">
+          <h4><span class="dot" style="background:hsl(var(--warning))"></span>变体契约</h4>
+          <ul>
+            <li>Button 变体：default/secondary/destructive/outline/ghost/link</li>
+            <li>Badge 变体：default/secondary/destructive/outline/success/warning</li>
+            <li>尺寸仅 sm / default / lg / icon，禁止自定义 px 高度</li>
+          </ul>
+        </div>
+        <div class="rule-card">
+          <h4><span class="dot" style="background:hsl(var(--destructive))"></span>无障碍（a11y）</h4>
+          <ul>
+            <li>表单控件须关联 <code>&lt;Label htmlFor&gt;</code></li>
+            <li>Switch/Checkbox 用 <code>aria-pressed</code> / <code>role</code></li>
+            <li>加载态使用 <code>role="status" aria-live="polite"</code></li>
+          </ul>
+        </div>
+        <div class="rule-card">
+          <h4><span class="dot" style="background:hsl(var(--info))"></span>动效规范</h4>
+          <ul>
+            <li>颜色过渡 <code>.15s cubic-bezier(0.16,1,0.3,1)</code></li>
+            <li>按压反馈 <code>active:scale(0.97/0.98)</code></li>
+            <li>主题切换整体 <code>background/color .2s</code> 缓动</li>
+          </ul>
+        </div>
+        <div class="rule-card">
+          <h4><span class="dot" style="background:hsl(var(--primary))"></span>文件头注释</h4>
+          <ul>
+            <li>源码头注释格式 <code>// path vX.Y.Z</code></li>
+            <li>每次改动仅更新<b>被改文件</b>的头注释版本</li>
+            <li>禁止全仓库批量刷写头注释</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">
+        <b>原型同步：</b><code class="mono">prototype.html</code>（高保真可交互）须与本文档视觉、组件层级、设计令牌保持严格一致；
+        修改任一处需同步 bump <code class="mono">APP_VERSION</code> 并核对 README / package.json 版本三元一致。
+      </div>
+    </section>
+
+    <p class="footer-note">DNS Shield · 组件库规范 v3.7.58 · 与 prototype.html / shadcn/design-system.md 协同</p>
+  </main>
+</body>
+</html>

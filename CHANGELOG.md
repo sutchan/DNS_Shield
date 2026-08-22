@@ -7,6 +7,20 @@
 
 ## [Unreleased]
 
+## [3.7.58] - 2026-08-22
+
+### Added
+- 完善高保真原型体系，新增 `prototype/wireframes.html`（组件库规范：基础/复合/业务组件 + 设计令牌 + 使用规则）与 `prototype/flows.html`（关键业务流程交互原型：URL 导入/格式切换/设置驱动/主题语言，带动效）
+- 增强 `prototype/prototype.html`：补齐设置面板（项目名/版本/IPv4/IPv6/4 选项，实时驱动生成，对齐 `SettingsPanel.tsx`）、URL 批量导入区（流式加载态 + 10MB 上限模拟，对齐 `UrlSection.tsx`）、About 业务组件（GitHub/Star/更新日志/使用指南三步，对齐 `Footer.tsx`）
+
+### Changed
+- 同步全局版本展示位至 v3.7.58（package.json / version.ts / next.config.js / README / README.en / DEPLOYMENT / openspec SPEC.md / prototype 三件套头注释与版本引用）
+
+## [3.7.57] - 2026-08-19
+
+### Added
+- 新增 `src/utils/domainPrimitives.ts` 与 `src/utils/parseDomainFormats.ts`：域名/IP 校验与规范化、各过滤格式入站解析器，供 domainValidator 与各格式解析器复用
+
 ## [3.7.56] - 2026-08-19
 
 ### Changed
