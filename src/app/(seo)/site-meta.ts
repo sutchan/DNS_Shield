@@ -1,8 +1,10 @@
-// src/app/site-meta.ts v3.7.50
+// src/app/(seo)/site-meta.ts v3.7.59
 // 站点元数据与 JSON-LD 结构常量，从 layout.tsx 拆分以保持单文件职责清晰。
 // 版本号统一引用单一来源 APP_VERSION，避免硬编码漂移。
+// 归入 (seo) 路由组目录，集中管理 SEO/元数据相关模块；
+// robots.ts / sitemap.ts 属 Next 约定文件须留在 app/ 根，不在此组。
 import type { Metadata, Viewport } from 'next';
-import { APP_VERSION } from '../config/version';
+import { APP_VERSION } from '../../config/version';
 
 const SITE_URL = 'https://dns.ewuse.com';
 const GITHUB_URL = 'https://github.com/sutchan/DNS_Shield';

@@ -7,6 +7,31 @@
 
 ## [Unreleased]
 
+### Added
+- 扩充 `public/domains.txt` 广告域名清单（v3.7.60）
+  - 从权威 blocklist 源（pgl.yoyo.org、anudeepND）筛选 106 个品牌级稳定广告/追踪基础设施域名，补齐 Google 广告分析栈、主流 SSP/DSP（criteo/pubmatic/rubiconproject/taboola/outbrain/adform 等）
+  - 黑名单区按字母升序排序并去重，白名单段保持业务分组原样
+  - 重新生成 8 种输出格式文件（hosts/dnsmasq/AdGuard/Unbound/Pi-hole/Bind RPZ/纯域名/SmartDNS），版本同步至 3.7.60
+
+### Changed
+- 重构目录结构与职责划分（refactor，v3.7.59）
+  - `domainPrimitives.ts`：移除重复的 `ParseResult`/`ParseStats` 类型，改由 `types/formats.ts` 统一承载
+  - `domainValidator.ts`：复用 `domainPrimitives` 与 `formatLineParsers`，消除重复正则/校验定义，统计聚合拆出 `statsAggregator.ts`，行数降至 ≤200
+  - `parseDomainFormats.ts` 改名为 `formatLineParsers.ts`，语义更清晰（格式行解析器）
+  - `uiUtils.ts` 的 `generateLineNumbers`（操作 DOM ref）移出纯逻辑 `utils/`，归位 `hooks/useLineNumbers.ts`，保持 `utils/` 不含 React/DOM 依赖
+  - `domainValidator` 重新导出 `ParseResult`/`ParseStats`，保持 `parser.ts`/`sortDedupe.ts` 公开 API 兼容
+  - SEO 元数据模块归位：`app/site-meta.ts` 移入 `app/(seo)/site-meta.ts`，`layout.tsx` 同步更新 import；`robots.ts`/`sitemap.ts` 属 Next 约定文件保留于 `app/` 根以维持 `/robots.txt`、`/sitemap.xml` 路由
+
+### Changed（原型体系 v3.7.59）
+- 原型生成引擎对齐真实 `src/utils`（rulesGenerator / parser / formatGenerators）：白名单从黑名单剔除、自定义 DNS 按 domain 去重、blockIPv6 追加 IPv6 拦截、removeWildcard 控制通配符剥离、头部含版本+域名+白名单计数
+- 补齐 9 种格式真实输出（含 Bind RPZ / 纯域名 / AdGuard 白名单段 `@@||domain^`），AdGuard 自定义 DNS 由 `||domain^$dnsrewrite` 修正为 `||domain^`
+- 设置面板新增「AdGuard 含白名单」开关；i18n 下拉扩至真实 16 语言，阿拉伯语标记 RTL 并切换 `dir`
+- 新增 Hero 签名元素「DNS 拦截流可视化」（拦截/放行/自定义三类流动态）
+
+### Fixed（原型体系 v3.7.59）
+- 修正 `wireframes.html` wlHeader 逻辑错误；移除装饰性章节序号；补齐 InputPanel/OutputPanel 语义化 id
+- 预览区空状态引导文案；`prefers-reduced-motion` 降级（原型三件套）；flows 格式切换扩至 9 种
+
 ## [3.7.58] - 2026-08-22
 
 ### Added

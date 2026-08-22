@@ -1,9 +1,9 @@
-// src/hooks/useRules.ts v3.7.50
+// src/hooks/useRules.ts v3.7.59
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateRules as generateRulesUtil, computeEffectiveStats } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
 import { downloadOutput as downloadOutputUtil, copyToClipboard } from '../utils/fileUtils';
-import { generateLineNumbers } from '../utils/uiUtils';
+import { generateLineNumbers } from './useLineNumbers';
 import { OutputContent, Settings, ParsedData, Translation, FormatType, Stats } from '../types';
 
 export const useRules = (

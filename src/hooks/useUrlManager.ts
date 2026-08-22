@@ -1,8 +1,8 @@
-// src/hooks/useUrlManager.ts v3.7.50
+// src/hooks/useUrlManager.ts v3.7.59
 import { useState } from 'react';
 import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
 import { fetchDomainsText } from '../utils/domainFetch';
-import { generateLineNumbers } from '../utils/uiUtils';
+import { generateLineNumbers } from './useLineNumbers';
 import { config, presetMirrors, type PresetName } from '../config/index';
 import { useLoading } from './useLoading';
 

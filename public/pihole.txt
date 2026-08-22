@@ -2,19 +2,21 @@
 # DNS Shield - Pi-hole 广告过滤列表
 # =====================================
 #
-# 路由器级广告过滤列表（0.0.0.0 gravity）
+# 兼容 Pi-hole gravity 的 0.0.0.0 域名列表
 #
-# 版本:: 3.7.56
-# 更新:: 2026.08.19
-# 域名:: 522 个唯一域名
+# 版本:: 3.7.57
+# 更新:: 2026.08.22
+# 域名:: 630 个唯一域名
 # 白名单:: 232 个域名
+#
+使用方法: 作为广告列表添加到 Group Management -> Adlists
 #
 # 项目: https://github.com/sutchan/DNS_Shield
 # 演示: https://dns.ewuse.com/
 #
 # =====================================
 
-
+0.0.0.0 2o7.net
 0.0.0.0 3dns-2.adobe.com
 0.0.0.0 3dns-3.adobe.com
 0.0.0.0 4009997658.com
@@ -25,6 +27,7 @@
 0.0.0.0 a.cctv.com
 0.0.0.0 a.cntv.cn
 0.0.0.0 aaid.umeng.com
+0.0.0.0 aaxads.com
 0.0.0.0 acroipm.adobe.com
 0.0.0.0 acs.youku.com
 0.0.0.0 act.vip.iqiyi.com
@@ -38,6 +41,7 @@
 0.0.0.0 ad.88765.com
 0.0.0.0 ad.bestv.com.cn
 0.0.0.0 ad.bilibili.com
+0.0.0.0 ad.bytedance.com
 0.0.0.0 ad.cctv.com
 0.0.0.0 ad.cdntv.com
 0.0.0.0 ad.cmvideo.cn
@@ -47,6 +51,7 @@
 0.0.0.0 ad.douyin.com
 0.0.0.0 ad.ffalcon.com
 0.0.0.0 ad.fun.tv
+0.0.0.0 ad.gifshow.com
 0.0.0.0 ad.haokan.com
 0.0.0.0 ad.hisense.com
 0.0.0.0 ad.hpplay.cn
@@ -54,11 +59,13 @@
 0.0.0.0 ad.iqiyi.com
 0.0.0.0 ad.ixigua.com
 0.0.0.0 ad.kuaishou.com
+0.0.0.0 ad.kwai.com
 0.0.0.0 ad.letv.com
 0.0.0.0 ad.m.taobao.com
 0.0.0.0 ad.mgtv.com
 0.0.0.0 ad.mi.com
 0.0.0.0 ad.miguvideo.com
+0.0.0.0 ad.oceanengine.com
 0.0.0.0 ad.pptv.com
 0.0.0.0 ad.qq.com
 0.0.0.0 ad.sohu.com
@@ -66,6 +73,7 @@
 0.0.0.0 ad.toutiao.com
 0.0.0.0 ad.tv.sohu.com
 0.0.0.0 ad.video.qq.com
+0.0.0.0 ad.weishi.qq.com
 0.0.0.0 ad.weixin.qq.com
 0.0.0.0 ad.xelements.cn
 0.0.0.0 ad.xiaohongshu.com
@@ -77,35 +85,58 @@
 0.0.0.0 adash.man.aliyuncs.com
 0.0.0.0 adashbc.ut.taobao.com
 0.0.0.0 adashx.m.taobao.com
+0.0.0.0 adbutler.com
 0.0.0.0 adc.hpplay.cn
 0.0.0.0 adcdn.hpplay.cn
+0.0.0.0 adchat.com
 0.0.0.0 adcolony.com
 0.0.0.0 adcontrol.tudou.com
 0.0.0.0 adeng.hpplay.cn
 0.0.0.0 adextensioncontrol.tudou.com
+0.0.0.0 adform.com
+0.0.0.0 adform.net
+0.0.0.0 adfox.ru
 0.0.0.0 adguanggao.eee114.com
 0.0.0.0 adiu.amap.com
 0.0.0.0 adjust.com
 0.0.0.0 admaster.com
 0.0.0.0 admaster.com.cn
 0.0.0.0 admp.weixin.qq.com
+0.0.0.0 adnxs.com
+0.0.0.0 adometry.com
 0.0.0.0 adping.qq.com
 0.0.0.0 adplay.tudou.com
+0.0.0.0 adriver.ru
+0.0.0.0 adroll.com
 0.0.0.0 ads-union.jd.com
 0.0.0.0 ads-vp5.xhscdn.com
 0.0.0.0 ads.95516.com
 0.0.0.0 ads.api.vungle.com
 0.0.0.0 ads.bestv.com.cn
+0.0.0.0 ads.bing.com
 0.0.0.0 ads.cup.com.cn
 0.0.0.0 ads.fun.tv
 0.0.0.0 ads.kuaishou.com
 0.0.0.0 ads.letv.com
+0.0.0.0 ads.linkedin.com
 0.0.0.0 ads.mgtv.com
 0.0.0.0 ads.migu.cn
+0.0.0.0 ads.pinterest.com
 0.0.0.0 ads.pptv.com
+0.0.0.0 ads.reddit.com
 0.0.0.0 ads.sohu.com
+0.0.0.0 ads.twitter.com
+0.0.0.0 ads.wikia.com
 0.0.0.0 ads.xiaohongshu.com
+0.0.0.0 ads.yahoo.com
+0.0.0.0 ads.youtube.com
+0.0.0.0 adsame.com
+0.0.0.0 adscale.com
+0.0.0.0 adscale.de
 0.0.0.0 adsclick.qq.com
+0.0.0.0 adserver.net
+0.0.0.0 adservice.google.com
+0.0.0.0 adservice.google.com.mt
 0.0.0.0 adsfile.qq.com
 0.0.0.0 adshmct.qq.com
 0.0.0.0 adshmmsg.qq.com
@@ -113,21 +144,33 @@
 0.0.0.0 adslvseed.qq.com
 0.0.0.0 adsmind.gdtimg.com
 0.0.0.0 adsmind.ugdtimg.com
+0.0.0.0 adsmogo.com
 0.0.0.0 adsmoloco.com
+0.0.0.0 adspirit.de
 0.0.0.0 adsqqclick.qq.com
 0.0.0.0 adsrich.qq.com
+0.0.0.0 adsrvr.org
 0.0.0.0 adstats.tencentmusic.com
+0.0.0.0 adthrive.com
 0.0.0.0 adv.sec.miui.com
 0.0.0.0 advertising.com
+0.0.0.0 adview.cn
+0.0.0.0 adwo.com
 0.0.0.0 adx.tv.mi.com
+0.0.0.0 adyoulike.com
+0.0.0.0 adzerk.net
 0.0.0.0 affise.com
 0.0.0.0 afp.iqiyi.com
 0.0.0.0 afp.qiyi.com
 0.0.0.0 alert.kuyun.com
 0.0.0.0 ali-ad.a.yximgs.com
+0.0.0.0 allyes.com
 0.0.0.0 alog.umeng.com
+0.0.0.0 amazon-adsystem.com
 0.0.0.0 amdc.m.taobao.com
+0.0.0.0 analytics.google.com
 0.0.0.0 analytics.rayjump.com
+0.0.0.0 analytics.yahoo.com
 0.0.0.0 android.bugly.qq.com
 0.0.0.0 api-ad.bestv.cn
 0.0.0.0 api-ad.fun.tv
@@ -173,6 +216,7 @@
 0.0.0.0 baidu.new1cloud.com
 0.0.0.0 baiducdncmn3.inter.iqiyi.com
 0.0.0.0 baiducdncnc.inter.ptqy.gitv.tv
+0.0.0.0 baidumobads.baidu.com
 0.0.0.0 baidutv.baidu.com
 0.0.0.0 bar.baidu.com
 0.0.0.0 bdbus-turbonet.baidu.com
@@ -189,19 +233,24 @@
 0.0.0.0 beacon.migu.cn
 0.0.0.0 beacon.pptv.com
 0.0.0.0 beacon.xiaohongshu.com
+0.0.0.0 bidswitch.net
+0.0.0.0 bidtellect.com
 0.0.0.0 blackhole.m.jd.com
+0.0.0.0 bluekai.com
 0.0.0.0 bm.snssdk.com
 0.0.0.0 bss.pandora.xiaomi.com
 0.0.0.0 bytedance.com
 0.0.0.0 bytedance.net
 0.0.0.0 c.l.qq.com
 0.0.0.0 callback.ad.xiaomi.com
+0.0.0.0 casalemedia.com
 0.0.0.0 cctv-ad.cdn.cctv.cn
 0.0.0.0 cctv.adsunion.com
 0.0.0.0 cdn.hpplay.com.cn
 0.0.0.0 centertime.ksyun.com
 0.0.0.0 chartboost.com
 0.0.0.0 chaturbate.com
+0.0.0.0 cl2.cn
 0.0.0.0 cm.bilibili.com
 0.0.0.0 cm.cn.miaozhen.com
 0.0.0.0 cm.ipinyou.com
@@ -215,33 +264,48 @@
 0.0.0.0 conf.hpplay.cn
 0.0.0.0 config.kuyun.com
 0.0.0.0 config.unityads.unitychina.cn
+0.0.0.0 connatix.com
 0.0.0.0 connectivitycheck.platform.hicloud.com
+0.0.0.0 contextweb.com
 0.0.0.0 coreldrawchina.com
 0.0.0.0 cpro.baidu.com
+0.0.0.0 criteo.com
+0.0.0.0 criteo.net
+0.0.0.0 crwdcntrl.net
 0.0.0.0 cupid.ptqy.gitv.tv
 0.0.0.0 d.cntv.cn
 0.0.0.0 data.mistat.xiaomi.com
+0.0.0.0 dataeye.com
 0.0.0.0 datahub.zhihu.com
 0.0.0.0 daup.map.baidu.com
 0.0.0.0 de.pandora.xiaomi.com
 0.0.0.0 df.tanx.com
 0.0.0.0 diagnosis.ad.xiaomi.com
 0.0.0.0 dig.bdurl.net
+0.0.0.0 districtm.ca
+0.0.0.0 districtm.io
 0.0.0.0 ditwan.cn
 0.0.0.0 dl.cupid.ptqy.gitv.tv
 0.0.0.0 dm.bytedance.com
 0.0.0.0 dm.pstatp.com
 0.0.0.0 dm.toutiao.com
 0.0.0.0 dnkeeper.platform.dbankcloud.com
+0.0.0.0 domob.cn
+0.0.0.0 domob.org
 0.0.0.0 duga.zhihu.com
 0.0.0.0 dvb.pandora.xiaomi.com
 0.0.0.0 ef-dongfeng.tanx.com
+0.0.0.0 engagebdr.com
 0.0.0.0 errlog.umeng.com
 0.0.0.0 ets.tanx.com
+0.0.0.0 exelate.com
+0.0.0.0 exelator.com
 0.0.0.0 extlog.snssdk.com
 0.0.0.0 finder.video.qq.com
 0.0.0.0 fix.hpplay.cn
+0.0.0.0 flashtalking.com
 0.0.0.0 fm.tiktok.com
+0.0.0.0 freewheel.tv
 0.0.0.0 g.dtv.cn.miaozhan.com
 0.0.0.0 g.dtv.cn.miaozhen.com
 0.0.0.0 g.pandora.xiaomi.com
@@ -251,9 +315,15 @@
 0.0.0.0 gdt.qq.com
 0.0.0.0 gifshow.com
 0.0.0.0 glb.hpplay.cn
+0.0.0.0 google-analytics.com
 0.0.0.0 googleads.g.doubleclick.net
+0.0.0.0 googleadservices.com
+0.0.0.0 googlesyndication.com
+0.0.0.0 googletagmanager.com
+0.0.0.0 googletagservices.com
 0.0.0.0 gs.getui.com
 0.0.0.0 gsnuoyou.cn
+0.0.0.0 gumgum.com
 0.0.0.0 gvod.aiseejapp.atianqi.com
 0.0.0.0 h-adashx.ut.taobao.com
 0.0.0.0 h5.hpplay.com.cn
@@ -268,7 +338,10 @@
 0.0.0.0 image.hpplay.cn
 0.0.0.0 imdns.hpplay.cn
 0.0.0.0 imp.ad.xelements.cn
+0.0.0.0 indexexchange.com
 0.0.0.0 init.supersonicads.com
+0.0.0.0 inmobi.com
+0.0.0.0 innovid.com
 0.0.0.0 ip.ptqy.gitv.tv
 0.0.0.0 ironsrc.com
 0.0.0.0 is-gateway.supersonicads.com
@@ -281,6 +354,7 @@
 0.0.0.0 kwimgs.com
 0.0.0.0 leboapi.hpplay.com.cn
 0.0.0.0 live.vzuu.com
+0.0.0.0 liverail.com
 0.0.0.0 log-api.pangolin-sdk-toutiao.com
 0.0.0.0 log.ad.xiaomi.com
 0.0.0.0 log.bestv.com.cn
@@ -309,15 +383,24 @@
 0.0.0.0 logbak.hicloud.com
 0.0.0.0 logonext.tv.kuyun.com
 0.0.0.0 logs.ironsrc.mobi
+0.0.0.0 loopme.com
 0.0.0.0 lstat.youku.com
 0.0.0.0 m.pcv.iqiyi.com
 0.0.0.0 m.reachmax.cn
 0.0.0.0 ma.baidu.com
+0.0.0.0 madhouse.cn
+0.0.0.0 madserving.com
 0.0.0.0 mairuanwang.com
 0.0.0.0 makeding.com
+0.0.0.0 mathtag.com
 0.0.0.0 mb.cctv.com
 0.0.0.0 mb.cdntv.com
 0.0.0.0 mc.corel.com
+0.0.0.0 mediamath.com
+0.0.0.0 mediav.com
+0.0.0.0 mediav.net
+0.0.0.0 mediavine.com
+0.0.0.0 mediavoice.com
 0.0.0.0 metok.sys.miui.com
 0.0.0.0 mgtv-ad.cdn.mgtv.com
 0.0.0.0 miaozhen.com
@@ -326,6 +409,8 @@
 0.0.0.0 misc.pandora.xiaomi.com
 0.0.0.0 mishop.pandora.xiaomi.com
 0.0.0.0 mitv.tracking.miui.com
+0.0.0.0 moat.com
+0.0.0.0 moatads.com
 0.0.0.0 mon.snssdk.com
 0.0.0.0 mopub.com
 0.0.0.0 mpad.qq.com
@@ -335,6 +420,7 @@
 0.0.0.0 msg.iqiyi.com
 0.0.0.0 msg.qy.net
 0.0.0.0 mtt.taobao.com
+0.0.0.0 nativo.com
 0.0.0.0 networksdk.ssacdn.com
 0.0.0.0 new.api.ad.xiaomi.com
 0.0.0.0 newzone.cctv.com
@@ -343,14 +429,19 @@
 0.0.0.0 nstat.tudou.com
 0.0.0.0 o1098464.ingest.sentry.io
 0.0.0.0 oauth-login-drcn.platform.dbankcloud.com
+0.0.0.0 oceanengine.com
 0.0.0.0 official-t.720static.com
 0.0.0.0 omgmta.play.aiseet.atianqi.com
+0.0.0.0 onscroll.com
 0.0.0.0 open.e.kuaishou.cn
 0.0.0.0 open.e.kuaishou.com
 0.0.0.0 openapi.vip.ptqy.gitv.tv
+0.0.0.0 openx.net
+0.0.0.0 optimatic.com
 0.0.0.0 optimus-ads.amap.com
 0.0.0.0 origin-mc.corel.com
 0.0.0.0 ota.ptqy.gitv.tv
+0.0.0.0 outbrain.com
 0.0.0.0 outcome-ssp.supersonicads.com
 0.0.0.0 p1.bestvimg.com
 0.0.0.0 p1.ffalconimg.com
@@ -403,9 +494,13 @@
 0.0.0.0 pic2.iqiyi.com
 0.0.0.0 pic7.iqiyipic.com
 0.0.0.0 pin.hpplay.cn
+0.0.0.0 piximedia.tv
+0.0.0.0 platforms.adx1.com
+0.0.0.0 poweredby.zergnet.com
 0.0.0.0 prod-ms.applovin.com
 0.0.0.0 ptgy.gitv.tv
 0.0.0.0 ptmi.gitv.tv
+0.0.0.0 pubmatic.com
 0.0.0.0 puma-api.ptqy.gitv.tv
 0.0.0.0 push.cctv.com
 0.0.0.0 px.ucweb.com
@@ -419,23 +514,30 @@
 0.0.0.0 qr.tv.qq.com
 0.0.0.0 qr.youku.com
 0.0.0.0 qtsftl.m.cn.miaozhen.com
+0.0.0.0 quantcast.com
+0.0.0.0 quantserve.com
 0.0.0.0 r.browser.miui.com
+0.0.0.0 ramp.com
 0.0.0.0 recommend.cctv.com
 0.0.0.0 reflow.amemv.com
 0.0.0.0 regist.tv.kuyun.com
 0.0.0.0 res-ga.smzdm.com
 0.0.0.0 resstatic.servicewechat.com
+0.0.0.0 revcontent.com
 0.0.0.0 reward.ad.xiaomi.com
+0.0.0.0 rfihub.com
 0.0.0.0 router.amemv.com
 0.0.0.0 rp.hpplay.cn
 0.0.0.0 rp.mobile.youku.com
 0.0.0.0 rt.applovin.com
 0.0.0.0 rtb.ads.cn.miaozhen.com
+0.0.0.0 rubiconproject.com
 0.0.0.0 s1.hdslb.com
 0.0.0.0 s3-fe-scm.pglstatp-toutiao.com
 0.0.0.0 s3a.pstatp.com
 0.0.0.0 sayhi.360.cn
 0.0.0.0 scc.ssacdn.com
+0.0.0.0 scorecardresearch.com
 0.0.0.0 scs.openspeech.cn
 0.0.0.0 sdk-cache.video.ptqy.gitv.tv
 0.0.0.0 sdk.ptqy.gitv.tv
@@ -444,13 +546,25 @@
 0.0.0.0 search.weixin.qq.com
 0.0.0.0 secure.chn.imrworldwide.com
 0.0.0.0 sentry.in.zhihu.com
+0.0.0.0 serverbid.com
+0.0.0.0 sharethrough.com
+0.0.0.0 smaato.net
+0.0.0.0 smartadserver.com
 0.0.0.0 snssdk.com
+0.0.0.0 sonobi.com
+0.0.0.0 sovrn.com
 0.0.0.0 spns.cctv.com
+0.0.0.0 spotx.tv
+0.0.0.0 spotxchange.com
 0.0.0.0 stats.amemv.com
+0.0.0.0 synacor.com
 0.0.0.0 t.track.ad.xiaomi.com
 0.0.0.0 t7z.cupid.iqiyi.com
 0.0.0.0 t7z.cupid.ptqy.gitv.tv
+0.0.0.0 taboola.com
+0.0.0.0 talkingdata.com
 0.0.0.0 tapjoy.com
+0.0.0.0 teads.tv
 0.0.0.0 theqoo.net
 0.0.0.0 time.video.ptqy.gitv.tv
 0.0.0.0 toblog.ctobsnssdk.com
@@ -458,6 +572,8 @@
 0.0.0.0 tosv.byted.org
 0.0.0.0 trace.rtbasia.com
 0.0.0.0 tracking.miui.com
+0.0.0.0 triplelift.com
+0.0.0.0 turn.com
 0.0.0.0 tv.aiseet.atianqi.com
 0.0.0.0 tv.api.iqiyi.com
 0.0.0.0 tvapi.kuyun.com
@@ -469,15 +585,24 @@
 0.0.0.0 ulogs.umengcloud.com
 0.0.0.0 umeng.com
 0.0.0.0 umengcloud.com
+0.0.0.0 umtrack.com
+0.0.0.0 undertone.com
 0.0.0.0 union.gdtimg.com
 0.0.0.0 unityads.unity3d.com
 0.0.0.0 unityads.unitychina.cn
+0.0.0.0 unruly.co
+0.0.0.0 unrulymedia.com
 0.0.0.0 upfile-drcn.platform.hicloud.com
 0.0.0.0 utk.baidu.com
 0.0.0.0 v.admaster.com.cn
 0.0.0.0 v2.reachmax.cn
+0.0.0.0 valueclick.com
+0.0.0.0 valueclickmedia.com
+0.0.0.0 vamaker.com
 0.0.0.0 vdn.cdntv.com
+0.0.0.0 verizonmedia.com
 0.0.0.0 videocontent-dra.himovie.hicloud.com
+0.0.0.0 videohub.tv
 0.0.0.0 view.adjust.com
 0.0.0.0 vip.api.youku.com
 0.0.0.0 vip.bz.mgtv.com
@@ -504,270 +629,20 @@
 0.0.0.0 wxa.wxs.qq.com
 0.0.0.0 wxad.qq.com
 0.0.0.0 wxapp.tc.qq.com
+0.0.0.0 wximg.wxs.qq.com
+0.0.0.0 wxsmw.wxs.qq.com
 0.0.0.0 wxsnsdy.tc.qq.com
+0.0.0.0 xad.com
 0.0.0.0 xiaomi-dtv.m.cn.miaozhen.com
 0.0.0.0 yhqdashi.com
-0.0.0.0 yk-ssp-ad.cp31.ott.cibntv.net
-0.0.0.0 yximgs.com
-0.0.0.0 zeus-api.vemarsdev.com
-0.0.0.0 adsame.com
-0.0.0.0 adsmogo.com
-0.0.0.0 adview.cn
-0.0.0.0 adwo.com
-0.0.0.0 allyes.com
-0.0.0.0 baidumobads.baidu.com
-0.0.0.0 cl2.cn
-0.0.0.0 dataeye.com
-0.0.0.0 domob.cn
-0.0.0.0 domob.org
-0.0.0.0 inmobi.com
-0.0.0.0 madhouse.cn
-0.0.0.0 madserving.com
-0.0.0.0 mediav.com
-0.0.0.0 mediav.net
-0.0.0.0 talkingdata.com
-0.0.0.0 umtrack.com
-0.0.0.0 vamaker.com
+0.0.0.0 yieldlab.net
+0.0.0.0 yieldmo.com
+0.0.0.0 yieldoptimizer.com
 0.0.0.0 yigao.com
+0.0.0.0 yk-ssp-ad.cp31.ott.cibntv.net
 0.0.0.0 youmi.net
 0.0.0.0 yoyi.com.cn
-0.0.0.0 oceanengine.com
-0.0.0.0 ad.oceanengine.com
-0.0.0.0 ad.bytedance.com
-0.0.0.0 ad.gifshow.com
-0.0.0.0 ad.weishi.qq.com
-0.0.0.0 ad.kwai.com
-
-# 白名单 (允许这些域名)
-# 白名单 access.speech.ai.xiaomi.com
-# 白名单 account-dcm.ai.xiaomi.com
-# 白名单 ai.xiaomi.com
-# 白名单 api.ai.xiaomi.com
-# 白名单 api.io.mi.com
-# 白名单 api.micloud.xiaomi.net
-# 白名单 api2.mina.mi.com
-# 白名单 file.xmpush.xiaomi.com
-# 白名单 galleryapi.micloud.xiaomi.net
-# 白名单 idm.iot.mi.com
-# 白名单 lbs.mina.mi.com
-# 白名单 milink.pandora.xiaomi.com
-# 白名单 o2o.api.xiaomi.com
-# 白名单 resolver.mi.xiaomi.com
-# 白名单 sts.api.io.mi.com
-# 白名单 tracker.ai.xiaomi.com
-# 白名单 tracker.xiaomixiaoai.com
-# 白名单 account.xiaomi.com
-# 白名单 ak.lp.account.xiaomi.com
-# 白名单 auth.be.sec.miui.com
-# 白名单 market.mi-img.com
-# 白名单 market.xiaomi.com
-# 白名单 api.hybrid.xiaomi.com
-# 白名单 api.e.kuaishou.cn
-# 白名单 api.kuaishouzt.com
-# 白名单 creator-api.kuaishouzt.com
-# 白名单 mon.tiktokv.com
-# 白名单 push.ksapisrv.com
-# 白名单 connectivitycheck.gstatic.com
-# 白名单 s.deepl.com
-# 白名单 talk.bz.gepush.com
-# 白名单 talk.bz.getui.net
-# 白名单 cfca.com.cn
-# 白名单 auth.cebbank.com
-# 白名单 b2e.cebbank.com
-# 白名单 cebbank.com
-# 白名单 corp.cebbank.com
-# 白名单 dns1.cebbank.com
-# 白名单 dns2.cebbank.com
-# 白名单 dns3.cebbank.com
-# 白名单 dns4.cebbank.com
-# 白名单 dns5.cebbank.com
-# 白名单 dns6.cebbank.com
-# 白名单 e.cebbank.com
-# 白名单 ebank.cebbank.com
-# 白名单 ehkg.cebbank.com
-# 白名单 ns1.zcebbank.com.cn
-# 白名单 open.cebbank.com
-# 白名单 pay.cebbank.com
-# 白名单 static.cebbank.com
-# 白名单 www.cebbank.com
-# 白名单 abchina.com
-# 白名单 bank.pingan.com
-# 白名单 bankcomm.com
-# 白名单 bankofbeijing.com.cn
-# 白名单 bankofchina.com
-# 白名单 boc.cn
-# 白名单 bosc.cn
-# 白名单 cbhb.com.cn
-# 白名单 ccb.cn
-# 白名单 ccb.com
-# 白名单 cgbchina.com.cn
-# 白名单 cib.com.cn
-# 白名单 citicbank.com
-# 白名单 cmbc.com.cn
-# 白名单 cmbchina.com
-# 白名单 czbank.com
-# 白名单 ecitic.com
-# 白名单 hxb.com.cn
-# 白名单 icbc.com.cn
-# 白名单 nbcb.com.cn
-# 白名单 psbc.com
-# 白名单 spdb.com.cn
-# 白名单 bohs.com.cn
-# 白名单 bsb.cn
-# 白名单 ccbank.cn
-# 白名单 cqcbank.com.cn
-# 白名单 cscb.cn
-# 白名单 dongguanbank.cn
-# 白名单 dyccb.com
-# 白名单 egbank.com.cn
-# 白名单 fudianbank.com
-# 白名单 gycbank.com
-# 白名单 gzccb.com.cn
-# 白名单 h3cb.com
-# 白名单 hebbank.com
-# 白名单 hkbchina.com
-# 白名单 hljbank.com
-# 白名单 hrbank.com.cn
-# 白名单 husbank.com
-# 白名单 hzbank.com.cn
-# 白名单 jhbchina.com
-# 白名单 jinzhoubank.com.cn
-# 白名单 jsbchina.cn
-# 白名单 jshbank.com
-# 白名单 jx-bank.com
-# 白名单 jxbank.com
-# 白名单 lnbank.com.cn
-# 白名单 lycb.com.cn
-# 白名单 lzbank.com.cn
-# 白名单 njcb.com.cn
-# 白名单 nxbank.com
-# 白名单 qdbank.cn
-# 白名单 qhrcb.com
-# 白名单 qlbank.com
-# 白名单 shengjingbank.com.cn
-# 白名单 srcb.com.cn
-# 白名单 szbank.cn
-# 白名单 tccb.com.cn
-# 白名单 tcrbank.com
-# 白名单 wzcb.com.cn
-# 白名单 xacbank.com
-# 白名单 xmbank.com.cn
-# 白名单 ynbank.com
-# 白名单 zybank.com.cn
-# 白名单 zzbank.cn
-# 白名单 12306.cn
-# 白名单 alipay.com
-# 白名单 chinatax.gov.cn
-# 白名单 gjzwfw.gov.cn
-# 白名单 mps.gov.cn
-# 白名单 amazon.cn
-# 白名单 dangdang.com
-# 白名单 gome.com.cn
-# 白名单 jd.com
-# 白名单 kaola.com
-# 白名单 pinduoduo.com
-# 白名单 suning.com
-# 白名单 taobao.com
-# 白名单 tmall.com
-# 白名单 vip.com
-# 白名单 douban.com
-# 白名单 im.qq.com
-# 白名单 qq.com
-# 白名单 qzone.qq.com
-# 白名单 renren.com
-# 白名单 tieba.baidu.com
-# 白名单 tim.qq.com
-# 白名单 weibo.com
-# 白名单 weixin.qq.com
-# 白名单 wx.qq.com
-# 白名单 zhihu.com
-# 白名单 acfun.com
-# 白名单 bilibili.com
-# 白名单 douyin.com
-# 白名单 douyu.com
-# 白名单 huya.com
-# 白名单 kuaishou.com
-# 白名单 xigua.com
-# 白名单 iqiyi.com
-# 白名单 kugou.com
-# 白名单 kuwo.cn
-# 白名单 letv.com
-# 白名单 mgtv.com
-# 白名单 miguvideo.com
-# 白名单 music.163.com
-# 白名单 pptv.com
-# 白名单 tv.sohu.com
-# 白名单 y.qq.com
-# 白名单 youku.com
-# 白名单 163.com
-# 白名单 360.cn
-# 白名单 baidu.com
-# 白名单 cctv.com
-# 白名单 chinanews.com.cn
-# 白名单 ifeng.com
-# 白名单 people.com.cn
-# 白名单 sina.com
-# 白名单 sina.com.cn
-# 白名单 so.com
-# 白名单 sogou.com
-# 白名单 thepaper.cn
-# 白名单 toutiao.com
-# 白名单 xinhuanet.com
-# 白名单 caocaokeji.cn
-# 白名单 ctrip.com
-# 白名单 dianping.com
-# 白名单 didichuxing.com
-# 白名单 didiglobal.com
-# 白名单 ele.me
-# 白名单 fliggy.com
-# 白名单 meituan.com
-# 白名单 qunar.com
-# 白名单 shouqi.com
-# 白名单 trip.com
-# 白名单 uber.com
-# 白名单 aliyun.com
-# 白名单 dingtalk.com
-# 白名单 docer.com
-# 白名单 feishu.cn
-# 白名单 foxmail.com
-# 白名单 larksuite.com
-# 白名单 mail.163.com
-# 白名单 mail.qq.com
-# 白名单 mail.sina.com.cn
-# 白名单 pan.baidu.com
-# 白名单 qiniu.com
-# 白名单 teambition.com
-# 白名单 upyun.com
-# 白名单 weiyun.com
-# 白名单 wps.cn
-# 白名单 console.cloud.tencent.com
-# 白名单 cloud.tencent.com
-# 白名单 baiducloud.com
-# 白名单 bing.com
-# 白名单 cn.bing.com
-# 白名单 cnblogs.com
-# 白名单 csdn.net
-# 白名单 developer.aliyun.com
-# 白名单 gitee.com
-# 白名单 github.com
-# 白名单 gitlab.com
-# 白名单 huaweicloud.com
-# 白名单 juejin.cn
-# 白名单 npmjs.com
-# 白名单 npmjs.org
-# 白名单 oschina.net
-# 白名单 stackoverflow.com
-# 白名单 canva.cn
-# 白名单 cnki.net
-# 白名单 icourse163.org
-# 白名单 izhihu.com
-# 白名单 mooc.com
-# 白名单 processon.com
-# 白名单 runoob.com
-# 白名单 smzdm.com
-# 白名单 w3school.com.cn
-# 白名单 wangfangdata.com.cn
-# 白名单 xuetangx.com
-# 白名单 youdao.com
-# 白名单 zhihuishu.com
-# 白名单 zhongchou.com
+0.0.0.0 yximgs.com
+0.0.0.0 zedo.com
+0.0.0.0 zemanta.com
+0.0.0.0 zeus-api.vemarsdev.com

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- prototype/wireframes.html v3.7.58 — DNS Shield 组件库规范 (Wireframes & Component Library) -->
+<!-- prototype/wireframes.html v3.7.60 — DNS Shield 组件库规范 (Wireframes & Component Library) -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 组件库规范 v3.7.58</title>
+  <title>DNS Shield — 组件库规范 v3.7.60</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -303,7 +303,7 @@
         <div class="logo">DS</div>
         <div>
           <h1>DNS Shield · 组件库规范</h1>
-          <p>Wireframes &amp; Component Library · v3.7.58</p>
+          <p>Wireframes &amp; Component Library · v3.7.60</p>
         </div>
       </div>
       <nav class="doc-nav">
@@ -320,7 +320,7 @@
 
     <!-- ============ INTRO ============ -->
     <section class="section">
-      <div class="section-head"><span class="num">00</span><h2>概述</h2></div>
+      <div class="section-head"><h2>概述</h2></div>
       <p class="section-desc">
         本文档为 DNS Shield 的组件库规范（Wireframes），与 <code class="mono">prototype.html</code> 高保真原型、
         <code class="mono">shadcn/</code> 设计系统三位一体。所有组件均基于真实的 <code class="mono">src/components/ui/</code>
@@ -336,7 +336,7 @@
 
     <!-- ============ ATOMS ============ -->
     <section class="section" id="atoms">
-      <div class="section-head"><span class="num">01</span><h2>基础组件（Atoms）</h2></div>
+      <div class="section-head"><h2>基础组件（Atoms）</h2></div>
       <p class="section-desc">不可再拆分的原子级 UI 单元，对应 <code class="mono">src/components/ui/</code> 中的 shadcn 封装，是所有复合与业务组件的构建块。</p>
 
       <div class="sub">Button 按钮</div>
@@ -374,7 +374,7 @@
         </div><span class="meta">req * / error 红边</span></div>
         <div class="cell"><span class="label">Disabled</span><div class="stage" style="flex-direction:column;align-items:stretch">
           <label class="lbl" for="demo-inp3">版本（锁定）</label>
-          <input class="inp" id="demo-inp3" value="3.7.58" disabled />
+          <input class="inp" id="demo-inp3" value="3.7.60" disabled />
         </div><span class="meta">disabled 半透明</span></div>
         <div class="cell"><span class="label">Textarea</span><div class="stage" style="flex-direction:column;align-items:stretch">
           <label class="lbl" for="demo-ta">自定义规则</label>
@@ -460,7 +460,7 @@
 
     <!-- ============ COMPOSITE ============ -->
     <section class="section" id="composite">
-      <div class="section-head"><span class="num">02</span><h2>复合组件（Composite）</h2></div>
+      <div class="section-head"><h2>复合组件（Composite）</h2></div>
       <p class="section-desc">由多个基础组件组合，承载明确交互意图的模块。对应原型中的卡片、表单、列表、统计、代码预览等区块。</p>
 
       <div class="sub">Card 卡片</div>
@@ -475,7 +475,7 @@
             <div class="card-body">
               <div class="form-grid">
                 <div class="field"><label class="lbl">项目名</label><input class="inp" value="家庭网络屏蔽" /></div>
-                <div class="field"><label class="lbl">版本</label><input class="inp" value="3.7.58" /></div>
+                <div class="field"><label class="lbl">版本</label><input class="inp" value="3.7.60" /></div>
               </div>
             </div>
             <div class="card-footer">
@@ -529,7 +529,7 @@
         <div class="cell" style="grid-column: span 2"><span class="label">Code Preview</span>
           <div class="preview-shell" style="width:100%">
             <div class="preview-bar"><span class="badge badge-secondary">dnsmasq</span><button class="btn btn-outline btn-sm">复制</button></div>
-            <div class="codeblock"># 版本::3.7.58 项目:家庭网络屏蔽
+            <div class="codeblock"># 版本::3.7.60 项目:家庭网络屏蔽
 <span class="cmt"># 头部注释已注入</span>
 server=/doubleclick.net/0.0.0.0
 server=/google-analytics.com/0.0.0.0
@@ -542,7 +542,7 @@ server=/github.com/#</span></div>
 
     <!-- ============ BUSINESS ============ -->
     <section class="section" id="business">
-      <div class="section-head"><span class="num">03</span><h2>业务组件（Business）</h2></div>
+      <div class="section-head"><h2>业务组件（Business）</h2></div>
       <p class="section-desc">由复合组件组装、承载 DNS Shield 核心业务流程的页面级区块。对应 <code class="mono">src/components/</code> 中的 Header / Footer / SettingsPanel / InputPanel / OutputPanel / UrlSection。</p>
 
       <div class="sub">AppHeader 顶栏（语言 + 主题切换）</div>
@@ -563,7 +563,7 @@ server=/github.com/#</span></div>
       <div class="settings-panel" id="settings-panel-biz" style="margin-top:16px">
         <div class="settings-grid">
           <div class="field"><label class="lbl">项目名</label><input class="inp" value="家庭网络屏蔽" /></div>
-          <div class="field"><label class="lbl">版本</label><input class="inp" value="3.7.58" /></div>
+          <div class="field"><label class="lbl">版本</label><input class="inp" value="3.7.60" /></div>
           <div class="field"><label class="lbl">IPv4</label><input class="inp" value="0.0.0.0" /></div>
           <div class="field"><label class="lbl">IPv6</label><input class="inp" value="::" /></div>
         </div>
@@ -577,7 +577,7 @@ server=/github.com/#</span></div>
       </div>
 
       <div class="sub">InputPanel + UrlSection（域名输入 / URL 批量导入）</div>
-      <div class="card" style="margin-top:16px">
+      <div class="card" id="input-panel-biz" style="margin-top:16px">
         <div class="card-header"><div class="card-title">域名输入</div><span class="badge badge-secondary">1,284 行</span></div>
         <div class="card-body">
           <div class="field" style="margin-bottom:12px">
@@ -603,7 +603,7 @@ google-analytics.com
       </div>
 
       <div class="sub">OutputPanel（格式切换 + 预览 + 导出）</div>
-      <div class="card" style="margin-top:16px">
+      <div class="card" id="output-panel-biz" style="margin-top:16px">
         <div class="card-header">
           <div class="card-title">规则输出</div>
           <div class="tabs">
@@ -617,7 +617,7 @@ google-analytics.com
           </div>
         </div>
         <div class="card-body">
-          <div class="codeblock" style="min-height:140px"># 版本::3.7.58 项目:家庭网络屏蔽
+          <div class="codeblock" style="min-height:140px"># 版本::3.7.60 项目:家庭网络屏蔽
 server=/doubleclick.net/0.0.0.0
 server=/google-analytics.com/0.0.0.0
 <span class="wl">server=/github.com/#</span></div>
@@ -636,7 +636,7 @@ server=/google-analytics.com/0.0.0.0
           <a class="footer-link">★ Star</a>
           <a class="footer-link">更新日志 ↗</a>
           <button class="footer-link" style="border:none;background:none">使用指南 ▾</button>
-          <span class="badge badge-outline mono" style="margin-left:auto">v3.7.58</span>
+          <span class="badge badge-outline mono" style="margin-left:auto">v3.7.60</span>
         </div>
         <div class="usage-guide" style="margin-top:14px">
           <div class="usage-step"><span class="n">1</span><div><div class="st">输入域名</div><div class="sd">粘贴或导入广告域名</div></div></div>
@@ -648,7 +648,7 @@ server=/google-analytics.com/0.0.0.0
 
     <!-- ============ TOKENS ============ -->
     <section class="section" id="tokens">
-      <div class="section-head"><span class="num">04</span><h2>设计令牌（Design Tokens）</h2></div>
+      <div class="section-head"><h2>设计令牌（Design Tokens）</h2></div>
       <p class="section-desc">所有颜色以 HSL 通道值定义（与 <code class="mono">globals.css</code> 一致），支持 <code class="mono">.dark</code> 主题切换。圆角分四级，间距 4px 基准。</p>
       <table class="tokens">
         <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>用途</th></tr></thead>
@@ -668,7 +668,7 @@ server=/google-analytics.com/0.0.0.0
 
     <!-- ============ RULES ============ -->
     <section class="section" id="rules">
-      <div class="section-head"><span class="num">05</span><h2>组件使用规则（Rules）</h2></div>
+      <div class="section-head"><h2>组件使用规则（Rules）</h2></div>
       <p class="section-desc">组件落地与组合须遵循的硬性规范，确保跨页面一致性与可维护性。</p>
       <div class="rules-grid">
         <div class="rule-card">
@@ -726,7 +726,7 @@ server=/google-analytics.com/0.0.0.0
       </div>
     </section>
 
-    <p class="footer-note">DNS Shield · 组件库规范 v3.7.58 · 与 prototype.html / shadcn/design-system.md 协同</p>
+    <p class="footer-note">DNS Shield · 组件库规范 v3.7.60 · 与 prototype.html / shadcn/design-system.md 协同</p>
   </main>
 </body>
 </html>

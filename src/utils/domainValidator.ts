@@ -1,47 +1,12 @@
-// src/utils/domainValidator.ts v3.7.54
-// 域名验证与行解析工具函数
-// 支持 9 种过滤格式的入站解析（hosts/dnsmasq/AdGuard/Pi-hole/Bind RPZ/
+// src/utils/domainValidator.ts v3.7.59
+// 域名验证与行解析：支持 9 种过滤格式的入站解析（hosts/dnsmasq/AdGuard/Pi-hole/Bind RPZ/
 // SmartDNS/Unbound/纯域名/白名单），实现「粘贴任意格式 → 统一结构 → 互转」。
+// 校验原语（isValidDomain/isValidIp/normalizeDomain）复用 domainPrimitives，避免重复定义；
+// 统计聚合复用 statsAggregator；类型 ParseResult/ParseStats 定义在 types/formats.ts。
 
-// 域名正则表达式（允许可选通配符前缀 *.，供 RPZ 等格式保留子域通配语义）
-const DOMAIN_REGEX = /^(?:\*\.)?[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
-
-export interface ParseResult {
-  type: 'empty' | 'comment' | 'whitelist' | 'customDns' | 'hosts' | 'dnsmasq' | 'adguard' | 'domain';
-  domain?: string;
-  ip?: string;
-  isValid?: boolean;
-  originalLine: string;
-}
-
-export interface ParseStats {
-  domainCount: number;
-  validCount: number;
-  commentCount: number;
-  blacklistCount: number;
-  whitelistCount: number;
-  // 解析失败/格式无效的行数（如非法白名单、非法 customDns、非法域名），
-  // 与真实注释/空行分开统计，避免 stats 数字失真
-  invalidCount: number;
-}
-
-// 验证域名格式
-export const isValidDomain = (domain: string): boolean => {
-  return DOMAIN_REGEX.test(domain);
-};
-
-// IP 地址校验（IPv4 / IPv6）
-const IPV4_REGEX = /^(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}$/;
-const IPV6_REGEX = /^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|::([0-9a-fA-F]{1,4}:){0,6}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4})$/;
-
-export const isValidIp = (ip: string): boolean => {
-  return IPV4_REGEX.test(ip) || IPV6_REGEX.test(ip);
-};
-
-// 规范化域名（仅转小写，保留可选通配符前缀 *.，由 settings.removeWildcard 决定去留）
-export const normalizeDomain = (domain: string): string => {
-  return domain.toLowerCase();
-};
+import { type ParseResult, type ParseStats } from '../types/formats';
+import { isValidDomain, isValidIp, normalizeDomain } from './domainPrimitives';
+import { buildParseStats } from './statsAggregator';
 
 // 解析单行域名
 export const parseDomainLine = (line: string): ParseResult => {
@@ -74,7 +39,7 @@ export const parseDomainLine = (line: string): ParseResult => {
       type: 'whitelist',
       domain,
       isValid: isValidResult,
-      originalLine: line
+      originalLine: line,
     };
   }
 
@@ -94,7 +59,7 @@ export const parseDomainLine = (line: string): ParseResult => {
         type: 'whitelist',
         domain,
         isValid: isValidDomain(domain),
-        originalLine: line
+        originalLine: line,
       };
     }
     const match = content.substring(1).trim().match(/^([^=]+)=(.+)$/);
@@ -106,7 +71,7 @@ export const parseDomainLine = (line: string): ParseResult => {
         domain,
         ip,
         isValid: isValidDomain(domain) && isValidIp(ip),
-        originalLine: line
+        originalLine: line,
       };
     }
     return { type: 'comment', originalLine: line };
@@ -119,7 +84,7 @@ export const parseDomainLine = (line: string): ParseResult => {
       type: 'hosts',
       domain,
       isValid: isValidDomain(domain),
-      originalLine: line
+      originalLine: line,
     };
   }
 
@@ -132,7 +97,7 @@ export const parseDomainLine = (line: string): ParseResult => {
         type: 'dnsmasq',
         domain,
         isValid: isValidDomain(domain),
-        originalLine: line
+        originalLine: line,
       };
     }
     return { type: 'comment', originalLine: line };
@@ -150,13 +115,15 @@ export const parseDomainLine = (line: string): ParseResult => {
       type: 'adguard',
       domain,
       isValid: isValidDomain(domain),
-      originalLine: line
+      originalLine: line,
     };
   }
 
   // Unbound 格式：local-zone: "domain" refuse（黑名单） / transparent（白名单）
   if (content.startsWith('local-zone:')) {
-    const m = content.match(/^local-zone:\s*"([^"]+)"\s+(refuse|transparent|always_refuse|always_transparent)\s*$/);
+    const m = content.match(
+      /^local-zone:\s*"([^"]+)"\s+(refuse|transparent|always_refuse|always_transparent)\s*$/
+    );
     if (m) {
       const domain = normalizeDomain(m[1]);
       const isWl = m[2].startsWith('transparent');
@@ -164,14 +131,18 @@ export const parseDomainLine = (line: string): ParseResult => {
         type: isWl ? 'whitelist' : 'adguard',
         domain,
         isValid: isValidDomain(domain),
-        originalLine: line
+        originalLine: line,
       };
     }
     return { type: 'comment', originalLine: line };
   }
 
   // SmartDNS 格式：address /domain/#（黑名单） / server /domain/ip（黑名单） / nameserver /domain/#（白名单）
-  if (content.startsWith('address /') || content.startsWith('server /') || content.startsWith('nameserver /')) {
+  if (
+    content.startsWith('address /') ||
+    content.startsWith('server /') ||
+    content.startsWith('nameserver /')
+  ) {
     const m = content.match(/^(?:address|server|nameserver)\s+\/([^/]+)\//);
     if (m) {
       const domain = normalizeDomain(m[1]);
@@ -180,7 +151,7 @@ export const parseDomainLine = (line: string): ParseResult => {
         type: isWl ? 'whitelist' : 'adguard',
         domain,
         isValid: isValidDomain(domain),
-        originalLine: line
+        originalLine: line,
       };
     }
     return { type: 'comment', originalLine: line };
@@ -194,7 +165,7 @@ export const parseDomainLine = (line: string): ParseResult => {
       type: 'adguard',
       domain,
       isValid: isValidDomain(domain),
-      originalLine: line
+      originalLine: line,
     };
   }
 
@@ -204,7 +175,93 @@ export const parseDomainLine = (line: string): ParseResult => {
     type: 'domain',
     domain,
     isValid: isValidDomain(domain),
-    originalLine: line
+    originalLine: line,
   };
 };
 
+// 解析完整源文本：按行解析并聚合统计，支持自定义域名混排（行内 # 注释 + 空白行自动跳过）
+export interface ParseSourceResult {
+  entries: ParseResult[];
+  stats: ParseStats;
+}
+
+export const parseSource = (text: string): ParseSourceResult => {
+  const lines = text.split('\n');
+  const entries: ParseResult[] = [];
+  let pendingCustom = '';
+  let customAccum = '';
+  let pendingWhitelist = '';
+  let whitelistAccum = '';
+
+  const flushAccum = (): void => {
+    if (pendingCustom) {
+      const d = normalizeDomain(pendingCustom);
+      entries.push({ type: 'domain', domain: d, isValid: isValidDomain(d), originalLine: customAccum });
+      pendingCustom = '';
+      customAccum = '';
+    }
+    if (pendingWhitelist) {
+      const d = normalizeDomain(pendingWhitelist);
+      entries.push({ type: 'whitelist', domain: d, isValid: isValidDomain(d), originalLine: whitelistAccum });
+      pendingWhitelist = '';
+      whitelistAccum = '';
+    }
+  };
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    const hashIndex = trimmed.indexOf('#');
+    const isEmpty = !trimmed;
+    const isComment = hashIndex === 0 || (hashIndex < 0 && trimmed.startsWith('!'));
+    const content = hashIndex >= 0 ? trimmed.substring(0, hashIndex).trim() : trimmed;
+
+    if (isEmpty || isComment || !content) {
+      flushAccum();
+      entries.push(parseDomainLine(line));
+      continue;
+    }
+
+    // 自定义域名混排：以 @ 开头且独占一行，下一行正式域名时合并为自定义解析
+    if (content.startsWith('@') && !content.includes('=')) {
+      pendingCustom = content.slice(1).trim();
+      customAccum = line;
+      continue;
+    }
+    if (pendingCustom) {
+      const domain = normalizeDomain(content);
+      if (isValidDomain(domain) && !content.startsWith('@') && !content.startsWith('+')) {
+        entries.push({ type: 'domain', domain, isValid: true, originalLine: `${customAccum}\n${line}` });
+        pendingCustom = '';
+        customAccum = '';
+        continue;
+      }
+      flushAccum();
+    }
+
+    // 白名单混排：以 + 开头且独占一行，下一行域名时合并为白名单
+    if (content.startsWith('+')) {
+      pendingWhitelist = content.slice(1).trim();
+      whitelistAccum = line;
+      continue;
+    }
+    if (pendingWhitelist) {
+      const domain = normalizeDomain(content);
+      if (isValidDomain(domain) && !content.startsWith('@') && !content.startsWith('+')) {
+        entries.push({ type: 'whitelist', domain, isValid: true, originalLine: `${whitelistAccum}\n${line}` });
+        pendingWhitelist = '';
+        whitelistAccum = '';
+        continue;
+      }
+      flushAccum();
+    }
+
+    entries.push(parseDomainLine(line));
+  }
+  flushAccum();
+
+  return { entries, stats: buildParseStats(entries) };
+};
+
+// 重新导出校验原语与类型，保持对 parser.ts / sortDedupe.ts 等调用方的公开 API 兼容
+export { isValidDomain, isValidIp, normalizeDomain };
+export type { ParseResult, ParseStats };

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- prototype/prototype.html v3.7.58 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
+<!-- prototype/prototype.html v3.7.60 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.7.58</title>
+  <title>DNS Shield — 高保真原型 v3.7.60</title>
   <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS 的 DNS 广告过滤规则生成器" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -197,6 +197,7 @@
     }
     .preview .cmt { color: hsl(var(--muted-foreground)); }
     .preview .wl { color: hsl(var(--success)); }
+    .preview .empty-hint { color: hsl(var(--muted-foreground)); font-style: italic; white-space: normal; }
 
     /* Dropdown */
     .dd { position: relative; }
@@ -261,6 +262,36 @@
     .loading-bar .fill { height: 100%; width: 40%; background: hsl(var(--primary)); animation: indet 1.2s ease-in-out infinite; }
     @keyframes indet { 0% { transform: translateX(-100%); } 100% { transform: translateX(350%); } }
 
+    /* ---- Hero 签名元素：DNS 拦截流可视化 (P1) ---- */
+    .hero { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg);
+      padding: 22px; margin-bottom: 18px; overflow: hidden; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    .dark .hero { box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+    .hero::before { content: ""; position: absolute; inset: 0; background:
+      radial-gradient(800px 200px at 85% -20%, hsl(var(--primary) / .10), transparent); pointer-events: none; }
+    .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; position: relative; }
+    .hero-copy { max-width: 520px; }
+    .hero-kicker { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: hsl(var(--primary)); }
+    .hero-title { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin: 8px 0 6px; }
+    .hero-desc { font-size: 13.5px; color: hsl(var(--muted-foreground)); }
+    .hero-cta { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+    .flowviz { display: flex; flex-direction: column; gap: 7px; min-width: 250px; }
+    .flowviz-row { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
+    .fv-dot { width: 7px; height: 7px; border-radius: 50%; flex: 0 0 7px; }
+    .fv-dot.block { background: hsl(var(--destructive)); }
+    .fv-dot.allow { background: hsl(var(--success)); }
+    .fv-dot.dns { background: hsl(var(--primary)); }
+    .fv-name { color: hsl(var(--muted-foreground)); }
+    .fv-bar { flex: 1; height: 3px; background: hsl(var(--muted)); border-radius: 2px; overflow: hidden; position: relative; }
+    .fv-bar::after { content: ""; position: absolute; inset: 0; width: 30%; background: currentColor; border-radius: 2px; animation: fvflow 1.8s ease-in-out infinite; }
+    .fv-row.block .fv-bar { color: hsl(var(--destructive)); }
+    .fv-row.allow .fv-bar { color: hsl(var(--success)); }
+    .fv-row.dns .fv-bar { color: hsl(var(--primary)); }
+    @keyframes fvflow { 0% { transform: translateX(-120%); } 60% { transform: translateX(330%); } 100% { transform: translateX(330%); } }
+    @media (prefers-reduced-motion: reduce) {
+      .fv-bar::after, .loading-bar .fill, .spinner { animation: none !important; }
+      * { transition-duration: .01ms !important; }
+    }
+
     /* ---- About / footer business component ---- */
     .about { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); padding: 16px; }
     .about-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
@@ -302,6 +333,28 @@
   </header>
 
   <main class="main-content" id="main-content">
+    <!-- Hero 签名元素：DNS 拦截流可视化 -->
+    <div class="wrap">
+      <section class="hero" id="hero" aria-label="DNS 防护概览">
+        <div class="hero-top">
+          <div class="hero-copy">
+            <span class="hero-kicker"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/></svg> 路由器级 DNS 防护</span>
+            <h2 class="hero-title" id="heroTitle">把广告与追踪域名，挡在网络入口</h2>
+            <p class="hero-desc" id="heroDesc">粘贴域名或批量导入，一键生成 9 种格式规则，直接部署到路由器或 DNS 服务。</p>
+            <div class="hero-cta">
+              <a class="btn btn-primary btn-sm" href="#input-panel">开始生成</a>
+              <a class="btn btn-outline btn-sm" href="#settings-panel">配置设置</a>
+            </div>
+          </div>
+          <div class="flowviz" id="flowviz" aria-hidden="true">
+            <div class="flowviz-row block"><span class="fv-dot block"></span><span class="fv-name">doubleclick.net</span><span class="fv-bar"></span><span class="fv-name">拦截</span></div>
+            <div class="flowviz-row block"><span class="fv-dot block"></span><span class="fv-name">google-analytics.com</span><span class="fv-bar"></span><span class="fv-name">拦截</span></div>
+            <div class="flowviz-row allow"><span class="fv-dot allow"></span><span class="fv-name">github.com</span><span class="fv-bar"></span><span class="fv-name">放行</span></div>
+            <div class="flowviz-row dns"><span class="fv-dot dns"></span><span class="fv-name">cdn.example.com</span><span class="fv-bar"></span><span class="fv-name">自定义</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
     <div class="wrap grid">
       <!-- 输入面板 -->
       <section class="card" id="input-panel" aria-label="域名输入">
@@ -391,7 +444,7 @@
         <div class="card-body" style="padding:18px">
           <div class="settings-grid">
             <div class="field"><label id="lblProjName">项目名</label><input class="input" id="projName" value="DNS Shield" /></div>
-            <div class="field"><label id="lblVer">版本</label><input class="input" id="projVer" value="3.7.58" /></div>
+            <div class="field"><label id="lblVer">版本</label><input class="input" id="projVer" value="3.7.60" /></div>
             <div class="field"><label id="lblIpv4">IPv4 重定向</label><input class="input" id="ipv4" value="127.0.0.1" /></div>
             <div class="field"><label id="lblIpv6">IPv6 重定向</label><input class="input" id="ipv6" value="::" /></div>
           </div>
@@ -400,6 +453,7 @@
             <label class="check" data-opt="blockIPv6"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptIpv6">屏蔽 IPv6</span></label>
             <label class="check" data-opt="dedupDomains"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptDedupe">去重域名</span></label>
             <label class="check" data-opt="removeWildcard"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptWild">移除通配符</span></label>
+            <label class="check" data-opt="adguardIncludeWhitelist"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptAgWl">AdGuard 含白名单</span></label>
           </div>
         </div>
       </section>
@@ -416,7 +470,7 @@
           <a class="about-link" id="linkChangelog">更新日志 ↗</a>
           <a class="about-link" id="linkGuide">使用指南 ▾</a>
         </div>
-        <span class="badge badge-outline mono" style="margin-left:auto" id="aboutVer">v3.7.58</span>
+        <span class="badge badge-outline mono" style="margin-left:auto" id="aboutVer">v3.7.60</span>
       </div>
       <div class="usage" id="usageGuide">
         <div class="step"><span class="n">1</span><div><div class="st" id="step1t">输入域名</div><div class="sd" id="step1d">粘贴或导入广告域名</div></div></div>
@@ -427,7 +481,7 @@
   </section>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <footer class="wrap" style="padding:16px; text-align:center"><span class="footer-ver" id="footerVer">v3.7.58</span></div>
+  <footer class="wrap" style="padding:16px; text-align:center"><span class="footer-ver" id="footerVer">v3.7.60</span></div>
 
   <script>
   (function () {
@@ -440,7 +494,7 @@
         parse: '生成规则', sort: '排序', dedupe: '去重', clear: '清空', copy: '复制', download: '下载',
         copied: '已复制到剪贴板', noData: '没有可复制的内容', settings: '设置', projName: '项目名', ver: '版本',
         ipv4: 'IPv4 重定向', ipv6: 'IPv6 重定向', optHeader: '添加头部注释', optIpv6: '屏蔽 IPv6',
-        optDedupe: '去重域名', optWild: '移除通配符', fetch: '获取', fetching: '获取中…', fetched: '已导入域名',
+        optDedupe: '去重域名', optWild: '移除通配符', optAgWl: 'AdGuard 含白名单', fetch: '获取', fetching: '获取中…', fetched: '已导入域名', emptyHint: '在左侧输入域名，或点击预设 / 从 URL 导入，即可生成规则。',
         step1t: '输入域名', step1d: '粘贴或导入广告域名', step2t: '选择格式', step2d: 'dnsmasq / hosts / AdGuard…',
         step3t: '导出部署', step3d: '复制到路由器或 DNS 服务' },
       'en': { name: 'English', sub: 'DNS Ad-blocking Rule Generator', input: 'Domain Input', output: 'Rule Output',
@@ -448,11 +502,17 @@
         parse: 'Generate', sort: 'Sort', dedupe: 'Dedupe', clear: 'Clear', copy: 'Copy', download: 'Download',
         copied: 'Copied to clipboard', noData: 'Nothing to copy', settings: 'Settings', projName: 'Project',
         ver: 'Version', ipv4: 'IPv4 Redirect', ipv6: 'IPv6 Redirect', optHeader: 'Add Header', optIpv6: 'Block IPv6',
-        optDedupe: 'Dedupe', optWild: 'Remove Wildcard', fetch: 'Fetch', fetching: 'Fetching…', fetched: 'Domains imported',
+        optDedupe: 'Dedupe', optWild: 'Remove Wildcard', optAgWl: 'AdGuard Whitelist', fetch: 'Fetch', fetching: 'Fetching…', fetched: 'Domains imported', emptyHint: 'Enter domains on the left, or use a preset / URL import to generate rules.',
         step1t: 'Input Domains', step1d: 'Paste or import ad domains', step2t: 'Pick Format', step2d: 'dnsmasq / hosts / AdGuard…',
         step3t: 'Export', step3d: 'Copy to router or DNS service' }
     };
-    var LANGS = [['zh-cn','中文'],['en','English'],['ja','日本語'],['ko','한국어'],['ru','Русский'],['es','Español'],['fr','Français'],['de','Deutsch']];
+    // 对齐 src/locales 全部 16 种语言；第三项标记 RTL（阿拉伯语）
+    var LANGS = [
+      ['zh-cn','中文'],['en','English'],['zh-tw','繁體中文'],['ja','日本語'],['ko','한국어'],
+      ['ru','Русский'],['es','Español'],['fr','Français'],['de','Deutsch'],['ar','العربية',true],
+      ['cs','Čeština'],['hi','हिन्दी'],['id','Indonesia'],['it','Italiano'],['nl','Nederlands'],
+      ['pl','Polski'],['sv','Svenska'],['th','ไทย'],['tr','Türkçe'],['vi','Tiếng Việt']
+    ];
 
     // ---- 真实数据样本 (对齐 public/domains.txt 语法) ----
     var SAMPLE = [
@@ -475,8 +535,8 @@
       neohosts: 'ad.neohost.cn\nbanner.neohost.cn\n+api.neohost.cn'
     };
 
-    var settings = { projectName: 'DNS Shield', version: '3.7.58', ipv4: '127.0.0.1', ipv6: '::',
-      addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true };
+    var settings = { projectName: 'DNS Shield', version: '3.7.60', ipv4: '127.0.0.1', ipv6: '::',
+      addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true, adguardIncludeWhitelist: true };
 
     var DOMAIN_REGEX = /^(?=.{1,253}$)([a-z0-9](-?[a-z0-9])*\.)+[a-z]{2,}$/i;
     var currentLang = localStorage.getItem('ds_lang') || 'zh-cn';
@@ -485,7 +545,12 @@
     var parsed = null;
 
     // ---- 解析 (对齐 src/utils/parser.ts + 3.7.29 白名单剔除语义) ----
-    function normKey(d) { return d.trim().toLowerCase().replace(/^\*\./, ''); }
+    // removeWildcard 开关控制是否剥离 *. 前缀（真实引擎 rulesGenerator 行为）
+    function normKey(d) {
+      d = d.trim().toLowerCase();
+      if (settings.removeWildcard) d = d.replace(/^\*\./, '');
+      return d;
+    }
     function parseSource(src) {
       var lines = src.replace(/\r/g, '').split('\n');
       var domains = [], wl = [], custom = [], comments = 0;
@@ -513,64 +578,103 @@
         var d = normKey(raw);
         if (DOMAIN_REGEX.test(d)) domains.push(d); else comments++;
       }
+      // 自定义 DNS 按 domain 去重（3.7.10），与真实引擎一致
+      var seenC = {}; custom = custom.filter(function (c) { if (seenC[c.domain]) return false; seenC[c.domain] = 1; return true; });
       if (settings.dedupDomains) { domains = uniq(domains).sort(); wl = uniq(wl).sort(); }
-      // 3.7.29: 白名单域名不进入拦截列表
+      // 3.7.29: 白名单域名不进入拦截列表；白名单与自定义 DNS 也不入黑名单
       var wlSet = {}; wl.forEach(function (x) { wlSet[x] = true; });
-      domains = domains.filter(function (x) { return !wlSet[x]; });
+      var cdSet = {}; custom.forEach(function (c) { cdSet[c.domain] = true; });
+      domains = domains.filter(function (x) { return !wlSet[x] && !cdSet[x]; });
       return { domains: domains, whitelist: wl, customDns: custom, comments: comments };
     }
     function uniq(a) { var s = {}, r = []; a.forEach(function (x) { if (!s[x]) { s[x] = 1; r.push(x); } }); return r; }
 
-    // ---- 生成 (对齐 src/utils/rulesGenerator.ts) ----
-    function header(title) {
-      return settings.addHeader
-        ? '# ' + settings.projectName + ' - ' + title + '\n# 版本: ' + settings.version + ' | 域名: ' + parsed.domains.length + ' 个\n'
-        : '';
+    // ---- 生成 (对齐 src/utils/rulesGenerator.ts + formatGenerators.ts) ----
+    // 头部含版本 + 域名计数 + 白名单计数（对齐 generateHeader）
+    function header(fmtName) {
+      if (!settings.addHeader) return '';
+      var total = parsed.domains.length;
+      var wcount = parsed.whitelist.length;
+      var tag = '# 版本::' + settings.version + ' 项目:' + settings.projectName;
+      var cnt = '# 域名:' + total + ' 白名单:' + wcount;
+      var head = '# ' + fmtName + '\n' + tag + '\n' + cnt + '\n';
+      return head;
+    }
+    function wlHeader(fmtName) {
+      if (!settings.addHeader) return '';
+      return '# ' + fmtName + '\n# 版本::' + settings.version + ' 项目:' + settings.projectName + '\n';
     }
     function genDnsmasq() {
       var out = header('Dnsmasq 格式 (address=/domain/ip)') + '\n';
-      parsed.domains.forEach(function (d) { out += 'address=/' + d + '/' + settings.ipv4 + '\n'; });
-      if (settings.blockIPv6 && settings.ipv6) parsed.domains.forEach(function (d) { out += 'address=/' + d + '/' + settings.ipv6 + '\n'; });
+      parsed.domains.forEach(function (d) {
+        out += 'address=/' + d + '/' + settings.ipv4 + '\n';
+        if (settings.blockIPv6 && settings.ipv6) out += 'address=/' + d + '/' + settings.ipv6 + '\n';
+      });
       parsed.customDns.forEach(function (c) { out += 'address=/' + c.domain + '/' + c.ip + '\n'; });
-      parsed.whitelist.forEach(function (d) { out += 'server=/' + d + '/  # 已白名单\n'; });
+      if (parsed.whitelist.length) {
+        if (settings.addHeader) out += '\n# 白名单\n';
+        parsed.whitelist.forEach(function (d) { out += 'server=/' + d + '/\n'; });
+      }
       return out;
     }
     function genHosts() {
       var out = header('Hosts 格式 (ip domain)') + '\n';
-      parsed.domains.forEach(function (d) { out += settings.ipv4 + ' ' + d + '\n'; });
-      if (settings.blockIPv6 && settings.ipv6) parsed.domains.forEach(function (d) { out += settings.ipv6 + ' ' + d + '\n'; });
+      parsed.domains.forEach(function (d) {
+        out += settings.ipv4 + ' ' + d + '\n';
+        if (settings.blockIPv6 && settings.ipv6) out += settings.ipv6 + ' ' + d + '\n';
+      });
       parsed.customDns.forEach(function (c) { out += c.ip + ' ' + c.domain + '\n'; });
-      parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      if (parsed.whitelist.length) {
+        if (settings.addHeader) out += '\n# 白名单 (hosts 不支持白名单语法，仅标注已排除)\n';
+        parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      }
       return out;
     }
     function genAdguard() {
       var out = header('AdGuard 格式 (||domain^)') + '\n';
       parsed.domains.forEach(function (d) { out += '||' + d + '^\n'; });
-      parsed.customDns.forEach(function (c) { out += '||' + c.domain + '^$dnsrewrite=NOERROR;A;' + c.ip + '\n'; });
+      // 自定义 DNS 在 AdGuard 中以拦截规则形式（与真实引擎一致：||domain^）
+      parsed.customDns.forEach(function (c) { out += '||' + c.domain + '^\n'; });
+      if (parsed.whitelist.length) {
+        if (settings.adguardIncludeWhitelist) {
+          if (settings.addHeader) out += '\n! 白名单\n';
+          parsed.whitelist.forEach(function (d) { out += '@@||' + d + '^\n'; });
+        }
+      }
       return out;
     }
     function genWhitelist() {
-      var out = header('白名单列表') + '\n';
+      var out = wlHeader('白名单列表') + '\n';
       parsed.whitelist.forEach(function (d) { out += '@@||' + d + '^$important\n'; });
       return out;
     }
-    // 3.7.48 新增 5 种格式
     function genUnbound() {
       var out = header('Unbound 格式 (local-zone refuse)') + '\n';
       parsed.domains.forEach(function (d) { out += 'local-zone: "' + d + '" refuse\n'; });
-      parsed.whitelist.forEach(function (d) { out += 'local-zone: "' + d + '" transparent\n'; });
+      parsed.customDns.forEach(function (c) { out += 'local-zone: "' + c.domain + '" transparent\n'; });
+      if (parsed.whitelist.length) {
+        if (settings.addHeader) out += '\n# 白名单\n';
+        parsed.whitelist.forEach(function (d) { out += 'local-zone: "' + d + '" transparent\n'; });
+      }
       return out;
     }
     function genPihole() {
       var out = header('Pi-hole 格式 (0.0.0.0 domain)') + '\n';
       parsed.domains.forEach(function (d) { out += '0.0.0.0 ' + d + '\n'; });
       parsed.customDns.forEach(function (c) { out += c.ip + ' ' + c.domain + '\n'; });
+      if (parsed.whitelist.length) {
+        if (settings.addHeader) out += '\n# 白名单\n';
+        parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      }
       return out;
     }
     function genDomains() {
       var out = header('纯域名列表') + '\n';
       parsed.domains.forEach(function (d) { out += d + '\n'; });
-      parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      if (parsed.whitelist.length) {
+        if (settings.addHeader) out += '\n# 白名单\n';
+        parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      }
       return out;
     }
     function genBind() {
@@ -582,7 +686,10 @@
       var out = header('SmartDNS 格式 (address /domain/#)') + '\n';
       parsed.domains.forEach(function (d) { out += 'address /' + d + '/#\n'; });
       parsed.customDns.forEach(function (c) { out += 'server /' + c.domain + '/' + c.ip + '\n'; });
-      parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      if (parsed.whitelist.length) {
+        if (settings.addHeader) out += '\n# 白名单\n';
+        parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      }
       return out;
     }
     function generate() {
@@ -615,11 +722,18 @@
     }
     function renderPreview() {
       var txt = generate();
-      // 轻量高亮（仅注释/白名单），无 XSS 风险（textContent）
+      var empty = parsed.domains.length === 0 && parsed.whitelist.length === 0 && parsed.customDns.length === 0;
+      if (empty) {
+        $('preview').innerHTML = '<span class="empty-hint">' + ((I18N[currentLang] || I18N.en).emptyHint || '在左侧输入域名，或点击预设 / 从 URL 导入，即可生成规则。') + '</span>';
+        return;
+      }
+      // 轻量高亮（注释 / 白名单 / 白名单放行段），无 XSS 风险（先转义再着色）
       var esc = txt.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-      esc = esc.replace(/^(#.*)$/gm, '<span class="cmt">$1</span>')
-               .replace(/^(@@\|\|.*)$/gm, '<span class="wl">$1</span>')
-               .replace(/^(# 已白名单:.*)$/gm, '<span class="wl">$1</span>');
+      esc = esc
+        .replace(/^(#.*|!.*)$/gm, '<span class="cmt">$1</span>')
+        .replace(/^(@@\|\|.*)$/gm, '<span class="wl">$1</span>')
+        .replace(/^(server=\/.*)$/gm, '<span class="wl">$1</span>')
+        .replace(/^(# 已白名单:.*)$/gm, '<span class="wl">$1</span>');
       $('preview').innerHTML = esc;
     }
     function renderAll() {
@@ -653,6 +767,7 @@
       $('lblOptIpv6').textContent = t.optIpv6;
       $('lblOptDedupe').textContent = t.optDedupe;
       $('lblOptWild').textContent = t.optWild;
+      $('lblOptAgWl').textContent = t.optAgWl;
       $('lblFetch').textContent = t.fetch;
       $('step1t').textContent = t.step1t; $('step1d').textContent = t.step1d;
       $('step2t').textContent = t.step2t; $('step2d').textContent = t.step2d;
@@ -715,13 +830,19 @@
       localStorage.setItem('ds_theme', currentTheme); applyTheme();
     });
 
-    // 语言下拉
+    // 语言下拉（对齐 src/locales 16 语，含 RTL 标注）
     var langMenu = $('langMenu');
+    function applyDir() {
+      var rtl = (LANGS.filter(function (l) { return l[0] === currentLang; })[0] || [])[2];
+      document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+    }
     LANGS.forEach(function (l) {
       var item = document.createElement('div');
       item.className = 'dd-item' + (l[0] === currentLang ? ' active' : '');
       item.setAttribute('role', 'menuitem');
-      item.innerHTML = '<span>' + l[1] + '</span>' + (l[0] === currentLang ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : '');
+      if (l[2]) item.setAttribute('dir', 'rtl');
+      var rtlTag = l[2] ? ' <span style="font-size:10px;color:hsl(var(--muted-foreground))">RTL</span>' : '';
+      item.innerHTML = '<span>' + l[1] + rtlTag + '</span>' + (l[0] === currentLang ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : '');
       item.addEventListener('click', function () {
         currentLang = l[0]; localStorage.setItem('ds_lang', currentLang);
         langMenu.querySelectorAll('.dd-item').forEach(function (x) { x.classList.remove('active'); x.querySelector('svg') && x.removeChild(x.querySelector('svg')); });
@@ -732,7 +853,7 @@
         chk.setAttribute('stroke-linecap', 'round'); chk.setAttribute('stroke-linejoin', 'round');
         chk.innerHTML = '<path d="M20 6 9 17l-5-5"/>'; item.appendChild(chk);
         langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false');
-        applyI18n();
+        applyDir(); applyI18n();
       });
       langMenu.appendChild(item);
     });
@@ -774,7 +895,7 @@
       btn.querySelector('span').textContent = (I18N[currentLang] || I18N.en).fetching;
       // 模拟流式读取（真实实现 domainFetch 含 10MB 字节上限）
       setTimeout(function () {
-        var extra = 'ad.example.org\n||track.example.net^\n+boot.example.com';
+        var extra = 'ad.example.org\ntrack.example.net\n+boot.example.com';
         var cur = $('editor').value.trim();
         $('editor').value = (cur ? cur + '\n' : '') + extra;
         renderGutter(); renderAll();
@@ -786,6 +907,7 @@
 
     // ---- 初始化 ----
     document.documentElement.lang = currentLang;
+    applyDir();
     $('editor').value = SAMPLE;
     applyTheme(); applyI18n(); renderGutter(); renderAll();
   })();

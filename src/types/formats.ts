@@ -1,6 +1,7 @@
-// src/types/formats.ts v3.7.50
+// src/types/formats.ts v3.7.59
 // 输出格式枚举与格式分类常量，从 index.ts 拆分以保持类型定义文件单一职责。
 // 格式键均一一对应 rulesGenerator 的 generateRules 输出字段。
+// 同时集中解析结果/统计类型（原散落于 domainPrimitives，现归一此处）。
 
 /** 支持的输出格式类型 */
 export type FormatType =
@@ -41,3 +42,24 @@ export const MASKED_FORMATS: FormatType[] = [
 
 /** 仅用于白名单呈现的格式 */
 export const WHITELIST_FORMATS: FormatType[] = ['whitelist'];
+
+/** 单行解析结果：区分空行 / 注释 / 各类格式命中 */
+export interface ParseResult {
+  type: 'empty' | 'comment' | 'whitelist' | 'customDns' | 'hosts' | 'dnsmasq' | 'adguard' | 'domain';
+  domain?: string;
+  ip?: string;
+  isValid?: boolean;
+  originalLine: string;
+}
+
+/** 解析源文本后的统计聚合，与真实注释/空行分开计数，避免数字失真 */
+export interface ParseStats {
+  domainCount: number;
+  validCount: number;
+  commentCount: number;
+  blacklistCount: number;
+  whitelistCount: number;
+  // 解析失败/格式无效的行数（如非法白名单、非法 customDns、非法域名），
+  // 与真实注释/空行分开统计，避免 stats 数字失真
+  invalidCount: number;
+}
