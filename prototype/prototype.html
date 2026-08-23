@@ -8,7 +8,7 @@
   <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS 的 DNS 广告过滤规则生成器" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Spectral:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
     /* --- Color tokens (HSL, 与 design-system.md / globals.css 对齐) --- */
     :root {
@@ -38,6 +38,10 @@
       --radius-md: 0.5rem;
       --radius-lg: 0.625rem;
       --radius-xl: 0.75rem;
+      /* 排版三元：显示体(衬线) / 正文(sans) / 数据(mono) */
+      --font-serif: 'Spectral', Georgia, 'Times New Roman', serif;
+      --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
     }
     .dark {
       --background: 240 6% 7%;
@@ -67,7 +71,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 14px; }
     body {
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      font-family: var(--font-sans);
       background: hsl(var(--background));
       color: hsl(var(--foreground));
       line-height: 1.5;
@@ -91,8 +95,8 @@
       background: hsl(var(--primary)); color: hsl(var(--primary-foreground));
       display: grid; place-items: center;
     }
-    .brand-title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-    .brand-sub { font-size: 11px; color: hsl(var(--muted-foreground)); font-weight: 500; }
+    .brand-title { font-family: var(--font-serif); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+    .brand-sub { font-size: 12px; color: hsl(var(--muted-foreground)); font-weight: 500; }
     .header-actions { display: flex; align-items: center; gap: 8px; }
 
     .btn {
@@ -109,11 +113,11 @@
     .btn-ghost:hover { background: hsl(var(--secondary)); }
     .btn-outline { background: hsl(var(--card)); color: hsl(var(--foreground)); border-color: hsl(var(--border)); }
     .btn-outline:hover { background: hsl(var(--secondary)); }
-    .btn-sm { height: 30px; padding: 0 10px; font-size: 12px; min-width: 64px; }
+    .btn-sm { height: 30px; padding: 0 10px; font-size: 13px; min-width: 64px; }
     .icon-btn { width: 36px; height: 36px; padding: 0; border-radius: var(--radius-md); }
 
     /* Layout */
-    .main-content { padding: 24px 0 48px; }
+    .main-content { padding: 24px 0 0; }
     .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
     @media (min-width: 768px) { .grid { grid-template-columns: 1fr 1fr; gap: 24px; } }
 
@@ -122,44 +126,58 @@
       border-radius: var(--radius-lg); padding: 16px;
       box-shadow: 0 1px 2px rgba(0,0,0,.04);
     }
+    /* 双栏面板卡片：内部纵向布局，让预览区 flex 填满实现等高平衡 */
+    #input-panel .card, #output-panel .card { display: flex; flex-direction: column; }
     .dark .card { box-shadow: 0 1px 2px rgba(0,0,0,.2); }
     .card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 8px; }
-    .card-title { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    /* 输出面板卡片头：标题与格式标签分行显示 */
+    #output-panel .card-head { flex-wrap: wrap; }
+    #output-panel .card-head .tabs { margin-top: 4px; }
+    /* 输出工具栏推到卡片底部，配合等高布局消除留白 */
+    #outputToolbar { margin-top: auto; }
+    .card-title { font-family: var(--font-serif); font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; letter-spacing: -0.01em; }
     .card-title svg { color: hsl(var(--primary)); }
 
     /* Stats */
-    .stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .stats { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
     .stat {
-      display: flex; flex-direction: column; gap: 1px;
-      background: hsl(var(--muted)); border-radius: var(--radius-md);
-      padding: 8px 12px; min-width: 64px;
+      display: flex; flex-direction: row; align-items: center; gap: 6px;
+      background: hsl(var(--muted)); border-radius: 999px;
+      padding: 6px 16px; min-width: 64px;
     }
-    .stat-value { font-size: 16px; font-weight: 700; line-height: 1.1; }
-    .stat-label { font-size: 11px; color: hsl(var(--muted-foreground)); }
+    .stat-value { font-family: var(--font-serif); font-size: 15px; font-weight: 600; line-height: 1.1; }
+    .stat-label { font-size: 12px; color: hsl(var(--muted-foreground)); }
+    .stat-dot { width: 6px; height: 6px; border-radius: 50%; flex: 0 0 6px; }
+    .stat-dot.block { background: hsl(var(--destructive)); }
+    .stat-dot.allow { background: hsl(var(--success)); }
+    .stat-dot.dns { background: hsl(var(--primary)); }
 
     /* Editor */
     .gutter {
-      flex: 0 0 36px; padding: 10px 6px 10px 0; text-align: right;
+      flex: 0 0 36px; max-height: 436px; padding: 10px 6px 10px 0; text-align: right;
       font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.6;
       color: hsl(var(--muted-foreground)); background: hsl(var(--muted));
       border: 1px solid hsl(var(--border)); border-right: none;
       border-radius: var(--radius-md) 0 0 var(--radius-md); overflow: hidden; user-select: none;
+      white-space: pre;
     }
     textarea#editor {
-      flex: 1; min-height: 320px; resize: vertical;
+      flex: 1; min-height: 436px; max-height: 436px; resize: vertical; min-width: 0; overflow: auto;
       font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.6;
       padding: 10px 12px; border: 1px solid hsl(var(--border)); border-radius: 0 var(--radius-md) var(--radius-md) 0;
       background: hsl(var(--card)); color: hsl(var(--foreground)); outline: none;
       transition: border-color .15s, box-shadow .15s;
     }
     textarea#editor:focus { border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / .2); }
+    /* 主编辑区：gutter 与 textarea 等高对齐、紧贴无间隙，避免数据多时错位/撑破 */
+    #editorRow { align-items: stretch; gap: 0; max-height: 436px; overflow: hidden; }
 
     .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 
     /* Presets */
-    .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
     .preset {
-      font-size: 12px; padding: 4px 10px; border-radius: 9999px; cursor: pointer;
+      font-size: 13px; padding: 4px 10px; border-radius: 9999px; cursor: pointer;
       background: hsl(var(--accent)); color: hsl(var(--accent-foreground));
       border: 1px solid transparent; transition: background .15s, transform .1s;
     }
@@ -171,33 +189,53 @@
     /* Tabs（统一风格：对齐真实应用 .format-tabs / .format-tab） */
     .tabs {
       display: inline-flex; align-items: center; flex-wrap: wrap;
-      background: hsl(var(--muted)); border-radius: var(--radius-lg);
-      padding: 3px; gap: 2px;
+      gap: 6px;
     }
     .tab {
-      font-size: 12px; font-weight: 500; padding: 6px 12px;
-      border-radius: var(--radius-md);
+      font-size: 14px; font-weight: 500; padding: 6px 14px;
+      border-radius: 999px;
       cursor: pointer; color: hsl(var(--muted-foreground));
-      border: none; background: transparent;
-      transition: background .15s ease, color .15s ease, box-shadow .15s ease;
+      border: 1px solid transparent; background: hsl(var(--muted));
+      transition: background .15s ease, color .15s ease, box-shadow .15s ease, border-color .15s ease;
     }
-    .tab:hover:not(.active) { color: hsl(var(--foreground)); background: hsl(var(--accent) / .5); }
+    .tab:hover:not(.active) { color: hsl(var(--foreground)); background: hsl(var(--accent) / .6); }
     .tab.active {
       background: hsl(var(--card)); color: hsl(var(--foreground));
+      border-color: hsl(var(--border));
       box-shadow: 0 1px 2px rgba(0,0,0,.10);
     }
     .tab:focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 1px; }
 
-    /* Preview */
+    /* Preview：结构与 .editor-row 一致（行号列 + 内容列 紧贴双栏） */
     .preview {
-      margin-top: 12px; min-height: 320px; max-height: 460px; overflow: auto;
+      margin-top: 12px; flex: none; height: 436px; min-height: 0; overflow: hidden;
+      display: flex; gap: 0; background: hsl(var(--card));
+      border: 1px solid hsl(var(--border)); border-radius: var(--radius-md);
       font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.6;
-      background: hsl(var(--muted)); border: 1px solid hsl(var(--border));
-      border-radius: var(--radius-md); padding: 12px 14px; white-space: pre; color: hsl(var(--foreground));
+      color: hsl(var(--foreground));
     }
+    .preview-gutter {
+      flex: 0 0 36px; min-height: 0; padding: 10px 6px 10px 0; text-align: right;
+      font-size: 13px; line-height: 1.6; color: hsl(var(--muted-foreground));
+      background: hsl(var(--muted)); border-right: 1px solid hsl(var(--border));
+      overflow: hidden; user-select: none; white-space: pre;
+    }
+    .preview-body {
+      flex: 1; min-width: 0; min-height: 0; overflow: auto; padding: 10px 12px;
+      white-space: pre-wrap; word-break: break-all;
+    }
+    .preview .pl { white-space: pre-wrap; word-break: break-all; }
     .preview .cmt { color: hsl(var(--muted-foreground)); }
     .preview .wl { color: hsl(var(--success)); }
     .preview .empty-hint { color: hsl(var(--muted-foreground)); font-style: italic; white-space: normal; }
+    /* 预览区统计条：反映当前输出维度 */
+    .preview-stats { display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 10px; font-size: 12px; color: hsl(var(--muted-foreground)); }
+    .preview-stats .ps { display: inline-flex; align-items: center; gap: 5px; background: hsl(var(--muted)); border-radius: 999px; padding: 3px 10px; }
+    .preview-stats .ps b { font-weight: 700; color: hsl(var(--foreground)); }
+    .preview-stats .ps-dot { width: 6px; height: 6px; border-radius: 50%; flex: 0 0 6px; }
+    .preview-stats .ps-dot.block { background: hsl(var(--destructive)); }
+    .preview-stats .ps-dot.allow { background: hsl(var(--success)); }
+    .preview-stats .ps-dot.dns { background: hsl(var(--primary)); }
 
     /* Dropdown */
     .dd { position: relative; }
@@ -226,14 +264,14 @@
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    .footer-ver { font-size: 11px; color: hsl(var(--muted-foreground)); }
+    .footer-ver { font-size: 12px; color: hsl(var(--muted-foreground)); }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes spin { to { transform: rotate(360deg); } }
     .spinner { width: 16px; height: 16px; border: 2px solid hsl(var(--muted-foreground) / .3); border-top-color: hsl(var(--primary)); border-radius: 50%; animation: spin .7s linear infinite; }
 
     /* ---- Settings panel (对齐 src/components/SettingsPanel.tsx) ---- */
-    .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 14px; }
+    .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
     .field { display: flex; flex-direction: column; gap: 5px; }
     .field label { font-size: 12px; font-weight: 500; color: hsl(var(--foreground)); }
     .input {
@@ -242,8 +280,11 @@
       transition: border-color .15s, box-shadow .15s; font-family: inherit;
     }
     .input:focus { border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / .2); }
+    /* 选项分组：与参数区用分隔线语义区分 */
+    .opt-group { margin-top: 16px; padding-top: 16px; border-top: 1px solid hsl(var(--border)); }
+    .opt-group-title { font-size: 12px; font-weight: 600; color: hsl(var(--muted-foreground)); margin-bottom: 10px; }
     .opt-row { display: flex; flex-wrap: wrap; gap: 14px 20px; }
-    .check { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; cursor: pointer; user-select: none; }
+    .check { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; cursor: pointer; user-select: none; }
     .box {
       width: 16px; height: 16px; border: 1.5px solid hsl(var(--primary)); border-radius: 4px;
       display: grid; place-items: center; background: transparent; transition: background .15s;
@@ -253,10 +294,12 @@
     .box.on svg { opacity: 1; }
 
     /* ---- URL import section (对齐 src/components/UrlSection.tsx) ---- */
-    .editor-row { display: flex; gap: 8px; align-items: center; }
-    .editor-row .input { flex: 1; }
-    .url-bar { margin-bottom: 12px; }
-    .url-bar .hint { font-size: 11.5px; color: hsl(var(--muted-foreground)); margin-top: 5px; }
+    .editor-row { display: flex; gap: 8px; align-items: center; min-width: 0; }
+    .editor-row .input { flex: 1; min-width: 0; }
+    .url-bar { margin-top: 16px; margin-bottom: 12px; }
+    .url-bar .hint { font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 5px; }
+    /* URL 导入提示移到统计条右侧 */
+    #stats #urlHint { text-align: left; font-size: 12px; color: hsl(var(--muted-foreground)); }
     .loading-bar { height: 3px; width: 100%; background: hsl(var(--muted)); border-radius: 2px; overflow: hidden; margin-top: 8px; opacity: 0; visibility: hidden; transition: opacity .2s; }
     .loading-bar.on { opacity: 1; visibility: visible; }
     .loading-bar .fill { height: 100%; width: 40%; background: hsl(var(--primary)); animation: indet 1.2s ease-in-out infinite; }
@@ -264,31 +307,57 @@
 
     /* ---- Hero 签名元素：DNS 拦截流可视化 (P1) ---- */
     .hero { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg);
-      padding: 22px; margin-bottom: 18px; overflow: hidden; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+      padding: 26px; margin-bottom: 20px; overflow: hidden; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
     .dark .hero { box-shadow: 0 1px 2px rgba(0,0,0,.2); }
     .hero::before { content: ""; position: absolute; inset: 0; background:
       radial-gradient(800px 200px at 85% -20%, hsl(var(--primary) / .10), transparent); pointer-events: none; }
     .hero-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; position: relative; }
     .hero-copy { max-width: 520px; }
-    .hero-kicker { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: hsl(var(--primary)); }
-    .hero-title { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin: 8px 0 6px; }
-    .hero-desc { font-size: 13.5px; color: hsl(var(--muted-foreground)); }
+    /* 桌面端：hero 用与下方 .grid 相同的 1fr 1fr 栅格，使 flowviz 列宽 == #output-panel 列宽 */
+    @media (min-width: 768px) {
+      .hero-top { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 24px; }
+      .hero-copy { max-width: none; }
+    }
+    .hero-kicker { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: hsl(var(--primary)); }
+    .hero-title { font-family: var(--font-serif); font-size: 28px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.15; margin: 8px 0 6px; }
+    .hero-desc { font-size: 14px; color: hsl(var(--muted-foreground)); }
     .hero-cta { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
-    .flowviz { display: flex; flex-direction: column; gap: 7px; min-width: 250px; }
-    .flowviz-row { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
+    /* flowviz：DNS 流量管制台 —— 标题行 + 签名下落动画轨道 */
+    .flowviz { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+    .flowviz-row { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
     .fv-dot { width: 7px; height: 7px; border-radius: 50%; flex: 0 0 7px; }
     .fv-dot.block { background: hsl(var(--destructive)); }
     .fv-dot.allow { background: hsl(var(--success)); }
     .fv-dot.dns { background: hsl(var(--primary)); }
-    .fv-name { color: hsl(var(--muted-foreground)); }
-    .fv-bar { flex: 1; height: 3px; background: hsl(var(--muted)); border-radius: 2px; overflow: hidden; position: relative; }
-    .fv-bar::after { content: ""; position: absolute; inset: 0; width: 30%; background: currentColor; border-radius: 2px; animation: fvflow 1.8s ease-in-out infinite; }
-    .fv-row.block .fv-bar { color: hsl(var(--destructive)); }
-    .fv-row.allow .fv-bar { color: hsl(var(--success)); }
-    .fv-row.dns .fv-bar { color: hsl(var(--primary)); }
+    .fv-name { color: hsl(var(--muted-foreground)); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 150px; }
+    /* 签名元素：域名从顶部落入的实时流量管道 */
+    .fv-track {
+      position: relative; height: 140px; overflow: hidden; border-radius: var(--radius-md);
+      background: hsl(var(--muted) / .5); border: 1px solid hsl(var(--border));
+    }
+    .fv-track::before {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+      background: linear-gradient(90deg, hsl(var(--destructive)), hsl(var(--success)), hsl(var(--primary)));
+      opacity: .8;
+    }
+    .fv-token {
+      position: absolute; top: -22px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      padding: 2px 7px; border-radius: 999px; white-space: nowrap; color: #fff;
+      animation: fvDrop 2.6s linear forwards; will-change: transform, opacity;
+    }
+    .fv-token.block { background: hsl(var(--destructive)); }
+    .fv-token.allow { background: hsl(var(--success)); }
+    .fv-token.dns { background: hsl(var(--primary)); }
+    @keyframes fvDrop {
+      0% { transform: translateY(0); opacity: 0; }
+      10% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { transform: translateY(162px); opacity: 0; }
+    }
     @keyframes fvflow { 0% { transform: translateX(-120%); } 60% { transform: translateX(330%); } 100% { transform: translateX(330%); } }
     @media (prefers-reduced-motion: reduce) {
-      .fv-bar::after, .loading-bar .fill, .spinner { animation: none !important; }
+      .fv-bar::after, .loading-bar .fill, .spinner, .fv-token { animation: none !important; }
+      .fv-token { display: none; }
       * { transition-duration: .01ms !important; }
     }
 
@@ -296,14 +365,14 @@
     .about { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); padding: 16px; }
     .about-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
     .about-links { display: flex; gap: 6px; flex-wrap: wrap; }
-    .about-link { font-size: 12.5px; color: hsl(var(--muted-foreground)); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-md); }
+    .about-link { font-size: 13px; color: hsl(var(--muted-foreground)); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-md); }
     .about-link:hover { background: hsl(var(--secondary)); color: hsl(var(--foreground)); }
-    .usage-title { font-size: 15px; font-weight: 700; margin: 0 0 2px; color: hsl(var(--foreground)); }
+    .usage-title { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin: 0 0 2px; color: hsl(var(--foreground)); letter-spacing: -0.01em; }
     .usage { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 14px; }
     .step { display: flex; gap: 10px; align-items: flex-start; }
-    .step .n { width: 22px; height: 22px; flex: 0 0 22px; border-radius: 50%; background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); display: grid; place-items: center; font-size: 11px; font-weight: 700; }
-    .step .st { font-size: 12.5px; font-weight: 600; }
-    .step .sd { font-size: 11.5px; color: hsl(var(--muted-foreground)); }
+    .step .n { width: 22px; height: 22px; flex: 0 0 22px; border-radius: 50%; background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); display: grid; place-items: center; font-size: 12px; font-weight: 700; }
+    .step .st { font-family: var(--font-serif); font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+    .step .sd { font-size: 12px; color: hsl(var(--muted-foreground)); }
   </style>
 </head>
 <body>
@@ -348,11 +417,11 @@
               <a class="btn btn-outline btn-sm" href="#settings-panel">配置设置</a>
             </div>
           </div>
-          <div class="flowviz" id="flowviz" aria-hidden="true">
-            <div class="flowviz-row block"><span class="fv-dot block"></span><span class="fv-name">doubleclick.net</span><span class="fv-bar"></span><span class="fv-name">拦截</span></div>
-            <div class="flowviz-row block"><span class="fv-dot block"></span><span class="fv-name">google-analytics.com</span><span class="fv-bar"></span><span class="fv-name">拦截</span></div>
-            <div class="flowviz-row allow"><span class="fv-dot allow"></span><span class="fv-name">github.com</span><span class="fv-bar"></span><span class="fv-name">放行</span></div>
-            <div class="flowviz-row dns"><span class="fv-dot dns"></span><span class="fv-name">cdn.example.com</span><span class="fv-bar"></span><span class="fv-name">自定义</span></div>
+          <div class="flowviz" id="flowviz" aria-label="DNS 拦截流实时概览">
+            <div class="flowviz-row fv-summary" id="fvSummary">
+              <span class="fv-dot block"></span><span class="fv-name" id="fvSummaryTxt">等待流量接入…</span>
+            </div>
+            <div class="fv-track" id="fvTrack" aria-hidden="true"></div>
           </div>
         </div>
       </section>
@@ -367,13 +436,6 @@
           </div>
         </div>
 
-        <div class="stats" id="stats">
-          <div class="stat"><span class="stat-value" id="statDomains">0</span><span class="stat-label" id="lblDomains">黑名单</span></div>
-          <div class="stat"><span class="stat-value" id="statWhitelist">0</span><span class="stat-label" id="lblWhitelist">白名单</span></div>
-          <div class="stat"><span class="stat-value" id="statCustom">0</span><span class="stat-label" id="lblCustom">自定义DNS</span></div>
-          <div class="stat"><span class="stat-value" id="statComments">0</span><span class="stat-label" id="lblComments">注释</span></div>
-        </div>
-
         <!-- URL 批量导入 (对齐 src/components/UrlSection.tsx) -->
         <div class="url-bar" id="urlSection">
           <div class="editor-row" id="urlRow">
@@ -381,12 +443,19 @@
             <button class="btn btn-primary btn-sm" id="urlFetchBtn"><span id="lblFetch">获取</span></button>
           </div>
           <div class="loading-bar" id="urlLoading"><div class="fill"></div></div>
-          <div class="hint" id="urlHint">支持 hosts / dnsmasq / AdGuard / 纯域名 混合格式，单行 10MB 上限</div>
         </div>
 
         <div class="editor-row" id="editorRow">
           <div class="gutter" id="gutter" aria-hidden="true">1</div>
           <textarea id="editor" spellcheck="false" aria-label="域名编辑区"></textarea>
+        </div>
+
+        <div class="stats" id="stats">
+          <div class="stat"><span class="stat-dot block"></span><span class="stat-value" id="statDomains">0</span><span class="stat-label" id="lblDomains">黑名单</span></div>
+          <div class="stat"><span class="stat-dot allow"></span><span class="stat-value" id="statWhitelist">0</span><span class="stat-label" id="lblWhitelist">白名单</span></div>
+          <div class="stat"><span class="stat-dot dns"></span><span class="stat-value" id="statCustom">0</span><span class="stat-label" id="lblCustom">自定义DNS</span></div>
+          <div class="stat"><span class="stat-value" id="statComments">0</span><span class="stat-label" id="lblComments">注释</span></div>
+          <div class="hint" id="urlHint">支持 hosts / dnsmasq / AdGuard / 纯域名 混合格式，单行 10MB 上限</div>
         </div>
 
         <div class="toolbar" id="inputToolbar">
@@ -418,7 +487,7 @@
             <button class="tab active" data-fmt="dnsmasq" role="tab" id="tabDnsmasq">Dnsmasq</button>
             <button class="tab" data-fmt="hosts" role="tab" id="tabHosts">Hosts</button>
             <button class="tab" data-fmt="adguard" role="tab" id="tabAdguard">AdGuard</button>
-            <button class="tab" data-fmt="whitelist" role="tab" id="tabWhitelist">白名单</button>
+            <button class="tab" data-fmt="whitelist" role="tab" id="tabWhitelist">ADG白名单</button>
             <button class="tab" data-fmt="unbound" role="tab" id="tabUnbound">Unbound</button>
             <button class="tab" data-fmt="pihole" role="tab" id="tabPihole">Pi-hole</button>
             <button class="tab" data-fmt="domains" role="tab" id="tabDomains">Domains</button>
@@ -427,12 +496,17 @@
           </div>
         </div>
 
-        <div class="toolbar" id="outputToolbar" style="margin-bottom:12px">
+        <div class="preview-stats" id="previewStats" aria-live="polite"></div>
+
+        <div class="preview" id="preview" aria-live="polite">
+          <div class="preview-gutter" id="previewGutter" aria-hidden="true">1</div>
+          <div class="preview-body" id="previewBody"></div>
+        </div>
+
+        <div class="toolbar" id="outputToolbar" style="margin-top:12px">
           <button class="btn btn-outline btn-sm" id="copyBtn"><span id="lblCopy">复制</span></button>
           <button class="btn btn-outline btn-sm" id="downloadBtn"><span id="lblDownload">下载</span></button>
         </div>
-
-        <pre class="preview" id="preview" aria-live="polite"></pre>
       </section>
 
       <!-- 设置面板 (对齐 src/components/SettingsPanel.tsx) -->
@@ -450,12 +524,15 @@
             <div class="field"><label id="lblIpv4">IPv4 重定向</label><input class="input" id="ipv4" value="127.0.0.1" /></div>
             <div class="field"><label id="lblIpv6">IPv6 重定向</label><input class="input" id="ipv6" value="::" /></div>
           </div>
-          <div class="opt-row">
-            <label class="check" data-opt="addHeader"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptHeader">添加头部注释</span></label>
-            <label class="check" data-opt="blockIPv6"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptIpv6">屏蔽 IPv6</span></label>
-            <label class="check" data-opt="dedupDomains"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptDedupe">去重域名</span></label>
-            <label class="check" data-opt="removeWildcard"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptWild">移除通配符</span></label>
-            <label class="check" data-opt="adguardIncludeWhitelist"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptAgWl">AdGuard 含白名单</span></label>
+          <div class="opt-group">
+            <div class="opt-group-title" id="lblOptGroup">生成选项</div>
+            <div class="opt-row">
+              <label class="check" data-opt="addHeader"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptHeader">添加头部注释</span></label>
+              <label class="check" data-opt="blockIPv6"><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptIpv6">屏蔽 IPv6</span></label>
+              <label class="check" data-opt="dedupDomains"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptDedupe">去重域名</span></label>
+              <label class="check" data-opt="removeWildcard"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptWild">移除通配符</span></label>
+              <label class="check" data-opt="adguardIncludeWhitelist"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span id="lblOptAgWl">AdGuard 含白名单</span></label>
+            </div>
           </div>
         </div>
       </section>
@@ -495,17 +572,17 @@
       'zh-cn': { name: '中文', sub: 'DNS 广告过滤规则生成器', input: '域名输入', output: '规则输出',
         blacklist: '黑名单', whitelist: '白名单', custom: '自定义DNS', comments: '注释',
         parse: '生成规则', sort: '排序', dedupe: '去重', clear: '清空', copy: '复制', download: '下载',
-        copied: '已复制到剪贴板', noData: '没有可复制的内容', settings: '设置', projName: '项目名', ver: '版本',
+        copied: '已放行到剪贴板', noData: '没有可复制的内容', settings: '设置', projName: '项目名', ver: '版本',
         ipv4: 'IPv4 重定向', ipv6: 'IPv6 重定向', optHeader: '添加头部注释', optIpv6: '屏蔽 IPv6',
-        optDedupe: '去重域名', optWild: '移除通配符', optAgWl: 'AdGuard 含白名单', fetch: '获取', fetching: '获取中…', fetched: '已导入域名', emptyHint: '在左侧输入域名，或点击预设 / 从 URL 导入，即可生成规则。',
+        optDedupe: '去重域名', optWild: '移除通配符', optAgWl: 'AdGuard 含白名单', fetch: '获取', fetching: '获取中…', fetched: '已导入域名', emptyHint: '等待流量接入… 在左侧输入域名，或点击预设 / 从 URL 导入，即可生成拦截规则。',
         step1t: '输入域名', step1d: '粘贴或导入广告域名', step2t: '选择格式', step2d: 'dnsmasq / hosts / AdGuard…',
         step3t: '导出部署', step3d: '复制到路由器或 DNS 服务' },
       'en': { name: 'English', sub: 'DNS Ad-blocking Rule Generator', input: 'Domain Input', output: 'Rule Output',
         blacklist: 'Blacklist', whitelist: 'Whitelist', custom: 'Custom DNS', comments: 'Comments',
         parse: 'Generate', sort: 'Sort', dedupe: 'Dedupe', clear: 'Clear', copy: 'Copy', download: 'Download',
-        copied: 'Copied to clipboard', noData: 'Nothing to copy', settings: 'Settings', projName: 'Project',
+        copied: 'Released to clipboard', noData: 'Nothing to copy', settings: 'Settings', projName: 'Project',
         ver: 'Version', ipv4: 'IPv4 Redirect', ipv6: 'IPv6 Redirect', optHeader: 'Add Header', optIpv6: 'Block IPv6',
-        optDedupe: 'Dedupe', optWild: 'Remove Wildcard', optAgWl: 'AdGuard Whitelist', fetch: 'Fetch', fetching: 'Fetching…', fetched: 'Domains imported', emptyHint: 'Enter domains on the left, or use a preset / URL import to generate rules.',
+        optDedupe: 'Dedupe', optWild: 'Remove Wildcard', optAgWl: 'AdGuard Whitelist', fetch: 'Fetch', fetching: 'Fetching…', fetched: 'Domains imported', emptyHint: 'Awaiting traffic… Enter domains on the left, or use a preset / URL import to generate block rules.',
         step1t: 'Input Domains', step1d: 'Paste or import ad domains', step2t: 'Pick Format', step2d: 'dnsmasq / hosts / AdGuard…',
         step3t: 'Export', step3d: 'Copy to router or DNS service' }
     };
@@ -736,30 +813,95 @@
       $('statComments').textContent = parsed.comments;
     }
     function renderGutter() {
-      var n = $('editor').value.split('\n').length;
+      var val = $('editor').value;
+      var lines = val.split('\n');
+      // 末尾空行不计入行号，避免多出一个错位行号
+      while (lines.length > 1 && lines[lines.length - 1] === '') lines.pop();
+      var n = lines.length || 1;
       var s = ''; for (var i = 1; i <= n; i++) s += i + '\n';
-      $('gutter').textContent = s.trim();
+      $('gutter').textContent = s;
     }
     function renderPreview() {
       var txt = generate();
       var empty = parsed.domains.length === 0 && parsed.whitelist.length === 0 && parsed.customDns.length === 0;
+      var gut = $('previewGutter'), body = $('previewBody');
       if (empty) {
-        $('preview').innerHTML = '<span class="empty-hint">' + ((I18N[currentLang] || I18N.en).emptyHint || '在左侧输入域名，或点击预设 / 从 URL 导入，即可生成规则。') + '</span>';
+        gut.textContent = '';
+        body.innerHTML = '<span class="empty-hint">' + ((I18N[currentLang] || I18N.en).emptyHint || '在左侧输入域名，或点击预设 / 从 URL 导入，即可生成规则。') + '</span>';
+        $('previewStats').innerHTML = '';
         return;
       }
-      // 轻量高亮（注释 / 白名单 / 白名单放行段），无 XSS 风险（先转义再着色）
-      var esc = txt.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-      esc = esc
-        .replace(/^(#.*|!.*)$/gm, '<span class="cmt">$1</span>')
-        .replace(/^(@@\|\|.*)$/gm, '<span class="wl">$1</span>')
-        .replace(/^(server=\/.*)$/gm, '<span class="wl">$1</span>')
-        .replace(/^(# 已白名单:.*)$/gm, '<span class="wl">$1</span>');
-      $('preview').innerHTML = esc;
+      // 行号列：末尾空行不计入，避免错位
+      var lines = txt.split('\n');
+      while (lines.length > 1 && lines[lines.length - 1] === '') lines.pop();
+      var n = lines.length || 1;
+      var gs = ''; for (var i = 1; i <= n; i++) gs += i + '\n';
+      gut.textContent = gs;
+      // 内容列：轻量高亮（注释 / 白名单 / 白名单放行段），先转义再着色，逐行包 .pl
+      var esc = txt.split('\n').map(function (line) {
+        var e = line.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+        e = e
+          .replace(/^(#.*|!.*)$/, '<span class="cmt">$1</span>')
+          .replace(/^(@@\|\|.*)$/, '<span class="wl">$1</span>')
+          .replace(/^(server=\/.*)$/, '<span class="wl">$1</span>')
+          .replace(/^(# 已白名单:.*)$/, '<span class="wl">$1</span>');
+        return '<div class="pl">' + e + '</div>';
+      }).join('');
+      body.innerHTML = esc;
+      // 预览区统计条：当前格式 + 三态计数 + 总行数
+      var fmtNames = { dnsmasq: 'Dnsmasq', hosts: 'Hosts', adguard: 'AdGuard', whitelist: 'ADG白名单', unbound: 'Unbound', pihole: 'Pi-hole', domains: 'Domains', bind: 'Bind RPZ', smartdns: 'SmartDNS' };
+      var ps = '<span class="ps"><b>' + (fmtNames[currentFmt] || currentFmt) + '</b></span>'
+        + '<span class="ps"><span class="ps-dot block"></span>拦截 <b>' + parsed.domains.length + '</b></span>'
+        + '<span class="ps"><span class="ps-dot allow"></span>放行 <b>' + parsed.whitelist.length + '</b></span>'
+        + '<span class="ps"><span class="ps-dot dns"></span>改道 <b>' + parsed.customDns.length + '</b></span>'
+        + '<span class="ps">注释 <b>' + parsed.comments.length + '</b></span>'
+        + '<span class="ps">共 <b>' + n + '</b> 行</span>';
+      $('previewStats').innerHTML = ps;
     }
     function renderAll() {
       parsed = parseSource($('editor').value);
-      renderStats(); renderPreview();
+      renderStats(); renderPreview(); renderFlowviz();
     }
+
+    // 流量管道动画抽样池：按当前 parsed 真实数据构建，动画从中随机取域名
+    var fvPool = [];
+    var fvTimer = null;
+    function renderFlowviz() {
+      var txt = $('fvSummaryTxt');
+      var total = parsed.domains.length;
+      txt.textContent = total + ' 黑名单 / ' + parsed.whitelist.length + ' 白名单 / ' + parsed.customDns.length + ' 自定义';
+      // 构建抽样池（按真实占比抽样，保持三态比例）
+      fvPool = [];
+      var sample = function (arr, cls, n) { for (var i = 0; i < n && i < arr.length; i++) fvPool.push({ cls: cls, name: (arr[i].domain || arr[i]) }); };
+      sample(parsed.domains, 'block', 12);
+      sample(parsed.whitelist, 'allow', 6);
+      sample(parsed.customDns, 'dns', 4);
+      if (!total && !parsed.whitelist.length && !parsed.customDns.length) {
+        stopFlowAnim();
+        return;
+      }
+      startFlowAnim();
+    }
+
+    // 签名动画：域名 token 从管道顶部按真实数据比例落入，命中规则后淡出
+    function spawnToken() {
+      var track = $('fvTrack');
+      if (!track || !fvPool.length) return;
+      var item = fvPool[Math.floor(Math.random() * fvPool.length)];
+      var tok = document.createElement('span');
+      tok.className = 'fv-token ' + item.cls;
+      tok.textContent = item.name;
+      tok.style.left = (6 + Math.random() * 70) + '%';
+      tok.style.animationDuration = (2.2 + Math.random() * 1.2) + 's';
+      track.appendChild(tok);
+      setTimeout(function () { if (tok.parentNode) tok.parentNode.removeChild(tok); }, 3600);
+    }
+    function startFlowAnim() {
+      if (fvTimer) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      fvTimer = setInterval(spawnToken, 650);
+    }
+    function stopFlowAnim() { if (fvTimer) { clearInterval(fvTimer); fvTimer = null; } }
 
     function applyI18n() {
       var t = I18N[currentLang] || I18N['en'];
@@ -816,6 +958,8 @@
     // ---- 事件 ----
     $('editor').addEventListener('input', function () { renderGutter(); renderAll(); });
     $('editor').addEventListener('scroll', function () { $('gutter').scrollTop = this.scrollTop; });
+    // 预览区内容滚动时同步行号列
+    $('previewBody').addEventListener('scroll', function () { $('previewGutter').scrollTop = this.scrollTop; });
     $('parseBtn').addEventListener('click', renderAll);
     $('sortBtn').addEventListener('click', function () {
       var p = parseSource($('editor').value);
