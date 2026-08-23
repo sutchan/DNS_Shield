@@ -138,6 +138,8 @@
     /* 输出工具栏推到卡片底部，配合等高布局消除留白 */
     #outputToolbar { margin-top: auto; }
     .card-title { font-family: var(--font-serif); font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; letter-spacing: -0.01em; }
+    .card-body { padding: 18px; }
+    .rtl-tag { font-size: 10px; color: hsl(var(--muted-foreground)); }
     .card-title svg { color: hsl(var(--primary)); }
 
     /* Stats */
@@ -560,7 +562,7 @@
           <div class="preview-body" id="previewBody"></div>
         </div>
 
-        <div class="toolbar" id="outputToolbar" style="margin-top:12px">
+        <div class="toolbar" id="outputToolbar">
           <button class="btn btn-outline btn-sm" id="copyBtn"><span id="lblCopy">复制</span></button>
           <button class="btn btn-outline btn-sm" id="downloadBtn"><span id="lblDownload">下载</span></button>
         </div>
@@ -579,7 +581,7 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
           </div>
-          <div class="card-body" id="settingsBody" style="padding:18px">
+          <div class="card-body" id="settingsBody">
             <div class="settings-grid">
               <div class="field"><label id="lblProjName">项目名</label><input class="input" id="projName" value="DNS Shield" /></div>
               <div class="field"><label id="lblVer">版本</label><input class="input" id="projVer" value="3.8.0" /></div>
@@ -642,7 +644,7 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
-        <div class="card-body" id="guideBody" style="padding:18px">
+        <div class="card-body" id="guideBody">
           <div class="guide-steps">
             <div class="step"><span class="n">1</span><div><div class="st" id="gStep1t">输入域名</div><div class="sd" id="gStep1d">在「域名输入」粘贴域名清单，每行一个；或点「内置数据 / AdGuard / EasyList」一键导入，亦可填 URL 批量拉取。</div></div></div>
             <div class="step"><span class="n">2</span><div><div class="st" id="gStep2t">选择格式</div><div class="sd" id="gStep2d">勾选需要的输出格式（可多选）：Dnsmasq、Hosts、AdGuard、ADG 白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS。</div></div></div>
@@ -1323,7 +1325,7 @@
       item.setAttribute('role', 'menuitem');
       item.tabIndex = 0;
       if (l[2]) item.setAttribute('dir', 'rtl');
-      var rtlTag = l[2] ? ' <span style="font-size:10px;color:hsl(var(--muted-foreground))">RTL</span>' : '';
+      var rtlTag = l[2] ? ' <span class="rtl-tag">RTL</span>' : '';
       item.innerHTML = '<span>' + l[1] + rtlTag + '</span>' + (l[0] === currentLang ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : '');
       function choose() {
         currentLang = l[0]; localStorage.setItem('ds_lang', currentLang);
