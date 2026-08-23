@@ -161,5 +161,8 @@
     "DNS Shield：路由器级 DNS 广告过滤规则生成器，一键生成 9 种格式规则。",
     "告别网页广告与追踪：DNS Shield 把域名清单转成路由器可用的拦截规则。",
     "家用网络全员免广告？DNS Shield 生成 hosts/dnsmasq/AdGuard 等规则，部署一次处处生效。"
-  ]
+  ],
+  "heroKicker": "路由器级 DNS 防护",
+  "heroTitle": "把广告与追踪域名，挡在网络入口",
+  "heroDesc": "粘贴域名或批量导入，一键生成 9 种格式规则，直接部署到路由器或 DNS 服务。"
 }

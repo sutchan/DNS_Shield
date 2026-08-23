@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.8.1
+// src/types/translation.ts v3.8.2
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 export interface Translation {
   subtitle: string;
@@ -81,6 +81,10 @@ export interface Translation {
   shareTitle: string;
   copied: string;
   shareTexts: string[];
+  // Hero 营销文案（对齐原型 heroKicker / heroTitle / heroDesc）
+  heroKicker: string;
+  heroTitle: string;
+  heroDesc: string;
   // 悬停在 GitHub 链接上时显示的提示文案（如「如果对你有帮助，请给项目点个 Star ⭐」）
   starPrompt: string;
   starLink?: string;

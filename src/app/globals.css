@@ -686,9 +686,18 @@
   @apply flex flex-col gap-4;
 }
 
-.hero-tagline {
-  @apply text-[1.0625rem] sm:text-[1.1875rem] font-semibold tracking-tight leading-snug;
-  letter-spacing: -0.01em;
+.hero-kicker {
+  @apply inline-flex items-center gap-1.5 text-[0.8125rem] font-medium uppercase tracking-wide text-primary;
+}
+
+.hero-title {
+  @apply text-[1.75rem] sm:text-[2.25rem] font-bold tracking-tight leading-[1.1];
+  letter-spacing: -0.02em;
+}
+
+.hero-desc {
+  @apply text-[0.9375rem] sm:text-[1.0625rem] leading-relaxed text-muted-foreground;
+  max-width: 34rem;
 }
 
 .fv-legend {

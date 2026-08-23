@@ -1,4 +1,4 @@
-// src/components/FlowViz.tsx v3.8.1
+// src/components/FlowViz.tsx v3.8.2
 // 输出流量可视化签名组件：对齐原型 flowviz —— 三态管道（拦截/放行/改道）
 // 实时反映 parsedData 中黑名单/白名单/自定义 DNS 的真实占比，域名 token 从管道顶部落入。
 // 动画遵循全局 prefers-reduced-motion 降级（globals.css 已统一处理）。
@@ -56,7 +56,12 @@ const FlowViz: React.FC<FlowVizProps> = ({ parsedData }) => {
     <section className="hero" id="hero" aria-label={t.fvTagline}>
       <div className="hero-inner">
         <div className="hero-copy">
-          <p className="hero-tagline" id="hero-tagline">{t.fvTagline}</p>
+          <span className="hero-kicker" id="heroKicker">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden="true"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z" /></svg>
+            <span id="heroKickerTxt">{t.heroKicker}</span>
+          </span>
+          <h1 className="hero-title" id="heroTitle">{t.heroTitle}</h1>
+          <p className="hero-desc" id="heroDesc">{t.heroDesc}</p>
           <ul className="fv-legend" id="flowviz-legend">
             {legend.map((item) => (
               <li key={item.kind} className={`fv-legend-item fv-legend-${item.kind}`}>

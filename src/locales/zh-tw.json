@@ -162,4 +162,8 @@
     "Block ads and trackers at the DNS layer: DNS Shield turns domain lists into router-ready rules.",
     "Ad-free home network? DNS Shield generates hosts/dnsmasq/AdGuard rules — set up once, protect everywhere."
   ]
+,
+  "heroKicker": "Router-level DNS protection",
+  "heroTitle": "Block ads and trackers at your network's entry",
+  "heroDesc": "Paste domains or bulk import, generate 9 format rules in one click, deploy straight to your router or DNS service."
 }
