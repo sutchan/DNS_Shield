@@ -1,4 +1,4 @@
-// src/components/InputPanel.tsx v3.8.1
+// src/components/InputPanel.tsx v3.8.6
 'use client';
 import * as React from 'react';
 import { Button } from './ui/Button';
@@ -24,6 +24,7 @@ interface InputPanelProps {
   clearAll: () => void;
   sortDomains: () => void;
   parseSource: () => void;
+  generateRules: () => void;
   dedupeDomains: () => void;
   saveDomains: () => void;
   loadPreset: (preset: string) => void;
@@ -51,6 +52,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
   clearAll,
   sortDomains,
   parseSource,
+  generateRules,
   dedupeDomains,
   saveDomains,
   loadPreset,
@@ -136,7 +138,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
       <div className="editor-actions" id="input-editor-actions" role="group" aria-label={t.editorActionsAria}>
         <Button type="button" variant="outline" size="sm" onClick={clearAll} id="clear-btn">{t.clearBtn}</Button>
         <Button type="button" variant="outline" size="sm" onClick={sortDomains} id="sort-btn">{t.sortBtn}</Button>
-        <Button type="button" variant="default" onClick={parseSource} id="parse-btn">{t.parseBtn}</Button>
+        <Button type="button" variant="default" onClick={generateRules} id="parse-btn">{t.generateBtn}</Button>
         <Button type="button" variant="outline" size="sm" onClick={dedupeDomains} id="dedupe-btn">{t.dedupeBtn}</Button>
         <Button type="button" variant="outline" size="sm" onClick={saveDomains} id="save-btn">{t.saveBtn}</Button>
       </div>

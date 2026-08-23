@@ -173,6 +173,7 @@ export default function Home() {
             clearAll={clearAll}
             sortDomains={sortDomains}
             parseSource={parseSourceData}
+            generateRules={generateRules}
             dedupeDomains={dedupeDomains}
             saveDomains={saveDomains}
             loadPreset={loadPreset}

@@ -5,6 +5,17 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.8.6]
+
+### Changed（原型-应用 UI 对齐）
+- 输入面板主按钮改为一步式「生成规则」（对齐原型 #parseBtn），点击直接解析 + 生成全部格式，移除独立的「解析域名」步骤
+- 设置面板「生成选项」6 项渲染为带边框卡片 checkbox 网格（对齐原型 .opt-row + .box 视觉，保留 Radix Checkbox 可访问性）
+
+## [3.8.5]
+
+### Changed（原型-应用视觉对齐）
+- 补齐 FlowViz DNS 信号配色对齐：图例点 / 管道边框 / 信号点 / 下落 token / 计数文字由 warning（黄）统一改为 primary（蓝），对齐 prototype.html 的 `fv-dot.dns` / `fv-pipe-dns` / `fv-token.dns` 设计（上次改动未落盘，本次修正）
+
 ## [3.8.4]
 
 ### Added（原型-应用功能对齐）

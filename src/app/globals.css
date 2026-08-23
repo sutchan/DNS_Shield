@@ -499,6 +499,23 @@
   @apply bg-primary text-primary-foreground border-primary;
 }
 
+/* C：设置生成选项卡片 checkbox 网格（对齐原型 .opt-row + .box 视觉） */
+.opt-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 mt-2;
+}
+
+.opt-card {
+  @apply inline-flex items-center gap-2.5 px-3 py-2.5 rounded-md border border-border bg-background text-sm cursor-pointer select-none transition-colors hover:bg-accent;
+}
+
+.opt-card:has(input[data-state="checked"]) {
+  @apply border-primary bg-primary/5;
+}
+
+.opt-card-label {
+  @apply text-sm text-foreground;
+}
+
 /* ============================================
    Footer
    ============================================ */
@@ -808,7 +825,7 @@
 
 .fv-legend-block .fv-legend-dot { background: hsl(var(--destructive)); }
 .fv-legend-allow .fv-legend-dot { background: hsl(var(--success)); }
-.fv-legend-dns .fv-legend-dot { background: hsl(var(--warning)); }
+.fv-legend-dns .fv-legend-dot { background: hsl(var(--primary)); }
 .fv-legend-await .fv-legend-dot { background: hsl(var(--muted-foreground) / 0.5); }
 
 .flowviz {
@@ -825,7 +842,7 @@
 
 .fv-pipe-block { box-shadow: inset 0 0 0 1px hsl(var(--destructive) / 0.18); }
 .fv-pipe-allow { box-shadow: inset 0 0 0 1px hsl(var(--success) / 0.18); }
-.fv-pipe-dns { box-shadow: inset 0 0 0 1px hsl(var(--warning) / 0.18); }
+.fv-pipe-dns { box-shadow: inset 0 0 0 1px hsl(var(--primary) / 0.18); }
 
 .fv-signal {
   @apply w-2 h-2 rounded-full;
@@ -834,7 +851,7 @@
 
 .fv-pipe-block .fv-signal { background: hsl(var(--destructive)); }
 .fv-pipe-allow .fv-signal { background: hsl(var(--success)); }
-.fv-pipe-dns .fv-signal { background: hsl(var(--warning)); }
+.fv-pipe-dns .fv-signal { background: hsl(var(--primary)); }
 
 .fv-track {
   @apply relative w-full h-32;
@@ -848,7 +865,7 @@
 
 .fv-pipe-block .fv-token { background: hsl(var(--destructive) / 0.8); }
 .fv-pipe-allow .fv-token { background: hsl(var(--success) / 0.8); }
-.fv-pipe-dns .fv-token { background: hsl(var(--warning) / 0.85); }
+.fv-pipe-dns .fv-token { background: hsl(var(--primary) / 0.85); }
 
 .fv-count {
   @apply text-sm font-semibold tabular-nums;
@@ -856,7 +873,7 @@
 
 .fv-pipe-block .fv-count { color: hsl(var(--destructive)); }
 .fv-pipe-allow .fv-count { color: hsl(var(--success)); }
-.fv-pipe-dns .fv-count { color: hsl(var(--warning)); }
+.fv-pipe-dns .fv-count { color: hsl(var(--primary)); }
 
 .fv-summary {
   @apply text-center text-[0.75rem] text-muted-foreground;

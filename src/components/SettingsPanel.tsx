@@ -1,4 +1,4 @@
-// src/components/SettingsPanel.tsx v3.8.3
+// src/components/SettingsPanel.tsx v3.8.6
 // 设置面板组件 —— 从 OutputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -79,56 +79,57 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             />
           </div>
         </div>
-        <div className="flex flex-wrap gap-4" id="settings-options-row">
-          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-addheader">
+        {/* C：生成选项渲染为带边框的卡片 checkbox 网格（对齐原型 .opt-row + .box 视觉） */}
+        <div className="opt-grid" id="settings-options-grid">
+          <label className="opt-card" id="settings-option-addheader">
             <Checkbox
               id="addHeader"
               checked={settings.addHeader}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, addHeader: checked === true }))}
             />
-            <Label htmlFor="addHeader" className="text-sm text-muted-foreground cursor-pointer">{t.headerComment}</Label>
-          </div>
-          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-blockipv6">
+            <span className="opt-card-label">{t.headerComment}</span>
+          </label>
+          <label className="opt-card" id="settings-option-blockipv6">
             <Checkbox
               id="blockIPv6"
               checked={settings.blockIPv6}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, blockIPv6: checked === true }))}
             />
-            <Label htmlFor="blockIPv6" className="text-sm text-muted-foreground cursor-pointer">{t.blockIPv6}</Label>
-          </div>
-          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-dedup">
+            <span className="opt-card-label">{t.blockIPv6}</span>
+          </label>
+          <label className="opt-card" id="settings-option-dedup">
             <Checkbox
               id="dedupDomains"
               checked={settings.dedupDomains}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, dedupDomains: checked === true }))}
             />
-            <Label htmlFor="dedupDomains" className="text-sm text-muted-foreground cursor-pointer">{t.dedup}</Label>
-          </div>
-          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-removewildcard">
+            <span className="opt-card-label">{t.dedup}</span>
+          </label>
+          <label className="opt-card" id="settings-option-removewildcard">
             <Checkbox
               id="removeWildcard"
               checked={settings.removeWildcard}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, removeWildcard: checked === true }))}
             />
-            <Label htmlFor="removeWildcard" className="text-sm text-muted-foreground cursor-pointer">{t.removeWildcard}</Label>
-          </div>
-          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-adguard-include-whitelist">
+            <span className="opt-card-label">{t.removeWildcard}</span>
+          </label>
+          <label className="opt-card" id="settings-option-adguard-include-whitelist">
             <Checkbox
               id="adguardIncludeWhitelist"
               checked={settings.adguardIncludeWhitelist}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, adguardIncludeWhitelist: checked === true }))}
             />
-            <Label htmlFor="adguardIncludeWhitelist" className="text-sm text-muted-foreground cursor-pointer">{t.adguardIncludeWhitelist}</Label>
-          </div>
-          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-show-all-formats">
+            <span className="opt-card-label">{t.adguardIncludeWhitelist}</span>
+          </label>
+          <label className="opt-card" id="settings-option-show-all-formats">
             <Checkbox
               id="showAllFormats"
               checked={settings.showAllFormats}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, showAllFormats: checked === true }))}
             />
-            <Label htmlFor="showAllFormats" className="text-sm text-muted-foreground cursor-pointer">{t.showAllFormats}</Label>
-          </div>
-          </div>
+            <span className="opt-card-label">{t.showAllFormats}</span>
+          </label>
+        </div>
         </div>
         {/* 外观分组（对齐原型 appearanceGroup + 主题分段切换） */}
         <div className="settings-group" id="settings-group-appearance">
