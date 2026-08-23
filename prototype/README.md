@@ -1,4 +1,4 @@
-# DNS Shield — 项目原型 (Prototype) v3.7.62
+# DNS Shield — 项目原型 (Prototype) v3.8.0
 
 > 高保真、可交互、内联真实数据的产品原型，与真实引擎 `src/` 及 OpenSpec 规范保持最小颗粒度对齐。
 
@@ -82,7 +82,7 @@ prototype/
 - 应用内导航栏 Logo 复用 `lucide-react` 的 `Shield` 图标（`text-primary`），与 `favicon.svg` 视觉一致。
 - 修改标志时直接更新 `public/` 下对应资产，并保持 `public/brand/` 文档同步。
 
-## 与真实引擎的同步状态（v3.7.62）
+## 与真实引擎的同步状态（v3.8.0）
 
 `prototype.html` 的解析/生成逻辑对齐 `src/utils/parser.ts`、`rulesGenerator.ts`、`domainValidator.ts`：
 
@@ -99,4 +99,4 @@ prototype/
 
 ## 版本
 
-当前原型版本 **v3.7.62**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。
+当前原型版本 **v3.8.0**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。

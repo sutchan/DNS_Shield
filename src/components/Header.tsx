@@ -3,6 +3,7 @@
 
 import * as React from 'react';
 import { Sun, Moon, Globe, Check } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from './ui/Button';
 import {
   DropdownMenu,
@@ -31,6 +32,20 @@ const Header: React.FC<HeaderProps> = ({
   const t = useT();
   const current = supportedLanguages.find((lang) => lang.code === currentLang);
   const currentName = current?.name || currentLang;
+
+  // 分享：随机取一条分享文案 + 项目链接，复制到剪贴板（对齐原型 shareBtn / shareTexts）
+  const handleShare = () => {
+    const texts = (t.shareTexts && t.shareTexts.length ? t.shareTexts : [t.shareTitle]) as string[];
+    const text = texts[Math.floor(Math.random() * texts.length)] + ' https://github.com/sutchan/DNS_Shield';
+    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(text).then(
+        () => toast.success(t.copied),
+        () => toast.error(t.toast.copyFailed)
+      );
+    } else {
+      toast.error(t.toast.copyFailed);
+    }
+  };
 
   return (
     <header className="app-header" id="app-header" role="banner">
@@ -86,6 +101,24 @@ const Header: React.FC<HeaderProps> = ({
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+
+          {/* Share */}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={handleShare}
+            aria-label={t.shareBtn}
+            title={t.shareTitle}
+            id="shareBtn"
+          >
+            <svg className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.6" y1="13.5" x2="15.4" y2="17.5" />
+              <line x1="15.4" y1="6.5" x2="8.6" y2="10.5" />
+            </svg>
+          </Button>
 
           {/* Theme Toggle */}
           <Button

@@ -38,6 +38,7 @@
       --radius-md: 0.5rem;
       --radius-lg: 0.625rem;
       --radius-xl: 0.75rem;
+      --radius-2xl: 1rem;
       /* 排版三元：显示体(衬线) / 正文(sans) / 数据(mono) */
       --font-serif: 'Spectral', Georgia, 'Times New Roman', serif;
       --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -390,7 +391,7 @@
     }
     .fv-token {
       position: absolute; top: -22px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
-      padding: 2px 7px; border-radius: 999px; white-space: nowrap; color: #fff;
+      padding: 2px 7px; border-radius: 999px; white-space: nowrap; color: hsl(var(--primary-foreground));
       animation: fvDrop 2.6s linear forwards; will-change: transform, opacity;
     }
     .fv-token.block { background: hsl(var(--destructive)); }

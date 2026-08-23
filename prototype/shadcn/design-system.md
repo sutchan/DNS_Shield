@@ -1,4 +1,4 @@
-# DNS Shield — 设计系统规范 v3.7.34
+# DNS Shield — 设计系统规范 v3.8.0
 > 基于 shadcn/ui + Tailwind CSS + Radix UI 的完整设计系统
 > 色彩空间：HSL | 设计哲学：Swiss Modernism 2.0 × Apple Precision
 
@@ -115,11 +115,23 @@
 
 ## 2. 字体系统
 
-### 2.1 字体栈
+### 2.1 字体栈（三元体系）
+
+排版采用三层角色，避免单一种族造成的视觉扁平：
+
+| 角色 | 字体 | 用途 |
+|------|------|------|
+| 正文 / UI | Inter | 所有正文、按钮、标签、描述 |
+| 品牌标头 | Spectral（衬线） | 仅页面级品牌标题：`.brand-title`、`.hero-title`、`.card-title`、`.usage-title` |
+| 数据 / 代码 | JetBrains Mono | 编辑器、行号、URL 输入、flowviz token、指南 code |
 
 ```css
-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
+--font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
+--font-serif: 'Spectral', Georgia, 'Times New Roman', serif;
+--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 ```
+
+> 约束：衬线仅用于「品牌标头」层级，功能数字（统计值）、步骤标题等保持 sans，避免同一信息单元内 serif/sans 混排割裂。
 
 ### 2.2 字体规格
 

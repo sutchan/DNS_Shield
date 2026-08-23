@@ -20,6 +20,7 @@ interface UrlSectionProps {
   sortUrls: () => void;
   fetchAllUrls: () => void;
   setUrls: (urls: string[]) => void;
+  isLoading: boolean;
 }
 
 const PRESETS = ['builtin', 'adguard', 'easylist', 'neohosts'] as const;
@@ -75,6 +76,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
   sortUrls,
   fetchAllUrls,
   setUrls,
+  isLoading,
 }) => {
   const t = useT();
   return (
@@ -83,6 +85,14 @@ const UrlSection: React.FC<UrlSectionProps> = ({
       id="url-section"
       aria-hidden={isCollapsed}
     >
+      <div
+        className={`loading-bar ${isLoading ? 'active' : ''}`}
+        id="url-loading"
+        role="progressbar"
+        aria-hidden={!isLoading}
+      >
+        <div className="loading-bar-fill" />
+      </div>
       <div className="url-input-row" id="url-input-row">
         <label htmlFor="urlInput" className="sr-only">{t.urlPlaceholder}</label>
         <Input

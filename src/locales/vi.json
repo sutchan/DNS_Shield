@@ -46,6 +46,12 @@
   "downloadBtn": "Tải xuống",
   "copyBtn": "Sao chép",
   "usageToggle": "Hướng dẫn sử dụng",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
   "usageStep1": "1. Nhập hoặc nhập khẩu miền",
   "usageStep1Desc": "Nhập danh sách miền vào hộp văn bản bên trái, hoặc nhập từ các tùy chọn sẵn (AdGuard, EasyList, v.v.), hoặc dán trực tiếp URL để lấy miền",
   "usageStep2": "2. Cấu hình tùy chọn tạo",
@@ -150,5 +156,13 @@
   "psFormat": "Định dạng",
   "psLines": "dòng",
   "psDomains": "tên miền",
-  "psFormats": "định dạng"
+  "psFormats": "định dạng",
+  "shareBtn": "Share",
+  "shareTitle": "Share DNS Shield",
+  "copied": "Copied to clipboard",
+  "shareTexts": [
+    "DNS Shield: router-level DNS ad-blocking rule generator, generate 9 format rules in one click.",
+    "Block ads and trackers at the DNS layer: DNS Shield turns domain lists into router-ready rules.",
+    "Ad-free home network? DNS Shield generates hosts/dnsmasq/AdGuard rules — set up once, protect everywhere."
+  ]
 }

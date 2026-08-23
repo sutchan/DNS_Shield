@@ -46,6 +46,12 @@
   "downloadBtn": "डाउनलोड करें",
   "copyBtn": "कॉपी करें",
   "usageToggle": "उपयोग मार्गदर्शिका",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
   "usageStep1": "1. डोमेन दर्ज करें या आयात करें",
   "usageStep1Desc": "बाएं पाठ बॉक्स में डोमेन सूची दर्ज करें, या पूर्वनिर्धारित स्रोतों (AdGuard, EasyList आदि) से आयात करें, या डोमेन प्राप्त करने के लिए सीधे URL पेस्ट करें",
   "usageStep2": "2. जनरेशन विकल्प कॉन्फ़िगर करें",
@@ -150,5 +156,13 @@
   "psFormat": "प्रारूप",
   "psLines": "पंक्तियाँ",
   "psDomains": "डोमेन",
-  "psFormats": "प्रारूप"
+  "psFormats": "प्रारूप",
+  "shareBtn": "Share",
+  "shareTitle": "Share DNS Shield",
+  "copied": "Copied to clipboard",
+  "shareTexts": [
+    "DNS Shield: router-level DNS ad-blocking rule generator, generate 9 format rules in one click.",
+    "Block ads and trackers at the DNS layer: DNS Shield turns domain lists into router-ready rules.",
+    "Ad-free home network? DNS Shield generates hosts/dnsmasq/AdGuard rules — set up once, protect everywhere."
+  ]
 }

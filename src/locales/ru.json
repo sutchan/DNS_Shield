@@ -46,6 +46,12 @@
   "downloadBtn": "Скачать",
   "copyBtn": "Скопировать",
   "usageToggle": "Руководство использования",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
   "usageStep1": "1. Введите или импортируйте домены",
   "usageStep1Desc": "Введите список доменов в левом текстовом поле, или импортируйте из предустановок (AdGuard, EasyList и т.д.), или напрямую вставьте URL для получения доменов",
   "usageStep2": "2. Настройте параметры генерации",
@@ -150,5 +156,13 @@
   "psFormat": "Формат",
   "psLines": "строк",
   "psDomains": "доменов",
-  "psFormats": "форматов"
+  "psFormats": "форматов",
+  "shareBtn": "Share",
+  "shareTitle": "Share DNS Shield",
+  "copied": "Copied to clipboard",
+  "shareTexts": [
+    "DNS Shield: router-level DNS ad-blocking rule generator, generate 9 format rules in one click.",
+    "Block ads and trackers at the DNS layer: DNS Shield turns domain lists into router-ready rules.",
+    "Ad-free home network? DNS Shield generates hosts/dnsmasq/AdGuard rules — set up once, protect everywhere."
+  ]
 }

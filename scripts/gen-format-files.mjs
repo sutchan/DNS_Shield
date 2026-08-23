@@ -1,4 +1,4 @@
-// scripts/gen-format-files.mjs v3.7.53
+// scripts/gen-format-files.mjs v3.8.0
 // 预生成 9 种过滤规则的静态产出文件，对齐 src/utils/formatGenerators.ts 的生成逻辑。
 // 单一数据源：public/domains.txt（纯域名=黑名单，`+domain`=白名单，`@domain=ip`=自定义 DNS）。
 // 产出（不含 domains.txt 数据源本身）：

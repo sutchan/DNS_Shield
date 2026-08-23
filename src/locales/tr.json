@@ -46,6 +46,12 @@
   "downloadBtn": "İndir",
   "copyBtn": "Kopyala",
   "usageToggle": "Kullanım Kılavuzu",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
   "usageStep1": "1. Alan Adlarını Girin veya İçe Aktarın",
   "usageStep1Desc": "Alan adı listesini sol metin kutusuna girin, veya ön ayarlardan (AdGuard, EasyList vb.) içe aktarın, veya alan adları almak için doğrudan bir URL yapıştırın",
   "usageStep2": "2. Üretim Seçeneklerini Yapılandırın",
@@ -150,5 +156,13 @@
   "psFormat": "Biçim",
   "psLines": "satır",
   "psDomains": "alan adı",
-  "psFormats": "biçim"
+  "psFormats": "biçim",
+  "shareBtn": "Share",
+  "shareTitle": "Share DNS Shield",
+  "copied": "Copied to clipboard",
+  "shareTexts": [
+    "DNS Shield: router-level DNS ad-blocking rule generator, generate 9 format rules in one click.",
+    "Block ads and trackers at the DNS layer: DNS Shield turns domain lists into router-ready rules.",
+    "Ad-free home network? DNS Shield generates hosts/dnsmasq/AdGuard rules — set up once, protect everywhere."
+  ]
 }

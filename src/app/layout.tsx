@@ -1,7 +1,7 @@
 // src/app/layout.tsx v3.8.0
 import type { ReactNode } from 'react';
 import './globals.css';
-import { Inter, JetBrains_Mono, Noto_Sans_SC } from 'next/font/google';
+import { Inter, JetBrains_Mono, Noto_Sans_SC, Spectral } from 'next/font/google';
 import { metadata, viewport, jsonLd } from './(seo)/site-meta';
 import { APP_VERSION } from '../config/version';
 
@@ -9,6 +9,12 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'sw
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-jetbrains-mono',
+  display: 'swap',
+});
+const spectral = Spectral({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  variable: '--font-spectral',
   display: 'swap',
 });
 const notoSansSC = Noto_Sans_SC({
@@ -46,7 +52,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} ${notoSansSC.variable}`}
+        className={`${inter.variable} ${jetbrainsMono.variable} ${notoSansSC.variable} ${spectral.variable}`}
         id="app-body"
       >
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:shadow">

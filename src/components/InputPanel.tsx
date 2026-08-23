@@ -32,6 +32,7 @@ interface InputPanelProps {
   sortUrls: () => void;
   fetchAllUrls: () => void;
   setUrls: (urls: string[]) => void;
+  isLoading: boolean;
 }
 
 const InputPanel: React.FC<InputPanelProps> = ({
@@ -58,14 +59,16 @@ const InputPanel: React.FC<InputPanelProps> = ({
   sortUrls,
   fetchAllUrls,
   setUrls,
+  isLoading,
 }) => {
   const t = useT();
   const statItems = [
     { key: 'domainCount' as const, labelKey: 'domainCount' as keyof Translation },
     { key: 'blacklistCount' as const, labelKey: 'blacklistCount' as keyof Translation },
     { key: 'whitelistCount' as const, labelKey: 'whitelistCount' as keyof Translation },
-    { key: 'validCount' as const, labelKey: 'validCount' as keyof Translation },
+    { key: 'customDnsCount' as const, labelKey: 'customDnsCount' as keyof Translation },
     { key: 'commentCount' as const, labelKey: 'commentCount' as keyof Translation },
+    { key: 'totalLines' as const, labelKey: 'totalLines' as keyof Translation },
   ] as const;
 
   return (
@@ -109,6 +112,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
         sortUrls={sortUrls}
         fetchAllUrls={fetchAllUrls}
         setUrls={setUrls}
+        isLoading={isLoading}
       />
 
       {/* 预设标签 */}

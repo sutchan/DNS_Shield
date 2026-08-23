@@ -10,6 +10,8 @@ export const buildParseStats = (entries: ParseResult[]): ParseStats => {
     commentCount: 0,
     blacklistCount: 0,
     whitelistCount: 0,
+    customDnsCount: 0,
+    totalLines: 0,
     invalidCount: 0,
   };
 
@@ -23,6 +25,7 @@ export const buildParseStats = (entries: ParseResult[]): ParseStats => {
       stats.domainCount++;
     } else if (entry.type === 'customDns') {
       stats.blacklistCount++;
+      stats.customDnsCount++;
     } else if (entry.type === 'hosts' || entry.type === 'dnsmasq' || entry.type === 'adguard') {
       stats.blacklistCount++;
       stats.domainCount++;
@@ -34,6 +37,8 @@ export const buildParseStats = (entries: ParseResult[]): ParseStats => {
       stats.validCount++;
     }
   }
+
+  stats.totalLines = entries.length;
 
   return stats;
 };

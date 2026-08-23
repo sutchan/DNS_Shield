@@ -46,6 +46,12 @@
   "downloadBtn": "تنزيل",
   "copyBtn": "نسخ",
   "usageToggle": "دليل الاستخدام",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
   "usageStep1": "1. إدخال أو استيراد النطاقات",
   "usageStep1Desc": "أدخل قائمة النطاقات في مربع النص الأيسر، أو استيرادها من الإعدادات المسبقة (AdGuard، EasyList، إلخ)، أو لصق URL للحصول على النطاقات",
   "usageStep2": "2. تكوين خيارات الإنشاء",
@@ -150,5 +156,13 @@
   "psFormat": "التنسيق",
   "psLines": "سطر",
   "psDomains": "نطاقات",
-  "psFormats": "تنسيقات"
+  "psFormats": "تنسيقات",
+  "shareBtn": "Share",
+  "shareTitle": "Share DNS Shield",
+  "copied": "Copied to clipboard",
+  "shareTexts": [
+    "DNS Shield: router-level DNS ad-blocking rule generator, generate 9 format rules in one click.",
+    "Block ads and trackers at the DNS layer: DNS Shield turns domain lists into router-ready rules.",
+    "Ad-free home network? DNS Shield generates hosts/dnsmasq/AdGuard rules — set up once, protect everywhere."
+  ]
 }

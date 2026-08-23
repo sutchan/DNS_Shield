@@ -76,6 +76,11 @@ export interface Translation {
   githubLinkAria: string;
   changelogLinkAria: string;
   changelogLabel?: string;
+  // 分享按钮与文案（对齐原型 shareBtn / shareTexts）
+  shareBtn: string;
+  shareTitle: string;
+  copied: string;
+  shareTexts: string[];
   // 悬停在 GitHub 链接上时显示的提示文案（如「如果对你有帮助，请给项目点个 Star ⭐」）
   starPrompt: string;
   starLink?: string;

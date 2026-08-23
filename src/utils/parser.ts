@@ -82,6 +82,8 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
     commentCount,
     blacklistCount: filteredDomains.length,
     whitelistCount: uniqueWhitelist.length,
+    customDnsCount: uniqueCustomDns.length,
+    totalLines: lines.length,
     invalidCount
   };
 

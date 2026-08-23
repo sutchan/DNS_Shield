@@ -42,7 +42,7 @@ export const supportedLanguages: Language[] = [
   { code: 'en', name: 'English', icon: '' },
   { code: 'zh-cn', name: '中文简体', icon: '' },
   { code: 'zh-tw', name: '中文繁體', icon: '' },
-  { code: 'ar', name: 'العربية', icon: '' },
+  { code: 'ar', name: 'العربية', icon: '', rtl: true },
   { code: 'cs', name: 'Čeština', icon: '' },
   { code: 'es', name: 'Español', icon: '' },
   { code: 'hi', name: 'हिन्दी', icon: '' },

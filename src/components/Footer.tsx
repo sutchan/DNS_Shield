@@ -62,52 +62,7 @@ const Footer: React.FC<FooterProps> = ({
               <line x1="10" y1="14" x2="21" y2="3"></line>
             </svg>
           </a>
-          <button 
-            className="usage-toggle" 
-            id="usageToggle" 
-            onClick={toggleUsageGuide}
-            aria-expanded={!isUsageGuideCollapsed}
-            aria-controls="usageGuide"
-          >
-            <span id="usageToggleText">{t.usageToggle}</span>
-            <svg className={`toggle-arrow ${isUsageGuideCollapsed ? 'collapsed' : ''}`} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
           <span className="footer-version" id="version-display" aria-label={`${t.versionLabel} ${version}`}>v{version}</span>
-        </div>
-        <div
-          className={`usage-guide ${isUsageGuideCollapsed ? 'collapsed' : ''}`}
-          id="usageGuide"
-          aria-hidden={isUsageGuideCollapsed}
-        >
-          <div className="usage-steps" id="usage-steps" role="region" aria-label={t.usageGuideAria}>
-            <div className="usage-step" id="usage-step-1">
-              <span className="step-number" aria-hidden="true">1</span>
-              <div className="step-content" id="usage-step-1-content">
-                <span className="step-title">{t.usageStep1}</span>
-                <span className="step-desc">{t.usageStep1Desc}</span>
-              </div>
-            </div>
-            <div className="usage-step" id="usage-step-2">
-              <span className="step-number" aria-hidden="true">2</span>
-              <div className="step-content" id="usage-step-2-content">
-                <span className="step-title">{t.usageStep2}</span>
-                <span className="step-desc">{t.usageStep2Desc}</span>
-              </div>
-            </div>
-            <div className="usage-step" id="usage-step-3">
-              <span className="step-number" aria-hidden="true">3</span>
-              <div className="step-content" id="usage-step-3-content">
-                <span className="step-title">{t.usageStep3}</span>
-                <span className="step-desc">{t.usageStep3Desc}</span>
-              </div>
-            </div>
-          </div>
-          <div className="usage-tip" id="usage-tip" role="note">
-            <span className="tip-label">{t.usageTip}</span>
-            <span className="tip-content">{t.usageTipContent}</span>
-          </div>
         </div>
       </div>
     </footer>

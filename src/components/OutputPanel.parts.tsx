@@ -2,7 +2,7 @@
 // OutputPanel 的纯展示子组件：格式切换标签栏与预览统计条。
 // 从 OutputPanel 抽离以保持主文件 ≤200 行，遵循「组件文件拆分」规范。
 
-import * as React from 'react';
+import type { FC } from 'react';
 import { Tabs, TabsList, TabsTrigger } from './ui/Tabs';
 import { FormatType } from '../types';
 
@@ -14,7 +14,7 @@ interface FormatTabsProps {
 }
 
 // 格式切换标签栏：点击切换输出格式，对齐原型「输出规则类型」显示/隐藏开关
-export const FormatTabs: React.FC<FormatTabsProps> = ({
+export const FormatTabs: FC<FormatTabsProps> = ({
   currentFormat,
   visibleFormats,
   formatLabel,
@@ -46,7 +46,7 @@ interface PreviewStatsProps {
 }
 
 // 输出预览统计条：当前格式 / 规则行数 / 域名总数 / 可见格式数
-export const PreviewStats: React.FC<PreviewStatsProps> = ({
+export const PreviewStats: FC<PreviewStatsProps> = ({
   currentFormat,
   formatLabel,
   ruleLines,

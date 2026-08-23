@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   DNS Shield — Design System v3.7.60
+   DNS Shield — Design System v3.8.0
    Designer: UI Designer
    Philosophy: Swiss Precision × Calm Technology
    ============================================ */
@@ -61,6 +61,8 @@
     /* 等宽/代码：JetBrains Mono（由 next/font 注入，变量 --font-jetbrains-mono），回退系统栈 */
     --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular,
       'SF Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    /* 品牌标头：Spectral（由 next/font 注入，变量 --font-spectral），仅用于页面级标题 */
+    --font-serif: var(--font-spectral), Georgia, 'Times New Roman', serif;
   }
 
   .dark {
@@ -182,6 +184,7 @@
 .app-title {
   @apply text-[1.625rem] sm:text-2xl font-semibold tracking-tight leading-tight;
   letter-spacing: -0.02em;
+  font-family: var(--font-serif);
 }
 
 .app-subtitle {
@@ -535,6 +538,11 @@
   margin-top: 1rem;
 }
 
+.usage-guide-title {
+  @apply text-base font-semibold text-foreground mb-3;
+  font-family: var(--font-serif);
+}
+
 .usage-guide.collapsed {
   max-height: 0;
   opacity: 0;
@@ -600,6 +608,37 @@
 
 .loading-content {
   @apply flex flex-col items-center justify-center;
+}
+
+/* URL 细进度条（对齐原型 loading-bar：替代全屏遮罩，保持可交互性） */
+.loading-bar {
+  height: 3px;
+  width: 100%;
+  background: hsl(var(--muted));
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.loading-bar.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  width: 40%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, hsl(var(--primary) / 0.4), hsl(var(--primary)));
+  animation: url-progress 1.2s ease-in-out infinite;
+}
+
+@keyframes url-progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
 }
 
 @keyframes spin {

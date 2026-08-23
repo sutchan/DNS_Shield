@@ -21,6 +21,9 @@ export const useLanguage = () => {
     setCurrentLang(lang);
     if (typeof window !== 'undefined') {
       try { localStorage.setItem('lang', lang); } catch { /* 隐私模式不可用 */ }
+      // 根据语言设置 <html dir>，确保 RTL 语言（如阿拉伯语）布局正确。
+      const found = supportedLanguages.find((l) => l.code === lang);
+      document.documentElement.setAttribute('dir', found?.rtl ? 'rtl' : 'ltr');
     }
   };
 

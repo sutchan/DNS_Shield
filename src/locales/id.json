@@ -46,6 +46,12 @@
   "downloadBtn": "Unduh",
   "copyBtn": "Salin",
   "usageToggle": "Panduan Penggunaan",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
   "usageStep1": "1. Masukkan atau Impor Domain",
   "usageStep1Desc": "Masukkan daftar domain di kotak teks kiri, atau impor dari preset (AdGuard, EasyList, dll.), atau tempel URL langsung untuk mendapatkan domain",
   "usageStep2": "2. Konfigurasikan Opsi Pembuatan",
@@ -150,5 +156,13 @@
   "psFormat": "Format",
   "psLines": "baris",
   "psDomains": "domain",
-  "psFormats": "format"
+  "psFormats": "format",
+  "shareBtn": "Share",
+  "shareTitle": "Share DNS Shield",
+  "copied": "Copied to clipboard",
+  "shareTexts": [
+    "DNS Shield: router-level DNS ad-blocking rule generator, generate 9 format rules in one click.",
+    "Block ads and trackers at the DNS layer: DNS Shield turns domain lists into router-ready rules.",
+    "Ad-free home network? DNS Shield generates hosts/dnsmasq/AdGuard rules — set up once, protect everywhere."
+  ]
 }

@@ -46,6 +46,12 @@
   "downloadBtn": "Download",
   "copyBtn": "Kopiëren",
   "usageToggle": "Gebruiksaanwijzing",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
+  "usageTitle": "Quick Start",
+  "customDnsCount": "Custom DNS",
+  "totalLines": "Total lines",
   "usageStep1": "1. Voer domeinen in of importeer ze",
   "usageStep1Desc": "Voer een domeinlijst in het linkerde tekstvak in, of importeer deze uit voorinstellingen (AdGuard, EasyList, enz.), of plak direct een URL om domeinen op te halen",
   "usageStep2": "2. Configureer generatieopties",
@@ -150,5 +156,13 @@
   "psFormat": "Formaat",
   "psLines": "regels",
   "psDomains": "domeinen",
-  "psFormats": "formaten"
+  "psFormats": "formaten",
+  "shareBtn": "Share",
+  "shareTitle": "Share DNS Shield",
+  "copied": "Copied to clipboard",
+  "shareTexts": [
+    "DNS Shield: router-level DNS ad-blocking rule generator, generate 9 format rules in one click.",
+    "Block ads and trackers at the DNS layer: DNS Shield turns domain lists into router-ready rules.",
+    "Ad-free home network? DNS Shield generates hosts/dnsmasq/AdGuard rules — set up once, protect everywhere."
+  ]
 }

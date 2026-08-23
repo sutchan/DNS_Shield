@@ -69,6 +69,9 @@ export interface ParseStats {
   commentCount: number;
   blacklistCount: number;
   whitelistCount: number;
+  customDnsCount: number;
+  // 输入源原始总行数（含空行/注释），对齐原型「总行数」维度
+  totalLines: number;
   // 解析失败/格式无效的行数（如非法白名单、非法 customDns、非法域名），
   // 与真实注释/空行分开统计，避免 stats 数字失真
   invalidCount: number;

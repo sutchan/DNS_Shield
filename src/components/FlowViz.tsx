@@ -65,23 +65,35 @@ const FlowViz: React.FC<FlowVizProps> = ({ parsedData }) => {
               </li>
             ))}
           </ul>
-          <div className="about" id="quickstart-panel">
-            <h3 className="usage-title">{t.usageTitle}</h3>
-            <div className="usage">
-              <div className="step">
-                <div className="st">{t.usageStep1}</div>
-                <div className="sd">{t.usageStep1Desc}</div>
+          <div className="usage-guide quickstart" id="quickstart-panel" aria-label={t.usageTitle}>
+            <h3 className="usage-guide-title">{t.usageTitle}</h3>
+            <div className="usage-steps">
+              <div className="usage-step">
+                <span className="step-number" aria-hidden="true">1</span>
+                <div className="step-content">
+                  <span className="step-title">{t.usageStep1}</span>
+                  <span className="step-desc">{t.usageStep1Desc}</span>
+                </div>
               </div>
-              <div className="step">
-                <div className="st">{t.usageStep2}</div>
-                <div className="sd">{t.usageStep2Desc}</div>
+              <div className="usage-step">
+                <span className="step-number" aria-hidden="true">2</span>
+                <div className="step-content">
+                  <span className="step-title">{t.usageStep2}</span>
+                  <span className="step-desc">{t.usageStep2Desc}</span>
+                </div>
               </div>
-              <div className="step">
-                <div className="st">{t.usageStep3}</div>
-                <div className="sd">{t.usageStep3Desc}</div>
+              <div className="usage-step">
+                <span className="step-number" aria-hidden="true">3</span>
+                <div className="step-content">
+                  <span className="step-title">{t.usageStep3}</span>
+                  <span className="step-desc">{t.usageStep3Desc}</span>
+                </div>
               </div>
             </div>
-            <p className="usage-tip">{t.usageTip}</p>
+            <div className="usage-tip">
+              <span className="tip-label">{t.usageTip}</span>
+              <span className="tip-content">{t.usageTipContent}</span>
+            </div>
           </div>
         </div>
 

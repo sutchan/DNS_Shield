@@ -32,6 +32,8 @@ export interface Stats {
   commentCount: number;
   blacklistCount: number;
   whitelistCount: number;
+  customDnsCount: number;
+  totalLines: number;
   invalidCount: number;
 }
 
@@ -68,6 +70,8 @@ export interface Language {
   code: string;
   name: string;
   icon: string;
+  // 是否为从右到左书写语言（如阿拉伯语），用于切换 <html dir="rtl"> 布局。
+  rtl?: boolean;
 }
 
 

@@ -10,7 +10,6 @@ import OutputPanel from '../components/OutputPanel';
 import FlowViz from '../components/FlowViz';
 import Footer from '../components/Footer';
 import { ToastProvider } from '../components/ui/Toast';
-import Loading from '../components/ui/Loading';
 import { AppProvider } from '../context/AppContext';
 
 // 导入钩子
@@ -162,6 +161,7 @@ export default function Home() {
             sortUrls={sortUrls}
             fetchAllUrls={fetchAllUrls}
             setUrls={setUrls}
+            isLoading={isLoading}
           />
 
           <OutputPanel
@@ -185,7 +185,6 @@ export default function Home() {
 
         <Footer />
 
-        <Loading isLoading={isLoading} loadingText={t.toast.loading} />
         <ToastProvider />
       </div>
     </AppProvider>
