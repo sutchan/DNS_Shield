@@ -140,5 +140,15 @@
   "smartdnsFormat": "SmartDNS",
   "changelogLabel": "บันทึกการเปลี่ยนแปลง",
   "starLink": "Star",
-  "starLinkAria": "กดดาวให้โปรเจกต์นี้บน GitHub (เปิดในหน้าต่างใหม่)"
+  "starLinkAria": "กดดาวให้โปรเจกต์นี้บน GitHub (เปิดในหน้าต่างใหม่)",
+  "fvTagline": "แสดงภาพแบบเรียลไทม์ว่าการจราจร DNS ของคุณถูกบล็อก อนุญาต และเปลี่ยนเส้นทางอย่างไร",
+  "fvBlock": "บล็อก",
+  "fvAllow": "อนุญาต",
+  "fvDns": "เปลี่ยนเส้นทาง",
+  "fvAwait": "รอ",
+  "fvDomains": "โดเมน",
+  "psFormat": "รูปแบบ",
+  "psLines": "บรรทัด",
+  "psDomains": "โดเมน",
+  "psFormats": "รูปแบบ"
 }

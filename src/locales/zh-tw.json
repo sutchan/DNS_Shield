@@ -140,5 +140,15 @@
   "smartdnsFormat": "SmartDNS",
   "changelogLabel": "更新日誌",
   "starLink": "Star",
-  "starLinkAria": "在 GitHub 上為本專案標星（新視窗開啟）"
+  "starLinkAria": "在 GitHub 上為本專案標星（新視窗開啟）",
+  "fvTagline": "即時視覺化你的 DNS 流量如何被攔截、放行與智慧改道",
+  "fvBlock": "攔截",
+  "fvAllow": "放行",
+  "fvDns": "改道",
+  "fvAwait": "待解析",
+  "fvDomains": "個網域",
+  "psFormat": "目前格式",
+  "psLines": "行",
+  "psDomains": "個網域",
+  "psFormats": "種格式"
 }

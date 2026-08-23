@@ -42,6 +42,10 @@
   "githubLinkAria": "Visit GitHub repository (opens in new window)",
   "mergeInfo": "Click \"Generate Rules\" to view output",
   "previewPlaceholder": "// Generated rules will appear here",
+  "psFormat": "Format",
+  "psLines": "lines",
+  "psDomains": "domains",
+  "psFormats": "formats",
   "generateBtn": "Generate Rules",
   "downloadBtn": "Download",
   "copyBtn": "Copy",
@@ -140,5 +144,11 @@
   "starLink": "Star",
   "starLinkAria": "Star this project on GitHub (opens in new window)",
   "starPrompt": "If this helps, please give the project a Star ⭐",
-  "showAllFormats": "Show all output rule types"
+  "showAllFormats": "Show all output rule types",
+  "fvTagline": "Visualize in real time how your DNS traffic is blocked, allowed, and smart-routed",
+  "fvBlock": "Blocked",
+  "fvAllow": "Allowed",
+  "fvDns": "Rerouted",
+  "fvAwait": "Pending",
+  "fvDomains": "domains"
 }

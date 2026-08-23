@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.7.61
+// src/app/Home.tsx v3.7.68
 'use client';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './globals.css';
@@ -7,6 +7,7 @@ import './globals.css';
 import Header from '../components/Header';
 import InputPanel from '../components/InputPanel';
 import OutputPanel from '../components/OutputPanel';
+import FlowViz from '../components/FlowViz';
 import Footer from '../components/Footer';
 import { ToastProvider } from '../components/ui/Toast';
 import Loading from '../components/ui/Loading';
@@ -133,6 +134,8 @@ export default function Home() {
           toggleTheme={toggleTheme}
           switchLang={switchLang}
         />
+
+        <FlowViz parsedData={parsedData} />
 
         <main className="main-content" id="main-content">
           <InputPanel

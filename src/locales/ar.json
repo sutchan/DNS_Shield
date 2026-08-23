@@ -140,5 +140,15 @@
   "smartdnsFormat": "SmartDNS",
   "changelogLabel": "سجل التغييرات",
   "starLink": "Star",
-  "starLinkAria": "ضع نجمة لهذا المشروع على GitHub (يفتح في نافذة جديدة)"
+  "starLinkAria": "ضع نجمة لهذا المشروع على GitHub (يفتح في نافذة جديدة)",
+  "fvTagline": "تصوّر في الوقت الفعلي كيف يتم حظر وتسمية وإعادة توجيه حركة DNS الخاصة بك",
+  "fvBlock": "محظور",
+  "fvAllow": "مسموح",
+  "fvDns": "معاد توجيهه",
+  "fvAwait": "قيد الانتظار",
+  "fvDomains": "نطاقات",
+  "psFormat": "التنسيق",
+  "psLines": "سطر",
+  "psDomains": "نطاقات",
+  "psFormats": "تنسيقات"
 }

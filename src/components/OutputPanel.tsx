@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.7.65
+// src/components/OutputPanel.tsx v3.7.68
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -127,6 +127,26 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
           ) : (
             t.mergeInfo
           )}
+        </div>
+
+        {/* 输出预览统计条（对齐原型 previewStats）：当前格式 / 规则行数 / 域名总数 / 格式数 */}
+        <div className="preview-stats" id="preview-stats" aria-live="polite">
+          <span className="preview-stat">
+            <span className="text-muted-foreground">{t.psFormat}</span>
+            <span className="preview-stat-value">{formatLabel[currentFormat]}</span>
+          </span>
+          <span className="preview-stat">
+            <span className="preview-stat-value">{outputContent[currentFormat] ? outputContent[currentFormat].split('\n').length : 0}</span>
+            <span className="text-muted-foreground">{t.psLines}</span>
+          </span>
+          <span className="preview-stat">
+            <span className="preview-stat-value">{parsedData.domains.length + parsedData.whitelist.length + parsedData.customDns.length}</span>
+            <span className="text-muted-foreground">{t.psDomains}</span>
+          </span>
+          <span className="preview-stat">
+            <span className="preview-stat-value">{visibleFormats.length}</span>
+            <span className="text-muted-foreground">{t.psFormats}</span>
+          </span>
         </div>
 
         {/* Output Preview */}

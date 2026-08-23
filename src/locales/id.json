@@ -140,5 +140,15 @@
   "smartdnsFormat": "SmartDNS",
   "changelogLabel": "Catatan perubahan",
   "starLink": "Star",
-  "starLinkAria": "Beri bintang proyek ini di GitHub (dibuka di jendela baru)"
+  "starLinkAria": "Beri bintang proyek ini di GitHub (dibuka di jendela baru)",
+  "fvTagline": "Visualisasikan secara real-time bagaimana lalu lintas DNS Anda diblokir, diizinkan, dan dialihkan",
+  "fvBlock": "Diblokir",
+  "fvAllow": "Diizinkan",
+  "fvDns": "Dialihkan",
+  "fvAwait": "Menunggu",
+  "fvDomains": "domain",
+  "psFormat": "Format",
+  "psLines": "baris",
+  "psDomains": "domain",
+  "psFormats": "format"
 }

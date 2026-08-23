@@ -140,5 +140,15 @@
   "smartdnsFormat": "SmartDNS",
   "changelogLabel": "Değişiklik günlüğü",
   "starLink": "Star",
-  "starLinkAria": "Bu projeye GitHub'da yıldız verin (yeni pencerede açılır)"
+  "starLinkAria": "Bu projeye GitHub'da yıldız verin (yeni pencerede açılır)",
+  "fvTagline": "DNS trafiğinizin nasıl engellendiğini, izin verildiğini ve yönlendirildiğini gerçek zamanlı görselleştirin",
+  "fvBlock": "Engellendi",
+  "fvAllow": "İzin verildi",
+  "fvDns": "Yönlendirildi",
+  "fvAwait": "Bekliyor",
+  "fvDomains": "alan adı",
+  "psFormat": "Biçim",
+  "psLines": "satır",
+  "psDomains": "alan adı",
+  "psFormats": "biçim"
 }

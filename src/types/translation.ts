@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.7.65
+// src/types/translation.ts v3.7.68
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 export interface Translation {
   subtitle: string;
@@ -39,8 +39,20 @@ export interface Translation {
   removeWildcard: string;
   adguardIncludeWhitelist: string;
   showAllFormats: string;
+  // 流量可视化签名区（对齐原型 flowviz）
+  fvTagline: string;
+  fvBlock: string;
+  fvAllow: string;
+  fvDns: string;
+  fvAwait: string;
+  fvDomains: string;
   mergeInfo: string;
   previewPlaceholder: string;
+  // 输出预览统计条（对齐原型 previewStats）
+  psFormat: string;
+  psLines: string;
+  psDomains: string;
+  psFormats: string;
   generateBtn: string;
   downloadBtn: string;
   copyBtn: string;

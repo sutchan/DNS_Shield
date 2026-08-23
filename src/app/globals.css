@@ -630,6 +630,134 @@
 }
 
 /* ============================================
+   Hero + FlowViz (对齐原型 flowviz 签名可视化)
+   ============================================ */
+.hero {
+  @apply mb-6 rounded-2xl border border-border bg-card overflow-hidden;
+  background:
+    radial-gradient(120% 140% at 0% 0%, hsl(var(--primary) / 0.06), transparent 55%),
+    radial-gradient(120% 140% at 100% 0%, hsl(var(--success) / 0.05), transparent 55%);
+}
+
+.hero-inner {
+  @apply grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-6 p-5 sm:p-7 items-center;
+}
+
+.hero-copy {
+  @apply flex flex-col gap-4;
+}
+
+.hero-tagline {
+  @apply text-[1.0625rem] sm:text-[1.1875rem] font-semibold tracking-tight leading-snug;
+  letter-spacing: -0.01em;
+}
+
+.fv-legend {
+  @apply flex flex-wrap gap-x-4 gap-y-2;
+}
+
+.fv-legend-item {
+  @apply inline-flex items-center gap-1.5 text-[0.8125rem] text-muted-foreground;
+}
+
+.fv-legend-dot {
+  @apply inline-block w-2.5 h-2.5 rounded-full;
+}
+
+.fv-legend-block .fv-legend-dot { background: hsl(var(--destructive)); }
+.fv-legend-allow .fv-legend-dot { background: hsl(var(--success)); }
+.fv-legend-dns .fv-legend-dot { background: hsl(var(--warning)); }
+.fv-legend-await .fv-legend-dot { background: hsl(var(--muted-foreground) / 0.5); }
+
+.flowviz {
+  @apply flex flex-col gap-3 rounded-xl border border-border bg-background/60 p-4;
+}
+
+.fv-pipes {
+  @apply grid grid-cols-3 gap-3;
+}
+
+.fv-pipe {
+  @apply relative flex flex-col items-center gap-2 rounded-lg border border-border bg-muted/30 py-3 overflow-hidden;
+}
+
+.fv-pipe-block { box-shadow: inset 0 0 0 1px hsl(var(--destructive) / 0.18); }
+.fv-pipe-allow { box-shadow: inset 0 0 0 1px hsl(var(--success) / 0.18); }
+.fv-pipe-dns { box-shadow: inset 0 0 0 1px hsl(var(--warning) / 0.18); }
+
+.fv-signal {
+  @apply w-2 h-2 rounded-full;
+  animation: fv-pulse 2.4s ease-in-out infinite;
+}
+
+.fv-pipe-block .fv-signal { background: hsl(var(--destructive)); }
+.fv-pipe-allow .fv-signal { background: hsl(var(--success)); }
+.fv-pipe-dns .fv-signal { background: hsl(var(--warning)); }
+
+.fv-track {
+  @apply relative w-full h-32;
+}
+
+.fv-token {
+  @apply absolute left-1/2 -translate-x-1/2 w-4 h-1.5 rounded-full opacity-0;
+  top: -8%;
+  animation: fv-fall 3.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+.fv-pipe-block .fv-token { background: hsl(var(--destructive) / 0.8); }
+.fv-pipe-allow .fv-token { background: hsl(var(--success) / 0.8); }
+.fv-pipe-dns .fv-token { background: hsl(var(--warning) / 0.85); }
+
+.fv-count {
+  @apply text-sm font-semibold tabular-nums;
+}
+
+.fv-pipe-block .fv-count { color: hsl(var(--destructive)); }
+.fv-pipe-allow .fv-count { color: hsl(var(--success)); }
+.fv-pipe-dns .fv-count { color: hsl(var(--warning)); }
+
+.fv-summary {
+  @apply text-center text-[0.75rem] text-muted-foreground;
+}
+
+@keyframes fv-fall {
+  0% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
+  12% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 720%) scale(1); }
+}
+
+@keyframes fv-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+}
+
+/* ============================================
+   Output Preview Stats (对齐原型 previewStats)
+   ============================================ */
+.preview-stats {
+  @apply flex flex-wrap items-center gap-x-4 gap-y-1.5 mb-4 text-[0.75rem] text-muted-foreground;
+}
+
+.preview-stat {
+  @apply inline-flex items-center gap-1.5;
+}
+
+.preview-stat-value {
+  @apply font-semibold text-foreground tabular-nums;
+}
+
+/* Reduced-motion：flowviz 动画已在全局块统一降级（animation-duration≈0），
+   此处额外保证管道 token 静态可见，避免空管视觉效果缺失 */
+@media (prefers-reduced-motion: reduce) {
+  .fv-token {
+    opacity: 0.55 !important;
+    transform: translate(-50%, 320%) scale(1) !important;
+    animation: none !important;
+  }
+}
+
+/* ============================================
    Reduced Motion
    ============================================ */
 @media (prefers-reduced-motion: reduce) {

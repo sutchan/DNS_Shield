@@ -140,5 +140,15 @@
   "smartdnsFormat": "SmartDNS",
   "changelogLabel": "Nhật ký thay đổi",
   "starLink": "Star",
-  "starLinkAria": "Gắn sao cho dự án này trên GitHub (mở trong cửa sổ mới)"
+  "starLinkAria": "Gắn sao cho dự án này trên GitHub (mở trong cửa sổ mới)",
+  "fvTagline": "Hình dung theo thời gian thực cách lưu lượng DNS của bạn bị chặn, cho phép và chuyển hướng",
+  "fvBlock": "Đã chặn",
+  "fvAllow": "Đã cho phép",
+  "fvDns": "Chuyển hướng",
+  "fvAwait": "Chờ xử lý",
+  "fvDomains": "tên miền",
+  "psFormat": "Định dạng",
+  "psLines": "dòng",
+  "psDomains": "tên miền",
+  "psFormats": "định dạng"
 }

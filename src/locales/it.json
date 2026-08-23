@@ -140,5 +140,15 @@
   "smartdnsFormat": "SmartDNS",
   "changelogLabel": "Registro modifiche",
   "starLink": "Star",
-  "starLinkAria": "Metti una stella a questo progetto su GitHub (si apre in una nuova finestra)"
+  "starLinkAria": "Metti una stella a questo progetto su GitHub (si apre in una nuova finestra)",
+  "fvTagline": "Visualizza in tempo reale come il tuo traffico DNS viene bloccato, consentito e rirotato",
+  "fvBlock": "Bloccato",
+  "fvAllow": "Consentito",
+  "fvDns": "Rirotto",
+  "fvAwait": "In attesa",
+  "fvDomains": "domini",
+  "psFormat": "Formato",
+  "psLines": "righe",
+  "psDomains": "domini",
+  "psFormats": "formati"
 }

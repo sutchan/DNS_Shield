@@ -140,5 +140,15 @@
   "smartdnsFormat": "SmartDNS",
   "changelogLabel": "Dziennik zmian",
   "starLink": "Star",
-  "starLinkAria": "Oznacz ten projekt gwiazdką na GitHub (otwiera się w nowym oknie)"
+  "starLinkAria": "Oznacz ten projekt gwiazdką na GitHub (otwiera się w nowym oknie)",
+  "fvTagline": "Wizualizuj w czasie rzeczywistym, jak Twój ruch DNS jest blokowany, dozwolony i przekierowywany",
+  "fvBlock": "Zablokowane",
+  "fvAllow": "Dozwolone",
+  "fvDns": "Przekierowane",
+  "fvAwait": "Oczekujące",
+  "fvDomains": "domen",
+  "psFormat": "Format",
+  "psLines": "linii",
+  "psDomains": "domen",
+  "psFormats": "formatów"
 }

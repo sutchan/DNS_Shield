@@ -42,6 +42,10 @@
   "githubLinkAria": "访问 GitHub 仓库（新窗口打开）",
   "mergeInfo": "点击\"生成规则\"查看输出",
   "previewPlaceholder": "// 生成的规则将显示在这里",
+  "psFormat": "当前格式",
+  "psLines": "行",
+  "psDomains": "个域名",
+  "psFormats": "种格式",
   "generateBtn": "生成规则",
   "downloadBtn": "下载",
   "copyBtn": "复制",
@@ -140,5 +144,11 @@
   "starLink": "Star",
   "starLinkAria": "在 GitHub 上为本项目标星（新窗口打开）",
   "starPrompt": "如果对你有帮助，请给项目点个 Star ⭐",
-  "showAllFormats": "显示全部输出规则类型"
+  "showAllFormats": "显示全部输出规则类型",
+  "fvTagline": "实时可视化你的 DNS 流量如何被拦截、放行与智能改道",
+  "fvBlock": "拦截",
+  "fvAllow": "放行",
+  "fvDns": "改道",
+  "fvAwait": "待解析",
+  "fvDomains": "个域名"
 }

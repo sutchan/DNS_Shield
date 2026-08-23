@@ -140,5 +140,15 @@
   "smartdnsFormat": "SmartDNS",
   "changelogLabel": "Seznam změn",
   "starLink": "Star",
-  "starLinkAria": "Dejte tomuto projektu hvězdičku na GitHubu (otevře se v novém okně)"
+  "starLinkAria": "Dejte tomuto projektu hvězdičku na GitHubu (otevře se v novém okně)",
+  "fvTagline": "Vizualizujte v reálném čase, jak je váš DNS provoz blokován, povolován a přesměrován",
+  "fvBlock": "Blokováno",
+  "fvAllow": "Povoleno",
+  "fvDns": "Přesměrováno",
+  "fvAwait": "Čeká",
+  "fvDomains": "domén",
+  "psFormat": "Formát",
+  "psLines": "řádků",
+  "psDomains": "domén",
+  "psFormats": "formátů"
 }
