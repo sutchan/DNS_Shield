@@ -1,4 +1,4 @@
-// src/utils/formatGenerators.ts v3.8.0
+// src/utils/formatGenerators.ts v3.8.1
 // 9 种输出格式的单行规则拼接逻辑，从 rulesGenerator.ts 拆分以保持生成器主文件聚焦编排。
 // 每个 helper 返回 OutputContent（9 个格式字段），调用方按阶段累加。
 import type { Settings, CustomDnsEntry, OutputContent, Translation } from '../types';

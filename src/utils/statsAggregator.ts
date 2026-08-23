@@ -1,4 +1,4 @@
-// src/utils/statsAggregator.ts v3.8.0
+// src/utils/statsAggregator.ts v3.8.1
 // 解析结果统计聚合：从 parseDomainLine 产出的 entry 列表计算各项计数。
 // 与真实注释/空行分开统计，避免 stats 数字失真。
 import type { ParseResult, ParseStats } from '../types/formats';

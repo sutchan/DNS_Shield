@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.8.0
+// src/hooks/useRules.ts v3.8.1
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateRules as generateRulesUtil, computeEffectiveStats } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';

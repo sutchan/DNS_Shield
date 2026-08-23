@@ -1,4 +1,4 @@
-// src/utils/domainPrimitives.ts v3.8.0
+// src/utils/domainPrimitives.ts v3.8.1
 // 域名/IP 校验与规范化原始能力，供 domainValidator 编排及各格式解析器复用。
 // 解析结果类型 ParseResult/ParseStats 统一在 types/formats.ts 定义，此处仅做类型引用。
 

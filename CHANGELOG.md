@@ -5,6 +5,12 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.8.1]
+
+### Changed（原型-应用视觉对齐）
+- 流量可视化（FlowViz）DNS 信号/管道/下落 token/计数/图例点配色由 warning（黄）统一改为 primary（蓝），对齐 prototype.html 的 `fv-dot.dns`/`fv-pipe-dns`/`fv-token.dns` 设计
+- 输出预览统计条补齐顶部分隔线（border-top）与每项胶囊背景（rounded-full + muted 底），对齐原型 `.ps` 卡片式统计条样式
+
 ## [3.8.0]
 
 ### Changed（原型-应用设计对齐）
@@ -1084,7 +1090,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.8.0...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.8.1...HEAD
+[3.8.1]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.8.1
 [3.8.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.8.0
 [3.7.68]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.68
 [3.7.67]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.67

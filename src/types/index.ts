@@ -1,4 +1,4 @@
-// src/types/index.ts v3.8.0
+// src/types/index.ts v3.8.1
 // 全局类型定义集中处：Settings / ParsedData / OutputContent 等。
 // FormatType 已拆分至 formats.ts，此处统一 re-export 以保持外部契约不变。
 export type { FormatType } from './formats';

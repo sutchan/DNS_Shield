@@ -1,4 +1,4 @@
-# DNS Shield — 设计系统规范 v3.8.0
+# DNS Shield — 设计系统规范 v3.8.1
 > 基于 shadcn/ui + Tailwind CSS + Radix UI 的完整设计系统
 > 色彩空间：HSL | 设计哲学：Swiss Modernism 2.0 × Apple Precision
 

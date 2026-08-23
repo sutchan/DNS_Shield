@@ -1,4 +1,4 @@
-// src/app/layout.tsx v3.8.0
+// src/app/layout.tsx v3.8.1
 import type { ReactNode } from 'react';
 import './globals.css';
 import { Inter, JetBrains_Mono, Noto_Sans_SC, Spectral } from 'next/font/google';

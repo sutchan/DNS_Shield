@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- prototype/prototype.html v3.8.0 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
+<!-- prototype/prototype.html v3.8.1 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.8.0</title>
+  <title>DNS Shield — 高保真原型 v3.8.1</title>
   <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS 的 DNS 广告过滤规则生成器" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -584,7 +584,7 @@
           <div class="card-body" id="settingsBody">
             <div class="settings-grid">
               <div class="field"><label id="lblProjName">项目名</label><input class="input" id="projName" value="DNS Shield" /></div>
-              <div class="field"><label id="lblVer">版本</label><input class="input" id="projVer" value="3.8.0" /></div>
+              <div class="field"><label id="lblVer">版本</label><input class="input" id="projVer" value="3.8.1" /></div>
               <div class="field"><label id="lblIpv4">IPv4 重定向</label><input class="input" id="ipv4" value="127.0.0.1" /></div>
               <div class="field"><label id="lblIpv6">IPv6 重定向</label><input class="input" id="ipv6" value="::" /></div>
             </div>
@@ -675,7 +675,7 @@
       </nav>
       <div class="footer-meta" id="footerMeta">
         <span id="footerMetaText">DNS Shield · 路由器级 DNS 广告过滤规则生成器</span>
-        <span class="footer-ver" id="footerVer">v3.8.0</span>
+        <span class="footer-ver" id="footerVer">v3.8.1</span>
       </div>
     </div>
   </footer>
@@ -779,7 +779,7 @@
       neohosts: 'ad.neohost.cn\nbanner.neohost.cn\n+api.neohost.cn'
     };
 
-    var settings = { projectName: 'DNS Shield', version: '3.8.0', ipv4: '127.0.0.1', ipv6: '::',
+    var settings = { projectName: 'DNS Shield', version: '3.8.1', ipv4: '127.0.0.1', ipv6: '::',
       addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true, adguardIncludeWhitelist: true };
 
     var DOMAIN_REGEX = /^(?=.{1,253}$)([a-z0-9](-?[a-z0-9])*\.)+[a-z]{2,}$/i;

@@ -1,4 +1,4 @@
-// src/types/formats.ts v3.8.0
+// src/types/formats.ts v3.8.1
 // 输出格式枚举与格式分类常量，从 index.ts 拆分以保持类型定义文件单一职责。
 // 格式键均一一对应 rulesGenerator 的 generateRules 输出字段。
 // 同时集中解析结果/统计类型（原散落于 domainPrimitives，现归一此处）。

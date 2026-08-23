@@ -1,4 +1,4 @@
-// src/components/OutputPanel.parts.tsx v3.8.0
+// src/components/OutputPanel.parts.tsx v3.8.1
 // OutputPanel 的纯展示子组件：格式切换标签栏与预览统计条。
 // 从 OutputPanel 抽离以保持主文件 ≤200 行，遵循「组件文件拆分」规范。
 

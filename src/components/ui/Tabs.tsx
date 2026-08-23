@@ -1,4 +1,4 @@
-// src/components/ui/Tabs.tsx v3.8.0
+// src/components/ui/Tabs.tsx v3.8.1
 import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 
