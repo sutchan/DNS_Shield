@@ -96,11 +96,27 @@
     "whitelist": "Vitlista:",
     "domainsCount": "domäner",
     "project": "Projekt:",
-    "demo": "Demo:"
+    "demo": "Demo:",
+    "unboundTitle": "Unbound blocklist",
+    "unboundDescription": "local-zone-blockeringsregler för rekursiv DNS-server",
+    "unboundUsage": "Användning: lägg till innehållet i unbound.conf och ladda om",
+    "piholeTitle": "Pi-hole blocklist",
+    "piholeDescription": "0.0.0.0-domänlista kompatibel med Pi-hole gravity",
+    "piholeUsage": "Användning: lägg till som annonslista i Group Management -> Adlists",
+    "domainsTitle": "Domänblocklista",
+    "domainsDescription": "Universell lista med rena domäner (utan IP och kommentarer), kan importeras av NextDNS / AdGuard Home / ControlD",
+    "domainsUsage": "Användning: klistra in direkt som domänblocklista",
+    "bindTitle": "Bind RPZ svarspolicyzon",
+    "bindDescription": "RPZ-blockeringsposter för företags-DNS-brandvägg",
+    "bindUsage": "Användning: ladda som RPZ-zonfil (type master, file rpz.db)",
+    "smartdnsTitle": "SmartDNS blocklist",
+    "smartdnsDescription": "SmartDNS address /domain/# blockeringsregler",
+    "smartdnsUsage": "Användning: lägg till i slutet av smartdns.conf"
   },
   "whitelist": {
     "title": "Vitlista (tillåt dessa domäner)",
-    "label": "På vitlista:"
+    "label": "På vitlista:",
+    "hostsNote": "Hosts-formatet stöder inte vitlistesyntax; dessa domäner har uteslutits från blocklistan. Använd AdGuard-formatet för fullständiga tillåtelseregler"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "Användningsguide",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "Om det hjälper, ge projektet en Star ⭐",
-  "showAllFormats": "Visa alla regeltyper"
+  "showAllFormats": "Visa alla regeltyper",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "Domänlista",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "Ändringslogg",
+  "starLink": "Star",
+  "starLinkAria": "Ge detta projekt en stjärna på GitHub (öppnas i ett nytt fönster)"
 }

@@ -96,11 +96,27 @@
     "whitelist": "Whitelist:",
     "domainsCount": "domini",
     "project": "Progetto:",
-    "demo": "Demo:"
+    "demo": "Demo:",
+    "unboundTitle": "Elenco di blocco Unbound",
+    "unboundDescription": "Regole di blocco local-zone del server DNS ricorsivo",
+    "unboundUsage": "Uso: aggiungi il contenuto a unbound.conf e ricarica",
+    "piholeTitle": "Elenco di blocco Pi-hole",
+    "piholeDescription": "Elenco di domini 0.0.0.0 compatibile con Pi-hole gravity",
+    "piholeUsage": "Uso: aggiungilo come elenco blocchi in Group Management -> Adlists",
+    "domainsTitle": "Elenco di blocco domini",
+    "domainsDescription": "Elenco universale di domini puri (senza IP né commenti), importabile da NextDNS / AdGuard Home / ControlD",
+    "domainsUsage": "Uso: incollali direttamente come blacklist di domini",
+    "bindTitle": "Zona di risposta Bind RPZ",
+    "bindDescription": "Record di blocco RPZ per firewall DNS aziendale",
+    "bindUsage": "Uso: carica come file di zona RPZ (type master, file rpz.db)",
+    "smartdnsTitle": "Elenco di blocco SmartDNS",
+    "smartdnsDescription": "Regole di blocco address /domain/# di SmartDNS",
+    "smartdnsUsage": "Uso: aggiungi in fondo a smartdns.conf"
   },
   "whitelist": {
     "title": "Whitelist (consenti questi domini)",
-    "label": "In whitelist:"
+    "label": "In whitelist:",
+    "hostsNote": "Il formato hosts non supporta nativamente la sintassi della whitelist; questi domini sono stati esclusi dall'elenco di blocco. Usa il formato AdGuard per regole di consento complete"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "Guida all'uso",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "Se ti è utile, lascia una Star al progetto ⭐",
-  "showAllFormats": "Mostra tutti i tipi di regola"
+  "showAllFormats": "Mostra tutti i tipi di regola",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "Elenco domini",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "Registro modifiche",
+  "starLink": "Star",
+  "starLinkAria": "Metti una stella a questo progetto su GitHub (si apre in una nuova finestra)"
 }

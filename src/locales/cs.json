@@ -96,11 +96,27 @@
     "whitelist": "Bílá lista:",
     "domainsCount": "domén",
     "project": "Projekt:",
-    "demo": "Demo:"
+    "demo": "Demo:",
+    "unboundTitle": "Seznam blokování Unbound",
+    "unboundDescription": "Pravidla blokování local-zone rekurzivního DNS serveru",
+    "unboundUsage": "Použití: přidejte obsah do unbound.conf a znovu načtěte",
+    "piholeTitle": "Seznam blokování Pi-hole",
+    "piholeDescription": "Seznam domén 0.0.0.0 kompatibilní s Pi-hole gravity",
+    "piholeUsage": "Použití: přidejte jako seznam blokování v Group Management -> Adlists",
+    "domainsTitle": "Seznam blokování domén",
+    "domainsDescription": "Univerzální seznam čistých domén (bez IP a komentářů), importovatelný přes NextDNS / AdGuard Home / ControlD",
+    "domainsUsage": "Použití: vložte přímo jako černou listinu domén",
+    "bindTitle": "Zóna politik Bind RPZ",
+    "bindDescription": "Záznamy blokování RPZ pro podnikovou DNS bránu",
+    "bindUsage": "Použití: načtěte jako soubor zóny RPZ (type master, file rpz.db)",
+    "smartdnsTitle": "Seznam blokování SmartDNS",
+    "smartdnsDescription": "Pravidla blokování address /domain/# v SmartDNS",
+    "smartdnsUsage": "Použití: přidejte na konec smartdns.conf"
   },
   "whitelist": {
     "title": "Bílá lista (povolit tyto domény)",
-    "label": "Na bílé listě:"
+    "label": "Na bílé listě:",
+    "hostsNote": "Formát hosts nativně nepodporuje syntaxi whitelistu; tyto domény byly vyloučeny ze seznamu blokování. Pro úplná pravidla povolení použijte formát AdGuard"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "Průvodce použitím",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "Pokud se vám to hodí, dejte projektu Star ⭐",
-  "showAllFormats": "Zobrazit všechny typy pravidel"
+  "showAllFormats": "Zobrazit všechny typy pravidel",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "Seznam domén",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "Seznam změn",
+  "starLink": "Star",
+  "starLinkAria": "Dejte tomuto projektu hvězdičku na GitHubu (otevře se v novém okně)"
 }

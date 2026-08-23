@@ -96,11 +96,27 @@
     "whitelist": "Lista blanca:",
     "domainsCount": "dominios",
     "project": "Proyecto:",
-    "demo": "Demo:"
+    "demo": "Demo:",
+    "unboundTitle": "Lista de bloqueo Unbound",
+    "unboundDescription": "Reglas de bloqueo local-zone del servidor DNS recursivo",
+    "unboundUsage": "Uso: añade el contenido a unbound.conf y recarga",
+    "piholeTitle": "Lista de bloqueo Pi-hole",
+    "piholeDescription": "Lista de dominios 0.0.0.0 compatible con Pi-hole gravity",
+    "piholeUsage": "Uso: añádela como lista de anuncios en Group Management -> Adlists",
+    "domainsTitle": "Lista de bloqueo de dominios",
+    "domainsDescription": "Lista universal de dominios puros (sin IP ni comentarios), importable por NextDNS / AdGuard Home / ControlD",
+    "domainsUsage": "Uso: pégalos directamente como lista negra de dominios",
+    "bindTitle": "Zona de política de respuesta Bind RPZ",
+    "bindDescription": "Registros de bloqueo RPZ para cortafuegos DNS empresarial",
+    "bindUsage": "Uso: cárgala como archivo de zona RPZ (type master, file rpz.db)",
+    "smartdnsTitle": "Lista de bloqueo SmartDNS",
+    "smartdnsDescription": "Reglas de bloqueo address /domain/# de SmartDNS",
+    "smartdnsUsage": "Uso: añade al final de smartdns.conf"
   },
   "whitelist": {
     "title": "Lista blanca (permitir estos dominios)",
-    "label": "En lista blanca:"
+    "label": "En lista blanca:",
+    "hostsNote": "El formato hosts no admite sintaxis de lista blanca de forma nativa; los siguientes dominios se han excluido de la lista de bloqueo. Use el formato AdGuard para reglas de permiso completas"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "Guía de uso",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "Si te ayuda, por favor dale una Star al proyecto ⭐",
-  "showAllFormats": "Mostrar todos los tipos de regla"
+  "showAllFormats": "Mostrar todos los tipos de regla",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "Lista de dominios",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "Registro de cambios",
+  "starLink": "Star",
+  "starLinkAria": "Dale una estrella a este proyecto en GitHub (se abre en una nueva ventana)"
 }

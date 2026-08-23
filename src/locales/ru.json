@@ -96,11 +96,27 @@
     "whitelist": "Белый список:",
     "domainsCount": "домена",
     "project": "Проект:",
-    "demo": "Демо:"
+    "demo": "Демо:",
+    "unboundTitle": "Список блокировки Unbound",
+    "unboundDescription": "Правила блокировки local-zone рекурсивного DNS-сервера",
+    "unboundUsage": "Применение: добавьте содержимое в unbound.conf и перезагрузите",
+    "piholeTitle": "Список блокировки Pi-hole",
+    "piholeDescription": "Список доменов 0.0.0.0, совместимый с Pi-hole gravity",
+    "piholeUsage": "Применение: добавьте как список блокировки в Group Management -> Adlists",
+    "domainsTitle": "Список блокировки доменов",
+    "domainsDescription": "Универсальный список чистых доменов (без IP и комментариев), импортируется в NextDNS / AdGuard Home / ControlD",
+    "domainsUsage": "Применение: вставьте напрямую как чёрный список доменов",
+    "bindTitle": "Зона политик Bind RPZ",
+    "bindDescription": "Записи блокировки RPZ для корпоративного DNS-экрана",
+    "bindUsage": "Применение: загрузите как файл зоны RPZ (type master, file rpz.db)",
+    "smartdnsTitle": "Список блокировки SmartDNS",
+    "smartdnsDescription": "Правила блокировки address /domain/# в SmartDNS",
+    "smartdnsUsage": "Применение: добавьте в конец smartdns.conf"
   },
   "whitelist": {
     "title": "Белый список (разрешить эти домены)",
-    "label": "В белом списке:"
+    "label": "В белом списке:",
+    "hostsNote": "Формат hosts не поддерживает синтаксис белого списка; эти домены исключены из списка блокировки. Для полных правил разрешения используйте формат AdGuard"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "Руководство по использованию",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "Если помогло, поставьте проекту Star ⭐",
-  "showAllFormats": "Показывать все типы правил"
+  "showAllFormats": "Показывать все типы правил",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "Список доменов",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "Журнал изменений",
+  "starLink": "Star",
+  "starLinkAria": "Поставьте звезду этому проекту на GitHub (открывается в новом окне)"
 }

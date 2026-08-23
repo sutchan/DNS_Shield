@@ -96,11 +96,27 @@
     "whitelist": "قائمة الأبيض:",
     "domainsCount": "نطاقات",
     "project": "المشروع:",
-    "demo": "عرض توضيحي:"
+    "demo": "عرض توضيحي:",
+    "unboundTitle": "قائمة حظر Unbound",
+    "unboundDescription": "قواعد حظر local-zone لخادم DNS التعاودي",
+    "unboundUsage": "الاستخدام: أضف المحتوى إلى unbound.conf وأعد التحميل",
+    "piholeTitle": "قائمة حظر Pi-hole",
+    "piholeDescription": "قائمة نطاقات 0.0.0.0 متوافقة مع Pi-hole gravity",
+    "piholeUsage": "الاستخدام: أضفها كقائمة حظر في Group Management -> Adlists",
+    "domainsTitle": "قائمة حظر النطاقات",
+    "domainsDescription": "قائمة نطاقات صرفة عالمية (بدون IP أو تعليقات)، يمكن استيرادها عبر NextDNS / AdGuard Home / ControlD",
+    "domainsUsage": "الاستخدام: الصق مباشرة كقائمة سوداء للنطاقات",
+    "bindTitle": "منطقة سياسة الاستجابة Bind RPZ",
+    "bindDescription": "سجلات حظر RPZ لجدار حماية DNS للمؤسسات",
+    "bindUsage": "الاستخدام: حمّلها كملف منطقة RPZ (type master, file rpz.db)",
+    "smartdnsTitle": "قائمة حظر SmartDNS",
+    "smartdnsDescription": "قواعد حظر address /domain/# في SmartDNS",
+    "smartdnsUsage": "الاستخدام: أضفها في نهاية smartdns.conf"
   },
   "whitelist": {
     "title": "قائمة الأبيض (السماح بهذه النطاقات)",
-    "label": "مدرج في القائمة البيضاء:"
+    "label": "مدرج في القائمة البيضاء:",
+    "hostsNote": "لا يدعم تنسيق hosts بنية قائمة السماح أصلاً؛ تم استبعاد هذه النطاقات من قائمة الحظر. استخدم تنسيق AdGuard للحصول على قواعد سماح كاملة"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "دليل الاستخدام",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "إذا كان مفيدًا لك، يرجى منح المشروع Star ⭐",
-  "showAllFormats": "إظهار جميع أنواع القواعد"
+  "showAllFormats": "إظهار جميع أنواع القواعد",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "قائمة النطاقات",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "سجل التغييرات",
+  "starLink": "Star",
+  "starLinkAria": "ضع نجمة لهذا المشروع على GitHub (يفتح في نافذة جديدة)"
 }

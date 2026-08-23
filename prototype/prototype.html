@@ -277,7 +277,16 @@
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    .footer-ver { font-size: 12px; color: hsl(var(--muted-foreground)); }
+    #app-footer { padding: 18px 16px 22px; border-top: 1px solid hsl(var(--border)); margin-top: 12px; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .about-links { display: flex; gap: 6px; flex-wrap: wrap; }
+    .about-link { font-size: 13px; color: hsl(var(--muted-foreground)); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-md); transition: background .15s ease, color .15s ease; }
+    .about-link:hover { background: hsl(var(--secondary)); color: hsl(var(--foreground)); }
+    .footer-ver { font-size: 12px; color: hsl(var(--muted-foreground)); white-space: nowrap; }
+    .footer-meta { margin-top: 10px; font-size: 12px; color: hsl(var(--muted-foreground)); text-align: center; opacity: .85; }
+    @media (max-width: 560px) {
+      .footer-inner { flex-direction: column; align-items: center; text-align: center; }
+    }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -385,9 +394,6 @@
     /* ---- About / footer business component ---- */
     .about { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); padding: 16px; }
     .about-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-    .about-links { display: flex; gap: 6px; flex-wrap: wrap; }
-    .about-link { font-size: 13px; color: hsl(var(--muted-foreground)); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-md); }
-    .about-link:hover { background: hsl(var(--secondary)); color: hsl(var(--foreground)); }
     .usage-title { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin: 0 0 2px; color: hsl(var(--foreground)); letter-spacing: -0.01em; }
     .usage { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 14px; }
     .step { display: flex; gap: 10px; align-items: flex-start; }
@@ -599,15 +605,18 @@
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <!-- 页面最底部：GitHub 等链接 + 单一版本号（消除 about 面板与 footer 的重复版本号） -->
-  <footer class="wrap" id="app-footer" style="padding:16px; text-align:center">
-    <div class="about-links" style="justify-content:center; margin-bottom:8px">
-      <a class="about-link" id="linkGithub" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">GitHub ↗</a>
-      <a class="about-link" id="linkStar" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">★ Star</a>
-      <a class="about-link" id="linkChangelog" href="https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md" target="_blank" rel="noopener">更新日志 ↗</a><!-- i18n: linkChangelog -->
-      <a class="about-link" id="linkGuide" href="#usageGuide">使用指南</a><!-- i18n: linkGuide -->
+  <!-- 页面最底部：GitHub 等链接 + 版本号 + 版权描述（单一版本号，避免与 about 面板重复） -->
+  <footer class="wrap" id="app-footer">
+    <div class="footer-inner" id="footerInner">
+      <nav class="about-links" id="footerLinks" aria-label="页脚链接">
+        <a class="about-link" id="linkGithub" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="about-link" id="linkStar" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">★ Star</a>
+        <a class="about-link" id="linkChangelog" href="https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md" target="_blank" rel="noopener">更新日志 ↗</a><!-- i18n: linkChangelog -->
+        <a class="about-link" id="linkGuide" href="#usageGuide">使用指南</a><!-- i18n: linkGuide -->
+      </nav>
+      <span class="footer-ver" id="footerVer">v3.7.64</span>
     </div>
-    <span class="footer-ver" id="footerVer">v3.7.64</span>
+    <div class="footer-meta" id="footerMeta">DNS Shield · 路由器级 DNS 广告过滤规则生成器</div>
   </footer>
 
   <script>
@@ -632,7 +641,7 @@
         linkChangelog: '更新日志', linkGuide: '使用指南', fmtGroup: '输出规则类型',
         fvAwait: '等待流量接入…', fvBlock: '黑名单', fvAllow: '白名单', fvDns: '自定义',
         psBlock: '拦截', psAllow: '放行', psDns: '改道', psComments: '注释', psLines: '共', psLinesSuffix: '行',
-        wlHeader: '白名单列表' },
+        wlHeader: '白名单列表', footerMeta: 'DNS Shield · 路由器级 DNS 广告过滤规则生成器' },
       'en': { name: 'English', sub: 'DNS Ad-blocking Rule Generator', input: 'Domain Input', output: 'Rule Output',
         blacklist: 'Blacklist', whitelist: 'Whitelist', custom: 'Custom DNS', comments: 'Comments',
         parse: 'Generate', sort: 'Sort', dedupe: 'Dedupe', clear: 'Clear', copy: 'Copy', download: 'Download',
@@ -649,7 +658,7 @@
         linkChangelog: 'Changelog', linkGuide: 'How to Use', fmtGroup: 'Output Rule Types',
         fvAwait: 'Awaiting traffic…', fvBlock: 'blacklist', fvAllow: 'whitelist', fvDns: 'custom',
         psBlock: 'Blocked', psAllow: 'Allowed', psDns: 'Rerouted', psComments: 'Comments', psLines: 'Total', psLinesSuffix: 'lines',
-        wlHeader: 'Whitelist' }
+        wlHeader: 'Whitelist', footerMeta: 'DNS Shield · Router-level DNS ad-blocking rule generator' }
     };
     // 对齐 src/utils/i18n.ts 全部 16 种语言；第三项标记 RTL（阿拉伯语）
     var LANGS = [
@@ -1057,6 +1066,7 @@
       $('fvSummaryTxt').textContent = t.fvAwait;
       $('linkChangelog').textContent = t.linkChangelog + ' ↗';
       $('linkGuide').textContent = t.linkGuide;
+      $('footerMeta').textContent = t.footerMeta;
       $('lblFmtGroup').textContent = t.fmtGroup;
     }
     function applyTheme() {

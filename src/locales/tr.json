@@ -96,11 +96,27 @@
     "whitelist": "Beyaz Liste:",
     "domainsCount": "alan adı",
     "project": "Proje:",
-    "demo": "Demo:"
+    "demo": "Demo:",
+    "unboundTitle": "Unbound engelleme listesi",
+    "unboundDescription": "Özyinelemeli DNS sunucusunun local-zone engelleme kuralları",
+    "unboundUsage": "Kullanım: içeriği unbound.conf dosyasına ekleyin ve yeniden yükleyin",
+    "piholeTitle": "Pi-hole engelleme listesi",
+    "piholeDescription": "Pi-hole gravity ile uyumlu 0.0.0.0 alan adı listesi",
+    "piholeUsage": "Kullanım: Group Management -> Adlists bölümüne reklam listesi olarak ekleyin",
+    "domainsTitle": "Alan adı engelleme listesi",
+    "domainsDescription": "IP ve yorum içermeyen evrensel saf alan adı listesi; NextDNS / AdGuard Home / ControlD tarafından içe aktarılabilir",
+    "domainsUsage": "Kullanım: doğrudan alan adı kara listesi olarak yapıştırın",
+    "bindTitle": "Bind RPZ yanıt ilkesi bölgesi",
+    "bindDescription": "Kurumsal DNS güvenlik duvarı için RPZ engelleme kayıtları",
+    "bindUsage": "Kullanım: RPZ bölge dosyası olarak yükleyin (type master, file rpz.db)",
+    "smartdnsTitle": "SmartDNS engelleme listesi",
+    "smartdnsDescription": "SmartDNS address /domain/# engelleme kuralları",
+    "smartdnsUsage": "Kullanım: smartdns.conf dosyasının sonuna ekleyin"
   },
   "whitelist": {
     "title": "Beyaz Liste (bu alan adlarına izin ver)",
-    "label": "Beyaz listede:"
+    "label": "Beyaz listede:",
+    "hostsNote": "hosts biçimi doğal olarak beyaz liste sözdizimini desteklemez; bu etki alanları engelleme listesinden çıkarılmıştır. Tam izin kuralları için AdGuard biçimini kullanın"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "Kullanım kılavuzu",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "Yardımcı olduysa, projeye bir Star verin ⭐",
-  "showAllFormats": "Tüm çıktı kural türlerini göster"
+  "showAllFormats": "Tüm çıktı kural türlerini göster",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "Alan adı listesi",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "Değişiklik günlüğü",
+  "starLink": "Star",
+  "starLinkAria": "Bu projeye GitHub'da yıldız verin (yeni pencerede açılır)"
 }

@@ -96,11 +96,27 @@
     "whitelist": "Daftar Putih:",
     "domainsCount": "domain",
     "project": "Proyek:",
-    "demo": "Demo:"
+    "demo": "Demo:",
+    "unboundTitle": "Daftar pemblokiran Unbound",
+    "unboundDescription": "Aturan pemblokiran local-zone dari server DNS rekursif",
+    "unboundUsage": "Cara pakai: tambahkan isi ke unbound.conf lalu muat ulang",
+    "piholeTitle": "Daftar pemblokiran Pi-hole",
+    "piholeDescription": "Daftar domain 0.0.0.0 yang kompatibel dengan Pi-hole gravity",
+    "piholeUsage": "Cara pakai: tambahkan sebagai daftar iklan di Group Management -> Adlists",
+    "domainsTitle": "Daftar pemblokiran domain",
+    "domainsDescription": "Daftar domain murni universal (tanpa IP dan komentar), dapat diimpor oleh NextDNS / AdGuard Home / ControlD",
+    "domainsUsage": "Cara pakai: tempel langsung sebagai daftar blokir domain",
+    "bindTitle": "Zona kebijakan respons Bind RPZ",
+    "bindDescription": "Catatan pemblokiran RPZ untuk firewall DNS perusahaan",
+    "bindUsage": "Cara pakai: muat sebagai file zona RPZ (type master, file rpz.db)",
+    "smartdnsTitle": "Daftar pemblokiran SmartDNS",
+    "smartdnsDescription": "Aturan pemblokiran address /domain/# SmartDNS",
+    "smartdnsUsage": "Cara pakai: tambahkan di akhir smartdns.conf"
   },
   "whitelist": {
     "title": "Daftar Putih (izinkan domain ini)",
-    "label": "Daftar Putih:"
+    "label": "Daftar Putih:",
+    "hostsNote": "Format hosts tidak mendukung sintaks daftar putih secara native; domain berikut dikecualikan dari daftar blokir. Gunakan format AdGuard untuk aturan izin lengkap"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "Panduan penggunaan",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "Jika membantu, mohon berikan Star pada proyek ⭐",
-  "showAllFormats": "Tampilkan semua jenis aturan"
+  "showAllFormats": "Tampilkan semua jenis aturan",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "Daftar domain",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "Catatan perubahan",
+  "starLink": "Star",
+  "starLinkAria": "Beri bintang proyek ini di GitHub (dibuka di jendela baru)"
 }

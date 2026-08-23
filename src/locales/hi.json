@@ -96,11 +96,27 @@
     "whitelist": "व्हाइटलिस्ट:",
     "domainsCount": "डोमेन",
     "project": "परियोजना:",
-    "demo": "डेमो:"
+    "demo": "डेमो:",
+    "unboundTitle": "Unbound ब्लॉक सूची",
+    "unboundDescription": "पुनरावर्ती DNS सर्वर के local-zone ब्लॉक नियम",
+    "unboundUsage": "उपयोग: सामग्री को unbound.conf में जोड़ें और पुनः लोड करें",
+    "piholeTitle": "Pi-hole ब्लॉक सूची",
+    "piholeDescription": "Pi-hole gravity के अनुकूल 0.0.0.0 डोमेन सूची",
+    "piholeUsage": "उपयोग: Group Management -> Adlists में विज्ञापन सूची के रूप में जोड़ें",
+    "domainsTitle": "डोमेन ब्लॉक सूची",
+    "domainsDescription": "सार्वभौमिक शुद्ध डोमेन सूची (IP और टिप्पणी रहित), जिसे NextDNS / AdGuard Home / ControlD आयात कर सकते हैं",
+    "domainsUsage": "उपयोग: इसे सीधे डोमेन ब्लैकलिस्ट के रूप में चिपकाएँ",
+    "bindTitle": "Bind RPZ प्रतिक्रिया नीति क्षेत्र",
+    "bindDescription": "उद्यम DNS फ़ायरवॉल के लिए RPZ ब्लॉक रिकॉर्ड",
+    "bindUsage": "उपयोग: इसे RPZ क्षेत्र फ़ाइल के रूप में लोड करें (type master, file rpz.db)",
+    "smartdnsTitle": "SmartDNS ब्लॉक सूची",
+    "smartdnsDescription": "SmartDNS के address /domain/# ब्लॉक नियम",
+    "smartdnsUsage": "उपयोग: इसे smartdns.conf के अंत में जोड़ें"
   },
   "whitelist": {
     "title": "व्हाइटलिस्ट (इन डोमेनों की अनुमति दें)",
-    "label": "व्हाइटलिस्ट में:"
+    "label": "व्हाइटलिस्ट में:",
+    "hostsNote": "hosts प्रारूप स्वाभाविक रूप से व्हाइटलिस्ट सिंटैक्स का समर्थन नहीं करता; इन डोमेन को ब्लॉक सूची से बाहर रखा गया है। पूर्ण अनुमति नियमों के लिए AdGuard प्रारूप का उपयोग करें"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "उपयोग गाइड",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "अगर यह मददगार है, तो प्रोजेक्ट को Star दें ⭐",
-  "showAllFormats": "सभी आउटपुट नियम प्रकार दिखाएँ"
+  "showAllFormats": "सभी आउटपुट नियम प्रकार दिखाएँ",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "डोमेन सूची",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "परिवर्तन लॉग",
+  "starLink": "Star",
+  "starLinkAria": "GitHub पर इस परियोजना को स्टार करें (नई विंडो में खुलता है)"
 }

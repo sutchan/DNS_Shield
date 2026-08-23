@@ -96,11 +96,27 @@
     "whitelist": "Biała lista:",
     "domainsCount": "domen",
     "project": "Projekt:",
-    "demo": "Demo:"
+    "demo": "Demo:",
+    "unboundTitle": "Lista blokad Unbound",
+    "unboundDescription": "Reguły blokowania local-zone rekursywnego serwera DNS",
+    "unboundUsage": "Użycie: dodaj zawartość do unbound.conf i przeładuj",
+    "piholeTitle": "Lista blokad Pi-hole",
+    "piholeDescription": "Lista domen 0.0.0.0 zgodna z Pi-hole gravity",
+    "piholeUsage": "Użycie: dodaj jako listę blokad w Group Management -> Adlists",
+    "domainsTitle": "Lista blokad domen",
+    "domainsDescription": "Uniwersalna lista czystych domen (bez IP i komentarzy), importowalna przez NextDNS / AdGuard Home / ControlD",
+    "domainsUsage": "Użycie: wklej bezpośrednio jako czarną listę domen",
+    "bindTitle": "Strefa polityki odpowiedzi Bind RPZ",
+    "bindDescription": "Rekordy blokowania RPZ dla firmowej zapory DNS",
+    "bindUsage": "Użycie: załaduj jako plik strefy RPZ (type master, file rpz.db)",
+    "smartdnsTitle": "Lista blokad SmartDNS",
+    "smartdnsDescription": "Reguły blokowania address /domain/# w SmartDNS",
+    "smartdnsUsage": "Użycie: dodaj na koniec smartdns.conf"
   },
   "whitelist": {
     "title": "Biała lista (zezwól na te domeny)",
-    "label": "Na białej liście:"
+    "label": "Na białej liście:",
+    "hostsNote": "Format hosts natywnie nie obsługuje składni listy dozwolonych; te domeny wykluczono z listy blokad. Użyj formatu AdGuard dla pełnych reguł zezwalania"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "Przewodnik użytkowania",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "Jeśli to pomaga, oceń projekt Star ⭐",
-  "showAllFormats": "Pokaż wszystkie typy reguł"
+  "showAllFormats": "Pokaż wszystkie typy reguł",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "Lista domen",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "Dziennik zmian",
+  "starLink": "Star",
+  "starLinkAria": "Oznacz ten projekt gwiazdką na GitHub (otwiera się w nowym oknie)"
 }

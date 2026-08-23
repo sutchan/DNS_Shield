@@ -96,11 +96,27 @@
     "whitelist": "Danh sách trắng:",
     "domainsCount": "miền",
     "project": "Dự án:",
-    "demo": "Demo:"
+    "demo": "Demo:",
+    "unboundTitle": "Danh sách chặn Unbound",
+    "unboundDescription": "Quy tắc chặn local-zone của máy chủ DNS đệ quy",
+    "unboundUsage": "Cách dùng: thêm nội dung vào unbound.conf rồi tải lại",
+    "piholeTitle": "Danh sách chặn Pi-hole",
+    "piholeDescription": "Danh sách tên miền 0.0.0.0 tương thích với Pi-hole gravity",
+    "piholeUsage": "Cách dùng: thêm vào Group Management -> Adlists với tư cách danh sách quảng cáo",
+    "domainsTitle": "Danh sách chặn tên miền",
+    "domainsDescription": "Danh sách tên miền thuần phổ dụng (không có IP và chú thích), có thể nhập bởi NextDNS / AdGuard Home / ControlD",
+    "domainsUsage": "Cách dùng: dán trực tiếp làm danh sách đen tên miền",
+    "bindTitle": "Vùng chính sách phản hồi Bind RPZ",
+    "bindDescription": "Bản ghi chặn RPZ cho tường lửa DNS doanh nghiệp",
+    "bindUsage": "Cách dùng: tải dưới dạng tệp vùng RPZ (type master, file rpz.db)",
+    "smartdnsTitle": "Danh sách chặn SmartDNS",
+    "smartdnsDescription": "Quy tắc chặn address /domain/# của SmartDNS",
+    "smartdnsUsage": "Cách dùng: thêm vào cuối smartdns.conf"
   },
   "whitelist": {
     "title": "Danh sách trắng (cho phép các miền này)",
-    "label": "Trong danh sách trắng:"
+    "label": "Trong danh sách trắng:",
+    "hostsNote": "Định dạng hosts không hỗ trợ cú pháp danh sách trắng; các tên miền này đã bị loại khỏi danh sách chặn. Hãy dùng định dạng AdGuard để có quy tắc cho phép đầy đủ"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "Hướng dẫn sử dụng",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "Nếu hữu ích, hãy tặng dự án một Star ⭐",
-  "showAllFormats": "Hiển thị tất cả loại quy tắc đầu ra"
+  "showAllFormats": "Hiển thị tất cả loại quy tắc đầu ra",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "Danh sách tên miền",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "Nhật ký thay đổi",
+  "starLink": "Star",
+  "starLinkAria": "Gắn sao cho dự án này trên GitHub (mở trong cửa sổ mới)"
 }

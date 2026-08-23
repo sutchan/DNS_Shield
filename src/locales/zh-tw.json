@@ -96,11 +96,27 @@
     "whitelist": "白名單:",
     "domainsCount": "個域名",
     "project": "專案:",
-    "demo": "演示:"
+    "demo": "演示:",
+    "unboundTitle": "Unbound 廣告過濾列表",
+    "unboundDescription": "遞歸 DNS 伺服器的 local-zone 攔截規則",
+    "unboundUsage": "使用方法: 將內容追加到 unbound.conf，並 reload",
+    "piholeTitle": "Pi-hole 廣告過濾列表",
+    "piholeDescription": "相容 Pi-hole gravity 的 0.0.0.0 域名列表",
+    "piholeUsage": "使用方法: 作為廣告列表添加到 Group Management -> Adlists",
+    "domainsTitle": "純域名封鎖列表",
+    "domainsDescription": "通用純域名列表（不含 IP 與註釋），可被 NextDNS / AdGuard Home / ControlD 等直接匯入",
+    "domainsUsage": "使用方法: 直接貼上為域名黑名單",
+    "bindTitle": "Bind RPZ 回應策略區",
+    "bindDescription": "企業級 DNS 防火牆的 RPZ 攔截記錄",
+    "bindUsage": "使用方法: 作為 RPZ 區域檔案載入 (type master, file rpz.db)",
+    "smartdnsTitle": "SmartDNS 廣告過濾列表",
+    "smartdnsDescription": "SmartDNS 的 address /domain/# 攔截規則",
+    "smartdnsUsage": "使用方法: 追加到 smartdns.conf"
   },
   "whitelist": {
     "title": "白名單 (允許這些域名)",
-    "label": "已白名單:"
+    "label": "已白名單:",
+    "hostsNote": "hosts 格式原生不支援白名單語法；以下網域已從攔截清單中排除，完整放行規則請使用 AdGuard 格式"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "使用指南",
   "changelogLinkAria": "查看更新日誌（新視窗開啟）",
   "starPrompt": "如果對你有幫助，請給專案點個 Star ⭐",
-  "showAllFormats": "顯示全部輸出規則類型"
+  "showAllFormats": "顯示全部輸出規則類型",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "純域名列表",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "更新日誌",
+  "starLink": "Star",
+  "starLinkAria": "在 GitHub 上為本專案標星（新視窗開啟）"
 }

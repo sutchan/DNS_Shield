@@ -96,11 +96,27 @@
     "whitelist": "รายการขาว:",
     "domainsCount": "โดเมน",
     "project": "โปรเจค:",
-    "demo": "เดโม:"
+    "demo": "เดโม:",
+    "unboundTitle": "รายการบล็อก Unbound",
+    "unboundDescription": "กฎการบล็อก local-zone ของเซิร์ฟเวอร์ DNS แบบเรียกซ้ำ",
+    "unboundUsage": "วิธีใช้: นำเนื้อหาไปเพิ่มใน unbound.conf แล้วโหลดใหม่",
+    "piholeTitle": "รายการบล็อก Pi-hole",
+    "piholeDescription": "รายการโดเมน 0.0.0.0 ที่เข้ากับ Pi-hole gravity",
+    "piholeUsage": "วิธีใช้: เพิ่มเป็นรายการโฆษณาใน Group Management -> Adlists",
+    "domainsTitle": "รายการบล็อกโดเมน",
+    "domainsDescription": "รายการโดเมนธรรมดาแบบสากล (ไม่มี IP และคำอธิบาย) นำเข้าได้โดย NextDNS / AdGuard Home / ControlD",
+    "domainsUsage": "วิธีใช้: วางเป็นรายการดำรายการโดเมนโดยตรง",
+    "bindTitle": "โซนนโยบายการตอบสนอง Bind RPZ",
+    "bindDescription": "เรคคอร์ดบล็อก RPZ สำหรับไฟร์วอลล์ DNS ระดับองค์กร",
+    "bindUsage": "วิธีใช้: โหลดเป็นไฟล์โซน RPZ (type master, file rpz.db)",
+    "smartdnsTitle": "รายการบล็อก SmartDNS",
+    "smartdnsDescription": "กฎการบล็อก address /domain/# ของ SmartDNS",
+    "smartdnsUsage": "วิธีใช้: เพิ่มไปที่ท้าย smartdns.conf"
   },
   "whitelist": {
     "title": "รายการขาว (อนุญาตโดเมนเหล่านี้)",
-    "label": "ในรายการขาว:"
+    "label": "ในรายการขาว:",
+    "hostsNote": "รูปแบบ hosts ไม่รองรับไวยากรณ์รายชื่ออนุญาตโดยกำเนิด; โดเมนเหล่านี้ถูกตัดออกจากรายการบล็อก ใช้รูปแบบ AdGuard สำหรับกฎอนุญาตแบบเต็ม"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "คู่มือการใช้งาน",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "หากมีประโยชน์ โปรดกด Star ให้โปรเจกต์ ⭐",
-  "showAllFormats": "แสดงประเภทกฎเอาต์พุตทั้งหมด"
+  "showAllFormats": "แสดงประเภทกฎเอาต์พุตทั้งหมด",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "รายการโดเมน",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "บันทึกการเปลี่ยนแปลง",
+  "starLink": "Star",
+  "starLinkAria": "กดดาวให้โปรเจกต์นี้บน GitHub (เปิดในหน้าต่างใหม่)"
 }

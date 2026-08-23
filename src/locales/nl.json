@@ -96,11 +96,27 @@
     "whitelist": "Whitelist:",
     "domainsCount": "domeinen",
     "project": "Project:",
-    "demo": "Demo:"
+    "demo": "Demo:",
+    "unboundTitle": "Unbound blokkeringslijst",
+    "unboundDescription": "local-zone blokeringsregels van de recursieve DNS-server",
+    "unboundUsage": "Gebruik: voeg de inhoud toe aan unbound.conf en herlaad",
+    "piholeTitle": "Pi-hole blokkeringslijst",
+    "piholeDescription": "0.0.0.0-domeinlijst compatibel met Pi-hole gravity",
+    "piholeUsage": "Gebruik: voeg toe als adlist in Group Management -> Adlists",
+    "domainsTitle": "Domeinblokkeringslijst",
+    "domainsDescription": "Universele lijst met zuivere domeinen (zonder IP of opmerkingen), importeerbaar door NextDNS / AdGuard Home / ControlD",
+    "domainsUsage": "Gebruik: plak rechtstreeks als domeinblacklist",
+    "bindTitle": "Bind RPZ responsbeleidzone",
+    "bindDescription": "RPZ-blokkeringsrecords voor bedrijfs-DNS-firewall",
+    "bindUsage": "Gebruik: laad als RPZ-zonebestand (type master, file rpz.db)",
+    "smartdnsTitle": "SmartDNS blokkeringslijst",
+    "smartdnsDescription": "SmartDNS address /domain/# blokeringsregels",
+    "smartdnsUsage": "Gebruik: voeg toe aan het einde van smartdns.conf"
   },
   "whitelist": {
     "title": "Whitelist (toestaan van deze domeinen)",
-    "label": "In whitelist:"
+    "label": "In whitelist:",
+    "hostsNote": "Het hosts-formaat ondersteunt geen whitelist-syntaxis; deze domeinen zijn uit de blokeringslijst verwijderd. Gebruik het AdGuard-formaat voor volledige toestaan-regels"
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
@@ -116,5 +132,13 @@
   "usageGuideAria": "Gebruikshandleiding",
   "changelogLinkAria": "View changelog (opens in new window)",
   "starPrompt": "Als dit helpt, geef het project dan een Star ⭐",
-  "showAllFormats": "Toon alle regeltypen"
+  "showAllFormats": "Toon alle regeltypen",
+  "unboundFormat": "Unbound",
+  "piholeFormat": "Pi-hole",
+  "domainsFormat": "Domeinlijst",
+  "bindFormat": "Bind (RPZ)",
+  "smartdnsFormat": "SmartDNS",
+  "changelogLabel": "Wijzigingslog",
+  "starLink": "Star",
+  "starLinkAria": "Geef dit project een ster op GitHub (opent in een nieuw venster)"
 }
