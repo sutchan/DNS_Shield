@@ -120,7 +120,7 @@
   },
   "hostsFormat": "Hosts",
   "dnsmasqFormat": "Dnsmasq",
-  "mergeStats": "黑名單: {blacklist} | 白名單: {whitelist} | 自訂DNS: {customDns}",
+  "mergeStats": "黑名單: {blacklist} | 白名單: {whitelist} | 改道: {customDns}",
   "versionLabel": "版本",
   "languageSelectorAria": "選擇語言",
   "statsAria": "統計資訊",

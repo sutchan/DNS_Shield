@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- prototype/prototype.html v3.7.64 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
+<!-- prototype/prototype.html v3.7.68 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.7.64</title>
+  <title>DNS Shield — 高保真原型 v3.7.68</title>
   <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS 的 DNS 广告过滤规则生成器" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -92,10 +92,11 @@
     .brand { display: flex; align-items: center; gap: 10px; }
     .brand-icon {
       width: 32px; height: 32px; border-radius: var(--radius-md);
-      background: hsl(var(--primary)); color: hsl(var(--primary-foreground));
-      display: grid; place-items: center;
+      background: transparent; color: hsl(var(--primary-foreground));
+      display: grid; place-items: center; overflow: hidden;
     }
-    .brand-title { font-family: var(--font-serif); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+    .brand-icon img { width: 32px; height: 32px; object-fit: contain; display: block; }
+    .brand-title { font-family: var(--font-serif); font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
     .brand-sub { font-size: 12px; color: hsl(var(--muted-foreground)); font-weight: 500; }
     .header-actions { display: flex; align-items: center; gap: 8px; }
 
@@ -104,7 +105,7 @@
       height: 36px; padding: 0 14px; border-radius: var(--radius-md);
       font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid transparent;
       transition: background-color .15s cubic-bezier(0.16,1,0.3,1), transform .1s, border-color .15s, opacity .15s;
-      white-space: nowrap; user-select: none;
+      white-space: nowrap; user-select: none; text-decoration: none;
     }
     .btn:active { transform: scale(0.97); }
     .btn-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
@@ -145,7 +146,7 @@
       background: hsl(var(--muted)); border-radius: 999px;
       padding: 6px 16px; min-width: 64px;
     }
-    .stat-value { font-family: var(--font-serif); font-size: 15px; font-weight: 600; line-height: 1.1; }
+    .stat-value { font-family: var(--font-sans); font-size: 15px; font-weight: 600; line-height: 1.1; }
     .stat-label { font-size: 12px; color: hsl(var(--muted-foreground)); }
     .stat-dot { width: 6px; height: 6px; border-radius: 50%; flex: 0 0 6px; }
     .stat-dot.block { background: hsl(var(--destructive)); }
@@ -183,14 +184,14 @@
     }
     textarea#editor:focus { border-color: hsl(var(--ring)); box-shadow: 0 0 0 3px hsl(var(--ring) / .2); }
     /* 主编辑区：gutter 与 textarea 等高对齐、紧贴无间隙，避免数据多时错位/撑破 */
-    #editorRow { align-items: stretch; gap: 0; max-height: 436px; overflow: hidden; }
+    #editorRow { align-items: stretch; gap: 0; max-height: 436px; overflow: hidden; margin-top: 12px; }
 
     .toolbar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 
     /* Presets */
-    .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+    .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
     .preset {
-      font-size: 13px; padding: 4px 10px; border-radius: 9999px; cursor: pointer;
+      font-size: 12px; padding: 2px 9px; border-radius: 9999px; cursor: pointer;
       background: hsl(var(--accent)); color: hsl(var(--accent-foreground));
       border: 1px solid transparent; transition: background .15s, transform .1s;
     }
@@ -242,7 +243,7 @@
     .preview .wl { color: hsl(var(--success)); }
     .preview .empty-hint { color: hsl(var(--muted-foreground)); font-style: italic; white-space: normal; }
     /* 预览区统计条：反映当前输出维度 */
-    .preview-stats { display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 10px; font-size: 12px; color: hsl(var(--muted-foreground)); }
+    .preview-stats { display: flex; flex-wrap: wrap; gap: 6px 10px; margin-top: 10px; padding-top: 10px; border-top: 1px solid hsl(var(--border)); font-size: 12px; color: hsl(var(--muted-foreground)); }
     .preview-stats .ps { display: inline-flex; align-items: center; gap: 5px; background: hsl(var(--muted)); border-radius: 999px; padding: 3px 10px; }
     .preview-stats .ps b { font-weight: 700; color: hsl(var(--foreground)); }
     .preview-stats .ps-dot { width: 6px; height: 6px; border-radius: 50%; flex: 0 0 6px; }
@@ -277,15 +278,19 @@
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    #app-footer { padding: 18px 16px 22px; border-top: 1px solid hsl(var(--border)); margin-top: 12px; }
+    #app-footer { padding: 18px 16px 22px; margin-top: 12px; }
     .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    .about-links { display: flex; gap: 6px; flex-wrap: wrap; }
+    .about-links { display: flex; gap: 6px; flex-wrap: nowrap; }
     .about-link { font-size: 13px; color: hsl(var(--muted-foreground)); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-md); transition: background .15s ease, color .15s ease; }
     .about-link:hover { background: hsl(var(--secondary)); color: hsl(var(--foreground)); }
     .footer-ver { font-size: 12px; color: hsl(var(--muted-foreground)); white-space: nowrap; }
-    .footer-meta { margin-top: 10px; font-size: 12px; color: hsl(var(--muted-foreground)); text-align: center; opacity: .85; }
+    .footer-meta { font-size: 12px; color: hsl(var(--muted-foreground)); text-align: right; opacity: .85; display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+    .footer-meta .footer-ver { margin: 0; }
     @media (max-width: 560px) {
       .footer-inner { flex-direction: column; align-items: center; text-align: center; }
+      .about-links { flex-wrap: nowrap; max-width: 100%; overflow-x: auto; justify-content: center; }
+      .footer-meta { text-align: center; justify-content: center; }
+      .usage { grid-template-columns: 1fr; }
     }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
@@ -315,6 +320,13 @@
     @keyframes settingsPop { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
     @media (prefers-reduced-motion: reduce) { .settings-dialog { animation: none; } }
     .check { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; cursor: pointer; user-select: none; }
+    /* ---- 使用指南弹窗内容 ---- */
+    .guide-steps { display: flex; flex-direction: column; gap: 14px; }
+    .guide-note { margin-top: 18px; padding: 14px 16px; background: hsl(var(--secondary)); border-radius: var(--radius-md); }
+    .guide-note-title { font-size: 13px; font-weight: 600; color: hsl(var(--foreground)); margin-bottom: 8px; }
+    .guide-list { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: hsl(var(--muted-foreground)); line-height: 1.5; }
+    .guide-list code { font-family: var(--font-mono); font-size: 12px; background: hsl(var(--muted)); padding: 1px 5px; border-radius: 4px; color: hsl(var(--foreground)); }
+    .guide-list b { color: hsl(var(--foreground)); }
     .box {
       width: 16px; height: 16px; border: 1.5px solid hsl(var(--primary)); border-radius: 4px;
       display: grid; place-items: center; background: transparent; transition: background .15s;
@@ -322,14 +334,21 @@
     .box.on { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
     .box svg { width: 11px; height: 11px; opacity: 0; }
     .box.on svg { opacity: 1; }
+    /* ---- 深浅色分段开关 ---- */
+    .theme-switch { position: relative; display: inline-flex; padding: 3px; background: hsl(var(--muted)); border: 1px solid hsl(var(--border)); border-radius: 999px; gap: 0; }
+    .theme-seg { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px; border: 0; background: transparent; font-size: 13px; font-family: inherit; color: hsl(var(--muted-foreground)); cursor: pointer; border-radius: 999px; transition: color .18s ease; white-space: nowrap; }
+    .theme-seg svg { display: block; }
+    .theme-seg[aria-pressed="true"] { color: hsl(var(--primary-foreground)); }
+    .theme-thumb { position: absolute; z-index: 0; top: 3px; bottom: 3px; left: 3px; width: calc(50% - 3px); background: hsl(var(--primary)); border-radius: 999px; box-shadow: 0 1px 3px rgba(15,23,42,.25); transition: transform .2s cubic-bezier(.4,0,.2,1); }
+    .theme-switch[data-active="dark"] .theme-thumb { transform: translateX(100%); }
+    .theme-switch:focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) { .theme-thumb { transition: none; } }
 
     /* ---- URL import section (对齐 src/components/UrlSection.tsx) ---- */
     .editor-row { display: flex; gap: 8px; align-items: center; min-width: 0; }
     .editor-row .input { flex: 1; min-width: 0; }
     .url-bar { margin-top: 16px; margin-bottom: 12px; }
     .url-bar .hint { font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 5px; }
-    /* URL 导入提示移到统计条右侧 */
-    #stats #urlHint { text-align: left; font-size: 12px; color: hsl(var(--muted-foreground)); }
     .loading-bar { height: 3px; width: 100%; background: hsl(var(--muted)); border-radius: 2px; overflow: hidden; margin-top: 8px; opacity: 0; visibility: hidden; transition: opacity .2s; }
     .loading-bar.on { opacity: 1; visibility: visible; }
     .loading-bar .fill { height: 100%; width: 40%; background: hsl(var(--primary)); animation: indet 1.2s ease-in-out infinite; }
@@ -345,15 +364,14 @@
     .hero-copy { max-width: 520px; }
     /* 桌面端：hero 用与下方 .grid 相同的 1fr 1fr 栅格，使 flowviz 列宽 == #output-panel 列宽 */
     @media (min-width: 768px) {
-      .hero-top { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 24px; }
+      .hero-top { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; gap: 24px; }
       .hero-copy { max-width: none; }
     }
     .hero-kicker { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: hsl(var(--primary)); }
     .hero-title { font-family: var(--font-serif); font-size: 28px; font-weight: 700; letter-spacing: -0.015em; line-height: 1.15; margin: 8px 0 6px; }
     .hero-desc { font-size: 14px; color: hsl(var(--muted-foreground)); }
-    .hero-cta { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
     /* flowviz：DNS 流量管制台 —— 标题行 + 签名下落动画轨道 */
-    .flowviz { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+    .flowviz { display: flex; flex-direction: column; gap: 8px; width: 100%; height: 100%; }
     .flowviz-row { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
     .fv-dot { width: 7px; height: 7px; border-radius: 50%; flex: 0 0 7px; }
     .fv-dot.block { background: hsl(var(--destructive)); }
@@ -362,7 +380,7 @@
     .fv-name { color: hsl(var(--muted-foreground)); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 150px; }
     /* 签名元素：域名从顶部落入的实时流量管道 */
     .fv-track {
-      position: relative; height: 140px; overflow: hidden; border-radius: var(--radius-md);
+      position: relative; flex: 1; min-height: 80px; overflow: hidden; border-radius: var(--radius-md);
       background: hsl(var(--muted) / .5); border: 1px solid hsl(var(--border));
     }
     .fv-track::before {
@@ -392,13 +410,13 @@
     }
 
     /* ---- About / footer business component ---- */
-    .about { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius-lg); padding: 16px; }
+    .about { background: hsl(var(--card)); border: 0; border-radius: var(--radius-lg); padding: 16px; margin-top: 18px; text-align: left; }
     .about-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
     .usage-title { font-family: var(--font-serif); font-size: 18px; font-weight: 700; margin: 0 0 2px; color: hsl(var(--foreground)); letter-spacing: -0.01em; }
-    .usage { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 14px; }
+    .usage { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
     .step { display: flex; gap: 10px; align-items: flex-start; }
     .step .n { width: 22px; height: 22px; flex: 0 0 22px; border-radius: 50%; background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); display: grid; place-items: center; font-size: 12px; font-weight: 700; }
-    .step .st { font-family: var(--font-serif); font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+    .step .st { font-family: var(--font-sans); font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
     .step .sd { font-size: 12px; color: hsl(var(--muted-foreground)); }
   </style>
 </head>
@@ -407,8 +425,7 @@
     <div class="wrap header-inner">
       <div class="brand">
         <div class="brand-icon" id="brandIcon" aria-hidden="true">
-          <!-- 与 public/logo.svg 同源：真实盾形 path + 白色勾选（viewBox 保持原始比例，造型零漂移） -->
-          <svg width="20" height="20" viewBox="0 0 135.46 169.33" fill="#0D5FE2" aria-hidden="true"><path d="M67.73 0l-67.73 25.4 0 59.27c0,42.33 29.63,71.97 67.73,84.67 38.1,-12.7 67.73,-42.33 67.73,-84.67l0 -59.27 -67.73 -25.4z"/><polyline points="38.1,86.36 57.57,105.83 94.82,68.58" fill="none" stroke="#ffffff" stroke-width="16.93" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <img src="../public/logo.svg" alt="" width="32" height="32" />
         </div>
         <div>
           <div class="brand-title">DNS Shield</div>
@@ -423,8 +440,8 @@
           </button>
           <div class="dd-menu" id="langMenu" role="menu"></div>
         </div>
-        <button class="btn btn-ghost icon-btn" id="themeBtn" aria-label="切换主题">
-          <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <button class="btn btn-ghost icon-btn" id="shareBtn" aria-label="分享">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
         </button>
         <button class="btn btn-ghost icon-btn" id="settingsBtn" aria-label="打开设置" aria-haspopup="dialog">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -442,9 +459,14 @@
             <span class="hero-kicker" id="heroKicker"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/></svg> <span id="heroKickerTxt">路由器级 DNS 防护</span></span>
             <h1 class="hero-title" id="heroTitle">把广告与追踪域名，挡在网络入口</h1>
             <p class="hero-desc" id="heroDesc">粘贴域名或批量导入，一键生成 9 种格式规则，直接部署到路由器或 DNS 服务。</p>
-            <div class="hero-cta" id="heroCta">
-              <a class="btn btn-primary btn-sm" href="#input-panel" id="ctaStart">开始生成</a>
-              <a class="btn btn-outline btn-sm" href="#app-footer" id="ctaSettings">配置设置</a>
+            <!-- About 业务组件：保留使用指南（链接与版本号统一移至页面最底部 footer） -->
+            <div class="about" id="about-panel">
+              <h2 class="usage-title" id="usageTitle">使用指南</h2><!-- i18n: usageTitle -->
+              <div class="usage" id="usageGuide">
+                <div class="step"><span class="n">1</span><div><div class="st" id="step1t">输入域名</div><div class="sd" id="step1d">粘贴或导入广告域名</div></div></div>
+                <div class="step"><span class="n">2</span><div><div class="st" id="step2t">选择格式</div><div class="sd" id="step2d">dnsmasq / hosts / AdGuard…</div></div></div>
+                <div class="step"><span class="n">3</span><div><div class="st" id="step3t">导出部署</div><div class="sd" id="step3d">复制到路由器或 DNS 服务</div></div></div>
+              </div>
             </div>
           </div>
           <div class="flowviz" id="flowviz" aria-label="DNS 拦截流实时概览">
@@ -479,15 +501,16 @@
             <input class="input" id="urlInput" placeholder="从 URL 批量导入域名，例如 https://example.com/ads.txt" data-i18n-ph="urlPlaceholder" />
             <button class="btn btn-primary btn-sm" id="urlFetchBtn"><span id="lblFetch">获取</span></button>
           </div>
+          <div class="hint" id="urlHint">支持 hosts / dnsmasq / AdGuard / 纯域名 混合格式，单行 10MB 上限</div><!-- i18n: urlHint -->
           <div class="loading-bar" id="urlLoading"><div class="fill"></div></div>
         </div>
 
         <div class="stats" id="stats">
           <div class="stat"><span class="stat-dot block"></span><span class="stat-value" id="statDomains">0</span><span class="stat-label" id="lblDomains">黑名单</span></div>
           <div class="stat"><span class="stat-dot allow"></span><span class="stat-value" id="statWhitelist">0</span><span class="stat-label" id="lblWhitelist">白名单</span></div>
-          <div class="stat"><span class="stat-dot dns"></span><span class="stat-value" id="statCustom">0</span><span class="stat-label" id="lblCustom">自定义DNS</span></div>
+          <div class="stat"><span class="stat-dot dns"></span><span class="stat-value" id="statCustom">0</span><span class="stat-label" id="lblCustom">改道</span></div>
           <div class="stat"><span class="stat-value" id="statComments">0</span><span class="stat-label" id="lblComments">注释</span></div>
-          <div class="hint" id="urlHint">支持 hosts / dnsmasq / AdGuard / 纯域名 混合格式，单行 10MB 上限</div><!-- i18n: urlHint -->
+          <div class="stat"><span class="stat-value" id="statLines">0</span><span class="stat-label" id="lblLines">总行数</span></div>
         </div>
 
         <div class="editor-row" id="editorRow">
@@ -558,9 +581,23 @@
           <div class="card-body" id="settingsBody" style="padding:18px">
             <div class="settings-grid">
               <div class="field"><label id="lblProjName">项目名</label><input class="input" id="projName" value="DNS Shield" /></div>
-              <div class="field"><label id="lblVer">版本</label><input class="input" id="projVer" value="3.7.64" /></div>
+              <div class="field"><label id="lblVer">版本</label><input class="input" id="projVer" value="3.7.68" /></div>
               <div class="field"><label id="lblIpv4">IPv4 重定向</label><input class="input" id="ipv4" value="127.0.0.1" /></div>
               <div class="field"><label id="lblIpv6">IPv6 重定向</label><input class="input" id="ipv6" value="::" /></div>
+            </div>
+            <div class="opt-group">
+              <div class="opt-group-title" id="lblAppearanceGroup">外观</div>
+              <div class="theme-switch" id="themeSwitch" role="switch" aria-checked="false" tabindex="0" aria-label="深浅色切换">
+                <button type="button" class="theme-seg" data-theme="light" id="themeLight" aria-pressed="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                  <span id="lblLight">浅色</span>
+                </button>
+                <button type="button" class="theme-seg" data-theme="dark" id="themeDark" aria-pressed="false">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+                  <span id="lblDark">深色</span>
+                </button>
+                <span class="theme-thumb" id="themeThumb" aria-hidden="true"></span>
+              </div>
             </div>
             <div class="opt-group">
               <div class="opt-group-title" id="lblOptGroup">生成选项</div>
@@ -591,14 +628,34 @@
       </div>
     </div>
 
-    <!-- About 业务组件：保留使用指南（链接与版本号统一移至页面最底部 footer） -->
-    <div class="wrap" id="aboutWrap" style="margin-top:24px; padding-bottom:40px">
-      <div class="about" id="about-panel">
-        <h2 class="usage-title" id="usageTitle">使用指南</h2><!-- i18n: usageTitle -->
-        <div class="usage" id="usageGuide">
-          <div class="step"><span class="n">1</span><div><div class="st" id="step1t">输入域名</div><div class="sd" id="step1d">粘贴或导入广告域名</div></div></div>
-          <div class="step"><span class="n">2</span><div><div class="st" id="step2t">选择格式</div><div class="sd" id="step2d">dnsmasq / hosts / AdGuard…</div></div></div>
-          <div class="step"><span class="n">3</span><div><div class="st" id="step3t">导出部署</div><div class="sd" id="step3d">复制到路由器或 DNS 服务</div></div></div>
+    <!-- 使用指南弹窗 (由页脚 linkGuide 触发) -->
+    <div class="settings-modal" id="guideModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle" hidden>
+      <div class="settings-overlay" id="guideOverlay"></div>
+      <div class="settings-dialog card" id="guideDialog">
+        <div class="card-head">
+          <div class="card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <span id="guideTitle">使用指南</span>
+          </div>
+          <button class="btn btn-ghost icon-btn" id="guideClose" aria-label="关闭使用指南">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="card-body" id="guideBody" style="padding:18px">
+          <div class="guide-steps">
+            <div class="step"><span class="n">1</span><div><div class="st" id="gStep1t">输入域名</div><div class="sd" id="gStep1d">在「域名输入」粘贴域名清单，每行一个；或点「内置数据 / AdGuard / EasyList」一键导入，亦可填 URL 批量拉取。</div></div></div>
+            <div class="step"><span class="n">2</span><div><div class="st" id="gStep2t">选择格式</div><div class="sd" id="gStep2d">勾选需要的输出格式（可多选）：Dnsmasq、Hosts、AdGuard、ADG 白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS。</div></div></div>
+            <div class="step"><span class="n">3</span><div><div class="st" id="gStep3t">导出部署</div><div class="sd" id="gStep3d">复制对应格式规则到路由器或 DNS 服务即可生效，支持白名单放行与自定义 DNS 映射。</div></div></div>
+          </div>
+          <div class="guide-note">
+            <div class="guide-note-title" id="guideNoteTitle">各格式部署提示</div>
+            <ul class="guide-list">
+              <li><b>Dnsmasq</b>：将规则追加到 <code>dnsmasq.conf</code>，重启服务。</li>
+              <li><b>Hosts</b>：覆盖到系统 <code>/etc/hosts</code>，需刷新 DNS 缓存。</li>
+              <li><b>AdGuard / Pi-hole</b>：在过滤规则页粘贴，或导入「ADG 白名单」放行误杀域名。</li>
+              <li><b>Unbound / Bind RPZ / SmartDNS</b>：作为上游响应策略 zone 加载。</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -609,14 +666,15 @@
   <footer class="wrap" id="app-footer">
     <div class="footer-inner" id="footerInner">
       <nav class="about-links" id="footerLinks" aria-label="页脚链接">
-        <a class="about-link" id="linkGithub" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">GitHub ↗</a>
-        <a class="about-link" id="linkStar" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">★ Star</a>
+        <a class="about-link" id="linkGithub" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">去 GitHub 给项目+Star</a><!-- i18n: linkGithub -->
         <a class="about-link" id="linkChangelog" href="https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md" target="_blank" rel="noopener">更新日志 ↗</a><!-- i18n: linkChangelog -->
-        <a class="about-link" id="linkGuide" href="#usageGuide">使用指南</a><!-- i18n: linkGuide -->
+        <a class="about-link" id="linkGuide" href="#guideModal" role="button">使用指南</a><!-- i18n: linkGuide -->
       </nav>
-      <span class="footer-ver" id="footerVer">v3.7.64</span>
+      <div class="footer-meta" id="footerMeta">
+        <span id="footerMetaText">DNS Shield · 路由器级 DNS 广告过滤规则生成器</span>
+        <span class="footer-ver" id="footerVer">v3.7.68</span>
+      </div>
     </div>
-    <div class="footer-meta" id="footerMeta">DNS Shield · 路由器级 DNS 广告过滤规则生成器</div>
   </footer>
 
   <script>
@@ -626,7 +684,7 @@
     // ---- 国际化 (原型最小集，对齐 src/locales) ----
     var I18N = {
       'zh-cn': { name: '中文', sub: 'DNS 广告过滤规则生成器', input: '域名输入', output: '规则输出',
-        blacklist: '黑名单', whitelist: '白名单', custom: '自定义DNS', comments: '注释',
+        blacklist: '黑名单', whitelist: '白名单', custom: '改道', comments: '注释',
         parse: '生成规则', sort: '排序', dedupe: '去重', clear: '清空', copy: '复制', download: '下载',
         copied: '已放行到剪贴板', noData: '没有可复制的内容', settings: '设置', projName: '项目名', ver: '版本',
         ipv4: 'IPv4 重定向', ipv6: 'IPv6 重定向', optHeader: '添加头部注释', optIpv6: '屏蔽 IPv6',
@@ -637,11 +695,21 @@
         heroDesc: '粘贴域名或批量导入，一键生成 9 种格式规则，直接部署到路由器或 DNS 服务。',
         ctaStart: '开始生成', ctaSettings: '配置设置', urlPlaceholder: '从 URL 批量导入域名，例如 https://example.com/ads.txt',
         urlHint: '支持 hosts / dnsmasq / AdGuard / 纯域名 混合格式，单行 10MB 上限',
-        presetBuiltin: '内置数据', tabWhitelist: 'ADG白名单', usageTitle: '使用指南',
-        linkChangelog: '更新日志', linkGuide: '使用指南', fmtGroup: '输出规则类型',
+        presetBuiltin: '内置数据', tabWhitelist: 'ADG白名单', usageTitle: '快速入门',
+        linkChangelog: '更新日志', linkGuide: '使用指南', linkGithub: '去 GitHub 给项目+Star', fmtGroup: '输出规则类型',
         fvAwait: '等待流量接入…', fvBlock: '黑名单', fvAllow: '白名单', fvDns: '自定义',
         psBlock: '拦截', psAllow: '放行', psDns: '改道', psComments: '注释', psLines: '共', psLinesSuffix: '行',
-        wlHeader: '白名单列表', footerMeta: 'DNS Shield · 路由器级 DNS 广告过滤规则生成器' },
+        wlHeader: '白名单列表', footerMeta: 'DNS Shield · 路由器级 DNS 广告过滤规则生成器',
+        shareTexts: [
+          'DNS Shield：路由器级 DNS 广告过滤规则生成器，一键生成 9 种格式规则。',
+          '告别网页广告与追踪：DNS Shield 把域名清单转成路由器可用的拦截规则。',
+          '家用网络全员免广告？DNS Shield 生成 hosts/dnsmasq/AdGuard 等规则，部署一次处处生效。',
+          '不想装插件也能屏蔽广告？用 DNS Shield 在 DNS 层拦截，覆盖手机、电视、IoT 设备。'
+        ], appearanceGroup: '外观', darkTheme: '深色模式',
+        guideTitle: '使用指南', gStep1t: '输入域名', gStep1d: '在「域名输入」粘贴域名清单，每行一个；或点「内置数据 / AdGuard / EasyList」一键导入，亦可填 URL 批量拉取。',
+        gStep2t: '选择格式', gStep2d: '勾选需要的输出格式（可多选）：Dnsmasq、Hosts、AdGuard、ADG 白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS。',
+        gStep3t: '导出部署', gStep3d: '复制对应格式规则到路由器或 DNS 服务即可生效，支持白名单放行与自定义 DNS 映射。', guideNoteTitle: '各格式部署提示',
+        themeLight: '浅色', themeDark: '深色', lblLines: '总行数' },
       'en': { name: 'English', sub: 'DNS Ad-blocking Rule Generator', input: 'Domain Input', output: 'Rule Output',
         blacklist: 'Blacklist', whitelist: 'Whitelist', custom: 'Custom DNS', comments: 'Comments',
         parse: 'Generate', sort: 'Sort', dedupe: 'Dedupe', clear: 'Clear', copy: 'Copy', download: 'Download',
@@ -655,10 +723,20 @@
         ctaStart: 'Start Generating', ctaSettings: 'Configure', urlPlaceholder: 'Bulk-import domains from URL, e.g. https://example.com/ads.txt',
         urlHint: 'Mixed hosts / dnsmasq / AdGuard / plain-domain formats supported, 10MB per line limit',
         presetBuiltin: 'Built-in Data', tabWhitelist: 'ADG Whitelist', usageTitle: 'How to Use',
-        linkChangelog: 'Changelog', linkGuide: 'How to Use', fmtGroup: 'Output Rule Types',
+        linkChangelog: 'Changelog', linkGuide: 'How to Use', linkGithub: 'Star this project on GitHub', fmtGroup: 'Output Rule Types',
         fvAwait: 'Awaiting traffic…', fvBlock: 'blacklist', fvAllow: 'whitelist', fvDns: 'custom',
         psBlock: 'Blocked', psAllow: 'Allowed', psDns: 'Rerouted', psComments: 'Comments', psLines: 'Total', psLinesSuffix: 'lines',
-        wlHeader: 'Whitelist', footerMeta: 'DNS Shield · Router-level DNS ad-blocking rule generator' }
+        wlHeader: 'Whitelist', footerMeta: 'DNS Shield · Router-level DNS ad-blocking rule generator',
+        shareTexts: [
+          'DNS Shield: router-level DNS ad-blocking rule generator, generate 9 format rules in one click.',
+          'Block ads and trackers at the DNS layer: DNS Shield turns domain lists into router-ready rules.',
+          'Ad-free home network? DNS Shield generates hosts/dnsmasq/AdGuard rules — set up once, protect everywhere.',
+          'No browser extension needed: intercept ads at DNS with DNS Shield, covering phones, TVs and IoT devices.'
+        ], appearanceGroup: 'Appearance', darkTheme: 'Dark mode',
+        guideTitle: 'User Guide', gStep1t: 'Input domains', gStep1d: 'Paste a domain list into the input box (one per line), or import via "Built-in / AdGuard / EasyList" presets, or fetch from a URL in bulk.',
+        gStep2t: 'Choose formats', gStep2d: 'Select the output formats you need (multiple allowed): Dnsmasq, Hosts, AdGuard, ADG allowlist, Unbound, Pi-hole, plain domains, Bind RPZ, SmartDNS.',
+        gStep3t: 'Export & deploy', gStep3d: 'Copy the rules for a format into your router or DNS service to activate; allowlist and custom DNS mapping are supported.', guideNoteTitle: 'Deployment tips per format',
+        themeLight: 'Light', themeDark: 'Dark', lblLines: 'Total lines' }
     };
     // 对齐 src/utils/i18n.ts 全部 16 种语言；第三项标记 RTL（阿拉伯语）
     var LANGS = [
@@ -698,7 +776,7 @@
       neohosts: 'ad.neohost.cn\nbanner.neohost.cn\n+api.neohost.cn'
     };
 
-    var settings = { projectName: 'DNS Shield', version: '3.7.64', ipv4: '127.0.0.1', ipv6: '::',
+    var settings = { projectName: 'DNS Shield', version: '3.7.68', ipv4: '127.0.0.1', ipv6: '::',
       addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true, adguardIncludeWhitelist: true };
 
     var DOMAIN_REGEX = /^(?=.{1,253}$)([a-z0-9](-?[a-z0-9])*\.)+[a-z]{2,}$/i;
@@ -910,7 +988,9 @@
       $('statDomains').textContent = parsed.domains.length;
       $('statWhitelist').textContent = parsed.whitelist.length;
       $('statCustom').textContent = parsed.customDns.length;
-      $('statComments').textContent = parsed.comments;
+      $('statComments').textContent = parsed.outComments || 0;
+      var rawLines = $('editor').value.split('\n').length;
+      $('statLines').textContent = rawLines;
     }
     function renderGutter() {
       var val = $('editor').value;
@@ -936,6 +1016,11 @@
       var lines = txt.split('\n');
       while (lines.length > 1 && lines[lines.length - 1] === '') lines.pop();
       var n = lines.length || 1;
+      // 输出注释行数：以 # 或 ! 开头的行（覆盖头部注释、白名单/自定义DNS说明注释）
+      var outComments = txt.split('\n').filter(function (l) {
+        var c = l.trim().charAt(0); return c === '#' || c === '!';
+      }).length;
+      parsed.outComments = outComments;
       var gs = ''; for (var i = 1; i <= n; i++) gs += i + '\n';
       gut.textContent = gs;
       // 内容列：轻量高亮（注释 / 白名单 / 白名单放行段），先转义再着色，逐行包 .pl
@@ -956,13 +1041,13 @@
         + '<span class="ps"><span class="ps-dot block"></span>' + t.psBlock + ' <b>' + parsed.domains.length + '</b></span>'
         + '<span class="ps"><span class="ps-dot allow"></span>' + t.psAllow + ' <b>' + parsed.whitelist.length + '</b></span>'
         + '<span class="ps"><span class="ps-dot dns"></span>' + t.psDns + ' <b>' + parsed.customDns.length + '</b></span>'
-        + '<span class="ps">' + t.psComments + ' <b>' + parsed.comments + '</b></span>'
+        + '<span class="ps">' + t.psComments + ' <b>' + outComments + '</b></span>'
         + '<span class="ps">' + t.psLines + ' <b>' + n + '</b> ' + t.psLinesSuffix + '</span>';
       $('previewStats').innerHTML = ps;
     }
     function renderAll() {
       parsed = parseSource($('editor').value);
-      renderStats(); renderPreview(); renderFlowviz();
+      renderPreview(); renderStats(); renderFlowviz();
     }
     // 编辑器语法着色：注释灰、白名单绿、自定义DNS蓝，其余默认前景色
     function renderEditorHighlight() {
@@ -1030,6 +1115,7 @@
       $('lblWhitelist').textContent = t.whitelist;
       $('lblCustom').textContent = t.custom;
       $('lblComments').textContent = t.comments;
+      $('lblLines').textContent = t.lblLines;
       $('lblParse').textContent = t.parse;
       $('lblSort').textContent = t.sort;
       $('lblDedupe').textContent = t.dedupe;
@@ -1056,8 +1142,6 @@
       $('heroKickerTxt').textContent = t.heroKicker;
       $('heroTitle').textContent = t.heroTitle;
       $('heroDesc').textContent = t.heroDesc;
-      $('ctaStart').textContent = t.ctaStart;
-      $('ctaSettings').textContent = t.ctaSettings;
       $('urlInput').placeholder = t.urlPlaceholder;
       $('urlHint').textContent = t.urlHint;
       $('presetBuiltin').textContent = t.presetBuiltin;
@@ -1066,15 +1150,21 @@
       $('fvSummaryTxt').textContent = t.fvAwait;
       $('linkChangelog').textContent = t.linkChangelog + ' ↗';
       $('linkGuide').textContent = t.linkGuide;
-      $('footerMeta').textContent = t.footerMeta;
+      $('linkGithub').textContent = t.linkGithub;
+      $('footerMetaText').textContent = t.footerMeta;
       $('lblFmtGroup').textContent = t.fmtGroup;
+      $('lblAppearanceGroup').textContent = t.appearanceGroup;
+      $('lblLight').textContent = t.themeLight;
+      $('lblDark').textContent = t.themeDark;
+      // 使用指南弹窗 i18n
+      $('guideTitle').textContent = t.guideTitle;
+      $('gStep1t').textContent = t.gStep1t; $('gStep1d').textContent = t.gStep1d;
+      $('gStep2t').textContent = t.gStep2t; $('gStep2d').textContent = t.gStep2d;
+      $('gStep3t').textContent = t.gStep3t; $('gStep3d').textContent = t.gStep3d;
+      $('guideNoteTitle').textContent = t.guideNoteTitle;
     }
     function applyTheme() {
       document.documentElement.classList.toggle('dark', currentTheme === 'dark');
-      var icon = $('themeIcon');
-      icon.innerHTML = currentTheme === 'dark'
-        ? '<path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/>'
-        : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
     }
 
     function toast(msg) {
@@ -1178,9 +1268,46 @@
       tryNext();
     }
 
-    $('themeBtn').addEventListener('click', function () {
-      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('ds_theme', currentTheme); applyTheme();
+    // 设置弹窗内的深浅色分段开关
+    function syncThemeSwitch() {
+      var sw = $('themeSwitch');
+      sw.setAttribute('data-active', currentTheme);
+      sw.setAttribute('aria-checked', currentTheme === 'dark' ? 'true' : 'false');
+      $('themeLight').setAttribute('aria-pressed', currentTheme === 'light' ? 'true' : 'false');
+      $('themeDark').setAttribute('aria-pressed', currentTheme === 'dark' ? 'true' : 'false');
+    }
+    function setTheme(next) {
+      currentTheme = next;
+      localStorage.setItem('ds_theme', currentTheme); applyTheme(); syncThemeSwitch();
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('#themeSwitch .theme-seg'), function (seg) {
+      seg.addEventListener('click', function () { setTheme(seg.dataset.theme); });
+    });
+    $('themeSwitch').addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+      }
+    });
+    syncThemeSwitch();
+
+    // 分享：随机搭配项目文案 + 项目链接
+    function pickShareText(t) {
+      var arr = t.shareTexts && t.shareTexts.length ? t.shareTexts : [t.shareText || ''];
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+    $('shareBtn').addEventListener('click', function () {
+      var t = (I18N[currentLang] || I18N.en);
+      var text = pickShareText(t) + ' https://github.com/sutchan/DNS_Shield';
+      var done = function () { toast(t.copied); };
+      if (navigator.share) {
+        navigator.share({ title: 'DNS Shield', text: text, url: 'https://github.com/sutchan/DNS_Shield' }).catch(function () {});
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, done);
+      } else {
+        var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (e) {} document.body.removeChild(ta); done();
+      }
     });
 
     // 语言下拉（对齐 src/locales 16 语，含 RTL 标注）
@@ -1225,6 +1352,7 @@
       if (e.key === 'Escape') {
         langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false');
         if (!$('settingsModal').hasAttribute('hidden')) closeSettings();
+        if (!$('guideModal').hasAttribute('hidden')) closeGuide();
       }
     });
 
@@ -1250,8 +1378,27 @@
     $('settingsBtn').addEventListener('click', openSettings);
     $('settingsClose').addEventListener('click', closeSettings);
     $('settingsOverlay').addEventListener('click', closeSettings);
-    // Hero CTA「配置设置」改为打开弹窗（不再锚点跳转常驻面板）
-    $('ctaSettings').addEventListener('click', function (e) { e.preventDefault(); openSettings(); });
+
+    // ---- 使用指南弹窗：打开 / 关闭 / 焦点陷阱 ----
+    function openGuide() {
+      $('guideModal').removeAttribute('hidden');
+      $('guideClose').focus();
+    }
+    function closeGuide() {
+      $('guideModal').setAttribute('hidden', '');
+      $('linkGuide').focus();
+    }
+    $('linkGuide').addEventListener('click', function (e) { e.preventDefault(); openGuide(); });
+    $('guideClose').addEventListener('click', closeGuide);
+    $('guideOverlay').addEventListener('click', closeGuide);
+    $('guideModal').addEventListener('keydown', function (e) {
+      if (e.key !== 'Tab') return;
+      var f = $('guideDialog').querySelectorAll('input, button, a[href], [tabindex]:not([tabindex="-1"])');
+      if (!f.length) return;
+      var firstEl = f[0], lastEl = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === firstEl) { e.preventDefault(); lastEl.focus(); }
+      else if (!e.shiftKey && document.activeElement === lastEl) { e.preventDefault(); firstEl.focus(); }
+    });
     document.addEventListener('click', function () { langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false'); });
 
     // ---- 设置面板：真实驱动生成 (对齐 src/components/SettingsPanel.tsx) ----
@@ -1278,7 +1425,13 @@
     // ---- URL 批量导入 (对齐 src/components/UrlSection.tsx, 模拟 fetch + 加载态) ----
     $('urlFetchBtn').addEventListener('click', function () {
       var url = $('urlInput').value.trim();
-      if (!url) { toast((I18N[currentLang] || I18N.en).noData); return; }
+      if (!url) {
+        // 默认用内置数据（real-time 拉取 sutchan/DNS_Shield domains.txt）填入获取
+        document.querySelectorAll('#presets .preset').forEach(function (x) { x.classList.remove('active'); });
+        $('presetBuiltin').classList.add('active');
+        loadBuiltin($('presetBuiltin'));
+        return;
+      }
       $('urlLoading').classList.add('on');
       var btn = $('urlFetchBtn'); btn.disabled = true; var old = btn.querySelector('span').textContent;
       btn.querySelector('span').textContent = (I18N[currentLang] || I18N.en).fetching;

@@ -5,6 +5,29 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.7.68]
+
+### Changed（自定义 DNS 文案重命名）
+- 面向用户的中文「自定义DNS」统一重命名为「改道」（统计标签、i18n zh-cn/zh-tw、输入提示、合并统计）
+- 内部类型与变量名 `customDns` 保持不变，仅展示文案变更，对外契约稳定
+
+## [3.7.67]
+
+### Changed（原型页脚与设置优化）
+- 页脚 `#footerMeta` 与 `#footerVer` 并排；`.about-links` 链接强制单行不折行
+- 使用指南「linkGuide」改为弹出详细指南弹窗（含分步说明与各格式部署提示）
+- 设置内深浅色切换由复选框升级为分段开关（日/月图标 + 滑块），支持方向键切换
+- 分享按钮文案改为多条随机搭配（zh-cn / en），每次分享随机选用
+- `.preview-stats` 上方增加分隔线；`.about-panel` 移至 `.hero-cta` 下方
+- 点击「获取」按钮且 URL 为空时默认使用内置数据填入获取
+- 规则输出注释行数统计修正为实际输出文本注释行数（修复输入注释数误用）
+- `.brand-icon` logo 完整显示（32×32、object-fit:contain）；`.brand-title` 字号 20px
+
+### Fixed
+- 修正 `next.config.js` env.version（3.7.60→3.7.67）、README/openspec/prototype 版本展示位脱节
+- 同步 `package.json` version、`src/config/version.ts` APP_VERSION 至 3.7.67
+- 重新生成 public 格式文件头注释版本至 3.7.67
+
 ## [Unreleased]
 
 ### Fixed（OutputPanel 类型错误修复 v3.7.64）
@@ -1044,7 +1067,9 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.7.56...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.7.68...HEAD
+[3.7.68]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.68
+[3.7.67]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.67
 [3.7.56]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.56
 [3.7.45]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.45
 [3.7.44]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.44
