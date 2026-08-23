@@ -57,6 +57,9 @@ export interface Translation {
   downloadBtn: string;
   copyBtn: string;
   usageToggle: string;
+  usageTitle: string;
+  customDnsCount: string;
+  totalLines: string;
   usageStep1: string;
   usageStep1Desc: string;
   usageStep2: string;

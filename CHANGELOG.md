@@ -5,6 +5,23 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.8.0]
+
+### Changed（原型-应用设计对齐）
+- 快速入门三步卡片由页脚折叠区移至 Hero 首屏（与 prototype.html 对齐，首屏可见）
+- URL 导入加载形态由全屏遮罩改为 URL 区细进度条 `.loading-bar`（贴合原型、提升可交互性）
+- 输入统计条补齐「改道」与「总行数」维度，共 5 维对齐原型（黑名单/白名单/改道/注释/总行数）
+- i18n 新增 `usageTitle`（快速入门）、`customDnsCount`（改道）、`totalLines`（总行数）键
+- `src/config/version.ts` APP_VERSION 追平 package.json 权威值 3.8.0（修正头注释与常量脱节）
+
+### Fixed（代码质量与规范对齐）
+- 修复 `OutputPanel.tsx` 被 `React.memo` 包裹导致内联 `Button` 的 `variant`/`size` 字面量拓宽为 `string` 的 4 处 TS2322 类型错误，以及 `Tabs` `onValueChange` 回调 `v` 参数隐式 `any`（TS7006），消除阻塞 `next build` 的生产构建错误
+- 删除无调用方的死代码 `src/utils/parseSource.ts`，并清理 `domainValidator.ts` re-export 层，消除其与 `parser.ts` 同名 `parseSource` 的重名隐患
+- 拆分 `OutputPanel.tsx`（206 行）为 `OutputPanel.parts.tsx`（`FormatTabs` + `PreviewStats` 子组件），主文件降至约 175 行，符合单文件 ≤200 行规范
+- 补充语义化 id：`OutputPanel` 的 `output-format-tabs`/`output-preview-area`；`UrlSection` 的 `url-remove-btn-${index}`；保持项目「主要容器加语义化 id」约定
+- 统一 src 下全部 39 个源码文件头注释版本号至 v3.8.0（修正此前 3.7.50~3.7.68 分散失实）
+- 删除 npm 副作用生成的 `package-lock.json`，避免与项目 pnpm-lock.yaml 冲突（Vercel 使用 pnpm 安装）
+
 ## [3.7.68]
 
 ### Changed（自定义 DNS 文案重命名）
@@ -1067,7 +1084,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.7.68...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.8.0...HEAD
+[3.8.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.8.0
 [3.7.68]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.68
 [3.7.67]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.67
 [3.7.56]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.56

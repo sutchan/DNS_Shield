@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- prototype/flows.html v3.7.62 — DNS Shield 关键业务流程交互原型 (Interactive Flows) -->
+<!-- prototype/flows.html v3.8.0 — DNS Shield 关键业务流程交互原型 (Interactive Flows) -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 业务流程原型 v3.7.62</title>
+  <title>DNS Shield — 业务流程原型 v3.8.0</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -114,7 +114,7 @@
   <div class="container">
     <div class="doc-h">
       <h1>DNS Shield · 业务流程原型</h1>
-      <span class="ver">v3.7.62</span>
+      <span class="ver">v3.8.0</span>
     </div>
     <p class="doc-sub">聚焦关键交互流程的真实可交互原型（带动效），与 <code class="mono">prototype.html</code>、<code class="mono">wireframes.html</code> 协同呈现。点击下列按钮体验完整状态转换。</p>
 
@@ -233,10 +233,10 @@
 
     /* Flow 2: format switch (9 种格式，对齐真实引擎) */
     var fmtGen = {
-      dnsmasq: '# 版本::3.7.62 项目:家庭网络屏蔽\n# 域名:2 白名单:1\naddress=/doubleclick.net/0.0.0.0\naddress=/google-analytics.com/0.0.0.0\n# 白名单\nserver=/github.com/',
+      dnsmasq: '# 版本::3.8.0 项目:家庭网络屏蔽\n# 域名:2 白名单:1\naddress=/doubleclick.net/0.0.0.0\naddress=/google-analytics.com/0.0.0.0\n# 白名单\nserver=/github.com/',
       hosts: '0.0.0.0 doubleclick.net\n0.0.0.0 google-analytics.com\n# 白名单 (hosts 不支持白名单语法，仅标注已排除)\n# 已白名单: github.com',
       adguard: '||doubleclick.net^\n||google-analytics.com^\n! 白名单\n@@||github.com^',
-      whitelist: '# 版本::3.7.62 项目:家庭网络屏蔽\n@@||github.com^$important',
+      whitelist: '# 版本::3.8.0 项目:家庭网络屏蔽\n@@||github.com^$important',
       unbound: 'local-zone: "doubleclick.net" refuse\nlocal-zone: "google-analytics.com" refuse\n# 白名单\nlocal-zone: "github.com" transparent',
       pihole: '0.0.0.0 doubleclick.net\n0.0.0.0 google-analytics.com\n# 白名单\n# 已白名单: github.com',
       domains: 'doubleclick.net\ngoogle-analytics.com\n# 白名单\n# 已白名单: github.com',
@@ -261,7 +261,7 @@
       var ip = $('fIp').value || '0.0.0.0';
       var head = $('fHeadBox').classList.contains('on');
       var ip6 = $('fIp6Box').classList.contains('on');
-      var out = (head ? '# 版本::3.7.62 项目:' + name + '\n' : '') + 'address=/doubleclick.net/' + ip + '\n';
+      var out = (head ? '# 版本::3.8.0 项目:' + name + '\n' : '') + 'address=/doubleclick.net/' + ip + '\n';
       if (ip6) out += 'address=/doubleclick.net/::\n';
       $('fSetPreview').innerHTML = out;
     }

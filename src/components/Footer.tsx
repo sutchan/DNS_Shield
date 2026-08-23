@@ -1,6 +1,6 @@
 // src/components/Footer.tsx v3.8.0
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { useT } from '../context/AppContext';
 import { APP_VERSION } from '../config/version';
 
@@ -12,11 +12,6 @@ const Footer: React.FC<FooterProps> = ({
   version = APP_VERSION
 }) => {
   const t = useT();
-  const [isUsageGuideCollapsed, setIsUsageGuideCollapsed] = useState(true);
-
-  const toggleUsageGuide = () => {
-    setIsUsageGuideCollapsed(!isUsageGuideCollapsed);
-  };
 
   return (
     <footer className="app-footer" id="about-panel" role="contentinfo">

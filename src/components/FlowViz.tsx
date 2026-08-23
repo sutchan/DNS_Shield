@@ -65,6 +65,24 @@ const FlowViz: React.FC<FlowVizProps> = ({ parsedData }) => {
               </li>
             ))}
           </ul>
+          <div className="about" id="quickstart-panel">
+            <h3 className="usage-title">{t.usageTitle}</h3>
+            <div className="usage">
+              <div className="step">
+                <div className="st">{t.usageStep1}</div>
+                <div className="sd">{t.usageStep1Desc}</div>
+              </div>
+              <div className="step">
+                <div className="st">{t.usageStep2}</div>
+                <div className="sd">{t.usageStep2Desc}</div>
+              </div>
+              <div className="step">
+                <div className="st">{t.usageStep3}</div>
+                <div className="sd">{t.usageStep3Desc}</div>
+              </div>
+            </div>
+            <p className="usage-tip">{t.usageTip}</p>
+          </div>
         </div>
 
         <div className="flowviz" id="flowviz" aria-hidden="true">
