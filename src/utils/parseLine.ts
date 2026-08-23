@@ -1,4 +1,4 @@
-// src/utils/parseLine.ts v3.7.61
+// src/utils/parseLine.ts v3.8.0
 // 单行域名解析：支持 9 种过滤格式的入站解析（hosts/dnsmasq/AdGuard/Pi-hole/Bind RPZ/
 // SmartDNS/Unbound/纯域名/白名单），实现「粘贴任意格式 → 统一结构」。
 // 校验原语（isValidDomain/isValidIp/normalizeDomain）复用 domainPrimitives，避免重复定义；

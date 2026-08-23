@@ -1,4 +1,4 @@
-// src/components/UrlSection.tsx v3.7.50
+// src/components/UrlSection.tsx v3.8.0
 // URL 导入区域组件 —— 从 InputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -119,6 +119,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
                 variant="ghost"
                 size="icon"
                 className="url-remove-btn"
+                id={`url-remove-btn-${index}`}
                 onClick={() => setUrls(urls.filter((_: string, i: number) => i !== index))}
                 aria-label={t.removeUrlAria.replace('{url}', url)}
               >

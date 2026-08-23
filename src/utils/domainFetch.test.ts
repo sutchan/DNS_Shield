@@ -1,4 +1,4 @@
-// src/utils/domainFetch.test.ts v3.7.50
+// src/utils/domainFetch.test.ts v3.8.0
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { fetchDomainsText } from './domainFetch';
 

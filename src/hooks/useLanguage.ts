@@ -1,4 +1,4 @@
-// src/hooks/useLanguage.ts v3.7.60
+// src/hooks/useLanguage.ts v3.8.0
 import { useState, useEffect, useMemo } from 'react';
 import { supportedLanguages, getTranslation } from '../utils/i18n';
 import { Translation } from '../types';

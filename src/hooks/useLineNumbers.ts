@@ -1,4 +1,4 @@
-// src/hooks/useLineNumbers.ts v3.7.59
+// src/hooks/useLineNumbers.ts v3.8.0
 // 视图辅助：依据文本内容为行号槽位生成行号。操作 DOM ref，属 UI 层逻辑，
 // 故置于 hooks/ 而非纯逻辑 utils/（utils/ 约定不含 React/DOM 依赖）。
 

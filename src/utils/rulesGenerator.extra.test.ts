@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.extra.test.ts v3.7.50
+// src/utils/rulesGenerator.extra.test.ts v3.8.0
 // 从 rulesGenerator.test.ts 拆分出的补充用例：computeEffectiveStats 统计一致性
 // 与 generateHeader 头部渲染校验（注释符、版本、用法文案解析）。与主文件共享 fixtures。
 import { describe, it, expect } from 'vitest';

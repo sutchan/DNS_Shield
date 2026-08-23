@@ -1,4 +1,4 @@
-// src/components/ui/DropdownMenu.tsx v3.7.50
+// src/components/ui/DropdownMenu.tsx v3.8.0
 // shadcn/ui 标准 Radix 封装（原子组件聚合，单一文件导出契约，不拆分）。
 import * as React from "react"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"

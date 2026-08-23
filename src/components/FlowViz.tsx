@@ -1,4 +1,4 @@
-// src/components/FlowViz.tsx v3.7.68
+// src/components/FlowViz.tsx v3.8.0
 // 输出流量可视化签名组件：对齐原型 flowviz —— 三态管道（拦截/放行/改道）
 // 实时反映 parsedData 中黑名单/白名单/自定义 DNS 的真实占比，域名 token 从管道顶部落入。
 // 动画遵循全局 prefers-reduced-motion 降级（globals.css 已统一处理）。

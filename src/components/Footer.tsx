@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v3.7.61
+// src/components/Footer.tsx v3.8.0
 'use client';
 import React, { useState } from 'react';
 import { useT } from '../context/AppContext';

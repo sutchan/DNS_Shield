@@ -1,10 +1,10 @@
-// src/components/OutputPanel.tsx v3.7.68
+// src/components/OutputPanel.tsx v3.8.0
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
 import { Button } from './ui/Button';
-import { Tabs, TabsList, TabsTrigger } from './ui/Tabs';
 import SettingsPanel from './SettingsPanel';
+import { FormatTabs, PreviewStats } from './OutputPanel.parts';
 import { Settings as SettingsType, FormatType, OutputContent, ParsedData } from '../types';
 import { ALL_FORMATS, CORE_FORMATS } from '../types/formats';
 import { useT } from '../context/AppContext';
@@ -71,6 +71,9 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
     smartdns: t.smartdnsFormat ?? t.hostsFormat,
   };
 
+  const ruleLines = outputContent[currentFormat] ? outputContent[currentFormat].split('\n').length : 0;
+  const domainTotal = parsedData.domains.length + parsedData.whitelist.length + parsedData.customDns.length;
+
   return (
     <section className="panel" id="output-panel" aria-labelledby="output-title">
       <div className="output-body" id="output-body">
@@ -80,19 +83,12 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
             <h2 id="output-title">{t.outputTitle}</h2>
           </div>
           <div className="output-toolbar" id="output-toolbar">
-            <Tabs value={currentFormat} onValueChange={(v: string) => setFormat(v as FormatType)}>
-              <TabsList className="format-tabs">
-                {visibleFormats.map((fmt) => (
-                  <TabsTrigger
-                    key={fmt}
-                    value={fmt}
-                    id={`format-${fmt}-btn`}
-                  >
-                    {formatLabel[fmt]}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
+            <FormatTabs
+              currentFormat={currentFormat}
+              visibleFormats={visibleFormats}
+              formatLabel={formatLabel}
+              onFormatChange={setFormat}
+            />
             <Button
               type="button"
               variant={'outline' as const}
@@ -129,28 +125,18 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
           )}
         </div>
 
-        {/* 输出预览统计条（对齐原型 previewStats）：当前格式 / 规则行数 / 域名总数 / 格式数 */}
-        <div className="preview-stats" id="preview-stats" aria-live="polite">
-          <span className="preview-stat">
-            <span className="text-muted-foreground">{t.psFormat}</span>
-            <span className="preview-stat-value">{formatLabel[currentFormat]}</span>
-          </span>
-          <span className="preview-stat">
-            <span className="preview-stat-value">{outputContent[currentFormat] ? outputContent[currentFormat].split('\n').length : 0}</span>
-            <span className="text-muted-foreground">{t.psLines}</span>
-          </span>
-          <span className="preview-stat">
-            <span className="preview-stat-value">{parsedData.domains.length + parsedData.whitelist.length + parsedData.customDns.length}</span>
-            <span className="text-muted-foreground">{t.psDomains}</span>
-          </span>
-          <span className="preview-stat">
-            <span className="preview-stat-value">{visibleFormats.length}</span>
-            <span className="text-muted-foreground">{t.psFormats}</span>
-          </span>
-        </div>
+        {/* 输出预览统计条 */}
+        <PreviewStats
+          currentFormat={currentFormat}
+          formatLabel={formatLabel}
+          ruleLines={ruleLines}
+          domainTotal={domainTotal}
+          formatCount={visibleFormats.length}
+          t={{ psFormat: t.psFormat, psLines: t.psLines, psDomains: t.psDomains, psFormats: t.psFormats }}
+        />
 
         {/* Output Preview */}
-        <div className="editor-wrapper" id="output-editor-wrapper">
+        <div className="editor-wrapper" id="output-preview-area">
           <div className="line-numbers" id="outputLineNumbers" ref={outputLineNumbersRef} aria-hidden="true"></div>
           {outputContent[currentFormat] ? (
             <div
@@ -201,5 +187,3 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
 });
 
 export default OutputPanel;
-
-

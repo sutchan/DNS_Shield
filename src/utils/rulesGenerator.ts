@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.ts v3.7.63
+// src/utils/rulesGenerator.ts v3.8.0
 // 规则生成核心：将解析后的域名数据转换为 Dnsmasq / Hosts / AdGuard / 白名单 /
 // Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS 9 种格式。纯函数、可单测。
 // 头部注释配置（HEADER_CONFIGS）已拆分至 headerConfigs.ts。
