@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "เครื่องสร้างกฎการกรองโฆษณาที่ระดับเราเตอร์",
   "inputTitle": "ป้อนรายการโดเมน",
   "advanced": "ขั้นสูง",
@@ -115,5 +115,6 @@
   "urlListAria": "รายการ URL",
   "usageGuideAria": "คู่มือการใช้งาน",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "หากมีประโยชน์ โปรดกด Star ให้โปรเจกต์ ⭐"
+  "starPrompt": "หากมีประโยชน์ โปรดกด Star ให้โปรเจกต์ ⭐",
+  "showAllFormats": "แสดงประเภทกฎเอาต์พุตทั้งหมด"
 }

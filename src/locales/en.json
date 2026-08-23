@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "Router-level ad filtering rule generator",
   "inputTitle": "Input Domain List",
   "advanced": "Advanced",
@@ -139,5 +139,6 @@
   "changelogLabel": "Changelog",
   "starLink": "Star",
   "starLinkAria": "Star this project on GitHub (opens in new window)",
-  "starPrompt": "If this helps, please give the project a Star ⭐"
+  "starPrompt": "If this helps, please give the project a Star ⭐",
+  "showAllFormats": "Show all output rule types"
 }

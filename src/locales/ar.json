@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "مولد قواعد فلترة الإعلانات على مستوى الراوتر",
   "inputTitle": "إدخال قائمة النطاقات",
   "advanced": "متقدم",
@@ -115,5 +115,6 @@
   "urlListAria": "قائمة URL",
   "usageGuideAria": "دليل الاستخدام",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "إذا كان مفيدًا لك، يرجى منح المشروع Star ⭐"
+  "starPrompt": "إذا كان مفيدًا لك، يرجى منح المشروع Star ⭐",
+  "showAllFormats": "إظهار جميع أنواع القواعد"
 }

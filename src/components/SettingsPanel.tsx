@@ -1,4 +1,4 @@
-// src/components/SettingsPanel.tsx v3.7.50
+// src/components/SettingsPanel.tsx v3.7.65
 // 设置面板组件 —— 从 OutputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -111,6 +111,14 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, adguardIncludeWhitelist: checked === true }))}
             />
             <Label htmlFor="adguardIncludeWhitelist" className="text-sm text-muted-foreground cursor-pointer">{t.adguardIncludeWhitelist}</Label>
+          </div>
+          <div className="inline-flex items-center gap-2 text-sm cursor-pointer select-none" id="settings-option-show-all-formats">
+            <Checkbox
+              id="showAllFormats"
+              checked={settings.showAllFormats}
+              onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, showAllFormats: checked === true }))}
+            />
+            <Label htmlFor="showAllFormats" className="text-sm text-muted-foreground cursor-pointer">{t.showAllFormats}</Label>
           </div>
         </div>
       </div>

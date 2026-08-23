@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "路由器級全局廣告過濾規則生成工具",
   "inputTitle": "輸入域名清單",
   "advanced": "高級選項",
@@ -115,5 +115,6 @@
   "urlListAria": "URL列表",
   "usageGuideAria": "使用指南",
   "changelogLinkAria": "查看更新日誌（新視窗開啟）",
-  "starPrompt": "如果對你有幫助，請給專案點個 Star ⭐"
+  "starPrompt": "如果對你有幫助，請給專案點個 Star ⭐",
+  "showAllFormats": "顯示全部輸出規則類型"
 }

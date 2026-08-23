@@ -1,4 +1,4 @@
-// src/hooks/useSettings.ts v3.7.50
+// src/hooks/useSettings.ts v3.7.65
 // 设置管理 hook —— 从 Home.tsx 拆分
 import { useState, useCallback } from 'react';
 import { Settings } from '../types';
@@ -14,6 +14,7 @@ const DEFAULT_SETTINGS: Settings = {
   dedupDomains: true,
   removeWildcard: true,
   adguardIncludeWhitelist: true,
+  showAllFormats: true,
   dnsmasqFilename: 'dnsmasq.conf',
   hostsFilename: 'hosts.txt',
   adguardFilename: 'adguard.txt',

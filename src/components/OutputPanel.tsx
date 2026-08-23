@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.7.64
+// src/components/OutputPanel.tsx v3.7.65
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -6,6 +6,7 @@ import { Button } from './ui/Button';
 import { Tabs, TabsList, TabsTrigger } from './ui/Tabs';
 import SettingsPanel from './SettingsPanel';
 import { Settings as SettingsType, FormatType, OutputContent, ParsedData } from '../types';
+import { ALL_FORMATS, CORE_FORMATS } from '../types/formats';
 import { useT } from '../context/AppContext';
 
 interface OutputPanelProps {
@@ -44,6 +45,32 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   setSettings,
 }) => {
   const t = useT();
+
+  // 可见格式列表：showAllFormats 为 false 时仅展示核心 4 种（对齐原型「输出规则类型」显示/隐藏开关）
+  const visibleFormats = React.useMemo<FormatType[]>(
+    () => (settings.showAllFormats ? ALL_FORMATS : CORE_FORMATS),
+    [settings.showAllFormats]
+  );
+
+  // 当前选中格式被隐藏时，回退到首个可见格式，避免空面板
+  React.useEffect(() => {
+    if (!visibleFormats.includes(currentFormat)) {
+      setFormat(visibleFormats[0]);
+    }
+  }, [visibleFormats, currentFormat, setFormat]);
+
+  const formatLabel: Record<FormatType, string> = {
+    hosts: t.hostsFormat,
+    dnsmasq: t.dnsmasqFormat,
+    adguard: t.adguardFormat,
+    whitelist: t.whitelistFormat,
+    unbound: t.unboundFormat ?? t.hostsFormat,
+    pihole: t.piholeFormat ?? t.hostsFormat,
+    domains: t.domainsFormat ?? t.hostsFormat,
+    bind: t.bindFormat ?? t.hostsFormat,
+    smartdns: t.smartdnsFormat ?? t.hostsFormat,
+  };
+
   return (
     <section className="panel" id="output-panel" aria-labelledby="output-title">
       <div className="output-body" id="output-body">
@@ -55,15 +82,15 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
           <div className="output-toolbar" id="output-toolbar">
             <Tabs value={currentFormat} onValueChange={(v: string) => setFormat(v as FormatType)}>
               <TabsList className="format-tabs">
-                <TabsTrigger value="hosts" id="format-hosts-btn">{t.hostsFormat}</TabsTrigger>
-                <TabsTrigger value="dnsmasq" id="format-dnsmasq-btn">{t.dnsmasqFormat}</TabsTrigger>
-                <TabsTrigger value="adguard" id="format-adguard-btn">{t.adguardFormat}</TabsTrigger>
-                <TabsTrigger value="whitelist" id="format-whitelist-btn">{t.whitelistFormat}</TabsTrigger>
-                <TabsTrigger value="unbound" id="format-unbound-btn">{t.unboundFormat}</TabsTrigger>
-                <TabsTrigger value="pihole" id="format-pihole-btn">{t.piholeFormat}</TabsTrigger>
-                <TabsTrigger value="domains" id="format-domains-btn">{t.domainsFormat}</TabsTrigger>
-                <TabsTrigger value="bind" id="format-bind-btn">{t.bindFormat}</TabsTrigger>
-                <TabsTrigger value="smartdns" id="format-smartdns-btn">{t.smartdnsFormat}</TabsTrigger>
+                {visibleFormats.map((fmt) => (
+                  <TabsTrigger
+                    key={fmt}
+                    value={fmt}
+                    id={`format-${fmt}-btn`}
+                  >
+                    {formatLabel[fmt]}
+                  </TabsTrigger>
+                ))}
               </TabsList>
             </Tabs>
             <Button

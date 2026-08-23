@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "Генератор правил фильтрации рекламы на уровне маршрутизатора",
   "inputTitle": "Введите список доменов",
   "advanced": "Расширенные",
@@ -115,5 +115,6 @@
   "urlListAria": "Список URL",
   "usageGuideAria": "Руководство по использованию",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "Если помогло, поставьте проекту Star ⭐"
+  "starPrompt": "Если помогло, поставьте проекту Star ⭐",
+  "showAllFormats": "Показывать все типы правил"
 }

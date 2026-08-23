@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "Generador de reglas de filtrado de anuncios a nivel de router",
   "inputTitle": "Lista de dominios de entrada",
   "advanced": "Avanzado",
@@ -115,5 +115,6 @@
   "urlListAria": "Lista de URL",
   "usageGuideAria": "Guía de uso",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "Si te ayuda, por favor dale una Star al proyecto ⭐"
+  "starPrompt": "Si te ayuda, por favor dale una Star al proyecto ⭐",
+  "showAllFormats": "Mostrar todos los tipos de regla"
 }

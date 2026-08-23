@@ -1,4 +1,4 @@
-// src/types/formats.ts v3.7.59
+// src/types/formats.ts v3.7.65
 // 输出格式枚举与格式分类常量，从 index.ts 拆分以保持类型定义文件单一职责。
 // 格式键均一一对应 rulesGenerator 的 generateRules 输出字段。
 // 同时集中解析结果/统计类型（原散落于 domainPrimitives，现归一此处）。
@@ -42,6 +42,16 @@ export const MASKED_FORMATS: FormatType[] = [
 
 /** 仅用于白名单呈现的格式 */
 export const WHITELIST_FORMATS: FormatType[] = ['whitelist'];
+
+/** 核心格式：当设置「仅显示核心格式」(showAllFormats=false) 时，
+ *  格式 Tab 仅展示这 4 种最常用的黑名单/白名单格式，隐藏高级格式。
+ *  顺序与 ALL_FORMATS 一致。 */
+export const CORE_FORMATS: FormatType[] = [
+  'hosts',
+  'dnsmasq',
+  'adguard',
+  'whitelist',
+];
 
 /** 单行解析结果：区分空行 / 注释 / 各类格式命中 */
 export interface ParseResult {

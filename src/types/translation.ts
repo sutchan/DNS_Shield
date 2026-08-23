@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.7.61
+// src/types/translation.ts v3.7.65
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 export interface Translation {
   subtitle: string;
@@ -38,6 +38,7 @@ export interface Translation {
   dedup: string;
   removeWildcard: string;
   adguardIncludeWhitelist: string;
+  showAllFormats: string;
   mergeInfo: string;
   previewPlaceholder: string;
   generateBtn: string;

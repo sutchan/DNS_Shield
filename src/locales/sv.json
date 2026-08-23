@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "Router-nivå annonsfiltreringsregelgenerator",
   "inputTitle": "Ange domänlista",
   "advanced": "Avancerat",
@@ -115,5 +115,6 @@
   "urlListAria": "URL-lista",
   "usageGuideAria": "Användningsguide",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "Om det hjälper, ge projektet en Star ⭐"
+  "starPrompt": "Om det hjälper, ge projektet en Star ⭐",
+  "showAllFormats": "Visa alla regeltyper"
 }

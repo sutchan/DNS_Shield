@@ -19,6 +19,7 @@ const baseSettings: Settings = {
   dedupDomains: true,
   removeWildcard: true,
   adguardIncludeWhitelist: true,
+  showAllFormats: true,
   dnsmasqFilename: 'dnsmasq.conf',
   hostsFilename: 'hosts.txt',
   adguardFilename: 'adguard.txt',

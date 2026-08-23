@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "Generatore di regole di filtraggio pubblicitario a livello di router",
   "inputTitle": "Inserisci Elenco Domini",
   "advanced": "Avanzato",
@@ -115,5 +115,6 @@
   "urlListAria": "Elenco URL",
   "usageGuideAria": "Guida all'uso",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "Se ti è utile, lascia una Star al progetto ⭐"
+  "starPrompt": "Se ti è utile, lascia una Star al progetto ⭐",
+  "showAllFormats": "Mostra tutti i tipi di regola"
 }

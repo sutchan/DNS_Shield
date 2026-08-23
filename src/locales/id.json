@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "Generator aturan filtering iklan tingkat router",
   "inputTitle": "Masukkan Daftar Domain",
   "advanced": "Lanjutan",
@@ -115,5 +115,6 @@
   "urlListAria": "Daftar URL",
   "usageGuideAria": "Panduan penggunaan",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "Jika membantu, mohon berikan Star pada proyek ⭐"
+  "starPrompt": "Jika membantu, mohon berikan Star pada proyek ⭐",
+  "showAllFormats": "Tampilkan semua jenis aturan"
 }

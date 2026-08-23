@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "Router-niveau advertentiefilteringsregelgenerator",
   "inputTitle": "Voer domeinlijst in",
   "advanced": "Geavanceerd",
@@ -115,5 +115,6 @@
   "urlListAria": "URL-lijst",
   "usageGuideAria": "Gebruikshandleiding",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "Als dit helpt, geef het project dan een Star ⭐"
+  "starPrompt": "Als dit helpt, geef het project dan een Star ⭐",
+  "showAllFormats": "Toon alle regeltypen"
 }

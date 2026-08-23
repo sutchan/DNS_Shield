@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "Trình tạo quy tắc lọc quảng cáo cấp router",
   "inputTitle": "Nhập danh sách miền",
   "advanced": "Nâng cao",
@@ -115,5 +115,6 @@
   "urlListAria": "Danh sách URL",
   "usageGuideAria": "Hướng dẫn sử dụng",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "Nếu hữu ích, hãy tặng dự án một Star ⭐"
+  "starPrompt": "Nếu hữu ích, hãy tặng dự án một Star ⭐",
+  "showAllFormats": "Hiển thị tất cả loại quy tắc đầu ra"
 }

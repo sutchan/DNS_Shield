@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "Generator reguł filtrowania reklam na poziomie routera",
   "inputTitle": "Wprowadź listę domen",
   "advanced": "Zaawansowane",
@@ -115,5 +115,6 @@
   "urlListAria": "Lista URL",
   "usageGuideAria": "Przewodnik użytkowania",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "Jeśli to pomaga, oceń projekt Star ⭐"
+  "starPrompt": "Jeśli to pomaga, oceń projekt Star ⭐",
+  "showAllFormats": "Pokaż wszystkie typy reguł"
 }

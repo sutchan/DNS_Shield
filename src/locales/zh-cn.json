@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "路由器级全局广告过滤规则生成工具",
   "inputTitle": "输入域名清单",
   "advanced": "高级选项",
@@ -139,5 +139,6 @@
   "changelogLabel": "更新日志",
   "starLink": "Star",
   "starLinkAria": "在 GitHub 上为本项目标星（新窗口打开）",
-  "starPrompt": "如果对你有帮助，请给项目点个 Star ⭐"
+  "starPrompt": "如果对你有帮助，请给项目点个 Star ⭐",
+  "showAllFormats": "显示全部输出规则类型"
 }

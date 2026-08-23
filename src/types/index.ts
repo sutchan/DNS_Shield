@@ -1,4 +1,4 @@
-// src/types/index.ts v3.7.50
+// src/types/index.ts v3.7.65
 // 全局类型定义集中处：Settings / ParsedData / OutputContent 等。
 // FormatType 已拆分至 formats.ts，此处统一 re-export 以保持外部契约不变。
 export type { FormatType } from './formats';
@@ -47,6 +47,9 @@ export interface Settings {
   // AdGuard 黑名单是否包含白名单豁免规则（@@||domain^）。
   // 默认 true（保持向后兼容：历史版本始终在 AdGuard 黑名单中附带白名单）。
   adguardIncludeWhitelist: boolean;
+  // 格式 Tab 是否显示全部 9 种格式；为 false 时仅显示核心 4 种（hosts/dnsmasq/adguard/whitelist）。
+  // 对齐原型「输出规则类型」显示/隐藏开关，默认 true（显示全部）。
+  showAllFormats: boolean;
   dnsmasqFilename: string;
   hostsFilename: string;
   adguardFilename: string;

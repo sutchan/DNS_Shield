@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "राउटर स्तर पर विज्ञापन फ़िल्टरिंग नियम जनरेटर",
   "inputTitle": "डोमेन सूची दर्ज करें",
   "advanced": "उन्नत",
@@ -115,5 +115,6 @@
   "urlListAria": "URL सूची",
   "usageGuideAria": "उपयोग गाइड",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "अगर यह मददगार है, तो प्रोजेक्ट को Star दें ⭐"
+  "starPrompt": "अगर यह मददगार है, तो प्रोजेक्ट को Star दें ⭐",
+  "showAllFormats": "सभी आउटपुट नियम प्रकार दिखाएँ"
 }

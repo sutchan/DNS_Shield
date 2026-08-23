@@ -1,4 +1,4 @@
-﻿{
+{
   "subtitle": "Generátor pravidel pro filtrování reklam na úrovni routeru",
   "inputTitle": "Vstup seznamu domén",
   "advanced": "Pokročilé",
@@ -115,5 +115,6 @@
   "urlListAria": "Seznam URL",
   "usageGuideAria": "Průvodce použitím",
   "changelogLinkAria": "View changelog (opens in new window)",
-  "starPrompt": "Pokud se vám to hodí, dejte projektu Star ⭐"
+  "starPrompt": "Pokud se vám to hodí, dejte projektu Star ⭐",
+  "showAllFormats": "Zobrazit všechny typy pravidel"
 }
