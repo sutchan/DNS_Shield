@@ -1,7 +1,8 @@
-// src/components/SettingsPanel.tsx v3.8.1
+// src/components/SettingsPanel.tsx v3.8.3
 // 设置面板组件 —— 从 OutputPanel 拆分
 'use client';
 import * as React from 'react';
+import { Sun, Moon } from 'lucide-react';
 import { Input } from './ui/Input';
 import { Label } from './ui/Label';
 import { Checkbox } from './ui/Checkbox';
@@ -11,6 +12,8 @@ import { useT } from '../context/AppContext';
 interface SettingsPanelProps {
   isCollapsed: boolean;
   settings: SettingsType;
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
   updateSettings: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
 }
@@ -18,6 +21,8 @@ interface SettingsPanelProps {
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
   isCollapsed,
   settings,
+  theme,
+  toggleTheme,
   updateSettings,
   setSettings,
 }) => {
@@ -29,7 +34,10 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
       aria-hidden={isCollapsed}
     >
       <div className="settings-inner" id="settings-inner">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3" id="settings-fields-grid">
+        {/* 输出规则类型分组（对齐原型 fmtGroup） */}
+        <div className="settings-group" id="settings-group-format">
+          <h3 className="settings-group-title" id="settings-group-format-title">{t.fmtGroup}</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3" id="settings-fields-grid">
           <div className="flex flex-col gap-1.5" id="settings-field-project">
             <Label htmlFor="projectNameInput" className="text-xs font-medium text-muted-foreground">{t.projectName}</Label>
             <Input
@@ -119,6 +127,33 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, showAllFormats: checked === true }))}
             />
             <Label htmlFor="showAllFormats" className="text-sm text-muted-foreground cursor-pointer">{t.showAllFormats}</Label>
+          </div>
+          </div>
+        </div>
+        {/* 外观分组（对齐原型 appearanceGroup + 主题分段切换） */}
+        <div className="settings-group" id="settings-group-appearance">
+          <h3 className="settings-group-title" id="settings-group-appearance-title">{t.appearanceGroup}</h3>
+          <div className="inline-flex items-center gap-2" id="settings-theme-segment" role="group" aria-label={t.darkTheme}>
+            <button
+              type="button"
+              className={`theme-seg-btn ${theme === 'light' ? 'active' : ''}`}
+              onClick={() => theme !== 'light' && toggleTheme()}
+              aria-pressed={theme === 'light'}
+              id="themeSegLight"
+            >
+              <Sun className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+              <span>{t.themeLight}</span>
+            </button>
+            <button
+              type="button"
+              className={`theme-seg-btn ${theme === 'dark' ? 'active' : ''}`}
+              onClick={() => theme !== 'dark' && toggleTheme()}
+              aria-pressed={theme === 'dark'}
+              id="themeSegDark"
+            >
+              <Moon className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+              <span>{t.themeDark}</span>
+            </button>
           </div>
         </div>
       </div>

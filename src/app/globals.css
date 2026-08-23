@@ -483,6 +483,22 @@
   @apply p-4 rounded-xl border border-border bg-muted/40;
 }
 
+.settings-group {
+  @apply flex flex-col gap-2 pt-3 mt-3 border-t border-border first:border-t-0 first:pt-0 first:mt-0;
+}
+
+.settings-group-title {
+  @apply text-xs font-semibold uppercase tracking-wide text-muted-foreground;
+}
+
+.theme-seg-btn {
+  @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm border border-border bg-background text-muted-foreground transition-colors hover:bg-accent;
+}
+
+.theme-seg-btn.active {
+  @apply bg-primary text-primary-foreground border-primary;
+}
+
 /* ============================================
    Footer
    ============================================ */
@@ -714,7 +730,7 @@
 
 .fv-legend-block .fv-legend-dot { background: hsl(var(--destructive)); }
 .fv-legend-allow .fv-legend-dot { background: hsl(var(--success)); }
-.fv-legend-dns .fv-legend-dot { background: hsl(var(--primary)); }
+.fv-legend-dns .fv-legend-dot { background: hsl(var(--warning)); }
 .fv-legend-await .fv-legend-dot { background: hsl(var(--muted-foreground) / 0.5); }
 
 .flowviz {
@@ -731,7 +747,7 @@
 
 .fv-pipe-block { box-shadow: inset 0 0 0 1px hsl(var(--destructive) / 0.18); }
 .fv-pipe-allow { box-shadow: inset 0 0 0 1px hsl(var(--success) / 0.18); }
-.fv-pipe-dns { box-shadow: inset 0 0 0 1px hsl(var(--primary) / 0.18); }
+.fv-pipe-dns { box-shadow: inset 0 0 0 1px hsl(var(--warning) / 0.18); }
 
 .fv-signal {
   @apply w-2 h-2 rounded-full;
@@ -740,7 +756,7 @@
 
 .fv-pipe-block .fv-signal { background: hsl(var(--destructive)); }
 .fv-pipe-allow .fv-signal { background: hsl(var(--success)); }
-.fv-pipe-dns .fv-signal { background: hsl(var(--primary)); }
+.fv-pipe-dns .fv-signal { background: hsl(var(--warning)); }
 
 .fv-track {
   @apply relative w-full h-32;
@@ -754,7 +770,7 @@
 
 .fv-pipe-block .fv-token { background: hsl(var(--destructive) / 0.8); }
 .fv-pipe-allow .fv-token { background: hsl(var(--success) / 0.8); }
-.fv-pipe-dns .fv-token { background: hsl(var(--primary) / 0.85); }
+.fv-pipe-dns .fv-token { background: hsl(var(--warning) / 0.85); }
 
 .fv-count {
   @apply text-sm font-semibold tabular-nums;
@@ -762,7 +778,7 @@
 
 .fv-pipe-block .fv-count { color: hsl(var(--destructive)); }
 .fv-pipe-allow .fv-count { color: hsl(var(--success)); }
-.fv-pipe-dns .fv-count { color: hsl(var(--primary)); }
+.fv-pipe-dns .fv-count { color: hsl(var(--warning)); }
 
 .fv-summary {
   @apply text-center text-[0.75rem] text-muted-foreground;

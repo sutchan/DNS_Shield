@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.8.1
+// src/app/Home.tsx v3.8.3
 'use client';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './globals.css';
@@ -123,6 +123,18 @@ export default function Home() {
     }
   }, []);
 
+  // Hero CTA：滚动到输入面板并聚焦编辑器
+  const scrollToInput = useCallback(() => {
+    if (typeof document !== 'undefined') {
+      const el = document.getElementById('input-panel');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const editor = document.getElementById('source-editor');
+        (editor as HTMLTextAreaElement | null)?.focus?.();
+      }
+    }
+  }, []);
+
   return (
     <AppProvider value={{ t }}>
       <div className="container" id="app-container">
@@ -134,7 +146,11 @@ export default function Home() {
           switchLang={switchLang}
         />
 
-        <FlowViz parsedData={parsedData} />
+        <FlowViz
+          parsedData={parsedData}
+          onStart={scrollToInput}
+          onToggleSettings={() => toggleSection('settings-panel')}
+        />
 
         <main className="main-content" id="main-content">
           <InputPanel
@@ -180,6 +196,8 @@ export default function Home() {
             syncOutputScroll={syncOutputScroll}
             updateSettings={updateSettings}
             setSettings={setSettings}
+            theme={theme}
+            toggleTheme={toggleTheme}
           />
         </main>
 

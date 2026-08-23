@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.8.1
+// src/components/OutputPanel.tsx v3.8.3
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -25,6 +25,8 @@ interface OutputPanelProps {
   syncOutputScroll: () => void;
   updateSettings: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
+  theme: 'light' | 'dark';
+  toggleTheme: () => void;
 }
 
 const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
@@ -43,6 +45,8 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   syncOutputScroll,
   updateSettings,
   setSettings,
+  theme,
+  toggleTheme,
 }) => {
   const t = useT();
 
@@ -108,6 +112,8 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
         <SettingsPanel
           isCollapsed={isSettingsPanelCollapsed}
           settings={settings}
+          theme={theme}
+          toggleTheme={toggleTheme}
           updateSettings={updateSettings}
           setSettings={setSettings}
         />

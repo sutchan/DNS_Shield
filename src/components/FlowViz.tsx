@@ -1,11 +1,13 @@
-// src/components/FlowViz.tsx v3.8.2
+// src/components/FlowViz.tsx v3.8.3
 // 输出流量可视化签名组件：对齐原型 flowviz —— 三态管道（拦截/放行/改道）
 // 实时反映 parsedData 中黑名单/白名单/自定义 DNS 的真实占比，域名 token 从管道顶部落入。
 // 动画遵循全局 prefers-reduced-motion 降级（globals.css 已统一处理）。
 'use client';
 import * as React from 'react';
+import { Sparkles, Settings2 } from 'lucide-react';
 import { ParsedData } from '../types';
 import { useT } from '../context/AppContext';
+import { Button } from './ui/Button';
 
 /** 单条轨道的静态 token 数量（视觉密度，不随数据量无限增长） */
 const TOKENS_PER_PIPE = 7;
@@ -35,10 +37,13 @@ const Pipe: React.FC<PipeProps> = ({ kind, count, label }) => (
 
 interface FlowVizProps {
   parsedData: ParsedData;
+  // Hero CTA 回调（对齐原型 ctaStart / ctaSettings）
+  onStart?: () => void;
+  onToggleSettings?: () => void;
 }
 
 /** 流量可视化签名区：将当前输入的三类域名以三态管道动画呈现 */
-const FlowViz: React.FC<FlowVizProps> = ({ parsedData }) => {
+const FlowViz: React.FC<FlowVizProps> = ({ parsedData, onStart, onToggleSettings }) => {
   const t = useT();
   const block = parsedData.domains.length;
   const allow = parsedData.whitelist.length;
@@ -98,6 +103,30 @@ const FlowViz: React.FC<FlowVizProps> = ({ parsedData }) => {
             <div className="usage-tip">
               <span className="tip-label">{t.usageTip}</span>
               <span className="tip-content">{t.usageTipContent}</span>
+            </div>
+            {/* Hero CTA（对齐原型 ctaStart / ctaSettings） */}
+            <div className="hero-cta" id="heroCta">
+              <Button
+                type="button"
+                variant="default"
+                size="sm"
+                onClick={onStart}
+                id="ctaStart"
+                className="font-semibold"
+              >
+                <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
+                {t.ctaStart}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={onToggleSettings}
+                id="ctaSettings"
+              >
+                <Settings2 className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
+                {t.ctaSettings}
+              </Button>
             </div>
           </div>
         </div>

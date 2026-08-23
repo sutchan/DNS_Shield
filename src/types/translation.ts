@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.8.2
+// src/types/translation.ts v3.8.3
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 export interface Translation {
   subtitle: string;
@@ -168,4 +168,30 @@ export interface Translation {
     invalidUrl: string;
     invalidUrlsFiltered: string;
   };
+  // —— 对齐原型 v3.8.1 新增扁平键 ——
+  // Hero CTA 按钮（原型 ctaStart/ctaSettings）
+  ctaStart: string;
+  ctaSettings: string;
+  // URL 批量导入（原型 urlHint/lblFetch）
+  urlHint: string;
+  lblFetch: string;
+  // 预设标签（原型 presetBuiltin）
+  presetBuiltin: string;
+  // 输出格式 tab 标签（原型 tabWhitelist）
+  tabWhitelist: string;
+  // 设置分组标题（原型 fmtGroup/appearanceGroup/darkTheme/themeLight/themeDark）
+  fmtGroup: string;
+  appearanceGroup: string;
+  themeLight: string;
+  themeDark: string;
+  darkTheme: string;
+  // 使用指南弹窗（原型 guideTitle/gStep1t/gStep1d/gStep2t/gStep2d/gStep3t/gStep3d/guideNoteTitle）
+  guideTitle: string;
+  gStep1t: string;
+  gStep1d: string;
+  gStep2t: string;
+  gStep2d: string;
+  gStep3t: string;
+  gStep3d: string;
+  guideNoteTitle: string;
 }

@@ -63,7 +63,7 @@ const nextConfig = {
     unoptimized: true
   },
   env: {
-    version: '3.8.2'
+    version: '3.8.3'
   },
   devIndicators: {
     buildActivity: false
