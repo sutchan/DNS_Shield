@@ -7,6 +7,11 @@
 
 ## [Unreleased]
 
+### Fixed（OutputPanel 类型错误修复 v3.7.64）
+- 修复 `OutputPanel.tsx` 被 `React.memo` 包裹后内联 `Button` 的 `variant`/`size` 字面量被拓宽为 `string` 导致 4 处 TS2322 类型错误
+- 修复 `Tabs` `onValueChange` 回调 `v` 参数隐式 `any`（TS7006），显式标注为 `string`
+- 上述 5 处 TS 错误会阻塞 `next build` 生产构建，已通过 `as const` 精确类型标注消除，tsc 0 错误、67/67 测试通过
+
 ### Fixed（CI 构建修复 v3.7.62）
 - 修复 Vercel 构建失败：`pnpm-lock.yaml` 的 `@types/node` specifier（`^20.14.0`）与 `package.json`（`^24.0.0`）脱节导致 `frozen-lockfile` 校验失败
 - 将 lock 的 `@types/node` 解析对齐至 `24.13.3`，新增对应 packages 条目，恢复 lock 与 manifest 一致

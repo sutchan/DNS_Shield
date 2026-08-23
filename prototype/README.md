@@ -1,4 +1,4 @@
-# DNS Shield — 项目原型 (Prototype) v3.7.60
+# DNS Shield — 项目原型 (Prototype) v3.7.62
 
 > 高保真、可交互、内联真实数据的产品原型，与真实引擎 `src/` 及 OpenSpec 规范保持最小颗粒度对齐。
 
@@ -19,11 +19,11 @@ prototype/
 ## 原型能力（`index.html`）
 
 - **极简视觉**：严格复用 `shadcn/design-system.md` 的 HSL token 与 Inter 字体、4px 间距、Apple ease-out-quart 缓动。
-- **真实数据**：内置与 `public/domains.txt` 语法一致的样本（黑名单 / `+` 白名单 / `@domain=ip` 自定义 DNS / `!` 注释），输出逻辑 1:1 对齐 `src/utils/parser.ts` 与 `rulesGenerator.ts`。
+- **真实数据**：内置数据预设 `SAMPLE` 取自真实运行时源 `https://raw.githubusercontent.com/sutchan/DNS_Shield/refs/heads/main/public/domains.txt`（纯黑名单域名列表，样本为该文件头部真实域名），与运行时源同构；`+` 白名单 / `@domain=ip` 自定义 DNS / `!` 注释等混合语法由 adguard/easylist 等预设演示，输出逻辑 1:1 对齐 `src/utils/parser.ts` 与 `rulesGenerator.ts`。
 - **格式转换**：粘贴 hosts / dnsmasq / AdGuard / 纯域名任意格式清单，`parseDomainLine` 逐行识别并解析为统一中间结构，再输出为目标格式，支持不同格式互转。
 - **高保真交互**：
   - 主题切换（Light/Dark，持久化 `localStorage` + `prefers-color-scheme`）
-  - 8 语言下拉（i18n 最小集，对齐 `src/locales`）
+  - 16 语言下拉（对齐 `src/utils/i18n.ts` `supportedLanguages`）
   - 实时解析统计（黑名单 / 白名单 / 自定义 DNS / 注释）
   - 9 种格式输出（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS）Tab 切换
   - 行号编辑器、排序、去重、清空、复制、下载
@@ -82,7 +82,7 @@ prototype/
 - 应用内导航栏 Logo 复用 `lucide-react` 的 `Shield` 图标（`text-primary`），与 `favicon.svg` 视觉一致。
 - 修改标志时直接更新 `public/` 下对应资产，并保持 `public/brand/` 文档同步。
 
-## 与真实引擎的同步状态（v3.7.60）
+## 与真实引擎的同步状态（v3.7.62）
 
 `prototype.html` 的解析/生成逻辑对齐 `src/utils/parser.ts`、`rulesGenerator.ts`、`domainValidator.ts`：
 
@@ -99,4 +99,4 @@ prototype/
 
 ## 版本
 
-当前原型版本 **v3.7.60**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。
+当前原型版本 **v3.7.62**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。

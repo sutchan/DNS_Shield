@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- prototype/prototype.html v3.7.60 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
+<!-- prototype/prototype.html v3.7.63 — DNS Shield 高保真可交互原型（极简风格 / 真实数据 / 响应式） -->
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DNS Shield — 高保真原型 v3.7.60</title>
+  <title>DNS Shield — 高保真原型 v3.7.63</title>
   <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS 的 DNS 广告过滤规则生成器" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -109,7 +109,7 @@
     .btn-ghost:hover { background: hsl(var(--secondary)); }
     .btn-outline { background: hsl(var(--card)); color: hsl(var(--foreground)); border-color: hsl(var(--border)); }
     .btn-outline:hover { background: hsl(var(--secondary)); }
-    .btn-sm { height: 30px; padding: 0 10px; font-size: 12px; }
+    .btn-sm { height: 30px; padding: 0 10px; font-size: 12px; min-width: 64px; }
     .icon-btn { width: 36px; height: 36px; padding: 0; border-radius: var(--radius-md); }
 
     /* Layout */
@@ -138,7 +138,6 @@
     .stat-label { font-size: 11px; color: hsl(var(--muted-foreground)); }
 
     /* Editor */
-    .editor-row { display: flex; gap: 8px; }
     .gutter {
       flex: 0 0 36px; padding: 10px 6px 10px 0; text-align: right;
       font-family: ui-monospace, monospace; font-size: 13px; line-height: 1.6;
@@ -167,6 +166,7 @@
     .preset:hover { background: hsl(var(--primary) / .15); }
     .preset:active { transform: scale(.96); }
     .preset.active { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+    .preset.loading { opacity: .6; pointer-events: none; }
 
     /* Tabs（统一风格：对齐真实应用 .format-tabs / .format-tab） */
     .tabs {
@@ -253,12 +253,12 @@
     .box.on svg { opacity: 1; }
 
     /* ---- URL import section (对齐 src/components/UrlSection.tsx) ---- */
-    .editor-row { display: flex; gap: 8px; align-items: stretch; }
+    .editor-row { display: flex; gap: 8px; align-items: center; }
     .editor-row .input { flex: 1; }
     .url-bar { margin-bottom: 12px; }
     .url-bar .hint { font-size: 11.5px; color: hsl(var(--muted-foreground)); margin-top: 5px; }
-    .loading-bar { height: 3px; width: 100%; background: hsl(var(--muted)); border-radius: 2px; overflow: hidden; margin-top: 8px; display: none; }
-    .loading-bar.on { display: block; }
+    .loading-bar { height: 3px; width: 100%; background: hsl(var(--muted)); border-radius: 2px; overflow: hidden; margin-top: 8px; opacity: 0; visibility: hidden; transition: opacity .2s; }
+    .loading-bar.on { opacity: 1; visibility: visible; }
     .loading-bar .fill { height: 100%; width: 40%; background: hsl(var(--primary)); animation: indet 1.2s ease-in-out infinite; }
     @keyframes indet { 0% { transform: translateX(-100%); } 100% { transform: translateX(350%); } }
 
@@ -298,6 +298,7 @@
     .about-links { display: flex; gap: 6px; flex-wrap: wrap; }
     .about-link { font-size: 12.5px; color: hsl(var(--muted-foreground)); text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; padding: 4px 8px; border-radius: var(--radius-md); }
     .about-link:hover { background: hsl(var(--secondary)); color: hsl(var(--foreground)); }
+    .usage-title { font-size: 15px; font-weight: 700; margin: 0 0 2px; color: hsl(var(--foreground)); }
     .usage { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-top: 14px; }
     .step { display: flex; gap: 10px; align-items: flex-start; }
     .step .n { width: 22px; height: 22px; flex: 0 0 22px; border-radius: 50%; background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); display: grid; place-items: center; font-size: 11px; font-weight: 700; }
@@ -310,7 +311,8 @@
     <div class="wrap header-inner">
       <div class="brand">
         <div class="brand-icon" id="brandIcon" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="#0D5FE2" aria-hidden="true"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/><path d="M8.5 12.2l2.3 2.3 4.4-4.4" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <!-- 与 public/logo.svg 同源：真实盾形 path + 白色勾选（viewBox 保持原始比例，造型零漂移） -->
+          <svg width="20" height="20" viewBox="0 0 135.46 169.33" fill="#0D5FE2" aria-hidden="true"><path d="M67.73 0l-67.73 25.4 0 59.27c0,42.33 29.63,71.97 67.73,84.67 38.1,-12.7 67.73,-42.33 67.73,-84.67l0 -59.27 -67.73 -25.4z"/><polyline points="38.1,86.36 57.57,105.83 94.82,68.58" fill="none" stroke="#ffffff" stroke-width="16.93" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div>
           <div class="brand-title">DNS Shield</div>
@@ -334,14 +336,14 @@
 
   <main class="main-content" id="main-content">
     <!-- Hero 签名元素：DNS 拦截流可视化 -->
-    <div class="wrap">
+    <div class="wrap" id="heroWrap">
       <section class="hero" id="hero" aria-label="DNS 防护概览">
-        <div class="hero-top">
-          <div class="hero-copy">
+        <div class="hero-top" id="heroTop">
+          <div class="hero-copy" id="heroCopy">
             <span class="hero-kicker"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/></svg> 路由器级 DNS 防护</span>
-            <h2 class="hero-title" id="heroTitle">把广告与追踪域名，挡在网络入口</h2>
+            <h1 class="hero-title" id="heroTitle">把广告与追踪域名，挡在网络入口</h1>
             <p class="hero-desc" id="heroDesc">粘贴域名或批量导入，一键生成 9 种格式规则，直接部署到路由器或 DNS 服务。</p>
-            <div class="hero-cta">
+            <div class="hero-cta" id="heroCta">
               <a class="btn btn-primary btn-sm" href="#input-panel">开始生成</a>
               <a class="btn btn-outline btn-sm" href="#settings-panel">配置设置</a>
             </div>
@@ -355,7 +357,7 @@
         </div>
       </section>
     </div>
-    <div class="wrap grid">
+    <div class="wrap grid" id="workGrid">
       <!-- 输入面板 -->
       <section class="card" id="input-panel" aria-label="域名输入">
         <div class="card-head">
@@ -374,7 +376,7 @@
 
         <!-- URL 批量导入 (对齐 src/components/UrlSection.tsx) -->
         <div class="url-bar" id="urlSection">
-          <div class="editor-row">
+          <div class="editor-row" id="urlRow">
             <input class="input" id="urlInput" placeholder="从 URL 批量导入域名，例如 https://example.com/ads.txt" />
             <button class="btn btn-primary btn-sm" id="urlFetchBtn"><span id="lblFetch">获取</span></button>
           </div>
@@ -382,12 +384,12 @@
           <div class="hint" id="urlHint">支持 hosts / dnsmasq / AdGuard / 纯域名 混合格式，单行 10MB 上限</div>
         </div>
 
-        <div class="editor-row">
+        <div class="editor-row" id="editorRow">
           <div class="gutter" id="gutter" aria-hidden="true">1</div>
           <textarea id="editor" spellcheck="false" aria-label="域名编辑区"></textarea>
         </div>
 
-        <div class="toolbar">
+        <div class="toolbar" id="inputToolbar">
           <button class="btn btn-primary btn-sm" id="parseBtn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
             <span id="lblParse">生成规则</span>
@@ -425,7 +427,7 @@
           </div>
         </div>
 
-        <div class="toolbar" style="margin-bottom:12px">
+        <div class="toolbar" id="outputToolbar" style="margin-bottom:12px">
           <button class="btn btn-outline btn-sm" id="copyBtn"><span id="lblCopy">复制</span></button>
           <button class="btn btn-outline btn-sm" id="downloadBtn"><span id="lblDownload">下载</span></button>
         </div>
@@ -441,10 +443,10 @@
             <span id="settingsTitle">设置</span>
           </div>
         </div>
-        <div class="card-body" style="padding:18px">
+        <div class="card-body" id="settingsBody" style="padding:18px">
           <div class="settings-grid">
             <div class="field"><label id="lblProjName">项目名</label><input class="input" id="projName" value="DNS Shield" /></div>
-            <div class="field"><label id="lblVer">版本</label><input class="input" id="projVer" value="3.7.60" /></div>
+            <div class="field"><label id="lblVer">版本</label><input class="input" id="projVer" value="3.7.63" /></div>
             <div class="field"><label id="lblIpv4">IPv4 重定向</label><input class="input" id="ipv4" value="127.0.0.1" /></div>
             <div class="field"><label id="lblIpv6">IPv6 重定向</label><input class="input" id="ipv6" value="::" /></div>
           </div>
@@ -458,30 +460,31 @@
         </div>
       </section>
     </div>
-  </main>
 
-  <!-- About 业务组件 (对齐 src/components/Footer.tsx) -->
-  <section class="wrap" style="padding-bottom:40px">
-    <div class="about" id="about-panel">
-      <div class="about-top">
-        <div class="about-links">
-          <a class="about-link" id="linkGithub" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">GitHub ↗</a>
-          <a class="about-link" id="linkStar" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">★ Star</a>
-          <a class="about-link" id="linkChangelog" href="https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md" target="_blank" rel="noopener">更新日志 ↗</a>
-          <a class="about-link" id="linkGuide" href="#settings-panel">使用指南 ▾</a>
+    <!-- About 业务组件：保留使用指南（链接与版本号统一移至页面最底部 footer） -->
+    <div class="wrap" id="aboutWrap" style="margin-top:24px; padding-bottom:40px">
+      <div class="about" id="about-panel">
+        <h2 class="usage-title" id="usageTitle">使用指南</h2>
+        <div class="usage" id="usageGuide">
+          <div class="step"><span class="n">1</span><div><div class="st" id="step1t">输入域名</div><div class="sd" id="step1d">粘贴或导入广告域名</div></div></div>
+          <div class="step"><span class="n">2</span><div><div class="st" id="step2t">选择格式</div><div class="sd" id="step2d">dnsmasq / hosts / AdGuard…</div></div></div>
+          <div class="step"><span class="n">3</span><div><div class="st" id="step3t">导出部署</div><div class="sd" id="step3d">复制到路由器或 DNS 服务</div></div></div>
         </div>
-        <span class="badge badge-outline mono" style="margin-left:auto" id="aboutVer">v3.7.60</span>
-      </div>
-      <div class="usage" id="usageGuide">
-        <div class="step"><span class="n">1</span><div><div class="st" id="step1t">输入域名</div><div class="sd" id="step1d">粘贴或导入广告域名</div></div></div>
-        <div class="step"><span class="n">2</span><div><div class="st" id="step2t">选择格式</div><div class="sd" id="step2d">dnsmasq / hosts / AdGuard…</div></div></div>
-        <div class="step"><span class="n">3</span><div><div class="st" id="step3t">导出部署</div><div class="sd" id="step3d">复制到路由器或 DNS 服务</div></div></div>
       </div>
     </div>
-  </section>
+  </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <footer class="wrap" style="padding:16px; text-align:center"><span class="footer-ver" id="footerVer">v3.7.60</span></div>
+  <!-- 页面最底部：GitHub 等链接 + 单一版本号（消除 about 面板与 footer 的重复版本号） -->
+  <footer class="wrap" id="app-footer" style="padding:16px; text-align:center">
+    <div class="about-links" style="justify-content:center; margin-bottom:8px">
+      <a class="about-link" id="linkGithub" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="about-link" id="linkStar" href="https://github.com/sutchan/DNS_Shield" target="_blank" rel="noopener">★ Star</a>
+      <a class="about-link" id="linkChangelog" href="https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md" target="_blank" rel="noopener">更新日志 ↗</a>
+      <a class="about-link" id="linkGuide" href="#usageGuide">使用指南 ▾</a>
+    </div>
+    <span class="footer-ver" id="footerVer">v3.7.63</span>
+  </footer>
 
   <script>
   (function () {
@@ -506,36 +509,45 @@
         step1t: 'Input Domains', step1d: 'Paste or import ad domains', step2t: 'Pick Format', step2d: 'dnsmasq / hosts / AdGuard…',
         step3t: 'Export', step3d: 'Copy to router or DNS service' }
     };
-    // 对齐 src/locales 全部 16 种语言；第三项标记 RTL（阿拉伯语）
+    // 对齐 src/utils/i18n.ts 全部 16 种语言；第三项标记 RTL（阿拉伯语）
     var LANGS = [
-      ['zh-cn','中文'],['en','English'],['zh-tw','繁體中文'],['ja','日本語'],['ko','한국어'],
-      ['ru','Русский'],['es','Español'],['fr','Français'],['de','Deutsch'],['ar','العربية',true],
+      ['zh-cn','中文'],['en','English'],['zh-tw','繁體中文'],
+      ['ru','Русский'],['es','Español'],['ar','العربية',true],
       ['cs','Čeština'],['hi','हिन्दी'],['id','Indonesia'],['it','Italiano'],['nl','Nederlands'],
       ['pl','Polski'],['sv','Svenska'],['th','ไทย'],['tr','Türkçe'],['vi','Tiếng Việt']
     ];
 
-    // ---- 真实数据样本 (对齐 public/domains.txt 语法) ----
+    // ---- 内置数据（对齐 src/config/index.ts PRESET_MIRRORS.builtin）----
+    // 运行时真实源为纯黑名单域名列表（每行一个域名，无白名单/自定义DNS前缀）。
+    // 主源被墙时自动降级到 jsdelivr 镜像，与原应用行为一致；
+    // 全部失败时回退到下列静态样本（取自真实 domains.txt 头部）。
+    var BUILTIN_SOURCES = [
+      'https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/domains.txt',
+      'https://cdn.jsdelivr.net/gh/sutchan/DNS_Shield@main/public/domains.txt'
+    ];
     var SAMPLE = [
-      '# DNS Shield 示例域名',
       'doubleclick.net',
       'googleadservices.com',
       'googlesyndication.com',
       'adservice.google.com',
-      '+mi.com',
-      '+iot.mi.com',
-      '@cdn.example.com=1.2.3.4',
-      '!adblock-analytics.example.com',
-      'ad.example.com'
+      'ad.doubleclick.net',
+      'ad.iqiyi.com',
+      'ad.tencentmusic.com',
+      'ad.xiaomi.com',
+      'ad.xiaohongshu.com',
+      'ad.youku.com',
+      'a.applvn.com',
+      'acs.youku.com'
     ].join('\n');
 
     var PRESETS = {
-      builtin: SAMPLE,
+      builtin: null, // 异步从 BUILTIN_SOURCES 拉取，见 loadBuiltin()
       adguard: '||doubleclick.net^\n||googleadservices.com^\n+google-analytics.com',
       easylist: '||ads.example.com^\n||tracker.example.org^\n+trusted.example.com',
       neohosts: 'ad.neohost.cn\nbanner.neohost.cn\n+api.neohost.cn'
     };
 
-    var settings = { projectName: 'DNS Shield', version: '3.7.60', ipv4: '127.0.0.1', ipv6: '::',
+    var settings = { projectName: 'DNS Shield', version: '3.7.63', ipv4: '127.0.0.1', ipv6: '::',
       addHeader: true, blockIPv6: false, dedupDomains: true, removeWildcard: true, adguardIncludeWhitelist: true };
 
     var DOMAIN_REGEX = /^(?=.{1,253}$)([a-z0-9](-?[a-z0-9])*\.)+[a-z]{2,}$/i;
@@ -553,7 +565,7 @@
     }
     function parseSource(src) {
       var lines = src.replace(/\r/g, '').split('\n');
-      var domains = [], wl = [], custom = [], comments = 0;
+      var domains = [], wl = [], custom = [], comments = 0, invalid = 0;
       var seenWl = {};
       for (var i = 0; i < lines.length; i++) {
         var raw = lines[i].trim();
@@ -562,21 +574,22 @@
         if (raw.charAt(0) === '!') { comments++; continue; }
         if (raw.charAt(0) === '+') {
           var w = normKey(raw.slice(1));
-          if (!seenWl[w]) { seenWl[w] = true; if (DOMAIN_REGEX.test(w)) wl.push(w); else comments++; }
+          if (!seenWl[w]) { seenWl[w] = true; if (DOMAIN_REGEX.test(w)) wl.push(w); else invalid++; }
           continue;
         }
         if (raw.charAt(0) === '@') {
           var eq = raw.indexOf('=');
-          if (eq > 1) { var cd = normKey(raw.slice(1, eq)); if (DOMAIN_REGEX.test(cd)) custom.push({ domain: cd, ip: raw.slice(eq + 1).trim() }); else comments++; }
+          if (eq > 1) { var cd = normKey(raw.slice(1, eq)); if (DOMAIN_REGEX.test(cd)) custom.push({ domain: cd, ip: raw.slice(eq + 1).trim() }); else invalid++; }
           continue;
         }
         if (raw.indexOf('@@||') === 0) {
           var aw = raw.slice(4).replace(/\^\$?.*$/, ''); aw = normKey(aw);
-          if (!seenWl[aw]) { seenWl[aw] = true; if (DOMAIN_REGEX.test(aw)) wl.push(aw); else comments++; }
+          if (!seenWl[aw]) { seenWl[aw] = true; if (DOMAIN_REGEX.test(aw)) wl.push(aw); else invalid++; }
           continue;
         }
         var d = normKey(raw);
-        if (DOMAIN_REGEX.test(d)) domains.push(d); else comments++;
+        // 对齐真实引擎 parseLine：无法识别的行标记为 invalid（而非伪装成注释）
+        if (DOMAIN_REGEX.test(d)) domains.push(d); else invalid++;
       }
       // 自定义 DNS 按 domain 去重（3.7.10），与真实引擎一致
       var seenC = {}; custom = custom.filter(function (c) { if (seenC[c.domain]) return false; seenC[c.domain] = 1; return true; });
@@ -595,27 +608,15 @@
       if (!settings.addHeader) return '';
       var total = parsed.domains.length;
       var wcount = parsed.whitelist.length;
-      var sep = '========================================';
-      // 对齐真实引擎 rulesGenerator.ts:generateHeader（9 类格式统一多行注释结构）
+      // 紧凑头部：保留版本/更新/域名/白名单计数/项目链接，去除冗余分隔线与空行
+      // （对齐真实引擎 rulesGenerator.ts:generateHeader 的信息集，但行数压缩约一半）
       var lines = [
-        '# ' + sep,
         '# ' + settings.projectName + ' - ' + fmtName,
-        '# ' + sep,
-        '#',
-        '# DNS Shield 域名广告拦截规则',
-        '#',
-        '# 版本: ' + settings.version,
-        '# 更新: ' + new Date().toISOString().slice(0, 10),
-        '# 域名: ' + total + ' 个',
-        '# 白名单: ' + wcount + ' 个'
+        '# 版本: ' + settings.version + '  更新: ' + new Date().toISOString().slice(0, 10),
+        '# 域名: ' + total + ' 个' + (wcount > 0 ? '  白名单: ' + wcount + ' 个（已从拦截列表剔除）' : ''),
+        '# 项目主页: https://github.com/sutchan/DNS_Shield',
+        '# 在线演示: https://dns.ewuse.com/'
       ];
-      if (wcount > 0) lines.push('# 白名单域名已从上述拦截列表中剔除');
-      lines.push('#');
-      lines.push('# 项目主页: https://github.com/sutchan/DNS_Shield');
-      lines.push('# 在线演示: https://dns.ewuse.com/');
-      lines.push('#');
-      lines.push('# ' + sep);
-      lines.push('');
       return lines.join('\n');
     }
     function wlHeader(fmtName) {
@@ -805,7 +806,7 @@
       setTimeout(function () { el.classList.remove('show'); }, 1800);
     }
     function download() {
-      var fmt = currentFmt === 'whitelist' ? 'whitelist' : currentFmt;
+      var fmt = currentFmt;
       var name = fmt === 'whitelist' ? 'whitelist.txt' : 'dns-shield.' + fmt;
       var blob = new Blob([generate()], { type: 'text/plain' });
       var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click();
@@ -822,7 +823,13 @@
         p.customDns.map(function (c) { return '@' + c.domain + '=' + c.ip; }));
       $('editor').value = lines.join('\n'); renderGutter(); renderAll();
     });
-    $('dedupeBtn').addEventListener('click', renderAll);
+    $('dedupeBtn').addEventListener('click', function () {
+      var p = parseSource($('editor').value);
+      // 去重并重建编辑器（白名单 +自定义DNS 前缀保留，与 sortBtn 一致）
+      var lines = [].concat(p.domains, p.whitelist.map(function (d) { return '+' + d; }),
+        p.customDns.map(function (c) { return '@' + c.domain + '=' + c.ip; }));
+      $('editor').value = lines.join('\n'); renderGutter(); renderAll();
+    });
     $('clearBtn').addEventListener('click', function () { $('editor').value = ''; renderGutter(); renderAll(); });
     $('copyBtn').addEventListener('click', function () {
       var txt = generate(); if (!txt.trim()) { toast((I18N[currentLang]||I18N.en).noData); return; }
@@ -840,9 +847,43 @@
       p.addEventListener('click', function () {
         document.querySelectorAll('#presets .preset').forEach(function (x) { x.classList.remove('active'); });
         p.classList.add('active');
+        if (p.dataset.preset === 'builtin') { loadBuiltin(p); return; }
         $('editor').value = PRESETS[p.dataset.preset] || SAMPLE; renderGutter(); renderAll();
       });
     });
+
+    // 内置数据：真实拉取 sutchan/DNS_Shield 的 domains.txt（含 jsdelivr 镜像降级），
+    // 全部失败回退静态 SAMPLE。对齐 src/config/index.ts PRESET_MIRRORS.builtin。
+    var builtinLoading = false;
+    function loadBuiltin(btn) {
+      if (builtinLoading) return;
+      builtinLoading = true;
+      if (btn) { btn.classList.add('loading'); }
+      $('urlLoading').classList.add('on');
+      var i = 0;
+      function tryNext() {
+        if (i >= BUILTIN_SOURCES.length) {
+          // 全部镜像失败，回退静态样本
+          $('editor').value = SAMPLE; renderGutter(); renderAll();
+          $('urlLoading').classList.remove('on'); builtinLoading = false;
+          if (btn) { btn.classList.remove('loading'); }
+          toast((I18N[currentLang] || I18N.en).fetched + ' (离线样本)');
+          return;
+        }
+        fetch(BUILTIN_SOURCES[i++], { cache: 'no-store' })
+          .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+          .then(function (txt) {
+            var lines = txt.split('\n').map(function (l) { return l.trim(); })
+              .filter(function (l) { return l && !l.startsWith('#') && !l.startsWith('!'); });
+            $('editor').value = lines.join('\n'); renderGutter(); renderAll();
+            $('urlLoading').classList.remove('on'); builtinLoading = false;
+            if (btn) { btn.classList.remove('loading'); }
+            toast((I18N[currentLang] || I18N.en).fetched + ' (' + (lines.length) + ')');
+          })
+          .catch(function () { tryNext(); });
+      }
+      tryNext();
+    }
 
     $('themeBtn').addEventListener('click', function () {
       currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -859,10 +900,11 @@
       var item = document.createElement('div');
       item.className = 'dd-item' + (l[0] === currentLang ? ' active' : '');
       item.setAttribute('role', 'menuitem');
+      item.tabIndex = 0;
       if (l[2]) item.setAttribute('dir', 'rtl');
       var rtlTag = l[2] ? ' <span style="font-size:10px;color:hsl(var(--muted-foreground))">RTL</span>' : '';
       item.innerHTML = '<span>' + l[1] + rtlTag + '</span>' + (l[0] === currentLang ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>' : '');
-      item.addEventListener('click', function () {
+      function choose() {
         currentLang = l[0]; localStorage.setItem('ds_lang', currentLang);
         langMenu.querySelectorAll('.dd-item').forEach(function (x) { x.classList.remove('active'); x.querySelector('svg') && x.removeChild(x.querySelector('svg')); });
         item.classList.add('active');
@@ -873,6 +915,10 @@
         chk.innerHTML = '<path d="M20 6 9 17l-5-5"/>'; item.appendChild(chk);
         langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false');
         applyDir(); applyI18n();
+      }
+      item.addEventListener('click', choose);
+      item.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); choose(); }
       });
       langMenu.appendChild(item);
     });
@@ -880,6 +926,10 @@
       e.stopPropagation();
       var open = langMenu.classList.toggle('open');
       $('langBtn').setAttribute('aria-expanded', String(open));
+      if (open) { var first = langMenu.querySelector('.dd-item'); if (first) first.focus(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false'); }
     });
     document.addEventListener('click', function () { langMenu.classList.remove('open'); $('langBtn').setAttribute('aria-expanded', 'false'); });
 
@@ -903,7 +953,6 @@
         var on = box.classList.toggle('on'); settings[opt] = on; renderPreview();
       });
     });
-    $('aboutVer').textContent = 'v' + settings.version;
 
     // ---- URL 批量导入 (对齐 src/components/UrlSection.tsx, 模拟 fetch + 加载态) ----
     $('urlFetchBtn').addEventListener('click', function () {
@@ -912,16 +961,24 @@
       $('urlLoading').classList.add('on');
       var btn = $('urlFetchBtn'); btn.disabled = true; var old = btn.querySelector('span').textContent;
       btn.querySelector('span').textContent = (I18N[currentLang] || I18N.en).fetching;
-      // 模拟流式读取（真实实现 domainFetch 含 10MB 字节上限）
-      setTimeout(function () {
-        var extra = 'ad.example.org\ntrack.example.net\n+boot.example.com';
+      // 模拟流式读取（真实实现 domainFetch 含 10MB 字节上限）；失败有 toast 反馈
+      new Promise(function (resolve, reject) {
+        setTimeout(function () {
+          if (!/^https?:\/\//i.test(url)) { reject(new Error('invalid')); return; }
+          resolve('ad.example.org\ntrack.example.net\n+boot.example.com');
+        }, 700);
+      }).then(function (extra) {
         var cur = $('editor').value.trim();
         $('editor').value = (cur ? cur + '\n' : '') + extra;
         renderGutter(); renderAll();
         $('urlLoading').classList.remove('on');
         btn.disabled = false; btn.querySelector('span').textContent = old;
         toast((I18N[currentLang] || I18N.en).fetched);
-      }, 700);
+      }).catch(function () {
+        $('urlLoading').classList.remove('on');
+        btn.disabled = false; btn.querySelector('span').textContent = old;
+        toast((I18N[currentLang] || I18N.en).noData);
+      });
     });
 
     // ---- 初始化 ----

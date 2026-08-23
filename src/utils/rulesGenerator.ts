@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.ts v3.7.50
+// src/utils/rulesGenerator.ts v3.7.63
 // 规则生成核心：将解析后的域名数据转换为 Dnsmasq / Hosts / AdGuard / 白名单 /
 // Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS 9 种格式。纯函数、可单测。
 // 头部注释配置（HEADER_CONFIGS）已拆分至 headerConfigs.ts。
@@ -40,27 +40,21 @@ export const generateHeader = (
       : '';
 
   const lines: string[] = [];
+  // 紧凑头部：保留 i18n 信息（title/description/usage/project/demo），
+  // 对齐 prototype.html 的精简风格——去除冗余分隔线与空行。
   lines.push(`${commentChar} ${separator}`);
   lines.push(`${commentChar} ${settings.projectName} - ${title}`);
-  lines.push(`${commentChar} ${separator}`);
-  lines.push(`${commentChar}`);
   lines.push(`${commentChar} ${description}`);
-  lines.push(`${commentChar}`);
-  lines.push(`${commentChar} ${t.header.version}: ${settings.version}`);
-  lines.push(`${commentChar} ${t.header.update}: ${dateStr}`);
+  lines.push(`${commentChar} ${t.header.version}: ${settings.version}  ${t.header.update}: ${dateStr}`);
   lines.push(`${commentChar} ${t.header.domains}: ${totalDomains} ${t.header.uniqueDomains}`);
   if (whitelistCount > 0) {
     lines.push(`${commentChar} ${t.header.whitelist}: ${whitelistCount} ${t.header.domainsCount}`);
   }
-  lines.push(`${commentChar}`);
   if (extraUsage) {
     lines.push(extraUsage);
-    lines.push(`${commentChar}`);
   }
   lines.push(`${commentChar} ${t.header.project} https://github.com/sutchan/DNS_Shield`);
   lines.push(`${commentChar} ${t.header.demo} https://dns.ewuse.com/`);
-  lines.push(`${commentChar}`);
-  lines.push(`${commentChar} ${separator}`);
 
   return lines.join('\n') + '\n\n';
 };

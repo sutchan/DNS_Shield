@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.7.60
+// src/components/OutputPanel.tsx v3.7.64
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -53,7 +53,7 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
             <h2 id="output-title">{t.outputTitle}</h2>
           </div>
           <div className="output-toolbar" id="output-toolbar">
-            <Tabs value={currentFormat} onValueChange={(v) => setFormat(v as FormatType)}>
+            <Tabs value={currentFormat} onValueChange={(v: string) => setFormat(v as FormatType)}>
               <TabsList className="format-tabs">
                 <TabsTrigger value="hosts" id="format-hosts-btn">{t.hostsFormat}</TabsTrigger>
                 <TabsTrigger value="dnsmasq" id="format-dnsmasq-btn">{t.dnsmasqFormat}</TabsTrigger>
@@ -68,8 +68,8 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
             </Tabs>
             <Button
               type="button"
-              variant="outline"
-              size="icon"
+              variant={'outline' as const}
+              size={'icon' as const}
               onClick={() => toggleSection('settings-panel')}
               title={t.settingsTitle}
               id="settings-panel-toggle-btn"
@@ -135,15 +135,15 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-2 justify-end" id="output-actions" role="group" aria-label={t.outputActionsAria}>
-          <Button type="button" variant="default" onClick={generateRules} id="generate-rules-btn" className="font-semibold shadow-md">
+          <Button type="button" variant={'default' as const} onClick={generateRules} id="generate-rules-btn" className="font-semibold shadow-md">
             <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
             {t.generateBtn}
           </Button>
-          <Button type="button" variant="default" onClick={downloadOutput} id="download-btn">
+          <Button type="button" variant={'default' as const} onClick={downloadOutput} id="download-btn">
             <Download className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
             {t.downloadBtn}
           </Button>
-          <Button type="button" variant="outline" onClick={copyOutput} id="copy-btn">
+          <Button type="button" variant={'outline' as const} onClick={copyOutput} id="copy-btn">
             <Copy className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
             {t.copyBtn}
           </Button>
