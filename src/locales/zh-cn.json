@@ -184,5 +184,7 @@
   "gStep2d": "dnsmasq / hosts / AdGuard…",
   "gStep3t": "导出部署",
   "gStep3d": "复制到路由器或 DNS 服务",
-  "guideNoteTitle": "提示"
+  "guideNoteTitle": "提示",
+  "guideNoteContent": "部署后请确认规则已生效：不同路由器固件导入路径不同，建议先在测试环境验证再全量应用",
+  "close": "关闭"
 }

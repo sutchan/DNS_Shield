@@ -184,5 +184,7 @@
   "gStep2d": "dnsmasq / hosts / AdGuard…",
   "gStep3t": "Export & deploy",
   "gStep3d": "Copy to router or DNS service",
-  "guideNoteTitle": "Tip"
+  "guideNoteTitle": "Tip",
+  "guideNoteContent": "After deploying, verify the rules take effect: import paths differ across router firmwares, so validate in a test environment before full rollout",
+  "close": "Close"
 }

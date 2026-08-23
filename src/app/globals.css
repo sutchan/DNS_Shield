@@ -657,6 +657,84 @@
   100% { transform: translateX(250%); }
 }
 
+/* ============================================
+   使用指南弹窗（对齐原型 #guideModal）
+   ============================================ */
+.guide-modal-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+  background: hsl(var(--background) / 0.6);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.guide-modal-overlay.open {
+  opacity: 1;
+}
+
+.guide-modal-overlay.closing {
+  opacity: 0;
+}
+
+.guide-modal {
+  @apply w-full max-w-md rounded-xl border bg-card p-5 shadow-lg;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: translateY(8px) scale(0.98);
+  transition: transform 0.2s ease;
+}
+
+.guide-modal-overlay.open .guide-modal {
+  transform: translateY(0) scale(1);
+}
+
+.guide-modal-header {
+  @apply flex items-center justify-between mb-4;
+}
+
+.guide-modal-title {
+  @apply text-lg font-semibold text-foreground;
+}
+
+.guide-steps {
+  @apply flex flex-col gap-3 list-none p-0 m-0;
+}
+
+.guide-step {
+  @apply flex items-start gap-3;
+}
+
+.guide-step-badge {
+  @apply flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-xs font-semibold text-primary-foreground;
+  background: hsl(var(--primary));
+}
+
+.guide-step-body {
+  @apply flex flex-col;
+}
+
+.guide-step-title {
+  @apply text-sm font-medium text-foreground;
+}
+
+.guide-step-desc {
+  @apply text-xs text-muted-foreground leading-relaxed;
+}
+
+.guide-note {
+  @apply mt-4 rounded-lg border border-dashed p-3;
+  border-color: hsl(var(--border));
+  background: hsl(var(--muted) / 0.4);
+}
+
+.guide-note-title {
+  @apply mb-1 text-xs font-semibold text-foreground;
+}
+
+.guide-note-content {
+  @apply text-xs text-muted-foreground leading-relaxed;
+}
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }

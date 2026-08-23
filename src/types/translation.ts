@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.8.3
+// src/types/translation.ts v3.8.4
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 export interface Translation {
   subtitle: string;
@@ -194,4 +194,6 @@ export interface Translation {
   gStep3t: string;
   gStep3d: string;
   guideNoteTitle: string;
+  guideNoteContent: string;
+  close: string;
 }

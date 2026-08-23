@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.8.3
+// src/app/Home.tsx v3.8.4
 'use client';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './globals.css';
@@ -9,6 +9,7 @@ import InputPanel from '../components/InputPanel';
 import OutputPanel from '../components/OutputPanel';
 import FlowViz from '../components/FlowViz';
 import Footer from '../components/Footer';
+import GuideModal from '../components/GuideModal';
 import { ToastProvider } from '../components/ui/Toast';
 import { AppProvider } from '../context/AppContext';
 
@@ -100,6 +101,9 @@ export default function Home() {
   // 区域折叠状态
   const [isUrlSectionCollapsed, setIsUrlSectionCollapsed] = useState(true);
   const [isSettingsPanelCollapsed, setIsSettingsPanelCollapsed] = useState(true);
+
+  // 使用指南弹窗开关（对齐原型 #guideModal：页脚 linkGuide 触发）
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   // 引用
   const sourceTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -201,7 +205,9 @@ export default function Home() {
           />
         </main>
 
-        <Footer />
+        <Footer onOpenGuide={() => setIsGuideOpen(true)} />
+
+        <GuideModal open={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
 
         <ToastProvider />
       </div>

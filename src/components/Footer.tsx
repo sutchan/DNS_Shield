@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v3.8.1
+// src/components/Footer.tsx v3.8.4
 'use client';
 import React from 'react';
 import { useT } from '../context/AppContext';
@@ -6,10 +6,12 @@ import { APP_VERSION } from '../config/version';
 
 interface FooterProps {
   version?: string;
+  onOpenGuide?: () => void;
 }
 
 const Footer: React.FC<FooterProps> = ({
-  version = APP_VERSION
+  version = APP_VERSION,
+  onOpenGuide,
 }) => {
   const t = useT();
 
@@ -47,11 +49,11 @@ const Footer: React.FC<FooterProps> = ({
             </svg>
             <span>{t.starLink ?? 'Star'}</span>
           </a>
-          <a 
-            href="https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="footer-link" 
+          <a
+            href="https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-link"
             id="changelog-link"
             aria-label={t.changelogLinkAria}
           >
@@ -62,6 +64,21 @@ const Footer: React.FC<FooterProps> = ({
               <line x1="10" y1="14" x2="21" y2="3"></line>
             </svg>
           </a>
+          <button
+            type="button"
+            className="footer-link footer-guide-link"
+            id="guide-link"
+            onClick={onOpenGuide}
+            aria-label={t.guideTitle}
+            title={t.guideTitle}
+          >
+            {t.guideTitle}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </button>
           <span className="footer-version" id="version-display" aria-label={`${t.versionLabel} ${version}`}>v{version}</span>
         </div>
       </div>

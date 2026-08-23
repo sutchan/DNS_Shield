@@ -5,6 +5,24 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.8.4]
+
+### Added（原型-应用功能对齐）
+- 新增独立「使用指南」弹窗（GuideModal，对齐原型 #guideModal）：页脚 `linkGuide` 触发，含 3 步指南（gStep1t~3d）+ 部署提示框（guideNoteTitle/guideNoteContent）
+- i18n 新增 `guideNoteContent`/`close` 键，16 语言同步
+
+## [3.8.3]
+
+### Changed（原型-应用设计对齐）
+- 落地 Hero 营销文案区（heroKicker/heroTitle/heroDesc）与 FlowViz CTA（ctaStart/ctaSettings）
+- SettingsPanel 按 fgroup（格式组）/appearanceGroup（外观组）分组，外观组含主题分段切换
+- 补齐 RTL 逻辑（ar 标记 rtl:true，切换时设置 html dir）与分享功能（Header #shareBtn 复制随机 shareTexts + 仓库链接）
+
+## [3.8.2]
+
+### Added（原型-应用功能对齐）
+- 落地真实功能缺口：RTL 语言支持、分享功能、i18n 补全（heroKicker/heroTitle/heroDesc/ctaStart/ctaSettings 等）
+
 ## [3.8.1]
 
 ### Changed（原型-应用视觉对齐）
