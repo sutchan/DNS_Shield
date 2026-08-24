@@ -194,6 +194,9 @@ export interface Translation {
   gStep3t: string;
   gStep3d: string;
   guideNoteTitle: string;
-  guideNoteContent: string;
+  deployDnsmasq: string;
+  deployHosts: string;
+  deployAdguardPihole: string;
+  deployUnboundBindSmartdns: string;
   close: string;
 }

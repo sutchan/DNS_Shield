@@ -184,7 +184,10 @@
   "gStep2d": "dnsmasq / hosts / AdGuard…",
   "gStep3t": "导出部署",
   "gStep3d": "复制到路由器或 DNS 服务",
-  "guideNoteTitle": "提示",
-  "guideNoteContent": "部署后请确认规则已生效：不同路由器固件导入路径不同，建议先在测试环境验证再全量应用",
-  "close": "关闭"
+  "guideNoteTitle": "各格式部署提示",
+  "close": "关闭",
+  "deployDnsmasq": "追加到 dnsmasq.conf，重启服务生效",
+  "deployHosts": "覆盖到系统 /etc/hosts，刷新 DNS 缓存生效",
+  "deployAdguardPihole": "在过滤规则页粘贴，或导入「ADG 白名单」放行误杀",
+  "deployUnboundBindSmartdns": "作为上游响应策略 zone 加载"
 }

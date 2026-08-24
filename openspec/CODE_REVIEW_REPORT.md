@@ -1,6 +1,6 @@
 # DNS_Shield 代码审查报告
 
-> 审查对象：`E:\Github\DNS_Shield`（DNS_Shield v3.8.4）
+> 审查对象：`E:\Github\DNS_Shield`（DNS_Shield v3.8.7）
 > 审查类型：全量代码审查（基于源码阅读 + 测试运行）
 > 审查日期：2026-08-23
 > 审查人：CodeReviewExpert

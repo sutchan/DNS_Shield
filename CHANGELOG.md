@@ -5,6 +5,13 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.8.7]
+
+### Changed（原型-应用对齐：使用指南弹窗部署提示）
+- 重构 GuideModal 提示区为原型 #guideModal 的多格式部署列表（Dnsmasq/Hosts/AdGuard·Pi-hole/Unbound·Bind RPZ·SmartDNS 四项）
+- i18n 新增 4 个部署提示键（deployDnsmasq/deployHosts/deployAdguardPihole/deployUnboundBindSmartdns），移除冗余 guideNoteContent 纯文本键
+- guideNoteTitle 文案对齐原型（「各格式部署提示」）
+
 ## [3.8.6]
 
 ### Changed（原型-应用 UI 对齐）

@@ -745,10 +745,22 @@
 }
 
 .guide-note-title {
-  @apply mb-1 text-xs font-semibold text-foreground;
+  @apply mb-2 text-xs font-semibold text-foreground;
 }
 
-.guide-note-content {
+.guide-note-list {
+  @apply flex flex-col gap-1.5 list-none p-0 m-0;
+}
+
+.guide-note-item {
+  @apply flex flex-col gap-0.5;
+}
+
+.guide-note-name {
+  @apply text-xs font-medium text-foreground;
+}
+
+.guide-note-desc {
   @apply text-xs text-muted-foreground leading-relaxed;
 }
 

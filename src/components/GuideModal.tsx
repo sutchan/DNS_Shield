@@ -1,4 +1,4 @@
-// src/components/GuideModal.tsx v3.8.4
+// src/components/GuideModal.tsx v3.8.7
 // 使用指南独立弹窗（对齐原型 #guideModal：页脚 linkGuide 触发）
 'use client';
 import * as React from 'react';
@@ -83,7 +83,24 @@ const GuideModal: React.FC<GuideModalProps> = ({ open, onClose }) => {
 
         <div className="guide-note" id="guide-note" role="note">
           <p className="guide-note-title">{t.guideNoteTitle}</p>
-          <p className="guide-note-content">{t.guideNoteContent}</p>
+          <ul className="guide-note-list" id="guide-note-list">
+            <li className="guide-note-item" id="guide-note-dnsmasq">
+              <span className="guide-note-name">{t.dnsmasqFormat}</span>
+              <span className="guide-note-desc">{t.deployDnsmasq}</span>
+            </li>
+            <li className="guide-note-item" id="guide-note-hosts">
+              <span className="guide-note-name">{t.hostsFormat}</span>
+              <span className="guide-note-desc">{t.deployHosts}</span>
+            </li>
+            <li className="guide-note-item" id="guide-note-adguard">
+              <span className="guide-note-name">{t.adguardFormat} / {t.piholeFormat}</span>
+              <span className="guide-note-desc">{t.deployAdguardPihole}</span>
+            </li>
+            <li className="guide-note-item" id="guide-note-unbound">
+              <span className="guide-note-name">{t.unboundFormat} / Bind RPZ / {t.smartdnsFormat}</span>
+              <span className="guide-note-desc">{t.deployUnboundBindSmartdns}</span>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
