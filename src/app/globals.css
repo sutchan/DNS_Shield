@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   DNS Shield — Design System v3.8.1
+   DNS Shield — Design System v3.8.8
    Designer: UI Designer
    Philosophy: Swiss Precision × Calm Technology
    ============================================ */
@@ -195,15 +195,7 @@
    Panel — the container for input/output
    ============================================ */
 .panel {
-  @apply flex flex-col flex-1 rounded-2xl border border-border bg-card shadow-[0_1px_3px_0_hsl(var(--border)_/_0.3)] overflow-hidden;
-  transition: box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1),
-              transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.panel:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px -8px hsl(var(--border) / 0.4),
-              0 2px 6px -2px hsl(var(--border) / 0.2);
+  @apply flex flex-col flex-1 rounded-xl border border-border bg-card shadow-[0_1px_2px_0_rgba(0,0,0,0.04)] overflow-hidden;
 }
 
 .panel-body {
@@ -795,7 +787,7 @@
    Hero + FlowViz (对齐原型 flowviz 签名可视化)
    ============================================ */
 .hero {
-  @apply mb-6 rounded-2xl border border-border bg-card overflow-hidden;
+  @apply mb-6 rounded-xl border border-border bg-card overflow-hidden;
   background:
     radial-gradient(120% 140% at 0% 0%, hsl(var(--primary) / 0.06), transparent 55%),
     radial-gradient(120% 140% at 100% 0%, hsl(var(--success) / 0.05), transparent 55%);

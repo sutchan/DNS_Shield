@@ -5,6 +5,12 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.8.8]
+
+### Changed（原型-应用 UI 对齐：视觉令牌收紧）
+- 面板/卡片圆角由 rounded-2xl 收至 rounded-xl，对齐原型 --radius-lg 紧凑值
+- 移除 .panel:hover 抬升位移与重阴影，对齐原型 .card 极轻阴影风格
+
 ## [3.8.7]
 
 ### Changed（原型-应用对齐：使用指南弹窗部署提示）
