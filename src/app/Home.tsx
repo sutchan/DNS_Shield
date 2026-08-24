@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.8.4
+// src/app/Home.tsx v3.9.0
 'use client';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './globals.css';
@@ -58,7 +58,6 @@ export default function Home() {
     clearAll, 
     sortDomains, 
     dedupeDomains, 
-    saveDomains, 
     handleSourceInput,
     setSourceInput,
     parseSourceData
@@ -175,7 +174,6 @@ export default function Home() {
             parseSource={parseSourceData}
             generateRules={generateRules}
             dedupeDomains={dedupeDomains}
-            saveDomains={saveDomains}
             loadPreset={loadPreset}
             fetchFromUrl={fetchFromUrl}
             addUrl={addUrl}

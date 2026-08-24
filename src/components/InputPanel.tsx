@@ -1,4 +1,4 @@
-// src/components/InputPanel.tsx v3.8.6
+// src/components/InputPanel.tsx v3.9.0
 'use client';
 import * as React from 'react';
 import { Button } from './ui/Button';
@@ -26,7 +26,6 @@ interface InputPanelProps {
   parseSource: () => void;
   generateRules: () => void;
   dedupeDomains: () => void;
-  saveDomains: () => void;
   loadPreset: (preset: string) => void;
   fetchFromUrl: () => void;
   addUrl: () => void;
@@ -54,7 +53,6 @@ const InputPanel: React.FC<InputPanelProps> = ({
   parseSource,
   generateRules,
   dedupeDomains,
-  saveDomains,
   loadPreset,
   fetchFromUrl,
   addUrl,
@@ -65,7 +63,6 @@ const InputPanel: React.FC<InputPanelProps> = ({
 }) => {
   const t = useT();
   const statItems = [
-    { key: 'domainCount' as const, labelKey: 'domainCount' as keyof Translation },
     { key: 'blacklistCount' as const, labelKey: 'blacklistCount' as keyof Translation },
     { key: 'whitelistCount' as const, labelKey: 'whitelistCount' as keyof Translation },
     { key: 'customDnsCount' as const, labelKey: 'customDnsCount' as keyof Translation },
@@ -134,13 +131,12 @@ const InputPanel: React.FC<InputPanelProps> = ({
         syncScroll={syncScroll}
       />
 
-      {/* 编辑操作按钮 */}
+      {/* 编辑操作按钮（对齐原型 inputEditorActions：生成规则 / 排序 / 去重 / 清空） */}
       <div className="editor-actions" id="input-editor-actions" role="group" aria-label={t.editorActionsAria}>
-        <Button type="button" variant="outline" size="sm" onClick={clearAll} id="clear-btn">{t.clearBtn}</Button>
-        <Button type="button" variant="outline" size="sm" onClick={sortDomains} id="sort-btn">{t.sortBtn}</Button>
         <Button type="button" variant="default" onClick={generateRules} id="parse-btn">{t.generateBtn}</Button>
+        <Button type="button" variant="outline" size="sm" onClick={sortDomains} id="sort-btn">{t.sortBtn}</Button>
         <Button type="button" variant="outline" size="sm" onClick={dedupeDomains} id="dedupe-btn">{t.dedupeBtn}</Button>
-        <Button type="button" variant="outline" size="sm" onClick={saveDomains} id="save-btn">{t.saveBtn}</Button>
+        <Button type="button" variant="outline" size="sm" onClick={clearAll} id="clear-btn">{t.clearBtn}</Button>
       </div>
     </section>
   );

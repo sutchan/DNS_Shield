@@ -1,4 +1,4 @@
-// src/utils/headerConfigs.ts v3.8.1
+// src/utils/headerConfigs.ts v3.9.0
 // 各输出格式的头部注释配置（注释符、分隔符、标题/描述/用法 i18n 键），
 // 从 rulesGenerator.ts 拆分以保持生成器主文件聚焦规则生成逻辑。
 import type { FormatType } from '../types';

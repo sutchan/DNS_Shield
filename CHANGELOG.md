@@ -5,6 +5,15 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.0]
+
+### Added（原型-应用 UI 对齐：输出规则类型逐格式开关）
+- 新增 `Settings.visibleFormats` 字段，支持「输出规则类型」9 个格式独立显示/隐藏开关（对齐原型 .box + .on 视觉）
+- 设置面板重构为两组：生成选项（5 项卡片网格）+ 输出规则类型（showAllFormats 开关 + 9 格式 toggle 卡片）
+- 输入面板编辑操作按钮对齐原型顺序（生成规则 / 排序 / 去重 / 清空），移除 save 按钮
+- 统计条移除 domainCount，对齐原型 5 项统计（黑名单/白名单/改道/注释/总行数）
+- 生成选项卡片网格改为 2 列（对齐原型 .opt-grid）
+
 ## [3.8.8]
 
 ### Changed（原型-应用 UI 对齐：视觉令牌收紧）

@@ -1,4 +1,4 @@
-// src/app/(seo)/site-meta.ts v3.8.1
+// src/app/(seo)/site-meta.ts v3.9.0
 // 站点元数据与 JSON-LD 结构常量，从 layout.tsx 拆分以保持单文件职责清晰。
 // 版本号统一引用单一来源 APP_VERSION，避免硬编码漂移。
 // 归入 (seo) 路由组目录，集中管理 SEO/元数据相关模块；

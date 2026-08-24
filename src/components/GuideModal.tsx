@@ -1,4 +1,4 @@
-// src/components/GuideModal.tsx v3.8.7
+// src/components/GuideModal.tsx v3.9.0
 // 使用指南独立弹窗（对齐原型 #guideModal：页脚 linkGuide 触发）
 'use client';
 import * as React from 'react';

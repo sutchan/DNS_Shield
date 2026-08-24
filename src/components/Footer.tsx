@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v3.8.4
+// src/components/Footer.tsx v3.9.0
 'use client';
 import React from 'react';
 import { useT } from '../context/AppContext';

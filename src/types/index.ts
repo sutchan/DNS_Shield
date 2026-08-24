@@ -1,6 +1,7 @@
-// src/types/index.ts v3.8.1
+// src/types/index.ts v3.9.0
 // 全局类型定义集中处：Settings / ParsedData / OutputContent 等。
 // FormatType 已拆分至 formats.ts，此处统一 re-export 以保持外部契约不变。
+import type { FormatType } from './formats';
 export type { FormatType } from './formats';
 
 export interface OutputContent {
@@ -52,6 +53,10 @@ export interface Settings {
   // 格式 Tab 是否显示全部 9 种格式；为 false 时仅显示核心 4 种（hosts/dnsmasq/adguard/whitelist）。
   // 对齐原型「输出规则类型」显示/隐藏开关，默认 true（显示全部）。
   showAllFormats: boolean;
+  // 逐格式可见性集合（对齐原型「输出规则类型」9 个独立显示/隐藏开关 .box.on）。
+  // 为空表示全部可见；含字段则仅列出字段可见。与 showAllFormats 配合：
+  // 当 showAllFormats=false 时取 CORE_FORMATS 交集，true 时取 ALL_FORMATS 交集。
+  visibleFormats: FormatType[];
   dnsmasqFilename: string;
   hostsFilename: string;
   adguardFilename: string;

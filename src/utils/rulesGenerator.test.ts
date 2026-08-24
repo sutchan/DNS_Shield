@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.test.ts v3.8.1
+// src/utils/rulesGenerator.test.ts v3.9.0
 import { describe, it, expect } from 'vitest';
 import { generateRules, generateHeader } from './rulesGenerator';
 import { parseSource } from './parser';
@@ -19,6 +19,7 @@ const baseSettings: Settings = {
   removeWildcard: true,
   adguardIncludeWhitelist: true,
   showAllFormats: true,
+  visibleFormats: [],
   dnsmasqFilename: 'dnsmasq.conf',
   hostsFilename: 'hosts.txt',
   adguardFilename: 'adguard.txt',

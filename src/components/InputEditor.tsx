@@ -1,4 +1,4 @@
-// src/components/InputEditor.tsx v3.8.1
+// src/components/InputEditor.tsx v3.9.0
 // 域名编辑器组件 —— 从 InputPanel 拆分
 'use client';
 import * as React from 'react';

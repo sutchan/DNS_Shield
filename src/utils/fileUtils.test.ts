@@ -1,4 +1,4 @@
-// src/utils/fileUtils.test.ts v3.8.1
+// src/utils/fileUtils.test.ts v3.9.0
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { isValidHttpUrl, fetchFromUrl, fetchFromUrls } from './fileUtils';
 

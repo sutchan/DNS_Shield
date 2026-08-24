@@ -491,9 +491,9 @@
   @apply bg-primary text-primary-foreground border-primary;
 }
 
-/* C：设置生成选项卡片 checkbox 网格（对齐原型 .opt-row + .box 视觉） */
+/* C：设置生成选项卡片 checkbox 网格（对齐原型 .opt-row + .box 视觉，2 列） */
 .opt-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 mt-2;
+  @apply grid grid-cols-2 gap-2.5 mt-2;
 }
 
 .opt-card {
@@ -504,8 +504,26 @@
   @apply border-primary bg-primary/5;
 }
 
+.opt-card-inline {
+  @apply mb-2.5;
+}
+
 .opt-card-label {
   @apply text-sm text-foreground;
+}
+
+/* 输出规则类型：9 个格式独立显示/隐藏开关（对齐原型 .box + .on） */
+.fmt-grid {
+  @apply grid gap-2 mt-1;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+}
+
+.fmt-box {
+  @apply inline-flex items-center justify-center px-2.5 py-2 rounded-md border border-border bg-background text-sm text-muted-foreground cursor-pointer select-none transition-colors hover:bg-accent;
+}
+
+.fmt-box.on {
+  @apply border-primary bg-primary text-primary-foreground;
 }
 
 /* ============================================

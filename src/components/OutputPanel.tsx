@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.8.3
+// src/components/OutputPanel.tsx v3.9.0
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -50,11 +50,15 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
 }) => {
   const t = useT();
 
-  // 可见格式列表：showAllFormats 为 false 时仅展示核心 4 种（对齐原型「输出规则类型」显示/隐藏开关）
-  const visibleFormats = React.useMemo<FormatType[]>(
-    () => (settings.showAllFormats ? ALL_FORMATS : CORE_FORMATS),
-    [settings.showAllFormats]
-  );
+  // 可见格式列表：结合 showAllFormats（全部/核心）与 visibleFormats（逐格式显示/隐藏开关）。
+  // 对齐原型「输出规则类型」9 个独立开关：visibleFormats 非空时仅保留其中声明的格式。
+  const visibleFormats = React.useMemo<FormatType[]>(() => {
+    const base = settings.showAllFormats ? ALL_FORMATS : CORE_FORMATS;
+    const filtered = settings.visibleFormats.length > 0
+      ? base.filter((f) => settings.visibleFormats.includes(f))
+      : base;
+    return filtered.filter((f) => outputContent[f]?.trim());
+  }, [settings.showAllFormats, settings.visibleFormats, outputContent]);
 
   // 当前选中格式被隐藏时，回退到首个可见格式，避免空面板
   React.useEffect(() => {
