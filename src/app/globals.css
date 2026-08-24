@@ -821,84 +821,69 @@
   max-width: 34rem;
 }
 
-.fv-legend {
-  @apply flex flex-wrap gap-x-4 gap-y-2;
-}
-
-.fv-legend-item {
-  @apply inline-flex items-center gap-1.5 text-[0.8125rem] text-muted-foreground;
-}
-
-.fv-legend-dot {
-  @apply inline-block w-2.5 h-2.5 rounded-full;
-}
-
-.fv-legend-block .fv-legend-dot { background: hsl(var(--destructive)); }
-.fv-legend-allow .fv-legend-dot { background: hsl(var(--success)); }
-.fv-legend-dns .fv-legend-dot { background: hsl(var(--primary)); }
-.fv-legend-await .fv-legend-dot { background: hsl(var(--muted-foreground) / 0.5); }
-
+/* 流量可视化容器：标题行 + 单条下落轨道 */
 .flowviz {
-  @apply flex flex-col gap-3 rounded-xl border border-border bg-background/60 p-4;
+  @apply flex flex-col gap-2 w-full h-full;
 }
 
-.fv-pipes {
-  @apply grid grid-cols-3 gap-3;
+.flowviz-row {
+  @apply flex items-center gap-2 font-mono text-[0.75rem];
 }
 
-.fv-pipe {
-  @apply relative flex flex-col items-center gap-2 rounded-lg border border-border bg-muted/30 py-3 overflow-hidden;
+.fv-dot {
+  @apply w-[7px] h-[7px] rounded-full flex-shrink-0 flex-grow-0;
 }
 
-.fv-pipe-block { box-shadow: inset 0 0 0 1px hsl(var(--destructive) / 0.18); }
-.fv-pipe-allow { box-shadow: inset 0 0 0 1px hsl(var(--success) / 0.18); }
-.fv-pipe-dns { box-shadow: inset 0 0 0 1px hsl(var(--primary) / 0.18); }
+.fv-dot.block { background: hsl(var(--destructive)); }
+.fv-dot.allow { background: hsl(var(--success)); }
+.fv-dot.dns { background: hsl(var(--primary)); }
 
-.fv-signal {
-  @apply w-2 h-2 rounded-full;
-  animation: fv-pulse 2.4s ease-in-out infinite;
+.fv-name {
+  @apply text-muted-foreground overflow-hidden text-ellipsis whitespace-nowrap;
+  max-width: 150px;
 }
 
-.fv-pipe-block .fv-signal { background: hsl(var(--destructive)); }
-.fv-pipe-allow .fv-signal { background: hsl(var(--success)); }
-.fv-pipe-dns .fv-signal { background: hsl(var(--primary)); }
-
+/* 签名轨道：域名 token 从顶部落入 */
 .fv-track {
-  @apply relative w-full h-32;
+  @apply relative flex-1 min-h-[120px] overflow-hidden rounded-md;
+  background: hsl(var(--muted) / 0.5);
+  border: 1px solid hsl(var(--border));
+}
+
+.fv-track::before {
+  content: '';
+  @apply absolute left-0 right-0 bottom-0 h-0.5;
+  background: linear-gradient(90deg, hsl(var(--destructive)), hsl(var(--success)), hsl(var(--primary)));
+  opacity: 0.8;
 }
 
 .fv-token {
-  @apply absolute left-1/2 -translate-x-1/2 w-4 h-1.5 rounded-full opacity-0;
-  top: -8%;
-  animation: fv-fall 3.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  @apply absolute whitespace-nowrap text-primary-foreground rounded-full pointer-events-none;
+  top: -22px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 2px 7px;
+  animation: fvDrop 2.6s linear forwards;
+  will-change: transform, opacity;
 }
 
-.fv-pipe-block .fv-token { background: hsl(var(--destructive) / 0.8); }
-.fv-pipe-allow .fv-token { background: hsl(var(--success) / 0.8); }
-.fv-pipe-dns .fv-token { background: hsl(var(--primary) / 0.85); }
+.fv-token.block { background: hsl(var(--destructive)); }
+.fv-token.allow { background: hsl(var(--success)); }
+.fv-token.dns { background: hsl(var(--primary)); }
 
-.fv-count {
-  @apply text-sm font-semibold tabular-nums;
-}
-
-.fv-pipe-block .fv-count { color: hsl(var(--destructive)); }
-.fv-pipe-allow .fv-count { color: hsl(var(--success)); }
-.fv-pipe-dns .fv-count { color: hsl(var(--primary)); }
-
-.fv-summary {
-  @apply text-center text-[0.75rem] text-muted-foreground;
-}
-
-@keyframes fv-fall {
-  0% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
-  12% { opacity: 1; }
+@keyframes fvDrop {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 1; }
   85% { opacity: 1; }
-  100% { opacity: 0; transform: translate(-50%, 720%) scale(1); }
+  100% { transform: translateY(162px); opacity: 0; }
 }
 
-@keyframes fv-pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.4); opacity: 0.6; }
+/* Reduced-motion：flowviz 动画已在全局块统一降级（animation-duration≈0），
+   此处额外保证轨道 token 不显示，避免静态视觉噪点 */
+@media (prefers-reduced-motion: reduce) {
+  .fv-token {
+    display: none !important;
+  }
 }
 
 /* ============================================

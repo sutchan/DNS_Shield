@@ -2,7 +2,7 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
-> 当前版本：v3.9.0
+> 当前版本：v3.9.1
 
 ## 部署环境
 
@@ -239,7 +239,7 @@ docker-compose up -d
 | `PORT` | 服务器端口 | 3000 |
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
-| `NEXT_PUBLIC_APP_VERSION` | 应用版本（同时由 `src/config/version.ts` APP_VERSION 与 `next.config.js` env.version 提供） | 3.9.0 |
+| `NEXT_PUBLIC_APP_VERSION` | 应用版本（同时由 `src/config/version.ts` APP_VERSION 与 `next.config.js` env.version 提供） | 3.9.1 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（留空则不启用统计） | 空 |
 
 ### 2. Next.js 配置
@@ -253,7 +253,7 @@ const nextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   env: {
-    version: '3.9.0'
+    version: '3.9.1'
   },
   async headers() {
     return [

@@ -1,39 +1,14 @@
-// src/components/FlowViz.tsx v3.9.0
-// 输出流量可视化签名组件：对齐原型 flowviz —— 三态管道（拦截/放行/改道）
-// 实时反映 parsedData 中黑名单/白名单/自定义 DNS 的真实占比，域名 token 从管道顶部落入。
+// src/components/FlowViz.tsx v3.9.1
+// DNS 流量可视化签名区：对齐原型 flowviz —— 单条横向流量管道，真实域名 token 下落。
+// token 从解析后的黑名单/白名单/改道数据中随机抽样，按三态比例落入轨道。
 // 动画遵循全局 prefers-reduced-motion 降级（globals.css 已统一处理）。
 'use client';
 import * as React from 'react';
 import { Sparkles, Settings2 } from 'lucide-react';
 import { ParsedData } from '../types';
 import { useT } from '../context/AppContext';
+import { useFlowTokens } from '../hooks/useFlowTokens';
 import { Button } from './ui/Button';
-
-/** 单条轨道的静态 token 数量（视觉密度，不随数据量无限增长） */
-const TOKENS_PER_PIPE = 7;
-
-interface PipeProps {
-  kind: 'block' | 'allow' | 'dns';
-  count: number;
-  label: string;
-}
-
-/** 单条垂直管道：顶部信号点 + 落入的域名 token + 底部实时计数 */
-const Pipe: React.FC<PipeProps> = ({ kind, count, label }) => (
-  <div className={`fv-pipe fv-pipe-${kind}`} role="group" aria-label={label}>
-    <span className="fv-signal" aria-hidden="true" />
-    <div className="fv-track" aria-hidden="true">
-      {Array.from({ length: TOKENS_PER_PIPE }).map((_, i) => (
-        <span
-          key={i}
-          className="fv-token"
-          style={{ animationDelay: `${(i * 0.9).toFixed(2)}s` }}
-        />
-      ))}
-    </div>
-    <span className="fv-count" aria-hidden="true">{count}</span>
-  </div>
-);
 
 interface FlowVizProps {
   parsedData: ParsedData;
@@ -42,20 +17,14 @@ interface FlowVizProps {
   onToggleSettings?: () => void;
 }
 
-/** 流量可视化签名区：将当前输入的三类域名以三态管道动画呈现 */
+/** 流量可视化签名区：左侧文案 + 右侧实时流量轨道 */
 const FlowViz: React.FC<FlowVizProps> = ({ parsedData, onStart, onToggleSettings }) => {
   const t = useT();
+  const tokens = useFlowTokens(parsedData);
   const block = parsedData.domains.length;
   const allow = parsedData.whitelist.length;
   const dns = parsedData.customDns.length;
-  const total = block + allow + dns;
-
-  const legend = [
-    { kind: 'block', text: t.fvBlock },
-    { kind: 'allow', text: t.fvAllow },
-    { kind: 'dns', text: t.fvDns },
-    { kind: 'await', text: t.fvAwait },
-  ] as const;
+  const hasData = block > 0 || allow > 0 || dns > 0;
 
   return (
     <section className="hero" id="hero" aria-label={t.fvTagline}>
@@ -67,14 +36,7 @@ const FlowViz: React.FC<FlowVizProps> = ({ parsedData, onStart, onToggleSettings
           </span>
           <h1 className="hero-title" id="heroTitle">{t.heroTitle}</h1>
           <p className="hero-desc" id="heroDesc">{t.heroDesc}</p>
-          <ul className="fv-legend" id="flowviz-legend">
-            {legend.map((item) => (
-              <li key={item.kind} className={`fv-legend-item fv-legend-${item.kind}`}>
-                <span className="fv-legend-dot" aria-hidden="true" />
-                <span className="fv-legend-text">{item.text}</span>
-              </li>
-            ))}
-          </ul>
+
           <div className="usage-guide quickstart" id="quickstart-panel" aria-label={t.usageTitle}>
             <h3 className="usage-guide-title">{t.usageTitle}</h3>
             <div className="usage-steps">
@@ -100,7 +62,7 @@ const FlowViz: React.FC<FlowVizProps> = ({ parsedData, onStart, onToggleSettings
                 </div>
               </div>
             </div>
-            {/* Hero CTA（对齐原型 ctaStart / ctaSettings） */}
+
             <div className="hero-cta" id="heroCta">
               <Button
                 type="button"
@@ -127,17 +89,26 @@ const FlowViz: React.FC<FlowVizProps> = ({ parsedData, onStart, onToggleSettings
           </div>
         </div>
 
-        <div className="flowviz" id="flowviz" aria-hidden="true">
-          <div className="fv-pipes">
-            <Pipe kind="block" count={block} label={t.fvBlock} />
-            <Pipe kind="allow" count={allow} label={t.fvAllow} />
-            <Pipe kind="dns" count={dns} label={t.fvDns} />
+        <div className="flowviz" id="flowviz" aria-label={t.fvTagline}>
+          <div className="flowviz-row fv-summary" id="fvSummary">
+            <span className="fv-dot block" aria-hidden="true" />
+            <span className="fv-name" id="fvSummaryTxt">
+              {hasData
+                ? `${block} ${t.fvBlock} / ${allow} ${t.fvAllow} / ${dns} ${t.fvDns}`
+                : t.fvAwait}
+            </span>
           </div>
-          <p className="fv-summary">
-            {total > 0
-              ? `${total} ${t.fvDomains}`
-              : t.fvAwait}
-          </p>
+          <div className="fv-track" id="fvTrack" aria-hidden="true">
+            {tokens.map((token) => (
+              <span
+                key={token.id}
+                className={`fv-token ${token.kind}`}
+                style={{ left: token.left, animationDuration: token.duration }}
+              >
+                {token.name}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

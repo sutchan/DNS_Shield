@@ -5,6 +5,14 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.1]
+
+### Changed（原型-应用视觉对齐：FlowViz 改为单轨下落动画）
+- FlowViz 由三列竖直管道改为原型 `#flowviz` 单条横向流量轨道，域名 token 从真实解析数据随机抽样下落
+- 新增 `useFlowTokens` hook 与 `buildFlowPool` 工具，按黑名单/白名单/改道三态比例生成可视化 token
+- 同步更新 FlowViz 与 globals.css 样式，移除旧的 `.fv-pipes/.fv-pipe/.fv-legend` 三管道视觉
+- 保留真实数据驱动与无障碍降级（prefers-reduced-motion 隐藏动画 token）
+
 ## [3.9.0]
 
 ### Added（原型-应用 UI 对齐：输出规则类型逐格式开关）
