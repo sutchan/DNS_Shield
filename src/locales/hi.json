@@ -49,14 +49,6 @@
   "usageTitle": "Quick Start",
   "customDnsCount": "Custom DNS",
   "totalLines": "Total lines",
-  "usageStep1": "1. डोमेन दर्ज करें या आयात करें",
-  "usageStep1Desc": "बाएं पाठ बॉक्स में डोमेन सूची दर्ज करें, या पूर्वनिर्धारित स्रोतों (AdGuard, EasyList आदि) से आयात करें, या डोमेन प्राप्त करने के लिए सीधे URL पेस्ट करें",
-  "usageStep2": "2. जनरेशन विकल्प कॉन्फ़िगर करें",
-  "usageStep2Desc": "आउटपुट फ़ॉर्मेट (Dnsmasq/Hosts) चुनें, लक्ष्य IP पता सेट करें, वैकल्पिक रूप से डुप्लिकेट हटाएं, क्रमबद्ध करें, टिप्पणियाँ जोड़ें आदि",
-  "usageStep3": "3. नियम जनरेट करें और डाउनलोड करें",
-  "usageStep3Desc": "\"नियम जनरेट करें\" बटन पर क्लिक करें, परिणाम पूर्वावलोकन करें और इसे स्थानीय डिवाइस पर डाउनलोड करें, या क्लिपबोर्ड पर कॉपी करें",
-  "usageTip": "सुझाव",
-  "usageTipContent": "जनरेट किए गए नियमों का उपयोग सीधे राउटर विज्ञापन फ़िल्टरिंग के लिए किया जा सकता है, Asus, Merlin, OpenWrt और अन्य फर्मवेयर का समर्थन करता है",
   "adguardFormat": "AdGuard Blacklist",
   "whitelistFormat": "AdGuard Whitelist",
   "toast": {
@@ -188,5 +180,11 @@
   "deployDnsmasq": "Append to dnsmasq.conf and restart the service",
   "deployHosts": "Overwrite system /etc/hosts and flush DNS cache",
   "deployAdguardPihole": "Paste in the filter rules page, or import the ADG whitelist to allow false positives",
-  "deployUnboundBindSmartdns": "Load as an upstream response policy zone"
+  "deployUnboundBindSmartdns": "Load as an upstream response policy zone",
+  "step1t": "Input Domains",
+  "step1d": "Paste or import ad domains",
+  "step2t": "Pick Format",
+  "step2d": "dnsmasq / hosts / AdGuard…",
+  "step3t": "Export",
+  "step3d": "Copy to router or DNS service"
 }

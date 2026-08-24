@@ -49,14 +49,6 @@
   "usageTitle": "Quick Start",
   "customDnsCount": "Custom DNS",
   "totalLines": "Total lines",
-  "usageStep1": "1. Введите или импортируйте домены",
-  "usageStep1Desc": "Введите список доменов в левом текстовом поле, или импортируйте из предустановок (AdGuard, EasyList и т.д.), или напрямую вставьте URL для получения доменов",
-  "usageStep2": "2. Настройте параметры генерации",
-  "usageStep2Desc": "Выберите формат вывода (Dnsmasq/Hosts), установите целевой IP-адрес, удалите необязательные дубликаты, отсортируйте, добавьте комментарии и т.д.",
-  "usageStep3": "3. Сгенерируйте и скачайте правила",
-  "usageStep3Desc": "Нажмите кнопку \"Сгенерировать правила\", предварительно просмотрите результат, а затем скачайте его на локальное устройство или скопируйте в буфер обмена",
-  "usageTip": "Совет",
-  "usageTipContent": "Сгенерированные правила можно использовать напрямую для фильтрации рекламы на маршрутизаторе, поддерживает прошивки Asus, Merlin, OpenWrt и другие",
   "adguardFormat": "AdGuard Blacklist",
   "whitelistFormat": "AdGuard Whitelist",
   "toast": {
@@ -188,5 +180,11 @@
   "deployDnsmasq": "Append to dnsmasq.conf and restart the service",
   "deployHosts": "Overwrite system /etc/hosts and flush DNS cache",
   "deployAdguardPihole": "Paste in the filter rules page, or import the ADG whitelist to allow false positives",
-  "deployUnboundBindSmartdns": "Load as an upstream response policy zone"
+  "deployUnboundBindSmartdns": "Load as an upstream response policy zone",
+  "step1t": "Input Domains",
+  "step1d": "Paste or import ad domains",
+  "step2t": "Pick Format",
+  "step2d": "dnsmasq / hosts / AdGuard…",
+  "step3t": "Export",
+  "step3d": "Copy to router or DNS service"
 }

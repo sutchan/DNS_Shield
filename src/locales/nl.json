@@ -49,14 +49,6 @@
   "usageTitle": "Quick Start",
   "customDnsCount": "Custom DNS",
   "totalLines": "Total lines",
-  "usageStep1": "1. Voer domeinen in of importeer ze",
-  "usageStep1Desc": "Voer een domeinlijst in het linkerde tekstvak in, of importeer deze uit voorinstellingen (AdGuard, EasyList, enz.), of plak direct een URL om domeinen op te halen",
-  "usageStep2": "2. Configureer generatieopties",
-  "usageStep2Desc": "Selecteer uitvoerformaat (Dnsmasq/Hosts), stel doel-IP-adres in, verwijder optionele dubbels, sorteer, voeg opmerkingen toe, enz.",
-  "usageStep3": "3. Genereer en download regels",
-  "usageStep3Desc": "Klik op de knop \"Genereer regels\", bekijk de voorvertoning en download deze naar uw lokale apparaat, of kopieer deze naar het klembord",
-  "usageTip": "Tip",
-  "usageTipContent": "Gegenereerde regels kunnen direct worden gebruikt voor routeradvertentiefiltering, ondersteunt Asus, Merlin, OpenWrt en andere firmware",
   "adguardFormat": "AdGuard Blacklist",
   "whitelistFormat": "AdGuard Whitelist",
   "toast": {
@@ -188,5 +180,11 @@
   "deployDnsmasq": "Append to dnsmasq.conf and restart the service",
   "deployHosts": "Overwrite system /etc/hosts and flush DNS cache",
   "deployAdguardPihole": "Paste in the filter rules page, or import the ADG whitelist to allow false positives",
-  "deployUnboundBindSmartdns": "Load as an upstream response policy zone"
+  "deployUnboundBindSmartdns": "Load as an upstream response policy zone",
+  "step1t": "Input Domains",
+  "step1d": "Paste or import ad domains",
+  "step2t": "Pick Format",
+  "step2d": "dnsmasq / hosts / AdGuard…",
+  "step3t": "Export",
+  "step3d": "Copy to router or DNS service"
 }

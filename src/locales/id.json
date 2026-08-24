@@ -49,14 +49,6 @@
   "usageTitle": "Quick Start",
   "customDnsCount": "Custom DNS",
   "totalLines": "Total lines",
-  "usageStep1": "1. Masukkan atau Impor Domain",
-  "usageStep1Desc": "Masukkan daftar domain di kotak teks kiri, atau impor dari preset (AdGuard, EasyList, dll.), atau tempel URL langsung untuk mendapatkan domain",
-  "usageStep2": "2. Konfigurasikan Opsi Pembuatan",
-  "usageStep2Desc": "Pilih format output (Dnsmasq/Hosts), atur alamat IP tujuan, hapus duplikat opsional, urutkan, tambahkan komentar, dll.",
-  "usageStep3": "3. Generate dan Unduh Aturan",
-  "usageStep3Desc": "Klik tombol \"Generate Aturan\", pratinjau hasilnya lalu unduh ke perangkat lokal, atau salin ke clipboard",
-  "usageTip": "Tip",
-  "usageTipContent": "Aturan yang dihasilkan dapat digunakan langsung untuk filtering iklan router, mendukung firmware Asus, Merlin, OpenWrt, dan lainnya",
   "adguardFormat": "AdGuard Blacklist",
   "whitelistFormat": "AdGuard Whitelist",
   "toast": {
@@ -188,5 +180,11 @@
   "deployDnsmasq": "Append to dnsmasq.conf and restart the service",
   "deployHosts": "Overwrite system /etc/hosts and flush DNS cache",
   "deployAdguardPihole": "Paste in the filter rules page, or import the ADG whitelist to allow false positives",
-  "deployUnboundBindSmartdns": "Load as an upstream response policy zone"
+  "deployUnboundBindSmartdns": "Load as an upstream response policy zone",
+  "step1t": "Input Domains",
+  "step1d": "Paste or import ad domains",
+  "step2t": "Pick Format",
+  "step2d": "dnsmasq / hosts / AdGuard…",
+  "step3t": "Export",
+  "step3d": "Copy to router or DNS service"
 }

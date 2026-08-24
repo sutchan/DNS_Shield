@@ -53,14 +53,6 @@
   "usageTitle": "快速入门",
   "customDnsCount": "改道",
   "totalLines": "总行数",
-  "usageStep1": "1. 输入或导入域名",
-  "usageStep1Desc": "在左侧文本框输入域名列表，或从预设源（AdGuard、EasyList等）导入，或直接粘贴 URL 获取域名",
-  "usageStep2": "2. 配置生成选项",
-  "usageStep2Desc": "选择输出格式（Dnsmasq/Hosts），设置目标 IP 地址，可选去重、排序、添加注释等",
-  "usageStep3": "3. 生成并下载规则",
-  "usageStep3Desc": "点击\"生成规则\"按钮，预览效果后下载到本地，或复制到剪贴板",
-  "usageTip": "提示",
-  "usageTipContent": "生成的规则可直接用于路由器广告过滤，支持华硕、梅林、OpenWrt 等固件",
   "adguardFormat": "AdGuard 黑名单",
   "whitelistFormat": "AdGuard 白名单",
   "unboundFormat": "Unbound",
@@ -189,5 +181,11 @@
   "deployDnsmasq": "追加到 dnsmasq.conf，重启服务生效",
   "deployHosts": "覆盖到系统 /etc/hosts，刷新 DNS 缓存生效",
   "deployAdguardPihole": "在过滤规则页粘贴，或导入「ADG 白名单」放行误杀",
-  "deployUnboundBindSmartdns": "作为上游响应策略 zone 加载"
+  "deployUnboundBindSmartdns": "作为上游响应策略 zone 加载",
+  "step1t": "输入域名",
+  "step1d": "粘贴或导入广告域名",
+  "step2t": "选择格式",
+  "step2d": "dnsmasq / hosts / AdGuard…",
+  "step3t": "导出部署",
+  "step3d": "复制到路由器或 DNS 服务"
 }

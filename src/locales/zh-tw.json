@@ -49,14 +49,6 @@
   "usageTitle": "快速入門",
   "customDnsCount": "改道",
   "totalLines": "總行數",
-  "usageStep1": "1. 輸入或匯入域名",
-  "usageStep1Desc": "在左側文字框輸入域名列表，或從預設源（AdGuard、EasyList等）匯入，或直接貼上 URL 獲取域名",
-  "usageStep2": "2. 配置生成選項",
-  "usageStep2Desc": "選擇輸出格式（Dnsmasq/Hosts），設定目標 IP 位址，可選去重、排序、新增註釋等",
-  "usageStep3": "3. 生成並下載規則",
-  "usageStep3Desc": "點擊\"生成規則\"按鈕，預覽效果後下載到本機，或複製到剪貼板",
-  "usageTip": "提示",
-  "usageTipContent": "生成的規則可直接用於路由器廣告過濾，支援華碩、梅林、OpenWrt 等韌體",
   "adguardFormat": "AdGuard 黑名單",
   "whitelistFormat": "AdGuard 白名單",
   "toast": {
@@ -188,5 +180,11 @@
   "deployDnsmasq": "Append to dnsmasq.conf and restart the service",
   "deployHosts": "Overwrite system /etc/hosts and flush DNS cache",
   "deployAdguardPihole": "Paste in the filter rules page, or import the ADG whitelist to allow false positives",
-  "deployUnboundBindSmartdns": "Load as an upstream response policy zone"
+  "deployUnboundBindSmartdns": "Load as an upstream response policy zone",
+  "step1t": "Input Domains",
+  "step1d": "Paste or import ad domains",
+  "step2t": "Pick Format",
+  "step2d": "dnsmasq / hosts / AdGuard…",
+  "step3t": "Export",
+  "step3d": "Copy to router or DNS service"
 }

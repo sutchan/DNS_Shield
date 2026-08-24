@@ -49,14 +49,6 @@
   "usageTitle": "Quick Start",
   "customDnsCount": "Custom DNS",
   "totalLines": "Total lines",
-  "usageStep1": "1. Nhập hoặc nhập khẩu miền",
-  "usageStep1Desc": "Nhập danh sách miền vào hộp văn bản bên trái, hoặc nhập từ các tùy chọn sẵn (AdGuard, EasyList, v.v.), hoặc dán trực tiếp URL để lấy miền",
-  "usageStep2": "2. Cấu hình tùy chọn tạo",
-  "usageStep2Desc": "Chọn định dạng đầu ra (Dnsmasq/Hosts), đặt địa chỉ IP đích, loại bỏ trùng lặp tùy chọn, sắp xếp, thêm bình luận, v.v.",
-  "usageStep3": "3. Tạo và tải xuống quy tắc",
-  "usageStep3Desc": "Nhấn nút \"Tạo quy tắc\", xem trước kết quả sau đó tải xuống thiết bị cục bộ, hoặc sao chép vào bộ nhớ tạm",
-  "usageTip": "Mẹo",
-  "usageTipContent": "Quy tắc được tạo có thể được sử dụng trực tiếp cho việc lọc quảng cáo router, hỗ trợ firmware Asus, Merlin, OpenWrt và các firmware khác",
   "adguardFormat": "AdGuard Blacklist",
   "whitelistFormat": "AdGuard Whitelist",
   "toast": {
@@ -188,5 +180,11 @@
   "deployDnsmasq": "Append to dnsmasq.conf and restart the service",
   "deployHosts": "Overwrite system /etc/hosts and flush DNS cache",
   "deployAdguardPihole": "Paste in the filter rules page, or import the ADG whitelist to allow false positives",
-  "deployUnboundBindSmartdns": "Load as an upstream response policy zone"
+  "deployUnboundBindSmartdns": "Load as an upstream response policy zone",
+  "step1t": "Input Domains",
+  "step1d": "Paste or import ad domains",
+  "step2t": "Pick Format",
+  "step2d": "dnsmasq / hosts / AdGuard…",
+  "step3t": "Export",
+  "step3d": "Copy to router or DNS service"
 }

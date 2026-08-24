@@ -49,14 +49,6 @@
   "usageTitle": "Quick Start",
   "customDnsCount": "Custom DNS",
   "totalLines": "Total lines",
-  "usageStep1": "1. ป้อนหรือนำเข้าโดเมน",
-  "usageStep1Desc": "ป้อนรายการโดเมนในกล่องข้อความด้านซ้าย หรือนำเข้าจากการตั้งค่าต้นแบบ (AdGuard, EasyList ฯลฯ) หรือวาง URL โดยตรงเพื่อดึงโดเมน",
-  "usageStep2": "2. กำหนดค่าตัวเลือกการสร้าง",
-  "usageStep2Desc": "เลือกรูปแบบเอาต์พุต (Dnsmasq/Hosts) ตั้งค่าที่อยู่ IP เป้าหมาย ลบทับซ้อนที่เป็นทางเลือก เรียงลำดับ เพิ่มความคิดเห็น ฯลฯ",
-  "usageStep3": "3. สร้างและดาวน์โหลดกฎ",
-  "usageStep3Desc": "คลิกปุ่ม \"สร้างกฎ\" แสดงตัวอย่างผลลัพธ์แล้วดาวน์โหลดไปยังอุปกรณ์ในเครื่องของคุณ หรือคัดลอกไปยังคลิปบอร์ด",
-  "usageTip": "แนะนำ",
-  "usageTipContent": "กฎที่สร้างขึ้นสามารถใช้โดยตรงสำหรับการกรองโฆษณาในเราเตอร์ รองรับเฟิร์มแวร์ Asus, Merlin, OpenWrt และอื่นๆ",
   "adguardFormat": "AdGuard Blacklist",
   "whitelistFormat": "AdGuard Whitelist",
   "toast": {
@@ -188,5 +180,11 @@
   "deployDnsmasq": "Append to dnsmasq.conf and restart the service",
   "deployHosts": "Overwrite system /etc/hosts and flush DNS cache",
   "deployAdguardPihole": "Paste in the filter rules page, or import the ADG whitelist to allow false positives",
-  "deployUnboundBindSmartdns": "Load as an upstream response policy zone"
+  "deployUnboundBindSmartdns": "Load as an upstream response policy zone",
+  "step1t": "Input Domains",
+  "step1d": "Paste or import ad domains",
+  "step2t": "Pick Format",
+  "step2d": "dnsmasq / hosts / AdGuard…",
+  "step3t": "Export",
+  "step3d": "Copy to router or DNS service"
 }

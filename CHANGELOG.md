@@ -10,6 +10,7 @@
 ### Changed（原型-应用 UI 对齐：视觉令牌收紧）
 - 面板/卡片圆角由 rounded-2xl 收至 rounded-xl，对齐原型 --radius-lg 紧凑值
 - 移除 .panel:hover 抬升位移与重阴影，对齐原型 .card 极轻阴影风格
+- FlowViz 内联快速入门三步改用原型键 step1t~3d（简洁版），删除冗余 usageStep*/usageTip* 详细键与 Hero tip 区，对齐原型 #about-panel（仅 3 步、无 tip）
 
 ## [3.8.7]
 

@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.8.4
+// src/types/translation.ts v3.8.8
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 export interface Translation {
   subtitle: string;
@@ -60,14 +60,12 @@ export interface Translation {
   usageTitle: string;
   customDnsCount: string;
   totalLines: string;
-  usageStep1: string;
-  usageStep1Desc: string;
-  usageStep2: string;
-  usageStep2Desc: string;
-  usageStep3: string;
-  usageStep3Desc: string;
-  usageTip: string;
-  usageTipContent: string;
+  step1t: string;
+  step1d: string;
+  step2t: string;
+  step2d: string;
+  step3t: string;
+  step3d: string;
   lightMode: string;
   darkMode: string;
   inputHelp: string;
