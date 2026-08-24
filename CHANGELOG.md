@@ -5,6 +5,13 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.2]
+
+### Changed（原型-应用视觉对齐：Header 设置入口 + Settings 分组修复）
+- Header 新增设置按钮（`#settingsBtn`），对齐原型设置触发入口，点击展开/收起设置侧栏
+- 修复 SettingsPanel 分组标题：项目信息字段（projectName/version/ipv4/ipv6）从"输出规则类型"组移出，改为独立无标题分组，消除重复的 fmtGroup 标题
+- Hero 标题补 `font-serif`（Spectral），对齐原型 hero-title 品牌字体
+
 ## [3.9.1]
 
 ### Changed（原型-应用视觉对齐：FlowViz 改为单轨下落动画）

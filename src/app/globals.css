@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   DNS Shield — Design System v3.8.8
+   DNS Shield — Design System v3.9.2
    Designer: UI Designer
    Philosophy: Swiss Precision × Calm Technology
    ============================================ */
@@ -812,8 +812,8 @@
 }
 
 .hero-title {
-  @apply text-[1.75rem] sm:text-[2.25rem] font-bold tracking-tight leading-[1.1];
-  letter-spacing: -0.02em;
+  @apply text-[1.75rem] sm:text-[2.25rem] font-bold tracking-tight leading-[1.1] font-serif;
+  letter-spacing: -0.015em;
 }
 
 .hero-desc {

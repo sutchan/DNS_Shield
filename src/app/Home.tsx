@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.9.0
+// src/app/Home.tsx v3.9.2
 'use client';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './globals.css';
@@ -147,6 +147,7 @@ export default function Home() {
           supportedLanguages={supportedLanguages}
           toggleTheme={toggleTheme}
           switchLang={switchLang}
+          onOpenSettings={() => toggleSection('settings-panel')}
         />
 
         <FlowViz

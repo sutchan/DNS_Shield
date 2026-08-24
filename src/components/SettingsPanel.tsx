@@ -1,4 +1,4 @@
-// src/components/SettingsPanel.tsx v3.9.0
+// src/components/SettingsPanel.tsx v3.9.2
 // 设置面板组件 —— 从 OutputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -35,9 +35,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
       aria-hidden={isCollapsed}
     >
       <div className="settings-inner" id="settings-inner">
-        {/* 输出规则类型分组（对齐原型 fmtGroup） */}
-        <div className="settings-group" id="settings-group-format">
-          <h3 className="settings-group-title" id="settings-group-format-title">{t.fmtGroup}</h3>
+        {/* 项目信息字段（独立分组，原型无独立标题，仅视觉分隔） */}
+        <div className="settings-group" id="settings-group-project">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3" id="settings-fields-grid">
           <div className="flex flex-col gap-1.5" id="settings-field-project">
             <Label htmlFor="projectNameInput" className="text-xs font-medium text-muted-foreground">{t.projectName}</Label>
@@ -79,6 +78,10 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
               onChange={updateSettings}
             />
           </div>
+        </div>
+        {/* 输出规则类型分组（对齐原型 fmtGroup） */}
+        <div className="settings-group" id="settings-group-format">
+          <h3 className="settings-group-title" id="settings-group-format-title">{t.fmtGroup}</h3>
         </div>
         {/* C：生成选项渲染为带边框的卡片 checkbox 网格（对齐原型 .opt-row + .box 视觉，仅 5 项） */}
         <div className="opt-grid" id="settings-options-grid">
