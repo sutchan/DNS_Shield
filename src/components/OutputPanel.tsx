@@ -1,7 +1,7 @@
-// src/components/OutputPanel.tsx v3.9.3
+// src/components/OutputPanel.tsx v3.9.5
 'use client';
 import * as React from 'react';
-import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
+import { Sparkles, Download, Copy, Settings } from 'lucide-react';
 import { Button } from './ui/Button';
 import SettingsPanel from './SettingsPanel';
 import { FormatTabs, PreviewStats } from './OutputPanel.parts';
@@ -91,7 +91,7 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
       <div className="output-body" id="output-body">
         <div className="output-header" id="output-header">
           <div className="panel-title" id="output-panel-title">
-            <FileCode className="h-4 w-4 text-primary" strokeWidth={1.8} aria-hidden="true" />
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
             <h2 id="output-title">{t.outputTitle}</h2>
           </div>
           <div className="output-toolbar" id="output-toolbar">
@@ -175,7 +175,7 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
               id="output-preview-empty"
               aria-label={t.previewPlaceholder}
             >
-              <FileCode className="h-12 w-12 mb-4 opacity-40" strokeWidth={1.2} aria-hidden="true" />
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="mb-4 opacity-40" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
               <p className="text-sm">{t.previewPlaceholder}</p>
             </div>
           )}

@@ -1,4 +1,4 @@
-// src/components/InputPanel.tsx v3.9.0
+// src/components/InputPanel.tsx v3.9.5
 'use client';
 import * as React from 'react';
 import { Button } from './ui/Button';
@@ -62,20 +62,24 @@ const InputPanel: React.FC<InputPanelProps> = ({
   isLoading,
 }) => {
   const t = useT();
+  // 统计项与彩色圆点语义映射，对齐原型 .input-panel 的 .stat-dot（block/allow/dns）
   const statItems = [
-    { key: 'blacklistCount' as const, labelKey: 'blacklistCount' as keyof Translation },
-    { key: 'whitelistCount' as const, labelKey: 'whitelistCount' as keyof Translation },
-    { key: 'customDnsCount' as const, labelKey: 'customDnsCount' as keyof Translation },
-    { key: 'commentCount' as const, labelKey: 'commentCount' as keyof Translation },
-    { key: 'invalidCount' as const, labelKey: 'invalidCount' as keyof Translation },
-    { key: 'totalLines' as const, labelKey: 'totalLines' as keyof Translation },
+    { key: 'blacklistCount' as const, labelKey: 'blacklistCount' as keyof Translation, dot: 'block' as const },
+    { key: 'whitelistCount' as const, labelKey: 'whitelistCount' as keyof Translation, dot: 'allow' as const },
+    { key: 'customDnsCount' as const, labelKey: 'customDnsCount' as keyof Translation, dot: 'dns' as const },
+    { key: 'commentCount' as const, labelKey: 'commentCount' as keyof Translation, dot: null },
+    { key: 'invalidCount' as const, labelKey: 'invalidCount' as keyof Translation, dot: null },
+    { key: 'totalLines' as const, labelKey: 'totalLines' as keyof Translation, dot: null },
   ] as const;
 
   return (
     <section className="panel input-section" id="input-panel" aria-labelledby="input-title">
-      {/* 标题栏 */}
-      <div className="section-header" id="input-section-header">
-        <h2 id="input-title">{t.inputTitle}</h2>
+      {/* 卡片头：标题 + 图标（对齐原型 .card-head / .card-title） */}
+      <div className="panel-header" id="input-section-header">
+        <div className="panel-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+          <h2 id="input-title">{t.inputTitle}</h2>
+        </div>
         <Button
           type="button"
           variant="ghost"
@@ -91,15 +95,11 @@ const InputPanel: React.FC<InputPanelProps> = ({
         </Button>
       </div>
 
-      {/* 统计信息 */}
-      <div className="stats-compact" id="stats-bar" role="region" aria-label={t.statsAria}>
-        {statItems.map(({ key, labelKey }) => (
-          <Badge key={key} variant="secondary" className="stat-badge" role="status" aria-live="polite">
-            <span className="stat-value" id={key} aria-label={String(t[labelKey])}>{stats[key]}</span>
-            <span className="stat-label">{String(t[labelKey])}</span>
-          </Badge>
-        ))}
-      </div>
+      {/* 预设标签：对齐原型置于卡片头下方、始终显示（不依赖 URL 区折叠） */}
+      <PresetTags
+        activePreset={activePreset}
+        loadPreset={loadPreset}
+      />
 
       {/* URL 区域 */}
       <UrlSection
@@ -115,13 +115,16 @@ const InputPanel: React.FC<InputPanelProps> = ({
         isLoading={isLoading}
       />
 
-      {/* 预设标签 */}
-      {!isUrlSectionCollapsed && (
-        <PresetTags
-          activePreset={activePreset}
-          loadPreset={loadPreset}
-        />
-      )}
+      {/* 统计信息：带彩色圆点胶囊（对齐原型 .stat / .stat-dot） */}
+      <div className="stats-compact" id="stats-bar" role="region" aria-label={t.statsAria}>
+        {statItems.map(({ key, labelKey, dot }) => (
+          <Badge key={key} variant="secondary" className="stat-badge" role="status" aria-live="polite">
+            {dot && <span className={`stat-dot ${dot}`} aria-hidden="true" />}
+            <span className="stat-value" id={key} aria-label={String(t[labelKey])}>{stats[key]}</span>
+            <span className="stat-label">{String(t[labelKey])}</span>
+          </Badge>
+        ))}
+      </div>
 
       {/* 域名编辑器（提取为子组件） */}
       <InputEditor

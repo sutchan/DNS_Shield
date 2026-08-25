@@ -1,4 +1,4 @@
-// src/components/UrlSection.tsx v3.9.0
+// src/components/UrlSection.tsx v3.9.5
 // URL 导入区域组件 —— 从 InputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -45,8 +45,7 @@ export const PresetTags: React.FC<PresetTagsProps> = ({
   const t = useT();
   return (
     <div className="preset-section" id="preset-section">
-      <span className="preset-label" id="preset-label">{t.presetLabel}</span>
-      <div className="preset-tags" role="group" aria-labelledby="preset-label">
+      <div className="preset-tags" role="group" aria-label={t.presetLabel}>
         {PRESETS.map((preset) => (
           <Badge
             key={preset}

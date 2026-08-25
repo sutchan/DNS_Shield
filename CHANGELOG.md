@@ -5,6 +5,15 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.5] - 2026-08-25
+
+### Changed（对齐原型视觉与无障碍）
+- `globals.css` 新增 `.stat-dot`（block/allow/dns 三色语义圆点）与 `.output-header` 横向布局，对齐原型 `.input-panel` / `.output-header`
+- `InputPanel` 统计项重构为带彩色圆点（`block`/`allow`/`dns` 语义色），对齐原型 `.stat-dot`
+- `OutputPanel` 用内联 SVG 替换 `FileCode` lucide 图标，移除未用 import
+- `UrlSection` preset 标签无障碍由 `aria-labelledby` 改为 `aria-label`
+- 同步全局版本展示位至 v3.9.5
+
 ## [3.9.4]
 
 ### Changed（对齐原型 .tablist 排序）
