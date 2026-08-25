@@ -888,3 +888,9 @@ zeus-api.vemarsdev.com
 +youdao.com
 +zhihuishu.com
 +zhongchou.com
+
+# ========== 小米 / Mitv 追踪域名（来自 dev 分支合并补充） ==========
+cdn.ad.xiaomi.com
+gallery.pandora.xiaomi.com
+stat.pandora.xiaomi.com
+tat.pandora.xiaomi.com
