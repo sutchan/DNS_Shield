@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.9.2
+// src/app/Home.tsx v3.9.3
 'use client';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './globals.css';
@@ -21,6 +21,8 @@ import { useRules } from '../hooks/useRules';
 import { useUrlManager } from '../hooks/useUrlManager';
 import { useSettings } from '../hooks/useSettings';
 import { toast } from 'sonner';
+import type { Stats } from '../types';
+import { logger } from '../utils/logger';
 
 export default function Home() {
   // 使用钩子
@@ -38,7 +40,7 @@ export default function Home() {
     let message = toastMessages[key] || key;
     // 缺翻译键时告警，便于发现漏翻（不影响功能，回退显示原始 key）
     if (!toastMessages[key]) {
-      console.warn(`[i18n] 缺少 toast 翻译键: "${key}"（语言 ${currentLang}），已回退为原始 key`);
+      logger.warn(`[i18n] 缺少 toast 翻译键: "${key}"（语言 ${currentLang}），已回退为原始 key`);
     }
     if (params) {
       Object.entries(params).forEach(([k, v]) => {
@@ -66,6 +68,15 @@ export default function Home() {
   // 设置管理
   const { settings, setSettings, updateSettings } = useSettings();
 
+  // 稳定引用：将「生效后统计」合并进展示用的 stats（保留 domainCount/commentCount/invalidCount）。
+  // 用 useCallback 包裹，避免每次渲染生成新函数导致 useRules 的 runGenerate 及下游回调
+  // （generateRules 等）身份抖动，进而破坏 OutputPanel(React.memo) 的跳过重渲染优化。
+  const handleEffectiveStats = useCallback(
+    (partial: Pick<Stats, 'blacklistCount' | 'whitelistCount' | 'validCount'>) =>
+      setStats((prev) => ({ ...prev, ...partial })),
+    []
+  );
+
   // 规则生成
   const { 
     outputContent, 
@@ -77,10 +88,7 @@ export default function Home() {
     copyOutput, 
     setFormat, 
     syncOutputScroll
-  } = useRules(parsedData, sourceInput, settings, t, showToast, parseSourceData,
-    // 将「生效后统计」合并进展示用的 stats（保留 domainCount/commentCount/invalidCount）
-    (partial) => setStats((prev) => ({ ...prev, ...partial }))
-  );
+  } = useRules(parsedData, sourceInput, settings, t, showToast, parseSourceData, handleEffectiveStats);
 
   // URL管理
   const { 
@@ -99,7 +107,8 @@ export default function Home() {
 
   // 区域折叠状态
   const [isUrlSectionCollapsed, setIsUrlSectionCollapsed] = useState(true);
-  const [isSettingsPanelCollapsed, setIsSettingsPanelCollapsed] = useState(true);
+  // 设置面板弹窗开关（对齐原型 settings-modal：L2 由侧栏折叠改为居中弹窗）
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   // 使用指南弹窗开关（对齐原型 #guideModal：页脚 linkGuide 触发）
   const [isGuideOpen, setIsGuideOpen] = useState(false);
@@ -116,15 +125,14 @@ export default function Home() {
 
   // 切换区域（函数式 setState 使依赖为空，useCallback 稳定引用，避免下游重渲染）
   const toggleSection = useCallback((section: string) => {
-    switch (section) {
-      case 'url-section':
-        setIsUrlSectionCollapsed(prev => !prev);
-        break;
-      case 'settings-panel':
-        setIsSettingsPanelCollapsed(prev => !prev);
-        break;
+    if (section === 'url-section') {
+      setIsUrlSectionCollapsed(prev => !prev);
     }
   }, []);
+
+  // 设置面板弹窗开关（对齐原型 settings-modal）
+  const openSettings = useCallback(() => setIsSettingsOpen(true), []);
+  const closeSettings = useCallback(() => setIsSettingsOpen(false), []);
 
   // Hero CTA：滚动到输入面板并聚焦编辑器
   const scrollToInput = useCallback(() => {
@@ -142,18 +150,16 @@ export default function Home() {
     <AppProvider value={{ t }}>
       <div className="container" id="app-container">
         <Header
-          theme={theme}
           currentLang={currentLang}
           supportedLanguages={supportedLanguages}
-          toggleTheme={toggleTheme}
           switchLang={switchLang}
-          onOpenSettings={() => toggleSection('settings-panel')}
+          onOpenSettings={openSettings}
         />
 
         <FlowViz
           parsedData={parsedData}
           onStart={scrollToInput}
-          onToggleSettings={() => toggleSection('settings-panel')}
+          onToggleSettings={openSettings}
         />
 
         <main className="main-content" id="main-content">
@@ -187,7 +193,9 @@ export default function Home() {
           <OutputPanel
             outputContent={outputContent}
             currentFormat={currentFormat}
-            isSettingsPanelCollapsed={isSettingsPanelCollapsed}
+            isSettingsOpen={isSettingsOpen}
+            onOpenSettings={openSettings}
+            onCloseSettings={closeSettings}
             settings={settings}
             parsedData={parsedData}
             outputPreviewRef={outputPreviewRef}

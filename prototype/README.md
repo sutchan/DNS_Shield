@@ -1,4 +1,4 @@
-# DNS Shield — 项目原型 (Prototype) v3.9.2
+# DNS Shield — 项目原型 (Prototype) v3.9.3
 
 > 高保真、可交互、内联真实数据的产品原型，与真实引擎 `src/` 及 OpenSpec 规范保持最小颗粒度对齐。
 
@@ -24,7 +24,7 @@ prototype/
 - **高保真交互**：
   - 主题切换（Light/Dark，持久化 `localStorage` + `prefers-color-scheme`）
   - 16 语言下拉（对齐 `src/utils/i18n.ts` `supportedLanguages`）
-  - 实时解析统计（黑名单 / 白名单 / 自定义 DNS / 注释）
+  - 实时解析统计（黑名单 / 白名单 / 自定义 DNS / 注释 / 无效行）
   - 9 种格式输出（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS）Tab 切换
   - 行号编辑器、排序、去重、清空、复制、下载
   - 预设数据（内置 / AdGuard / EasyList / NeoHosts）
@@ -39,7 +39,7 @@ prototype/
 - **基础组件（Atoms）**：Button（6 变体 / 4 尺寸）、Input、Label、Textarea、Checkbox、Switch、Badge（6 变体）、Select、Tabs、DropdownMenu、Loading（Spinner / Skeleton / Indeterminate Bar）、Toast。
 - **复合组件（Composite）**：Card（header/body/footer）、Form（字段组）、List（域名条目）、Stat（统计卡）、Code Preview（注释/白名单着色）。
 - **业务组件（Business）**：AppHeader（语言+主题）、SettingsPanel、InputPanel+UrlSection、OutputPanel、AppFooter（使用指南）。
-- **设计令牌**：Light/Dark HSL 通道值表，圆角四级，与 `globals.css` 同源。
+- **设计令牌**：Light/Dark HSL 通道值表，圆角五级（sm/md/lg/xl/2xl）+ full 药丸，与 `globals.css` 同源。
 - **使用规则**：语义化 id、单一数据源、变体契约、a11y、动效规范、文件头注释。
 
 ## 业务流程原型（`flows.html`）
@@ -49,7 +49,7 @@ prototype/
 ## 设计规范索引
 - **3.7.29 语义**：白名单域名不进入黑名单拦截列表，仅以 `server=/`（Dnsmasq）、`# 已白名单:`（Hosts）、`@@||domain^$important`（AdGuard 白名单）呈现。
 - **响应式**：≥768px 双栏，移动端单列堆叠；sticky 顶栏；Toast 反馈。
-- **语义化 id / 无障碍**：主要容器与控件均带 `id`（`app-header`/`main-content`/`input-panel`/`output-panel`/`langBtn`/`themeBtn` 等），支持键盘与 ARIA。
+- **语义化 id / 无障碍**：主要容器与控件均带 `id`（`app-header`/`main-content`/`input-panel`/`output-panel`/`lang-selector-btn`/`settingsBtn`/`shareBtn` 等，主题切换位于设置弹窗内对应 `theme-seg-btn`），支持键盘与 ARIA。
 
 ## 设计规范索引
 
@@ -82,7 +82,7 @@ prototype/
 - 应用内导航栏 Logo 复用 `lucide-react` 的 `Shield` 图标（`text-primary`），与 `favicon.svg` 视觉一致。
 - 修改标志时直接更新 `public/` 下对应资产，并保持 `public/brand/` 文档同步。
 
-## 与真实引擎的同步状态（v3.9.2）
+## 与真实引擎的同步状态（v3.9.3）
 
 `prototype.html` 的解析/生成逻辑对齐 `src/utils/parser.ts`、`rulesGenerator.ts`、`domainValidator.ts`：
 
@@ -99,4 +99,4 @@ prototype/
 
 ## 版本
 
-当前原型版本 **v3.9.2**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。
+当前原型版本 **v3.9.3**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。

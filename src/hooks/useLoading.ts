@@ -1,6 +1,7 @@
 // src/hooks/useLoading.ts v3.9.0
 // 加载状态管理 hook —— 从 useUrlManager 拆分
 import { useState, useCallback } from 'react';
+import { logger } from '../utils/logger';
 
 interface LoadConfig<T> {
   fetchFn: () => Promise<T>;
@@ -51,7 +52,7 @@ export const useLoading = (
       }
     } catch (error) {
       const context = errorContext || 'Loading operation';
-      console.error(`[${context}] Error:`, error);
+      logger.error(`[${context}] Error:`, error);
       
       if (onError) {
         onError(error);

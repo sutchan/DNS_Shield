@@ -1,7 +1,8 @@
-// src/components/Header.tsx v3.9.2'use client';
+// src/components/Header.tsx v3.9.3
+'use client';
 
 import * as React from 'react';
-import { Sun, Moon, Globe, Check } from 'lucide-react';
+import { Globe, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './ui/Button';
 import {
@@ -14,19 +15,15 @@ import { Language } from '../types';
 import { useT } from '../context/AppContext';
 
 interface HeaderProps {
-  theme: 'light' | 'dark';
   currentLang: string;
   supportedLanguages: Language[];
-  toggleTheme: () => void;
   switchLang: (lang: string) => void;
   onOpenSettings: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
-  theme,
   currentLang,
   supportedLanguages,
-  toggleTheme,
   switchLang,
   onOpenSettings,
 }) => {
@@ -121,24 +118,7 @@ const Header: React.FC<HeaderProps> = ({
             </svg>
           </Button>
 
-          {/* Theme Toggle */}
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={toggleTheme}
-            aria-label={theme === 'dark' ? t.lightMode : t.darkMode}
-            aria-pressed={theme === 'dark'}
-            title={theme === 'dark' ? t.lightMode : t.darkMode}
-            id="theme-toggle-btn"
-          >
-            {theme === 'dark' ? (
-              <Sun className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-            ) : (
-              <Moon className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-            )}
-          </Button>
-
-          {/* Settings（对齐原型 settingsBtn，触发侧栏） */}
+          {/* Settings（对齐原型 settingsBtn，触发弹窗） */}
           <Button
             variant="outline"
             size="icon"

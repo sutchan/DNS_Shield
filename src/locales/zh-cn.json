@@ -168,6 +168,7 @@
   "appearanceGroup": "外观",
   "themeLight": "浅色",
   "themeDark": "深色",
+  "closeBtn": "关闭",
   "darkTheme": "深色主题",
   "guideTitle": "使用指南",
   "gStep1t": "输入域名",
@@ -187,5 +188,6 @@
   "step2t": "选择格式",
   "step2d": "dnsmasq / hosts / AdGuard…",
   "step3t": "导出部署",
-  "step3d": "复制到路由器或 DNS 服务"
+  "step3d": "复制到路由器或 DNS 服务",
+  "invalidCount": "无效行"
 }

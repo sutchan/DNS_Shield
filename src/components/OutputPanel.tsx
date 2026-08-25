@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.9.0
+// src/components/OutputPanel.tsx v3.9.3
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, FileCode } from 'lucide-react';
@@ -12,7 +12,9 @@ import { useT } from '../context/AppContext';
 interface OutputPanelProps {
   outputContent: OutputContent;
   currentFormat: FormatType;
-  isSettingsPanelCollapsed: boolean;
+  isSettingsOpen: boolean;
+  onOpenSettings: () => void;
+  onCloseSettings: () => void;
   settings: SettingsType;
   parsedData: ParsedData;
   outputPreviewRef: React.RefObject<HTMLDivElement>;
@@ -32,7 +34,9 @@ interface OutputPanelProps {
 const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   outputContent,
   currentFormat,
-  isSettingsPanelCollapsed,
+  isSettingsOpen,
+  onOpenSettings,
+  onCloseSettings,
   settings,
   parsedData,
   outputPreviewRef,
@@ -101,10 +105,10 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
               type="button"
               variant={'outline' as const}
               size={'icon' as const}
-              onClick={() => toggleSection('settings-panel')}
+              onClick={onOpenSettings}
               title={t.settingsTitle}
               id="settings-panel-toggle-btn"
-              aria-expanded={!isSettingsPanelCollapsed}
+              aria-expanded={isSettingsOpen}
               aria-controls="settings-panel"
             >
               <Settings className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
@@ -112,9 +116,10 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
           </div>
         </div>
 
-        {/* Settings Panel */}
+        {/* Settings Panel（L2：居中弹窗 modal） */}
         <SettingsPanel
-          isCollapsed={isSettingsPanelCollapsed}
+          isOpen={isSettingsOpen}
+          onClose={onCloseSettings}
           settings={settings}
           theme={theme}
           toggleTheme={toggleTheme}

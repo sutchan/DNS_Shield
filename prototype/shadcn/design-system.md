@@ -1,4 +1,4 @@
-# DNS Shield — 设计系统规范 v3.8.1
+# DNS Shield — 设计系统规范 v3.9.3
 > 基于 shadcn/ui + Tailwind CSS + Radix UI 的完整设计系统
 > 色彩空间：HSL | 设计哲学：Swiss Modernism 2.0 × Apple Precision
 
@@ -52,7 +52,8 @@
   --input: 220 6% 88%;
   --ring: 217 89% 47%;
 
-  /* Radius */
+  /* Radius — 基础变量 --radius 被 Tailwind rounded-lg 引用，与 --radius-lg 同值 */
+  --radius: 0.625rem;
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.625rem;

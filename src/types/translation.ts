@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.9.0
+// src/types/translation.ts v3.9.3
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 export interface Translation {
   subtitle: string;
@@ -9,6 +9,7 @@ export interface Translation {
   whitelistCount: string;
   validCount: string;
   commentCount: string;
+  invalidCount: string;
   urlPlaceholder: string;
   fetchBtn: string;
   addUrl: string;
@@ -182,6 +183,7 @@ export interface Translation {
   appearanceGroup: string;
   themeLight: string;
   themeDark: string;
+  closeBtn: string;
   darkTheme: string;
   // 使用指南弹窗（原型 guideTitle/gStep1t/gStep1d/gStep2t/gStep2d/gStep3t/gStep3d/guideNoteTitle）
   guideTitle: string;

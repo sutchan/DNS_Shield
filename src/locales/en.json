@@ -187,5 +187,7 @@
   "step2t": "Pick Format",
   "step2d": "dnsmasq / hosts / AdGuard…",
   "step3t": "Export",
-  "step3d": "Copy to router or DNS service"
+  "step3d": "Copy to router or DNS service",
+  "closeBtn": "Close",
+  "invalidCount": "Invalid"
 }

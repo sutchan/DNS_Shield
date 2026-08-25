@@ -5,6 +5,7 @@ import { fetchDomainsText } from '../utils/domainFetch';
 import { generateLineNumbers } from './useLineNumbers';
 import { ParsedData, Stats } from '../types';
 import { config } from '../config';
+import { logger } from '../utils/logger';
 import {
   isValidAutosave,
   readAutosave,
@@ -50,7 +51,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
       setParsedData(data);
       setStats(newStats);
     } catch (error) {
-      console.error('Error parsing source:', error);
+      logger.error('Error parsing source:', error);
       showToastRef.current('parseFailed');
     }
   }, []);
@@ -88,9 +89,9 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
         return;
       }
       // 所有源均失败且无内容：保留空状态（loadAll 的 finally 会统一处理 UI）
-      console.warn('Could not load any domains source (remote and local both empty).');
+      logger.warn('Could not load any domains source (remote and local both empty).');
     } catch (error) {
-      console.warn('Could not load domains.txt:', error);
+      logger.warn('Could not load domains.txt:', error);
     } finally {
       setIsLoading(false);
     }

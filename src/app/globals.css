@@ -10,7 +10,7 @@
 
 @layer base {
   :root {
-    /* --- Color tokens (oklch) --- */
+    /* --- Color tokens (HSL) --- */
     --background: 0 0% 98.5%;
     --foreground: 240 8% 12%;
 
@@ -48,6 +48,7 @@
     --scrollbar-thumb: 220 6% 78%;
     --scrollbar-thumb-hover: 220 5% 68%;
 
+    --radius: 0.625rem;
     --radius-sm: 0.375rem;
     --radius-md: 0.5rem;
     --radius-lg: 0.625rem;
@@ -161,7 +162,7 @@
 }
 
 .main-content {
-  @apply grid grid-cols-1 lg:grid-cols-2 gap-6;
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6;
 }
 
 .app-header {
@@ -458,21 +459,32 @@
   margin-bottom: 1.25rem;
 }
 
-.settings-expanded {
-  max-height: 800px;
-  opacity: 1;
-  margin-bottom: 1.25rem;
+/* L2：设置面板改为居中弹窗 modal（对齐原型 settings-modal / settings-dialog） */
+.settings-modal {
+  @apply fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-6 overflow-y-auto;
+  background: rgba(0, 0, 0, 0.45);
 }
 
-.settings-collapsed,
-.settings-panel.collapsed {
-  max-height: 0;
-  opacity: 0;
-  margin-bottom: 0;
+.settings-dialog {
+  @apply relative w-full max-w-[560px] mt-12 sm:mt-16 rounded-xl border border-border bg-background shadow-xl;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+}
+
+.settings-dialog-header {
+  @apply flex items-center justify-between px-5 py-4 border-b border-border sticky top-0 bg-background z-10;
+}
+
+.settings-dialog-title {
+  @apply text-sm font-semibold text-foreground;
+}
+
+.settings-close {
+  @apply inline-flex items-center justify-center h-8 w-8 rounded-md border border-border bg-background text-muted-foreground transition-colors hover:bg-accent;
 }
 
 .settings-inner {
-  @apply p-4 rounded-xl border border-border bg-muted/40;
+  @apply p-4 sm:p-5;
 }
 
 .settings-group {

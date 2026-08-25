@@ -5,6 +5,14 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.3]
+
+### Changed（严格对齐原型布局：消除 3 处架构级差异）
+- **L1 主区域布局**：`.main-content` 由两栏并排（`lg:grid-cols-2`）改为单栏堆叠（`grid-cols-1`），对齐原型单栏 input/output 卡片流
+- **L2 设置面板形态**：由侧栏折叠改为居中弹窗 modal（`.settings-modal` + `.settings-dialog` + 遮罩 + 关闭按钮），对齐原型 settings-modal/settings-dialog
+- **L3 主题切换入口**：移除 Header 独立 `#theme-toggle-btn`，主题切换仅保留在设置面板内（对齐原型，原型无独立 theme 按钮）
+- 新增 `closeBtn` 翻译键并补充至全部 16 语言（modal 关闭按钮 aria-label）
+
 ## [3.9.2]
 
 ### Changed（原型-应用视觉对齐：Header 设置入口 + Settings 分组修复）

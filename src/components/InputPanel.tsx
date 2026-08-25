@@ -67,6 +67,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
     { key: 'whitelistCount' as const, labelKey: 'whitelistCount' as keyof Translation },
     { key: 'customDnsCount' as const, labelKey: 'customDnsCount' as keyof Translation },
     { key: 'commentCount' as const, labelKey: 'commentCount' as keyof Translation },
+    { key: 'invalidCount' as const, labelKey: 'invalidCount' as keyof Translation },
     { key: 'totalLines' as const, labelKey: 'totalLines' as keyof Translation },
   ] as const;
 

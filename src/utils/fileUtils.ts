@@ -1,4 +1,5 @@
 // src/utils/fileUtils.ts v3.9.0
+import { logger } from './logger';
 
 const MAX_URL_LENGTH = 2048;
 const MAX_FILENAME_LENGTH = 255;
@@ -56,7 +57,7 @@ export const copyToClipboard = async (content: string): Promise<boolean> => {
     await navigator.clipboard.writeText(content);
     return true;
   } catch (err) {
-    console.error('Failed to copy:', err);
+    logger.error('Failed to copy:', err);
     return false;
   }
 };

@@ -1,4 +1,4 @@
-// src/components/SettingsPanel.tsx v3.9.2
+// src/components/SettingsPanel.tsx v3.9.3
 // 设置面板组件 —— 从 OutputPanel 拆分
 'use client';
 import * as React from 'react';
@@ -11,7 +11,8 @@ import { ALL_FORMATS } from '../types/formats';
 import { useT } from '../context/AppContext';
 
 interface SettingsPanelProps {
-  isCollapsed: boolean;
+  isOpen: boolean;
+  onClose: () => void;
   settings: SettingsType;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
@@ -20,7 +21,8 @@ interface SettingsPanelProps {
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
-  isCollapsed,
+  isOpen,
+  onClose,
   settings,
   theme,
   toggleTheme,
@@ -28,12 +30,77 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   setSettings,
 }) => {
   const t = useT();
+  const dialogRef = React.useRef<HTMLDivElement>(null);
+  const closeBtnRef = React.useRef<HTMLButtonElement>(null);
+
+  // 模态无障碍：打开时锁定滚动 + 自动聚焦关闭按钮 + Esc 关闭 + Tab 焦点陷阱
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const prevFocus = document.activeElement as HTMLElement | null;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeBtnRef.current?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+      prevFocus?.focus?.();
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
   return (
     <div
-      className={`settings-panel ${isCollapsed ? 'settings-collapsed' : 'settings-expanded'}`}
+      className="settings-modal"
       id="settings-panel"
-      aria-hidden={isCollapsed}
+      role="dialog"
+      aria-modal="true"
+      aria-label={t.settingsTitle}
+      ref={dialogRef}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
+      <div className="settings-dialog" id="settings-dialog">
+        <div className="settings-dialog-header" id="settings-dialog-header">
+          <span className="settings-dialog-title" id="settings-dialog-title">{t.settingsTitle}</span>
+          <button
+            type="button"
+            className="settings-close"
+            onClick={onClose}
+            aria-label={t.closeBtn}
+            id="settings-close-btn"
+            ref={closeBtnRef}
+          >
+            <svg className="h-4 w-4" strokeWidth={2} aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
       <div className="settings-inner" id="settings-inner">
         {/* 项目信息字段（独立分组，原型无独立标题，仅视觉分隔） */}
         <div className="settings-group" id="settings-group-project">
@@ -188,6 +255,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             </button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
