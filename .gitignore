@@ -84,3 +84,5 @@ __pycache__/
 *.bak
 /.codebuddy
 .gitmsg.txt
+review_*.md
+CODE_REVIEW_*.md
