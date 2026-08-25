@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.9.0
+// src/hooks/useRules.ts v3.9.4
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateRules as generateRulesUtil, computeEffectiveStats } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
@@ -26,7 +26,7 @@ export const useRules = (
     bind: '',
     smartdns: ''
   });
-  const [currentFormat, setCurrentFormat] = useState<FormatType>('hosts');
+  const [currentFormat, setCurrentFormat] = useState<FormatType>('dnsmasq');
   
   // 引用
   const outputPreviewRef = useRef<HTMLDivElement>(null);

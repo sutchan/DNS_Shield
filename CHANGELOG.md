@@ -5,6 +5,12 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.4]
+
+### Changed（对齐原型 .tablist 排序）
+- 格式 Tab 顺序对齐原型 `prototype.html` 的 `.tablist`：`dnsmasq` 提至首位（路由器级 DNS 工具最常用），其后为 `hosts / adguard / whitelist / unbound / pihole / domains / bind / smartdns`
+- `ALL_FORMATS`、`CORE_FORMATS` 顺序同步调整；默认输出格式 `currentFormat` 初值由 `hosts` 改为 `dnsmasq`，与原型默认激活态一致
+
 ## [3.9.3]
 
 ### Changed（严格对齐原型布局：消除 3 处架构级差异）
