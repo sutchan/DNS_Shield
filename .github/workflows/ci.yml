@@ -8,6 +8,11 @@ on:
 
 # 任务：代码质量门禁 —— 每次 PR/推送到 main 自动执行 lint + 测试(含覆盖率) + 构建。
 # 与 CODE_REVIEW.md 中的「合并前审查」触发时机对应。
+#
+# 注意：本项目使用 pnpm 管理依赖（pnpm-lock.yaml），因此必须：
+#   1. 先通过 pnpm/action-setup 安装 pnpm
+#   2. setup-node 的 cache 必须设为 'pnpm'（不能是 'npm'，否则会因找不到 package-lock.json 而失败）
+#   3. 依赖安装使用 `pnpm install --frozen-lockfile`（等效于 npm ci）
 jobs:
   quality-gate:
     name: Lint · Test · Build
@@ -16,23 +21,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '9'
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: npm run lint
+        run: pnpm run lint
 
       - name: Test (with coverage)
-        run: npm run test:coverage
+        run: pnpm run test:coverage
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
 
       - name: Upload coverage report
         if: always()
