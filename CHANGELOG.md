@@ -5,6 +5,12 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.9] - 2026-08-26
+
+### Chore（构建/依赖配置）
+- `package.json` 新增 `pnpm.onlyBuiltDependencies`，允许 `esbuild`/`unrs-resolver` 执行构建脚本，修复 pnpm 默认安全策略下 `next`/`vitest` 因 esbuild 未构建而不可用的问题
+- 同步全局版本展示位至 v3.9.9
+
 ## [3.9.8] - 2026-08-26
 
 ### Perf（性能优化）
