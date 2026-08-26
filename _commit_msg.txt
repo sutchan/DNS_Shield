@@ -1,0 +1,7 @@
+fix: 修复 memo 组件 display-name 错误并同步版本至 v3.9.11
+
+- FlowViz/Footer 的 React.memo 包裹改为命名函数，修复 EO CI next build 的
+  react/display-name ESLint Error 导致构建失败
+- 同步全局版本展示位至 v3.9.11
+
+Bumps v3.9.10 -> v3.9.11

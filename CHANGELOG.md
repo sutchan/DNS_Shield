@@ -11,6 +11,13 @@
 - 移除 ci.yml 中 `pnpm/action-setup@v4` 硬编码的 `version: '9'`，改由 `package.json` 的 `packageManager`（pnpm@11.24.0）统一驱动，消除 `ERR_PNPM_BAD_PM_VERSION` 多重版本冲突
 - `engines.pnpm` 由 `>=9` 对齐为 `>=11`，与 packageManager 声明一致
 
+## [3.9.11] - 2026-08-26
+
+### Fix（构建修复）
+- 修复 `React.memo` 包裹组件缺少 displayName 导致的 EO CI `next build` ESLint 报错（`react/display-name`）
+- `FlowViz.tsx` / `Footer.tsx` 的 memo 包裹改为命名函数，满足 ESLint display-name 规则
+- 同步全局版本展示位至 v3.9.11
+
 ## [3.9.10] - 2026-08-26
 
 ### Chore（部署/构建配置）

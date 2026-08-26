@@ -18,7 +18,7 @@ interface FlowVizProps {
 }
 
 /** 流量可视化签名区：左侧文案 + 右侧实时流量轨道 */
-const FlowViz: React.FC<FlowVizProps> = React.memo(({ parsedData, onStart, onToggleSettings }) => {
+const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ parsedData, onStart, onToggleSettings }) {
   const t = useT();
   const tokens = useFlowTokens(parsedData);
   const block = parsedData.domains.length;

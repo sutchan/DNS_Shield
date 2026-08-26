@@ -9,10 +9,10 @@ interface FooterProps {
   onOpenGuide?: () => void;
 }
 
-const Footer = React.memo(({
+const Footer = React.memo(function Footer({
   version = APP_VERSION,
   onOpenGuide,
-}: FooterProps) => {
+}: FooterProps) {
   const t = useT();
 
   return (
