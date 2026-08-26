@@ -5,6 +5,11 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.6] - 2026-08-26
+
+### Fixed
+- 修复 CI 构建失败：`globals.css` 的 `.stat-dot.allow` 误用 `@apply bg-success`，但 `tailwind.config.js` 的 colors 未定义 `success` 键导致类不存在；改为原生 `bg-green-500`（与 `--success: 142 71% 45%` 及 Badge 成功色一致）
+
 ## [3.9.5] - 2026-08-25
 
 ### Changed（对齐原型视觉与无障碍）

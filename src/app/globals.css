@@ -276,7 +276,7 @@
   @apply inline-block w-1.5 h-1.5 rounded-full flex-shrink-0;
 }
 .stat-dot.block { @apply bg-destructive; }
-.stat-dot.allow { @apply bg-success; }
+.stat-dot.allow { @apply bg-green-500; }
 .stat-dot.dns { @apply bg-primary; }
 
 /* ============================================
