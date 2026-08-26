@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.9.4
+// src/hooks/useRules.ts v3.9.8
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateRules as generateRulesUtil, computeEffectiveStats } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
@@ -31,6 +31,12 @@ export const useRules = (
   // 引用
   const outputPreviewRef = useRef<HTMLDivElement>(null);
   const outputLineNumbersRef = useRef<HTMLDivElement>(null);
+  // 用 ref 持有最新的 settings/t，避免 runGenerate 因 settings 对象引用变化而重建，
+  // 从而稳定 generateRules 等回调引用，防止击穿 OutputPanel 的 React.memo（#perf）
+  const settingsRef = useRef(settings);
+  settingsRef.current = settings;
+  const tRef = useRef(t);
+  tRef.current = t;
 
   // 监听outputContent变化，更新输出行号
   useEffect(() => {
@@ -45,7 +51,7 @@ export const useRules = (
     // 2) 避免 React state 闭包捕获的旧值。此为有意设计，非冗余双解析。
     const freshData = parseSource(sourceInput);
     const { domains, whitelist, customDns } = freshData.data;
-    const newOutputContent = generateRulesUtil(domains, whitelist, customDns, settings, t);
+    const newOutputContent = generateRulesUtil(domains, whitelist, customDns, settingsRef.current, tRef.current);
     setOutputContent(newOutputContent);
     // 同步「生效后的实际统计」到 UI：与本次生成的变换（去通配/去重/白名单剔除）完全一致，
     // 修复统计数字与实际导出结果不符的问题（#2）
@@ -59,7 +65,7 @@ export const useRules = (
     generateLineNumbers(content || '', outputLineNumbersRef);
 
     if (notify) showToast('rulesGenerated');
-  }, [sourceInput, settings, t, currentFormat, syncParsedData, showToast, onEffectiveStats]);
+  }, [sourceInput, currentFormat, syncParsedData, showToast, onEffectiveStats]);
 
   // 监听 sourceInput：只要存在可解析内容即自动生成，确保右侧预览（含白名单标签页）
   // 始终反映当前数据，避免"左侧有白名单但右侧生成窗口为空"的失效观感。

@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.9.3
+// src/app/Home.tsx v3.9.8
 'use client';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './globals.css';
@@ -112,6 +112,7 @@ export default function Home() {
 
   // 使用指南弹窗开关（对齐原型 #guideModal：页脚 linkGuide 触发）
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const openGuide = useCallback(() => setIsGuideOpen(true), [setIsGuideOpen]);
 
   // 引用
   const sourceTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -211,7 +212,7 @@ export default function Home() {
           />
         </main>
 
-        <Footer onOpenGuide={() => setIsGuideOpen(true)} />
+        <Footer onOpenGuide={openGuide} />
 
         <GuideModal open={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
 

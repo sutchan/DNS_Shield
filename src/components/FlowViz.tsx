@@ -1,4 +1,4 @@
-// src/components/FlowViz.tsx v3.9.1
+// src/components/FlowViz.tsx v3.9.8
 // DNS 流量可视化签名区：对齐原型 flowviz —— 单条横向流量管道，真实域名 token 下落。
 // token 从解析后的黑名单/白名单/改道数据中随机抽样，按三态比例落入轨道。
 // 动画遵循全局 prefers-reduced-motion 降级（globals.css 已统一处理）。
@@ -18,7 +18,7 @@ interface FlowVizProps {
 }
 
 /** 流量可视化签名区：左侧文案 + 右侧实时流量轨道 */
-const FlowViz: React.FC<FlowVizProps> = ({ parsedData, onStart, onToggleSettings }) => {
+const FlowViz: React.FC<FlowVizProps> = React.memo(({ parsedData, onStart, onToggleSettings }) => {
   const t = useT();
   const tokens = useFlowTokens(parsedData);
   const block = parsedData.domains.length;
@@ -113,6 +113,6 @@ const FlowViz: React.FC<FlowVizProps> = ({ parsedData, onStart, onToggleSettings
       </div>
     </section>
   );
-};
+});
 
 export default FlowViz;

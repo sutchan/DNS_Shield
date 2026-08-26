@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.ts v3.9.0
+// src/hooks/useDomainData.ts v3.9.8
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
 import { fetchDomainsText } from '../utils/domainFetch';
@@ -104,6 +104,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   // 恢复自动保存内容（仅在挂载时执行一次，避免清空后又被覆盖）
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (autosaveRestoredRef.current) return; // 严格单次守卫（StrictMode 双调用亦只执行一次）
     // schema 校验：仅接受合法字符串且非空，防止脏数据/超长内容进入应用
     const autosave = readAutosave();
     if (autosave && !sourceInputRef.current.trim()) {

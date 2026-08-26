@@ -5,6 +5,14 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.8] - 2026-08-26
+
+### Perf（性能优化）
+- `FlowViz`/`Footer` 包 `React.memo`，避免输入时随父组件无谓重渲染
+- `Home` 的 `onOpenGuide` 改为 `useCallback` 稳定引用，修复 Footer memo 击穿
+- `useRules` 用 ref 持有最新 `settings`/`t`，稳定 `runGenerate` 引用，防止 `OutputPanel` memo 被设置变更击穿
+- `useDomainData` 自动保存恢复 effect 加严格单次守卫，避免 StrictMode 双执行
+
 ## [3.9.7] - 2026-08-26
 
 ### Changed（pnpm 迁移与强制约束）

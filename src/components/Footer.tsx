@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v3.9.0
+// src/components/Footer.tsx v3.9.8
 'use client';
 import React from 'react';
 import { useT } from '../context/AppContext';
@@ -9,10 +9,10 @@ interface FooterProps {
   onOpenGuide?: () => void;
 }
 
-const Footer: React.FC<FooterProps> = ({
+const Footer = React.memo(({
   version = APP_VERSION,
   onOpenGuide,
-}) => {
+}: FooterProps) => {
   const t = useT();
 
   return (
@@ -84,7 +84,7 @@ const Footer: React.FC<FooterProps> = ({
       </div>
     </footer>
   );
-};
+});
 
 export default Footer;
 
