@@ -100,7 +100,7 @@ export const generateRules = (
   const contents = mergeContents(
     buildHeaders(totalDomains, whitelistCount, dateStr, settings, t),
     buildBlockedRules(blockedDomains, settings),
-    buildCustomDnsRules(customDns, settings),
+    buildCustomDnsRules(customDns),
     buildWhitelistRules(filteredWhitelist, settings, t, addHeader)
   );
 

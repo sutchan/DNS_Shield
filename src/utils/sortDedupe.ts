@@ -1,5 +1,5 @@
 // src/utils/sortDedupe.ts v3.9.0
-import { parseDomainLine, ParseResult } from './domainValidator';
+import { parseDomainLine } from './domainValidator';
 
 // 排序域名：按"块"处理，每段注释（分组标题）及其下方数据行作为一个块，
 // 块内数据行单独排序，注释与块顺序保持不变；空行作为独立分隔块原样保留。

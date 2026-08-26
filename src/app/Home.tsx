@@ -74,7 +74,7 @@ export default function Home() {
   const handleEffectiveStats = useCallback(
     (partial: Pick<Stats, 'blacklistCount' | 'whitelistCount' | 'validCount'>) =>
       setStats((prev) => ({ ...prev, ...partial })),
-    []
+    [setStats]
   );
 
   // 规则生成
@@ -121,7 +121,7 @@ export default function Home() {
     if (sourceTextareaRef.current && lineNumbersRef.current) {
       lineNumbersRef.current.scrollTop = sourceTextareaRef.current.scrollTop;
     }
-  }, []);
+  }, [sourceTextareaRef, lineNumbersRef]);
 
   // 切换区域（函数式 setState 使依赖为空，useCallback 稳定引用，避免下游重渲染）
   const toggleSection = useCallback((section: string) => {
@@ -178,7 +178,6 @@ export default function Home() {
             syncScroll={syncScroll}
             clearAll={clearAll}
             sortDomains={sortDomains}
-            parseSource={parseSourceData}
             generateRules={generateRules}
             dedupeDomains={dedupeDomains}
             loadPreset={loadPreset}
@@ -200,7 +199,6 @@ export default function Home() {
             parsedData={parsedData}
             outputPreviewRef={outputPreviewRef}
             outputLineNumbersRef={outputLineNumbersRef}
-            toggleSection={toggleSection}
             setFormat={setFormat}
             generateRules={generateRules}
             downloadOutput={downloadOutput}

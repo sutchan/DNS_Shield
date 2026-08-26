@@ -20,7 +20,7 @@ export const parseDomainLine = (line: string): ParseResult => {
     return { type: 'comment', originalLine: line };
   }
 
-  let content = hashIndex >= 0 ? trimmed.substring(0, hashIndex).trim() : trimmed;
+  const content = hashIndex >= 0 ? trimmed.substring(0, hashIndex).trim() : trimmed;
 
   if (!content) {
     return { type: 'comment', originalLine: line };

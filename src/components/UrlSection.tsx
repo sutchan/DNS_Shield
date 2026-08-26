@@ -8,7 +8,6 @@ import { Input } from './ui/Input';
 import { Badge } from './ui/Badge';
 import { Translation } from '../types';
 import { useT } from '../context/AppContext';
-import { config } from '../config';
 
 interface UrlSectionProps {
   isCollapsed: boolean;

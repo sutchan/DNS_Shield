@@ -44,8 +44,7 @@ export function buildBlockedRules(
 
 /** 自定义 DNS 的 9 格式规则（dnsmasq/hosts/adguard/pihole/smartdns 生效） */
 export function buildCustomDnsRules(
-  customDns: CustomDnsEntry[],
-  settings: Settings
+  customDns: CustomDnsEntry[]
 ): Contents {
   const out = emptyContents();
   customDns.forEach((item) => {

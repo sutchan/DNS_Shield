@@ -2,6 +2,7 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 import { Globe, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './ui/Button';
@@ -51,12 +52,13 @@ const Header: React.FC<HeaderProps> = ({
         <div className="header-brand" id="header-brand">
           {/* 品牌图标：统一引用品牌单一来源 /logo.svg（与 brand/logo.svg 同源） */}
           <div className="brand-icon" aria-hidden="true">
-            <img
+            <Image
               src="/logo.svg"
               alt="DNS Shield"
               className="h-6 w-6"
               width={24}
               height={24}
+              unoptimized
             />
           </div>
           <div>

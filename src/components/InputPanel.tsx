@@ -23,7 +23,6 @@ interface InputPanelProps {
   syncScroll: () => void;
   clearAll: () => void;
   sortDomains: () => void;
-  parseSource: () => void;
   generateRules: () => void;
   dedupeDomains: () => void;
   loadPreset: (preset: string) => void;
@@ -50,7 +49,6 @@ const InputPanel: React.FC<InputPanelProps> = ({
   syncScroll,
   clearAll,
   sortDomains,
-  parseSource,
   generateRules,
   dedupeDomains,
   loadPreset,

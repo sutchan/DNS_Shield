@@ -19,7 +19,6 @@ interface OutputPanelProps {
   parsedData: ParsedData;
   outputPreviewRef: React.RefObject<HTMLDivElement>;
   outputLineNumbersRef: React.RefObject<HTMLDivElement>;
-  toggleSection: (section: string) => void;
   setFormat: (format: FormatType) => void;
   generateRules: () => void;
   downloadOutput: () => void;
@@ -41,7 +40,6 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   parsedData,
   outputPreviewRef,
   outputLineNumbersRef,
-  toggleSection,
   setFormat,
   generateRules,
   downloadOutput,
@@ -200,5 +198,6 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
     </section>
   );
 });
+OutputPanel.displayName = 'OutputPanel';
 
 export default OutputPanel;
