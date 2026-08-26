@@ -1,9 +1,0 @@
-chore: 修复 pnpm 构建脚本配置并同步版本至 v3.9.9
-
-- pnpm-workspace.yaml 的 allowBuilds 启用 esbuild/unrs-resolver 构建脚本，
-  修复 pnpm 11 默认安全策略下 next/vitest 因 esbuild 未构建而不可用
-- 移除 .npmrc/.package.json 中 pnpm 11 已不读取的无效配置
-- 同步 pnpm-lock.yaml（补齐 v3.9.7 新增的 only-allow 依赖）
-- 同步全局版本展示位至 v3.9.9
-
-Bumps v3.9.8 → v3.9.9
