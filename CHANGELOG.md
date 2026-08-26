@@ -5,6 +5,14 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.7] - 2026-08-26
+
+### Changed（pnpm 迁移与强制约束）
+- 新增 `.npmrc`：`engine-strict=true` 与 `package-manager-strict=true`
+- `package.json` 增加 `packageManager: pnpm@11.24.0`、`engines.pnpm: >=9`、`preinstall: npx only-allow pnpm`、`devDependencies.only-allow`
+- `.gitignore` 追加 `*.err`；删除非项目文档 `CODE_REVIEW.md`
+- 同步全局版本展示位至 v3.9.7；修正原型 `prototype.html` 头注释/标题版本滞后（v3.9.2 → v3.9.7）
+
 ## [3.9.6] - 2026-08-26
 
 ### Fixed

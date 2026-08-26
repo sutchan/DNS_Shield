@@ -86,3 +86,4 @@ __pycache__/
 .gitmsg.txt
 review_*.md
 CODE_REVIEW_*.md
+*.err

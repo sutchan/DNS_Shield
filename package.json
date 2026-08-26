@@ -1,9 +1,11 @@
 {
   "name": "dns-shield",
-  "version": "3.9.6",
+  "version": "3.9.7",
   "private": true,
+  "packageManager": "pnpm@11.24.0",
   "engines": {
-    "node": ">=24.11.0"
+    "node": ">=24.11.0",
+    "pnpm": ">=9"
   },
   "scripts": {
     "dev": "next dev --port 8082",
@@ -16,7 +18,8 @@
     "check:locales": "node scripts/check-locales.mjs",
     "count:domains": "node scripts/count-domains.mjs",
     "icons:gen": "node scripts/gen-icons.mjs",
-    "build:formats": "node scripts/gen-format-files.mjs"
+    "build:formats": "node scripts/gen-format-files.mjs",
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -48,6 +51,7 @@
     "tailwindcss": "^3.4.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5",
-    "vitest": "^2.1.9"
+    "vitest": "^2.1.9",
+    "only-allow": "^1.1.1"
   }
 }
