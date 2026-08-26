@@ -1,11 +1,11 @@
 {
   "name": "dns-shield",
-  "version": "3.9.9",
+  "version": "3.9.11",
   "private": true,
   "packageManager": "pnpm@11.24.0",
   "engines": {
     "node": ">=24.11.0",
-    "pnpm": ">=9"
+    "pnpm": ">=11"
   },
   "scripts": {
     "dev": "next dev --port 8082",

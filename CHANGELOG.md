@@ -5,6 +5,18 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.11] - 2026-08-26
+
+### Fixed（CI pnpm 版本冲突）
+- 移除 ci.yml 中 `pnpm/action-setup@v4` 硬编码的 `version: '9'`，改由 `package.json` 的 `packageManager`（pnpm@11.24.0）统一驱动，消除 `ERR_PNPM_BAD_PM_VERSION` 多重版本冲突
+- `engines.pnpm` 由 `>=9` 对齐为 `>=11`，与 packageManager 声明一致
+
+## [3.9.10] - 2026-08-26
+
+### Chore（部署/构建配置）
+- 新增 `edgeone.json`：将 EdgeOne Makers 安装命令从默认的 `npm install` 覆盖为 `pnpm install --config.dangerouslyAllowAllBuilds=true`，修复 EO CI 因 `only-allow pnpm` 拦截 `npm install` 导致构建失败，并放行 esbuild 等构建脚本
+- 同步全局版本展示位至 v3.9.10
+
 ## [3.9.9] - 2026-08-26
 
 ### Chore（构建/依赖配置）
