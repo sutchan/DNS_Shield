@@ -16,7 +16,7 @@
 | 应用版本 | v3.10.2 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 145 键、递归合计 207 键 | 脚本统计 `zh-cn.json`（`check:locales` 输出为递归口径 207） |
-| 测试套件 / 用例 | **13 套件 / 95 用例**（全通过） | `vitest run` |
+| 测试套件 / 用例 | **13 套件 / 85 用例**（全通过） | `vitest run`（权威计数） |
 | 覆盖率门禁 | 已生效（报告值 47.85%，真实约 95%+） | `vitest run --coverage` |
 | 组件规模 | 顶层 12 个 + `ui/` 12 个 | `src/components/` |
 | 源文件 >200 行 | 0 个（T-P1-04 已完成拆分） | 行数扫描 |

@@ -24,7 +24,7 @@ export function useHomeController() {
 
   // 显示提示（useCallback 稳定引用，避免下游 hook 依赖链抖动触发重渲染）
   const showToast = useCallback((key: string, params?: Record<string, string | number>) => {
-    const toastMessages = t.toast as Record<string, string>;
+    const toastMessages = t.toast as unknown as Record<string, string>;
     let message = toastMessages[key] || key;
     // 缺翻译键时告警，便于发现漏翻（不影响功能，回退显示原始 key）
     if (!toastMessages[key]) {

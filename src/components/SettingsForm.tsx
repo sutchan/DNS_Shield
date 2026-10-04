@@ -66,6 +66,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, t
             />
           </div>
         </div>
+        </div>
         {/* 输出规则类型分组（对齐原型 fmtGroup） */}
         <div className="settings-group" id="settings-group-format">
           <h3 className="settings-group-title" id="settings-group-format-title">{t.fmtGroup}</h3>
