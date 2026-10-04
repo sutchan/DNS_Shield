@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "Sluiten",
-  "invalidCount": "Ongeldig"
+  "invalidCount": "Ongeldig",
+  "ruleTesterTitle": "Domeinregel Tester",
+  "ruleTesterDesc": "Test of een domein overeenkomt met de zwarte lijst, witte lijst of aangepaste DNS",
+  "ruleTesterInputPlaceholder": "Voer een testdomein in, bijv. ad.doubleclick.net",
+  "ruleTesterBtn": "Test Overeenkomst",
+  "ruleTesterActionBlocked": "Geblokkeerd",
+  "ruleTesterActionWhitelisted": "Toegestaan (Whitelist)",
+  "ruleTesterActionCustomDns": "Aangepaste DNS",
+  "ruleTesterActionPassed": "Doorgelaten",
+  "ruleTesterMatchedRuleLabel": "Overeenkomende Regel",
+  "ruleTesterTargetIpLabel": "Doel IP",
+  "routerScriptTitle": "Router Synchronisatiescript",
+  "routerScriptDesc": "Genereer geautomatiseerd Shell-script voor routers",
+  "routerScriptTargetLabel": "Doel Firmware",
+  "routerScriptCopyBtn": "Kopieer Script",
+  "routerScriptCopied": "Routerscript gekopieerd naar klembord"
 }

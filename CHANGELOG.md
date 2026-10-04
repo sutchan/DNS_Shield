@@ -5,6 +5,21 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.9.12]
+
+### Added（功能增强与覆盖率治理）
+- 新增 `src/utils/ruleMatcher.ts`：支持域名/URL层级规则匹配测试引擎（白名单 > 自定义DNS > 黑名单 > 直连放行），支持通配符与子域名泛匹配
+- 新增 `src/components/RuleTesterModal.tsx`：可视化域名规则匹配测试弹窗，支持实时输入待测域名快速返回命中规则与解析行为
+- 新增 `src/utils/scriptGenerator.ts`：支持 OpenWrt、Merlin、Padavan、SmartDNS、Pi-hole 自动化定时更新与重载 Shell 脚本生成
+- 新增 `src/components/ScriptGeneratorModal.tsx`：路由器固件同步脚本一键生成与复制弹窗
+- 新增 `src/utils/logger.ts`：生产环境安全日志门禁工具，避免敏感调试信息外泄
+- 配置 `@vitest/coverage-v8` 自动化代码覆盖率阈值监控，核心工具与生成器单元测试覆盖率达到 91.9%+（语句 91.9%，分支 87.16%，函数 92.68%）
+- 补全 16 种国际化语言对应新功能翻译字典，并通过 `check:locales` 一致性校验
+
+### Fixed（稳定性与钩子修复）
+- 修复 `src/hooks/useRules.ts` 中 `computeEffectiveStats` 读取 stale settings 导致导出统计与实际输出不一致的缺陷
+- 修复 `src/utils/statsAggregator.ts` 统计聚合与流式图池单元测试用例
+
 ## [3.9.11] - 2026-08-26
 
 ### Fixed（CI pnpm 版本冲突）

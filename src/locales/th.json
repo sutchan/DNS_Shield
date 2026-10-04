@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "ปิด",
-  "invalidCount": "ไม่ถูกต้อง"
+  "invalidCount": "ไม่ถูกต้อง",
+  "ruleTesterTitle": "เครื่องมือทดสอบกฎโดเมน",
+  "ruleTesterDesc": "ทดสอบว่าโดเมนตรงกับบัญชีดำ บัญชีขาว หรือ DNS ที่กำหนดเองหรือไม่",
+  "ruleTesterInputPlaceholder": "ป้อนโดเมนทดสอบ เช่น ad.doubleclick.net",
+  "ruleTesterBtn": "ทดสอบการจับคู่",
+  "ruleTesterActionBlocked": "ถูกบล็อก",
+  "ruleTesterActionWhitelisted": "อนุญาต (Whitelist)",
+  "ruleTesterActionCustomDns": "DNS ที่กำหนดเอง",
+  "ruleTesterActionPassed": "ผ่าน",
+  "ruleTesterMatchedRuleLabel": "กฎที่ตรงกัน",
+  "ruleTesterTargetIpLabel": "IP ปลายทาง",
+  "routerScriptTitle": "สคริปต์ซิงค์เราเตอร์",
+  "routerScriptDesc": "สร้างสคริปต์ Shell สำหรับอัปเดตเราเตอร์อัตโนมัติ",
+  "routerScriptTargetLabel": "เฟิร์มแวร์เป้าหมาย",
+  "routerScriptCopyBtn": "คัดลอกสคริปต์",
+  "routerScriptCopied": "คัดลอกสคริปต์เราเตอร์ไปยังคลิปบอร์ดแล้ว"
 }

@@ -189,5 +189,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "Close",
-  "invalidCount": "Invalid"
+  "invalidCount": "Invalid",
+  "ruleTesterTitle": "Rule Match Tester",
+  "ruleTesterDesc": "Test whether a domain matches current blacklist, whitelist, or custom DNS rules in real-time",
+  "ruleTesterInputPlaceholder": "Enter domain to test, e.g. ad.doubleclick.net or https://...",
+  "ruleTesterBtn": "Test Match",
+  "ruleTesterActionBlocked": "Blocked (Blacklist)",
+  "ruleTesterActionWhitelisted": "Allowed (Whitelist)",
+  "ruleTesterActionCustomDns": "Redirected (Custom DNS)",
+  "ruleTesterActionPassed": "Passed (No Match)",
+  "ruleTesterMatchedRuleLabel": "Matched Rule",
+  "ruleTesterTargetIpLabel": "Target IP",
+  "routerScriptTitle": "Router Sync Script",
+  "routerScriptDesc": "Generate automated shell sync and reload scripts for router firmware",
+  "routerScriptTargetLabel": "Target Firmware",
+  "routerScriptCopyBtn": "Copy Script",
+  "routerScriptCopied": "Router sync script copied to clipboard"
 }

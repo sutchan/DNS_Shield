@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.9.11
+// src/hooks/useRules.ts v3.9.12
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateRules as generateRulesUtil, computeEffectiveStats } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
@@ -55,7 +55,7 @@ export const useRules = (
     setOutputContent(newOutputContent);
     // 同步「生效后的实际统计」到 UI：与本次生成的变换（去通配/去重/白名单剔除）完全一致，
     // 修复统计数字与实际导出结果不符的问题（#2）
-    onEffectiveStats?.(computeEffectiveStats(freshData.data, settings));
+    onEffectiveStats?.(computeEffectiveStats(freshData.data, settingsRef.current));
     // 同步解析结果回 parsedData/stats，确保统计与合并信息立即反映本次生成内容
     // （消除防抖延迟造成的"规则已生成但白名单计数仍为 0"的失效观感）
     syncParsedData(sourceInput);

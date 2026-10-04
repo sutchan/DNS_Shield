@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "बंद करें",
-  "invalidCount": "अमान्य"
+  "invalidCount": "अमान्य",
+  "ruleTesterTitle": "डोमेन नियम परीक्षक",
+  "ruleTesterDesc": "जांचें कि क्या कोई डोमेन वर्तमान ब्लैकलिस्ट या श्वेतसूची नियमों से मेल खाता है",
+  "ruleTesterInputPlaceholder": "परीक्षण के लिए डोमेन दर्ज करें, जैसे ad.doubleclick.net",
+  "ruleTesterBtn": "परीक्षण करें",
+  "ruleTesterActionBlocked": "अवरुद्ध",
+  "ruleTesterActionWhitelisted": "अनुमत",
+  "ruleTesterActionCustomDns": "कस्टम DNS",
+  "ruleTesterActionPassed": "पारित",
+  "ruleTesterMatchedRuleLabel": "मिलान नियम",
+  "ruleTesterTargetIpLabel": "लक्ष्य IP",
+  "routerScriptTitle": "राउटर सिंक स्क्रिप्ट",
+  "routerScriptDesc": "राउटर के लिए स्वचालित शेल स्क्रिप्ट तैयार करें",
+  "routerScriptTargetLabel": "लक्ष्य फर्मवेयर",
+  "routerScriptCopyBtn": "स्क्रिप्ट कॉपी करें",
+  "routerScriptCopied": "राउटर स्क्रिप्ट क्लिपबोर्ड पर कॉपी की गई"
 }

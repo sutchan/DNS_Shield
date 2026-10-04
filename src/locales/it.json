@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "Chiudi",
-  "invalidCount": "Non valido"
+  "invalidCount": "Non valido",
+  "ruleTesterTitle": "Tester Regole Dominio",
+  "ruleTesterDesc": "Verifica se un dominio corrisponde a blacklist, whitelist o DNS personalizzato",
+  "ruleTesterInputPlaceholder": "Inserisci il dominio di prova, es. ad.doubleclick.net",
+  "ruleTesterBtn": "Testa Corrispondenza",
+  "ruleTesterActionBlocked": "Bloccato",
+  "ruleTesterActionWhitelisted": "Consentito (Whitelist)",
+  "ruleTesterActionCustomDns": "DNS Personalizzato",
+  "ruleTesterActionPassed": "Superato",
+  "ruleTesterMatchedRuleLabel": "Regola Corrispondente",
+  "ruleTesterTargetIpLabel": "IP Destinazione",
+  "routerScriptTitle": "Script di Sincronizzazione Router",
+  "routerScriptDesc": "Genera script Shell per aggiornamento automatico e riavvio router",
+  "routerScriptTargetLabel": "Firmware Target",
+  "routerScriptCopyBtn": "Copia Script",
+  "routerScriptCopied": "Script del router copiato negli appunti"
 }

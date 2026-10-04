@@ -1,6 +1,7 @@
 # 任务清单
 
-> 最后审查：2026-08-23（与 package.json v3.8.8 对齐）
+> 最后审查：2026-09-14（与 package.json v3.9.11 对齐）
+> 详细剩余开发任务规划请参见：[REMAINING_TASKS.md](./REMAINING_TASKS.md)
 
 ## 日常维护
 

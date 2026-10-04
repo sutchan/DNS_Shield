@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "Kapat",
-  "invalidCount": "Geçersiz"
+  "invalidCount": "Geçersiz",
+  "ruleTesterTitle": "Alan Adı Kural Testi",
+  "ruleTesterDesc": "Bir alan adının kara liste, beyaz liste veya özel DNS kurallarıyla eşleşip eşleşmediğini test edin",
+  "ruleTesterInputPlaceholder": "Test edilecek alan adını girin, örn. ad.doubleclick.net",
+  "ruleTesterBtn": "Eşleşmeyi Test Et",
+  "ruleTesterActionBlocked": "Engellendi",
+  "ruleTesterActionWhitelisted": "İzin Verildi (Beyaz Liste)",
+  "ruleTesterActionCustomDns": "Özel DNS",
+  "ruleTesterActionPassed": "Geçti",
+  "ruleTesterMatchedRuleLabel": "Eşleşen Kural",
+  "ruleTesterTargetIpLabel": "Hedef IP",
+  "routerScriptTitle": "Yönlendirici Senkronizasyon Komut Dosyası",
+  "routerScriptDesc": "Yönlendiriciler için otomatik kabuk komut dosyası oluşturun",
+  "routerScriptTargetLabel": "Hedef Donanım Yazılımı",
+  "routerScriptCopyBtn": "Komut Dosyasını Kopyala",
+  "routerScriptCopied": "Yönlendirici komut dosyası panoya kopyalandı"
 }

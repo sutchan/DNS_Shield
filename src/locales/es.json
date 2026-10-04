@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "Cerrar",
-  "invalidCount": "Inválido"
+  "invalidCount": "Inválido",
+  "ruleTesterTitle": "Probador de Reglas de Dominio",
+  "ruleTesterDesc": "Prueba si un dominio coincide con las reglas de lista negra, lista blanca o DNS personalizado",
+  "ruleTesterInputPlaceholder": "Ingresa un dominio para probar, ej. ad.doubleclick.net",
+  "ruleTesterBtn": "Probar Coincidencia",
+  "ruleTesterActionBlocked": "Bloqueado",
+  "ruleTesterActionWhitelisted": "Permitido (Lista Blanca)",
+  "ruleTesterActionCustomDns": "DNS Personalizado",
+  "ruleTesterActionPassed": "Permitido (Sin Coincidencia)",
+  "ruleTesterMatchedRuleLabel": "Regla Coincidente",
+  "ruleTesterTargetIpLabel": "IP Destino",
+  "routerScriptTitle": "Script de Sincronización de Router",
+  "routerScriptDesc": "Generar script Shell automático para actualizar y reiniciar routers",
+  "routerScriptTargetLabel": "Firmware Destino",
+  "routerScriptCopyBtn": "Copiar Script",
+  "routerScriptCopied": "Script copiado al portapapeles"
 }

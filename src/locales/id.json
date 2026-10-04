@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "Tutup",
-  "invalidCount": "Tidak valid"
+  "invalidCount": "Tidak valid",
+  "ruleTesterTitle": "Penguji Aturan Domain",
+  "ruleTesterDesc": "Uji apakah domain cocok dengan daftar blokir, daftar putih, atau DNS kustom",
+  "ruleTesterInputPlaceholder": "Masukkan domain uji, mis. ad.doubleclick.net",
+  "ruleTesterBtn": "Uji Pencocokan",
+  "ruleTesterActionBlocked": "Diblokir",
+  "ruleTesterActionWhitelisted": "Diizinkan",
+  "ruleTesterActionCustomDns": "DNS Kustom",
+  "ruleTesterActionPassed": "Lolos",
+  "ruleTesterMatchedRuleLabel": "Aturan yang Cocok",
+  "ruleTesterTargetIpLabel": "IP Target",
+  "routerScriptTitle": "Skrip Sinkronisasi Router",
+  "routerScriptDesc": "Buat skrip Shell otomatis untuk memperbarui dan memuat ulang router",
+  "routerScriptTargetLabel": "Firmware Target",
+  "routerScriptCopyBtn": "Salin Skrip",
+  "routerScriptCopied": "Skrip router disalin ke papan klip"
 }

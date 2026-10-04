@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "關閉",
-  "invalidCount": "無效行"
+  "invalidCount": "無效行",
+  "ruleTesterTitle": "網域名稱規則測試",
+  "ruleTesterDesc": "即時測試特定網域是否命中當前黑名單、白名單或自訂 DNS 規則",
+  "ruleTesterInputPlaceholder": "輸入測試網域，如 ad.doubleclick.net 或 https://...",
+  "ruleTesterBtn": "測試匹配",
+  "ruleTesterActionBlocked": "攔截 (Blacklist)",
+  "ruleTesterActionWhitelisted": "白名單豁免 (Whitelist)",
+  "ruleTesterActionCustomDns": "自訂解析 (Custom DNS)",
+  "ruleTesterActionPassed": "直連放行 (Pass)",
+  "ruleTesterMatchedRuleLabel": "命中規則",
+  "ruleTesterTargetIpLabel": "目標 IP",
+  "routerScriptTitle": "路由器同步腳本",
+  "routerScriptDesc": "產生適用於各類路由器的全自動定時更新與重啟 Shell 腳本",
+  "routerScriptTargetLabel": "目標系統",
+  "routerScriptCopyBtn": "複製腳本",
+  "routerScriptCopied": "路由器更新腳本已複製至剪貼簿"
 }

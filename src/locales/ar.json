@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "إغلاق",
-  "invalidCount": "غير صالح"
+  "invalidCount": "غير صالح",
+  "ruleTesterTitle": "فاحص قواعد النطاق",
+  "ruleTesterDesc": "اختبر ما إذا كان النطاق يطابق القائمة السوداء أو البيضاء أو DNS المخصص",
+  "ruleTesterInputPlaceholder": "أدخل النطاق للاختبار، مثل ad.doubleclick.net",
+  "ruleTesterBtn": "اختبار المطابقة",
+  "ruleTesterActionBlocked": "محظور (القائمة السوداء)",
+  "ruleTesterActionWhitelisted": "مسموح (القائمة البيضاء)",
+  "ruleTesterActionCustomDns": "DNS مخصص",
+  "ruleTesterActionPassed": "تم التمرير",
+  "ruleTesterMatchedRuleLabel": "القاعدة المطابقة",
+  "ruleTesterTargetIpLabel": "IP المستهدف",
+  "routerScriptTitle": "نص مزامنة الموجه",
+  "routerScriptDesc": "توليد نصوص شل للتحديث التلقائي للموجهات",
+  "routerScriptTargetLabel": "النظام المستهدف",
+  "routerScriptCopyBtn": "نسخ النص",
+  "routerScriptCopied": "تم نسخ نص المزامنة إلى الحافظة"
 }

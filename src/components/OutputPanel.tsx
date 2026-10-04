@@ -1,9 +1,11 @@
-// src/components/OutputPanel.tsx v3.9.11
+// src/components/OutputPanel.tsx v3.9.12
 'use client';
 import * as React from 'react';
-import { Sparkles, Download, Copy, Settings } from 'lucide-react';
+import { Sparkles, Download, Copy, Settings, SearchCheck, Terminal } from 'lucide-react';
 import { Button } from './ui/Button';
 import SettingsPanel from './SettingsPanel';
+import RuleTesterModal from './RuleTesterModal';
+import ScriptGeneratorModal from './ScriptGeneratorModal';
 import { FormatTabs, PreviewStats } from './OutputPanel.parts';
 import { Settings as SettingsType, FormatType, OutputContent, ParsedData } from '../types';
 import { ALL_FORMATS, CORE_FORMATS } from '../types/formats';
@@ -28,6 +30,7 @@ interface OutputPanelProps {
   setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
+  showToast?: (key: string) => void;
 }
 
 const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
@@ -49,11 +52,13 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   setSettings,
   theme,
   toggleTheme,
+  showToast = () => {},
 }) => {
   const t = useT();
+  const [isRuleTesterOpen, setIsRuleTesterOpen] = React.useState(false);
+  const [isScriptGenOpen, setIsScriptGenOpen] = React.useState(false);
 
   // 可见格式列表：结合 showAllFormats（全部/核心）与 visibleFormats（逐格式显示/隐藏开关）。
-  // 对齐原型「输出规则类型」9 个独立开关：visibleFormats 非空时仅保留其中声明的格式。
   const visibleFormats = React.useMemo<FormatType[]>(() => {
     const base = settings.showAllFormats ? ALL_FORMATS : CORE_FORMATS;
     const filtered = settings.visibleFormats.length > 0
@@ -92,13 +97,35 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
             <h2 id="output-title">{t.outputTitle}</h2>
           </div>
-          <div className="output-toolbar" id="output-toolbar">
+          <div className="output-toolbar flex items-center gap-1.5" id="output-toolbar">
             <FormatTabs
               currentFormat={currentFormat}
               visibleFormats={visibleFormats}
               formatLabel={formatLabel}
               onFormatChange={setFormat}
             />
+            <Button
+              type="button"
+              variant={'outline' as const}
+              size={'icon' as const}
+              onClick={() => setIsRuleTesterOpen(true)}
+              title={t.ruleTesterTitle}
+              id="rule-tester-toggle-btn"
+              aria-label={t.ruleTesterTitle}
+            >
+              <SearchCheck className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+            </Button>
+            <Button
+              type="button"
+              variant={'outline' as const}
+              size={'icon' as const}
+              onClick={() => setIsScriptGenOpen(true)}
+              title={t.routerScriptTitle}
+              id="router-script-toggle-btn"
+              aria-label={t.routerScriptTitle}
+            >
+              <Terminal className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+            </Button>
             <Button
               type="button"
               variant={'outline' as const}
@@ -123,6 +150,20 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
           toggleTheme={toggleTheme}
           updateSettings={updateSettings}
           setSettings={setSettings}
+        />
+
+        {/* 规则测试器弹窗 */}
+        <RuleTesterModal
+          open={isRuleTesterOpen}
+          onClose={() => setIsRuleTesterOpen(false)}
+          parsedData={parsedData}
+        />
+
+        {/* 路由器同步脚本弹窗 */}
+        <ScriptGeneratorModal
+          open={isScriptGenOpen}
+          onClose={() => setIsScriptGenOpen(false)}
+          showToast={showToast}
         />
 
         {/* Merge Info */}
@@ -160,11 +201,6 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
               role="tabpanel"
               aria-label={t.outputFormatAria.replace('{format}', currentFormat)}
             >
-              {/* 安全约束：outputContent 由 useRules 经 generateRulesUtil 生成，
-                  其来源（sourceInput 域名、customDns 的 IP、设置项）均已在
-                  parser.ts / domainValidator.ts / rulesGenerator.ts 中严格清洗与校验，
-                  此处作为 React 文本节点渲染（非 dangerouslySetInnerHTML），不存在 XSS 面。
-                  如后续放开任意文本注入，必须先经 sanitize 处理。 */}
               {outputContent[currentFormat]}
             </div>
           ) : (

@@ -189,5 +189,20 @@
   "step2d": "dnsmasq / hosts / AdGuard…",
   "step3t": "导出部署",
   "step3d": "复制到路由器或 DNS 服务",
-  "invalidCount": "无效行"
+  "invalidCount": "无效行",
+  "ruleTesterTitle": "域名规则测试",
+  "ruleTesterDesc": "实时测试特定域名是否命中当前黑名单、白名单或自定义 DNS 规则",
+  "ruleTesterInputPlaceholder": "输入测试域名，如 ad.doubleclick.net 或 https://...",
+  "ruleTesterBtn": "测试匹配",
+  "ruleTesterActionBlocked": "拦截 (Blacklist)",
+  "ruleTesterActionWhitelisted": "白名单豁免 (Whitelist)",
+  "ruleTesterActionCustomDns": "自定义解析 (Custom DNS)",
+  "ruleTesterActionPassed": "直连放行 (Pass)",
+  "ruleTesterMatchedRuleLabel": "命中规则",
+  "ruleTesterTargetIpLabel": "目标 IP",
+  "routerScriptTitle": "路由器同步脚本",
+  "routerScriptDesc": "生成适用于各类路由器的全自动定时更新与重启 Shell 脚本",
+  "routerScriptTargetLabel": "目标系统",
+  "routerScriptCopyBtn": "复制脚本",
+  "routerScriptCopied": "路由器更新脚本已复制到剪贴板"
 }

@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "Закрыть",
-  "invalidCount": "Недействительные"
+  "invalidCount": "Недействительные",
+  "ruleTesterTitle": "Тестер правил доменов",
+  "ruleTesterDesc": "Проверьте, соответствует ли домен черному списку, белому списку или пользовательскому DNS",
+  "ruleTesterInputPlaceholder": "Введите домен для проверки, например ad.doubleclick.net",
+  "ruleTesterBtn": "Проверить совпадение",
+  "ruleTesterActionBlocked": "Заблокировано",
+  "ruleTesterActionWhitelisted": "Разрешено (Белый список)",
+  "ruleTesterActionCustomDns": "Пользовательский DNS",
+  "ruleTesterActionPassed": "Пропущено",
+  "ruleTesterMatchedRuleLabel": "Совпавшее правило",
+  "ruleTesterTargetIpLabel": "Целевой IP",
+  "routerScriptTitle": "Скрипт синхронизации маршрутизатора",
+  "routerScriptDesc": "Генерация Shell-скрипта для автоматического обновления маршрутизатора",
+  "routerScriptTargetLabel": "Целевая прошивка",
+  "routerScriptCopyBtn": "Копировать скрипт",
+  "routerScriptCopied": "Скрипт маршрутизатора скопирован в буфер обмена"
 }

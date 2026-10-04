@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "Đóng",
-  "invalidCount": "Không hợp lệ"
+  "invalidCount": "Không hợp lệ",
+  "ruleTesterTitle": "Kiểm tra quy tắc tên miền",
+  "ruleTesterDesc": "Kiểm tra xem tên miền có khớp với danh sách đen, danh sách trắng hoặc DNS tùy chỉnh hay không",
+  "ruleTesterInputPlaceholder": "Nhập tên miền cần kiểm tra, ví dụ ad.doubleclick.net",
+  "ruleTesterBtn": "Kiểm tra khớp",
+  "ruleTesterActionBlocked": "Bị chặn",
+  "ruleTesterActionWhitelisted": "Được phép (Whitelist)",
+  "ruleTesterActionCustomDns": "DNS tùy chỉnh",
+  "ruleTesterActionPassed": "Bỏ qua",
+  "ruleTesterMatchedRuleLabel": "Quy tắc khớp",
+  "ruleTesterTargetIpLabel": "IP mục tiêu",
+  "routerScriptTitle": "Tập lệnh đồng bộ hóa bộ định tuyến",
+  "routerScriptDesc": "Tạo tập lệnh Shell tự động cập nhật và tải lại cho bộ định tuyến",
+  "routerScriptTargetLabel": "Phần mềm mục tiêu",
+  "routerScriptCopyBtn": "Sao chép tập lệnh",
+  "routerScriptCopied": "Đã sao chép tập lệnh bộ định tuyến vào khay nhớ tạm"
 }

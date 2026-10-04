@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "Zavřít",
-  "invalidCount": "Neplatné"
+  "invalidCount": "Neplatné",
+  "ruleTesterTitle": "Testování pravidel domén",
+  "ruleTesterDesc": "Otestujte, zda doména odpovídá černé listině, bílé listině nebo vlastnímu DNS",
+  "ruleTesterInputPlaceholder": "Zadejte testovací doménu, např. ad.doubleclick.net",
+  "ruleTesterBtn": "Testovat shodu",
+  "ruleTesterActionBlocked": "Blokováno",
+  "ruleTesterActionWhitelisted": "Povoleno",
+  "ruleTesterActionCustomDns": "Vlastní DNS",
+  "ruleTesterActionPassed": "Prošlo",
+  "ruleTesterMatchedRuleLabel": "Odpovídající pravidlo",
+  "ruleTesterTargetIpLabel": "Cílová IP",
+  "routerScriptTitle": "Synchronizační skript routeru",
+  "routerScriptDesc": "Generovat automatický skript aktualizace pro routery",
+  "routerScriptTargetLabel": "Cílový systém",
+  "routerScriptCopyBtn": "Kopírovat skript",
+  "routerScriptCopied": "Skript routeru byl zkopírován do schránky"
 }

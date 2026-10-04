@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "Zamknij",
-  "invalidCount": "Nieprawidłowe"
+  "invalidCount": "Nieprawidłowe",
+  "ruleTesterTitle": "Tester Reguł Domen",
+  "ruleTesterDesc": "Sprawdź, czy domena pasuje do czarnej listy, białej listy lub niestandardowego DNS",
+  "ruleTesterInputPlaceholder": "Wpisz domenę do testu, np. ad.doubleclick.net",
+  "ruleTesterBtn": "Testuj Dopasowanie",
+  "ruleTesterActionBlocked": "Zablokowane",
+  "ruleTesterActionWhitelisted": "Dozwolone (Biała lista)",
+  "ruleTesterActionCustomDns": "Niestandardowy DNS",
+  "ruleTesterActionPassed": "Przepuszczone",
+  "ruleTesterMatchedRuleLabel": "Dopasowana Reguła",
+  "ruleTesterTargetIpLabel": "Docelowy IP",
+  "routerScriptTitle": "Skrypt Synchronizacji Routera",
+  "routerScriptDesc": "Generuj automatyczny skrypt powłoki dla routerów",
+  "routerScriptTargetLabel": "Docelowe Oprogramowanie",
+  "routerScriptCopyBtn": "Kopiuj Skrypt",
+  "routerScriptCopied": "Skrypt routera skopiowany do schowka"
 }

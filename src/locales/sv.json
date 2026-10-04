@@ -188,5 +188,20 @@
   "step3t": "Export",
   "step3d": "Copy to router or DNS service",
   "closeBtn": "Stäng",
-  "invalidCount": "Ogiltiga"
+  "invalidCount": "Ogiltiga",
+  "ruleTesterTitle": "Domänregeltestare",
+  "ruleTesterDesc": "Testa om en domän matchar svartlista, vitlista eller anpassad DNS",
+  "ruleTesterInputPlaceholder": "Ange testdomän, t.ex. ad.doubleclick.net",
+  "ruleTesterBtn": "Testa Matchning",
+  "ruleTesterActionBlocked": "Blockerad",
+  "ruleTesterActionWhitelisted": "Tillåten (Vitlista)",
+  "ruleTesterActionCustomDns": "Anpassad DNS",
+  "ruleTesterActionPassed": "Passerad",
+  "ruleTesterMatchedRuleLabel": "Matchad Regel",
+  "ruleTesterTargetIpLabel": "Mål-IP",
+  "routerScriptTitle": "Routersynkroniseringsskript",
+  "routerScriptDesc": "Generera automatiskt Shell-skript för routrar",
+  "routerScriptTargetLabel": "Målsystem",
+  "routerScriptCopyBtn": "Kopiera Skript",
+  "routerScriptCopied": "Routerskript kopierat till urklipp"
 }

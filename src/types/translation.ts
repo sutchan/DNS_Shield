@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.9.3
+// src/types/translation.ts v3.9.12
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 export interface Translation {
   subtitle: string;
@@ -199,4 +199,20 @@ export interface Translation {
   deployAdguardPihole: string;
   deployUnboundBindSmartdns: string;
   close: string;
+  // 规则匹配测试与路由器脚本
+  ruleTesterTitle: string;
+  ruleTesterDesc: string;
+  ruleTesterInputPlaceholder: string;
+  ruleTesterBtn: string;
+  ruleTesterActionBlocked: string;
+  ruleTesterActionWhitelisted: string;
+  ruleTesterActionCustomDns: string;
+  ruleTesterActionPassed: string;
+  ruleTesterMatchedRuleLabel: string;
+  ruleTesterTargetIpLabel: string;
+  routerScriptTitle: string;
+  routerScriptDesc: string;
+  routerScriptTargetLabel: string;
+  routerScriptCopyBtn: string;
+  routerScriptCopied: string;
 }

@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.9.11
+// src/app/Home.tsx v3.9.12
 'use client';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './globals.css';
@@ -209,6 +209,7 @@ export default function Home() {
             setSettings={setSettings}
             theme={theme}
             toggleTheme={toggleTheme}
+            showToast={showToast}
           />
         </main>
 
