@@ -1,13 +1,22 @@
-// src/utils/parser.ts v3.9.0
+// src/utils/parser.ts v3.11.0
 import { parseDomainLine, ParseStats } from './domainValidator';
 import { CustomDnsEntry, ParsedData } from '../types';
+
+// 进度回调触发间隔：每 N 行上报一次，避免高频回调拖慢解析（Worker 内 postMessage 有开销）
+const PROGRESS_INTERVAL = 2000;
 
 // 排序 / 去重职责抽离到 sortDedupe，保持公开 API 稳定
 export { sortDomains, dedupeDomains } from './sortDedupe';
 
-// 解析源文本（hosts / dnsmasq / adguard / 无限界文本），输出结构化数据
-export const parseSource = (text: string): { data: ParsedData; stats: ParseStats } => {
+// 解析源文本（hosts / dnsmasq / adguard / 无限界文本），输出结构化数据。
+// onProgress 为可选进度回调（供 Web Worker 分片上报解析进度）；
+// 不传该参数时行为与此前完全一致，向后兼容。
+export const parseSource = (
+  text: string,
+  onProgress?: (processed: number, total: number) => void
+): { data: ParsedData; stats: ParseStats } => {
   const lines = text.split('\n');
+  const total = lines.length;
 
   const domains: string[] = [];
   const whitelist: string[] = [];
@@ -15,7 +24,12 @@ export const parseSource = (text: string): { data: ParsedData; stats: ParseStats
   let commentCount = 0;
   let invalidCount = 0;
 
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i++) {
+    // 在各 continue 分支之前统一上报进度，确保跳过的行也被计入
+    if (onProgress && (i + 1) % PROGRESS_INTERVAL === 0) {
+      onProgress(i + 1, total);
+    }
+    const line = lines[i];
     const parsed = parseDomainLine(line);
 
     if (parsed.type === 'empty') {

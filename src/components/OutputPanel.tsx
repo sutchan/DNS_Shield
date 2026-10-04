@@ -1,9 +1,10 @@
-// src/components/OutputPanel.tsx v3.10.2
+// src/components/OutputPanel.tsx v3.11.0
 // 输出面板：编排格式切换 / 设置弹窗 / 规则测试 / 路由器脚本 / 预览 / 操作按钮。
 // 纯展示子组件与派生逻辑已抽离至 OutputPanel.parts.tsx 以保持主文件 ≤200 行。
 'use client';
 import * as React from 'react';
 import SettingsPanel from './SettingsPanel';
+import { OutputPreview } from './OutputPreview';
 import RuleTesterModal from './RuleTesterModal';
 import ScriptGeneratorModal from './ScriptGeneratorModal';
 import {
@@ -143,20 +144,17 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
           t={{ psFormat: t.psFormat, psLines: t.psLines, psDomains: t.psDomains, psFormats: t.psFormats }}
         />
 
-        {/* Output Preview */}
+        {/* Output Preview（超长文本启用虚拟渲染，见 OutputPreview） */}
         <div className="editor-wrapper" id="output-preview-area">
           <div className="line-numbers" id="outputLineNumbers" ref={outputLineNumbersRef} aria-hidden="true"></div>
           {outputContent[currentFormat] ? (
-            <div
-              className="editor-preview"
-              id="outputPreview"
+            <OutputPreview
+              content={outputContent[currentFormat]}
+              scrollRef={outputPreviewRef}
               onScroll={syncOutputScroll}
-              ref={outputPreviewRef}
-              role="tabpanel"
-              aria-label={t.outputFormatAria.replace('{format}', currentFormat)}
-            >
-              {outputContent[currentFormat]}
-            </div>
+              id="outputPreview"
+              ariaLabel={t.outputFormatAria.replace('{format}', currentFormat)}
+            />
           ) : (
             <div
               className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground"

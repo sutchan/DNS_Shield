@@ -32,6 +32,9 @@ interface InputPanelProps {
   fetchAllUrls: () => void;
   setUrls: (urls: string[]) => void;
   isLoading: boolean;
+  /** Worker 处理进度（大文本解析/排序/去重进行中非空） */
+  progress: { processed: number; total: number; elapsed: number | null } | null;
+  isProcessing: boolean;
 }
 
 const InputPanel: React.FC<InputPanelProps> = ({
@@ -58,8 +61,16 @@ const InputPanel: React.FC<InputPanelProps> = ({
   fetchAllUrls,
   setUrls,
   isLoading,
+  progress,
+  isProcessing,
 }) => {
   const t = useT();
+  // Worker 处理进度百分比与耗时文案（仅大文本任务会上报进度）
+  const percent =
+    progress && progress.total > 0
+      ? Math.min(100, Math.round((progress.processed / progress.total) * 100))
+      : 0;
+  const elapsedLabel = progress?.elapsed != null ? ` · ${progress.elapsed}ms` : '';
   // 统计项与彩色圆点语义映射，对齐原型 .input-panel 的 .stat-dot（block/allow/dns）
   const statItems = [
     { key: 'blacklistCount' as const, labelKey: 'blacklistCount' as keyof Translation, dot: 'block' as const },
@@ -123,6 +134,24 @@ const InputPanel: React.FC<InputPanelProps> = ({
           </Badge>
         ))}
       </div>
+
+      {/* Worker 处理进度：仅在处理大文本时出现 */}
+      {isProcessing && (
+        <div className="process-progress" id="process-progress" role="status" aria-live="polite">
+          <div
+            className="process-progress-track"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={percent}
+          >
+            <div className="process-progress-bar" style={{ width: `${percent}%` }} />
+          </div>
+          <span className="process-progress-text">
+            {String(t.toast.loading)} {percent}%{elapsedLabel}
+          </span>
+        </div>
+      )}
 
       {/* 域名编辑器（提取为子组件） */}
       <InputEditor

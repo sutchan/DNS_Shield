@@ -5,6 +5,17 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.10.3]
+
+### Refactor（GA4 衡量 ID 环境变量化）
+- 移除 `src/app/layout.tsx` 中硬编码的兜底衡量 ID（`G-XXXX...`），衡量 ID **仅**从环境变量 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 读取，源码不再写入任何真实 ID
+- 新增 `src/utils/analytics.ts`：衡量 ID 归一化（去空白 + 大写）、格式校验（`G-` 前缀 + 4~32 位大写字母数字）、`missing`/`invalid` 降级判定、gtag 加载地址与初始化片段生成（ID 经 `JSON.stringify` 转义，防注入）
+- 新增 `src/app/(seo)/ga-scripts.tsx`：从 `layout.tsx` 拆出 gtag 注入，环境变量缺失或格式非法时返回 `null`，不渲染任何统计脚本（分析功能在正确配置下行为不变）
+- 环境变量须以字面量 `process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID` 引用以保证 Next.js 构建期内联；未启用情形输出开发期诊断日志（生产环境由 `logger` 静默），诊断信息不回显原始值
+- 新增 `.env.example` 模板（含 GA 与预设源变量），并在 `.gitignore` 中放行 `!.env.example`
+- 新增 `src/utils/analytics.test.ts`（13 例）：缺失/空白、UA- 前缀等非法值、大小写与空白归一化、环境变量读取、脚本注入转义
+- 同步文档：README / README.en / DEPLOYMENT / SPEC.md / tasks.md 中的衡量 ID 说明与版本展示位；全局版本展示位升至 v3.10.3
+
 ## [3.10.2]
 
 ### Chore（移除 Docker 部署）

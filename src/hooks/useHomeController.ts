@@ -51,6 +51,8 @@ export function useHomeController() {
     handleSourceInput,
     setSourceInput,
     parseSourceData,
+    progress,
+    isProcessing,
   } = useDomainData(showToast);
 
   // 设置管理
@@ -152,6 +154,8 @@ export function useHomeController() {
     handleSourceInput,
     setSourceInput,
     parseSourceData,
+    progress,
+    isProcessing,
     showToast,
     settings,
     setSettings,

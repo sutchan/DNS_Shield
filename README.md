@@ -4,7 +4,7 @@
 
 # DNS Shield - 路由器广告过滤工具
 
-[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.10.2-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.10.3-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告和保护隐私。既支持从统一域名数据源**生成**多种格式规则，也支持将已有清单在**不同格式间互相转换**。
 
@@ -204,7 +204,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
 | 自动保存间隔 | `useDomainData` 内部 | 默认 30 秒 |
 | 远程拉取超时 | `domainFetch.ts` | 远端 URL 拉取超时与体积上限 |
 | 构建版本号 | `next.config.js` → `env.version` | 注入运行时的应用版本 |
-| 隐私统计 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID，留空则不启用统计；CSP 已放通 gtag 域名 |
+| 隐私统计 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（构建期由环境变量注入，源码不硬编码）；留空或格式非法（须形如 `G-XXXXXXXXXX`）时不注入任何统计脚本；CSP 已放通 gtag 域名 |
 
 ## SEO 与元数据
 
@@ -270,7 +270,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.10.2
+当前版本：v3.10.3
 
 ## 更新日志
 

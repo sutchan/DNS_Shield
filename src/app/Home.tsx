@@ -57,6 +57,8 @@ export default function Home() {
             fetchAllUrls={c.fetchAllUrls}
             setUrls={c.setUrls}
             isLoading={c.isLoading}
+            progress={c.progress}
+            isProcessing={c.isProcessing}
           />
 
           <OutputPanel

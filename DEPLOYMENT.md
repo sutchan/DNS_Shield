@@ -2,7 +2,7 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
-> 当前版本：v3.10.2
+> 当前版本：v3.10.3
 
 ## 部署环境
 
@@ -193,7 +193,7 @@ CI 采用「并行 job + 聚合门禁」结构：`lint`、`typecheck`、`test`�
 | `VERCEL_ORG_ID` | Vercel 组织 ID | 同上 |
 | `VERCEL_PROJECT_ID` | Vercel 项目 ID | 同上 |
 | `EDGEONE_API_TOKEN` | EdgeOne Pages API Token | EdgeOne job 跳过 |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 衡量 ID（构建期内联） | 留空则前端不启用统计 |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 衡量 ID（构建期内联，源码不硬编码） | 留空或格式非法则不注入统计脚本 |
 
 ### 3. 需要配置的 Variables（部署开关）
 
@@ -257,7 +257,7 @@ git add public && git commit -m "chore: 同步生成规则文件至 v3.10.1"
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
 | `NEXT_PUBLIC_APP_VERSION` | 应用版本（同时由 `src/config/version.ts` APP_VERSION 与 `next.config.js` env.version 提供） | 3.10.1 |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（留空则不启用统计） | 空 |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（须形如 `G-XXXXXXXXXX`；留空或格式非法则不启用统计，详见 `.env.example`） | 空 |
 
 ### 2. Next.js 配置
 

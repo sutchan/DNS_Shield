@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-08-26（与 package.json v3.10.1 对齐）
+> 最后审查：2026-10-04（与 package.json v3.10.3 对齐）
 
 ## 1. 项目概述
 
@@ -13,7 +13,7 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.10.1 |
+| 当前版本 | v3.10.3 |
 | 拦截域名 | 525 (本地) / 6766+ (含预设源) |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -62,6 +62,9 @@ dns-shield/
 │   │   ├── Home.tsx                # 主组件（组合各业务组件与 hook）
 │   │   ├── globals.css             # 全局样式（CSS 变量 + Tailwind + 业务组件）
 │   │   ├── layout.tsx              # 根布局（Metadata + SEO + 安全头部接入）
+│   │   ├── (seo)/                  # <head> 注入类关注点（元数据、GA 脚本）
+│   │   │   ├── site-meta.ts        # 站点元数据与 JSON-LD 常量
+│   │   │   └── ga-scripts.tsx      # GA4 脚本注入（衡量 ID 取自环境变量，缺失/非法则不注入）
 │   │   ├── robots.ts               # 自动生成 robots.txt（含 sitemap 索引）
 │   │   └── sitemap.ts              # 自动生成 sitemap.xml
 │   ├── components/                 # 业务组件
@@ -108,6 +111,7 @@ dns-shield/
 │   ├── types/
 │   │   └── index.ts                # TypeScript 类型定义
 │   └── utils/                      # 工具函数
+│       ├── analytics.ts            # GA4 衡量 ID 读取/校验与 gtag 片段生成（纯逻辑）
 │       ├── domainValidator.ts      # 域名验证与行解析
 │       ├── domainFetch.ts          # 远程域名列表拉取（超时/兜底/体积上限）
 │       ├── parser.ts               # 域名解析器（行级解析、提取域名）
@@ -171,7 +175,7 @@ dns-shield/
 | 格式转换 | 粘贴任意格式清单，自动解析为统一域名条目结构后再输出为目标格式，实现不同格式互转 |
 | 自动保存 | 每 30 秒自动保存到 localStorage |
 | 自动恢复 | 页面加载时恢复未保存内容 |
-| 隐私统计 | 可选接入 Google Analytics 4（衡量 ID 经 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 注入，留空不启用；CSP 已放通 gtag 域名） |
+| 隐私统计 | 可选接入 Google Analytics 4（衡量 ID 仅从环境变量 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 注入，源码不硬编码；须形如 `G-XXXXXXXXXX`，留空或格式非法则不注入统计脚本并输出开发期诊断日志；CSP 已放通 gtag 域名） |
 
 ### 4.2 输出功能
 
@@ -194,7 +198,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.10.1 |
+| 版本号 | 3.10.3 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

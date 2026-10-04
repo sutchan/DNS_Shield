@@ -4,19 +4,19 @@
 > 所有新增、变更、完成任务必须更新本文件；项目内其他位置（README、SPEC、CHECKLIST、CHANGELOG、原型等）**不得另建任务清单**。
 > 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-10-04 19:17（与 package.json v3.10.2 对齐，代码实况核验）
+> 最后审查：2026-10-04 19:40（与 package.json v3.10.3 对齐，代码实况核验）
 > 维护团队：Sut / ArcesTeam
 >
-> **本次更新（2026-10-04 19:17）**：① 进度核验：T-P1-04 经代码实查确认已完成（4 个拆分文件均 ≤200 行）；② **修正计数口径错误**：未完成任务实为 **7 项**（原文误写 6 项）；③ **重排优先级与状态**：T-P4-01（升级 Vitest 3.x）由 P4 提升至 **P2**（风险低、收益明确，可根治覆盖率统计异常并回归真实阈值），并给出全量实施顺序；④ 数据型数字脚本实算复核：测试 **13 套件 / 85 用例**、输出格式 **12 种**、顶层组件 **13** 个（原文 12 有误）、`ts/tsx` 超 200 行文件 **0** 个。
+> **本次更新（2026-10-04 19:40）**：GA4 衡量 ID 改为纯环境变量注入（新增 `src/utils/analytics.ts` 校验/降级逻辑 + `src/app/(seo)/ga-scripts.tsx` 注入组件，移除源码硬编码 ID），数据型数字随之实算更新：测试 **14 套件 / 98 用例**（新增 `analytics.test.ts` 13 例）、应用版本 **v3.10.3**。上一轮（19:17）核验结论：T-P1-04 已完成、未完成任务 7 项、输出格式 12 种、顶层组件 13 个、`ts/tsx` 超 200 行文件 0 个。
 
 ---
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.10.2 | `package.json` version（权威源） |
+| 应用版本 | v3.10.3 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 145 键、递归合计 207 键 | 脚本统计 `zh-cn.json`（`check:locales` 输出为递归口径 207） |
-| 测试套件 / 用例 | **13 套件 / 85 用例**（全通过） | `vitest run`（权威计数） |
+| 测试套件 / 用例 | **14 套件 / 98 用例**（全通过） | `vitest run`（权威计数） |
 | 覆盖率门禁 | 已生效（报告值 47.85%，真实约 95%+） | `vitest run --coverage` |
 | 组件规模 | 顶层 **13** 个 + `ui/` 12 个 | `src/components/` 统计 `.tsx` |
 | 源文件 >200 行 | `ts/tsx` **0** 个（T-P1-04 已完成）；`globals.css` 951 行属全局样式表，按代码拆分口径不计入 | 行数扫描 |
@@ -128,6 +128,7 @@
 - [x] **T-P3-03: 定时自动抓取与上游规则聚合 GitHub Action** — `.github/workflows/aggregate.yml`（每周一 03:17 UTC）+ `scripts/aggregate-upstream.mjs`，聚合 AdGuard / EasyList / NeoHosts / StevenBlack / YousList，去重合并后自动发起 PR 供人工审核
 - [x] **任务文档合并（2026-10-04）** — 原 `TASKS.md` 与 `REMAINING_TASKS.md` 合并为本文件，删除冗余文档，消除剩余任务数口径矛盾
 - [x] **T-P1-04: 拆分超 200 行源文件（2026-10-04，v3.10.2）** — 按职责拆分 4 个超行文件且公开 API 不变：`translation.ts`→`translation.parts.ts`（嵌套子类型）、`Home.tsx`→`useHomeController` 钩子、`SettingsPanel.tsx`→`useModalA11y`+`SettingsForm`、`OutputPanel.tsx`→`OutputPanel.parts.tsx` 增 `formatLabel`/`useVisibleFormats`/`OutputToolbar`/`OutputActions`；拆分后单文件均 ≤200 行
+- [x] **GA4 衡量 ID 环境变量化（2026-10-04，v3.10.3）** — 移除 `layout.tsx` 中硬编码的兜底衡量 ID，改为仅从 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 读取；新增 `src/utils/analytics.ts`（格式校验 + 缺失/非法降级 + gtag 片段生成）与 `src/app/(seo)/ga-scripts.tsx`（`<head>` 注入，非法则不渲染），补 `.env.example` 与 `analytics.test.ts`（13 例）
 
 ### 历史开发任务（已归档）
 

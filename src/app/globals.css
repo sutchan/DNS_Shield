@@ -255,6 +255,23 @@
   @apply flex flex-wrap gap-2 mb-5;
 }
 
+/* Worker 处理进度条：仅大文本解析/排序/去重进行时出现 */
+.process-progress {
+  @apply flex items-center gap-3 mb-3;
+}
+
+.process-progress-track {
+  @apply relative flex-1 h-1.5 rounded-full bg-muted overflow-hidden;
+}
+
+.process-progress-bar {
+  @apply h-full rounded-full bg-primary transition-[width] duration-200;
+}
+
+.process-progress-text {
+  @apply text-xs text-muted-foreground tabular-nums whitespace-nowrap;
+}
+
 .stat-item {
   @apply flex flex-col items-center gap-0.5 px-2 py-2.5 rounded-xl bg-muted/60 text-center;
 }
@@ -375,6 +392,30 @@
 }
 
 /* Output preview (div-based, no resize, allow scroll) */
+/* 虚拟化预览：仅渲染可视区切片，容器保持总高度以维持滚动条比例 */
+.editor-preview.is-virtualized {
+  white-space: pre;
+}
+
+.preview-virtual {
+  position: relative;
+  width: 100%;
+}
+
+.preview-virtual-rows {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  will-change: transform;
+}
+
+.preview-line {
+  line-height: 1.5rem;
+  min-height: 1.5rem;
+  white-space: pre;
+}
+
 .editor-preview {
   /* 与输入区一致固定 20 行高度（504px），内容超出内部滚动，避免面板忽高忽低。
      容器已固定 h-[504px]，此处 h-full 保证与左侧输入框严格等高对齐 */

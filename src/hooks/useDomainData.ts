@@ -1,18 +1,13 @@
 // src/hooks/useDomainData.ts v3.11.0
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
 import { fetchWithCache } from '../utils/cachedFetch';
 import { generateLineNumbers } from './useLineNumbers';
 import { ParsedData, Stats } from '../types';
 import { config } from '../config';
 import { logger } from '../utils/logger';
-import {
-  isValidAutosave,
-  readAutosave,
-  readAutosaveTime,
-  writeAutosave,
-  clearAutosave
-} from './autosaveStorage';
+import { isValidAutosave, writeAutosave, clearAutosave } from './autosaveStorage';
+import { useAsyncRuleProcessing } from './useAsyncRuleProcessing';
+import { useAutosave } from './useAutosave';
 
 export const useDomainData = (showToast: (key: string, params?: { [key: string]: string | number }) => void) => {
   const [sourceInput, setSourceInput] = useState('');
@@ -32,6 +27,9 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     invalidCount: 0
   });
   const [isLoading, setIsLoading] = useState(false);
+  // 规则处理：超过阈值的解析/排序/去重移交 Web Worker，避免阻塞主线程
+  const { processParse, processSort, processDedupe, progress, isProcessing } =
+    useAsyncRuleProcessing();
 
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const showToastRef = useRef(showToast);
@@ -42,19 +40,22 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   // 覆盖用户本地草稿（否则异步返回的远端数据会覆盖刚恢复的 autosave）。
   const autosaveRestoredRef = useRef(false);
 
+  // 大文本经 Web Worker 解析，小文本走主线程同步路径（阈值见 useAsyncRuleProcessing）
   const parseSourceData = useCallback((text?: string) => {
-    try {
-      // 优先使用显式传入的文本；否则读取 ref 中的最新输入，避免闭包依赖 sourceInput
-      // （否则 parseSourceData 随 sourceInput 重建会触发 loadDomainData effect 反复执行并覆盖清空）
-      const input = text ?? sourceInputRef.current;
-      const { data, stats: newStats } = parseSource(input);
-      setParsedData(data);
-      setStats(newStats);
-    } catch (error) {
-      logger.error('Error parsing source:', error);
-      showToastRef.current('parseFailed');
-    }
-  }, []);
+    // 优先使用显式传入的文本；否则读取 ref 中的最新输入，避免闭包依赖 sourceInput
+    const input = text ?? sourceInputRef.current;
+    void processParse(input)
+      .then((outcome) => {
+        // outcome 为 null 表示结果已过期或 Worker 不可用，丢弃即可
+        if (!outcome) return;
+        setParsedData(outcome.data);
+        setStats(outcome.stats);
+      })
+      .catch((error) => {
+        logger.error('Error parsing source:', error);
+        showToastRef.current('parseFailed');
+      });
+  }, [processParse]);
 
   const loadLocalDomains = useCallback(async (text: string) => {
     if (!isValidAutosave(text)) {
@@ -102,42 +103,15 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     loadDomainData();
   }, [loadDomainData]);
 
-  // 恢复自动保存内容（仅在挂载时执行一次，避免清空后又被覆盖）
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    if (autosaveRestoredRef.current) return; // 严格单次守卫（StrictMode 双调用亦只执行一次）
-    // 异步读取（IndexedDB 优先，localStorage 降级）：schema 校验拒绝脏数据/超长内容
-    void (async () => {
-      const autosave = await readAutosave();
-      // 远端加载可能已填充内容，此时不让本地草稿覆盖
-      if (!autosave || sourceInputRef.current.trim()) {
-        return;
-      }
-      setSourceInput(autosave);
-      parseSourceData(autosave);
-      generateLineNumbers(autosave, lineNumbersRef);
-      autosaveRestoredRef.current = true;
-      const autoSaveTime = await readAutosaveTime();
-      if (autoSaveTime) {
-        const timeAgo = Math.floor((Date.now() - autoSaveTime) / 60000);
-        if (timeAgo > 0) {
-          showToastRef.current('autosaveRestored', { time: timeAgo });
-        }
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // 自动保存定时器（仅创建一次，通过 ref 读取最新输入）
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const autoSaveInterval = setInterval(() => {
-      if (sourceInputRef.current.trim()) {
-        void writeAutosave(sourceInputRef.current);
-      }
-    }, 30000);
-    return () => clearInterval(autoSaveInterval);
-  }, []);
+  // 自动保存编排：草稿恢复 + 定时持久化（已抽离至 useAutosave）
+  useAutosave({
+    sourceInputRef,
+    setSourceInput,
+    parseSourceData,
+    lineNumbersRef,
+    showToastRef,
+    restoredRef: autosaveRestoredRef
+  });
 
   // 防抖解析：用户停止输入 300ms 后再解析，避免频繁计算
   useEffect(() => {
@@ -157,18 +131,22 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   }, []);
 
   const sortDomains = useCallback(() => {
-    const sortedContent = sortDomainsUtil(sourceInput);
-    setSourceInput(sortedContent);
-    parseSourceData(sortedContent);
-    showToastRef.current('domainsSorted');
-  }, [sourceInput, parseSourceData]);
+    void processSort(sourceInputRef.current).then((sorted) => {
+      if (sorted === null) return;
+      setSourceInput(sorted);
+      parseSourceData(sorted);
+      showToastRef.current('domainsSorted');
+    });
+  }, [processSort, parseSourceData]);
 
   const dedupeDomains = useCallback(() => {
-    const { content, removedCount } = dedupeDomainsUtil(sourceInput);
-    setSourceInput(content);
-    parseSourceData(content);
-    showToastRef.current('duplicatesRemoved', { count: removedCount });
-  }, [sourceInput, parseSourceData]);
+    void processDedupe(sourceInputRef.current).then((result) => {
+      if (!result) return;
+      setSourceInput(result.content);
+      parseSourceData(result.content);
+      showToastRef.current('duplicatesRemoved', { count: result.removedCount });
+    });
+  }, [processDedupe, parseSourceData]);
 
   const saveDomains = useCallback(() => {
     if (sourceInputRef.current.trim()) {
@@ -195,6 +173,9 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     dedupeDomains,
     saveDomains,
     handleSourceInput,
-    setSourceInput
+    setSourceInput,
+    // Worker 处理状态：供 UI 展示进度条与耗时
+    progress,
+    isProcessing
   };
 };
