@@ -69,6 +69,27 @@ export const HEADER_CONFIGS: Record<FormatType, HeaderConfig> = {
     description: 'header.smartdnsDescription',
     usage: 'header.smartdnsUsage',
   },
+  mosdns: {
+    commentChar: '#',
+    separator: '=====================================',
+    title: 'header.mosdnsTitle',
+    description: 'header.mosdnsDescription',
+    usage: 'header.mosdnsUsage',
+  },
+  clash: {
+    commentChar: '#',
+    separator: '=====================================',
+    title: 'header.clashTitle',
+    description: 'header.clashDescription',
+    usage: 'header.clashUsage',
+  },
+  coredns: {
+    commentChar: '#',
+    separator: '=====================================',
+    title: 'header.corednsTitle',
+    description: 'header.corednsDescription',
+    usage: 'header.corednsUsage',
+  },
   // 白名单为独立导出，复用 hosts 头部样式（# 注释）。
   whitelist: {
     commentChar: '#',

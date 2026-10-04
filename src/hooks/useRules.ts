@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.9.12
+// src/hooks/useRules.ts v3.10.0
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { generateRules as generateRulesUtil, computeEffectiveStats } from '../utils/rulesGenerator';
 import { parseSource } from '../utils/parser';
@@ -24,7 +24,10 @@ export const useRules = (
     pihole: '',
     domains: '',
     bind: '',
-    smartdns: ''
+    smartdns: '',
+    mosdns: '',
+    clash: '',
+    coredns: ''
   });
   const [currentFormat, setCurrentFormat] = useState<FormatType>('dnsmasq');
   
@@ -95,7 +98,10 @@ export const useRules = (
       pihole: 'piholeFilename',
       domains: 'domainsFilename',
       bind: 'bindFilename',
-      smartdns: 'smartdnsFilename'
+      smartdns: 'smartdnsFilename',
+      mosdns: 'mosdnsFilename',
+      clash: 'clashFilename',
+      coredns: 'corednsFilename'
     };
     const filename = settings[filenameMap[currentFormat]] as string;
     downloadOutputUtil(content, filename);

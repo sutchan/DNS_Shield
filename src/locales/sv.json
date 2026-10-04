@@ -106,7 +106,16 @@
     "bindUsage": "Användning: ladda som RPZ-zonfil (type master, file rpz.db)",
     "smartdnsTitle": "SmartDNS blocklist",
     "smartdnsDescription": "SmartDNS address /domain/# blockeringsregler",
-    "smartdnsUsage": "Användning: lägg till i slutet av smartdns.conf"
+    "smartdnsUsage": "Användning: lägg till i slutet av smartdns.conf",
+    "mosdnsTitle": "Mosdns domain-set blocklist",
+    "mosdnsDescription": "Mosdns domain-set blocking rules (domain: matches domain and subdomains)",
+    "mosdnsUsage": "Usage: Include in Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS rules",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject rules",
+    "clashUsage": "Usage: Append to Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts blocklist",
+    "corednsDescription": "CoreDNS hosts-plugin 0.0.0.0 domain list",
+    "corednsUsage": "Usage: Load via CoreDNS hosts plugin"
   },
   "whitelist": {
     "title": "Vitlista (tillåt dessa domäner)",
@@ -203,5 +212,8 @@
   "routerScriptDesc": "Generera automatiskt Shell-skript för routrar",
   "routerScriptTargetLabel": "Målsystem",
   "routerScriptCopyBtn": "Kopiera Skript",
-  "routerScriptCopied": "Routerskript kopierat till urklipp"
+  "routerScriptCopied": "Routerskript kopierat till urklipp",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

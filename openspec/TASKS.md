@@ -1,7 +1,8 @@
 # 任务清单
 
-> 最后审查：2026-09-14（与 package.json v3.9.11 对齐）
+> 最后审查：2026-10-04（与 package.json v3.10.0 对齐）
 > 详细剩余开发任务规划请参见：[REMAINING_TASKS.md](./REMAINING_TASKS.md)
+> 本次更新（2026-10-04）：完成 T-P2-03（新增 Mosdns/Clash Meta/CoreDNS 三种导出格式）与 T-P3-03（定时聚合上游的 GitHub Action），版本升至 v3.10.0。剩余 5 项（T-P1-01/02/03、T-P2-01、T-P3-02）仍待实现。
 
 ## 日常维护
 

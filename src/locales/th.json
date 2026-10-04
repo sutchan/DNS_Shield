@@ -106,7 +106,16 @@
     "bindUsage": "วิธีใช้: โหลดเป็นไฟล์โซน RPZ (type master, file rpz.db)",
     "smartdnsTitle": "รายการบล็อก SmartDNS",
     "smartdnsDescription": "กฎการบล็อก address /domain/# ของ SmartDNS",
-    "smartdnsUsage": "วิธีใช้: เพิ่มไปที่ท้าย smartdns.conf"
+    "smartdnsUsage": "วิธีใช้: เพิ่มไปที่ท้าย smartdns.conf",
+    "mosdnsTitle": "Mosdns domain-set blocklist",
+    "mosdnsDescription": "Mosdns domain-set blocking rules (domain: matches domain and subdomains)",
+    "mosdnsUsage": "Usage: Include in Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS rules",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject rules",
+    "clashUsage": "Usage: Append to Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts blocklist",
+    "corednsDescription": "CoreDNS hosts-plugin 0.0.0.0 domain list",
+    "corednsUsage": "Usage: Load via CoreDNS hosts plugin"
   },
   "whitelist": {
     "title": "รายการขาว (อนุญาตโดเมนเหล่านี้)",
@@ -203,5 +212,8 @@
   "routerScriptDesc": "สร้างสคริปต์ Shell สำหรับอัปเดตเราเตอร์อัตโนมัติ",
   "routerScriptTargetLabel": "เฟิร์มแวร์เป้าหมาย",
   "routerScriptCopyBtn": "คัดลอกสคริปต์",
-  "routerScriptCopied": "คัดลอกสคริปต์เราเตอร์ไปยังคลิปบอร์ดแล้ว"
+  "routerScriptCopied": "คัดลอกสคริปต์เราเตอร์ไปยังคลิปบอร์ดแล้ว",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

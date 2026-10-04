@@ -106,7 +106,16 @@
     "bindUsage": "Gebruik: laad als RPZ-zonebestand (type master, file rpz.db)",
     "smartdnsTitle": "SmartDNS blokkeringslijst",
     "smartdnsDescription": "SmartDNS address /domain/# blokeringsregels",
-    "smartdnsUsage": "Gebruik: voeg toe aan het einde van smartdns.conf"
+    "smartdnsUsage": "Gebruik: voeg toe aan het einde van smartdns.conf",
+    "mosdnsTitle": "Mosdns domain-set blocklist",
+    "mosdnsDescription": "Mosdns domain-set blocking rules (domain: matches domain and subdomains)",
+    "mosdnsUsage": "Usage: Include in Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS rules",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject rules",
+    "clashUsage": "Usage: Append to Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts blocklist",
+    "corednsDescription": "CoreDNS hosts-plugin 0.0.0.0 domain list",
+    "corednsUsage": "Usage: Load via CoreDNS hosts plugin"
   },
   "whitelist": {
     "title": "Whitelist (toestaan van deze domeinen)",
@@ -203,5 +212,8 @@
   "routerScriptDesc": "Genereer geautomatiseerd Shell-script voor routers",
   "routerScriptTargetLabel": "Doel Firmware",
   "routerScriptCopyBtn": "Kopieer Script",
-  "routerScriptCopied": "Routerscript gekopieerd naar klembord"
+  "routerScriptCopied": "Routerscript gekopieerd naar klembord",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

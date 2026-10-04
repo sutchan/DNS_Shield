@@ -106,7 +106,16 @@
     "bindUsage": "Uso: cárgala como archivo de zona RPZ (type master, file rpz.db)",
     "smartdnsTitle": "Lista de bloqueo SmartDNS",
     "smartdnsDescription": "Reglas de bloqueo address /domain/# de SmartDNS",
-    "smartdnsUsage": "Uso: añade al final de smartdns.conf"
+    "smartdnsUsage": "Uso: añade al final de smartdns.conf",
+    "mosdnsTitle": "Mosdns domain-set blocklist",
+    "mosdnsDescription": "Mosdns domain-set blocking rules (domain: matches domain and subdomains)",
+    "mosdnsUsage": "Usage: Include in Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS rules",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject rules",
+    "clashUsage": "Usage: Append to Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts blocklist",
+    "corednsDescription": "CoreDNS hosts-plugin 0.0.0.0 domain list",
+    "corednsUsage": "Usage: Load via CoreDNS hosts plugin"
   },
   "whitelist": {
     "title": "Lista blanca (permitir estos dominios)",
@@ -203,5 +212,8 @@
   "routerScriptDesc": "Generar script Shell automático para actualizar y reiniciar routers",
   "routerScriptTargetLabel": "Firmware Destino",
   "routerScriptCopyBtn": "Copiar Script",
-  "routerScriptCopied": "Script copiado al portapapeles"
+  "routerScriptCopied": "Script copiado al portapapeles",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

@@ -106,7 +106,16 @@
     "bindUsage": "Cara pakai: muat sebagai file zona RPZ (type master, file rpz.db)",
     "smartdnsTitle": "Daftar pemblokiran SmartDNS",
     "smartdnsDescription": "Aturan pemblokiran address /domain/# SmartDNS",
-    "smartdnsUsage": "Cara pakai: tambahkan di akhir smartdns.conf"
+    "smartdnsUsage": "Cara pakai: tambahkan di akhir smartdns.conf",
+    "mosdnsTitle": "Mosdns domain-set blocklist",
+    "mosdnsDescription": "Mosdns domain-set blocking rules (domain: matches domain and subdomains)",
+    "mosdnsUsage": "Usage: Include in Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS rules",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject rules",
+    "clashUsage": "Usage: Append to Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts blocklist",
+    "corednsDescription": "CoreDNS hosts-plugin 0.0.0.0 domain list",
+    "corednsUsage": "Usage: Load via CoreDNS hosts plugin"
   },
   "whitelist": {
     "title": "Daftar Putih (izinkan domain ini)",
@@ -203,5 +212,8 @@
   "routerScriptDesc": "Buat skrip Shell otomatis untuk memperbarui dan memuat ulang router",
   "routerScriptTargetLabel": "Firmware Target",
   "routerScriptCopyBtn": "Salin Skrip",
-  "routerScriptCopied": "Skrip router disalin ke papan klip"
+  "routerScriptCopied": "Skrip router disalin ke papan klip",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

@@ -2,7 +2,7 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
-> 当前版本：v3.9.11
+> 当前版本：v3.10.0
 
 ## 部署环境
 
@@ -315,7 +315,7 @@ docker run -d --name dns-shield -p 3000:3000 \
 ### 6. 已知问题：规则文件漂移
 
 `public/*.txt|conf|db` 由 `scripts/gen-format-files.mjs` 从 `public/domains.txt` 生成，文件头带版本号与生成日期。
-当前仓库内这些文件停留在 **v3.8.8 / 630 个域名**，而实际数据已是 **867 条（黑名单 635 + 白名单 232）**、`package.json` 版本为 3.9.11。
+当前仓库内这些文件停留在 **v3.8.8 / 630 个域名**，而实际数据已是 **867 条（黑名单 635 + 白名单 232）**、`package.json` 版本为 3.10.0。
 
 因此 CI 中的漂移检测目前是**软门禁**（`continue-on-error`），只在工作流 Summary 中提示、不阻断流水线。
 补齐方式：
@@ -323,7 +323,7 @@ docker run -d --name dns-shield -p 3000:3000 \
 ```bash
 node scripts/gen-format-files.mjs   # 重新生成
 pnpm run count-domains              # 核对计数
-git add public && git commit -m "chore: 同步生成规则文件至 v3.9.11"
+git add public && git commit -m "chore: 同步生成规则文件至 v3.10.0"
 ```
 
 同步完成后，删除 `.github/workflows/ci.yml` 中 `Detect generated rule files drift` 步骤的
@@ -338,7 +338,7 @@ git add public && git commit -m "chore: 同步生成规则文件至 v3.9.11"
 | `PORT` | 服务器端口 | 3000 |
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
-| `NEXT_PUBLIC_APP_VERSION` | 应用版本（同时由 `src/config/version.ts` APP_VERSION 与 `next.config.js` env.version 提供） | 3.9.11 |
+| `NEXT_PUBLIC_APP_VERSION` | 应用版本（同时由 `src/config/version.ts` APP_VERSION 与 `next.config.js` env.version 提供） | 3.10.0 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（留空则不启用统计） | 空 |
 
 ### 2. Next.js 配置
@@ -352,7 +352,7 @@ const nextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   env: {
-    version: '3.9.11'
+    version: '3.10.0'
   },
   async headers() {
     return [

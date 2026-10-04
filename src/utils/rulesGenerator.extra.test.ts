@@ -30,6 +30,9 @@ const baseSettings: Settings = {
   domainsFilename: 'domains.txt',
   bindFilename: 'rpz.db',
   smartdnsFilename: 'smartdns.conf',
+  mosdnsFilename: 'mosdns_domain_set.txt',
+  clashFilename: 'clash_dns.yaml',
+  corednsFilename: 'coredns_hosts.txt',
 };
 
 describe('computeEffectiveStats', () => {

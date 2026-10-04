@@ -5,6 +5,16 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.10.0]
+
+### Added（新增输出格式：Mosdns / Clash Meta / CoreDNS）
+- 新增 `Mosdns` 格式：生成 `domain:域名` domain-set 拦截规则（匹配域名及其子域）
+- 新增 `Clash Meta` 格式：生成 `DOMAIN-SUFFIX,域名,reject` DNS 规则，白名单映射为 `DOMAIN-SUFFIX,域名,DIRECT`
+- 新增 `CoreDNS` 格式：生成 hosts 插件格式 `0.0.0.0 域名` 拦截规则，自定义 DNS 映射为 `IP 域名`
+- 扩展 `OutputContent` 与 `FormatType`，新增格式自动纳入 ALL_FORMATS / MASKED_FORMATS 与输出 Tab、下载/复制链路
+- 为 16 种国际化语言补齐三种新格式标签与头部文案，并通过 `check:locales` 校验
+- 新增 `scripts/aggregate-upstream.mjs` 与 `.github/workflows/aggregate.yml`：定时（每周一）聚合 AdGuard / EasyList / NeoHosts / StevenBlack / YousList 上游，合并去重后自动发起 Pull Request
+
 ## [3.9.12]
 
 ### Added（功能增强与覆盖率治理）
@@ -1241,7 +1251,9 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.8.1...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.10.0...HEAD
+[3.10.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.10.0
+[3.9.12]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.9.12
 [3.8.1]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.8.1
 [3.8.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.8.0
 [3.7.68]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.7.68

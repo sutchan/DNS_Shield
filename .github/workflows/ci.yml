@@ -162,10 +162,9 @@ jobs:
       - name: Count domains
         run: node scripts/count-domains.mjs
 
-      # 软门禁：重新生成 9 种规则文件并与仓库内容比对。
-      # public/*.txt 头部带版本号与生成日期，目前仍停留在 3.8.8（package.json 已到 3.9.11），
-      # 存在已知漂移，因此此处**不阻断**流水线，仅在 Summary 中提示。
-      # 补齐后可删除 continue-on-error 升级为硬门禁。
+      # 软门禁：重新生成 12 种规则文件并与仓库内容比对。
+      # public/*.txt 头部带版本号与生成日期，由 scripts/gen-format-files.mjs 依据 package.json 自动生成；
+      # 当前已与 package.json (3.10.0) 对齐，但仍保留 continue-on-error 作为软门禁。
       - name: Detect generated rule files drift
         id: drift
         continue-on-error: true

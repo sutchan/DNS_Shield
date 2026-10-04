@@ -24,7 +24,10 @@ const DEFAULT_SETTINGS: Settings = {
   piholeFilename: 'pihole.txt',
   domainsFilename: 'domains.txt',
   bindFilename: 'rpz.db',
-  smartdnsFilename: 'smartdns.conf'
+  smartdnsFilename: 'smartdns.conf',
+  mosdnsFilename: 'mosdns_domain_set.txt',
+  clashFilename: 'clash_dns.yaml',
+  corednsFilename: 'coredns_hosts.txt'
 };
 
 // 输入框 id -> settings key 的显式映射，避免脆弱的字符串替换。

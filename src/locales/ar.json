@@ -106,7 +106,16 @@
     "bindUsage": "الاستخدام: حمّلها كملف منطقة RPZ (type master, file rpz.db)",
     "smartdnsTitle": "قائمة حظر SmartDNS",
     "smartdnsDescription": "قواعد حظر address /domain/# في SmartDNS",
-    "smartdnsUsage": "الاستخدام: أضفها في نهاية smartdns.conf"
+    "smartdnsUsage": "الاستخدام: أضفها في نهاية smartdns.conf",
+    "mosdnsTitle": "Mosdns domain-set blocklist",
+    "mosdnsDescription": "Mosdns domain-set blocking rules (domain: matches domain and subdomains)",
+    "mosdnsUsage": "Usage: Include in Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS rules",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject rules",
+    "clashUsage": "Usage: Append to Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts blocklist",
+    "corednsDescription": "CoreDNS hosts-plugin 0.0.0.0 domain list",
+    "corednsUsage": "Usage: Load via CoreDNS hosts plugin"
   },
   "whitelist": {
     "title": "قائمة الأبيض (السماح بهذه النطاقات)",
@@ -203,5 +212,8 @@
   "routerScriptDesc": "توليد نصوص شل للتحديث التلقائي للموجهات",
   "routerScriptTargetLabel": "النظام المستهدف",
   "routerScriptCopyBtn": "نسخ النص",
-  "routerScriptCopied": "تم نسخ نص المزامنة إلى الحافظة"
+  "routerScriptCopied": "تم نسخ نص المزامنة إلى الحافظة",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

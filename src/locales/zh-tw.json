@@ -106,7 +106,16 @@
     "bindUsage": "使用方法: 作為 RPZ 區域檔案載入 (type master, file rpz.db)",
     "smartdnsTitle": "SmartDNS 廣告過濾列表",
     "smartdnsDescription": "SmartDNS 的 address /domain/# 攔截規則",
-    "smartdnsUsage": "使用方法: 追加到 smartdns.conf"
+    "smartdnsUsage": "使用方法: 追加到 smartdns.conf",
+    "mosdnsTitle": "Mosdns 網域集攔截清單",
+    "mosdnsDescription": "Mosdns domain-set 攔截規則（domain: 匹配網域及其子網域）",
+    "mosdnsUsage": "用法：包含於 Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS 規則",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject 規則",
+    "clashUsage": "用法：附加至 Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts 攔截清單",
+    "corednsDescription": "CoreDNS hosts 插件 0.0.0.0 網域清單",
+    "corednsUsage": "用法：經 CoreDNS hosts 插件載入"
   },
   "whitelist": {
     "title": "白名單 (允許這些域名)",
@@ -203,5 +212,8 @@
   "routerScriptDesc": "產生適用於各類路由器的全自動定時更新與重啟 Shell 腳本",
   "routerScriptTargetLabel": "目標系統",
   "routerScriptCopyBtn": "複製腳本",
-  "routerScriptCopied": "路由器更新腳本已複製至剪貼簿"
+  "routerScriptCopied": "路由器更新腳本已複製至剪貼簿",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

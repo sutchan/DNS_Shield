@@ -4,9 +4,9 @@
 #
 # 路由器级广告过滤响应策略区（RPZ）
 #
-# 版本:: 3.7.67
-# 更新:: 2026.08.23
-# 域名:: 630 个唯一域名
+# 版本:: 3.10.0
+# 更新:: 2026.10.04
+# 域名:: 634 个唯一域名
 # 白名单:: 232 个域名
 #
 # 项目: https://github.com/sutchan/DNS_Shield
@@ -1275,6 +1275,14 @@ zemanta.com CNAME .
 *.zemanta.com CNAME .
 zeus-api.vemarsdev.com CNAME .
 *.zeus-api.vemarsdev.com CNAME .
+cdn.ad.xiaomi.com CNAME .
+*.cdn.ad.xiaomi.com CNAME .
+gallery.pandora.xiaomi.com CNAME .
+*.gallery.pandora.xiaomi.com CNAME .
+stat.pandora.xiaomi.com CNAME .
+*.stat.pandora.xiaomi.com CNAME .
+tat.pandora.xiaomi.com CNAME .
+*.tat.pandora.xiaomi.com CNAME .
 
 # 白名单 (允许这些域名)
 # 白名单 access.speech.ai.xiaomi.com

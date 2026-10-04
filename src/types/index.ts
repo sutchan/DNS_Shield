@@ -14,6 +14,9 @@ export interface OutputContent {
   domains: string;
   bind: string;
   smartdns: string;
+  mosdns: string;
+  clash: string;
+  coredns: string;
 }
 
 export interface CustomDnsEntry {
@@ -66,6 +69,9 @@ export interface Settings {
   domainsFilename: string;
   bindFilename: string;
   smartdnsFilename: string;
+  mosdnsFilename: string;
+  clashFilename: string;
+  corednsFilename: string;
 }
 
 // Translation 已拆分至 translation.ts，统一 re-export 以保持外部契约不变。

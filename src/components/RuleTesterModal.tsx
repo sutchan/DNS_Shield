@@ -1,4 +1,4 @@
-// src/components/RuleTesterModal.tsx v3.9.12
+// src/components/RuleTesterModal.tsx v3.10.0
 // 域名拦截匹配独立测试弹窗：支持实时输入任意域名或 URL 进行规则匹配分析
 'use client';
 import * as React from 'react';

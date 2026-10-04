@@ -115,7 +115,16 @@
     "whitelist": "白名单:",
     "domainsCount": "个域名",
     "project": "项目:",
-    "demo": "演示:"
+    "demo": "演示:",
+    "mosdnsTitle": "Mosdns 域名集拦截列表",
+    "mosdnsDescription": "Mosdns domain-set 拦截规则（domain: 匹配域名及其子域）",
+    "mosdnsUsage": "用法：包含于 Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS 规则",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject 规则",
+    "clashUsage": "用法：追加到 Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts 拦截列表",
+    "corednsDescription": "CoreDNS hosts 插件 0.0.0.0 域名列表",
+    "corednsUsage": "用法：经 CoreDNS hosts 插件加载"
   },
   "whitelist": {
     "title": "白名单 (允许这些域名)",
@@ -204,5 +213,8 @@
   "routerScriptDesc": "生成适用于各类路由器的全自动定时更新与重启 Shell 脚本",
   "routerScriptTargetLabel": "目标系统",
   "routerScriptCopyBtn": "复制脚本",
-  "routerScriptCopied": "路由器更新脚本已复制到剪贴板"
+  "routerScriptCopied": "路由器更新脚本已复制到剪贴板",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

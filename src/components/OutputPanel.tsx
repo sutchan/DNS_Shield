@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.9.12
+// src/components/OutputPanel.tsx v3.10.0
 'use client';
 import * as React from 'react';
 import { Sparkles, Download, Copy, Settings, SearchCheck, Terminal } from 'lucide-react';
@@ -84,6 +84,9 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
     domains: t.domainsFormat ?? t.hostsFormat,
     bind: t.bindFormat ?? t.hostsFormat,
     smartdns: t.smartdnsFormat ?? t.hostsFormat,
+    mosdns: t.mosdnsFormat ?? t.hostsFormat,
+    clash: t.clashFormat ?? t.hostsFormat,
+    coredns: t.corednsFormat ?? t.hostsFormat,
   };
 
   const ruleLines = outputContent[currentFormat] ? outputContent[currentFormat].split('\n').length : 0;

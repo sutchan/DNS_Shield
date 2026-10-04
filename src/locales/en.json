@@ -110,7 +110,16 @@
     "whitelist": "Whitelist:",
     "domainsCount": "domains",
     "project": "Project:",
-    "demo": "Demo:"
+    "demo": "Demo:",
+    "mosdnsTitle": "Mosdns domain-set blocklist",
+    "mosdnsDescription": "Mosdns domain-set blocking rules (domain: matches domain and subdomains)",
+    "mosdnsUsage": "Usage: Include in Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS rules",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject rules",
+    "clashUsage": "Usage: Append to Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts blocklist",
+    "corednsDescription": "CoreDNS hosts-plugin 0.0.0.0 domain list",
+    "corednsUsage": "Usage: Load via CoreDNS hosts plugin"
   },
   "whitelist": {
     "title": "Whitelist (allow these domains)",
@@ -204,5 +213,8 @@
   "routerScriptDesc": "Generate automated shell sync and reload scripts for router firmware",
   "routerScriptTargetLabel": "Target Firmware",
   "routerScriptCopyBtn": "Copy Script",
-  "routerScriptCopied": "Router sync script copied to clipboard"
+  "routerScriptCopied": "Router sync script copied to clipboard",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

@@ -13,7 +13,10 @@ export type FormatType =
   | 'pihole'
   | 'domains'
   | 'bind'
-  | 'smartdns';
+  | 'smartdns'
+  | 'mosdns'
+  | 'clash'
+  | 'coredns';
 
 /** 全部可生成格式（顺序与 UI Tab 一致，对齐原型 .tablist） */
 export const ALL_FORMATS: FormatType[] = [
@@ -26,6 +29,9 @@ export const ALL_FORMATS: FormatType[] = [
   'domains',
   'bind',
   'smartdns',
+  'mosdns',
+  'clash',
+  'coredns',
 ];
 
 /** 带拦截语义（黑洞/拒绝）的格式，统计时计入黑名单计数 */
@@ -38,6 +44,9 @@ export const MASKED_FORMATS: FormatType[] = [
   'domains',
   'bind',
   'smartdns',
+  'mosdns',
+  'clash',
+  'coredns',
 ];
 
 /** 仅用于白名单呈现的格式 */

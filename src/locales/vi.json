@@ -106,7 +106,16 @@
     "bindUsage": "Cách dùng: tải dưới dạng tệp vùng RPZ (type master, file rpz.db)",
     "smartdnsTitle": "Danh sách chặn SmartDNS",
     "smartdnsDescription": "Quy tắc chặn address /domain/# của SmartDNS",
-    "smartdnsUsage": "Cách dùng: thêm vào cuối smartdns.conf"
+    "smartdnsUsage": "Cách dùng: thêm vào cuối smartdns.conf",
+    "mosdnsTitle": "Mosdns domain-set blocklist",
+    "mosdnsDescription": "Mosdns domain-set blocking rules (domain: matches domain and subdomains)",
+    "mosdnsUsage": "Usage: Include in Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS rules",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject rules",
+    "clashUsage": "Usage: Append to Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts blocklist",
+    "corednsDescription": "CoreDNS hosts-plugin 0.0.0.0 domain list",
+    "corednsUsage": "Usage: Load via CoreDNS hosts plugin"
   },
   "whitelist": {
     "title": "Danh sách trắng (cho phép các miền này)",
@@ -203,5 +212,8 @@
   "routerScriptDesc": "Tạo tập lệnh Shell tự động cập nhật và tải lại cho bộ định tuyến",
   "routerScriptTargetLabel": "Phần mềm mục tiêu",
   "routerScriptCopyBtn": "Sao chép tập lệnh",
-  "routerScriptCopied": "Đã sao chép tập lệnh bộ định tuyến vào khay nhớ tạm"
+  "routerScriptCopied": "Đã sao chép tập lệnh bộ định tuyến vào khay nhớ tạm",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

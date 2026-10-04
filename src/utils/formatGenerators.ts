@@ -10,6 +10,7 @@ function emptyContents(): Contents {
   return {
     dnsmasq: '', hosts: '', adguard: '', whitelist: '',
     unbound: '', pihole: '', domains: '', bind: '', smartdns: '',
+    mosdns: '', clash: '', coredns: '',
   };
 }
 
@@ -34,9 +35,16 @@ export function buildBlockedRules(
     out.bind += `*.${domain} CNAME .\n`;
     // SmartDNS：address /domain/# 返回空地址（等效拦截）
     out.smartdns += `address /${domain}/#\n`;
+    // Mosdns domain-set：domain: 匹配域名及其子域
+    out.mosdns += `domain:${domain}\n`;
+    // Clash Meta DNS 规则：DOMAIN-SUFFIX 命中后 reject
+    out.clash += `DOMAIN-SUFFIX,${domain},reject\n`;
+    // CoreDNS hosts 插件格式：0.0.0.0 domain
+    out.coredns += `0.0.0.0 ${domain}\n`;
     if (settings.blockIPv6) {
       out.dnsmasq += `address=/${domain}/${settings.ipv6}\n`;
       out.hosts += `${settings.ipv6} ${domain}\n`;
+      out.coredns += `${settings.ipv6} ${domain}\n`;
     }
   });
   return out;
@@ -55,6 +63,8 @@ export function buildCustomDnsRules(
     out.pihole += `${item.ip} ${item.domain}\n`;
     // SmartDNS 自定义上游：server /domain/ip
     out.smartdns += `server /${item.domain}/${item.ip}\n`;
+    // CoreDNS hosts 插件格式：ip domain（自定义解析生效）
+    out.coredns += `${item.ip} ${item.domain}\n`;
   });
   return out;
 }
@@ -80,6 +90,9 @@ export function buildWhitelistRules(
     out.unbound += `\n# ${t.whitelist.title}\n`;
     out.domains += `\n# ${t.whitelist.title}\n`;
     out.smartdns += `\n# ${t.whitelist.title}\n`;
+    out.mosdns += `\n# ${t.whitelist.title}\n`;
+    out.clash += `\n# ${t.whitelist.title}\n`;
+    out.coredns += `\n# ${t.whitelist.title}\n`;
   }
   filteredWhitelist.forEach((domain) => {
     out.dnsmasq += `server=/${domain}/\n`;
@@ -95,6 +108,12 @@ export function buildWhitelistRules(
     // 纯域名与 RPZ 列表无白名单语义：仅以注释形式标注已豁免
     out.domains += `# ${t.whitelist.label} ${domain}\n`;
     out.smartdns += `# ${t.whitelist.label} ${domain}\n`;
+    // Mosdns domain-set 无内联取反：以注释标注已豁免
+    out.mosdns += `# ${t.whitelist.label} ${domain}\n`;
+    // Clash Meta：DIRECT 绕过拦截（白名单语义）
+    out.clash += `DOMAIN-SUFFIX,${domain},DIRECT\n`;
+    // CoreDNS hosts 格式：注释标注已豁免
+    out.coredns += `# ${t.whitelist.label} ${domain}\n`;
   });
   return out;
 }
@@ -117,6 +136,9 @@ export function buildHeaders(
   out.domains = generateHeader('domains', totalDomains, whitelistCount, dateStr, settings, t);
   out.bind = generateHeader('bind', totalDomains, whitelistCount, dateStr, settings, t);
   out.smartdns = generateHeader('smartdns', totalDomains, whitelistCount, dateStr, settings, t);
+  out.mosdns = generateHeader('mosdns', totalDomains, whitelistCount, dateStr, settings, t);
+  out.clash = generateHeader('clash', totalDomains, whitelistCount, dateStr, settings, t);
+  out.coredns = generateHeader('coredns', totalDomains, whitelistCount, dateStr, settings, t);
   return out;
 }
 

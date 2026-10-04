@@ -29,6 +29,9 @@ const baseSettings: Settings = {
   domainsFilename: 'domains.txt',
   bindFilename: 'rpz.db',
   smartdnsFilename: 'smartdns.conf',
+  mosdnsFilename: 'mosdns_domain_set.txt',
+  clashFilename: 'clash_dns.yaml',
+  corednsFilename: 'coredns_hosts.txt',
 };
 
 describe('generateRules', () => {
@@ -46,6 +49,30 @@ describe('generateRules', () => {
     expect(out.hosts).toContain('# 已白名单: api.example.com');
     expect(out.adguard).toContain('@@||api.example.com^');
     expect(out.whitelist).toContain('@@||api.example.com^');
+  });
+
+  it('新增 Mosdns / Clash Meta / CoreDNS 格式生成正确拦截规则', () => {
+    const out = generateRules(['ad.example.com', 'ads.example.com'], [], [], baseSettings, t);
+    // Mosdns domain-set：domain: 匹配域名及其子域
+    expect(out.mosdns).toContain('domain:ad.example.com');
+    expect(out.mosdns).toContain('domain:ads.example.com');
+    // Clash Meta DNS 规则：DOMAIN-SUFFIX 命中后 reject
+    expect(out.clash).toContain('DOMAIN-SUFFIX,ad.example.com,reject');
+    expect(out.clash).toContain('DOMAIN-SUFFIX,ads.example.com,reject');
+    // CoreDNS hosts 插件格式：0.0.0.0 domain
+    expect(out.coredns).toContain('0.0.0.0 ad.example.com');
+    expect(out.coredns).toContain('0.0.0.0 ads.example.com');
+  });
+
+  it('Clash Meta 白名单生成 DIRECT 绕过规则', () => {
+    const out = generateRules([], ['api.example.com'], [], baseSettings, t);
+    expect(out.clash).toContain('DOMAIN-SUFFIX,api.example.com,DIRECT');
+  });
+
+  it('CoreDNS 自定义 DNS 生成 hosts 格式 ip domain', () => {
+    const customDns: CustomDnsEntry[] = [{ domain: 'cdn.example.com', ip: '10.0.0.1' }];
+    const out = generateRules([], [], customDns, baseSettings, t);
+    expect(out.coredns).toContain('10.0.0.1 cdn.example.com');
   });
 
   it('自定义 DNS 生成指定 IP 的解析规则', () => {

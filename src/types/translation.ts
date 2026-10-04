@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.9.12
+// src/types/translation.ts v3.10.0
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 export interface Translation {
   subtitle: string;
@@ -95,6 +95,9 @@ export interface Translation {
   domainsFormat?: string;
   bindFormat?: string;
   smartdnsFormat?: string;
+  mosdnsFormat?: string;
+  clashFormat?: string;
+  corednsFormat?: string;
   mergeStats: string;
   versionLabel: string;
   languageSelectorAria: string;
@@ -131,6 +134,15 @@ export interface Translation {
     domainsUsage?: string;
     bindUsage?: string;
     smartdnsUsage?: string;
+    mosdnsTitle?: string;
+    mosdnsDescription?: string;
+    mosdnsUsage?: string;
+    clashTitle?: string;
+    clashDescription?: string;
+    clashUsage?: string;
+    corednsTitle?: string;
+    corednsDescription?: string;
+    corednsUsage?: string;
     version: string;
     update: string;
     domains: string;

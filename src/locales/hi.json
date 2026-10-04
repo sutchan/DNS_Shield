@@ -106,7 +106,16 @@
     "bindUsage": "उपयोग: इसे RPZ क्षेत्र फ़ाइल के रूप में लोड करें (type master, file rpz.db)",
     "smartdnsTitle": "SmartDNS ब्लॉक सूची",
     "smartdnsDescription": "SmartDNS के address /domain/# ब्लॉक नियम",
-    "smartdnsUsage": "उपयोग: इसे smartdns.conf के अंत में जोड़ें"
+    "smartdnsUsage": "उपयोग: इसे smartdns.conf के अंत में जोड़ें",
+    "mosdnsTitle": "Mosdns domain-set blocklist",
+    "mosdnsDescription": "Mosdns domain-set blocking rules (domain: matches domain and subdomains)",
+    "mosdnsUsage": "Usage: Include in Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS rules",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject rules",
+    "clashUsage": "Usage: Append to Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts blocklist",
+    "corednsDescription": "CoreDNS hosts-plugin 0.0.0.0 domain list",
+    "corednsUsage": "Usage: Load via CoreDNS hosts plugin"
   },
   "whitelist": {
     "title": "व्हाइटलिस्ट (इन डोमेनों की अनुमति दें)",
@@ -203,5 +212,8 @@
   "routerScriptDesc": "राउटर के लिए स्वचालित शेल स्क्रिप्ट तैयार करें",
   "routerScriptTargetLabel": "लक्ष्य फर्मवेयर",
   "routerScriptCopyBtn": "स्क्रिप्ट कॉपी करें",
-  "routerScriptCopied": "राउटर स्क्रिप्ट क्लिपबोर्ड पर कॉपी की गई"
+  "routerScriptCopied": "राउटर स्क्रिप्ट क्लिपबोर्ड पर कॉपी की गई",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

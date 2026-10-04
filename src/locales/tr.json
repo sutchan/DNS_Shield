@@ -106,7 +106,16 @@
     "bindUsage": "Kullanım: RPZ bölge dosyası olarak yükleyin (type master, file rpz.db)",
     "smartdnsTitle": "SmartDNS engelleme listesi",
     "smartdnsDescription": "SmartDNS address /domain/# engelleme kuralları",
-    "smartdnsUsage": "Kullanım: smartdns.conf dosyasının sonuna ekleyin"
+    "smartdnsUsage": "Kullanım: smartdns.conf dosyasının sonuna ekleyin",
+    "mosdnsTitle": "Mosdns domain-set blocklist",
+    "mosdnsDescription": "Mosdns domain-set blocking rules (domain: matches domain and subdomains)",
+    "mosdnsUsage": "Usage: Include in Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS rules",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject rules",
+    "clashUsage": "Usage: Append to Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts blocklist",
+    "corednsDescription": "CoreDNS hosts-plugin 0.0.0.0 domain list",
+    "corednsUsage": "Usage: Load via CoreDNS hosts plugin"
   },
   "whitelist": {
     "title": "Beyaz Liste (bu alan adlarına izin ver)",
@@ -203,5 +212,8 @@
   "routerScriptDesc": "Yönlendiriciler için otomatik kabuk komut dosyası oluşturun",
   "routerScriptTargetLabel": "Hedef Donanım Yazılımı",
   "routerScriptCopyBtn": "Komut Dosyasını Kopyala",
-  "routerScriptCopied": "Yönlendirici komut dosyası panoya kopyalandı"
+  "routerScriptCopied": "Yönlendirici komut dosyası panoya kopyalandı",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }

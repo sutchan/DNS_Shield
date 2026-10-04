@@ -1,8 +1,10 @@
 # DNS Shield 剩余开发任务清单 (Remaining Development Tasks)
 
-> 版本对齐：v3.9.12
-> 审查时间：2026-09-14
+> 版本对齐：v3.10.0
+> 审查时间：2026-10-04（本次更新）
 > 维护团队：Sut / ArcesTeam
+
+> **最近更新时间戳**：2026-10-04 — 核对代码真实状态后更新文档：T-P0 全完成（覆盖率门禁 / 核心模块单测 / 生产日志收敛均已落地）、T-P2-02（规则测试器）/ T-P3-01（路由器脚本）已落地。剩余 7 项为 P1 性能（Web Worker / 虚拟滚动 / IndexedDB）、P2 进阶（分类标签 / 多格式扩展）、P3 生态（LuCI 包 / 定时聚合 Action），详见下方状态。
 
 ---
 
@@ -14,7 +16,7 @@
 
 | 模块 / 维度 | 完成度 | 状态 | 关键成果 |
 |---|:---:|:---:|---|
-| **核心规则生成引擎** | 100% | ✅ 稳定 | 支持 9 种输出格式、通配符/白名单/自定义DNS前缀解析、高效去重与排序 |
+| **核心规则生成引擎** | 100% | ✅ 稳定 | 支持 12 种输出格式（含 Mosdns/Clash Meta/CoreDNS）、通配符/白名单/自定义DNS前缀解析、高效去重与排序 |
 | **Web 交互界面 (GUI)** | 98% | ✅ 完善 | Swiss Precision 排版、规则测试弹窗、路由器脚本弹窗、FlowViz 动效 |
 | **国际化 (i18n)** | 100% | ✅ 完成 | 16 种多语言本地化 (195 键完整覆盖)，自动校验脚本 `check:locales` 100% 通过 |
 | **单元测试 (Unit Test)** | 98% | ✅ 优秀 | Vitest 13 个测试套件、82 个测试用例全部通过 |
@@ -61,9 +63,9 @@
   - 实时分析输入域名是否命中当前白名单、黑名单或通配符规则，并高亮匹配的具体行
 - [ ] **T-P2-01: 域名分类与标签过滤系统**
   - 增加按类别（广告/跟踪分析/恶意软件/遥测收集/成人内容）标记与一键过滤功能
-- [ ] **T-P2-03: 规则格式间的高级语法双向转换**
-  - 增强 AdGuard 正则表达式与 Dnsmasq regex/server 语法的智能映射转换
-  - 支持更多新兴 DNS 引擎格式（如 Clash Meta DNS, Mosdns, CoreDNS）
+- [x] **T-P2-03: 规则格式扩展（Mosdns / Clash Meta / CoreDNS 导出）**
+  - ✅ 已实现：生成器新增 Mosdns（domain-set `domain:`）、Clash Meta（`DOMAIN-SUFFIX,域名,reject`）、CoreDNS（hosts `0.0.0.0 域名`）三种格式，纳入 `ALL_FORMATS` / 输出 Tab / 下载复制链路与 16 语言 i18n
+  - ⏳ 待办：AdGuard 正则 ↔ Dnsmasq regex/server 的双向智能语法转换（高级子项，未纳入本次）
 
 ---
 
@@ -74,8 +76,8 @@
   - 在 Web 端提供「复制路由器专用脚本」弹窗与一键复制功能 (`ScriptGeneratorModal.tsx`)
 - [ ] **T-P3-02: OpenWrt LuCI 界面配置包**
   - 构建轻量级 OpenWrt LuCI 界面插件，支持在路由器后台直接订阅 DNS Shield 规则源
-- [ ] **T-P3-03: 定时自动抓取与上游规则聚合 GitHub Action**
-  - 配置定期运行的 GitHub Action 任务，自动拉取 AdGuard、EasyList、NeoHosts 等上游更新，去重合并后自动提交 PR / 发布 Release
+- [x] **T-P3-03: 定时自动抓取与上游规则聚合 GitHub Action**
+  - ✅ 已实现：新增 `.github/workflows/aggregate.yml`（每周一 03:17 UTC 运行）+ `scripts/aggregate-upstream.mjs`，聚合 AdGuard / EasyList / NeoHosts / StevenBlack / YousList 上游，去重合并后自动发起 PR 供人工审核
 
 ---
 
@@ -92,4 +94,5 @@
 | T-P1-02 | 虚拟滚动 | Dev Team | 超大规则预览流畅（60fps 滚动） | 规划中 |
 | T-P1-03 | IndexedDB 存储 | Dev Team | 大容量规则持久化保存，页面刷新无缝恢复 | 规划中 |
 | T-P2-01 | 分类标签过滤 | Feature Team | 支持多维度分类标签与选择性导出 | 规划中 |
-| T-P2-03 | 多格式扩展 | Feature Team | 支持 Mosdns / Clash Meta 等新格式导出 | 规划中 |
+| T-P2-03 | 多格式扩展 | Feature Team | 支持 Mosdns / Clash Meta / CoreDNS 新格式导出 | ✅ 已完成（双向语法转换待办） |
+| T-P3-03 | 上游聚合 Action | Infra Team | 定时聚合上游并自动发起 PR | ✅ 已完成 |

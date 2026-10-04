@@ -1,4 +1,4 @@
-// src/utils/ruleMatcher.ts v3.9.12
+// src/utils/ruleMatcher.ts v3.10.0
 // 域名规则匹配分析器：根据当前黑名单、白名单与自定义 DNS 配置，
 // 实时测试给定目标域名是否被拦截、豁免或重定向，并返回匹配的具体规则与判定逻辑。
 import { ParsedData } from '../types';

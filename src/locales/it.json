@@ -106,7 +106,16 @@
     "bindUsage": "Uso: carica come file di zona RPZ (type master, file rpz.db)",
     "smartdnsTitle": "Elenco di blocco SmartDNS",
     "smartdnsDescription": "Regole di blocco address /domain/# di SmartDNS",
-    "smartdnsUsage": "Uso: aggiungi in fondo a smartdns.conf"
+    "smartdnsUsage": "Uso: aggiungi in fondo a smartdns.conf",
+    "mosdnsTitle": "Mosdns domain-set blocklist",
+    "mosdnsDescription": "Mosdns domain-set blocking rules (domain: matches domain and subdomains)",
+    "mosdnsUsage": "Usage: Include in Mosdns rule-set / domain-set",
+    "clashTitle": "Clash Meta DNS rules",
+    "clashDescription": "Clash Meta DOMAIN-SUFFIX reject rules",
+    "clashUsage": "Usage: Append to Clash Meta DNS ruleset",
+    "corednsTitle": "CoreDNS hosts blocklist",
+    "corednsDescription": "CoreDNS hosts-plugin 0.0.0.0 domain list",
+    "corednsUsage": "Usage: Load via CoreDNS hosts plugin"
   },
   "whitelist": {
     "title": "Whitelist (consenti questi domini)",
@@ -203,5 +212,8 @@
   "routerScriptDesc": "Genera script Shell per aggiornamento automatico e riavvio router",
   "routerScriptTargetLabel": "Firmware Target",
   "routerScriptCopyBtn": "Copia Script",
-  "routerScriptCopied": "Script del router copiato negli appunti"
+  "routerScriptCopied": "Script del router copiato negli appunti",
+  "mosdnsFormat": "Mosdns",
+  "clashFormat": "Clash Meta",
+  "corednsFormat": "CoreDNS"
 }
