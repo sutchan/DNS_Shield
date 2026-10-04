@@ -2,16 +2,18 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
-> 当前版本：v3.11.1
+> 当前版本：v3.11.2
 
 ## 部署环境
 
 ### 1. 系统要求
 
 - **操作系统**：Linux、macOS 或 Windows
-- **Node.js**：18.0 或更高版本（本地开发使用 Node 24 验证通过）
-- **pnpm**：8.0 或更高版本（推荐，项目依赖 `pnpm-lock.yaml`）
+- **Node.js**：24.11.0 或更高版本（`package.json` 的 `engines.node` 下限，`.npmrc` 开启 `engine-strict` 后版本不满足会直接安装失败；CI 使用 Node 24）
+- **pnpm**：11.24.0（由 `package.json` 的 `packageManager` 字段锁定，CI 走 `pnpm/action-setup` 自动安装，勿手动指定版本）
 - **Git**：用于版本控制
+
+> 依赖安装一律基于入库的 `pnpm-lock.yaml`（`pnpm install --frozen-lockfile`）。修改依赖后请先本地 `pnpm install` 并提交锁文件，否则 CI 会直接失败。
 
 ### 2. 服务器要求
 
@@ -204,7 +206,7 @@ CI 采用「并行 job + 聚合门禁」结构：`lint`、`typecheck`、`test`�
 | `DEPLOY_VERCEL` | `true` / 不设置 | 启用 Vercel 部署 |
 | `DEPLOY_EDGEONE` | `true` / 不设置 | 启用 EdgeOne Pages 部署 |
 | `EDGEONE_PROJECT_NAME` | 默认 `dns-shield` | EdgeOne 项目名 |
-| `EDGEONE_BUILD_PATH` | 默认 `./out` | EdgeOne 上传的产物目录 |
+| `EDGEONE_BUILD_PATH` | 默认 `./.next` | EdgeOne 上传的产物目录（`next.config.js` 为 `output: 'standalone'`，产物在 `.next/`） |
 
 之所以用「变量开关」而不是判断 Secret 是否存在：`secrets` 上下文在 job 级 `if` 中不可靠，显式开关更可控，也便于临时摘掉某个目标。
 
@@ -256,12 +258,12 @@ git add public && git commit -m "chore: 同步生成规则文件至 v3.10.1"
 | `PORT` | 服务器端口 | 3000 |
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
-| `NEXT_PUBLIC_APP_VERSION` | 应用版本（同时由 `src/config/version.ts` APP_VERSION 与 `next.config.js` env.version 提供） | 3.10.1 |
+| `NEXT_PUBLIC_APP_VERSION` | 应用版本（同时由 `src/config/version.ts` APP_VERSION 与 `next.config.js` env.version 提供） | 3.11.2 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（须形如 `G-XXXXXXXXXX`；留空或格式非法则不启用统计，详见 `.env.example`） | 空 |
 
 ### 2. Next.js 配置
 
-修改 `next.config.js`（当前项目未启用 `output: 'standalone'`，使用默认构建产物并经由 `next start` 启动）：
+修改 `next.config.js`（当前项目启用 `output: 'standalone'`，构建产物位于 `.next/`，本地经由 `next start` 启动；EdgeOne Pages 上传的产物目录即 `.next/`，可通过仓库变量 `EDGEONE_BUILD_PATH` 覆写）：
 
 ```javascript
 /** @type {import('next').NextConfig} */
@@ -270,7 +272,7 @@ const nextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   env: {
-    version: '3.10.1'
+    version: '3.11.2'
   },
   async headers() {
     return [

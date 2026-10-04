@@ -2,10 +2,11 @@
 # ---------------------------------------------------------------------------
 # CD —— 部署流水线
 #
-# 触发时机：
-#   - main 分支推送（CI 通过后自动部署）
-#   - 打 tag（v*）
-#   - 手动触发，可选择目标环境
+# 触发时机（已加 CI 门禁）：
+#   - main 分支的 CI（ci.yml）**成功**后自动部署（workflow_run）
+#   - 手动触发（workflow_dispatch，可选目标环境）
+#   - ⚠️ 不再由 main push / tag push 直接触发：CI 红了不许部署
+#     （tag 只用于触发 Release 发规则文件，部署由 main 提交覆盖）
 #
 # 四个可选目标，全部通过仓库变量（Settings → Secrets and variables → Actions → Variables）
 # 开关，未开启的 job 会 skipped，不会让工作流变红：
@@ -17,13 +18,18 @@
 #
 # 为什么用「变量」而不是判断 Secret 是否存在：
 #   secrets 上下文在 job 级 if 中不可靠，用显式开关更可控、也便于临时摘除某个目标。
+#
+# CLI 版本钉死（不使用 @latest）：浮动版本会让「昨天能部署今天不能」难以复现与排查。
+#   vercel 62.2.0 / edgeone 1.6.41 —— 升级时改下方 env 常量
 # ---------------------------------------------------------------------------
 name: Deploy
 
 on:
-  push:
+  # 只在 main 的 CI 成功后部署：CI 门禁的唯一入口
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
-    tags: ['v*']
   workflow_dispatch:
     inputs:
       environment:
@@ -43,23 +49,30 @@ permissions:
 env:
   NEXT_TELEMETRY_DISABLED: '1'
   NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
+  # CLI 版本钉死：禁止使用 @latest，避免上游发版即改变部署行为
+  VERCEL_CLI_VERSION: '62.2.0'
+  EDGEONE_CLI_VERSION: '1.6.41'
 
 jobs:
   # ---------------------------------------------------------------- Vercel
   vercel:
     name: Deploy to Vercel
     runs-on: ubuntu-latest
-    if: ${{ vars.DEPLOY_VERCEL == 'true' }}
+    timeout-minutes: 20
+    if: ${{ vars.DEPLOY_VERCEL == 'true' && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success') }}
     environment: production
     outputs:
       url: ${{ steps.deploy.outputs.url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # workflow_run 触发时检出「触发 CI 的那个 commit」，避免部署到比 CI 更新的代码
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - uses: ./.github/actions/setup
 
       - name: Pull Vercel environment
-        run: npx --yes vercel@latest pull --yes --environment=${{ github.event.inputs.environment || 'production' }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} pull --yes --environment=${{ github.event.inputs.environment || 'production' }} --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
@@ -68,9 +81,9 @@ jobs:
       - name: Build with Vercel
         run: |
           if [ "${{ github.event.inputs.environment }}" = "preview" ]; then
-            npx --yes vercel@latest build --token=${{ secrets.VERCEL_TOKEN }}
+            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} build --token=${{ secrets.VERCEL_TOKEN }}
           else
-            npx --yes vercel@latest build --prod --token=${{ secrets.VERCEL_TOKEN }}
+            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} build --prod --token=${{ secrets.VERCEL_TOKEN }}
           fi
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -80,9 +93,9 @@ jobs:
         id: deploy
         run: |
           if [ "${{ github.event.inputs.environment }}" = "preview" ]; then
-            npx --yes vercel@latest deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} | tee _deploy-url.txt
+            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} | tee _deploy-url.txt
           else
-            npx --yes vercel@latest deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} | tee _deploy-url.txt
+            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} | tee _deploy-url.txt
           fi
           echo "url=$(tail -1 _deploy-url.txt)" >> "$GITHUB_OUTPUT"
         env:
@@ -96,24 +109,28 @@ jobs:
   edgeone:
     name: Deploy to EdgeOne Pages
     runs-on: ubuntu-latest
-    if: ${{ vars.DEPLOY_EDGEONE == 'true' }}
+    timeout-minutes: 20
+    if: ${{ vars.DEPLOY_EDGEONE == 'true' && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success') }}
     environment: production
     steps:
       - uses: actions/checkout@v4
+        with:
+          # workflow_run 触发时检出「触发 CI 的那个 commit」，避免部署到比 CI 更新的代码
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - uses: ./.github/actions/setup
 
       - name: Build
         run: pnpm run build
 
-      # EdgeOne Pages 走的是静态托管：默认产物目录 ./out。
-      # 若已按 DEPLOYMENT.md 说明在 next.config.js 开启 output: 'export' → 保持 ./out；
-      # 若改用 EdgeOne 的 Node 渲染，请把仓库变量 EDGEONE_BUILD_PATH 改为 ./.next。
-      # 项目名与环境变量可在仓库变量中覆写：EDGEONE_PROJECT_NAME / EDGEONE_BUILD_PATH
+      # 产物目录：next.config.js 为 output: 'standalone'，构建产物在 .next/（非 ./out）。
+      # 旧默认值 ./out 属于 output: 'export' 形态，会让 EdgeOne 找不到产物而退化成
+      # 「pure project」（日志中的 No server-handler detected）。
+      # 仓库变量 EDGEONE_BUILD_PATH 仍可覆写（如需 standalone 产物目录可用 ./.next/standalone）。
       - name: Deploy to EdgeOne Pages
         run: |
-          npx --yes edgeone pages deploy \
-            "${{ vars.EDGEONE_BUILD_PATH || './out' }}" \
+          npx --yes edgeone@${{ env.EDGEONE_CLI_VERSION }} pages deploy \
+            "${{ vars.EDGEONE_BUILD_PATH || './.next' }}" \
             -n "${{ vars.EDGEONE_PROJECT_NAME || 'dns-shield' }}" \
             -t "${{ secrets.EDGEONE_API_TOKEN }}" \
             -e "${{ github.event.inputs.environment || 'production' }}"

@@ -45,12 +45,17 @@ env:
   NEXT_TELEMETRY_DISABLED: '1'
   # 构建期注入 GA 统计 ID；未配置该 Secret 时自动为空（不启用统计）
   NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
+  # 关闭 ANSI 着色：否则步骤摘要里的 grep 会被转义码打断，匹配不到 "Tests" 行
+  NO_COLOR: '1'
+  FORCE_COLOR: '0'
+  CI: 'true'
 
 jobs:
   # ---------------------------------------------------------------- lint
   lint:
     name: ESLint
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -63,6 +68,7 @@ jobs:
   typecheck:
     name: TypeScript
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -76,6 +82,7 @@ jobs:
   test:
     name: Vitest
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -96,7 +103,7 @@ jobs:
           {
             echo '### 单元测试结果'
             echo '```'
-            grep -E 'Test Files|Tests  |Duration' _test.log || echo '(未解析到测试摘要)'
+            grep -E 'Test Files|Tests|Duration' _test.log || echo '(未解析到测试摘要)'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -113,6 +120,7 @@ jobs:
   build:
     name: Next.js Build
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
@@ -145,6 +153,7 @@ jobs:
   data:
     name: Data Integrity
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -162,21 +171,30 @@ jobs:
       - name: Count domains
         run: node scripts/count-domains.mjs
 
-      # 软门禁：重新生成 12 种规则文件并与仓库内容比对。
-      # public/*.txt 头部带版本号与生成日期，由 scripts/gen-format-files.mjs 依据 package.json 自动生成；
-      # 当前已与 package.json (3.10.0) 对齐，但仍保留 continue-on-error 作为软门禁。
+      # 硬门禁：重新生成 12 种规则文件并与仓库内容比对。
+      # public/* 头部含「版本::」与「更新::」两行：
+      #   - 「更新::」是生成日期，每天都会变，属噪声，从比对中剔除；
+      #   - 「版本::」必须与 package.json 一致，属真实漂移，需要阻断。
+      # 修复方式：本地执行 pnpm run build:formats 后提交产物。
       - name: Detect generated rule files drift
         id: drift
-        continue-on-error: true
         run: |
           node scripts/gen-format-files.mjs
-          if git diff --quiet -- public; then
+          # 过滤掉仅日期行产生的差异（+/- 两种前缀），剩余即真实内容漂移
+          DRIFT_LINES=$(git diff -- public \
+            | grep -E '^[+-]' \
+            | grep -vE '^(\+\+\+|---)' \
+            | grep -vE '^[+-][[:space:]!#]*更新::' || true)
+          if [ -z "$(echo "$DRIFT_LINES" | tr -d '[:space:]')" ]; then
             echo "drift=false" >> "$GITHUB_OUTPUT"
-            echo "生成的规则文件与 public/domains.txt 一致"
+            echo "生成的规则文件与 public/domains.txt 一致（已忽略头部日期行）"
           else
             echo "drift=true" >> "$GITHUB_OUTPUT"
-            echo "检测到漂移（通常由文件头版本号/日期变化引起）："
+            echo "::error::规则文件与数据源漂移，请执行 pnpm run build:formats 后提交产物"
+            echo "$DRIFT_LINES" | head -n 40
+            echo "--- 差异统计 ---"
             git diff --stat -- public
+            exit 1
           fi
 
       - name: Write data summary
@@ -185,13 +203,14 @@ jobs:
           {
             echo '### 数据一致性'
             echo "- locale 键校验：通过"
-            echo "- 生成文件漂移：${{ steps.drift.outputs.drift == 'true' && '存在（软门禁，未阻断）' || '无' }}"
+            echo "- 生成文件漂移：${{ steps.drift.outputs.drift == 'true' && '存在（已阻断）' || '无（已忽略头部日期行）' }}"
           } >> "$GITHUB_STEP_SUMMARY"
 
   # ------------------------------------------------------------ 聚合门禁
   ci:
     name: CI Gate
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     needs: [lint, typecheck, test, build, data]
     if: always()
     steps:

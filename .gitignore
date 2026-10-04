@@ -55,9 +55,9 @@ _test.txt
 _tsc.txt
 
 # Package manager
+# 注意：pnpm-lock.yaml 必须入库（CI 用 --frozen-lockfile），此处只忽略 npm/yarn 锁文件
 package-lock.json
 yarn.lock
-pnpm-lock.yaml
 
 # Next.js
 .next/cache/

@@ -10,6 +10,9 @@
 #   3. 仅在确有新增域名时，自动发起 Pull Request 供人工审核合并
 #
 # 说明：使用 PR 而非直接推送，保证规则更新经过审查，避免误吞上游异常条目。
+# 权限：需要 contents: write（推送 PR 分支）+ pull-requests: write（开 PR）。
+# 注意：本 PR 只改 domains.txt，12 个派生规则文件由 Release 流程统一 regenerate，
+#      CI 的「生成文件漂移」硬门禁会拦截忘记同步的情况。
 # ---------------------------------------------------------------------------
 name: Aggregate Upstream Lists
 
@@ -19,13 +22,17 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
+  # create-pull-request 需要向 auto/aggregate-upstream 分支推送提交，
+  # 仅 pull-requests: write 会在 push 阶段报 403 而整 job 失败
+  contents: write
   pull-requests: write
 
 jobs:
   aggregate:
     name: Fetch & merge upstream blocklists
     runs-on: ubuntu-latest
+    # 挂死保护：上游 5 个源串行拉取，正常 2~5 分钟；超时即失败
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 

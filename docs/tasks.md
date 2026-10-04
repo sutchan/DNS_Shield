@@ -4,16 +4,17 @@
 > 所有新增、变更、完成任务必须更新本文件；项目内其他位置（README、SPEC、CHECKLIST、CHANGELOG、原型等）**不得另建任务清单**。
 > 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-10-04 20:40（与 package.json v3.11.1 对齐，代码实况核验）
+> 最后审查：2026-10-04 21:10（与 package.json v3.11.2 对齐，代码实况核验）
 > 维护团队：Sut / ArcesTeam
 >
-> **本次更新（2026-10-04 20:40）**：EdgeOne Pages 构建失败（`next build` ESLint 门禁，exit 18）已修复，patch 升至 **v3.11.1**。根因有二：① v3.10.2 组件拆分误删 `<FormatTabs>` JSX，导致输出格式切换 UI 丢失且 import 未使用报错——已恢复渲染；② 拆分/重构残留的未使用变量与 hooks 依赖告警（`SettingsPanel.updateSettings`、`useHomeController` 的 `React`、`useAutosave` 定时器依赖、`useRuleWorker` 清理函数读 ref）。门禁复核：`next lint` **0 error 0 warning**、`tsc --noEmit` 通过、测试 **16 套件 / 114 用例**全通过。上一轮（20:05）7 项未完成任务全部完成并升至 v3.11.0。
+> **本次更新（2026-10-04 21:10）**：工作流（`.github/workflows`）审查整改完成，patch 升至 **v3.11.2**。① 依赖可复现性：入库 `pnpm-lock.yaml`（4650 行 / lockfileVersion 9.0）、补 `packageManager: pnpm@11.24.0` 与 `engines.node >=24.11.0`、新增 `.npmrc`（engine-strict）、从 `.gitignore` 移除 pnpm-lock 忽略项；② Release 资产清单改为消费 `gen-format-files.mjs --list-files`（12 个产物，修掉 zip 内 3 个格式重复与单文件资产缺 3 个新格式）；③ `aggregate.yml` 补 `contents: write`（原权限必然 403 失败）；④ 漂移检查提为硬门禁并剔除「更新::」日期行噪声；⑤ 部署改为 `workflow_run`（仅 CI 成功后部署，检出 CI 的 head_sha）；⑥ EdgeOne 产物路径 `./out` → `./.next`（对齐 `output: 'standalone'`）；⑦ CLI 钉版本（vercel 62.2.0 / edgeone 1.6.41）；⑧ 全 job 加 timeout-minutes、修测试摘要 grep、补 `.gitattributes`（LF）。校验：4 个 workflow + composite action 的 YAML 全部解析通过。
+> 上一轮（20:40）修复 EdgeOne 构建失败（ESLint 门禁）并找回丢失的 `<FormatTabs>` 渲染，升至 v3.11.1。
 
 ---
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.11.1 | `package.json` version（权威源） |
+| 应用版本 | v3.11.2 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 145 键、递归合计 207 键 | 脚本统计 `zh-cn.json`（`check:locales` 输出为递归口径 207） |
 | 测试套件 / 用例 | **16 套件 / 114 用例**（全通过） | `vitest run`（权威计数） |
@@ -137,6 +138,7 @@
 - [x] **T-P2-01: 域名分类与标签过滤（2026-10-04，v3.11.0）** — 新增 `src/utils/domainCategory.ts`：按域名真实命中的上游源（AdGuard / EasyList / neoHosts / StevenBlack / YouSList）打标，提供索引解析、分类查询、按类筛选与分布统计，不引入任何虚构类别；补 7 例单测
 - [x] **T-P3-02: OpenWrt LuCI 配置包（2026-10-04，v3.11.0）** — 新增 `openwrt-package/`：LuCI 应用 Makefile（`luci-app-dnsshield`）、订阅控制器（uclient-fetch 拉取、10MB 上限、URL 白名单校验防命令注入，落地 `/etc/dnsshield/rules.conf` 并重载 dnsmasq）、菜单与 rpcd ACL、UCI 默认配置
 - [x] **构建门禁修复与格式切换 UI 找回（2026-10-04，v3.11.1）** — EdgeOne Pages 构建因 `next build` ESLint 门禁失败（exit 18）。① 恢复 v3.10.2 组件拆分中被误删的 `<FormatTabs>` 渲染（`OutputToolbar` 增 `children` 插槽，DOM 顺序同 v3.10.0），输出格式切换 UI 复原；② 清理 `FormatTabs`/`updateSettings`/未使用 `React` 导入 3 处 unused 变量与 `useAutosave`、`useRuleWorker` 2 处 hooks 依赖告警；③ 移除 `useSettings` 中已废弃的 `FIELD_MAP` + `updateSettings` 死代码；④ 复核 `next lint` 0 error 0 warning、`tsc --noEmit` 通过、16 套件 / 114 用例全通过
+- [x] **工作流审查整改（2026-10-04，v3.11.2）** — 审查 `.github/workflows` 全部 4 个工作流 + composite action 后落地 8 项整改：① 入库 `pnpm-lock.yaml` + `packageManager`/`engines`/`.npmrc`，解除「无锁文件却 `--frozen-lockfile`」的不可复现安装；② Release 资产清单改由 `gen-format-files.mjs --list-files` 单一来源导出（修 zip 重复项与缺失的 3 个新格式）；③ `aggregate.yml` 补 `contents: write`（原权限必 403）；④ 生成产物漂移提为硬门禁并剔除「更新::」日期行噪声；⑤ 部署改 `workflow_run` 门禁（仅 CI 成功后部署 + 检出 head_sha）；⑥ EdgeOne 产物路径 `./out` → `./.next`；⑦ CLI 钉版本 + 全 job `timeout-minutes`；⑧ 修测试摘要 grep + 新增 `.gitattributes` 固定 LF
 
 ### 历史开发任务（已归档）
 

@@ -1,23 +1,25 @@
 # .github/actions/setup/action.yml
 # ---------------------------------------------------------------------------
-# 复合动作（composite action）：统一 CI / Deploy / Release 三个工作流的运行时准备。
+# 复合动作（composite action）：统一 CI / Deploy / Release 四个工作流的运行时准备。
 #
 # 关键点（踩坑记录，勿随意改动顺序）：
 #   1. pnpm/action-setup 必须在 actions/setup-node 之前执行：
 #      setup-node 的 cache: 'pnpm' 需要 pnpm 已存在于 PATH 才能解析 store 路径。
 #   2. pnpm 版本不在此硬编码 —— 读取 package.json 的 packageManager 字段
-#      （当前 pnpm@11.24.0）。若在此写死 version，会触发 ERR_PNPM_BAD_PM_VERSION。
+#      （pnpm@11.24.0）。若在此写死 version，会触发 ERR_PNPM_BAD_PM_VERSION。
 #   3. Node 版本对齐 package.json 的 engines.node（>=24.11.0），且 .npmrc 开启了
 #      engine-strict=true，版本不匹配会直接 install 失败。
 #   4. 本项目使用 pnpm-lock.yaml（非 npm/yarn），cache 只能是 'pnpm'，
 #      设为 'npm' 会因找不到 package-lock.json 而报错。
+#   5. pnpm-lock.yaml 必须入库：CI 一律 --frozen-lockfile。若锁文件缺失，
+#      本步骤会在 install 前显式报错，而不是让 pnpm 静默解析出与仓库不一致的依赖树。
 # ---------------------------------------------------------------------------
 name: 'Setup DNS Shield'
 description: '安装 pnpm + Node.js，恢复依赖缓存并按锁定文件安装依赖'
 
 inputs:
   node-version:
-    description: 'Node.js 版本'
+    description: 'Node.js 版本（须满足 package.json engines.node）'
     required: false
     default: '24'
   install:
@@ -40,12 +42,23 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
         cache: ${{ inputs.install == 'true' && 'pnpm' || '' }}
+        # 显式指定锁文件，避免 setup-node 在缺失时报错或算出错误的缓存键
+        cache-dependency-path: pnpm-lock.yaml
+
+    - name: Assert lockfile is tracked
+      if: inputs.install == 'true' && inputs.frozen == 'true'
+      shell: bash
+      run: |
+        if [ ! -f pnpm-lock.yaml ]; then
+          echo "::error::缺少 pnpm-lock.yaml：CI 以 --frozen-lockfile 安装，请先在本地执行 pnpm install 并提交锁文件"
+          exit 1
+        fi
 
     - name: Install dependencies
       if: inputs.install == 'true'
       shell: bash
       run: |
-        if [ "${{ inputs.frozen }}" = "true" ]; then
+        if [ "${{ inputs.frozen }}" = "true"; then
           pnpm install --frozen-lockfile
         else
           pnpm install --no-frozen-lockfile
@@ -56,4 +69,5 @@ runs:
       run: |
         echo "node    : $(node -v)"
         echo "pnpm    : $(pnpm -v)"
+        echo "lockfile: $([ -f pnpm-lock.yaml ] && echo present || echo missing)"
         echo "registry: $(pnpm config get registry)"

@@ -1,10 +1,12 @@
-// scripts/gen-format-files.mjs v3.10.1
+// scripts/gen-format-files.mjs v3.11.2
 // 预生成全部过滤规则的静态产出文件，生成逻辑与 src/utils/formatGenerators.ts 保持 1:1 对齐。
 // 单一数据源：public/domains.txt（纯域名=黑名单，`+domain`=白名单，`@domain=ip`=自定义 DNS）。
 // 产出（不含 domains.txt 数据源本身）：
 //   dnsmasq.conf / hosts.txt / adguard.txt / whitelist.txt / unbound.conf / pihole.txt /
 //   rpz.db / smartdns.conf / mosdns_domain_set.txt / clash_dns.yaml / coredns_hosts.txt
-// 用法：node scripts/gen-format-files.mjs
+// 用法：
+//   node scripts/gen-format-files.mjs              # 重新生成全部产物
+//   node scripts/gen-format-files.mjs --list-files # 仅输出产物清单（供 CI / Release 消费，不写文件）
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -64,6 +66,16 @@ const OUTPUT_FILES = {
   clash: settings.clashFilename,
   coredns: settings.corednsFilename,
 };
+
+// 产物清单 = 数据源 domains.txt + 全部格式文件。
+// Release / CI 一律消费本清单，避免"新增格式却漏改 workflow 资产列表"的历史问题。
+const ARTIFACT_FILES = ['domains.txt', ...Object.values(OUTPUT_FILES)];
+
+// --list-files：只打印清单（每行一个 public/ 相对路径），不生成、不修改任何文件
+if (process.argv.includes('--list-files')) {
+  for (const file of ARTIFACT_FILES) console.log(`public/${file}`);
+  process.exit(0);
+}
 
 /** 组装单个格式的完整文件内容（头部 + 规则正文） */
 function buildFile(format) {

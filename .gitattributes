@@ -1,0 +1,11 @@
+* text=auto eol=lf
+public/*.txt text eol=lf
+public/*.conf text eol=lf
+public/*.db text eol=lf
+public/*.yaml text eol=lf
+pnpm-lock.yaml text eol=lf
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary

@@ -5,6 +5,19 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.11.2]
+
+### Fixed（工作流审查整改：8 项）
+- **依赖可复现性**：此前仓库无 `pnpm-lock.yaml`，而 CI 以 `--frozen-lockfile` 安装且 `cache: 'pnpm'`，依赖树完全不可复现；`setup` action 注释声称的 `packageManager` / `engines` / `.npmrc` 也都不存在。现已入库 `pnpm-lock.yaml`（lockfileVersion 9.0）、补 `packageManager: pnpm@11.24.0` 与 `engines.node >=24.11.0`、新增 `.npmrc`（`engine-strict=true`），并从 `.gitignore` 移除 `pnpm-lock.yaml` 忽略项
+- **Release 资产清单**：zip 内 `mosdns/clash/coredns` 各重复一次，单文件资产缺这 3 个新格式（用户无法从 Release 页下载）。改为消费 `node scripts/gen-format-files.mjs --list-files` 的单一来源清单，新增格式不再需要改 workflow
+- **`aggregate.yml` 权限**：`create-pull-request` 需要推送分支，原 `contents: read` 必然 403 失败；已补 `contents: write`
+- **生成产物漂移门禁**：`ci.yml` 的比对由 `continue-on-error` 软门禁改为硬门禁，并从比对中剔除头部「更新::」日期行（每天变化的噪声），「版本::」与规则内容漂移会真正阻断
+- **部署门禁**：`deploy.yml` 原先 main push 即部署（CI 红了也照发）。改为 `workflow_run` 触发，仅 CI 成功后部署，并检出触发 CI 的 `head_sha`，杜绝「部署到比 CI 更新的代码」
+- **EdgeOne 产物路径**：默认 `./out` 属于 `output: 'export'` 形态，与 `next.config.js` 的 `output: 'standalone'` 不符，会退化为 "No server-handler detected"；默认改为 `./.next`，DEPLOYMENT.md 同步纠正（原文档还误称未启用 standalone）
+- **供应链与健壮性**：`vercel` / `edgeone` CLI 由 `@latest` 钉到 62.2.0 / 1.6.41；所有 job 补 `timeout-minutes`（build/deploy 20、test 15、其余 10、聚合门禁 5）；`setup` action 补 `cache-dependency-path` 与锁文件存在性断言
+- **杂项**：CI 补 `NO_COLOR` / `FORCE_COLOR` / `CI` 环境变量并放宽测试摘要 grep（此前 ANSI 转义码导致 `Tests` 行匹配不到，摘要恒为空）；新增 `.gitattributes` 统一 LF，避免 Windows 检出把规则产物转成 CRLF 导致漂移门禁恒红
+- 重生成 12 个规则产物，头部版本由 3.10.1 对齐至 3.11.2
+
 ## [3.11.1]
 
 ### Fixed（修复 EdgeOne 构建失败并找回丢失的格式切换 UI）

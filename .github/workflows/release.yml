@@ -2,12 +2,16 @@
 # ---------------------------------------------------------------------------
 # Release —— 版本发布
 #
-# 触发：推送形如 v3.10.0 的 tag
+# 触发：推送形如 v3.11.2 的 tag
 #
 # 做三件事：
 #   1. 校验 tag 与 package.json 的 version 一致（防止打错版本号发布）
 #   2. 以 public/domains.txt 为单一数据源，重新生成全部过滤规则文件
 #   3. 把规则文件打包为 GitHub Release 资产（同时提供 zip 与单文件）
+#
+# 资产清单来自 `node scripts/gen-format-files.mjs --list-files`（唯一来源 = 生成脚本的
+# OUTPUT_FILES），不再在 workflow 里手写文件名——新增输出格式时无需再改本文件，
+# 杜绝"加了格式却漏发 Release 资产"的历史问题。
 #
 # 推荐发布流程：
 #   pnpm version patch|minor|major   # 自动改 package.json 并打 tag
@@ -26,6 +30,8 @@ jobs:
   release:
     name: Build & Publish rule files
     runs-on: ubuntu-latest
+    # 挂死保护：正常 1~2 分钟内完成，超时即失败，避免空耗额度
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -55,27 +61,30 @@ jobs:
           cat _count.log >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
 
+      # 资产清单：来自生成脚本的单一来源，逐行一个 public/ 相对路径
+      - name: Collect artifact list
+        id: artifacts
+        run: |
+          mapfile -t FILES < <(node scripts/gen-format-files.mjs --list-files)
+          if [ "${#FILES[@]}" -eq 0 ]; then
+            echo "::error::产物清单为空，请检查 scripts/gen-format-files.mjs"
+            exit 1
+          fi
+          echo "共 ${#FILES[@]} 个规则文件："
+          printf '  %s\n' "${FILES[@]}"
+          {
+            echo 'files<<EOF'
+            printf '%s\n' "${FILES[@]}"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
       - name: Package rule files
         id: package
         run: |
+          mapfile -t FILES < <(node scripts/gen-format-files.mjs --list-files)
           ZIP="dns-shield-rules-${GITHUB_REF_NAME}.zip"
-          # 用 zip 保持目录结构；runner 自带 zip
-          zip -j "$ZIP" \
-            public/domains.txt \
-            public/adguard.txt \
-            public/hosts.txt \
-            public/whitelist.txt \
-            public/dnsmasq.conf \
-            public/unbound.conf \
-            public/pihole.txt \
-            public/smartdns.conf \
-            public/rpz.db \
-            public/mosdns_domain_set.txt \
-            public/clash_dns.yaml \
-            public/coredns_hosts.txt \
-            public/mosdns_domain_set.txt \
-            public/clash_dns.yaml \
-            public/coredns_hosts.txt
+          # 用 zip 保持目录结构；runner 自带 zip。-j 压平目录，规则文件均在 public/ 根级
+          zip -j "$ZIP" "${FILES[@]}"
           echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
           ls -lh "$ZIP"
 
@@ -91,16 +100,9 @@ jobs:
             ${{ steps.count.outputs.body }}
             ```
 
-            本版本由 `public/domains.txt` 单一数据源生成，共 12 种格式。
+            本版本由 `public/domains.txt` 单一数据源生成，共 12 种格式（含数据源本身）。
             安装方式见 [README](https://github.com/${{ github.repository }}#readme)。
+          # 资产 = 归档 + 全部单文件（清单由上一步从生成脚本单一来源导出，含新增格式）
           files: |
             ${{ steps.package.outputs.zip }}
-            public/domains.txt
-            public/adguard.txt
-            public/hosts.txt
-            public/whitelist.txt
-            public/dnsmasq.conf
-            public/unbound.conf
-            public/pihole.txt
-            public/smartdns.conf
-            public/rpz.db
+            ${{ steps.artifacts.outputs.files }}
