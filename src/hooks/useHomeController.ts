@@ -1,4 +1,4 @@
-// src/hooks/useHomeController.ts v3.10.2
+// src/hooks/useHomeController.ts v3.11.0
 // Home 页面的状态编排钩子：聚合所有领域钩子（主题/语言/域名数据/规则/URL/设置）
 // 与稳定交互回调，保持 Home.tsx 仅负责渲染。从 Home.tsx 抽离以控制主文件行数，
 // 公开渲染契约不变（返回类型由 TS 推断，Home.tsx 直接解构使用）。

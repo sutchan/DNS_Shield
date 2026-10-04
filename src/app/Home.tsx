@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.10.2
+// src/app/Home.tsx v3.11.0
 // 首页编排：仅负责组合布局与渲染，所有状态逻辑已抽离至 useHomeController（保持主文件 ≤200 行）。
 'use client';
 import './globals.css';

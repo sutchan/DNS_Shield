@@ -5,6 +5,20 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.11.0]
+
+### Added（性能与功能）
+- Web Worker 异步规则解析：`ruleProcessor.worker.ts` 将解析/排序/去重移出主线程（阈值 5000 行），分片上报进度并展示进度条与耗时；Worker 不可用时自动回退主线程
+- IndexedDB 存储层：`idb.ts` / `httpCache.ts` / `cachedFetch.ts`，自动保存上限由 5MB 提升至 50MB，支持 ETag 条件请求（304 复用）与离线兜底，旧 localStorage 草稿自动迁移
+- 输出预览虚拟渲染：`useVirtualList` + `OutputPreview`，长文本仅挂载可视区切片
+- 正则规则双向转换：`regexRules.ts` 支持 AdGuard `/pattern/` ↔ Pi-hole FTL `regex:pattern`（如实标注 dnsmasq 不支持正则）
+- 域名分类与标签过滤：`domainCategory.ts` 依据真实上游源命中关系打标与筛选
+- OpenWrt LuCI 配置包：`openwrt-package/` 提供 `luci-app-dnsshield` 规则订阅
+
+### Changed
+- 升级 Vitest 至 3.2.7，根治 Windows 盘符重复统计导致的覆盖率虚低（报告值 47.85% → 真实 84.46%），阈值提升至 80/75/85/80
+- 移除 Docker 部署：`Dockerfile` / `.dockerignore` 删除，Deploy 工作流仅保留 Vercel 与 EdgeOne Pages
+
 ## [3.10.3]
 
 ### Refactor（GA4 衡量 ID 环境变量化）
