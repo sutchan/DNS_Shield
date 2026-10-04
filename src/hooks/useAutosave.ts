@@ -1,4 +1,4 @@
-// src/hooks/useAutosave.ts v3.11.0
+// src/hooks/useAutosave.ts v3.11.1
 // 自动保存编排：挂载时恢复本地草稿（IndexedDB 优先，localStorage 降级），
 // 并按固定间隔持久化当前输入。存储读写细节见 autosaveStorage / utils/idb。
 
@@ -63,5 +63,5 @@ export const useAutosave = ({
       }
     }, AUTOSAVE_INTERVAL_MS);
     return () => clearInterval(timer);
-  }, []);
+  }, [sourceInputRef]);
 };

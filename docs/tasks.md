@@ -4,16 +4,16 @@
 > 所有新增、变更、完成任务必须更新本文件；项目内其他位置（README、SPEC、CHECKLIST、CHANGELOG、原型等）**不得另建任务清单**。
 > 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-10-04 20:05（与 package.json v3.11.0 对齐，代码实况核验）
+> 最后审查：2026-10-04 20:40（与 package.json v3.11.1 对齐，代码实况核验）
 > 维护团队：Sut / ArcesTeam
 >
-> **本次更新（2026-10-04 20:05）**：**7 项未完成任务全部完成**（T-P1-03 / T-P1-01 / T-P1-02 / T-P4-01 / T-P2-04 / T-P2-01 / T-P3-02），含新功能故 minor 升至 **v3.11.0**。数据型数字实算：测试 **16 套件 / 114 用例**（新增 `regexRules.test.ts` 9 例 + `domainCategory.test.ts` 7 例）；覆盖率门禁回归真实值 **语句 84.46% / 分支 86.85% / 函数 91.07% / 行 84.46%**（升级 Vitest 3.2.7 后 Windows 盘符重复统计问题根治，阈值由 45/75/70/45 提升至 80/75/85/80）。上一轮（19:40）GA4 环境变量化、输出格式 12 种、顶层组件 13 个、`ts/tsx` 超 200 行文件 0 个。
+> **本次更新（2026-10-04 20:40）**：EdgeOne Pages 构建失败（`next build` ESLint 门禁，exit 18）已修复，patch 升至 **v3.11.1**。根因有二：① v3.10.2 组件拆分误删 `<FormatTabs>` JSX，导致输出格式切换 UI 丢失且 import 未使用报错——已恢复渲染；② 拆分/重构残留的未使用变量与 hooks 依赖告警（`SettingsPanel.updateSettings`、`useHomeController` 的 `React`、`useAutosave` 定时器依赖、`useRuleWorker` 清理函数读 ref）。门禁复核：`next lint` **0 error 0 warning**、`tsc --noEmit` 通过、测试 **16 套件 / 114 用例**全通过。上一轮（20:05）7 项未完成任务全部完成并升至 v3.11.0。
 
 ---
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.11.0 | `package.json` version（权威源） |
+| 应用版本 | v3.11.1 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 145 键、递归合计 207 键 | 脚本统计 `zh-cn.json`（`check:locales` 输出为递归口径 207） |
 | 测试套件 / 用例 | **16 套件 / 114 用例**（全通过） | `vitest run`（权威计数） |
@@ -136,6 +136,7 @@
 - [x] **T-P2-04: 正则规则双向语法转换（2026-10-04，v3.11.0）** — 新增 `src/utils/regexRules.ts`：AdGuard `/pattern/` ↔ Pi-hole FTL `regex:pattern` 双向互转；如实标注 dnsmasq 本身不支持正则（不生成无法生效的规则），例外语义在 Pi-hole 侧降级为注释；补 9 例单测
 - [x] **T-P2-01: 域名分类与标签过滤（2026-10-04，v3.11.0）** — 新增 `src/utils/domainCategory.ts`：按域名真实命中的上游源（AdGuard / EasyList / neoHosts / StevenBlack / YouSList）打标，提供索引解析、分类查询、按类筛选与分布统计，不引入任何虚构类别；补 7 例单测
 - [x] **T-P3-02: OpenWrt LuCI 配置包（2026-10-04，v3.11.0）** — 新增 `openwrt-package/`：LuCI 应用 Makefile（`luci-app-dnsshield`）、订阅控制器（uclient-fetch 拉取、10MB 上限、URL 白名单校验防命令注入，落地 `/etc/dnsshield/rules.conf` 并重载 dnsmasq）、菜单与 rpcd ACL、UCI 默认配置
+- [x] **构建门禁修复与格式切换 UI 找回（2026-10-04，v3.11.1）** — EdgeOne Pages 构建因 `next build` ESLint 门禁失败（exit 18）。① 恢复 v3.10.2 组件拆分中被误删的 `<FormatTabs>` 渲染（`OutputToolbar` 增 `children` 插槽，DOM 顺序同 v3.10.0），输出格式切换 UI 复原；② 清理 `FormatTabs`/`updateSettings`/未使用 `React` 导入 3 处 unused 变量与 `useAutosave`、`useRuleWorker` 2 处 hooks 依赖告警；③ 移除 `useSettings` 中已废弃的 `FIELD_MAP` + `updateSettings` 死代码；④ 复核 `next lint` 0 error 0 warning、`tsc --noEmit` 通过、16 套件 / 114 用例全通过
 
 ### 历史开发任务（已归档）
 

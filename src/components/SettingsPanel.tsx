@@ -1,4 +1,4 @@
-// src/components/SettingsPanel.tsx v3.10.2
+// src/components/SettingsPanel.tsx v3.11.1
 // 设置面板组件 —— 模态外壳 + 无障碍 Hook（useModalA11y）+ 内部表单（SettingsForm）。
 // 从 OutputPanel 拆分；无障碍逻辑与表单内容已抽离以保持主文件 ≤200 行。
 'use client';
@@ -14,7 +14,6 @@ interface SettingsPanelProps {
   settings: SettingsType;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
-  updateSettings: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
 }
 
@@ -24,7 +23,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   settings,
   theme,
   toggleTheme,
-  updateSettings,
   setSettings,
 }) => {
   const t = useT();

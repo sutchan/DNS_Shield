@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.11.0
+// src/components/OutputPanel.tsx v3.11.1
 // 输出面板：编排格式切换 / 设置弹窗 / 规则测试 / 路由器脚本 / 预览 / 操作按钮。
 // 纯展示子组件与派生逻辑已抽离至 OutputPanel.parts.tsx 以保持主文件 ≤200 行。
 'use client';
@@ -32,7 +32,6 @@ interface OutputPanelProps {
   downloadOutput: () => void;
   copyOutput: () => void;
   syncOutputScroll: () => void;
-  updateSettings: (e: React.ChangeEvent<HTMLInputElement>) => void;
   setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
@@ -54,7 +53,6 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   downloadOutput,
   copyOutput,
   syncOutputScroll,
-  updateSettings,
   setSettings,
   theme,
   toggleTheme,
@@ -93,7 +91,14 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
             onOpenScriptGen={() => setIsScriptGenOpen(true)}
             onOpenSettings={onOpenSettings}
             isSettingsOpen={isSettingsOpen}
-          />
+          >
+            <FormatTabs
+              currentFormat={currentFormat}
+              visibleFormats={visibleFormats}
+              formatLabel={formatLabel}
+              onFormatChange={setFormat}
+            />
+          </OutputToolbar>
         </div>
 
         {/* Settings Panel（L2：居中弹窗 modal） */}
@@ -103,7 +108,6 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
           settings={settings}
           theme={theme}
           toggleTheme={toggleTheme}
-          updateSettings={updateSettings}
           setSettings={setSettings}
         />
 

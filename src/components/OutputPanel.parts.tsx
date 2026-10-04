@@ -1,8 +1,8 @@
-// src/components/OutputPanel.parts.tsx v3.10.2
+// src/components/OutputPanel.parts.tsx v3.11.1
 // OutputPanel 的纯展示子组件：格式切换标签栏、预览统计条、工具栏与操作按钮。
 // 派生逻辑（格式标签映射 / 可见格式计算）已抽离至 OutputPanel.derived.ts 以保持本文件 ≤200 行。
 
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import { Tabs, TabsList, TabsTrigger } from './ui/Tabs';
 import { Button } from './ui/Button';
 import { SearchCheck, Terminal, Settings as SettingsIcon, Sparkles, Download, Copy } from 'lucide-react';
@@ -83,17 +83,21 @@ interface OutputToolbarProps {
   onOpenScriptGen: () => void;
   onOpenSettings: () => void;
   isSettingsOpen: boolean;
+  /** 工具栏左侧插槽：格式切换标签栏（保持与 v3.10.0 一致的 DOM 顺序） */
+  children?: ReactNode;
 }
 
-// 输出面板顶部工具栏：规则测试 / 路由器脚本 / 设置三个图标按钮。
+// 输出面板顶部工具栏：格式切换标签栏 + 规则测试 / 路由器脚本 / 设置三个图标按钮。
 export const OutputToolbar: FC<OutputToolbarProps> = ({
   t,
   onOpenRuleTester,
   onOpenScriptGen,
   onOpenSettings,
   isSettingsOpen,
+  children,
 }) => (
   <div className="output-toolbar flex items-center gap-1.5" id="output-toolbar">
+    {children}
     <Button
       type="button"
       variant={'outline' as const}

@@ -1,8 +1,8 @@
-// src/hooks/useHomeController.ts v3.11.0
+// src/hooks/useHomeController.ts v3.11.1
 // Home 页面的状态编排钩子：聚合所有领域钩子（主题/语言/域名数据/规则/URL/设置）
 // 与稳定交互回调，保持 Home.tsx 仅负责渲染。从 Home.tsx 抽离以控制主文件行数，
 // 公开渲染契约不变（返回类型由 TS 推断，Home.tsx 直接解构使用）。
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import type { Stats } from '../types';
 import { logger } from '../utils/logger';
@@ -56,7 +56,7 @@ export function useHomeController() {
   } = useDomainData(showToast);
 
   // 设置管理
-  const { settings, setSettings, updateSettings } = useSettings();
+  const { settings, setSettings } = useSettings();
 
   // 稳定引用：将「生效后统计」合并进展示用的 stats（保留 domainCount/commentCount/invalidCount）。
   // 用 useCallback 包裹，避免每次渲染生成新函数导致 useRules 的 runGenerate 及下游回调
@@ -159,7 +159,6 @@ export function useHomeController() {
     showToast,
     settings,
     setSettings,
-    updateSettings,
     outputContent,
     currentFormat,
     outputPreviewRef,

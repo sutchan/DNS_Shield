@@ -1,6 +1,8 @@
-// src/hooks/useSettings.ts v3.9.0
-// 设置管理 hook —— 从 Home.tsx 拆分
-import { useState, useCallback } from 'react';
+// src/hooks/useSettings.ts v3.11.1
+// 设置管理 hook —— 从 Home.tsx 拆分。
+// 各字段由 SettingsForm 直接以 setSettings(prev => ...) 就地更新，
+// 早期基于 input id 的通用 updateSettings 回调已随表单重构移除（死代码）。
+import { useState } from 'react';
 import { Settings } from '../types';
 import { APP_VERSION } from '../config/version';
 
@@ -30,32 +32,12 @@ const DEFAULT_SETTINGS: Settings = {
   corednsFilename: 'coredns_hosts.txt'
 };
 
-// 输入框 id -> settings key 的显式映射，避免脆弱的字符串替换。
-// 提升为模块级常量，保持引用稳定（避免 useCallback 依赖告警）。
-const FIELD_MAP: Record<string, keyof Settings> = {
-  projectNameInput: 'projectName',
-  versionInput: 'version',
-  ipv4Input: 'ipv4',
-  ipv6Input: 'ipv6',
-};
-
 export const useSettings = () => {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
 
-  const updateSettings = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    const key = FIELD_MAP[id];
-    if (!key) return;
-    setSettings((prev: Settings) => ({
-      ...prev,
-      [key]: value
-    }));
-  }, []);
-
   return {
     settings,
-    setSettings,
-    updateSettings
+    setSettings
   };
 };
 

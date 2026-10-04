@@ -5,6 +5,14 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.11.1]
+
+### Fixed（修复 EdgeOne 构建失败并找回丢失的格式切换 UI）
+- **修复 `next build` ESLint 门禁失败**（EdgeOne Pages 部署 exit 18）：清理 3 处 `@typescript-eslint/no-unused-vars` 错误（`OutputPanel.tsx` 的 `FormatTabs`、`SettingsPanel.tsx` 的 `updateSettings`、`useHomeController.ts` 未使用的 `React` 导入）与 2 处 `react-hooks/exhaustive-deps` 警告（`useAutosave` 定时器依赖 `sourceInputRef`、`useRuleWorker` 卸载清理在 effect 体内取出挂起表引用）
+- **找回丢失的输出格式切换标签栏**：`<FormatTabs>` 的 JSX 在 v3.10.2 的组件拆分（T-P1-04）中被误删，只剩未使用的 import——输出面板自此只能显示当前默认格式，无法切换 12 种格式。已恢复渲染（`OutputToolbar` 增加 `children` 插槽，DOM 顺序与 v3.10.0 一致：`#output-format-tabs` 位于工具栏按钮之前）
+- 清理 `updateSettings` 死代码链：表单已改为 `setSettings(prev => ...)` 就地更新，移除 `SettingsPanel`/`OutputPanel`/`Home` 的 prop 透传，以及 `useSettings` 中基于 input id 的 `FIELD_MAP` 与回调
+- 同步全局版本展示位至 v3.11.1
+
 ## [3.11.0]
 
 ### Added（性能与功能）

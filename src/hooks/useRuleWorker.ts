@@ -1,4 +1,4 @@
-// src/hooks/useRuleWorker.ts v3.11.0
+// src/hooks/useRuleWorker.ts v3.11.1
 // 规则处理 Worker 的主线程控制器：负责 Worker 生命周期、请求/响应配对、
 // 进度回调与耗时统计。不支持 Worker 的环境（SSR / 老旧浏览器）返回 null，
 // 由调用方回退主线程同步处理，保证功能不中断。
@@ -87,10 +87,13 @@ export const useRuleWorker = () => {
 
   // 卸载时释放 Worker 与挂起任务
   useEffect(() => {
+    // 在 effect 体内取出挂起表引用：cleanup 阶段直接用 ref.current 会被
+    // react-hooks/exhaustive-deps 判定为「清理时可能已变化」的值
+    const pendingTasks = pendingRef.current;
     return () => {
       workerRef.current?.terminate();
       workerRef.current = null;
-      pendingRef.current.clear();
+      pendingTasks.clear();
     };
   }, []);
 
