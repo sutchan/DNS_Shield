@@ -4,22 +4,22 @@
 > 所有新增、变更、完成任务必须更新本文件；项目内其他位置（README、SPEC、CHECKLIST、CHANGELOG、原型等）**不得另建任务清单**。
 > 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-10-04（与 package.json v3.10.1 对齐，代码实况核验）
+> 最后审查：2026-10-04（与 package.json v3.10.2 对齐，代码实况核验）
 > 维护团队：Sut / ArcesTeam
 >
-> **本次更新（2026-10-04）**：合并原 `TASKS.md` 与 `REMAINING_TASKS.md` 为本唯一文件，删除冗余任务文档，并消除两文档间「剩余 7 项 / 剩余 5 项」的口径矛盾。
+> **本次更新（2026-10-04）**：① 合并原 `TASKS.md` 与 `REMAINING_TASKS.md` 为本唯一文件，删除冗余任务文档，消除「剩余 7 项 / 剩余 5 项」口径矛盾；② 实况核验并修正数据型数字（测试用例由 85 修正为 **95**，源文件 >200 行仍为 4 个）；③ 启动 T-P1-04 拆分 4 个超行文件，拆分后单文件均 ≤200 行、公开 API 不变。
 
 ---
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.10.1 | `package.json` version（权威源） |
+| 应用版本 | v3.10.2 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 145 键、递归合计 207 键 | 脚本统计 `zh-cn.json`（`check:locales` 输出为递归口径 207） |
-| 测试套件 / 用例 | **13 套件 / 85 用例**（全通过） | `vitest run` |
+| 测试套件 / 用例 | **13 套件 / 95 用例**（全通过） | `vitest run` |
 | 覆盖率门禁 | 已生效（报告值 47.85%，真实约 95%+） | `vitest run --coverage` |
 | 组件规模 | 顶层 12 个 + `ui/` 12 个 | `src/components/` |
-| 源文件 >200 行 | 4 个（待 T-P1-04 拆分） | 行数扫描 |
+| 源文件 >200 行 | 0 个（T-P1-04 已完成拆分） | 行数扫描 |
 
 > **教训**：本文件中的数据型数字（键数 / 用例数 / 覆盖率 / 行数）历史上多次与实现脱节。修改前务必用脚本实算，禁止凭记忆书写。
 
@@ -61,12 +61,6 @@
 - [ ] **T-P1-03: 离线与增量存储优化 (IndexedDB)**
   - 使用 IndexedDB 替代 LocalStorage 存储超长自定义规则列表，突破 LocalStorage 5MB 限制
   - 实现预设源与远程 URL 规则的增量缓存与 ETag 校验
-- [ ] **T-P1-04: 拆分超 200 行源文件**
-  - 违反「源文件单文件 ≤200 行」规则，需按职责拆分且保持公开 API 不变（2026-10-04 实测）：
-  - `src/components/SettingsPanel.tsx`（269 行）
-  - `src/components/OutputPanel.tsx`（243 行）
-  - `src/types/translation.ts`（231 行）
-  - `src/app/Home.tsx`（229 行）
 
 ### 🟢 P2 - 规则引擎进阶功能与工具链
 
@@ -87,7 +81,7 @@
   - 当前以 thresholds 按报告值校准作 workaround，升级后需重新校准阈值
   - 受限：本次因网络受限未能升级
 
-> **未完成任务合计：7 项**（P1 四项、P2 两项、P3 一项、P4 一项）
+> **未完成任务合计：6 项**（P1 三项、P2 两项、P3 一项、P4 一项）
 
 ---
 
@@ -106,7 +100,7 @@
 | T-P1-01 | Web Worker 解析 | Dev Team | 10 万行域名解析不阻塞 UI 渲染，有进度反馈 | 规划中 |
 | T-P1-02 | 虚拟滚动 | Dev Team | 超大规则预览流畅（60fps 滚动） | 规划中 |
 | T-P1-03 | IndexedDB 存储 | Dev Team | 大容量规则持久化保存，刷新无缝恢复 | 规划中 |
-| T-P1-04 | 拆分超 200 行源文件 | Core Team | 4 个超行文件拆分后单文件 ≤200 行，公开 API 不变 | 规划中 |
+| T-P1-04 | 拆分超 200 行源文件 | Core Team | 4 个超行文件拆分后单文件 ≤200 行，公开 API 不变 | ✅ 已完成（v3.10.2，4 文件均 ≤200 行） |
 | T-P2-01 | 分类标签过滤 | Feature Team | 支持多维度分类标签与选择性导出 | 规划中 |
 | T-P2-04 | 正则双向语法转换 | Feature Team | AdGuard 正则 ↔ Dnsmasq regex/server 互转 | 规划中 |
 | T-P3-02 | OpenWrt LuCI 配置包 | Infra Team | LuCI 后台可直接订阅规则源 | 规划中 |
@@ -127,6 +121,7 @@
 - [x] **T-P3-01: 路由器一键同步脚本** — `ScriptGeneratorModal.tsx` 支持 OpenWrt / Merlin / Padavan / SmartDNS / Pi-hole
 - [x] **T-P3-03: 定时自动抓取与上游规则聚合 GitHub Action** — `.github/workflows/aggregate.yml`（每周一 03:17 UTC）+ `scripts/aggregate-upstream.mjs`，聚合 AdGuard / EasyList / NeoHosts / StevenBlack / YousList，去重合并后自动发起 PR 供人工审核
 - [x] **任务文档合并（2026-10-04）** — 原 `TASKS.md` 与 `REMAINING_TASKS.md` 合并为本文件，删除冗余文档，消除剩余任务数口径矛盾
+- [x] **T-P1-04: 拆分超 200 行源文件（2026-10-04，v3.10.2）** — 按职责拆分 4 个超行文件且公开 API 不变：`translation.ts`→`translation.parts.ts`（嵌套子类型）、`Home.tsx`→`useHomeController` 钩子、`SettingsPanel.tsx`→`useModalA11y`+`SettingsForm`、`OutputPanel.tsx`→`OutputPanel.parts.tsx` 增 `formatLabel`/`useVisibleFormats`/`OutputToolbar`/`OutputActions`；拆分后单文件均 ≤200 行
 
 ### 历史开发任务（已归档）
 
@@ -147,7 +142,7 @@
 - [x] 优化浏览器兼容性
 - [x] 完善国际化支持（16 种语言）
 - [x] 改进文档质量和完整性
-- [x] 优化构建和部署流程（corepack + pnpm，Dockerfile 对齐）
+- [x] 优化构建和部署流程（corepack + pnpm）
 - [x] 增强安全性和性能（CSP 头部、URL 验证）
 
 ---

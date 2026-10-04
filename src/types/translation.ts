@@ -1,5 +1,8 @@
-// src/types/translation.ts v3.10.1
+// src/types/translation.ts v3.10.2
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
+// 嵌套子类型（header/whitelist/toast）已抽离至 translation.parts.ts 以控制主文件行数。
+import type { TranslationHeader, TranslationWhitelist, TranslationToast } from './translation.parts';
+
 export interface Translation {
   subtitle: string;
   inputTitle: string;
@@ -108,77 +111,9 @@ export interface Translation {
   urlActionsAria: string;
   urlListAria: string;
   usageGuideAria: string;
-  header: {
-    dnsmasqTitle: string;
-    description: string;
-    hostsTitle: string;
-    hostsDescription: string;
-    adguardTitle: string;
-    adguardDescription: string;
-    unboundTitle?: string;
-    unboundDescription?: string;
-    piholeTitle?: string;
-    piholeDescription?: string;
-    domainsTitle?: string;
-    domainsDescription?: string;
-    bindTitle?: string;
-    bindDescription?: string;
-    smartdnsTitle?: string;
-    smartdnsDescription?: string;
-    usage: string;
-    merlinUsage: string;
-    openwrtUsage: string;
-    hostsUsage: string;
-    unboundUsage?: string;
-    piholeUsage?: string;
-    domainsUsage?: string;
-    bindUsage?: string;
-    smartdnsUsage?: string;
-    mosdnsTitle?: string;
-    mosdnsDescription?: string;
-    mosdnsUsage?: string;
-    clashTitle?: string;
-    clashDescription?: string;
-    clashUsage?: string;
-    corednsTitle?: string;
-    corednsDescription?: string;
-    corednsUsage?: string;
-    version: string;
-    update: string;
-    domains: string;
-    uniqueDomains: string;
-    whitelist: string;
-    domainsCount: string;
-    project: string;
-    demo: string;
-  };
-  whitelist: {
-    title: string;
-    label: string;
-    hostsNote?: string;
-  };
-  toast: {
-    rulesGenerated: string;
-    downloaded: string;
-    copied: string;
-    copyFailed: string;
-    domainsSorted: string;
-    duplicatesRemoved: string;
-    domainsSaved: string;
-    autosaveRestored: string;
-    parseFailed: string;
-    urlEnter: string;
-    domainsFetched: string;
-    fetchFailed: string;
-    urlAdded: string;
-    urlsSorted: string;
-    urlsFetched: string;
-    presetLoaded: string;
-    presetFailed: string;
-    loading: string;
-    invalidUrl: string;
-    invalidUrlsFiltered: string;
-  };
+  header: TranslationHeader;
+  whitelist: TranslationWhitelist;
+  toast: TranslationToast;
   // —— 对齐原型 v3.8.1 新增扁平键 ——
   // Hero CTA 按钮（原型 ctaStart/ctaSettings）
   ctaStart: string;

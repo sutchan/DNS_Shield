@@ -163,73 +163,6 @@ certbot --nginx -d dns-shield.example.com
 certbot renew --dry-run
 ```
 
-### 3. 容器化部署
-
-使用 Docker 容器化部署。
-
-#### 3.1 创建 Dockerfile
-
-在项目根目录创建 `Dockerfile`：
-
-```dockerfile
-# 使用 Node.js 18 作为基础镜像
-FROM node:18-alpine
-
-# 启用 corepack 以使用 pnpm（项目依赖 pnpm-lock.yaml）
-RUN corepack enable
-
-# 设置工作目录
-WORKDIR /app
-
-# 复制清单与锁文件
-COPY package.json pnpm-lock.yaml ./
-
-# 安装依赖
-RUN pnpm install --frozen-lockfile
-
-# 复制项目文件
-COPY . .
-
-# 构建项目
-RUN pnpm build
-
-# 暴露端口
-EXPOSE 3000
-
-# 启动应用
-CMD ["pnpm", "start"]
-```
-
-#### 3.2 构建与运行
-
-```bash
-# 构建镜像
-docker build -t dns-shield .
-
-# 运行容器
-docker run -d --name dns-shield -p 3000:3000 dns-shield
-```
-
-#### 3.3 使用 Docker Compose（可选）
-
-创建 `docker-compose.yml`：
-
-```yaml
-version: '3'
-services:
-  dns-shield:
-    build: .
-    ports:
-      - "3000:3000"
-    restart: always
-```
-
-```bash
-docker-compose up -d
-```
-
-> 说明：当前 `next.config.js` 未启用 `output: 'standalone'`，使用默认构建产物并经由 `next start` 启动。`Dockerfile` 已正确启用 corepack 以使用 `pnpm-lock.yaml` 安装依赖。
-
 ## CI/CD 自动化
 
 项目使用 GitHub Actions 实现「提交即校验、合入即部署」。工作流位于 `.github/workflows/`。
@@ -239,7 +172,7 @@ docker-compose up -d
 | 工作流 | 文件 | 触发时机 | 职责 |
 |--------|------|----------|------|
 | CI | `ci.yml` | push/PR → `main`、`dev`；手动 | 质量门禁：ESLint、TypeScript、Vitest（含覆盖率）、Next.js 构建、多语言与数据一致性 |
-| Deploy | `deploy.yml` | push → `main`、push tag `v*`；手动 | 部署到 Vercel / EdgeOne Pages / GHCR 镜像 / 自托管服务器 |
+| Deploy | `deploy.yml` | push → `main`、push tag `v*`；手动 | 部署到 Vercel / EdgeOne Pages |
 | Release | `release.yml` | push tag `v*` | 校验版本号、重新生成全部规则文件、创建 GitHub Release 并附带规则文件资产 |
 | Aggregate | `aggregate.yml` | 每周一定时；手动 | 聚合 AdGuard / EasyList / NeoHosts / StevenBlack / YousList 上游域名，去重合并后自动发起 Pull Request 更新 `public/domains.txt` |
 
@@ -260,10 +193,7 @@ CI 采用「并行 job + 聚合门禁」结构：`lint`、`typecheck`、`test`�
 | `VERCEL_ORG_ID` | Vercel 组织 ID | 同上 |
 | `VERCEL_PROJECT_ID` | Vercel 项目 ID | 同上 |
 | `EDGEONE_API_TOKEN` | EdgeOne Pages API Token | EdgeOne job 跳过 |
-| `SSH_HOST` / `SSH_USERNAME` / `SSH_PRIVATE_KEY` / `SSH_PORT` | 自托管服务器 SSH 登录 | 自托管 job 跳过 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 衡量 ID（构建期内联） | 留空则前端不启用统计 |
-
-GHCR 镜像推送使用内置的 `GITHUB_TOKEN`，无需额外配置。
 
 ### 3. 需要配置的 Variables（部署开关）
 

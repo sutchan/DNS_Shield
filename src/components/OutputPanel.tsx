@@ -1,14 +1,20 @@
-// src/components/OutputPanel.tsx v3.10.1
+// src/components/OutputPanel.tsx v3.10.2
+// 输出面板：编排格式切换 / 设置弹窗 / 规则测试 / 路由器脚本 / 预览 / 操作按钮。
+// 纯展示子组件与派生逻辑已抽离至 OutputPanel.parts.tsx 以保持主文件 ≤200 行。
 'use client';
 import * as React from 'react';
-import { Sparkles, Download, Copy, Settings, SearchCheck, Terminal } from 'lucide-react';
-import { Button } from './ui/Button';
 import SettingsPanel from './SettingsPanel';
 import RuleTesterModal from './RuleTesterModal';
 import ScriptGeneratorModal from './ScriptGeneratorModal';
-import { FormatTabs, PreviewStats } from './OutputPanel.parts';
+import {
+  FormatTabs,
+  PreviewStats,
+  buildFormatLabel,
+  useVisibleFormats,
+  OutputToolbar,
+  OutputActions,
+} from './OutputPanel.parts';
 import { Settings as SettingsType, FormatType, OutputContent, ParsedData } from '../types';
-import { ALL_FORMATS, CORE_FORMATS } from '../types/formats';
 import { useT } from '../context/AppContext';
 
 interface OutputPanelProps {
@@ -59,13 +65,9 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   const [isScriptGenOpen, setIsScriptGenOpen] = React.useState(false);
 
   // 可见格式列表：结合 showAllFormats（全部/核心）与 visibleFormats（逐格式显示/隐藏开关）。
-  const visibleFormats = React.useMemo<FormatType[]>(() => {
-    const base = settings.showAllFormats ? ALL_FORMATS : CORE_FORMATS;
-    const filtered = settings.visibleFormats.length > 0
-      ? base.filter((f) => settings.visibleFormats.includes(f))
-      : base;
-    return filtered.filter((f) => outputContent[f]?.trim());
-  }, [settings.showAllFormats, settings.visibleFormats, outputContent]);
+  const visibleFormats = useVisibleFormats(settings, outputContent);
+  // 各输出格式的展示标签。
+  const formatLabel = buildFormatLabel(t);
 
   // 当前选中格式被隐藏时，回退到首个可见格式，避免空面板
   React.useEffect(() => {
@@ -73,21 +75,6 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
       setFormat(visibleFormats[0]);
     }
   }, [visibleFormats, currentFormat, setFormat]);
-
-  const formatLabel: Record<FormatType, string> = {
-    hosts: t.hostsFormat,
-    dnsmasq: t.dnsmasqFormat,
-    adguard: t.adguardFormat,
-    whitelist: t.whitelistFormat,
-    unbound: t.unboundFormat ?? t.hostsFormat,
-    pihole: t.piholeFormat ?? t.hostsFormat,
-    domains: t.domainsFormat ?? t.hostsFormat,
-    bind: t.bindFormat ?? t.hostsFormat,
-    smartdns: t.smartdnsFormat ?? t.hostsFormat,
-    mosdns: t.mosdnsFormat ?? t.hostsFormat,
-    clash: t.clashFormat ?? t.hostsFormat,
-    coredns: t.corednsFormat ?? t.hostsFormat,
-  };
 
   const ruleLines = outputContent[currentFormat] ? outputContent[currentFormat].split('\n').length : 0;
   const domainTotal = parsedData.domains.length + parsedData.whitelist.length + parsedData.customDns.length;
@@ -100,48 +87,13 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
             <h2 id="output-title">{t.outputTitle}</h2>
           </div>
-          <div className="output-toolbar flex items-center gap-1.5" id="output-toolbar">
-            <FormatTabs
-              currentFormat={currentFormat}
-              visibleFormats={visibleFormats}
-              formatLabel={formatLabel}
-              onFormatChange={setFormat}
-            />
-            <Button
-              type="button"
-              variant={'outline' as const}
-              size={'icon' as const}
-              onClick={() => setIsRuleTesterOpen(true)}
-              title={t.ruleTesterTitle}
-              id="rule-tester-toggle-btn"
-              aria-label={t.ruleTesterTitle}
-            >
-              <SearchCheck className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-            </Button>
-            <Button
-              type="button"
-              variant={'outline' as const}
-              size={'icon' as const}
-              onClick={() => setIsScriptGenOpen(true)}
-              title={t.routerScriptTitle}
-              id="router-script-toggle-btn"
-              aria-label={t.routerScriptTitle}
-            >
-              <Terminal className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-            </Button>
-            <Button
-              type="button"
-              variant={'outline' as const}
-              size={'icon' as const}
-              onClick={onOpenSettings}
-              title={t.settingsTitle}
-              id="settings-panel-toggle-btn"
-              aria-expanded={isSettingsOpen}
-              aria-controls="settings-panel"
-            >
-              <Settings className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-            </Button>
-          </div>
+          <OutputToolbar
+            t={t}
+            onOpenRuleTester={() => setIsRuleTesterOpen(true)}
+            onOpenScriptGen={() => setIsScriptGenOpen(true)}
+            onOpenSettings={onOpenSettings}
+            isSettingsOpen={isSettingsOpen}
+          />
         </div>
 
         {/* Settings Panel（L2：居中弹窗 modal） */}
@@ -218,21 +170,12 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
           )}
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap gap-2 justify-end" id="output-actions" role="group" aria-label={t.outputActionsAria}>
-          <Button type="button" variant={'default' as const} onClick={generateRules} id="generate-rules-btn" className="font-semibold shadow-md">
-            <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
-            {t.generateBtn}
-          </Button>
-          <Button type="button" variant={'default' as const} onClick={downloadOutput} id="download-btn">
-            <Download className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
-            {t.downloadBtn}
-          </Button>
-          <Button type="button" variant={'outline' as const} onClick={copyOutput} id="copy-btn">
-            <Copy className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
-            {t.copyBtn}
-          </Button>
-        </div>
+        <OutputActions
+          t={t}
+          onGenerate={generateRules}
+          onDownload={downloadOutput}
+          onCopy={copyOutput}
+        />
       </div>
     </section>
   );

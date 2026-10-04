@@ -14,8 +14,6 @@
 #   |----------------|-----------------|------------------------------------------------------------|
 #   | Vercel         | DEPLOY_VERCEL   | VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID              |
 #   | EdgeOne Pages  | DEPLOY_EDGEONE  | EDGEONE_API_TOKEN                                           |
-#   | GHCR 镜像      | DEPLOY_GHCR     | 无（使用内置 GITHUB_TOKEN）                                  |
-#   | 自托管 SSH     | DEPLOY_SSH      | SSH_HOST, SSH_USERNAME, SSH_PRIVATE_KEY                      |
 #
 # 为什么用「变量」而不是判断 Secret 是否存在：
 #   secrets 上下文在 job 级 if 中不可靠，用显式开关更可控、也便于临时摘除某个目标。
@@ -41,7 +39,6 @@ concurrency:
 
 permissions:
   contents: read
-  packages: write
 
 env:
   NEXT_TELEMETRY_DISABLED: '1'
@@ -123,109 +120,4 @@ jobs:
         env:
           EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
 
-  # ------------------------------------------------------------ GHCR 镜像
-  docker:
-    name: Build & Push Docker image
-    runs-on: ubuntu-latest
-    if: ${{ vars.DEPLOY_GHCR != 'false' }}
-    permissions:
-      contents: read
-      packages: write
-    outputs:
-      image: ${{ steps.image.outputs.tag }}
-      digest: ${{ steps.build.outputs.digest }}
-    steps:
-      - uses: actions/checkout@v4
 
-      # 自托管部署复用同一个明确 tag，避免二次解析 metadata-action 的标签列表
-      - name: Compute image tag
-        id: image
-        run: echo "tag=ghcr.io/${{ github.repository }}:sha-${{ github.sha }}" >> "$GITHUB_OUTPUT"
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=sha-${{ github.sha }}
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Build and push
-        id: build
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          # 默认只构建 amd64 以控制时长。若需在树莓派等 ARM 设备运行，
-          # 在仓库变量 DOCKER_PLATFORMS 设为 linux/amd64,linux/arm64
-          platforms: ${{ vars.DOCKER_PLATFORMS || 'linux/amd64' }}
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build-args: |
-            NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
-
-      - name: Write image summary
-        run: |
-          {
-            echo '### 容器镜像已推送'
-            echo '```'
-            echo '${{ steps.meta.outputs.tags }}'
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
-
-  # ------------------------------------------------------------- 自托管机
-  selfhost:
-    name: Deploy to self-hosted server
-    runs-on: ubuntu-latest
-    needs: [docker]
-    if: ${{ always() && needs.docker.result == 'success' && vars.DEPLOY_SSH == 'true' }}
-    environment: production
-    steps:
-      - name: Check secrets
-        run: |
-          if [ -z "${{ secrets.SSH_HOST }}" ]; then
-            echo "::error::已开启 DEPLOY_SSH，但缺少 SSH_HOST / SSH_USERNAME / SSH_PRIVATE_KEY。"
-            exit 1
-          fi
-
-      # 通过 SSH 在目标机拉取 GHCR 镜像并滚动重启容器。
-      # 目标机需先执行一次：`echo $GH_TOKEN | docker login ghcr.io -u <user> --password-stdin`
-      - name: Remote deploy
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || '22' }}
-          script: |
-            set -e
-            IMAGE="${{ needs.docker.outputs.image }}"
-            docker pull "$IMAGE"
-            docker rm -f dns-shield 2>/dev/null || true
-            docker run -d \
-              --name dns-shield \
-              --restart unless-stopped \
-              -p 3000:3000 \
-              -e NODE_ENV=production \
-              "$IMAGE"
-            docker image prune -f
-            echo "部署完成：$IMAGE"

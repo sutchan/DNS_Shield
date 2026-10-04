@@ -1,9 +1,8 @@
-// src/app/Home.tsx v3.10.1
+// src/app/Home.tsx v3.10.2
+// 首页编排：仅负责组合布局与渲染，所有状态逻辑已抽离至 useHomeController（保持主文件 ≤200 行）。
 'use client';
-import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './globals.css';
 
-// 导入组件
 import Header from '../components/Header';
 import InputPanel from '../components/InputPanel';
 import OutputPanel from '../components/OutputPanel';
@@ -12,217 +11,83 @@ import Footer from '../components/Footer';
 import GuideModal from '../components/GuideModal';
 import { ToastProvider } from '../components/ui/Toast';
 import { AppProvider } from '../context/AppContext';
-
-// 导入钩子
-import { useTheme } from '../hooks/useTheme';
-import { useLanguage } from '../hooks/useLanguage';
-import { useDomainData } from '../hooks/useDomainData';
-import { useRules } from '../hooks/useRules';
-import { useUrlManager } from '../hooks/useUrlManager';
-import { useSettings } from '../hooks/useSettings';
-import { toast } from 'sonner';
-import type { Stats } from '../types';
-import { logger } from '../utils/logger';
+import { useHomeController } from '../hooks/useHomeController';
 
 export default function Home() {
-  // 使用钩子
-  const { theme, toggleTheme } = useTheme();
-  const { currentLang, supportedLanguages, t, switchLang } = useLanguage();
-
-  // L-003: 动态更新 html lang 属性（语言切换时同步）
-  useEffect(() => {
-    document.documentElement.lang = currentLang;
-  }, [currentLang]);
-  
-  // 显示提示（useCallback 稳定引用，避免下游 hook 依赖链抖动触发重渲染）
-  const showToast = useCallback((key: string, params?: Record<string, string | number>) => {
-    const toastMessages = t.toast as Record<string, string>;
-    let message = toastMessages[key] || key;
-    // 缺翻译键时告警，便于发现漏翻（不影响功能，回退显示原始 key）
-    if (!toastMessages[key]) {
-      logger.warn(`[i18n] 缺少 toast 翻译键: "${key}"（语言 ${currentLang}），已回退为原始 key`);
-    }
-    if (params) {
-      Object.entries(params).forEach(([k, v]) => {
-        message = message.replace(`{${k}}`, String(v));
-      });
-    }
-    toast(message);
-  }, [t, currentLang]);
-
-  // 域名数据管理
-  const { 
-    sourceInput, 
-    parsedData, 
-    stats, 
-    setStats, 
-    lineNumbersRef, 
-    clearAll, 
-    sortDomains, 
-    dedupeDomains, 
-    handleSourceInput,
-    setSourceInput,
-    parseSourceData
-  } = useDomainData(showToast);
-
-  // 设置管理
-  const { settings, setSettings, updateSettings } = useSettings();
-
-  // 稳定引用：将「生效后统计」合并进展示用的 stats（保留 domainCount/commentCount/invalidCount）。
-  // 用 useCallback 包裹，避免每次渲染生成新函数导致 useRules 的 runGenerate 及下游回调
-  // （generateRules 等）身份抖动，进而破坏 OutputPanel(React.memo) 的跳过重渲染优化。
-  const handleEffectiveStats = useCallback(
-    (partial: Pick<Stats, 'blacklistCount' | 'whitelistCount' | 'validCount'>) =>
-      setStats((prev) => ({ ...prev, ...partial })),
-    [setStats]
-  );
-
-  // 规则生成
-  const { 
-    outputContent, 
-    currentFormat, 
-    outputPreviewRef, 
-    outputLineNumbersRef, 
-    generateRules, 
-    downloadOutput, 
-    copyOutput, 
-    setFormat, 
-    syncOutputScroll
-  } = useRules(parsedData, sourceInput, settings, t, showToast, parseSourceData, handleEffectiveStats);
-
-  // URL管理
-  const { 
-    urls, 
-    isLoading, 
-    activePreset, 
-    urlInput, 
-    setUrlInput, 
-    loadPreset, 
-    fetchFromUrl, 
-    addUrl, 
-    sortUrls, 
-    fetchAllUrls, 
-    setUrls
-  } = useUrlManager(setSourceInput, parseSourceData, showToast, lineNumbersRef);
-
-  // 区域折叠状态
-  const [isUrlSectionCollapsed, setIsUrlSectionCollapsed] = useState(true);
-  // 设置面板弹窗开关（对齐原型 settings-modal：L2 由侧栏折叠改为居中弹窗）
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
-  // 使用指南弹窗开关（对齐原型 #guideModal：页脚 linkGuide 触发）
-  const [isGuideOpen, setIsGuideOpen] = useState(false);
-  const openGuide = useCallback(() => setIsGuideOpen(true), [setIsGuideOpen]);
-
-  // 引用
-  const sourceTextareaRef = useRef<HTMLTextAreaElement>(null);
-
-  // 同步滚动（仅用 ref，依赖为空，useCallback 稳定引用）
-  const syncScroll = useCallback(() => {
-    if (sourceTextareaRef.current && lineNumbersRef.current) {
-      lineNumbersRef.current.scrollTop = sourceTextareaRef.current.scrollTop;
-    }
-  }, [sourceTextareaRef, lineNumbersRef]);
-
-  // 切换区域（函数式 setState 使依赖为空，useCallback 稳定引用，避免下游重渲染）
-  const toggleSection = useCallback((section: string) => {
-    if (section === 'url-section') {
-      setIsUrlSectionCollapsed(prev => !prev);
-    }
-  }, []);
-
-  // 设置面板弹窗开关（对齐原型 settings-modal）
-  const openSettings = useCallback(() => setIsSettingsOpen(true), []);
-  const closeSettings = useCallback(() => setIsSettingsOpen(false), []);
-
-  // Hero CTA：滚动到输入面板并聚焦编辑器
-  const scrollToInput = useCallback(() => {
-    if (typeof document !== 'undefined') {
-      const el = document.getElementById('input-panel');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        const editor = document.getElementById('source-editor');
-        (editor as HTMLTextAreaElement | null)?.focus?.();
-      }
-    }
-  }, []);
+  const c = useHomeController();
 
   return (
-    <AppProvider value={{ t }}>
+    <AppProvider value={{ t: c.t }}>
       <div className="container" id="app-container">
         <Header
-          currentLang={currentLang}
-          supportedLanguages={supportedLanguages}
-          switchLang={switchLang}
-          onOpenSettings={openSettings}
+          currentLang={c.currentLang}
+          supportedLanguages={c.supportedLanguages}
+          switchLang={c.switchLang}
+          onOpenSettings={c.openSettings}
         />
 
         <FlowViz
-          parsedData={parsedData}
-          onStart={scrollToInput}
-          onToggleSettings={openSettings}
+          parsedData={c.parsedData}
+          onStart={c.scrollToInput}
+          onToggleSettings={c.openSettings}
         />
 
         <main className="main-content" id="main-content">
           <InputPanel
-            sourceInput={sourceInput}
-            urls={urls}
-            isUrlSectionCollapsed={isUrlSectionCollapsed}
-            stats={stats}
-            activePreset={activePreset}
-            lineNumbersRef={lineNumbersRef}
-            sourceTextareaRef={sourceTextareaRef}
-            urlInput={urlInput}
-            setUrlInput={setUrlInput}
-            toggleSection={toggleSection}
-            handleSourceInput={handleSourceInput}
-            syncScroll={syncScroll}
-            clearAll={clearAll}
-            sortDomains={sortDomains}
-            generateRules={generateRules}
-            dedupeDomains={dedupeDomains}
-            loadPreset={loadPreset}
-            fetchFromUrl={fetchFromUrl}
-            addUrl={addUrl}
-            sortUrls={sortUrls}
-            fetchAllUrls={fetchAllUrls}
-            setUrls={setUrls}
-            isLoading={isLoading}
+            sourceInput={c.sourceInput}
+            urls={c.urls}
+            isUrlSectionCollapsed={c.isUrlSectionCollapsed}
+            stats={c.stats}
+            activePreset={c.activePreset}
+            lineNumbersRef={c.lineNumbersRef}
+            sourceTextareaRef={c.sourceTextareaRef}
+            urlInput={c.urlInput}
+            setUrlInput={c.setUrlInput}
+            toggleSection={c.toggleSection}
+            handleSourceInput={c.handleSourceInput}
+            syncScroll={c.syncScroll}
+            clearAll={c.clearAll}
+            sortDomains={c.sortDomains}
+            generateRules={c.generateRules}
+            dedupeDomains={c.dedupeDomains}
+            loadPreset={c.loadPreset}
+            fetchFromUrl={c.fetchFromUrl}
+            addUrl={c.addUrl}
+            sortUrls={c.sortUrls}
+            fetchAllUrls={c.fetchAllUrls}
+            setUrls={c.setUrls}
+            isLoading={c.isLoading}
           />
 
           <OutputPanel
-            outputContent={outputContent}
-            currentFormat={currentFormat}
-            isSettingsOpen={isSettingsOpen}
-            onOpenSettings={openSettings}
-            onCloseSettings={closeSettings}
-            settings={settings}
-            parsedData={parsedData}
-            outputPreviewRef={outputPreviewRef}
-            outputLineNumbersRef={outputLineNumbersRef}
-            setFormat={setFormat}
-            generateRules={generateRules}
-            downloadOutput={downloadOutput}
-            copyOutput={copyOutput}
-            syncOutputScroll={syncOutputScroll}
-            updateSettings={updateSettings}
-            setSettings={setSettings}
-            theme={theme}
-            toggleTheme={toggleTheme}
-            showToast={showToast}
+            outputContent={c.outputContent}
+            currentFormat={c.currentFormat}
+            isSettingsOpen={c.isSettingsOpen}
+            onOpenSettings={c.openSettings}
+            onCloseSettings={c.closeSettings}
+            settings={c.settings}
+            parsedData={c.parsedData}
+            outputPreviewRef={c.outputPreviewRef}
+            outputLineNumbersRef={c.outputLineNumbersRef}
+            setFormat={c.setFormat}
+            generateRules={c.generateRules}
+            downloadOutput={c.downloadOutput}
+            copyOutput={c.copyOutput}
+            syncOutputScroll={c.syncOutputScroll}
+            updateSettings={c.updateSettings}
+            setSettings={c.setSettings}
+            theme={c.theme}
+            toggleTheme={c.toggleTheme}
+            showToast={c.showToast}
           />
         </main>
 
-        <Footer onOpenGuide={openGuide} />
+        <Footer onOpenGuide={c.openGuide} />
 
-        <GuideModal open={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
+        <GuideModal open={c.isGuideOpen} onClose={() => c.setIsGuideOpen(false)} />
 
         <ToastProvider />
       </div>
     </AppProvider>
   );
 }
-
-
-
-
