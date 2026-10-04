@@ -1,4 +1,4 @@
-// src/utils/logger.test.ts v3.10.0
+// src/utils/logger.test.ts v3.10.1
 import { describe, it, expect } from 'vitest';
 import { logger } from './logger';
 

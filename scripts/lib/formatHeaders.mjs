@@ -1,4 +1,4 @@
-// scripts/lib/formatHeaders.mjs v3.10.0
+// scripts/lib/formatHeaders.mjs v3.10.1
 // 各输出格式的头部注释文案与统一头部生成器，对齐 src/utils/headerConfigs.ts。
 // 说明：Mosdns / Clash Meta / CoreDNS 为 v3.10.0 新增格式。
 

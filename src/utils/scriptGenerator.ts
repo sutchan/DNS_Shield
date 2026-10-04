@@ -1,4 +1,4 @@
-// src/utils/scriptGenerator.ts v3.10.0
+// src/utils/scriptGenerator.ts v3.10.1
 // 路由器与 DNS 守护进程一键同步脚本生成器：
 // 支持针对 AsusWRT-Merlin / OpenWrt / SmartDNS / Pi-hole 生成自动拉取、备份与重启的 Shell 脚本。
 

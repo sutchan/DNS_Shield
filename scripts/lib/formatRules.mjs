@@ -1,4 +1,4 @@
-// scripts/lib/formatRules.mjs v3.10.0
+// scripts/lib/formatRules.mjs v3.10.1
 // 各输出格式的规则行生成逻辑，与 src/utils/formatGenerators.ts 1:1 对齐。
 // 纯函数：接收统一中间结构与设置，返回规则行数组（不含头部）。
 

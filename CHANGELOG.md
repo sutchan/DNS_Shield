@@ -5,7 +5,7 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-## [3.10.0]
+## [3.10.1]
 
 ### Added（新增输出格式：Mosdns / Clash Meta / CoreDNS）
 - 新增 `Mosdns` 格式：生成 `domain:域名` domain-set 拦截规则（匹配域名及其子域）
@@ -16,16 +16,28 @@
 - 新增 `scripts/aggregate-upstream.mjs` 与 `.github/workflows/aggregate.yml`：定时（每周一）聚合 AdGuard / EasyList / NeoHosts / StevenBlack / YousList 上游，合并去重后自动发起 Pull Request
 
 ### Changed（项目结构）
-- 规范文档目录由 `openspec/` 重命名为 `docs/`（含 SPEC.md / TASKS.md / CHECKLIST.md / config.yaml / REMAINING_TASKS.md），同步更新 README.md、prototype/README.md、TASKS.md、SPEC.md、CHECKLIST.md 与项目记忆中的路径引用
+- 规范文档目录由 `openspec/` 重命名为 `docs/`，同步更新全部路径引用
+- **任务记录收敛为唯一来源**：合并原 `docs/TASKS.md` 与 `docs/REMAINING_TASKS.md` 为 `docs/tasks.md`（小写），删除冗余任务文档，并将未完成任务口径统一为 **7 项**（P1 四项、P2 两项、P3 一项、P4 一项）
+- 在 `docs/SPEC.md` 新增 §5.3「任务记录规范（强制）」：`docs/tasks.md` 为任务记录唯一来源，禁止在其他文档另建任务清单或维护 `- [ ]` 任务条目
 - 文档与静态产物全量同步至 12 种格式：README（中英）/ DEPLOYMENT / SPEC.md / prototype 三件套补齐 Mosdns、Clash Meta、CoreDNS 的文件表、格式清单、下载链接与生成逻辑（`genMosdns` / `genClash` / `genCoredns`）
 - `gen-format-files.mjs` 按单文件 200 行规则拆分为编排层 + `scripts/lib/{domainSource,formatHeaders,formatRules}.mjs`，并新增生成 Mosdns / Clash Meta / CoreDNS 静态产物
 - 新增静态产物 `public/mosdns_domain_set.txt`、`public/clash_dns.yaml`、`public/coredns_hosts.txt`，并纳入 Release 工作流打包与资产列表
 - Service Worker 缓存白名单补充 `.conf` / `.yaml` / `.db` 扩展名以覆盖新增规则文件，缓存版本号升至 v3
 
 ### Fixed
+- 修复测试覆盖率门禁形同虚设：`vitest.config.ts` 此前**完全没有配置** `coverage.thresholds`，T-P0-01 文档声称的「行 ≥80% / 分支 ≥75%」并不存在。现已落地真实门禁（语句 45 / 分支 75 / 函数 70 / 行 45，阈值按 Windows 报告值校准），覆盖率不达标时以非零码退出
+- 澄清覆盖率数字虚低的原因：报告值 47.85% 并非测试文件混入分母，而是 Vitest 2.1.9 + `@vitest/coverage-v8` 在 Windows 上按盘符大小写（`e:\` 与 `E:\`）把同一源文件重复统计两次，导致「All files」折半；真实被测源码覆盖率约为报告值的 2 倍（~95%+）。已在 `vitest.config.ts` 注释中记录该根因，彻底根治需升级 Vitest 3.x
+- 补 `coverage.exclude` 防御性排除 `*.test.ts` / `*.spec.ts` / barrel 文件
 - 修复 `statsAggregator.test.ts` 使用过期字段（`raw` / `line`）导致的 6 处 TypeScript 类型错误，改为真实 `ParseResult` 的 `originalLine` 字段
 - 清除 `vitest.config.ts` 的 UTF-8 BOM 污染
 - 统一全站「9 种格式」表述为「12 种格式」，覆盖 16 种语言 i18n 文案（heroDesc / SEO 描述）、源文件头注释与原型文案
+- 合并 CHANGELOG 中重复的 `[3.10.1]` 小节为单一小节
+
+### Docs
+- 按代码实况校正任务文档中与实现脱节的数字：i18n 基准键数 195 → **145**、单元测试用例 82 → **85**、覆盖率 91.9% → 说明虚低根因
+- 修正任务文档的口径矛盾（「剩余 7 项」实为 **5 项**功能任务），并登记新发现的 T-P0-04 / T-P1-04
+- 新增「事实核验基线」小节，明确数据型数字必须脚本实算、禁止凭记忆书写
+- 修正开发端口说明：8082 → **3000**（以 `package.json` dev 脚本为准）
 
 ## [3.9.12]
 

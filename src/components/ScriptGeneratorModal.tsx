@@ -1,4 +1,4 @@
-// src/components/ScriptGeneratorModal.tsx v3.10.0
+// src/components/ScriptGeneratorModal.tsx v3.10.1
 // 路由器与 DNS 守护进程同步脚本生成弹窗
 'use client';
 import * as React from 'react';

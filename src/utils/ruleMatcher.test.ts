@@ -1,4 +1,4 @@
-// src/utils/ruleMatcher.test.ts v3.10.0
+// src/utils/ruleMatcher.test.ts v3.10.1
 import { describe, it, expect } from 'vitest';
 import { normalizeQueryDomain, isDomainMatch, matchDomainRule } from './ruleMatcher';
 import { ParsedData } from '../types';

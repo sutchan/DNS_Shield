@@ -1,4 +1,4 @@
-// src/utils/statsAggregator.test.ts v3.10.0
+// src/utils/statsAggregator.test.ts v3.10.1
 import { describe, it, expect } from 'vitest';
 import { buildParseStats } from './statsAggregator';
 import { ParseResult } from '../types/formats';

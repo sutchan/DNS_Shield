@@ -1,4 +1,4 @@
-// scripts/lib/domainSource.mjs v3.10.0
+// scripts/lib/domainSource.mjs v3.10.1
 // 解析 public/domains.txt 单一数据源为统一中间结构。
 // 语法约定：纯域名 = 黑名单；`+domain` = 白名单；`@domain=ip` = 自定义 DNS；`#` 开头 = 注释。
 // 纯函数，无副作用，便于独立测试。
