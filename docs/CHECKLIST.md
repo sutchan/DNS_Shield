@@ -48,10 +48,10 @@
 - [ ] `.github/FUNDING.yml` 赞助配置完整
 - [ ] `.github/ISSUE_TEMPLATE/` 含 bug_report 与 feature_request 模板
 - [ ] `DEPLOYMENT.md` 部署指南完整
-- [ ] `openspec/SPEC.md` 规范文档完整
-- [ ] `openspec/TASKS.md` 任务清单完整
-- [ ] `openspec/CHECKLIST.md` 检查清单完整
-- [ ] `openspec/config.yaml` 配置文件完整且 version 与 package.json 一致
+- [ ] `docs/SPEC.md` 规范文档完整
+- [ ] `docs/TASKS.md` 任务清单完整
+- [ ] `docs/CHECKLIST.md` 检查清单完整
+- [ ] `docs/config.yaml` 配置文件完整且 version 与 package.json 一致
 
 ## 文件结构
 

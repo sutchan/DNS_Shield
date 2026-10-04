@@ -229,7 +229,7 @@ pnpm test
 
 ## 项目规范
 
-项目严格遵循 [openspec/SPEC.md](openspec/SPEC.md) 定义的规范，包括：
+项目严格遵循 [docs/SPEC.md](docs/SPEC.md) 定义的规范，包括：
 
 - 域名格式规范（`+` 白名单、`@` 自定义 DNS、`#` 注释）
 - 输出格式规范（Dnsmasq、Hosts、AdGuard、白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS）

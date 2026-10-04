@@ -99,4 +99,4 @@ prototype/
 
 ## 版本
 
-当前原型版本 **v3.9.3**，与 `src/config/version.ts`、`openspec/SPEC.md`、`openspec/config.yaml` 一致。
+当前原型版本 **v3.9.3**，与 `src/config/version.ts`、`docs/SPEC.md`、`docs/config.yaml` 一致。

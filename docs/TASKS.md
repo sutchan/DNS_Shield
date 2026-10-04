@@ -32,8 +32,8 @@
 - [ ] `src/config/version.ts` APP_VERSION（派生源）
 - [ ] `next.config.js` env.version
 - [ ] `src/app/layout.tsx` metadata / JSON-LD / 头注释
-- [ ] `openspec/config.yaml` version
-- [ ] `openspec/SPEC.md` 当前版本 + 第4.3节版本号
+- [ ] `docs/config.yaml` version
+- [ ] `docs/SPEC.md` 当前版本 + 第4.3节版本号
 - [ ] `README.md` 当前版本
 - [ ] `README.en.md` 版本徽章
 - [ ] `DEPLOYMENT.md` 变量表 + 示例

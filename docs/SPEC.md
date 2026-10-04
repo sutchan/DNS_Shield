@@ -36,7 +36,7 @@ dns-shield/
 │   ├── PULL_REQUEST_TEMPLATE.md    # PR 模板
 │   ├── FUNDING.yml                 # 赞助配置
 │   └── ISSUE_TEMPLATE/             # Issue 模板（bug_report / feature_request）
-├── openspec/                       # 项目规范文档
+├── docs/                            # 项目规范文档
 │   ├── SPEC.md                     # 项目规范（本文件）
 │   ├── TASKS.md                    # 任务清单
 │   ├── CHECKLIST.md                # 质量检查清单

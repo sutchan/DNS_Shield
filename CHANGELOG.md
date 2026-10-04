@@ -15,6 +15,9 @@
 - 为 16 种国际化语言补齐三种新格式标签与头部文案，并通过 `check:locales` 校验
 - 新增 `scripts/aggregate-upstream.mjs` 与 `.github/workflows/aggregate.yml`：定时（每周一）聚合 AdGuard / EasyList / NeoHosts / StevenBlack / YousList 上游，合并去重后自动发起 Pull Request
 
+### Changed（项目结构）
+- 规范文档目录由 `openspec/` 重命名为 `docs/`（含 SPEC.md / TASKS.md / CHECKLIST.md / config.yaml / REMAINING_TASKS.md），同步更新 README.md、prototype/README.md、TASKS.md、SPEC.md、CHECKLIST.md 与项目记忆中的路径引用
+
 ## [3.9.12]
 
 ### Added（功能增强与覆盖率治理）
