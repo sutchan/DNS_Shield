@@ -87,3 +87,4 @@ __pycache__/
 review_*.md
 CODE_REVIEW_*.md
 *.err
+_*.txt

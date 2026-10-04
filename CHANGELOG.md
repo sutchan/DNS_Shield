@@ -1263,8 +1263,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.10.0...HEAD
-[3.10.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.10.0
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.10.1...HEAD
+[3.10.1]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.10.1
 [3.9.12]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.9.12
 [3.8.1]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.8.1
 [3.8.0]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.8.0
