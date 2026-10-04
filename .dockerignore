@@ -1,0 +1,24 @@
+# 构建上下文排除项：减小上下文体积、避免本地产物污染镜像
+**/node_modules
+**/.next
+**/.git
+**/.github
+**/coverage
+**/dist
+**/.cache
+**/.pnpm-store
+**/.workbuddy
+**/.codebuddy
+**/.vscode
+**/prototype
+**/openspec
+
+# 本地环境变量与日志
+.env
+.env.*
+*.log
+*.tsbuildinfo
+next-env.d.ts
+
+# 临时脚本产物
+scripts/_*.mjs

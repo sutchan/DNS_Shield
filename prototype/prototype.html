@@ -8,7 +8,7 @@
   <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS 的 DNS 广告过滤规则生成器" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Spectral:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Spectral:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     /* --- Color tokens (HSL, 与 design-system.md / globals.css 对齐) --- */
     :root {
@@ -511,7 +511,7 @@
         <div class="stats" id="stats">
           <div class="stat"><span class="stat-dot block"></span><span class="stat-value" id="statDomains">0</span><span class="stat-label" id="lblDomains">黑名单</span></div>
           <div class="stat"><span class="stat-dot allow"></span><span class="stat-value" id="statWhitelist">0</span><span class="stat-label" id="lblWhitelist">白名单</span></div>
-          <div class="stat"><span class="stat-dot dns"></span><span class="stat-value" id="statCustom">0</span><span class="stat-label" id="lblCustom">改道</span></div>
+          <div class="stat"><span class="stat-dot dns"></span><span class="stat-value" id="statCustom">0</span><span class="stat-label" id="lblCustom">自定义DNS</span></div>
           <div class="stat"><span class="stat-value" id="statComments">0</span><span class="stat-label" id="lblComments">注释</span></div>
           <div class="stat"><span class="stat-value" id="statLines">0</span><span class="stat-label" id="lblLines">总行数</span></div>
         </div>
@@ -687,7 +687,7 @@
     // ---- 国际化 (原型最小集，对齐 src/locales) ----
     var I18N = {
       'zh-cn': { name: '中文', sub: 'DNS 广告过滤规则生成器', input: '域名输入', output: '规则输出',
-        blacklist: '黑名单', whitelist: '白名单', custom: '改道', comments: '注释',
+        blacklist: '黑名单', whitelist: '白名单', custom: '自定义DNS', comments: '注释',
         parse: '生成规则', sort: '排序', dedupe: '去重', clear: '清空', copy: '复制', download: '下载',
         copied: '已放行到剪贴板', noData: '没有可复制的内容', settings: '设置', projName: '项目名', ver: '版本',
         ipv4: 'IPv4 重定向', ipv6: 'IPv6 重定向', optHeader: '添加头部注释', optIpv6: '屏蔽 IPv6',
@@ -701,7 +701,7 @@
         presetBuiltin: '内置数据', tabWhitelist: 'ADG白名单', usageTitle: '快速入门',
         linkChangelog: '更新日志', linkGuide: '使用指南', linkGithub: '去 GitHub 给项目+Star', fmtGroup: '输出规则类型',
         fvAwait: '等待流量接入…', fvBlock: '黑名单', fvAllow: '白名单', fvDns: '自定义',
-        psBlock: '拦截', psAllow: '放行', psDns: '改道', psComments: '注释', psLines: '共', psLinesSuffix: '行',
+        psBlock: '拦截', psAllow: '放行', psDns: '自定义DNS', psComments: '注释', psLines: '共', psLinesSuffix: '行',
         wlHeader: '白名单列表', footerMeta: 'DNS Shield · 路由器级 DNS 广告过滤规则生成器',
         shareTexts: [
           'DNS Shield：路由器级 DNS 广告过滤规则生成器，一键生成 9 种格式规则。',

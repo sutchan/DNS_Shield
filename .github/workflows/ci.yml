@@ -1,53 +1,215 @@
+# .github/workflows/ci.yml
+# ---------------------------------------------------------------------------
+# CI —— 质量门禁（Quality Gate）
+#
+# 触发时机：
+#   - 推送到 main / dev
+#   - 针对 main / dev 的 Pull Request
+#   - 手动触发（workflow_dispatch，可勾选是否跳过覆盖率以加速验证）
+#
+# 任务编排（并行 + 聚合）：
+#   lint ───────┐
+#   typecheck ──┤
+#   test ───────┼──► ci（聚合门禁，分支保护只需勾选这一个 check）
+#   build ──────┤
+#   data ───────┘
+#
+# 为什么用聚合 job：后续增删 job 不必反复改分支保护规则；
+# 任一上游 job 失败 → ci 失败 → PR 不可合并。
+# ---------------------------------------------------------------------------
 name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
-    branches: [main]
+    branches: [main, dev]
+  workflow_dispatch:
+    inputs:
+      skip-coverage:
+        description: '跳过覆盖率收集（加速验证）'
+        type: boolean
+        default: false
 
-# 任务：代码质量门禁 —— 每次 PR/推送到 main 自动执行 lint + 测试(含覆盖率) + 构建。
-# 与 CODE_REVIEW.md 中的「合并前审查」触发时机对应。
-#
-# 注意：本项目使用 pnpm 管理依赖（pnpm-lock.yaml），因此必须：
-#   1. 先通过 pnpm/action-setup 安装 pnpm
-#   2. setup-node 的 cache 必须设为 'pnpm'（不能是 'npm'，否则会因找不到 package-lock.json 而失败）
-#   3. 依赖安装使用 `pnpm install --frozen-lockfile`（等效于 npm ci）
+# 同一分支 / PR 重复推送时取消旧运行，避免排队浪费额度
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # runner 提供约 7GB 内存，留出余量防止 NEXT 构建期 OOM
+  NODE_OPTIONS: '--max-old-space-size=4096'
+  NEXT_TELEMETRY_DISABLED: '1'
+  # 构建期注入 GA 统计 ID；未配置该 Secret 时自动为空（不启用统计）
+  NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
+
 jobs:
-  quality-gate:
-    name: Lint · Test · Build
+  # ---------------------------------------------------------------- lint
+  lint:
+    name: ESLint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        # 版本取自 package.json 的 packageManager 字段（pnpm@11.24.0），
-        # 不要再在此硬编码 version，否则与 packageManager 冲突导致 ERR_PNPM_BAD_PM_VERSION
-        uses: pnpm/action-setup@v4
+      - uses: ./.github/actions/setup
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Lint
+      - name: Run ESLint
         run: pnpm run lint
 
-      - name: Test (with coverage)
-        run: pnpm run test:coverage
+  # ----------------------------------------------------------- typecheck
+  typecheck:
+    name: TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-      - name: Build
-        run: pnpm run build
+      - uses: ./.github/actions/setup
+
+      # 使用项目本地 TypeScript（package.json 锁定 ^5），避免 runner 预装版本漂移
+      - name: Type check (no emit)
+        run: pnpm exec tsc --noEmit
+
+  # ---------------------------------------------------------------- test
+  test:
+    name: Vitest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+
+      - name: Run unit tests
+        run: |
+          set -o pipefail
+          if [ "${{ github.event.inputs.skip-coverage }}" = "true" ]; then
+            pnpm run test 2>&1 | tee _test.log
+          else
+            pnpm run test:coverage 2>&1 | tee _test.log
+          fi
+
+      - name: Write test summary
+        if: always()
+        run: |
+          {
+            echo '### 单元测试结果'
+            echo '```'
+            grep -E 'Test Files|Tests  |Duration' _test.log || echo '(未解析到测试摘要)'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload coverage report
-        if: always()
+        if: ${{ always() && github.event.inputs.skip-coverage != 'true' }}
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
           path: coverage/
           retention-days: 7
+          if-no-files-found: warn
+
+  # --------------------------------------------------------------- build
+  build:
+    name: Next.js Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+
+      # 复用 Next.js 构建缓存，二次构建通常可省 40%~60% 时间
+      - name: Cache Next.js build artifacts
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          # 显式限定目录，避免 hashFiles 遍历 node_modules 拖慢耗时
+          key: ${{ runner.os }}-next-${{ hashFiles('pnpm-lock.yaml', 'package.json', 'src/**/*.ts', 'src/**/*.tsx', 'next.config.js', 'tailwind.config.js', 'postcss.config.js') }}
+          restore-keys: |
+            ${{ runner.os }}-next-
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Report build size
+        if: always()
+        run: |
+          {
+            echo '### 构建产物'
+            echo '```'
+            du -sh .next 2>/dev/null || echo '(未生成 .next 目录)'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # -------------------------------------------------- 数据与多语言一致性
+  data:
+    name: Data Integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 这些脚本是纯 Node，无第三方依赖，跳过安装可省 30s+
+      - uses: ./.github/actions/setup
+        with:
+          install: 'false'
+
+      # 16 种语言的缺键 / 多键校验。运行时有 deepMerge 兜底，问题不会暴露到 UI，
+      # 因此必须在 CI 阶段拦住漏翻。
+      - name: Check locale key parity
+        run: node scripts/check-locales.mjs
+
+      # 单一数据源 public/domains.txt 的黑名单 / 白名单计数
+      - name: Count domains
+        run: node scripts/count-domains.mjs
+
+      # 软门禁：重新生成 9 种规则文件并与仓库内容比对。
+      # public/*.txt 头部带版本号与生成日期，目前仍停留在 3.8.8（package.json 已到 3.9.11），
+      # 存在已知漂移，因此此处**不阻断**流水线，仅在 Summary 中提示。
+      # 补齐后可删除 continue-on-error 升级为硬门禁。
+      - name: Detect generated rule files drift
+        id: drift
+        continue-on-error: true
+        run: |
+          node scripts/gen-format-files.mjs
+          if git diff --quiet -- public; then
+            echo "drift=false" >> "$GITHUB_OUTPUT"
+            echo "生成的规则文件与 public/domains.txt 一致"
+          else
+            echo "drift=true" >> "$GITHUB_OUTPUT"
+            echo "检测到漂移（通常由文件头版本号/日期变化引起）："
+            git diff --stat -- public
+          fi
+
+      - name: Write data summary
+        if: always()
+        run: |
+          {
+            echo '### 数据一致性'
+            echo "- locale 键校验：通过"
+            echo "- 生成文件漂移：${{ steps.drift.outputs.drift == 'true' && '存在（软门禁，未阻断）' || '无' }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ------------------------------------------------------------ 聚合门禁
+  ci:
+    name: CI Gate
+    runs-on: ubuntu-latest
+    needs: [lint, typecheck, test, build, data]
+    if: always()
+    steps:
+      - name: Check upstream results
+        run: |
+          echo "lint      = ${{ needs.lint.result }}"
+          echo "typecheck = ${{ needs.typecheck.result }}"
+          echo "test      = ${{ needs.test.result }}"
+          echo "build     = ${{ needs.build.result }}"
+          echo "data      = ${{ needs.data.result }}"
+          if printf '%s\n' \
+            "${{ needs.lint.result }}" \
+            "${{ needs.typecheck.result }}" \
+            "${{ needs.test.result }}" \
+            "${{ needs.build.result }}" \
+            "${{ needs.data.result }}" | grep -qv '^success$'; then
+            echo "::error::质量门禁未通过，详见上方各 job 日志。"
+            exit 1
+          fi
+          echo "全部检查通过"

@@ -1,0 +1,100 @@
+# .github/workflows/release.yml
+# ---------------------------------------------------------------------------
+# Release —— 版本发布
+#
+# 触发：推送形如 v3.9.11 的 tag
+#
+# 做三件事：
+#   1. 校验 tag 与 package.json 的 version 一致（防止打错版本号发布）
+#   2. 以 public/domains.txt 为单一数据源，重新生成 9 种过滤规则文件
+#   3. 把规则文件打包为 GitHub Release 资产（同时提供 zip 与单文件）
+#
+# 推荐发布流程：
+#   pnpm version patch|minor|major   # 自动改 package.json 并打 tag
+#   git push --follow-tags
+# ---------------------------------------------------------------------------
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & Publish rule files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+        with:
+          install: 'false'
+
+      # tag 与 package.json 版本号必须一致，否则产出的规则文件头会与源码版本脱节
+      - name: Verify tag matches package.json
+        run: |
+          PKG_VERSION="v$(node -p "require('./package.json').version")"
+          echo "tag = ${GITHUB_REF_NAME}"
+          echo "pkg = ${PKG_VERSION}"
+          if [ "${GITHUB_REF_NAME}" != "${PKG_VERSION}" ]; then
+            echo "::error::tag ${GITHUB_REF_NAME} 与 package.json 版本 ${PKG_VERSION} 不一致"
+            exit 1
+          fi
+
+      - name: Regenerate rule files
+        run: node scripts/gen-format-files.mjs
+
+      - name: Count domains
+        id: count
+        run: |
+          node scripts/count-domains.mjs | tee _count.log
+          echo "body<<EOF" >> "$GITHUB_OUTPUT"
+          cat _count.log >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Package rule files
+        id: package
+        run: |
+          ZIP="dns-shield-rules-${GITHUB_REF_NAME}.zip"
+          # 用 zip 保持目录结构；runner 自带 zip
+          zip -j "$ZIP" \
+            public/domains.txt \
+            public/adguard.txt \
+            public/hosts.txt \
+            public/whitelist.txt \
+            public/dnsmasq.conf \
+            public/unbound.conf \
+            public/pihole.txt \
+            public/smartdns.conf \
+            public/rpz.db
+          echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
+          ls -lh "$ZIP"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: DNS Shield ${{ github.ref_name }}
+          generate_release_notes: true
+          body: |
+            ## 规则文件统计
+
+            ```
+            ${{ steps.count.outputs.body }}
+            ```
+
+            本版本由 `public/domains.txt` 单一数据源生成，共 9 种格式。
+            安装方式见 [README](https://github.com/${{ github.repository }}#readme)。
+          files: |
+            ${{ steps.package.outputs.zip }}
+            public/domains.txt
+            public/adguard.txt
+            public/hosts.txt
+            public/whitelist.txt
+            public/dnsmasq.conf
+            public/unbound.conf
+            public/pihole.txt
+            public/smartdns.conf
+            public/rpz.db

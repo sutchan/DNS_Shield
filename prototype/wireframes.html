@@ -7,7 +7,7 @@
   <title>DNS Shield — 组件库规范 v3.9.2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Spectral:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     /* ===== Design tokens (与 design-system.md / globals.css 对齐) ===== */
     :root {
@@ -126,9 +126,9 @@
     .btn-ghost { background: transparent; color: hsl(var(--foreground)); }
     .btn-ghost:hover { background: hsl(var(--secondary)); }
     .btn-link { background: transparent; color: hsl(var(--primary)); text-decoration: underline; text-underline-offset: 4px; padding: 0 4px; height: auto; }
-    .btn-sm { height: 30px; padding: 0 10px; font-size: 12px; border-radius: var(--radius-md); }
+    .btn-sm { height: 36px; padding: 0 10px; font-size: 12px; border-radius: var(--radius-md); }
     .btn-lg { height: 44px; padding: 0 32px; font-size: 14px; }
-    .btn-icon { width: 36px; height: 36px; padding: 0; }
+    .btn-icon { width: 40px; height: 40px; padding: 0; }
     .btn:disabled { opacity: .5; pointer-events: none; }
 
     .inp {
@@ -355,11 +355,11 @@
           <button class="btn btn-primary btn-sm">SM</button>
           <button class="btn btn-primary">Default</button>
           <button class="btn btn-primary btn-lg">LG</button>
-        </div><span class="meta">sm 30px / 36px / lg 44px</span></div>
+        </div><span class="meta">sm 36px / 40px / lg 44px</span></div>
         <div class="cell"><span class="label">Icon Button · Disabled</span><div class="stage">
           <button class="btn btn-outline btn-icon" aria-label="设置">⚙</button>
           <button class="btn btn-primary" disabled>Disabled</button>
-        </div><span class="meta">icon 36px / disabled</span></div>
+        </div><span class="meta">icon 40px / disabled</span></div>
       </div>
 
       <div class="sub">Input 输入框 · Label 标签</div>
