@@ -1,0 +1,13 @@
+{
+  "admin/system/dnsshield": {
+    "title": "DNS Shield",
+    "order": 60,
+    "action": {
+      "type": "firstchild"
+    },
+    "depends": {
+      "acl": [ "luci-app-dnsshield" ]
+    }
+  }
+}
+

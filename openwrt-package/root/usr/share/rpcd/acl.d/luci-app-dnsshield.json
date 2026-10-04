@@ -1,0 +1,16 @@
+{
+  "luci-app-dnsshield": {
+    "description": "Grant access to DNS Shield rule subscription",
+    "read": {
+      "file": [
+        "/etc/dnsshield/rules.conf"
+      ]
+    },
+    "write": {
+      "file": [
+        "/etc/dnsshield/rules.conf"
+      ]
+    }
+  }
+}
+
