@@ -9,11 +9,10 @@ import ScriptGeneratorModal from './ScriptGeneratorModal';
 import {
   FormatTabs,
   PreviewStats,
-  buildFormatLabel,
-  useVisibleFormats,
   OutputToolbar,
   OutputActions,
 } from './OutputPanel.parts';
+import { buildFormatLabel, useVisibleFormats } from './OutputPanel.derived';
 import { Settings as SettingsType, FormatType, OutputContent, ParsedData } from '../types';
 import { useT } from '../context/AppContext';
 

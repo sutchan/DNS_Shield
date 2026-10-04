@@ -1,8 +1,7 @@
 // src/hooks/useHomeController.ts v3.10.2
 // Home 页面的状态编排钩子：聚合所有领域钩子（主题/语言/域名数据/规则/URL/设置）
-// 与稳定回调（showToast/effectiveStats/滚动/折叠/弹窗开关），保持 Home.tsx 仅负责渲染。
-// 从 Home.tsx 抽离以控制主文件行数，公开渲染契约不变。
-
+// 与稳定交互回调，保持 Home.tsx 仅负责渲染。从 Home.tsx 抽离以控制主文件行数，
+// 公开渲染契约不变（返回类型由 TS 推断，Home.tsx 直接解构使用）。
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import type { Stats } from '../types';
@@ -14,70 +13,7 @@ import { useRules } from './useRules';
 import { useUrlManager } from './useUrlManager';
 import { useSettings } from './useSettings';
 
-export interface HomeController {
-  // 主题 / 语言
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
-  currentLang: string;
-  supportedLanguages: { code: string; label: string }[];
-  t: import('../types').Translation;
-  switchLang: (code: string) => void;
-  // 域名数据
-  sourceInput: string;
-  parsedData: import('../types').ParsedData;
-  stats: Stats;
-  setStats: React.Dispatch<React.SetStateAction<Stats>>;
-  lineNumbersRef: React.RefObject<HTMLDivElement>;
-  clearAll: () => void;
-  sortDomains: () => void;
-  dedupeDomains: () => void;
-  handleSourceInput: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  setSourceInput: React.Dispatch<React.SetStateAction<string>>;
-  parseSourceData: () => void;
-  showToast: (key: string, params?: Record<string, string | number>) => void;
-  // 设置
-  settings: import('../types').Settings;
-  setSettings: React.Dispatch<React.SetStateAction<import('../types').Settings>>;
-  updateSettings: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  // 规则
-  outputContent: import('../types').OutputContent;
-  currentFormat: import('../types').FormatType;
-  outputPreviewRef: React.RefObject<HTMLDivElement>;
-  outputLineNumbersRef: React.RefObject<HTMLDivElement>;
-  generateRules: () => void;
-  downloadOutput: () => void;
-  copyOutput: () => void;
-  setFormat: (format: import('../types').FormatType) => void;
-  syncOutputScroll: () => void;
-  // URL 管理
-  urls: string[];
-  isLoading: boolean;
-  activePreset: string;
-  urlInput: string;
-  setUrlInput: React.Dispatch<React.SetStateAction<string>>;
-  loadPreset: (preset: string) => void;
-  fetchFromUrl: (url: string) => void;
-  addUrl: () => void;
-  sortUrls: () => void;
-  fetchAllUrls: () => void;
-  setUrls: React.Dispatch<React.SetStateAction<string[]>>;
-  // 区域 / 弹窗状态
-  isUrlSectionCollapsed: boolean;
-  setIsUrlSectionCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
-  isSettingsOpen: boolean;
-  setIsSettingsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  isGuideOpen: boolean;
-  setIsGuideOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  openGuide: () => void;
-  sourceTextareaRef: React.RefObject<HTMLTextAreaElement>;
-  syncScroll: () => void;
-  toggleSection: (section: string) => void;
-  openSettings: () => void;
-  closeSettings: () => void;
-  scrollToInput: () => void;
-}
-
-export function useHomeController(): HomeController {
+export function useHomeController() {
   const { theme, toggleTheme } = useTheme();
   const { currentLang, supportedLanguages, t, switchLang } = useLanguage();
 

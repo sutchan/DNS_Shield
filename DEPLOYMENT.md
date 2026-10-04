@@ -2,7 +2,7 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
-> 当前版本：v3.10.1
+> 当前版本：v3.10.2
 
 ## 部署环境
 
@@ -203,11 +203,8 @@ CI 采用「并行 job + 聚合门禁」结构：`lint`、`typecheck`、`test`�
 |----------|------|------|
 | `DEPLOY_VERCEL` | `true` / 不设置 | 启用 Vercel 部署 |
 | `DEPLOY_EDGEONE` | `true` / 不设置 | 启用 EdgeOne Pages 部署 |
-| `DEPLOY_GHCR` | `false` / 不设置 | 设为 `false` 关闭 GHCR 镜像构建 |
-| `DEPLOY_SSH` | `true` / 不设置 | 启用自托管服务器部署 |
 | `EDGEONE_PROJECT_NAME` | 默认 `dns-shield` | EdgeOne 项目名 |
 | `EDGEONE_BUILD_PATH` | 默认 `./out` | EdgeOne 上传的产物目录 |
-| `DOCKER_PLATFORMS` | 默认 `linux/amd64` | 树莓派等 ARM 设备设为 `linux/amd64,linux/arm64` |
 
 之所以用「变量开关」而不是判断 Secret 是否存在：`secrets` 上下文在 job 级 `if` 中不可靠，显式开关更可控，也便于临时摘掉某个目标。
 
@@ -233,19 +230,7 @@ git push --follow-tags
 > `APP_VERSION`、`next.config.js` 的 `env.version`，以及规则文件头部的版本注释。
 > `release.yml` 会强制校验 tag 与 `package.json` 一致。
 
-### 5. 容器化部署
-
-仓库已内置 `Dockerfile`（多阶段构建：deps → build → runner），无需再手写：
-
-```bash
-docker build -t dns-shield .
-docker run -d --name dns-shield -p 3000:3000 \
-  -e NODE_ENV=production dns-shield
-```
-
-镜像由 Deploy 工作流自动推送到 `ghcr.io/<owner>/<repo>`，自托管 job 会在目标机上拉取并滚动重启容器。
-
-### 6. 已知问题：规则文件漂移
+### 5. 已知问题：规则文件漂移
 
 `public/*.txt|conf|db` 由 `scripts/gen-format-files.mjs` 从 `public/domains.txt` 生成，文件头带版本号与生成日期。
 当前仓库内这些文件停留在 **v3.8.8 / 630 个域名**，而实际数据已是 **867 条（黑名单 635 + 白名单 232）**、`package.json` 版本为 3.10.1。
@@ -315,7 +300,6 @@ curl -I http://localhost:3000
 
 ```bash
 pm2 logs dns-shield
-docker logs dns-shield
 ```
 
 ### 3. 定期更新
@@ -326,13 +310,11 @@ git pull origin main
 pnpm install
 pnpm build
 pm2 restart dns-shield
-# 或
-docker-compose up -d --build
 ```
 
 ### 4. 监控
 
-- **进程监控**：`pm2 monit` / `docker stats`
+- **进程监控**：`pm2 monit`
 - **可用性与性能**：Uptime Robot、New Relic、Datadog 等
 
 ## 故障排除
@@ -340,7 +322,7 @@ docker-compose up -d --build
 ### 1. 服务器启动失败
 
 - 检查端口是否被占用：`lsof -i :3000`
-- 检查日志：`pm2 logs dns-shield` 或 `docker logs dns-shield`
+- 检查日志：`pm2 logs dns-shield`
 - 检查依赖是否正确安装（确认使用 pnpm 而非 npm，避免与 `pnpm-lock.yaml` 冲突）
 
 ### 2. 页面加载失败

@@ -5,6 +5,15 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.10.2]
+
+### Chore（移除 Docker 部署）
+- 移除 `Dockerfile` 与 `.dockerignore`：项目不再提供容器化部署
+- 清理 `DEPLOYMENT.md` 中「容器化部署」章节、GHCR 镜像与自托管 SSH 部署目标及对应变量与命令
+- `deploy.yml` 删除 GHCR 镜像构建与自托管 SSH 两个 job，移除 `packages: write` 权限与说明表对应行
+- 从 Bug 报告模板与任务文档移除 Docker 相关措辞
+- 同步全局版本展示位至 v3.10.2
+
 ## [3.10.1]
 
 ### Added（新增输出格式：Mosdns / Clash Meta / CoreDNS）
