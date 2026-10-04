@@ -89,3 +89,4 @@ CODE_REVIEW_*.md
 *.err
 _*.txt
 scripts/_*.mjs
+_*.mjs

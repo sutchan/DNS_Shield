@@ -1,7 +1,7 @@
-// src/hooks/useDomainData.ts v3.10.1
+// src/hooks/useDomainData.ts v3.11.0
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { parseSource, sortDomains as sortDomainsUtil, dedupeDomains as dedupeDomainsUtil } from '../utils/parser';
-import { fetchDomainsText } from '../utils/domainFetch';
+import { fetchWithCache } from '../utils/cachedFetch';
 import { generateLineNumbers } from './useLineNumbers';
 import { ParsedData, Stats } from '../types';
 import { config } from '../config';
@@ -77,15 +77,16 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
       if (autosaveRestoredRef.current && sourceInputRef.current.trim()) {
         return;
       }
-      // 优先远端预设源，失败则回退同源 /domains.txt
-      const remote = await fetchDomainsText(config.domainsUrl);
-      if (remote.ok && remote.text && remote.text.trim()) {
-        await loadLocalDomains(remote.text);
+      // 优先远端预设源，失败则回退同源 /domains.txt；
+      // fetchWithCache 内置 ETag 条件请求（304 复用）与离线缓存兜底
+      const remote = await fetchWithCache(config.domainsUrl);
+      if (remote && remote.trim()) {
+        await loadLocalDomains(remote);
         return;
       }
-      const local = await fetchDomainsText('/domains.txt');
-      if (local.ok && local.text && local.text.trim()) {
-        await loadLocalDomains(local.text);
+      const local = await fetchWithCache('/domains.txt');
+      if (local && local.trim()) {
+        await loadLocalDomains(local);
         return;
       }
       // 所有源均失败且无内容：保留空状态（loadAll 的 finally 会统一处理 UI）
@@ -105,21 +106,25 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (autosaveRestoredRef.current) return; // 严格单次守卫（StrictMode 双调用亦只执行一次）
-    // schema 校验：仅接受合法字符串且非空，防止脏数据/超长内容进入应用
-    const autosave = readAutosave();
-    if (autosave && !sourceInputRef.current.trim()) {
+    // 异步读取（IndexedDB 优先，localStorage 降级）：schema 校验拒绝脏数据/超长内容
+    void (async () => {
+      const autosave = await readAutosave();
+      // 远端加载可能已填充内容，此时不让本地草稿覆盖
+      if (!autosave || sourceInputRef.current.trim()) {
+        return;
+      }
       setSourceInput(autosave);
       parseSourceData(autosave);
       generateLineNumbers(autosave, lineNumbersRef);
       autosaveRestoredRef.current = true;
-      const autoSaveTime = readAutosaveTime();
+      const autoSaveTime = await readAutosaveTime();
       if (autoSaveTime) {
         const timeAgo = Math.floor((Date.now() - autoSaveTime) / 60000);
         if (timeAgo > 0) {
           showToastRef.current('autosaveRestored', { time: timeAgo });
         }
       }
-    }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -128,7 +133,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     if (typeof window === 'undefined') return;
     const autoSaveInterval = setInterval(() => {
       if (sourceInputRef.current.trim()) {
-        writeAutosave(sourceInputRef.current);
+        void writeAutosave(sourceInputRef.current);
       }
     }, 30000);
     return () => clearInterval(autoSaveInterval);
@@ -147,7 +152,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     setParsedData({ domains: [], whitelist: [], customDns: [] });
     setStats({ domainCount: 0, validCount: 0, commentCount: 0, blacklistCount: 0, whitelistCount: 0, customDnsCount: 0, totalLines: 0, invalidCount: 0 });
     // 同步清除本地自动保存与时间戳，避免清空后加载/刷新时旧内容复现
-    clearAutosave();
+    void clearAutosave();
     showToastRef.current('cleared');
   }, []);
 
@@ -167,7 +172,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
 
   const saveDomains = useCallback(() => {
     if (sourceInputRef.current.trim()) {
-      writeAutosave(sourceInputRef.current);
+      void writeAutosave(sourceInputRef.current);
     }
     showToastRef.current('domainsSaved');
   }, []);

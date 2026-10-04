@@ -1,7 +1,7 @@
-// src/hooks/useUrlManager.ts v3.9.0
+// src/hooks/useUrlManager.ts v3.11.0
 import { useState, useCallback } from 'react';
-import { fetchFromUrl as fetchFromUrlUtil, fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
-import { fetchDomainsText } from '../utils/domainFetch';
+import { fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
+import { fetchWithCache } from '../utils/cachedFetch';
 import { generateLineNumbers } from './useLineNumbers';
 import { config, presetMirrors, type PresetName } from '../config/index';
 import { useLoading } from './useLoading';
@@ -43,11 +43,11 @@ export const useUrlManager = (
         if (!mirrors) {
           throw new Error('Preset not found');
         }
-        // 依次尝试各镜像，返回第一个成功获取的文本内容
+        // 依次尝试各镜像（带 ETag 增量缓存与离线兜底），返回第一个成功获取的文本内容
         for (const url of mirrors) {
-          const res = await fetchDomainsText(url);
-          if (res.ok && res.text) {
-            return res.text;
+          const text = await fetchWithCache(url);
+          if (text && text.trim()) {
+            return text;
           }
         }
         throw new Error('All preset mirrors failed');
@@ -76,7 +76,12 @@ export const useUrlManager = (
         if (!url) {
           throw new Error('URL not provided');
         }
-        return fetchFromUrlUtil(url);
+        // 走 ETag 增量缓存：内容未变时复用本地缓存，离线时亦可加载
+        const text = await fetchWithCache(url);
+        if (!text || !text.trim()) {
+          throw new Error('Empty response');
+        }
+        return text;
       },
       onSuccess: (content: string) => {
         setSourceInput(content);
