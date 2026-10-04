@@ -25,7 +25,7 @@ prototype/
   - 主题切换（Light/Dark，持久化 `localStorage` + `prefers-color-scheme`）
   - 16 语言下拉（对齐 `src/utils/i18n.ts` `supportedLanguages`）
   - 实时解析统计（黑名单 / 白名单 / 自定义 DNS / 注释 / 无效行）
-  - 9 种格式输出（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS）Tab 切换
+  - 12 种格式输出（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS）Tab 切换
   - 行号编辑器、排序、去重、清空、复制、下载
   - 预设数据（内置 / AdGuard / EasyList / NeoHosts）
   - **设置面板**（项目名 / 版本 / IPv4 / IPv6 / 头部注释 / IPv6 屏蔽 / 去重 / 通配符，实时驱动生成，对齐 `src/components/SettingsPanel.tsx`）

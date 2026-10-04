@@ -1,0 +1,73 @@
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90me:/Github/DNS_Shield[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32m✓[39m src/utils/ruleMatcher.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+ [32m✓[39m src/utils/domainValidator.test.ts [2m([22m[2m17 tests[22m[2m)[22m[90m 15[2mms[22m[39m
+ [32m✓[39m src/utils/sortDedupe.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 35[2mms[22m[39m
+ [32m✓[39m src/utils/parser.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 32[2mms[22m[39m
+ [32m✓[39m src/utils/fileUtils.test.ts [2m([22m[2m9 tests[22m[2m)[22m[90m 87[2mms[22m[39m
+ [32m✓[39m src/utils/statsAggregator.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✓[39m src/utils/scriptGenerator.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✓[39m src/utils/buildFlowPool.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✓[39m src/utils/domainFetch.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 34[2mms[22m[39m
+ [32m✓[39m src/utils/i18n.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m✓[39m src/utils/rulesGenerator.extra.test.ts [2m([22m[2m5 tests[22m[2m)[22m[90m 8[2mms[22m[39m
+ [32m✓[39m src/utils/rulesGenerator.test.ts [2m([22m[2m17 tests[22m[2m)[22m[90m 31[2mms[22m[39m
+[90mstdout[2m | src/utils/logger.test.ts[2m > [22m[2mlogger[2m > [22m[2mprovides error, warn, info, and debug methods without throwing
+[22m[39m[DNS_Shield] test message
+[DNS_Shield] test debug
+
+[90mstderr[2m | src/utils/logger.test.ts[2m > [22m[2mlogger[2m > [22m[2mprovides error, warn, info, and debug methods without throwing
+[22m[39m[DNS_Shield] test warning
+[DNS_Shield] test error
+
+ [32m✓[39m src/utils/logger.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 10[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m13 passed[39m[22m[90m (13)[39m
+[2m      Tests [22m [1m[32m85 passed[39m[22m[90m (85)[39m
+[2m   Start at [22m 17:31:18
+[2m   Duration [22m 5.80s[2m (transform 5.40s, setup 0ms, collect 12.65s, tests 284ms, environment 5ms, prepare 9.32s)[22m
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   47.85 |    84.97 |   71.69 |   47.85 |                   
+ buildFlowPool.ts  |     100 |      100 |     100 |     100 |                   
+ buildFlowPool.ts  |       0 |      100 |     100 |       0 | 11-29             
+ domainFetch.ts    |   86.04 |       70 |     100 |   86.04 | 27,35-39          
+ domainFetch.ts    |       0 |      100 |     100 |       0 | 14-58             
+ ...nPrimitives.ts |     100 |      100 |     100 |     100 |                   
+ ...nPrimitives.ts |       0 |      100 |     100 |       0 | 6-24              
+ ...inValidator.ts |     100 |      100 |     100 |     100 |                   
+ ...inValidator.ts |       0 |        0 |       0 |       0 | 1                 
+ fileUtils.ts      |   74.19 |     87.5 |      50 |   74.19 | ...44-55,62-66,80 
+ fileUtils.ts      |       0 |        0 |       0 |       0 | 1-153             
+ ...tGenerators.ts |     100 |    94.11 |     100 |     100 | 90                
+ ...tGenerators.ts |       0 |        0 |       0 |       0 | 1-154             
+ headerConfigs.ts  |     100 |      100 |     100 |     100 |                   
+ headerConfigs.ts  |       0 |      100 |     100 |       0 | 15-101            
+ i18n.ts           |     100 |    88.88 |   33.33 |     100 | 71                
+ i18n.ts           |       0 |        0 |       0 |       0 | 1-88              
+ logger.ts         |     100 |     87.5 |     100 |     100 | 20                
+ logger.ts         |       0 |      100 |     100 |       0 | 8-25              
+ parseLine.ts      |    98.6 |    84.44 |     100 |    98.6 | 163-164           
+ parseLine.ts      |       0 |        0 |       0 |       0 | 1-179             
+ parser.ts         |     100 |    83.33 |     100 |     100 | 43,51,67,74       
+ parser.ts         |       0 |        0 |       0 |       0 | 1-98              
+ ruleMatcher.ts    |     100 |      100 |     100 |     100 |                   
+ ruleMatcher.ts    |       0 |      100 |     100 |       0 | 20-115            
+ rulesGenerator.ts |     100 |    89.47 |     100 |     100 | 35,126            
+ rulesGenerator.ts |       0 |        0 |       0 |       0 | 1-141             
+ ...ptGenerator.ts |     100 |       80 |     100 |     100 | 24                
+ ...ptGenerator.ts |       0 |      100 |     100 |       0 | 18-138            
+ sortDedupe.ts     |   97.46 |    92.59 |     100 |   97.46 | 46,101            
+ sortDedupe.ts     |       0 |        0 |       0 |       0 | 1-103             
+ ...sAggregator.ts |   97.14 |       75 |     100 |   97.14 | 37                
+ ...sAggregator.ts |       0 |      100 |     100 |       0 | 6-44              
+-------------------|---------|----------|---------|---------|-------------------
+ERROR: Coverage for lines (47.85%) does not meet global threshold (80%)
+ERROR: Coverage for functions (71.69%) does not meet global threshold (80%)
+ERROR: Coverage for statements (47.85%) does not meet global threshold (80%)

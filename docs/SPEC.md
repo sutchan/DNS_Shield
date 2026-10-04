@@ -181,7 +181,10 @@ dns-shield/
 | Hosts 格式 | `IP domain` |
 | AdGuard 格式 | `\|\|domain^` |
 | 白名单格式 | `@@\|\|domain^` |
-| 九种目标格式 | Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS，由统一中间结构生成 |
+| Mosdns 格式 | `domain:domain`（domain-set，匹配域名及子域） |
+| Clash Meta 格式 | `DOMAIN-SUFFIX,domain,reject`（白名单为 `DIRECT`） |
+| CoreDNS 格式 | `0.0.0.0 domain`（hosts 插件格式） |
+| 十二种目标格式 | Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS，由统一中间结构生成 |
 | 头部注释 | 自动生成项目信息头 |
 | 一键下载 | 下载生成的文件 |
 | 剪贴板复制 | 复制生成的内容 |

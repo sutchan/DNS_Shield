@@ -6,7 +6,7 @@
 #
 # 做三件事：
 #   1. 校验 tag 与 package.json 的 version 一致（防止打错版本号发布）
-#   2. 以 public/domains.txt 为单一数据源，重新生成 9 种过滤规则文件
+#   2. 以 public/domains.txt 为单一数据源，重新生成全部过滤规则文件
 #   3. 把规则文件打包为 GitHub Release 资产（同时提供 zip 与单文件）
 #
 # 推荐发布流程：
@@ -69,7 +69,13 @@ jobs:
             public/unbound.conf \
             public/pihole.txt \
             public/smartdns.conf \
-            public/rpz.db
+            public/rpz.db \
+            public/mosdns_domain_set.txt \
+            public/clash_dns.yaml \
+            public/coredns_hosts.txt \
+            public/mosdns_domain_set.txt \
+            public/clash_dns.yaml \
+            public/coredns_hosts.txt
           echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
           ls -lh "$ZIP"
 
@@ -85,7 +91,7 @@ jobs:
             ${{ steps.count.outputs.body }}
             ```
 
-            本版本由 `public/domains.txt` 单一数据源生成，共 9 种格式。
+            本版本由 `public/domains.txt` 单一数据源生成，共 12 种格式。
             安装方式见 [README](https://github.com/${{ github.repository }}#readme)。
           files: |
             ${{ steps.package.outputs.zip }}

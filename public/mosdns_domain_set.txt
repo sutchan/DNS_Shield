@@ -1,0 +1,884 @@
+# =====================================
+# DNS Shield - Mosdns domain-set 广告过滤列表
+# =====================================
+#
+# Mosdns domain-set 列表（domain: 前缀匹配域名与子域）
+#
+# 版本:: 3.10.0
+# 更新:: 2026.10.04
+# 域名:: 634 个唯一域名
+# 白名单:: 232 个域名
+#
+# 项目: https://github.com/sutchan/DNS_Shield
+# 演示: https://dns.ewuse.com/
+#
+# =====================================
+
+domain:2o7.net
+domain:3dns-2.adobe.com
+domain:3dns-3.adobe.com
+domain:4009997658.com
+domain:519332da.rtc.youme.im
+domain:86file.megajoy.com
+domain:86get.joy.cn
+domain:a.applvn.com
+domain:a.cctv.com
+domain:a.cntv.cn
+domain:aaid.umeng.com
+domain:aaxads.com
+domain:acroipm.adobe.com
+domain:acs.youku.com
+domain:act.vip.iqiyi.com
+domain:activate-sea.adobe.com
+domain:activate-sjc0.adobe.com
+domain:activate.adobe.com
+domain:activate.wip3.adobe.com
+domain:ad-api.bilibili.com
+domain:ad-pc.iqiyi.com
+domain:ad-static.iqiyi.com
+domain:ad.88765.com
+domain:ad.bestv.com.cn
+domain:ad.bilibili.com
+domain:ad.bytedance.com
+domain:ad.cctv.com
+domain:ad.cdntv.com
+domain:ad.cmvideo.cn
+domain:ad.cntv.cn
+domain:ad.coocaa.com
+domain:ad.doubleclick.net
+domain:ad.douyin.com
+domain:ad.ffalcon.com
+domain:ad.fun.tv
+domain:ad.gifshow.com
+domain:ad.haokan.com
+domain:ad.hisense.com
+domain:ad.hpplay.cn
+domain:ad.huoshan.com
+domain:ad.iqiyi.com
+domain:ad.ixigua.com
+domain:ad.kuaishou.com
+domain:ad.kwai.com
+domain:ad.letv.com
+domain:ad.m.taobao.com
+domain:ad.mgtv.com
+domain:ad.mi.com
+domain:ad.miguvideo.com
+domain:ad.oceanengine.com
+domain:ad.pptv.com
+domain:ad.qq.com
+domain:ad.sohu.com
+domain:ad.tencentmusic.com
+domain:ad.toutiao.com
+domain:ad.tv.sohu.com
+domain:ad.video.qq.com
+domain:ad.weishi.qq.com
+domain:ad.weixin.qq.com
+domain:ad.xelements.cn
+domain:ad.xiaohongshu.com
+domain:ad.xiaomi.com
+domain:ad.xunkids.com
+domain:ad.youku.com
+domain:ad1.xiaomi.com
+domain:adash.m.taobao.com
+domain:adash.man.aliyuncs.com
+domain:adashbc.ut.taobao.com
+domain:adashx.m.taobao.com
+domain:adbutler.com
+domain:adc.hpplay.cn
+domain:adcdn.hpplay.cn
+domain:adchat.com
+domain:adcolony.com
+domain:adcontrol.tudou.com
+domain:adeng.hpplay.cn
+domain:adextensioncontrol.tudou.com
+domain:adform.com
+domain:adform.net
+domain:adfox.ru
+domain:adguanggao.eee114.com
+domain:adiu.amap.com
+domain:adjust.com
+domain:admaster.com
+domain:admaster.com.cn
+domain:admp.weixin.qq.com
+domain:adnxs.com
+domain:adometry.com
+domain:adping.qq.com
+domain:adplay.tudou.com
+domain:adriver.ru
+domain:adroll.com
+domain:ads-union.jd.com
+domain:ads-vp5.xhscdn.com
+domain:ads.95516.com
+domain:ads.api.vungle.com
+domain:ads.bestv.com.cn
+domain:ads.bing.com
+domain:ads.cup.com.cn
+domain:ads.fun.tv
+domain:ads.kuaishou.com
+domain:ads.letv.com
+domain:ads.linkedin.com
+domain:ads.mgtv.com
+domain:ads.migu.cn
+domain:ads.pinterest.com
+domain:ads.pptv.com
+domain:ads.reddit.com
+domain:ads.sohu.com
+domain:ads.twitter.com
+domain:ads.wikia.com
+domain:ads.xiaohongshu.com
+domain:ads.yahoo.com
+domain:ads.youtube.com
+domain:adsame.com
+domain:adscale.com
+domain:adscale.de
+domain:adsclick.qq.com
+domain:adserver.net
+domain:adservice.google.com
+domain:adservice.google.com.mt
+domain:adsfile.qq.com
+domain:adshmct.qq.com
+domain:adshmmsg.qq.com
+domain:adslvfile.qq.com
+domain:adslvseed.qq.com
+domain:adsmind.gdtimg.com
+domain:adsmind.ugdtimg.com
+domain:adsmogo.com
+domain:adsmoloco.com
+domain:adspirit.de
+domain:adsqqclick.qq.com
+domain:adsrich.qq.com
+domain:adsrvr.org
+domain:adstats.tencentmusic.com
+domain:adthrive.com
+domain:adv.sec.miui.com
+domain:advertising.com
+domain:adview.cn
+domain:adwo.com
+domain:adx.tv.mi.com
+domain:adyoulike.com
+domain:adzerk.net
+domain:affise.com
+domain:afp.iqiyi.com
+domain:afp.qiyi.com
+domain:alert.kuyun.com
+domain:ali-ad.a.yximgs.com
+domain:allyes.com
+domain:alog.umeng.com
+domain:amazon-adsystem.com
+domain:amdc.m.taobao.com
+domain:analytics.google.com
+domain:analytics.rayjump.com
+domain:analytics.yahoo.com
+domain:android.bugly.qq.com
+domain:api-ad.bestv.cn
+domain:api-ad.fun.tv
+domain:api-ad.hisense.com
+domain:api-ad.letv.com
+domain:api-ad.mgtv.com
+domain:api-ad.miguvideo.com
+domain:api-ad.pptv.com
+domain:api-ad.xiaohongshu.com
+domain:api-pay.mgtv.com
+domain:api-tx.douyin.com
+domain:api.ad.kuaishou.com
+domain:api.amemv.com
+domain:api.cloud.huawei.com
+domain:api.cupid.ptqy.gitv.tv
+domain:api.fd.mob.com
+domain:api.haokan.com
+domain:api.hpplay.com.cn
+domain:api.huoshan.com
+domain:api.ixigua.com
+domain:api.kingdata.ksyun.com
+domain:api.kuaishou.com
+domain:api.onesignal.com
+domain:api.ts.feedback.qy.net
+domain:api.vc.bilibili.com
+domain:api.vungle.com
+domain:applog-perf.uc.cn
+domain:applog.uc.cn
+domain:applovin.com
+domain:applvn.com
+domain:apps.corel.com
+domain:appsflyer.com
+domain:as.weixin.qq.com
+domain:at-img1.tdimg.com
+domain:at-img2.tdimg.com
+domain:at-img3.tdimg.com
+domain:atianqi.com
+domain:atm.youku.com
+domain:auction.unityads.unity.cn
+domain:auction.unityads.unity3d.com
+domain:auth.api.gitv.tv
+domain:badjs.weixinbridge.com
+domain:baidu.new1cloud.com
+domain:baiducdncmn3.inter.iqiyi.com
+domain:baiducdncnc.inter.ptqy.gitv.tv
+domain:baidumobads.baidu.com
+domain:baidutv.baidu.com
+domain:bar.baidu.com
+domain:bdbus-turbonet.baidu.com
+domain:bds.snssdk.com
+domain:bdsp.x.jd.com
+domain:beacon.bestv.com.cn
+domain:beacon.bilibili.com
+domain:beacon.cctv.cn
+domain:beacon.coocaa.com
+domain:beacon.ffalcon.com
+domain:beacon.fun.tv
+domain:beacon.kuaishou.com
+domain:beacon.letv.com
+domain:beacon.migu.cn
+domain:beacon.pptv.com
+domain:beacon.xiaohongshu.com
+domain:bidswitch.net
+domain:bidtellect.com
+domain:blackhole.m.jd.com
+domain:bluekai.com
+domain:bm.snssdk.com
+domain:bss.pandora.xiaomi.com
+domain:bytedance.com
+domain:bytedance.net
+domain:c.l.qq.com
+domain:callback.ad.xiaomi.com
+domain:casalemedia.com
+domain:cctv-ad.cdn.cctv.cn
+domain:cctv.adsunion.com
+domain:cdn.hpplay.com.cn
+domain:centertime.ksyun.com
+domain:chartboost.com
+domain:chaturbate.com
+domain:cl2.cn
+domain:cm.bilibili.com
+domain:cm.cn.miaozhen.com
+domain:cm.ipinyou.com
+domain:cmonitor.iqiyi.com
+domain:collect.data.qq.com
+domain:collector.amemv.com
+domain:collector.haokan.com
+domain:collector.huoshan.com
+domain:collector.ixigua.com
+domain:com.hisense.service.ad
+domain:conf.hpplay.cn
+domain:config.kuyun.com
+domain:config.unityads.unitychina.cn
+domain:connatix.com
+domain:connectivitycheck.platform.hicloud.com
+domain:contextweb.com
+domain:coreldrawchina.com
+domain:cpro.baidu.com
+domain:criteo.com
+domain:criteo.net
+domain:crwdcntrl.net
+domain:cupid.ptqy.gitv.tv
+domain:d.cntv.cn
+domain:data.mistat.xiaomi.com
+domain:dataeye.com
+domain:datahub.zhihu.com
+domain:daup.map.baidu.com
+domain:de.pandora.xiaomi.com
+domain:df.tanx.com
+domain:diagnosis.ad.xiaomi.com
+domain:dig.bdurl.net
+domain:districtm.ca
+domain:districtm.io
+domain:ditwan.cn
+domain:dl.cupid.ptqy.gitv.tv
+domain:dm.bytedance.com
+domain:dm.pstatp.com
+domain:dm.toutiao.com
+domain:dnkeeper.platform.dbankcloud.com
+domain:domob.cn
+domain:domob.org
+domain:duga.zhihu.com
+domain:dvb.pandora.xiaomi.com
+domain:ef-dongfeng.tanx.com
+domain:engagebdr.com
+domain:errlog.umeng.com
+domain:ets.tanx.com
+domain:exelate.com
+domain:exelator.com
+domain:extlog.snssdk.com
+domain:finder.video.qq.com
+domain:fix.hpplay.cn
+domain:flashtalking.com
+domain:fm.tiktok.com
+domain:freewheel.tv
+domain:g.dtv.cn.miaozhan.com
+domain:g.dtv.cn.miaozhen.com
+domain:g.pandora.xiaomi.com
+domain:g.rs.dbankcloud.com
+domain:galaxy.ad.iqiyi.com
+domain:game.weixin.qq.com
+domain:gdt.qq.com
+domain:gifshow.com
+domain:glb.hpplay.cn
+domain:google-analytics.com
+domain:googleads.g.doubleclick.net
+domain:googleadservices.com
+domain:googlesyndication.com
+domain:googletagmanager.com
+domain:googletagservices.com
+domain:gs.getui.com
+domain:gsnuoyou.cn
+domain:gumgum.com
+domain:gvod.aiseejapp.atianqi.com
+domain:h-adashx.ut.taobao.com
+domain:h5.hpplay.com.cn
+domain:h5.ptmi.gitv.tv
+domain:h5.tv.mi.com
+domain:hotupgrade.hpplay.cn
+domain:hpplay.cdn.cibn.cc
+domain:hwid-drcn.platform.hicloud.com
+domain:i0.hdslb.com
+domain:iad.ihuman.com
+domain:ihuman.com
+domain:image.hpplay.cn
+domain:imdns.hpplay.cn
+domain:imp.ad.xelements.cn
+domain:indexexchange.com
+domain:init.supersonicads.com
+domain:inmobi.com
+domain:innovid.com
+domain:ip.ptqy.gitv.tv
+domain:ironsrc.com
+domain:is-gateway.supersonicads.com
+domain:iws.corel.com
+domain:iwstat.tudou.com
+domain:iyes.youku.com
+domain:jellyfish.pandora.xiaomi.com
+domain:js-ad.a.yximgs.com
+domain:kuyun.com
+domain:kwimgs.com
+domain:leboapi.hpplay.com.cn
+domain:live.vzuu.com
+domain:liverail.com
+domain:log-api.pangolin-sdk-toutiao.com
+domain:log.ad.xiaomi.com
+domain:log.bestv.com.cn
+domain:log.bilibili.com
+domain:log.cctv.cn
+domain:log.coocaa.com
+domain:log.ffalcon.com
+domain:log.fun.tv
+domain:log.haokan.com
+domain:log.hisense.com
+domain:log.huoshan.com
+domain:log.iqiyi.com
+domain:log.ixigua.com
+domain:log.kuaishou.com
+domain:log.letv.com
+domain:log.mgtv.com
+domain:log.migu.cn
+domain:log.mmstat.com
+domain:log.pptv.com
+domain:log.snssdk.com
+domain:log.sohu.com
+domain:log.tbs.qq.com
+domain:log.umsns.com
+domain:log.xiaohongshu.com
+domain:log1.cntv.cn
+domain:logbak.hicloud.com
+domain:logonext.tv.kuyun.com
+domain:logs.ironsrc.mobi
+domain:loopme.com
+domain:lstat.youku.com
+domain:m.pcv.iqiyi.com
+domain:m.reachmax.cn
+domain:ma.baidu.com
+domain:madhouse.cn
+domain:madserving.com
+domain:mairuanwang.com
+domain:makeding.com
+domain:mathtag.com
+domain:mb.cctv.com
+domain:mb.cdntv.com
+domain:mc.corel.com
+domain:mediamath.com
+domain:mediav.com
+domain:mediav.net
+domain:mediavine.com
+domain:mediavoice.com
+domain:metok.sys.miui.com
+domain:mgtv-ad.cdn.mgtv.com
+domain:miaozhen.com
+domain:minigame.qq.com
+domain:misc.in.duokanbox.com
+domain:misc.pandora.xiaomi.com
+domain:mishop.pandora.xiaomi.com
+domain:mitv.tracking.miui.com
+domain:moat.com
+domain:moatads.com
+domain:mon.snssdk.com
+domain:mopub.com
+domain:mpad.qq.com
+domain:mpad.weixin.qq.com
+domain:mpush-api.aliyun.com
+domain:ms.applvn.com
+domain:msg.iqiyi.com
+domain:msg.qy.net
+domain:mtt.taobao.com
+domain:nativo.com
+domain:networksdk.ssacdn.com
+domain:new.api.ad.xiaomi.com
+domain:newzone.cctv.com
+domain:nielsen.com
+domain:norma-external-collect.meizu.com
+domain:nstat.tudou.com
+domain:o1098464.ingest.sentry.io
+domain:oauth-login-drcn.platform.dbankcloud.com
+domain:oceanengine.com
+domain:official-t.720static.com
+domain:omgmta.play.aiseet.atianqi.com
+domain:onscroll.com
+domain:open.e.kuaishou.cn
+domain:open.e.kuaishou.com
+domain:openapi.vip.ptqy.gitv.tv
+domain:openx.net
+domain:optimatic.com
+domain:optimus-ads.amap.com
+domain:origin-mc.corel.com
+domain:ota.ptqy.gitv.tv
+domain:outbrain.com
+domain:outcome-ssp.supersonicads.com
+domain:p1.bestvimg.com
+domain:p1.ffalconimg.com
+domain:p1.hisensead.com
+domain:p1.mgtvimg.com
+domain:p1.migupic.com
+domain:p2.bestvimg.com
+domain:p2.mgtvimg.com
+domain:p2.migupic.com
+domain:p2v.tudou.com
+domain:pagead2.googleadservices.com
+domain:pandora.mi.com
+domain:pandora.xiaomi.com
+domain:pangle.io
+domain:pangolin-sdk-toutiao-b.com
+domain:pangolin-sdk-toutiao.com
+domain:pangolin.snssdk.com
+domain:pay.ad.xiaomi.com
+domain:pay.api.youku.com
+domain:pay.bestv.com.cn
+domain:pay.bilibili.com
+domain:pay.dangbei.net
+domain:pay.fun.tv
+domain:pay.hd.sohu.com
+domain:pay.huawei.com
+domain:pay.icntv.help
+domain:pay.icntv.xyz
+domain:pay.iqiyi.com
+domain:pay.kuaishou.com
+domain:pay.letv.com
+domain:pay.mgtv.com
+domain:pay.migu.cn
+domain:pay.mobile.youku.com
+domain:pay.pptv.com
+domain:pay.sohu.com
+domain:pay.tv.qq.com
+domain:pay.tv.sohu.com
+domain:pay.video.qq.com
+domain:pay.xiaohongshu.com
+domain:pay.zmengzhu.com
+domain:paycallback.iqiyi.com
+domain:paycode.iqiyi.com
+domain:payment.callback.youku.com
+domain:payment.youku.com
+domain:pd.ads.cn.miaozhen.com
+domain:pgdt.gtimg.cn
+domain:pglstatp-toutiao.com
+domain:phncdn.com
+domain:pic1.iqiyi.com
+domain:pic2.iqiyi.com
+domain:pic7.iqiyipic.com
+domain:pin.hpplay.cn
+domain:piximedia.tv
+domain:platforms.adx1.com
+domain:poweredby.zergnet.com
+domain:prod-ms.applovin.com
+domain:ptgy.gitv.tv
+domain:ptmi.gitv.tv
+domain:pubmatic.com
+domain:puma-api.ptqy.gitv.tv
+domain:push.cctv.com
+domain:px.ucweb.com
+domain:pyk.cr-nielsen.com
+domain:qr.api.youku.com
+domain:qr.bilibili.com
+domain:qr.icntv.cn
+domain:qr.iqiyi.com
+domain:qr.mioffice.cn
+domain:qr.sohu.com
+domain:qr.tv.qq.com
+domain:qr.youku.com
+domain:qtsftl.m.cn.miaozhen.com
+domain:quantcast.com
+domain:quantserve.com
+domain:r.browser.miui.com
+domain:ramp.com
+domain:recommend.cctv.com
+domain:reflow.amemv.com
+domain:regist.tv.kuyun.com
+domain:res-ga.smzdm.com
+domain:resstatic.servicewechat.com
+domain:revcontent.com
+domain:reward.ad.xiaomi.com
+domain:rfihub.com
+domain:router.amemv.com
+domain:rp.hpplay.cn
+domain:rp.mobile.youku.com
+domain:rt.applovin.com
+domain:rtb.ads.cn.miaozhen.com
+domain:rubiconproject.com
+domain:s1.hdslb.com
+domain:s3-fe-scm.pglstatp-toutiao.com
+domain:s3a.pstatp.com
+domain:sayhi.360.cn
+domain:scc.ssacdn.com
+domain:scorecardresearch.com
+domain:scs.openspeech.cn
+domain:sdk-cache.video.ptqy.gitv.tv
+domain:sdk.ptqy.gitv.tv
+domain:sdkauth.hpplay.cn
+domain:sdkconfig.ad.xiaomi.com
+domain:search.weixin.qq.com
+domain:secure.chn.imrworldwide.com
+domain:sentry.in.zhihu.com
+domain:serverbid.com
+domain:sharethrough.com
+domain:smaato.net
+domain:smartadserver.com
+domain:snssdk.com
+domain:sonobi.com
+domain:sovrn.com
+domain:spns.cctv.com
+domain:spotx.tv
+domain:spotxchange.com
+domain:stats.amemv.com
+domain:synacor.com
+domain:t.track.ad.xiaomi.com
+domain:t7z.cupid.iqiyi.com
+domain:t7z.cupid.ptqy.gitv.tv
+domain:taboola.com
+domain:talkingdata.com
+domain:tapjoy.com
+domain:teads.tv
+domain:theqoo.net
+domain:time.video.ptqy.gitv.tv
+domain:toblog.ctobsnssdk.com
+domain:tosv.boe.byted.org
+domain:tosv.byted.org
+domain:trace.rtbasia.com
+domain:tracking.miui.com
+domain:triplelift.com
+domain:turn.com
+domain:tv.aiseet.atianqi.com
+domain:tv.api.iqiyi.com
+domain:tvapi.kuyun.com
+domain:tvapp.hpplay.cn
+domain:tx-ad.a.yximgs.com
+domain:tyaqy.m.cn.miaozhen.com
+domain:ugc.amemv.com
+domain:ulogs.umeng.com
+domain:ulogs.umengcloud.com
+domain:umeng.com
+domain:umengcloud.com
+domain:umtrack.com
+domain:undertone.com
+domain:union.gdtimg.com
+domain:unityads.unity3d.com
+domain:unityads.unitychina.cn
+domain:unruly.co
+domain:unrulymedia.com
+domain:upfile-drcn.platform.hicloud.com
+domain:utk.baidu.com
+domain:v.admaster.com.cn
+domain:v2.reachmax.cn
+domain:valueclick.com
+domain:valueclickmedia.com
+domain:vamaker.com
+domain:vdn.cdntv.com
+domain:verizonmedia.com
+domain:videocontent-dra.himovie.hicloud.com
+domain:videohub.tv
+domain:view.adjust.com
+domain:vip.api.youku.com
+domain:vip.bz.mgtv.com
+domain:vip.iqiyi.com
+domain:vip.ktcp.icntv.cn
+domain:vip.ktcp.icntv.top
+domain:vip.log.mgtv.com
+domain:vip.tv.qq.com
+domain:vip.video.xiaomi.com
+domain:vip.youku.com
+domain:vip.zmengzhu.com
+domain:vipauth.hpplay.cn
+domain:vlive.qqvideo.tc.qq.com
+domain:vpay.video.qq.com
+domain:vt.ipinyou.com
+domain:vungle.com
+domain:vv.play.aiseet.atianqi.com
+domain:webapp.skysrt.com
+domain:wechatad.com
+domain:weixinbridge.com
+domain:wgo.mmstat.com
+domain:wq.123789.net.cn
+domain:ws.mmstat.com
+domain:wxa.wxs.qq.com
+domain:wxad.qq.com
+domain:wxapp.tc.qq.com
+domain:wximg.wxs.qq.com
+domain:wxsmw.wxs.qq.com
+domain:wxsnsdy.tc.qq.com
+domain:xad.com
+domain:xiaomi-dtv.m.cn.miaozhen.com
+domain:yhqdashi.com
+domain:yieldlab.net
+domain:yieldmo.com
+domain:yieldoptimizer.com
+domain:yigao.com
+domain:yk-ssp-ad.cp31.ott.cibntv.net
+domain:youmi.net
+domain:yoyi.com.cn
+domain:yximgs.com
+domain:zedo.com
+domain:zemanta.com
+domain:zeus-api.vemarsdev.com
+domain:cdn.ad.xiaomi.com
+domain:gallery.pandora.xiaomi.com
+domain:stat.pandora.xiaomi.com
+domain:tat.pandora.xiaomi.com
+
+# 白名单 (允许这些域名)
+# 白名单 access.speech.ai.xiaomi.com
+# 白名单 account-dcm.ai.xiaomi.com
+# 白名单 account.xiaomi.com
+# 白名单 ai.xiaomi.com
+# 白名单 ak.lp.account.xiaomi.com
+# 白名单 api.ai.xiaomi.com
+# 白名单 api.hybrid.xiaomi.com
+# 白名单 api.io.mi.com
+# 白名单 api.micloud.xiaomi.net
+# 白名单 api2.mina.mi.com
+# 白名单 auth.be.sec.miui.com
+# 白名单 file.xmpush.xiaomi.com
+# 白名单 galleryapi.micloud.xiaomi.net
+# 白名单 idm.iot.mi.com
+# 白名单 lbs.mina.mi.com
+# 白名单 market.mi-img.com
+# 白名单 market.xiaomi.com
+# 白名单 milink.pandora.xiaomi.com
+# 白名单 o2o.api.xiaomi.com
+# 白名单 resolver.mi.xiaomi.com
+# 白名单 sts.api.io.mi.com
+# 白名单 tracker.ai.xiaomi.com
+# 白名单 tracker.xiaomixiaoai.com
+# 白名单 api.e.kuaishou.cn
+# 白名单 api.kuaishouzt.com
+# 白名单 creator-api.kuaishouzt.com
+# 白名单 mon.tiktokv.com
+# 白名单 push.ksapisrv.com
+# 白名单 connectivitycheck.gstatic.com
+# 白名单 s.deepl.com
+# 白名单 talk.bz.gepush.com
+# 白名单 talk.bz.getui.net
+# 白名单 abchina.com
+# 白名单 auth.cebbank.com
+# 白名单 b2e.cebbank.com
+# 白名单 bank.pingan.com
+# 白名单 bankcomm.com
+# 白名单 bankofbeijing.com.cn
+# 白名单 bankofchina.com
+# 白名单 boc.cn
+# 白名单 bohs.com.cn
+# 白名单 bosc.cn
+# 白名单 bsb.cn
+# 白名单 cbhb.com.cn
+# 白名单 ccb.cn
+# 白名单 ccb.com
+# 白名单 ccbank.cn
+# 白名单 cebbank.com
+# 白名单 cfca.com.cn
+# 白名单 cgbchina.com.cn
+# 白名单 cib.com.cn
+# 白名单 citicbank.com
+# 白名单 cmbc.com.cn
+# 白名单 cmbchina.com
+# 白名单 corp.cebbank.com
+# 白名单 cqcbank.com.cn
+# 白名单 cscb.cn
+# 白名单 czbank.com
+# 白名单 dns1.cebbank.com
+# 白名单 dns2.cebbank.com
+# 白名单 dns3.cebbank.com
+# 白名单 dns4.cebbank.com
+# 白名单 dns5.cebbank.com
+# 白名单 dns6.cebbank.com
+# 白名单 dongguanbank.cn
+# 白名单 dyccb.com
+# 白名单 e.cebbank.com
+# 白名单 ebank.cebbank.com
+# 白名单 ecitic.com
+# 白名单 egbank.com.cn
+# 白名单 ehkg.cebbank.com
+# 白名单 fudianbank.com
+# 白名单 gycbank.com
+# 白名单 gzccb.com.cn
+# 白名单 h3cb.com
+# 白名单 hebbank.com
+# 白名单 hkbchina.com
+# 白名单 hljbank.com
+# 白名单 hrbank.com.cn
+# 白名单 husbank.com
+# 白名单 hxb.com.cn
+# 白名单 hzbank.com.cn
+# 白名单 icbc.com.cn
+# 白名单 jhbchina.com
+# 白名单 jinzhoubank.com.cn
+# 白名单 jsbchina.cn
+# 白名单 jshbank.com
+# 白名单 jx-bank.com
+# 白名单 jxbank.com
+# 白名单 lnbank.com.cn
+# 白名单 lycb.com.cn
+# 白名单 lzbank.com.cn
+# 白名单 nbcb.com.cn
+# 白名单 njcb.com.cn
+# 白名单 ns1.zcebbank.com.cn
+# 白名单 nxbank.com
+# 白名单 open.cebbank.com
+# 白名单 pay.cebbank.com
+# 白名单 psbc.com
+# 白名单 qdbank.cn
+# 白名单 qhrcb.com
+# 白名单 qlbank.com
+# 白名单 shengjingbank.com.cn
+# 白名单 spdb.com.cn
+# 白名单 srcb.com.cn
+# 白名单 static.cebbank.com
+# 白名单 szbank.cn
+# 白名单 tccb.com.cn
+# 白名单 tcrbank.com
+# 白名单 www.cebbank.com
+# 白名单 wzcb.com.cn
+# 白名单 xacbank.com
+# 白名单 xmbank.com.cn
+# 白名单 ynbank.com
+# 白名单 zybank.com.cn
+# 白名单 zzbank.cn
+# 白名单 12306.cn
+# 白名单 alipay.com
+# 白名单 chinatax.gov.cn
+# 白名单 gjzwfw.gov.cn
+# 白名单 mps.gov.cn
+# 白名单 amazon.cn
+# 白名单 dangdang.com
+# 白名单 gome.com.cn
+# 白名单 jd.com
+# 白名单 kaola.com
+# 白名单 pinduoduo.com
+# 白名单 suning.com
+# 白名单 taobao.com
+# 白名单 tmall.com
+# 白名单 vip.com
+# 白名单 douban.com
+# 白名单 im.qq.com
+# 白名单 qq.com
+# 白名单 qzone.qq.com
+# 白名单 renren.com
+# 白名单 tieba.baidu.com
+# 白名单 tim.qq.com
+# 白名单 weibo.com
+# 白名单 weixin.qq.com
+# 白名单 wx.qq.com
+# 白名单 zhihu.com
+# 白名单 acfun.com
+# 白名单 bilibili.com
+# 白名单 douyin.com
+# 白名单 douyu.com
+# 白名单 huya.com
+# 白名单 kuaishou.com
+# 白名单 xigua.com
+# 白名单 iqiyi.com
+# 白名单 kugou.com
+# 白名单 kuwo.cn
+# 白名单 letv.com
+# 白名单 mgtv.com
+# 白名单 miguvideo.com
+# 白名单 music.163.com
+# 白名单 pptv.com
+# 白名单 tv.sohu.com
+# 白名单 y.qq.com
+# 白名单 youku.com
+# 白名单 163.com
+# 白名单 360.cn
+# 白名单 baidu.com
+# 白名单 cctv.com
+# 白名单 chinanews.com.cn
+# 白名单 ifeng.com
+# 白名单 people.com.cn
+# 白名单 sina.com
+# 白名单 sina.com.cn
+# 白名单 so.com
+# 白名单 sogou.com
+# 白名单 thepaper.cn
+# 白名单 toutiao.com
+# 白名单 xinhuanet.com
+# 白名单 caocaokeji.cn
+# 白名单 ctrip.com
+# 白名单 dianping.com
+# 白名单 didichuxing.com
+# 白名单 didiglobal.com
+# 白名单 ele.me
+# 白名单 fliggy.com
+# 白名单 meituan.com
+# 白名单 qunar.com
+# 白名单 shouqi.com
+# 白名单 trip.com
+# 白名单 uber.com
+# 白名单 aliyun.com
+# 白名单 dingtalk.com
+# 白名单 docer.com
+# 白名单 feishu.cn
+# 白名单 foxmail.com
+# 白名单 larksuite.com
+# 白名单 mail.163.com
+# 白名单 mail.qq.com
+# 白名单 mail.sina.com.cn
+# 白名单 pan.baidu.com
+# 白名单 qiniu.com
+# 白名单 teambition.com
+# 白名单 upyun.com
+# 白名单 weiyun.com
+# 白名单 wps.cn
+# 白名单 console.cloud.tencent.com
+# 白名单 cloud.tencent.com
+# 白名单 baiducloud.com
+# 白名单 bing.com
+# 白名单 cn.bing.com
+# 白名单 cnblogs.com
+# 白名单 csdn.net
+# 白名单 developer.aliyun.com
+# 白名单 gitee.com
+# 白名单 github.com
+# 白名单 gitlab.com
+# 白名单 huaweicloud.com
+# 白名单 juejin.cn
+# 白名单 npmjs.com
+# 白名单 npmjs.org
+# 白名单 oschina.net
+# 白名单 stackoverflow.com
+# 白名单 canva.cn
+# 白名单 cnki.net
+# 白名单 icourse163.org
+# 白名单 izhihu.com
+# 白名单 mooc.com
+# 白名单 processon.com
+# 白名单 runoob.com
+# 白名单 smzdm.com
+# 白名单 w3school.com.cn
+# 白名单 wangfangdata.com.cn
+# 白名单 xuetangx.com
+# 白名单 youdao.com
+# 白名单 zhihuishu.com
+# 白名单 zhongchou.com

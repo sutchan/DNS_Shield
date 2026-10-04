@@ -1,8 +1,8 @@
 # =====================================
-# DNS Shield - Hosts 广告过滤列表
+# DNS Shield - CoreDNS hosts 广告过滤列表
 # =====================================
 #
-# 路由器级广告过滤 hosts 文件
+# CoreDNS hosts 插件格式（0.0.0.0 域名）
 #
 # 版本:: 3.10.0
 # 更新:: 2026.10.04
@@ -650,7 +650,6 @@
 0.0.0.0 tat.pandora.xiaomi.com
 
 # 白名单 (允许这些域名)
-# hosts 原生不支持白名单语法，仅作参考标注
 # 白名单 access.speech.ai.xiaomi.com
 # 白名单 account-dcm.ai.xiaomi.com
 # 白名单 account.xiaomi.com

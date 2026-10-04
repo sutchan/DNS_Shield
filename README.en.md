@@ -12,7 +12,7 @@ This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 
 - **Blocked domains** - Local ad and tracking domain filter (expandable via preset sources like AdGuard, EasyList, NeoHosts)
 - **Web management tool** - Generate custom filter lists via browser
-- **Multiple output formats** - Dnsmasq, Hosts, AdGuard, Whitelist, Unbound, Pi-hole, Domains, Bind RPZ, SmartDNS
+- **Multiple output formats** - Dnsmasq, Hosts, AdGuard, Whitelist, Unbound, Pi-hole, Domains, Bind RPZ, SmartDNS, Mosdns, Clash Meta, CoreDNS
 - **Format conversion** - Paste a list in any format (hosts / dnsmasq / AdGuard / plain domains) and convert it to your target format
 - **Single source workflow** - One domain list generates all output formats
 - **Router compatible** - Works with Merlin, OpenWrt, Xiaomi, ASUS, TP-Link, and more
@@ -89,6 +89,9 @@ Most routers with custom hosts support can use the same method:
 | `domains.txt` | Unified domain list (one domain per line, source of truth) |
 | `rpz.db` | Bind RPZ response policy zone format |
 | `smartdns.conf` | SmartDNS format (`address /domain/#`) |
+| `mosdns_domain_set.txt` | Mosdns domain-set format (`domain:` prefix, includes subdomains) |
+| `clash_dns.yaml` | Clash Meta DNS format (`DOMAIN-SUFFIX` + `reject`) |
+| `coredns_hosts.txt` | CoreDNS hosts plugin format (`0.0.0.0 domain`) |
 | `src/app/` | Next.js source code directory with management interface logic |
 
 ## Format Conversion
@@ -97,7 +100,7 @@ Besides generating rules from a unified domain source, DNS Shield also **convert
 
 - **Input detection** - When you paste hosts, dnsmasq, AdGuard or plain-domain text, `parseDomainLine` automatically detects each line's format and extracts domains / whitelist (`+domain`) / custom DNS (`@domain=ip`) / comments (`#`).
 - **Unified intermediate model** - Regardless of the source format, entries are parsed into a unified domain-item model (blocked or not, target IP, whitelist flag).
-- **Any-format output** - Switch the target format in the output panel to generate the corresponding list (Dnsmasq / Hosts / AdGuard / Whitelist / Unbound / Pi-hole / Domains / Bind RPZ / SmartDNS).
+- **Any-format output** - Switch the target format in the output panel to generate the corresponding list (Dnsmasq / Hosts / AdGuard / Whitelist / Unbound / Pi-hole / Domains / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS).
 
 Typical use: paste an AdGuard rule list into the input box and convert it to dnsmasq or Pi-hole in one click; or turn a legacy hosts list into SmartDNS / Bind RPZ.
 
@@ -115,6 +118,9 @@ This project provides pre-generated filter rule files that can be downloaded and
 | [pihole.txt](pihole.txt) | Pi-hole gravity | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/pihole.txt) |
 | [rpz.db](rpz.db) | Bind RPZ | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/rpz.db) |
 | [smartdns.conf](smartdns.conf) | SmartDNS | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/smartdns.conf) |
+| [mosdns_domain_set.txt](mosdns_domain_set.txt) | Mosdns domain-set | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/mosdns_domain_set.txt) |
+| [clash_dns.yaml](clash_dns.yaml) | Clash Meta DNS | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/clash_dns.yaml) |
+| [coredns_hosts.txt](coredns_hosts.txt) | CoreDNS hosts | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/coredns_hosts.txt) |
 
 ### Whitelist Usage Instructions
 
@@ -140,7 +146,7 @@ The project is now based on Next.js. You can:
 
 - Load and parse domain lists from URL (10s timeout) or local file
 - Choose preset sources (built-in data, AdGuard, EasyList, NeoHosts)
-- Generate Dnsmasq, Hosts, AdGuard, Whitelist, Unbound, Pi-hole, Domains, Bind RPZ, SmartDNS output
+- Generate Dnsmasq, Hosts, AdGuard, Whitelist, Unbound, Pi-hole, Domains, Bind RPZ, SmartDNS, Mosdns, Clash Meta, CoreDNS output
 - Configure IP addresses (IPv4/IPv6), header comments, dedup, wildcard stripping
 - Support custom DNS pointing (`@domain=ip`) and whitelist (`+domain`) prefixes
 - Auto save to localStorage every 30s and restore on reload
@@ -158,7 +164,7 @@ domains.txt (Source of Truth, including + whitelist / @ custom DNS / # comment)
         ↓
   ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
   ↓     ↓     ↓     ↓     ↓     ↓     ↓     ↓     ↓
-dns   hosts adguard white  unbound pihole domains  rpz   smartdns
+dns   hosts adguard white  unbound pihole domains  rpz   smartdns mosdns clash coredns
 masq         .txt  list   .conf  .txt           .db   .conf
   └────────────────────────────────────────────────────┘
                   Output: copy / download

@@ -1,7 +1,7 @@
-// service-worker.js v3.8.1
+// service-worker.js v3.10.0
 // PWA 服务 worker 实现 - 安全加固版
 
-const CACHE_NAME = 'dns-shield-cache-v2';
+const CACHE_NAME = 'dns-shield-cache-v3';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -16,7 +16,8 @@ const STATIC_ASSETS = [
   '/domains.txt'
 ];
 
-const CACHE_SAFE_EXTENSIONS = ['.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.json', '.txt'];
+// 扩展名白名单：仅缓存静态资源；.conf/.yaml/.db 覆盖 dnsmasq/unbound/smartdns/clash 规则文件
+const CACHE_SAFE_EXTENSIONS = ['.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff', '.woff2', '.ttf', '.json', '.txt', '.conf', '.yaml', '.db'];
 
 const isSafeToCache = (request) => {
   if (request.method !== 'GET') return false;

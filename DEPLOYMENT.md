@@ -240,12 +240,15 @@ docker-compose up -d
 |--------|------|----------|------|
 | CI | `ci.yml` | push/PR → `main`、`dev`；手动 | 质量门禁：ESLint、TypeScript、Vitest（含覆盖率）、Next.js 构建、多语言与数据一致性 |
 | Deploy | `deploy.yml` | push → `main`、push tag `v*`；手动 | 部署到 Vercel / EdgeOne Pages / GHCR 镜像 / 自托管服务器 |
-| Release | `release.yml` | push tag `v*` | 校验版本号、重新生成 9 种规则文件、创建 GitHub Release 并附带规则文件资产 |
+| Release | `release.yml` | push tag `v*` | 校验版本号、重新生成全部规则文件、创建 GitHub Release 并附带规则文件资产 |
+| Aggregate | `aggregate.yml` | 每周一定时；手动 | 聚合 AdGuard / EasyList / NeoHosts / StevenBlack / YousList 上游域名，去重合并后自动发起 Pull Request 更新 `public/domains.txt` |
 
 CI 采用「并行 job + 聚合门禁」结构：`lint`、`typecheck`、`test`、`build`、`data` 并行执行，最后由 `ci` 汇总结果。
 配置分支保护时**只需把 `CI Gate` 勾选为必需检查**，后续增删 job 无需再改保护规则。
 
 三个工作流的运行时准备统一收敛到复合动作 `.github/actions/setup`（安装 pnpm + Node 24 + 恢复依赖缓存），避免每处重复。
+
+`aggregate.yml` 不参与发布链路，仅做上游数据源聚合：每周一定时拉取各上游列表，合并去重后更新 `public/domains.txt` 并自动发起 Pull Request，需人工 review 后合并，从而保证过滤数据持续更新。
 
 ### 2. 需要配置的 Secrets
 

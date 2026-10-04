@@ -53,7 +53,7 @@ export interface Settings {
   // AdGuard 黑名单是否包含白名单豁免规则（@@||domain^）。
   // 默认 true（保持向后兼容：历史版本始终在 AdGuard 黑名单中附带白名单）。
   adguardIncludeWhitelist: boolean;
-  // 格式 Tab 是否显示全部 9 种格式；为 false 时仅显示核心 4 种（hosts/dnsmasq/adguard/whitelist）。
+  // 格式 Tab 是否显示全部 12 种格式；为 false 时仅显示核心 4 种（hosts/dnsmasq/adguard/whitelist）。
   // 对齐原型「输出规则类型」显示/隐藏开关，默认 true（显示全部）。
   showAllFormats: boolean;
   // 逐格式可见性集合（对齐原型「输出规则类型」9 个独立显示/隐藏开关 .box.on）。

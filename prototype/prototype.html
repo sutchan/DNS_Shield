@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DNS Shield — 高保真原型 v3.9.7</title>
-  <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS 的 DNS 广告过滤规则生成器" />
+  <meta name="description" content="DNS Shield 高保真可交互原型：基于 dnsmasq/hosts/AdGuard/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS/Mosdns/Clash Meta/CoreDNS 的 DNS 广告过滤规则生成器" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Spectral:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -461,7 +461,7 @@
           <div class="hero-copy" id="heroCopy">
             <span class="hero-kicker" id="heroKicker"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2 4 5v7c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V5l-8-3z"/></svg> <span id="heroKickerTxt">路由器级 DNS 防护</span></span>
             <h1 class="hero-title" id="heroTitle">把广告与追踪域名，挡在网络入口</h1>
-            <p class="hero-desc" id="heroDesc">粘贴域名或批量导入，一键生成 9 种格式规则，直接部署到路由器或 DNS 服务。</p>
+            <p class="hero-desc" id="heroDesc">粘贴域名或批量导入，一键生成 12 种格式规则，直接部署到路由器或 DNS 服务。</p>
             <!-- About 业务组件：保留使用指南（链接与版本号统一移至页面最底部 footer） -->
             <div class="about" id="about-panel">
               <h2 class="usage-title" id="usageTitle">使用指南</h2><!-- i18n: usageTitle -->
@@ -552,6 +552,9 @@
             <button class="tab" data-fmt="domains" role="tab" id="tabDomains">Domains</button>
             <button class="tab" data-fmt="bind" role="tab" id="tabBind">Bind</button>
             <button class="tab" data-fmt="smartdns" role="tab" id="tabSmartdns">SmartDNS</button>
+            <button class="tab" data-fmt="mosdns" role="tab" id="tabMosdns">Mosdns</button>
+            <button class="tab" data-fmt="clash" role="tab" id="tabClash">Clash Meta</button>
+            <button class="tab" data-fmt="coredns" role="tab" id="tabCoredns">CoreDNS</button>
           </div>
         </div>
 
@@ -624,6 +627,9 @@
                 <label class="check" data-fmt="domains"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>纯域名</span></label>
                 <label class="check" data-fmt="bind"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>Bind RPZ</span></label>
                 <label class="check" data-fmt="smartdns"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>SmartDNS</span></label>
+                <label class="check" data-fmt="mosdns"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>Mosdns</span></label>
+                <label class="check" data-fmt="clash"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>Clash Meta</span></label>
+                <label class="check" data-fmt="coredns"><span class="box on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span><span>CoreDNS</span></label>
               </div>
             </div>
           </div>
@@ -647,7 +653,7 @@
         <div class="card-body" id="guideBody">
           <div class="guide-steps">
             <div class="step"><span class="n">1</span><div><div class="st" id="gStep1t">输入域名</div><div class="sd" id="gStep1d">在「域名输入」粘贴域名清单，每行一个；或点「内置数据 / AdGuard / EasyList」一键导入，亦可填 URL 批量拉取。</div></div></div>
-            <div class="step"><span class="n">2</span><div><div class="st" id="gStep2t">选择格式</div><div class="sd" id="gStep2d">勾选需要的输出格式（可多选）：Dnsmasq、Hosts、AdGuard、ADG 白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS。</div></div></div>
+            <div class="step"><span class="n">2</span><div><div class="st" id="gStep2t">选择格式</div><div class="sd" id="gStep2d">勾选需要的输出格式（可多选）：Dnsmasq、Hosts、AdGuard、ADG 白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS、Mosdns、Clash Meta、CoreDNS。</div></div></div>
             <div class="step"><span class="n">3</span><div><div class="st" id="gStep3t">导出部署</div><div class="sd" id="gStep3d">复制对应格式规则到路由器或 DNS 服务即可生效，支持白名单放行与自定义 DNS 映射。</div></div></div>
           </div>
           <div class="guide-note">
@@ -695,7 +701,7 @@
         step1t: '输入域名', step1d: '粘贴或导入广告域名', step2t: '选择格式', step2d: 'dnsmasq / hosts / AdGuard…',
         step3t: '导出部署', step3d: '复制到路由器或 DNS 服务',
         heroKicker: '路由器级 DNS 防护', heroTitle: '把广告与追踪域名，挡在网络入口',
-        heroDesc: '粘贴域名或批量导入，一键生成 9 种格式规则，直接部署到路由器或 DNS 服务。',
+        heroDesc: '粘贴域名或批量导入，一键生成 12 种格式规则，直接部署到路由器或 DNS 服务。',
         ctaStart: '开始生成', ctaSettings: '配置设置', urlPlaceholder: '从 URL 批量导入域名，例如 https://example.com/ads.txt',
         urlHint: '支持 hosts / dnsmasq / AdGuard / 纯域名 混合格式，单行 10MB 上限',
         presetBuiltin: '内置数据', tabWhitelist: 'ADG白名单', usageTitle: '快速入门',
@@ -704,13 +710,13 @@
         psBlock: '拦截', psAllow: '放行', psDns: '自定义DNS', psComments: '注释', psLines: '共', psLinesSuffix: '行',
         wlHeader: '白名单列表', footerMeta: 'DNS Shield · 路由器级 DNS 广告过滤规则生成器',
         shareTexts: [
-          'DNS Shield：路由器级 DNS 广告过滤规则生成器，一键生成 9 种格式规则。',
+          'DNS Shield：路由器级 DNS 广告过滤规则生成器，一键生成 12 种格式规则。',
           '告别网页广告与追踪：DNS Shield 把域名清单转成路由器可用的拦截规则。',
           '家用网络全员免广告？DNS Shield 生成 hosts/dnsmasq/AdGuard 等规则，部署一次处处生效。',
           '不想装插件也能屏蔽广告？用 DNS Shield 在 DNS 层拦截，覆盖手机、电视、IoT 设备。'
         ], appearanceGroup: '外观', darkTheme: '深色模式',
         guideTitle: '使用指南', gStep1t: '输入域名', gStep1d: '在「域名输入」粘贴域名清单，每行一个；或点「内置数据 / AdGuard / EasyList」一键导入，亦可填 URL 批量拉取。',
-        gStep2t: '选择格式', gStep2d: '勾选需要的输出格式（可多选）：Dnsmasq、Hosts、AdGuard、ADG 白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS。',
+        gStep2t: '选择格式', gStep2d: '勾选需要的输出格式（可多选）：Dnsmasq、Hosts、AdGuard、ADG 白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS、Mosdns、Clash Meta、CoreDNS。',
         gStep3t: '导出部署', gStep3d: '复制对应格式规则到路由器或 DNS 服务即可生效，支持白名单放行与自定义 DNS 映射。', guideNoteTitle: '各格式部署提示',
         themeLight: '浅色', themeDark: '深色', lblLines: '总行数' },
       'en': { name: 'English', sub: 'DNS Ad-blocking Rule Generator', input: 'Domain Input', output: 'Rule Output',
@@ -722,7 +728,7 @@
         step1t: 'Input Domains', step1d: 'Paste or import ad domains', step2t: 'Pick Format', step2d: 'dnsmasq / hosts / AdGuard…',
         step3t: 'Export', step3d: 'Copy to router or DNS service',
         heroKicker: 'Router-level DNS Protection', heroTitle: 'Block Ads & Trackers at the Network Gate',
-        heroDesc: 'Paste domains or bulk-import, generate 9 format rules in one click, deploy straight to your router or DNS service.',
+        heroDesc: 'Paste domains or bulk-import, generate 12 format rules in one click, deploy straight to your router or DNS service.',
         ctaStart: 'Start Generating', ctaSettings: 'Configure', urlPlaceholder: 'Bulk-import domains from URL, e.g. https://example.com/ads.txt',
         urlHint: 'Mixed hosts / dnsmasq / AdGuard / plain-domain formats supported, 10MB per line limit',
         presetBuiltin: 'Built-in Data', tabWhitelist: 'ADG Whitelist', usageTitle: 'How to Use',
@@ -731,13 +737,13 @@
         psBlock: 'Blocked', psAllow: 'Allowed', psDns: 'Rerouted', psComments: 'Comments', psLines: 'Total', psLinesSuffix: 'lines',
         wlHeader: 'Whitelist', footerMeta: 'DNS Shield · Router-level DNS ad-blocking rule generator',
         shareTexts: [
-          'DNS Shield: router-level DNS ad-blocking rule generator, generate 9 format rules in one click.',
+          'DNS Shield: router-level DNS ad-blocking rule generator, generate 12 format rules in one click.',
           'Block ads and trackers at the DNS layer: DNS Shield turns domain lists into router-ready rules.',
           'Ad-free home network? DNS Shield generates hosts/dnsmasq/AdGuard rules — set up once, protect everywhere.',
           'No browser extension needed: intercept ads at DNS with DNS Shield, covering phones, TVs and IoT devices.'
         ], appearanceGroup: 'Appearance', darkTheme: 'Dark mode',
         guideTitle: 'User Guide', gStep1t: 'Input domains', gStep1d: 'Paste a domain list into the input box (one per line), or import via "Built-in / AdGuard / EasyList" presets, or fetch from a URL in bulk.',
-        gStep2t: 'Choose formats', gStep2d: 'Select the output formats you need (multiple allowed): Dnsmasq, Hosts, AdGuard, ADG allowlist, Unbound, Pi-hole, plain domains, Bind RPZ, SmartDNS.',
+        gStep2t: 'Choose formats', gStep2d: 'Select the output formats you need (multiple allowed): Dnsmasq, Hosts, AdGuard, ADG allowlist, Unbound, Pi-hole, plain domains, Bind RPZ, SmartDNS, Mosdns, Clash Meta, CoreDNS.',
         gStep3t: 'Export & deploy', gStep3d: 'Copy the rules for a format into your router or DNS service to activate; allowlist and custom DNS mapping are supported.', guideNoteTitle: 'Deployment tips per format',
         themeLight: 'Light', themeDark: 'Dark', lblLines: 'Total lines' }
     };
@@ -788,7 +794,7 @@
     var currentFmt = 'dnsmasq';
     var parsed = null;
     // 输出规则类型可见性（设置弹窗中可切换显示/隐藏）
-    var fmtVisible = { dnsmasq: true, hosts: true, adguard: true, whitelist: true, unbound: true, pihole: true, domains: true, bind: true, smartdns: true };
+    var fmtVisible = { dnsmasq: true, hosts: true, adguard: true, whitelist: true, unbound: true, pihole: true, domains: true, bind: true, smartdns: true, mosdns: true, clash: true, coredns: true };
 
     // 应用格式可见性：隐藏对应 tab；若当前选中被隐藏则回退到首个可见格式
     function applyFmtVisibility() {
@@ -970,6 +976,34 @@
       }
       return out;
     }
+    function genMosdns() {
+      var out = header('Mosdns domain-set 格式 (domain: 前缀)') + '\n';
+      parsed.domains.forEach(function (d) { out += 'domain:' + d + '\n'; });
+      if (parsed.whitelist.length) {
+        if (settings.addHeader) out += '\n# 白名单\n';
+        parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      }
+      return out;
+    }
+    function genClash() {
+      var out = header('Clash Meta DNS 格式 (DOMAIN-SUFFIX + reject)') + '\n';
+      parsed.domains.forEach(function (d) { out += 'DOMAIN-SUFFIX,' + d + ',reject\n'; });
+      if (parsed.whitelist.length) {
+        if (settings.addHeader) out += '\n# 白名单\n';
+        parsed.whitelist.forEach(function (d) { out += 'DOMAIN-SUFFIX,' + d + ',DIRECT\n'; });
+      }
+      return out;
+    }
+    function genCoredns() {
+      var out = header('CoreDNS hosts 插件格式 (0.0.0.0 域名)') + '\n';
+      parsed.domains.forEach(function (d) { out += '0.0.0.0 ' + d + '\n'; });
+      parsed.customDns.forEach(function (c) { out += c.ip + ' ' + c.domain + '\n'; });
+      if (parsed.whitelist.length) {
+        if (settings.addHeader) out += '\n# 白名单\n';
+        parsed.whitelist.forEach(function (d) { out += '# 已白名单: ' + d + '\n'; });
+      }
+      return out;
+    }
     function generate() {
       switch (currentFmt) {
         case 'dnsmasq': return genDnsmasq();
@@ -981,6 +1015,9 @@
         case 'domains': return genDomains();
         case 'bind': return genBind();
         case 'smartdns': return genSmartdns();
+        case 'mosdns': return genMosdns();
+        case 'clash': return genClash();
+        case 'coredns': return genCoredns();
       }
       return '';
     }
@@ -1039,7 +1076,7 @@
       body.innerHTML = esc;
       // 预览区统计条：当前格式 + 三态计数 + 总行数
       var t = I18N[currentLang] || I18N['en'];
-      var fmtNames = { dnsmasq: 'Dnsmasq', hosts: 'Hosts', adguard: 'AdGuard', whitelist: t.tabWhitelist, unbound: 'Unbound', pihole: 'Pi-hole', domains: 'Domains', bind: 'Bind RPZ', smartdns: 'SmartDNS' };
+      var fmtNames = { dnsmasq: 'Dnsmasq', hosts: 'Hosts', adguard: 'AdGuard', whitelist: t.tabWhitelist, unbound: 'Unbound', pihole: 'Pi-hole', domains: 'Domains', bind: 'Bind RPZ', smartdns: 'SmartDNS', mosdns: 'Mosdns', clash: 'Clash Meta', coredns: 'CoreDNS' };
       var ps = '<span class="ps"><b>' + (fmtNames[currentFmt] || currentFmt) + '</b></span>'
         + '<span class="ps"><span class="ps-dot block"></span>' + t.psBlock + ' <b>' + parsed.domains.length + '</b></span>'
         + '<span class="ps"><span class="ps-dot allow"></span>' + t.psAllow + ' <b>' + parsed.whitelist.length + '</b></span>'

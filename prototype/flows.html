@@ -145,7 +145,7 @@
     <!-- Flow 2: 格式切换 -->
     <div class="flow" id="flow-fmt">
       <div class="flow-head"><span class="flow-num">2</span><h3>输出格式切换</h3></div>
-      <p class="flow-desc">9 种格式实时生成预览，切换有淡入动效。点击 Tab 体验状态转换。</p>
+      <p class="flow-desc">12 种格式实时生成预览，切换有淡入动效。点击 Tab 体验状态转换。</p>
       <div class="row">
         <div class="tabs" id="fFmtTabs">
           <button class="tab active" data-f="dnsmasq">Dnsmasq</button>
@@ -157,6 +157,9 @@
           <button class="tab" data-f="domains">纯域名</button>
           <button class="tab" data-f="bind">Bind RPZ</button>
           <button class="tab" data-f="smartdns">SmartDNS</button>
+          <button class="tab" data-f="mosdns">Mosdns</button>
+          <button class="tab" data-f="clash">Clash Meta</button>
+          <button class="tab" data-f="coredns">CoreDNS</button>
         </div>
         <button class="btn btn-outline" id="fCopyBtn">复制</button>
       </div>
@@ -231,7 +234,7 @@
       }, 900);
     });
 
-    /* Flow 2: format switch (9 种格式，对齐真实引擎) */
+    /* Flow 2: format switch (12 种格式，对齐真实引擎) */
     var fmtGen = {
       dnsmasq: '# 版本::3.10.0 项目:家庭网络屏蔽\n# 域名:2 白名单:1\naddress=/doubleclick.net/0.0.0.0\naddress=/google-analytics.com/0.0.0.0\n# 白名单\nserver=/github.com/',
       hosts: '0.0.0.0 doubleclick.net\n0.0.0.0 google-analytics.com\n# 白名单 (hosts 不支持白名单语法，仅标注已排除)\n# 已白名单: github.com',
@@ -241,7 +244,10 @@
       pihole: '0.0.0.0 doubleclick.net\n0.0.0.0 google-analytics.com\n# 白名单\n# 已白名单: github.com',
       domains: 'doubleclick.net\ngoogle-analytics.com\n# 白名单\n# 已白名单: github.com',
       bind: 'doubleclick.net CNAME .\n*.doubleclick.net CNAME .\ngoogle-analytics.com CNAME .\n*.google-analytics.com CNAME .',
-      smartdns: 'address /doubleclick.net/#\naddress /google-analytics.com/#\n# 白名单\n# 已白名单: github.com'
+      smartdns: 'address /doubleclick.net/#\naddress /google-analytics.com/#\n# 白名单\n# 已白名单: github.com',
+      mosdns: 'domain:doubleclick.net\ndomain:google-analytics.com\n# 白名单\n# 已白名单: github.com',
+      clash: 'DOMAIN-SUFFIX,doubleclick.net,reject\nDOMAIN-SUFFIX,google-analytics.com,reject\n# 白名单\nDOMAIN-SUFFIX,github.com,DIRECT',
+      coredns: '0.0.0.0 doubleclick.net\n0.0.0.0 google-analytics.com\n# 白名单\n# 已白名单: github.com'
     };
     function renderFmt(f) {
       $('fPreview').innerHTML = '<span class="fade-in">' + fmtGen[f] + '</span>';

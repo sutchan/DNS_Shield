@@ -17,6 +17,15 @@
 
 ### Changed（项目结构）
 - 规范文档目录由 `openspec/` 重命名为 `docs/`（含 SPEC.md / TASKS.md / CHECKLIST.md / config.yaml / REMAINING_TASKS.md），同步更新 README.md、prototype/README.md、TASKS.md、SPEC.md、CHECKLIST.md 与项目记忆中的路径引用
+- 文档与静态产物全量同步至 12 种格式：README（中英）/ DEPLOYMENT / SPEC.md / prototype 三件套补齐 Mosdns、Clash Meta、CoreDNS 的文件表、格式清单、下载链接与生成逻辑（`genMosdns` / `genClash` / `genCoredns`）
+- `gen-format-files.mjs` 按单文件 200 行规则拆分为编排层 + `scripts/lib/{domainSource,formatHeaders,formatRules}.mjs`，并新增生成 Mosdns / Clash Meta / CoreDNS 静态产物
+- 新增静态产物 `public/mosdns_domain_set.txt`、`public/clash_dns.yaml`、`public/coredns_hosts.txt`，并纳入 Release 工作流打包与资产列表
+- Service Worker 缓存白名单补充 `.conf` / `.yaml` / `.db` 扩展名以覆盖新增规则文件，缓存版本号升至 v3
+
+### Fixed
+- 修复 `statsAggregator.test.ts` 使用过期字段（`raw` / `line`）导致的 6 处 TypeScript 类型错误，改为真实 `ParseResult` 的 `originalLine` 字段
+- 清除 `vitest.config.ts` 的 UTF-8 BOM 污染
+- 统一全站「9 种格式」表述为「12 种格式」，覆盖 16 种语言 i18n 文案（heroDesc / SEO 描述）、源文件头注释与原型文案
 
 ## [3.9.12]
 

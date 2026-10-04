@@ -14,12 +14,14 @@
 - **支付保护** - 屏蔽扫码支付跳转链接（微信、支付宝）
 - **隐私防护** - 阻止追踪器和数据采集
 - **多设备生效** - 路由器设置一次，所有连接设备自动生效
-- **多种格式支持** - Dnsmasq、Hosts、AdGuard、Unbound、Pi-hole、Bind RPZ、SmartDNS、白名单等格式
+- **多种格式支持** - Dnsmasq、Hosts、AdGuard、Unbound、Pi-hole、Bind RPZ、SmartDNS、白名单、Mosdns、Clash Meta、CoreDNS 等格式
 - **格式互转** - 粘贴任意格式（hosts / dnsmasq / AdGuard / 纯域名）清单，自动解析并转换为目标格式
 - **白名单管理** - 自定义白名单，避免误拦截关键服务
 - **自定义 DNS 指向** - 支持 @domain=ip 语法，自定义域名解析
 - **URL 导入** - 从远程 URL 获取域名列表（带超时控制）
 - **预设数据源** - 内置 AdGuard、EasyList、NeoHosts 等预设
+- **规则测试器** - 输入域名即时返回命中的规则层级（白名单 / 改道 / 黑名单 / 直连）与解析行为
+- **路由器同步脚本** - 一键生成 OpenWrt / Merlin / Padavan / SmartDNS / Pi-hole 的定时更新与重载 Shell 脚本
 - **自动保存/恢复** - 每 30 秒自动保存内容到浏览器
 - **国际化支持** - 支持 16 种语言，翻译键全覆盖并带 zh-cn 兜底
 - **深色/浅色模式** - 一键切换主题配色
@@ -76,6 +78,9 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmas
 | `pihole.txt` | Pi-hole 格式（0.0.0.0 gravity） |
 | `rpz.db` | Bind RPZ 响应策略区格式 |
 | `smartdns.conf` | SmartDNS 格式（address /domain/#） |
+| `mosdns_domain_set.txt` | Mosdns domain-set 格式（domain: 前缀，含子域） |
+| `clash_dns.yaml` | Clash Meta DNS 格式（DOMAIN-SUFFIX + reject） |
+| `coredns_hosts.txt` | CoreDNS hosts 插件格式（0.0.0.0 域名） |
 
 ## 格式转换
 
@@ -83,7 +88,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmas
 
 - **输入识别**：粘贴 hosts、dnsmasq、AdGuard 或纯域名文本时，`parseDomainLine` 会自动识别每行格式，提取域名 / 白名单（`+domain`）/ 自定义 DNS（`@domain=ip`）/ 注释（`#`）。
 - **统一中间结构**：无论来源格式如何，先解析为统一的域名条目结构（是否拦截、目标 IP、白名单标记）。
-- **任意格式输出**：在输出面板切换目标格式即可生成对应清单（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS）。
+- **任意格式输出**：在输出面板切换目标格式即可生成对应清单（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS）。
 
 典型场景：把一份 AdGuard 规则粘贴进输入框，一键转换为 dnsmasq 或 Pi-hole 格式；或把旧 hosts 清单转为 SmartDNS / Bind RPZ。
 
@@ -132,7 +137,7 @@ src/
 │   ├── parser.ts     # 域名解析与排序去重（行级解析、提取域名）
 │   ├── sortDedupe.ts # 域名排序与去重（纯函数，含测试）
 │   ├── domainValidator.ts # 域名验证与行解析
-│   ├── rulesGenerator.ts  # 规则生成器（Dnsmasq/Hosts/AdGuard/白名单/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS）
+│   ├── rulesGenerator.ts  # 规则生成器（Dnsmasq/Hosts/AdGuard/白名单/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS/Mosdns/Clash Meta/CoreDNS）
 │   ├── rulesGenerator.test.ts # 规则生成器单元测试（Vitest）
 │   ├── domainFetch.ts # 远程域名列表拉取（超时/兜底/体积上限）
 │   ├── fileUtils.ts  # 文件操作（下载/复制）
@@ -175,7 +180,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
   规则生成（utils/rulesGenerator.ts）
         │  useRules 实时同步解析
         ▼
-  输出（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS） → 复制 / 下载
+  输出（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS） → 复制 / 下载
 ```
 
 关键设计要点：
@@ -193,7 +198,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
 | 配置项 | 位置 | 说明 |
 |--------|------|------|
 | 预设数据源 | `src/config/index.ts` | AdGuard、EasyList、NeoHosts 等内置预设源 URL |
-| 输出格式 | UI 切换（Tabs） | Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS |
+| 输出格式 | UI 切换（Tabs） | Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS |
 | 自定义 DNS 指向 | 输入语法 `@domain=ip` | 自定义域名解析目标 IP |
 | 白名单 | 输入语法 `+domain` | 放行指定域名 |
 | 自动保存间隔 | `useDomainData` 内部 | 默认 30 秒 |
@@ -232,7 +237,7 @@ pnpm test
 项目严格遵循 [docs/SPEC.md](docs/SPEC.md) 定义的规范，包括：
 
 - 域名格式规范（`+` 白名单、`@` 自定义 DNS、`#` 注释）
-- 输出格式规范（Dnsmasq、Hosts、AdGuard、白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS）
+- 输出格式规范（Dnsmasq、Hosts、AdGuard、白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS、Mosdns、Clash Meta、CoreDNS）
 - Git 提交规范（feat/fix/docs/chore/refactor）
 - 版本管理规范（SemVer 语义化版本）
 - 组件分层规范（UI 基础组件 → 业务组件 → 页面组件）
