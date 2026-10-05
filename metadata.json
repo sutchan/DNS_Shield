@@ -1,6 +1,0 @@
-{
-  "name": "DNS Shield",
-  "description": "Router-level global ad filtering rule generator supporting Dnsmasq, Hosts, AdGuard, Unbound, Pi-hole, and SmartDNS formats.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

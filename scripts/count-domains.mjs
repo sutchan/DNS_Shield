@@ -46,6 +46,9 @@ console.log(`合计: ${blocklist + whitelist}`);
 
 if (process.argv.includes('--write')) {
   const stamp = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
+  // 版本号取自 package.json（唯一来源），禁止硬编码：历史版本曾把此处写成 3.7.34，
+  // 导致 --write 一次就把 3 个产物的头部版本回退到旧值
+  const pkgVersion = JSON.parse(readFileSync(join(root, 'package.json'), 'utf-8')).version;
   const targets = [
     { file: 'public/hosts.txt', vprefix: '# 版本::', dprefix: '# 域名::', wprefix: '# 白名单::' },
     { file: 'public/dnsmasq.conf', vprefix: '# 版本::', dprefix: '# 域名::', wprefix: '# 白名单::' },
