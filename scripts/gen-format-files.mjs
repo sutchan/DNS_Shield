@@ -23,25 +23,10 @@ const VERSION = pkg.version;
 const now = new Date();
 const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
 
-// 默认设置（与 src/hooks/useSettings.ts DEFAULT_SETTINGS 对齐）
-const settings = {
-  ipv4: '0.0.0.0',
-  ipv6: '::',
-  blockIPv6: false,
-  addHeader: true,
-  adguardIncludeWhitelist: true,
-  dnsmasqFilename: 'dnsmasq.conf',
-  hostsFilename: 'hosts.txt',
-  adguardFilename: 'adguard.txt',
-  whitelistFilename: 'whitelist.txt',
-  unboundFilename: 'unbound.conf',
-  piholeFilename: 'pihole.txt',
-  bindFilename: 'rpz.db',
-  smartdnsFilename: 'smartdns.conf',
-  mosdnsFilename: 'mosdns_domain_set.txt',
-  clashFilename: 'clash_dns.yaml',
-  corednsFilename: 'coredns_hosts.txt',
-};
+// 默认设置：读取 src/config/defaults.json（与前端 useSettings 共用的唯一来源）。
+// 历史问题：本文件曾内联一份 settings 且 ipv4 写成 0.0.0.0，与前端的 127.0.0.1 冲突。
+const defaults = JSON.parse(readFileSync(join(root, 'src', 'config', 'defaults.json'), 'utf8'));
+const settings = { ...defaults };
 
 // 解析单一数据源
 const data = parseDomainSource(readFileSync(join(root, 'public', 'domains.txt'), 'utf8'));

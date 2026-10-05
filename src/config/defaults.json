@@ -1,0 +1,23 @@
+﻿{
+  "projectName": "DNS Shield",
+  "ipv4": "127.0.0.1",
+  "ipv6": "::",
+  "addHeader": true,
+  "blockIPv6": false,
+  "dedupDomains": true,
+  "removeWildcard": true,
+  "adguardIncludeWhitelist": true,
+  "showAllFormats": true,
+  "dnsmasqFilename": "dnsmasq.conf",
+  "hostsFilename": "hosts.txt",
+  "adguardFilename": "adguard.txt",
+  "whitelistFilename": "whitelist.txt",
+  "unboundFilename": "unbound.conf",
+  "piholeFilename": "pihole.txt",
+  "domainsFilename": "domains.txt",
+  "bindFilename": "rpz.db",
+  "smartdnsFilename": "smartdns.conf",
+  "mosdnsFilename": "mosdns_domain_set.txt",
+  "clashFilename": "clash_dns.yaml",
+  "corednsFilename": "coredns_hosts.txt"
+}
