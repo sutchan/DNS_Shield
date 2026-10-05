@@ -9,13 +9,15 @@ import { Settings } from '../types';
 import { APP_VERSION } from '../config/version';
 import defaults from '../config/defaults.json';
 
-const { visibleFormats: _initialVisibleFormats, version: _version, ...restDefaults } = defaults;
+// defaults.json 只含「可静态决定」的字段；version 取自 APP_VERSION 单一来源，
+// visibleFormats 是纯运行时状态（默认全部显示），二者不放在 JSON 里。
+const STATIC_DEFAULTS = defaults as Omit<Settings, 'version' | 'visibleFormats'>;
 
 const DEFAULT_SETTINGS: Settings = {
-  ...restDefaults,
+  ...STATIC_DEFAULTS,
   version: APP_VERSION,
   visibleFormats: []
-} as Settings;
+};
 
 export const useSettings = () => {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);

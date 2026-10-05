@@ -1,4 +1,4 @@
-﻿// scripts/sync-facts.mjs v3.12.0
+// scripts/sync-facts.mjs v3.12.0
 // 事实同步脚本：把 package.json 的 version 写入所有文档展示位。
 // 存在理由：版本号曾分散在 40+ 处手工维护（README 徽章、DEPLOYMENT、SPEC、config.yaml 等），
 // 每次 bump 都要手工逐处改，极易漏改（历史上 prototype/ 停在 3.9.3、DEPLOYMENT 停在 3.8.8）。

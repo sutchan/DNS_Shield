@@ -5,6 +5,30 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.12.0]
+
+### Fixed（目录结构审查 P0 + 事实副本收敛）
+- 删除生产零引用的投机模块 `src/utils/statsAggregator.ts` 及其测试（其统计语义与 `parser.ts` 内联统计不同，属重复实现）
+- 删除根目录垃圾与占位配置：`{const`（0 字节）、`tsconfig.tsbuildinfo`、临时 `_*.txt`、`metadata.json`（无引用的 AI Studio 元数据）、`pnpm-workspace.yaml`（`allowBuilds` 为占位串 `set this to true or false`）
+- 修复 `scripts/count-domains.mjs --write` 把产物头部版本硬写为 `3.7.34` 的缺陷，改为读 `package.json`
+- 安全响应头统一：以 `vercel.json` 为准回写 `next.config.js`，补齐 HSTS / X-Frame-Options / COOP / CORP，`frame-ancestors` 由 `*` 收紧为 `none`，移除生产不需要的 `unsafe-eval`
+- 默认设置收敛为单一来源 `src/config/defaults.json`，消除 `useSettings.ts`（`ipv4=127.0.0.1`）与生成脚本（`0.0.0.0`）的冲突
+- 更正 `README.md` / `README.en.md` 中不存在的文件（`uiUtils.ts`/`manifest.ts`/`sw.js`）与 4 处失效社区文件链接
+
+
+### Added（测试与门禁）
+- 新增 `scripts/sync-facts.mjs`：把 `package.json` 版本号写入 13 处文档展示位，并提供 `--check` 模式，已纳入 CI 硬门禁（版本号曾分散 40+ 处手工维护）
+- 新增 4 个 hooks 层单元测试（`useSettings` / `useLanguage` / `useModalA11y` / `useVirtualList`），覆盖率门禁扩展至 `src/hooks`；实测语句 51.61 / 分支 83.94 / 函数 80.24 / 行 51.61，门槛按实测校准为 50/75/80/50（编排层 14 个钩子中仅 4 个有测试，补齐后应提升回 80/75/85/80）
+- 新增 `src/test-utils/renderHook.ts`：零依赖测试助手（`react-dom/client` + React 18.3 内置 `act`），避开 `@testing-library/react` 在 pnpm 隔离布局下无法解析 peer `react` 的问题（该依赖已移除）
+- 测试规模：19 套件 / 129 用例全通过
+- 新增 `src/config/defaults.json`（默认设置单一来源，双端可读）
+
+### Changed（文档口径）
+- `docs/tasks.md`：T-P2-01 / T-P2-04 状态由「✅ 已完成」修正为「🟡 库已就绪，UI/生成器未接入」（经核实两个模块生产零引用，UI 不可见）
+- `docs/SPEC.md`：新增 CHECKLIST 豁免条款（发布验收清单允许 `- [ ]`）
+- `prototype/` 四个 md 与三个 HTML 标注为**设计快照**（内容停留在 v3.9.x ~ v3.10.x，不再随代码回填）
+- 新增 `docs/STRUCTURE-REVIEW.md`：目录结构与可维护性审查报告（含改进点排期）
+
 ## [3.11.2]
 
 ### Fixed（工作流审查整改：8 项）

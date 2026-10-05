@@ -1,4 +1,4 @@
-﻿// src/hooks/useModalA11y.test.ts v3.12.0
+// src/hooks/useModalA11y.test.ts v3.12.0
 // @vitest-environment jsdom
 // 模态无障碍契约：body 滚动锁定、Esc 关闭、卸载还原、Tab 焦点陷阱。
 import { describe, it, expect, afterEach, vi } from 'vitest';

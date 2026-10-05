@@ -1,4 +1,4 @@
-﻿// src/hooks/useSettings.test.ts v3.12.0
+// src/hooks/useSettings.test.ts v3.12.0
 // @vitest-environment jsdom
 // 默认设置单一来源（src/config/defaults.json）的回归测试：
 // 一旦前端默认值与静态产物生成脚本（gen-format-files.mjs）再次分叉，此用例即失败。

@@ -2,7 +2,7 @@
 
 ![DNS Shield](brand/logo.svg)
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.11.2-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.12.0-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Router-level DNS-based ad blocking filter list with web management tool. It both **generates** rule lists from a unified domain source and **converts** existing lists between different formats.
 
@@ -172,7 +172,7 @@ masq         .txt  list   .conf  .txt           .db   .conf
 
 ## Contribution
 
-Please refer to [Contribution Guide](CONTRIBUTING.md) to learn how to contribute to the project.
+Please refer to [Contribution Guide](.github/CONTRIBUTING.md) to learn how to contribute to the project.
 
 ## Testing
 
@@ -188,7 +188,7 @@ Please refer to [Deployment Guide](DEPLOYMENT.md) to learn how to deploy the web
 
 ## Security
 
-Please refer to [Security Guide](SECURITY.md) to learn about the project's security best practices.
+Please refer to [Security Guide](.github/SECURITY.md) to learn about the project's security best practices.
 
 ## License
 

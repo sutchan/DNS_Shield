@@ -1,3 +1,4 @@
+<!-- 设计快照（v3.12.0 冻结）：内容停留在 v3.9.x，不代表当前实现；现规范以 docs/SPEC.md 为准。 -->
 # DNS Shield — 设计系统规范 v3.9.3
 > 基于 shadcn/ui + Tailwind CSS + Radix UI 的完整设计系统
 > 色彩空间：HSL | 设计哲学：Swiss Modernism 2.0 × Apple Precision

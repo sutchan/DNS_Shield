@@ -2,7 +2,7 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
-> 当前版本：v3.11.2
+> 当前版本：v3.12.0
 
 ## 部署环境
 
@@ -235,7 +235,7 @@ git push --follow-tags
 ### 5. 已知问题：规则文件漂移
 
 `public/*.txt|conf|db` 由 `scripts/gen-format-files.mjs` 从 `public/domains.txt` 生成，文件头带版本号与生成日期。
-当前仓库内这些文件停留在 **v3.8.8 / 630 个域名**，而实际数据已是 **867 条（黑名单 635 + 白名单 232）**、`package.json` 版本为 3.10.1。
+规则产物的头部版本与域名计数由生成脚本写入（当前 **v3.12.0 / 867 条（黑名单 635 + 白名单 232）**、`package.json` 版本为 3.10.1。
 
 因此 CI 中的漂移检测目前是**软门禁**（`continue-on-error`），只在工作流 Summary 中提示、不阻断流水线。
 补齐方式：
@@ -258,7 +258,7 @@ git add public && git commit -m "chore: 同步生成规则文件至 v3.10.1"
 | `PORT` | 服务器端口 | 3000 |
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
-| `NEXT_PUBLIC_APP_VERSION` | 应用版本（同时由 `src/config/version.ts` APP_VERSION 与 `next.config.js` env.version 提供） | 3.11.2 |
+| `NEXT_PUBLIC_APP_VERSION` | 应用版本（同时由 `src/config/version.ts` APP_VERSION 与 `next.config.js` env.version 提供） | 3.12.0 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（须形如 `G-XXXXXXXXXX`；留空或格式非法则不启用统计，详见 `.env.example`） | 空 |
 
 ### 2. Next.js 配置
@@ -272,7 +272,7 @@ const nextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   env: {
-    version: '3.11.2'
+    version: '3.12.0'
   },
   async headers() {
     return [

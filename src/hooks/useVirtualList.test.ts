@@ -1,4 +1,4 @@
-﻿// src/hooks/useVirtualList.test.ts v3.12.0
+// src/hooks/useVirtualList.test.ts v3.12.0
 // @vitest-environment jsdom
 // 虚拟列表的切片数学：阈值以下全量返回；阈值以上按行高换算可视区间并叠加 overscan。
 import { describe, it, expect, afterEach } from 'vitest';
@@ -57,7 +57,7 @@ describe('useVirtualList', () => {
       useVirtualList({ itemCount: items.length, containerRef, overscan: 0 })
     );
     act(() => {
-      containerRef.current.scrollTop = 240 * 10;
+      containerRef.current.scrollTop = LINE_HEIGHT_PX * 10; // 第 10 行（行高 24px）
       containerRef.current.dispatchEvent(new Event('scroll'));
     });
     expect(result.current.startIndex).toBe(10);

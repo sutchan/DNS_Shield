@@ -4,7 +4,7 @@
 
 # DNS Shield - 路由器广告过滤工具
 
-[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.11.2-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.12.0-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告和保护隐私。既支持从统一域名数据源**生成**多种格式规则，也支持将已有清单在**不同格式间互相转换**。
 
@@ -142,8 +142,11 @@ src/
 │   ├── domainFetch.ts # 远程域名列表拉取（超时/兜底/体积上限）
 │   ├── fileUtils.ts  # 文件操作（下载/复制）
 │   ├── i18n.ts       # 国际化配置
-│   └── uiUtils.ts    # UI 工具函数（行号生成、滚动同步）
-├── config/           # 应用配置（预设源 URL、构建信息）
+│   ├── i18n.ts       # 国际化配置
+│   ├── analytics.ts   # GA4 衡量 ID 读取/校验与 gtag 片段生成
+│   ├── regexRules.ts / domainCategory.ts # 正则互转 / 域名分类（库已就绪，UI 未接入）
+│   ├── idb.ts / httpCache.ts / cachedFetch.ts # 存储与 HTTP 缓存层
+│   └── *.test.ts     # 与被测模块同目录的单元测试（Vitest）
 └── ...
 ```
 
@@ -153,12 +156,12 @@ src/
 - `layout.tsx` — 根布局（元数据、主题 Provider、安全/SEO 基础）
 - `robots.ts` — 自动生成 `robots.txt`（含 sitemap 索引）
 - `sitemap.ts` — 自动生成 `sitemap.xml`（站点地图）
-- `manifest.ts` — PWA manifest 配置
-- `sw.js` / `sw-register.ts` — Service Worker 注册与安全缓存
+- `(seo)/site-meta.ts` / `(seo)/ga-scripts.tsx` — 站点元数据与 GA4 脚本注入（衡量 ID 取自环境变量）
+- PWA 与 Service Worker 以静态文件提供：`public/manifest.json`、`public/service-worker.js`（非 `src/app/` 下的 TS 模块）
 - `globals.css`、`i18n.ts` — 全局样式与路由级国际化
 
 ```
-prototype/            # 高保真原型与设计规范
+prototype/            # 设计快照（已冻结，停留 v3.9.x，不代表当前实现）
 ├── index.html        # 自包含高保真原型（HTML/CSS/JS）
 ├── README.md         # 原型总览与使用说明
 └── shadcn/           # shadcn 设计规范（design-system/component-library/interaction-standards）
@@ -211,7 +214,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
 - `src/app/robots.ts` 自动生成 `robots.txt`，并声明 sitemap 索引地址。
 - `src/app/sitemap.ts` 自动生成 `sitemap.xml`，登记站点地图。
 - `src/app/layout.tsx` 定义页面元数据（标题、描述、Open Graph、主题色），并注入安全响应头（CSP/HSTS/COOP/CORP，见 `next.config.js`）。
-- `src/app/manifest.ts` 提供 PWA manifest，支持安装到桌面与离线可用。
+- `public/manifest.json` 提供 PWA manifest，`public/service-worker.js` 负责离线缓存，支持安装到桌面与离线可用。
 
 ## 开发
 
@@ -258,11 +261,11 @@ pnpm test
 
 ## 参与贡献
 
-欢迎提交域名规则和问题反馈，请查看 [贡献指南](CONTRIBUTING.md)。
+欢迎提交域名规则和问题反馈，请查看 [贡献指南](.github/CONTRIBUTING.md)。
 
 ## 安全
 
-请查看 [安全策略](SECURITY.md) 了解项目的安全最佳实践。
+请查看 [安全策略](.github/SECURITY.md) 了解项目的安全最佳实践。
 
 ## 许可证
 
@@ -270,7 +273,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.11.2
+当前版本：v3.12.0
 
 ## 更新日志
 

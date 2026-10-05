@@ -1,11 +1,24 @@
-﻿// src/hooks/useLanguage.test.ts v3.12.0
+// src/hooks/useLanguage.test.ts v3.12.0
 // @vitest-environment jsdom
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+// 注意：本仓 jsdom 环境不暴露全局 localStorage（探测确认 typeof localStorage === 'undefined'），
+// 而 useLanguage 直接使用裸 localStorage，故此处注入最小内存实现作为测试替身。
+import { describe, it, expect, beforeAll, beforeEach, afterEach } from 'vitest';
 import { act } from 'react';
 import { renderHook } from '../test-utils/renderHook';
 import { useLanguage } from './useLanguage';
 
-beforeEach(() => localStorage.clear());
+const store = new Map<string, string>();
+const memoryStorage = {
+  getItem: (k: string) => (store.has(k) ? store.get(k) : null),
+  setItem: (k: string, v: string) => void store.set(k, String(v)),
+  removeItem: (k: string) => void store.delete(k),
+  clear: () => store.clear()
+};
+
+beforeAll(() => {
+  Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: memoryStorage });
+});
+beforeEach(() => store.clear());
 afterEach(() => {
   document.body.innerHTML = '';
   document.documentElement.removeAttribute('dir');
@@ -20,7 +33,7 @@ describe('useLanguage', () => {
   });
 
   it('挂载时从 localStorage 恢复已保存语言', () => {
-    localStorage.setItem('lang', 'en');
+    store.set('lang', 'en');
     const { result, unmount } = renderHook(() => useLanguage());
     expect(result.current.currentLang).toBe('en');
     unmount();
@@ -30,7 +43,7 @@ describe('useLanguage', () => {
     const { result, unmount } = renderHook(() => useLanguage());
     act(() => result.current.switchLang('vi'));
     expect(result.current.currentLang).toBe('vi');
-    expect(localStorage.getItem('lang')).toBe('vi');
+    expect(store.get('lang')).toBe('vi');
     unmount();
   });
 

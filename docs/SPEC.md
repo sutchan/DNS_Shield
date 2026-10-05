@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-10-04（与 package.json v3.11.2 对齐）
+> 最后审查：2026-10-04（与 package.json v3.12.0 对齐）
 
 ## 1. 项目概述
 
@@ -13,8 +13,8 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.11.2 |
-| 拦截域名 | 525 (本地) / 6766+ (含预设源) |
+| 当前版本 | v3.12.0 |
+| 拦截域名 | 867 条（黑名单 635 + 白名单 232，本地 `public/domains.txt`）| 实测值，以 `node scripts/count-domains.mjs` 为准 |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
 | 通知组件 | sonner |
@@ -198,7 +198,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.11.2 |
+| 版本号 | 3.12.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -237,6 +237,7 @@ dns-shield/
 4. **更新时机**：新增任务、完成任务、任务状态或优先级变更、发现新缺陷时，**必须**同步更新 `docs/tasks.md`，并在其「最后审查」时间戳中记录更新时间。
 5. **数据准确性**：`docs/tasks.md` 中的数据型数字（i18n 键数、测试用例数、覆盖率、文件行数、格式数量等）**必须用脚本实算**后填写，禁止凭记忆书写；修改前先实查 `package.json` 等权威源。
 6. **删除冗余**：若发现其他文档存在任务清单内容，须迁移至 `docs/tasks.md` 并删除冗余文档。
+7. **CHECKLIST 例外**：`docs/CHECKLIST.md` 是**发布验收清单**（每次发版逐项核验），允许使用 `- [ ]` 复选框，不受第 2 条「禁止 `- [ ]`」约束；但严禁在其中记录任务状态或新增任务条目。
 
 ## 6. 路由器兼容列表
 
