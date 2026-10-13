@@ -1,4 +1,4 @@
-// src/hooks/useModalA11y.test.ts v3.12.0
+// src/hooks/useModalA11y.test.ts v3.13.0
 // @vitest-environment jsdom
 // 模态无障碍契约：body 滚动锁定、Esc 关闭、卸载还原、Tab 焦点陷阱。
 import { describe, it, expect, afterEach, vi } from 'vitest';
@@ -55,7 +55,7 @@ describe('useModalA11y', () => {
     const { first, close } = mountDialog();
     const { result, unmount } = renderHook(() => useModalA11y(true, vi.fn()));
     const dialogRef = result.current.dialogRef as { current: HTMLDivElement | null };
-    dialogRef.current = document.getElementById('dlg');
+    dialogRef.current = document.getElementById('dlg') as HTMLDivElement | null;
     close.focus();
     const ev = new KeyboardEvent('keydown', { key: 'Tab', cancelable: true });
     document.dispatchEvent(ev);

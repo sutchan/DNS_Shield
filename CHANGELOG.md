@@ -5,6 +5,24 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.13.1]
+
+### Fixed（单格式生成器 Pi-hole 口径对齐）
+- 修复 `formatGenerators.single.ts` 在「addHeader=true 且有白名单」场景下，Pi-hole 格式多输出一段白名单标题注释（`# 白名单`）的缺陷
+- 根因：`whitelistHeader` 的 `default` 分支误将 Pi-hole 纳入（返回 `\n# 白名单标题\n`），而全量 `buildWhitelistRules` 的对应分支不含 Pi-hole（Pi-hole 原生不支持白名单语法，不输出任何内容）
+- 现新增 `case 'pihole': return ''` 与全量实现逐字节对齐；`formatGenerators.single.test.ts` 的 12 格式一致性断言已全绿
+- 同步修正 `next.config.js` 滞后的 `env.version`（`3.12.0` → `3.13.1`，该字段属 sync-facts 手工同步项）
+
+## [3.13.0]
+
+### Added（分类筛选 UI 接入与规则生成惰性化）
+- 域名分类筛选 UI（T-P2-01 / T-P2-05）：新增 `CategoryFilter` 组件与 `useCategoryFilter` / `useCategoryIndex` 钩子，按真实上游命中源（AdGuard/EasyList/neoHosts/StevenBlack/YouSList）多选过滤域名；索引（`public/category-index.txt`，由 `scripts/aggregate-upstream.mjs` 产出）缺失时控件自动隐藏、筛选退化为全量，不影响主流程
+- 规则生成惰性化（T-P1-06）：`useRules` 预览仅生成当前格式文本（`generateSingleFormat`），去除每次同步生成全部 12 种格式的冗余开销；下载/复制直接消费当前格式文本，语义由 `formatGenerators.single.test.ts` 逐格式断言与全量生成逐字节一致
+- 新增 `src/utils/formatGenerators.single.ts` 与一致性测试（12 种格式 × 多种输入组合）
+
+### Changed
+- 版本号 v3.12.0 → v3.13.0（package.json / `src/config/version.ts` / 被改文件头注释 / 文档展示位统一同步，由 `scripts/sync-facts.mjs` 校验）
+
 ## [3.12.0]
 
 ### Fixed（目录结构审查 P0 + 事实副本收敛）

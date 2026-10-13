@@ -416,6 +416,31 @@
   white-space: pre;
 }
 
+/* 域名分类筛选 chips：按上游来源多选过滤（数值来自真实分类索引） */
+.category-filter {
+  @apply flex flex-wrap items-center gap-2 mb-3;
+}
+
+.category-chip {
+  @apply inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-2.5 py-1 text-xs text-muted-foreground transition-colors;
+}
+
+.category-chip:hover {
+  @apply bg-muted;
+}
+
+.category-chip.active {
+  @apply border-primary bg-primary/10 text-primary;
+}
+
+.category-chip-count {
+  @apply rounded-full bg-background/70 px-1.5 text-[0.65rem] tabular-nums;
+}
+
+.category-chip.clear {
+  @apply border-dashed;
+}
+
 .editor-preview {
   /* 与输入区一致固定 20 行高度（504px），内容超出内部滚动，避免面板忽高忽低。
      容器已固定 h-[504px]，此处 h-full 保证与左侧输入框严格等高对齐 */
@@ -953,6 +978,35 @@
 .preview-stats {
   @apply flex flex-wrap items-center gap-x-3 gap-y-2 mb-4 pt-3 text-[0.75rem] text-muted-foreground;
   border-top: 1px solid hsl(var(--border));
+}
+
+/* 域名分类筛选（T-P2-01 / T-P2-05，挂载于 InputPanel，索引不可用时整体隐藏） */
+.category-filter {
+  @apply flex flex-wrap items-center gap-2 mb-4;
+}
+
+.category-chip {
+  @apply inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-[0.75rem] text-foreground transition-colors;
+}
+
+.category-chip:hover {
+  @apply border-primary/50;
+}
+
+.category-chip.active {
+  @apply border-primary bg-primary/10 text-primary;
+}
+
+.category-chip.clear {
+  @apply border-dashed text-muted-foreground;
+}
+
+.category-chip-count {
+  @apply rounded-full bg-muted px-1.5 text-[0.65rem] text-muted-foreground;
+}
+
+.category-chip.active .category-chip-count {
+  @apply bg-primary/15 text-primary;
 }
 
 .preview-stat {

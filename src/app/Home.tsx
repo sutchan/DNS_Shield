@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.11.1
+// src/app/Home.tsx v3.13.0
 // 首页编排：仅负责组合布局与渲染，所有状态逻辑已抽离至 useHomeController（保持主文件 ≤200 行）。
 'use client';
 import './globals.css';
@@ -59,10 +59,15 @@ export default function Home() {
             isLoading={c.isLoading}
             progress={c.progress}
             isProcessing={c.isProcessing}
+            categoryAvailable={c.categoryAvailable}
+            categoryIndex={c.categoryIndex}
+            selectedCategories={c.selectedCategories}
+            onToggleCategory={c.onToggleCategory}
+            onClearCategories={c.onClearCategories}
           />
 
           <OutputPanel
-            outputContent={c.outputContent}
+            currentOutput={c.currentOutput}
             currentFormat={c.currentFormat}
             isSettingsOpen={c.isSettingsOpen}
             onOpenSettings={c.openSettings}

@@ -1,4 +1,4 @@
-// src/types/translation.parts.ts v3.10.2
+// src/types/translation.parts.ts v3.13.0
 // Translation 接口的嵌套子类型，从 translation.ts 抽离以保持主文件单一职责。
 // 仅类型定义，不含运行时逻辑；原结构完全保留，公开契约不变。
 
@@ -77,4 +77,6 @@ export interface TranslationToast {
   loading: string;
   invalidUrl: string;
   invalidUrlsFiltered: string;
+  /** 缺翻译键时的通用降级提示（T-P3-05，16 语言均已含该键） */
+  done: string;
 }

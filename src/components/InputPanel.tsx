@@ -5,6 +5,8 @@ import { Button } from './ui/Button';
 import { Badge } from './ui/Badge';
 import InputEditor from './InputEditor';
 import UrlSection, { PresetTags } from './UrlSection';
+import { CategoryFilter } from './CategoryFilter';
+import type { CategoryIndex, CategoryKey } from '../utils/domainCategory';
 import { Translation, Stats } from '../types';
 import { useT } from '../context/AppContext';
 
@@ -35,6 +37,12 @@ interface InputPanelProps {
   /** Worker 处理进度（大文本解析/排序/去重进行中非空） */
   progress: { processed: number; total: number; elapsed: number | null } | null;
   isProcessing: boolean;
+  /** 分类索引是否可用（不可用时隐藏分类筛选控件） */
+  categoryAvailable: boolean;
+  categoryIndex: CategoryIndex;
+  selectedCategories: ReadonlySet<CategoryKey>;
+  onToggleCategory: (key: CategoryKey) => void;
+  onClearCategories: () => void;
 }
 
 const InputPanel: React.FC<InputPanelProps> = ({
@@ -63,6 +71,11 @@ const InputPanel: React.FC<InputPanelProps> = ({
   isLoading,
   progress,
   isProcessing,
+  categoryAvailable,
+  categoryIndex,
+  selectedCategories,
+  onToggleCategory,
+  onClearCategories,
 }) => {
   const t = useT();
   // Worker 处理进度百分比与耗时文案（仅大文本任务会上报进度）
@@ -123,6 +136,17 @@ const InputPanel: React.FC<InputPanelProps> = ({
         setUrls={setUrls}
         isLoading={isLoading}
       />
+
+      {/* 域名分类筛选：仅在分类索引可用时渲染（数值来自真实上游命中索引） */}
+      {categoryAvailable && (
+        <CategoryFilter
+          index={categoryIndex}
+          selected={selectedCategories}
+          onToggle={onToggleCategory}
+          onClear={onClearCategories}
+          clearLabel={t.clearBtn}
+        />
+      )}
 
       {/* 统计信息：带彩色圆点胶囊（对齐原型 .stat / .stat-dot） */}
       <div className="stats-compact" id="stats-bar" role="region" aria-label={t.statsAria}>

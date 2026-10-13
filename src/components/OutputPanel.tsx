@@ -1,6 +1,7 @@
-// src/components/OutputPanel.tsx v3.11.1
+// src/components/OutputPanel.tsx v3.13.0
 // 输出面板：编排格式切换 / 设置弹窗 / 规则测试 / 路由器脚本 / 预览 / 操作按钮。
 // 纯展示子组件与派生逻辑已抽离至 OutputPanel.parts.tsx 以保持主文件 ≤200 行。
+// 惰性生成（T-P1-06）：仅消费当前格式文本 currentOutput，不再持有全量 OutputContent。
 'use client';
 import * as React from 'react';
 import SettingsPanel from './SettingsPanel';
@@ -14,11 +15,12 @@ import {
   OutputActions,
 } from './OutputPanel.parts';
 import { buildFormatLabel, useVisibleFormats } from './OutputPanel.derived';
-import { Settings as SettingsType, FormatType, OutputContent, ParsedData } from '../types';
+import { Settings as SettingsType, FormatType, ParsedData } from '../types';
 import { useT } from '../context/AppContext';
 
 interface OutputPanelProps {
-  outputContent: OutputContent;
+  /** 当前格式的规则文本（惰性生成，T-P1-06） */
+  currentOutput: string;
   currentFormat: FormatType;
   isSettingsOpen: boolean;
   onOpenSettings: () => void;
@@ -39,7 +41,7 @@ interface OutputPanelProps {
 }
 
 const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
-  outputContent,
+  currentOutput,
   currentFormat,
   isSettingsOpen,
   onOpenSettings,
@@ -62,8 +64,9 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   const [isRuleTesterOpen, setIsRuleTesterOpen] = React.useState(false);
   const [isScriptGenOpen, setIsScriptGenOpen] = React.useState(false);
 
-  // 可见格式列表：结合 showAllFormats（全部/核心）与 visibleFormats（逐格式显示/隐藏开关）。
-  const visibleFormats = useVisibleFormats(settings, outputContent);
+  // 可见格式列表：结合 showAllFormats（全部/核心）与 visibleFormats（逐格式显示/隐藏开关），
+  // 由输入数据推导各格式是否有产出（惰性生成后不再持有全量 OutputContent，T-P1-06）。
+  const visibleFormats = useVisibleFormats(settings, parsedData);
   // 各输出格式的展示标签。
   const formatLabel = buildFormatLabel(t);
 
@@ -74,7 +77,7 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
     }
   }, [visibleFormats, currentFormat, setFormat]);
 
-  const ruleLines = outputContent[currentFormat] ? outputContent[currentFormat].split('\n').length : 0;
+  const ruleLines = currentOutput ? currentOutput.split('\n').length : 0;
   const domainTotal = parsedData.domains.length + parsedData.whitelist.length + parsedData.customDns.length;
 
   return (
@@ -151,9 +154,9 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
         {/* Output Preview（超长文本启用虚拟渲染，见 OutputPreview） */}
         <div className="editor-wrapper" id="output-preview-area">
           <div className="line-numbers" id="outputLineNumbers" ref={outputLineNumbersRef} aria-hidden="true"></div>
-          {outputContent[currentFormat] ? (
+          {currentOutput ? (
             <OutputPreview
-              content={outputContent[currentFormat]}
+              content={currentOutput}
               scrollRef={outputPreviewRef}
               onScroll={syncOutputScroll}
               id="outputPreview"

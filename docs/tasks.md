@@ -4,7 +4,7 @@
 > 所有新增、变更、完成任务必须更新本文件；项目内其他位置（README、SPEC、CHECKLIST、CHANGELOG、原型等）**不得另建任务清单**。
 > 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-10-13（与 package.json v3.12.0 对齐，代码实况核验）
+> 最后审查：2026-10-13（与 package.json v3.13.1 对齐，代码实况核验）
 > 维护团队：Sut / ArcesTeam
 >
 > **本次更新（2026-10-13 第二轮：实况核验 + 剩余任务收尾）**。① 逐项以真实代码核验 v3.12.0 时登记的 9 项待办——**6 项已被 v3.12.0 落地完成**：T-P2-04/06（`parseLine.ts` 识别正则行 + `parser.ts` 收集 + `formatGenerators.buildRegexRules` + `useRules` 贯通）、T-P2-07（`prepareRuleData` 公共变换统一 `generateRules` 与 `computeEffectiveStats` 口径）、T-P1-05（`useRules.runGenerate` 直接复用 `useDomainData` 的 `parsedData`，消除 2~3 次重复 `parseSource`）、T-P3-04（`scriptGenerator.ts` `shellQuote` 单引号包裹 + `'\''` 转义，`customDnsIp` 死参数已删除）、T-P3-05（`parser.ts` 循环结束补报 `onProgress(total,total)` + `useHomeController` 缺键降级 `t.toast.done`，该键 16 语已存在）；② 剩余 **2 个工作项**（分类 UI 接入 T-P2-01/05、惰性生成 T-P1-06）本轮实施。
@@ -16,7 +16,7 @@
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.12.0 | `package.json` version（权威源） |
+| 应用版本 | v3.13.1 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 145 键、递归合计 207 键 | 脚本统计 `zh-cn.json`（`check:locales` 输出为递归口径 207） |
 | 测试套件 / 用例 | **19 套件 / 129 用例**（全通过） | `vitest run`（权威计数） |
@@ -134,9 +134,16 @@
 | T-P1-02 | 虚拟滚动 | Dev Team | 超大规则预览流畅（60fps 滚动） | ✅ 已完成（v3.11.0） |
 | T-P1-03 | IndexedDB 存储 | Dev Team | 大容量规则持久化保存，刷新无缝恢复 | ✅ 已完成（v3.11.0） |
 | T-P1-04 | 拆分超 200 行源文件 | Core Team | 4 个超行文件拆分后单文件 ≤200 行，公开 API 不变 | ✅ 已完成（v3.10.2，4 文件均 ≤200 行） |
-| T-P2-01 | 分类标签过滤 | Feature Team | 界面可按分类筛选/导出（数值来自真实索引） | ⏳ 待开发（库已就绪，UI 未接入，2026-10-13 纠偏降级） |
-| T-P2-04 | 正则双向语法转换 | Feature Team | AdGuard 正则 ↔ Pi-hole FTL 互转并接入生成器 | ⏳ 待开发（库已就绪，生成器未接入，2026-10-13 纠偏降级） |
+| T-P1-05 | 消除解析重复计算 | Dev Team | 单次输入仅一次 parseSource，runGenerate 复用解析结果 | ✅ 已完成（v3.12.0） |
+| T-P1-06 | 惰性生成 | Dev Team | 仅生成 currentFormat，下载/复制时按需全量 | ⏳ 待开发（实施序位 2） |
+| T-P2-01 | 分类标签过滤（UI 接入） | Feature Team | 界面可按分类筛选/导出（数值来自真实索引） | ⏳ 待开发（库已就绪，UI 未接入；实施序位 1） |
+| T-P2-04 | 正则双向语法转换 | Feature Team | AdGuard 正则 ↔ Pi-hole FTL 互转并接入生成器 | ✅ 已完成（v3.12.0） |
+| T-P2-05 | 分类标签 UI 接入 | Feature Team | 分类筛选控件 + 按类导出 + i18n 5 键 × 16 语 | ⏳ 待开发（与 T-P2-01 同一工作项） |
+| T-P2-06 | 正则规则接入生成器 | Feature Team | 正则行不再被丢弃，12 格式间可转换 | ✅ 已完成（v3.12.0，与 T-P2-04 合并落地） |
+| T-P2-07 | 统一统计口径 | Core Team | generateRules 与 computeEffectiveStats 共用同一变换 | ✅ 已完成（v3.12.0，prepareRuleData） |
 | T-P3-02 | OpenWrt LuCI 配置包 | Infra Team | LuCI 后台可直接订阅规则源 | ✅ 已完成（v3.11.0） |
+| T-P3-04 | 脚本生成器 URL 转义 | Core Team | shellQuote 单引号包裹 + `'\''` 转义，死参数已删除 | ✅ 已完成（v3.12.0） |
+| T-P3-05 | 进度补报 + i18n 降级 | Core Team | 尾段补报 100%；缺键降级 t.toast.done 不暴露裸 key | ✅ 已完成（v3.12.0） |
 | T-P4-01 | 升级 Vitest 3.x | Core Team | 覆盖率报告无重复键，阈值回归真实值 | ✅ 已完成（v3.11.0） |
 
 ---
@@ -160,12 +167,17 @@
 - [x] **T-P1-01: Web Worker 异步解析（2026-10-04，v3.11.0）** — 新增 `src/workers/ruleProcessor.worker.ts`（parse/sort/dedupe，按 2000 行分片上报进度）与 `useRuleWorker` / `useAsyncRuleProcessing`（阈值 5000 行、请求序号守卫防竞态、Worker 不可用自动回退主线程）；`parseSource` 增加可选进度回调且向后兼容；`InputPanel` 新增进度条与耗时展示
 - [x] **T-P1-02: 预览区虚拟渲染（2026-10-04，v3.11.0）** — 新增 `useVirtualList` 与 `OutputPreview`：行数 ≥500 时仅挂载可视区切片（固定行高 24px + overscan 10），小文本保持原自动换行与可选中体验；行号列沿用单文本节点 + 浏览器裁剪（DOM 节点数已为 O(1)）
 - [x] **T-P4-01: 升级 Vitest 至 3.2.7（2026-10-04，v3.11.0）** — 根治 Windows 盘符大小写导致的覆盖率重复统计，报告值由 47.85% 回归真实 84.46%；阈值由 45/75/70/45 提升至 80/75/85/80 并实测通过
-- [ ] **T-P2-04: 正则规则双向语法转换（2026-10-04，v3.11.0 建库；2026-10-13 纠偏降级为「库已就绪、生成器未接入」）** — 新增 `src/utils/regexRules.ts`：AdGuard `/pattern/` ↔ Pi-hole FTL `regex:pattern` 双向互转；如实标注 dnsmasq 本身不支持正则（不生成无法生效的规则），例外语义在 Pi-hole 侧降级为注释；补 9 例单测。**功能未对用户提供**：`parseLine.ts`/`rulesGenerator.ts` 未调用，用户粘贴 AdGuard 正则规则会被当无效行丢弃，待 T-P2-06 接入生成器。
+- [x] **T-P2-04 / T-P2-06: 正则规则双向语法转换（2026-10-04 v3.11.0 建库；2026-10-13 v3.12.0 接入生成器）** — 新增 `src/utils/regexRules.ts`：AdGuard `/pattern/` ↔ Pi-hole FTL `regex:pattern` 双向互转；如实标注 dnsmasq 本身不支持正则（不生成无法生效的规则），例外语义在 Pi-hole 侧降级为注释；补 9 例单测。v3.12.0 完成生产接入：`parseLine.ts` 在域名分支前识别 `/pattern/`、`@@/pattern/`、`regex:pattern`（修复 `/ads\./` 被当无效行丢弃），`parser.ts` 收集结构化 `regexRules`，`formatGenerators.buildRegexRules` 按目标格式输出，`useRules`/`useDomainData`/`types` 全链路贯通
 - [ ] **T-P2-01: 域名分类与标签过滤（2026-10-04，v3.11.0 建库；2026-10-13 纠偏降级为「库已就绪、UI 未接入」）** — 新增 `src/utils/domainCategory.ts`：按域名真实命中的上游源（AdGuard / EasyList / neoHosts / StevenBlack / YouSList）打标，提供索引解析、分类查询、按类筛选与分布统计，不引入任何虚构类别；补 7 例单测。**功能未对用户提供**：界面无任何消费，待 T-P2-05 接入 UI。
 - [x] **T-P3-02: OpenWrt LuCI 配置包（2026-10-04，v3.11.0）** — 新增 `openwrt-package/`：LuCI 应用 Makefile（`luci-app-dnsshield`）、订阅控制器（uclient-fetch 拉取、10MB 上限、URL 白名单校验防命令注入，落地 `/etc/dnsshield/rules.conf` 并重载 dnsmasq）、菜单与 rpcd ACL、UCI 默认配置
 - [x] **构建门禁修复与格式切换 UI 找回（2026-10-04，v3.11.1）** — EdgeOne Pages 构建因 `next build` ESLint 门禁失败（exit 18）。① 恢复 v3.10.2 组件拆分中被误删的 `<FormatTabs>` 渲染（`OutputToolbar` 增 `children` 插槽，DOM 顺序同 v3.10.0），输出格式切换 UI 复原；② 清理 `FormatTabs`/`updateSettings`/未使用 `React` 导入 3 处 unused 变量与 `useAutosave`、`useRuleWorker` 2 处 hooks 依赖告警；③ 移除 `useSettings` 中已废弃的 `FIELD_MAP` + `updateSettings` 死代码；④ 复核 `next lint` 0 error 0 warning、`tsc --noEmit` 通过、16 套件 / 114 用例全通过
 - [x] **目录结构审查与 P0 整改（2026-10-05，v3.12.0）** — 以 grilling 方式审查 `.github` 与全仓结构后落地：① 删除根目录垃圾与占位配置（`{const`、`metadata.json`（无引用的 AI Studio 元数据）、`pnpm-workspace.yaml`（`allowBuilds` 为占位串）、`tsconfig.tsbuildinfo`、临时 `_*.txt`）；② 删除投机死模块 `src/utils/statsAggregator.ts`（其统计语义与 `parser.ts` 内联统计不同，属未被生产引用的重复实现）及其测试；③ 修 `scripts/count-domains.mjs` 的 `--write` 硬编码 `3.7.34`（会把 3 个产物头部版本写回旧值）→ 改读 `package.json`；④ 默认设置收敛为 `src/config/defaults.json` 单一来源（此前 `useSettings.ts` 的 `ipv4=127.0.0.1` 与生成脚本的 `0.0.0.0` 冲突）；⑤ 安全响应头以 `vercel.json` 为准回写 `next.config.js`（此前两处不同：缺 HSTS/COOP/CORP/X-Frame-Options，`frame-ancestors` 为 `*`）；⑥ 新增 `scripts/sync-facts.mjs` 把版本号写入 13 处文档展示位并纳入 CI 硬门禁；⑦ 补 hooks 层单测（`useSettings`/`useLanguage`/`useModalA11y`/`useVirtualList`）并把 `src/hooks` 纳入覆盖率门禁；⑧ 修正 T-P2-01 / T-P2-04 的任务状态口径（库已就绪但 UI 未接入，原标记为 ✅ 已完成）
 - [x] **工作流审查整改（2026-10-04，v3.11.2）** — 审查 `.github/workflows` 全部 4 个工作流 + composite action 后落地 8 项整改：① 入库 `pnpm-lock.yaml` + `packageManager`/`engines`/`.npmrc`，解除「无锁文件却 `--frozen-lockfile`」的不可复现安装；② Release 资产清单改由 `gen-format-files.mjs --list-files` 单一来源导出（修 zip 重复项与缺失的 3 个新格式）；③ `aggregate.yml` 补 `contents: write`（原权限必 403）；④ 生成产物漂移提为硬门禁并剔除「更新::」日期行噪声；⑤ 部署改 `workflow_run` 门禁（仅 CI 成功后部署 + 检出 head_sha）；⑥ EdgeOne 产物路径 `./out` → `./.next`；⑦ CLI 钉版本 + 全 job `timeout-minutes`；⑧ 修测试摘要 grep + 新增 `.gitattributes` 固定 LF
+- [x] **T-P1-05: 消除解析重复计算（2026-10-13 核验确认，v3.12.0）** — `useRules.runGenerate` 直接复用 `useDomainData` 解析出的 `parsedData`（单一解析源），不再二次 `parseSource`；`useDomainData` 仅保留一处防抖解析（小文本立即 / 大文本 300ms），单次输入由 2~3 次完整解析降为 1 次
+- [x] **T-P2-06: 接入 AdGuard 正则规则解析与双向转换（v3.12.0）** — 与 T-P2-04 合并落地：正则规则不再被当无效行丢弃，可在 12 种格式间转换（详见上方 T-P2-04 条目）
+- [x] **T-P2-07: 统一统计口径（v3.12.0）** — `rulesGenerator.ts` 抽出 `prepareRuleData` 作为 `generateRules`（导出头部计数）与 `computeEffectiveStats`（UI 统计面板）的唯一公共变换（去通配/去重/白名单剔除），两处口径永不漂移；`validCount` 另含白名单豁免属不同指标，已在注释明确约定
+- [x] **T-P3-04: 路由器脚本生成器 URL shell 转义加固（v3.12.0）** — `scriptGenerator.ts` 新增 `shellQuote`（单引号包裹 + `'\''` 转义），5 处 `URL=` 均安全注入；`"` / `$()` / 反引号 / 反斜杠在单引号内均为字面量，彻底阻断命令注入；同步删除 `ScriptOptions.customDnsIp` 死参数
+- [x] **T-P3-05: parseSource 进度补报 100% + i18n 缺键降级（v3.12.0）** — `parser.ts` 循环结束补报 `onProgress(total, total)`，尾段不足 2000 行不再停在 <100%；`useHomeController` 缺 toast 键时降级为 `t.toast.done`（「已完成」，16 语已存在），不再向用户暴露原始键名
 
 ### 历史开发任务（已归档）
 

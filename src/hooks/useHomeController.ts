@@ -1,4 +1,4 @@
-// src/hooks/useHomeController.ts v3.11.1
+// src/hooks/useHomeController.ts v3.13.0
 // Home 页面的状态编排钩子：聚合所有领域钩子（主题/语言/域名数据/规则/URL/设置）
 // 与稳定交互回调，保持 Home.tsx 仅负责渲染。从 Home.tsx 抽离以控制主文件行数，
 // 公开渲染契约不变（返回类型由 TS 推断，Home.tsx 直接解构使用）。
@@ -10,6 +10,7 @@ import { useTheme } from './useTheme';
 import { useLanguage } from './useLanguage';
 import { useDomainData } from './useDomainData';
 import { useRules } from './useRules';
+import { useCategoryFilter } from './useCategoryFilter';
 import { useUrlManager } from './useUrlManager';
 import { useSettings } from './useSettings';
 
@@ -56,6 +57,18 @@ export function useHomeController() {
     isProcessing,
   } = useDomainData(showToast);
 
+  // 域名分类筛选（T-P2-01 / T-P2-05）：按上游来源过滤域名后再生成规则；
+  // 索引不可用时控件隐藏、筛选不生效（等同全部），过滤结果仅影响规则生成，
+  // 不影响原始输入与统计。
+  const {
+    index: categoryIndex,
+    available: categoryAvailable,
+    selected: selectedCategories,
+    toggle: onToggleCategory,
+    clear: onClearCategories,
+    filteredData
+  } = useCategoryFilter(parsedData);
+
   // 设置管理
   const { settings, setSettings } = useSettings();
 
@@ -68,9 +81,9 @@ export function useHomeController() {
     [setStats]
   );
 
-  // 规则生成
+  // 规则生成（输入为分类过滤后的数据，实现按上游来源选择性导出）
   const {
-    outputContent,
+    currentOutput,
     currentFormat,
     outputPreviewRef,
     outputLineNumbersRef,
@@ -79,7 +92,7 @@ export function useHomeController() {
     copyOutput,
     setFormat,
     syncOutputScroll,
-  } = useRules(parsedData, settings, t, showToast, handleEffectiveStats);
+  } = useRules(filteredData, settings, t, showToast, handleEffectiveStats);
 
   // URL管理
   const {
@@ -160,8 +173,13 @@ export function useHomeController() {
     showToast,
     settings,
     setSettings,
-    outputContent,
+    currentOutput,
     currentFormat,
+    categoryIndex,
+    categoryAvailable,
+    selectedCategories,
+    onToggleCategory,
+    onClearCategories,
     outputPreviewRef,
     outputLineNumbersRef,
     generateRules,
