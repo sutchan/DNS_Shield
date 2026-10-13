@@ -71,7 +71,8 @@
     "urlsFetched": "Alla URL:er hämtade",
     "loading": "Laddar...",
     "invalidUrl": "Ange en giltig URL",
-    "invalidUrlsFiltered": "Filtrerade {count} ogiltiga URL:er"
+    "invalidUrlsFiltered": "Filtrerade {count} ogiltiga URL:er",
+    "done": "Klart"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq annonsblockeringslista",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "Routerskript kopierat till urklipp",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

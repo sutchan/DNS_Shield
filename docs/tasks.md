@@ -7,7 +7,8 @@
 > 最后审查：2026-10-13（与 package.json v3.12.0 对齐，代码实况核验）
 > 维护团队：Sut / ArcesTeam
 >
-> **本次更新（2026-10-13）：应用问题诊断与待完善清单**。在不改动产品代码的前提下，对 `src/` 全量实读后梳理出以下真实问题（证据见文末「九、应用问题诊断详述」）：① 两个已建库功能**未接入生产**——`regexRules.ts`（AdGuard 正则 ↔ Pi-hole FTL 双向转换）与 `domainCategory.ts`（按上游源分类/筛选/统计）仅有测试引用、零生产调用，T-P2-01 / T-P2-04 实为「库就绪、用户不可用」，已纠偏为未完成；② `scriptGenerator.ts` 将用户 URL 直接嵌入 shell 模板仅 `trim()` 未做引号/美元符/反引号转义，存在命令注入隐患，且 `customDnsIp` 参数声明后从未使用；③ 解析重复计算——每次输入至少触发 2~3 次 `parseSource`（`useDomainData` 防抖 + `useRules.runGenerate` 同步 + 回写防抖）；④ `runGenerate` 同步生成全部 12 种格式文本，超大输入下开销冗余；⑤ `parseSource` 进度不上报 100%（`(i+1)%2000===0` 漏报尾段）；⑥ 统计口径不一致（`generateRules.totalDomains` 不含白名单 vs `computeEffectiveStats.validCount` 含白名单）；⑦ i18n 缺键仅 `logger.warn` 并回退裸 key，用户可见原始键名；⑧ 文档自身不一致——「二、全景」L40 仍写「16 套件 / 114 用例」，与指标表（19 套件 / 129 用例）矛盾。上述①~⑦ 已登记为新待办（T-P2-05 ~ T-P3-05）。
+> **本次更新（2026-10-13 第二轮：实况核验 + 剩余任务收尾）**。① 逐项以真实代码核验 v3.12.0 时登记的 9 项待办——**6 项已被 v3.12.0 落地完成**：T-P2-04/06（`parseLine.ts` 识别正则行 + `parser.ts` 收集 + `formatGenerators.buildRegexRules` + `useRules` 贯通）、T-P2-07（`prepareRuleData` 公共变换统一 `generateRules` 与 `computeEffectiveStats` 口径）、T-P1-05（`useRules.runGenerate` 直接复用 `useDomainData` 的 `parsedData`，消除 2~3 次重复 `parseSource`）、T-P3-04（`scriptGenerator.ts` `shellQuote` 单引号包裹 + `'\''` 转义，`customDnsIp` 死参数已删除）、T-P3-05（`parser.ts` 循环结束补报 `onProgress(total,total)` + `useHomeController` 缺键降级 `t.toast.done`，该键 16 语已存在）；② 剩余 **2 个工作项**（分类 UI 接入 T-P2-01/05、惰性生成 T-P1-06）本轮实施。
+> 上一轮（2026-10-13 首轮）应用问题诊断：在不改动产品代码的前提下实读 `src/` 梳理出 7 类真实问题并登记为 T-P2-05~07 / T-P1-05~06 / T-P3-04~05（证据见文末「九、应用问题诊断详述」）。
 > 上一轮（2026-10-05）目录结构审查与 P0 整改完成，升 **v3.12.0**；工作流审查整改（v3.11.2）与 EdgeOne 构建修复（v3.11.1）见历史段落。
 > 上一轮（20:40）修复 EdgeOne 构建失败（ESLint 门禁）并找回丢失的 `<FormatTabs>` 渲染，升至 v3.11.1。
 
@@ -48,8 +49,8 @@
 
 ## 三、待办任务（未完成，按优先级划分）
 
-> **实施顺序总览**：T-P1-03 → T-P1-01 → T-P1-02 → T-P4-01 → T-P2-04 → T-P2-01 → T-P3-02
-> 排序依据：存储层先行（突破 5MB 限制后大数据优化才有意义）→ 解析与渲染性能 → 低风险工具链先行 → 规则引擎功能 → 独立生态子项目。
+> **实施顺序总览**：T-P2-01/05（分类 UI 接入）→ T-P1-06（惰性生成）
+> 排序依据：功能完整性优先（分类筛选直接影响用户可用性与 T-P2-01 验收）→ 性能优化（惰性生成仅影响超大输入场景）。
 
 ### 🔴 P0 - 核心工程与质量门禁
 
@@ -57,62 +58,63 @@
 
 ### 🟡 P1 - 性能优化与大数据集体验
 
-- [x] **T-P1-03: 离线与增量存储优化 (IndexedDB)** ｜ 状态：✅ 已完成（v3.11.0）｜ 实施序位 1
+- [x] **T-P1-03: 离线与增量存储优化 (IndexedDB)** ｜ 状态：✅ 已完成（v3.11.0）
   - 使用 IndexedDB 替代 LocalStorage 存储超长自定义规则列表，突破 LocalStorage 5MB 限制
   - 实现预设源与远程 URL 规则的增量缓存与 ETag 校验
-- [x] **T-P1-01: 引入 Web Worker 实现异步规则解析与去重** ｜ 状态：✅ 已完成（v3.11.0）｜ 实施序位 2
+- [x] **T-P1-01: 引入 Web Worker 实现异步规则解析与去重** ｜ 状态：✅ 已完成（v3.11.0）
   - 将大文本解析（`parser.ts`）、排序去重（`sortDedupe.ts`）与格式转换移入 Web Worker
   - 避免在导入 100,000+ 条域名时造成主线程 UI 卡顿
   - 增加流式处理进度条与处理耗时统计
-- [x] **T-P1-02: 编辑器与预览区域虚拟滚动 (Virtual Scrolling)** ｜ 状态：✅ 已完成（v3.11.0）｜ 实施序位 3
+- [x] **T-P1-02: 编辑器与预览区域虚拟滚动 (Virtual Scrolling)** ｜ 状态：✅ 已完成（v3.11.0）
   - 针对大文本预览，集成虚拟渲染机制，降低超长 DOM 节点的内存占用与渲染延迟
+- [x] **T-P1-05: 消除解析重复计算（共享 parseSource 结果）** ｜ 状态：✅ 已完成（v3.12.0）
+  - `useRules.runGenerate` 直接复用 `useDomainData` 解析出的 `parsedData`（单一解析源），不再二次 `parseSource`；`useDomainData` 仅保留一处防抖解析（小文本立即解析保持预览实时性 / 大文本 300ms 防抖）
+- [ ] **T-P1-06: runGenerate 按当前格式惰性生成** ｜ 状态：⏳ 待开发 ｜ 实施序位 2
+  - 现每次同步生成全部 12 种格式文本，超大输入（10 万行 × 12）冗余；改为仅生成 `currentFormat`，下载/复制时按需全量
 
 ### 🟢 P2 - 规则引擎进阶功能与工具链
 
-- [x] **T-P4-01: 升级 Vitest 至 3.x 以根治覆盖率统计异常** ｜ 状态：✅ 已完成（v3.11.0）｜ 实施序位 4 ｜ **由 P4 提升至 P2**
+- [x] **T-P4-01: 升级 Vitest 至 3.x 以根治覆盖率统计异常** ｜ 状态：✅ 已完成（v3.11.0）｜ **由 P4 提升至 P2**
   - 提升理由：风险低、收益明确，可根治覆盖率统计异常并使阈值回归真实值，为后续功能提供可靠门禁
   - Vitest 2.1.9 + coverage-v8 在 Windows 上按盘符大小写重复统计同一源文件，导致覆盖率报告虚低（约真实值的 1/2）
   - 当前以 thresholds 按报告值校准作 workaround，升级后需重新校准阈值
   - 受限：v3.10.2 记录曾因网络受限未能升级
-- [ ] **T-P2-04: AdGuard 正则规则解析与双向语法转换（生成器接入）** ｜ 状态：🟡 库已就绪、**生成器未接入**（2026-10-13 纠偏，由「已完成」降级）｜ 实施序位 8
-  - `src/utils/regexRules.ts` 提供 `/pattern/` ↔ `regex:pattern` 双向转换、解析与提取（9 例单测），但 `parseLine.ts` / `rulesGenerator.ts` 零生产调用
-  - 直接后果：用户粘贴 AdGuard 正则规则（如 `/ads\./`）会被 `parseLine` 当纯域名判定 `isValid=false` 计入无效行丢弃，且无法转换到其它格式；dnsmasq 不支持正则已如实规避
-  - 验收：解析阶段识别 AdGuard `/pattern/` 与 Pi-hole `regex:` 并保留，生成阶段按目标格式输出对应正则语法
-- [ ] **T-P2-01: 域名分类与标签过滤系统（UI 接入）** ｜ 状态：🟡 库已就绪、**UI 未接入**（2026-10-13 纠偏，由「已完成」降级）｜ 实施序位 9
-  - `src/utils/domainCategory.ts` 提供按上游源（AdGuard/EasyList/neoHosts/StevenBlack/YouSList）分类、筛选与分布统计（7 例单测），`scripts/aggregate-upstream.mjs` 已产出分类索引，但界面无任何消费
-  - 验收：提供分类筛选控件与按类选择性导出，数值来自真实索引（禁虚构类别）
+- [x] **T-P2-04: AdGuard 正则规则解析与双向语法转换（生成器接入）** ｜ 状态：✅ 已完成（v3.12.0）
+  - `parseLine.ts` 在域名分支之前识别 `/pattern/`、`@@/pattern/`、`regex:pattern`（否则 `/ads\./` 落入纯域名分支被判无效丢弃）
+  - `parser.ts` 收集 `regexRules` 结构化数据；`formatGenerators.buildRegexRules` 按目标格式输出对应正则语法（dnsmasq 不支持正则已如实跳过，例外语义在 Pi-hole 侧降级为注释）
+  - `useRules` / `useDomainData` / `types` 全链路贯通，正则规则不再被当无效行丢弃
+- [ ] **T-P2-01 / T-P2-05: 域名分类与标签过滤系统（UI 接入）** ｜ 状态：🟡 库已就绪、**UI 未接入**（2026-10-13 纠偏降级）｜ 实施序位 1
+  - `src/utils/domainCategory.ts` 提供按上游源（AdGuard/EasyList/neoHosts/StevenBlack/YouSList）分类、筛选与分布统计（7 例单测），`scripts/aggregate-upstream.mjs` 已产出分类索引，但界面零消费
+  - 验收：提供分类筛选控件与按类选择性导出，数值来自真实索引（禁虚构类别）；i18n 补 `category.adguard/easylist/neohosts/stevenblack/youslist` 5 键 × 16 语言
 
 ### 🔵 P2 - 应用问题诊断与完善（2026-10-13 代码实读分析）
 
-- [ ] **T-P2-05: 接入域名分类标签过滤 UI** ｜ 状态：⏳ 待开发 ｜ 实施序位 10
-  - 复用 T-P2-01 库，在输入/输出区增加分类筛选控件与按类导出；i18n 补 `category.adguard/easylist/neohosts/stevenblack/youslist` 5 键
-- [ ] **T-P2-06: 接入 AdGuard 正则规则解析与双向转换** ｜ 状态：⏳ 待开发 ｜ 实施序位 11
-  - 复用 T-P2-04 库，使正则规则不再被当无效行丢弃并可在 12 种格式间转换
-- [ ] **T-P2-07: 统一统计口径（totalDomains vs validCount）** ｜ 状态：⏳ 待开发 ｜ 实施序位 12
-  - `generateRules` 头部 `totalDomains` 不含白名单；`computeEffectiveStats.validCount` 含白名单，UI 同屏展示易致困惑；统一语义并区分文案
+- [x] **T-P2-06: 接入 AdGuard 正则规则解析与双向转换** ｜ 状态：✅ 已完成（v3.12.0，与 T-P2-04 合并落地）
+  - 复用 `regexRules.ts` 库，正则规则不再被当无效行丢弃并可在 12 种格式间转换
+- [x] **T-P2-07: 统一统计口径（totalDomains vs validCount）** ｜ 状态：✅ 已完成（v3.12.0）
+  - `rulesGenerator.prepareRuleData` 为 `generateRules` 与 `computeEffectiveStats` 的唯一公共变换（去通配/去重/白名单剔除），两处口径永不漂移
+  - `validCount` 另含白名单豁免属不同指标，已在注释中明确约定，禁止混用
 
 ### 🟡 P1 - 性能优化（解析与生成）
 
-- [ ] **T-P1-05: 消除解析重复计算（共享 parseSource 结果）** ｜ 状态：⏳ 待开发 ｜ 实施序位 13
-  - 每次输入触发 2~3 次 `parseSource`（`useDomainData` 防抖、`useRules.runGenerate` 同步、`syncParsedData` 回写防抖）；经 Worker 解析结果应在 `useDomainData` 与 `useRules` 间共享，避免三处各自解析
-- [ ] **T-P1-06: runGenerate 按当前格式惰性生成** ｜ 状态：⏳ 待开发 ｜ 实施序位 14
-  - 现每次同步生成全部 12 种格式文本，超大输入（10 万行 × 12）冗余；改为仅生成 `currentFormat`，下载/复制时按需全量
+（解析重复计算 T-P1-05 已完成，见上；仅剩惰性生成 T-P1-06。）
 
 ### ⚪ P3 - 路由器自动化与生态拓展
 
-- [x] **T-P3-02: OpenWrt LuCI 界面配置包** ｜ 状态：✅ 已完成（v3.11.0）｜ 实施序位 7
+- [x] **T-P3-02: OpenWrt LuCI 界面配置包** ｜ 状态：✅ 已完成（v3.11.0）
   - 构建轻量级 OpenWrt LuCI 界面插件，支持在路由器后台直接订阅 DNS Shield 规则源
-- [ ] **T-P3-04: 路由器脚本生成器 URL shell 转义加固** ｜ 状态：⏳ 待开发 ｜ 实施序位 15
-  - `scriptGenerator.ts` 将用户 `ruleUrl` 直接嵌入 `URL="..."` 仅 `trim()`，未对 `"` / `$()` / 反引号转义，存在命令注入隐患；改用单引号包裹或显式转义；同步处置 `customDnsIp` 死参数（实现或删除）
-- [ ] **T-P3-05: parseSource 进度补报 100% + i18n 缺键降级** ｜ 状态：⏳ 待开发 ｜ 实施序位 16
-  - `parseSource` 仅 `(i+1)%2000===0` 上报，尾段不足 2000 行不报 `onProgress(total,total)`，进度条可能停在 <100%；循环结束补报
-  - `useHomeController` 缺 toast 键时回退裸 key（如 `presetLoaded`），建议降级为通用提示而非暴露原始键名
+- [x] **T-P3-04: 路由器脚本生成器 URL shell 转义加固** ｜ 状态：✅ 已完成（v3.12.0）
+  - `scriptGenerator.ts` 新增 `shellQuote`（单引号包裹 + `'\''` 转义），5 处 `URL=` 均安全注入，`"` / `$()` / 反引号在单引号内均为字面量，彻底阻断命令注入
+  - `ScriptOptions.customDnsIp` 死参数已删除（原声明后从未读取）
+- [x] **T-P3-05: parseSource 进度补报 100% + i18n 缺键降级** ｜ 状态：✅ 已完成（v3.12.0）
+  - `parser.ts` 循环结束补报 `onProgress(total, total)`，尾段不足 2000 行也不再停在 <100%
+  - `useHomeController` 缺 toast 键时降级为 `t.toast.done`（「已完成」，16 语已存在），不再向用户暴露原始键名
 
 ### ⚙️ P4 - 工具链与依赖
 
 当前无未完成的 P4 任务（原 T-P4-01 已提升至 P2）。
 
-> **未完成任务合计：9 项**（T-P2-01 / T-P2-04 纠偏降级 + T-P2-05~07 + T-P1-05~06 + T-P3-04~05）
+> **未完成任务合计：2 项**（T-P2-01/05 分类 UI 接入、T-P1-06 惰性生成）
 
 ---
 
@@ -121,7 +123,7 @@
 | 任务编号 | 任务名称 | 负责人 | 验收标准 | 状态 |
 |---|---|---|---|:---:|
 | T-P0-01 | 覆盖率工具与门禁 | Core Team | `pnpm test:coverage` 可生成报告且 thresholds 生效 | ✅ 已完成（门禁真实生效） |
-| T-P0-02 | 核心模块单元测试 | Core Team | 85 个单元测试用例全部通过 | ✅ 已完成 |
+| T-P0-02 | 核心模块单元测试 | Core Team | 129 个单元测试用例全部通过 | ✅ 已完成 |
 | T-P0-03 | 生产日志收敛 | Core Team | 生产构建控制台无未受控报错，logger 工具全覆盖 | ✅ 已完成 |
 | T-P0-04 | 修正覆盖率统计与门禁 | Core Team | 排除测试文件并落地 thresholds，不达标时非零码退出 | ✅ 已完成 |
 | T-P2-02 | 域名匹配测试器 | Feature Team | 输入测试域名即时展示命中规则与拦截原因 | ✅ 已完成 |

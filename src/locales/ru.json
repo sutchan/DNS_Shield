@@ -71,7 +71,8 @@
     "urlsFetched": "Получены все URL",
     "loading": "Загрузка...",
     "invalidUrl": "Введите действительный URL-адрес",
-    "invalidUrlsFiltered": "Отфильтровано {count} недействительных URL"
+    "invalidUrlsFiltered": "Отфильтровано {count} недействительных URL",
+    "done": "Готово"
   },
   "header": {
     "dnsmasqTitle": "Список блокировки рекламы Dnsmasq",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "Скрипт маршрутизатора скопирован в буфер обмена",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

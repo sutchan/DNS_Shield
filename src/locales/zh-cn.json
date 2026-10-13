@@ -80,7 +80,8 @@
     "urlsFetched": "已获取全部 URLs",
     "loading": "加载中...",
     "invalidUrl": "请输入有效的 URL 地址",
-    "invalidUrlsFiltered": "已过滤 {count} 个无效 URL"
+    "invalidUrlsFiltered": "已过滤 {count} 个无效 URL",
+    "done": "已完成"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq 广告过滤列表",
@@ -216,5 +217,12 @@
   "routerScriptCopied": "路由器更新脚本已复制到剪贴板",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

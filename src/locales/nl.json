@@ -71,7 +71,8 @@
     "urlsFetched": "Alle URL's opgehaald",
     "loading": "Laden...",
     "invalidUrl": "Voer een geldige URL in",
-    "invalidUrlsFiltered": "{count} ongeldige URLs gefilterd"
+    "invalidUrlsFiltered": "{count} ongeldige URLs gefilterd",
+    "done": "Gereed"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq advertentieblokkeringslijst",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "Routerscript gekopieerd naar klembord",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

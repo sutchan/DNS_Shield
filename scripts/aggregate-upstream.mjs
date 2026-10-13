@@ -14,13 +14,18 @@ const ROOT = resolve(__dirname, '..');
 const DOMAINS_FILE = resolve(ROOT, 'public/domains.txt');
 
 // 上游黑名单源（公开、稳定、含广告/追踪域名）。可按需增删。
+// key 为分类标识，必须与前端 src/utils/domainCategory.ts 的 CategoryKey 一致。
 const SOURCES = [
-  'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/adblock.txt',
-  'https://easylist.to/easylist/easylist.txt',
-  'https://raw.githubusercontent.com/neoFelhz/neohosts/master/dist/neohosts-full.txt',
-  'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts',
-  'https://raw.githubusercontent.com/yous/YousList/master/youslist.txt',
+  { key: 'adguard', url: 'https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/adblock.txt' },
+  { key: 'easylist', url: 'https://easylist.to/easylist/easylist.txt' },
+  { key: 'neohosts', url: 'https://raw.githubusercontent.com/neoFelhz/neohosts/master/dist/neohosts-full.txt' },
+  { key: 'stevenblack', url: 'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts' },
+  { key: 'youslist', url: 'https://raw.githubusercontent.com/yous/YousList/master/youslist.txt' },
 ];
+// 分类索引产物：每行 "<source> <domain>"，记录域名真实命中的上游源，供前端按类筛选。
+const CATEGORY_INDEX_FILE = resolve(ROOT, 'public/category-index.txt');
+// 索引中源的固定输出顺序（保证产物稳定，便于 diff 审查）。
+const SOURCE_ORDER = SOURCES.map((s) => s.key);
 
 const FETCH_TIMEOUT_MS = 30_000;
 
@@ -86,8 +91,22 @@ async function main() {
   }
   const before = merged.size;
 
-  for (const url of SOURCES) {
-    const set = await fetchDomains(url);
+  // 分类索引：记录每个域名真实命中的上游源（一个域名可命中多个源）
+  const categoryIndex = new Map();
+  const recordCategory = (key, domains) => {
+    for (const d of domains) {
+      const bucket = categoryIndex.get(d);
+      if (bucket) {
+        bucket.add(key);
+      } else {
+        categoryIndex.set(d, new Set([key]));
+      }
+    }
+  };
+
+  for (const source of SOURCES) {
+    const set = await fetchDomains(source.url);
+    recordCategory(source.key, set);
     for (const d of set) merged.add(d);
   }
 
@@ -103,6 +122,19 @@ async function main() {
     console.log(`无需更新：已是最新（${after} 个域名）`);
     process.stdout.write('ADDED=0\n');
   }
+
+  // 分类索引每次运行都重写：即使域名总量无变化，上游命中关系也可能变化，
+  // 从而保证前端按类筛选始终基于最新真实数据。
+  const indexLines = [];
+  for (const domain of sorted) {
+    const hits = categoryIndex.get(domain);
+    if (!hits) continue;
+    for (const key of SOURCE_ORDER) {
+      if (hits.has(key)) indexLines.push(`${key} ${domain}`);
+    }
+  }
+  writeFileSync(CATEGORY_INDEX_FILE, indexLines.join('\n') + '\n', 'utf8');
+  console.log(`分类索引已更新：${indexLines.length} 条 → ${CATEGORY_INDEX_FILE}`);
 }
 
 main().catch((err) => {

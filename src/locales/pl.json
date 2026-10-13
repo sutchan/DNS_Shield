@@ -71,7 +71,8 @@
     "urlsFetched": "Pobrano wszystkie URL",
     "loading": "Ładowanie...",
     "invalidUrl": "Wprowadź prawidłowy adres URL",
-    "invalidUrlsFiltered": "Filtrowano {count} nieprawidłowych URL-i"
+    "invalidUrlsFiltered": "Filtrowano {count} nieprawidłowych URL-i",
+    "done": "Gotowe"
   },
   "header": {
     "dnsmasqTitle": "Lista blokowania reklam Dnsmasq",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "Skrypt routera skopiowany do schowka",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

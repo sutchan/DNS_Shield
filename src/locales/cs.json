@@ -71,7 +71,8 @@
     "urlsFetched": "Všechny URL byly načteny",
     "loading": "Načítání...",
     "invalidUrl": "Zadejte prosím platnou URL adresu",
-    "invalidUrlsFiltered": "Filtrováno {count} neplatných URL"
+    "invalidUrlsFiltered": "Filtrováno {count} neplatných URL",
+    "done": "Hotovo"
   },
   "header": {
     "dnsmasqTitle": "Seznam blokování reklam Dnsmasq",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "Skript routeru byl zkopírován do schránky",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

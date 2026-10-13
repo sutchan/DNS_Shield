@@ -1,4 +1,4 @@
-// src/utils/scriptGenerator.ts v3.10.1
+// src/utils/scriptGenerator.ts v3.12.0
 // 路由器与 DNS 守护进程一键同步脚本生成器：
 // 支持针对 AsusWRT-Merlin / OpenWrt / SmartDNS / Pi-hole 生成自动拉取、备份与重启的 Shell 脚本。
 
@@ -7,8 +7,11 @@ export type RouterScriptTarget = 'openwrt' | 'merlin' | 'padavan' | 'smartdns' |
 export interface ScriptOptions {
   ruleUrl: string;
   target: RouterScriptTarget;
-  customDnsIp?: string;
 }
+
+// 将字符串安全嵌入单引号 shell 字面量：单引号经 '\'' 转义，
+// 双引号 / $() / 反引号 / 反斜杠在单引号内均为字面量，可彻底阻断命令注入（T-P3-04）。
+const shellQuote = (value: string): string => "'" + value.replace(/'/g, "'\\''") + "'";
 
 /**
  * 根据目标路由器系统生成全自动 Shell 更新同步脚本
@@ -29,7 +32,7 @@ export function generateRouterScript(options: ScriptOptions): string {
 CONF_DIR="/etc/dnsmasq.d"
 CONF_FILE="$CONF_DIR/dns-shield.conf"
 TMP_FILE="/tmp/dns-shield.conf.tmp"
-URL="${safeUrl}"
+URL=${shellQuote(safeUrl)}
 
 mkdir -p "$CONF_DIR"
 
@@ -66,7 +69,7 @@ fi
 
 CONF_FILE="/jffs/configs/dnsmasq.conf.add"
 TMP_FILE="/tmp/dnsmasq.conf.add.tmp"
-URL="${safeUrl}"
+URL=${shellQuote(safeUrl)}
 
 echo "[DNS Shield] Fetching rules for Merlin..."
 curl -s -k -m 30 -o "$TMP_FILE" "$URL"
@@ -88,7 +91,7 @@ fi
 
 CONF_FILE="/etc/storage/dnsmasq/dnsmasq.conf"
 TMP_FILE="/tmp/dnsmasq.tmp"
-URL="${safeUrl}"
+URL=${shellQuote(safeUrl)}
 
 wget -q --no-check-certificate -O "$TMP_FILE" "$URL"
 if [ -s "$TMP_FILE" ]; then
@@ -106,7 +109,7 @@ fi
 
 CONF_FILE="/etc/smartdns/conf.d/dns-shield.conf"
 TMP_FILE="/tmp/smartdns_rules.tmp"
-URL="${safeUrl}"
+URL=${shellQuote(safeUrl)}
 
 mkdir -p /etc/smartdns/conf.d
 curl -s -k -m 30 -o "$TMP_FILE" "$URL"
@@ -125,7 +128,7 @@ fi
 
 CUSTOM_LIST="/etc/pihole/custom.list"
 TMP_FILE="/tmp/pihole_shield.tmp"
-URL="${safeUrl}"
+URL=${shellQuote(safeUrl)}
 
 curl -s -m 30 -o "$TMP_FILE" "$URL"
 if [ -s "$TMP_FILE" ]; then

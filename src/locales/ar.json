@@ -71,7 +71,8 @@
     "urlsFetched": "تم جلب جميع URLs",
     "loading": "جاري التحميل...",
     "invalidUrl": "يرجى إدخال عنوان URL صالح",
-    "invalidUrlsFiltered": "تم تصفية {count} عناوين URL غير صالحة"
+    "invalidUrlsFiltered": "تم تصفية {count} عناوين URL غير صالحة",
+    "done": "تم"
   },
   "header": {
     "dnsmasqTitle": "قائمة فلترة Ad Block لـ Dnsmasq",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "تم نسخ نص المزامنة إلى الحافظة",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

@@ -71,7 +71,8 @@
     "urlsFetched": "Đã lấy tất cả URL",
     "loading": "Đang tải...",
     "invalidUrl": "Vui lòng nhập URL hợp lệ",
-    "invalidUrlsFiltered": "Đã lọc {count} URL không hợp lệ"
+    "invalidUrlsFiltered": "Đã lọc {count} URL không hợp lệ",
+    "done": "Hoàn thành"
   },
   "header": {
     "dnsmasqTitle": "Danh sách chặn quảng cáo Dnsmasq",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "Đã sao chép tập lệnh bộ định tuyến vào khay nhớ tạm",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

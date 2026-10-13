@@ -71,7 +71,8 @@
     "urlsFetched": "ดึง URL ทั้งหมดแล้ว",
     "loading": "กำลังโหลด...",
     "invalidUrl": "กรุณาใส่ URL ที่ถูกต้อง",
-    "invalidUrlsFiltered": "กรอง URL ไม่ถูกต้อง {count} รายการ"
+    "invalidUrlsFiltered": "กรอง URL ไม่ถูกต้อง {count} รายการ",
+    "done": "เสร็จแล้ว"
   },
   "header": {
     "dnsmasqTitle": "รายการบล็อกโฆษณา Dnsmasq",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "คัดลอกสคริปต์เราเตอร์ไปยังคลิปบอร์ดแล้ว",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

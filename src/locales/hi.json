@@ -71,7 +71,8 @@
     "urlsFetched": "सभी URL प्राप्त किए गए",
     "loading": "लोड हो रहा है...",
     "invalidUrl": "कृपया एक मान्य URL दर्ज करें",
-    "invalidUrlsFiltered": "{count} अमान्य URL फ़िल्टर किए गए"
+    "invalidUrlsFiltered": "{count} अमान्य URL फ़िल्टर किए गए",
+    "done": "पूर्ण"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq विज्ञापन ब्लॉक सूची",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "राउटर स्क्रिप्ट क्लिपबोर्ड पर कॉपी की गई",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

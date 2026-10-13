@@ -71,7 +71,8 @@
     "urlsFetched": "Todas las URL obtenidas",
     "loading": "Cargando...",
     "invalidUrl": "Por favor, introduzca una URL válida",
-    "invalidUrlsFiltered": "Se filtraron {count} URL no válidas"
+    "invalidUrlsFiltered": "Se filtraron {count} URL no válidas",
+    "done": "Hecho"
   },
   "header": {
     "dnsmasqTitle": "Lista de bloqueo de anuncios Dnsmasq",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "Script copiado al portapapeles",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

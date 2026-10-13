@@ -71,7 +71,8 @@
     "urlsFetched": "Semua URL telah diambil",
     "loading": "Memuat...",
     "invalidUrl": "Silakan masukkan URL yang valid",
-    "invalidUrlsFiltered": "Menyaring {count} URL tidak valid"
+    "invalidUrlsFiltered": "Menyaring {count} URL tidak valid",
+    "done": "Selesai"
   },
   "header": {
     "dnsmasqTitle": "Daftar Blok Iklan Dnsmasq",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "Skrip router disalin ke papan klip",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

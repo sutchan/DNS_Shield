@@ -75,7 +75,8 @@
     "urlsFetched": "Fetched all URLs",
     "loading": "Loading...",
     "invalidUrl": "Please enter a valid URL",
-    "invalidUrlsFiltered": "Filtered {count} invalid URLs"
+    "invalidUrlsFiltered": "Filtered {count} invalid URLs",
+    "done": "Done"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq Ad Block List",
@@ -216,5 +217,12 @@
   "routerScriptCopied": "Router sync script copied to clipboard",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

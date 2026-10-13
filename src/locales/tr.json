@@ -71,7 +71,8 @@
     "urlsFetched": "Tüm URL'ler alındı",
     "loading": "Yükleniyor...",
     "invalidUrl": "Lütfen geçerli bir URL girin",
-    "invalidUrlsFiltered": "{count} geçersiz URL filtrelendi"
+    "invalidUrlsFiltered": "{count} geçersiz URL filtrelendi",
+    "done": "Tamamlandı"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq Reklam Engelleme Listesi",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "Yönlendirici komut dosyası panoya kopyalandı",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }

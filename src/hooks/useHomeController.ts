@@ -25,10 +25,11 @@ export function useHomeController() {
   // 显示提示（useCallback 稳定引用，避免下游 hook 依赖链抖动触发重渲染）
   const showToast = useCallback((key: string, params?: Record<string, string | number>) => {
     const toastMessages = t.toast as unknown as Record<string, string>;
-    let message = toastMessages[key] || key;
-    // 缺翻译键时告警，便于发现漏翻（不影响功能，回退显示原始 key）
-    if (!toastMessages[key]) {
-      logger.warn(`[i18n] 缺少 toast 翻译键: "${key}"（语言 ${currentLang}），已回退为原始 key`);
+    let message = toastMessages[key];
+    // 缺翻译键时降级为通用完成提示，避免向用户暴露原始键名（T-P3-05）
+    if (!message) {
+      logger.warn(`[i18n] 缺少 toast 翻译键: "${key}"（语言 ${currentLang}），已降级为通用提示`);
+      message = t.toast.done ?? key;
     }
     if (params) {
       Object.entries(params).forEach(([k, v]) => {

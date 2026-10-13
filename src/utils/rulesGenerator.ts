@@ -59,16 +59,17 @@ export const generateHeader = (
   return lines.join('\n') + '\n\n';
 };
 
-// 生成规则：编排解析后的数据经过格式拼接（已拆分至 formatGenerators.ts）
-export const generateRules = (
+// 公共变换：去通配 + 去重 + 白名单剔除。generateRules（导出头部计数）与
+// computeEffectiveStats（UI 统计面板）共用，确保两处口径永不漂移（T-P2-07）。
+// 口径约定：blockedDomains = 实际拦截域名（黑名单剔除白名单）+ 自定义 DNS；
+// 统计面板的「有效规则数」另含白名单豁免，属不同指标，不得与前者混用。
+export const prepareRuleData = (
   domains: string[],
   whitelist: string[],
   customDns: CustomDnsEntry[],
-  settings: Settings,
-  t: Translation,
-  regexRules: RegexRule[] = []
-): OutputContent => {
-  const { addHeader, dedupDomains, removeWildcard } = settings;
+  settings: Settings
+): { filteredWhitelist: string[]; blockedDomains: string[]; customDns: CustomDnsEntry[] } => {
+  const { dedupDomains, removeWildcard } = settings;
 
   let filteredDomains = [...domains];
   if (removeWildcard) {
@@ -91,6 +92,22 @@ export const generateRules = (
   // 列表中排除白名单域名，使白名单在 dnsmasq/hosts 格式下真正生效（而非仅注释）。
   const whitelistSet = new Set(filteredWhitelist);
   const blockedDomains = filteredDomains.filter((domain) => !whitelistSet.has(domain));
+
+  return { filteredWhitelist, blockedDomains, customDns };
+};
+
+// 生成规则：编排解析后的数据经过格式拼接（已拆分至 formatGenerators.ts）
+export const generateRules = (
+  domains: string[],
+  whitelist: string[],
+  customDns: CustomDnsEntry[],
+  settings: Settings,
+  t: Translation,
+  regexRules: RegexRule[] = []
+): OutputContent => {
+  const { addHeader } = settings;
+
+  const { filteredWhitelist, blockedDomains } = prepareRuleData(domains, whitelist, customDns, settings);
 
   const now = new Date();
   const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
@@ -118,26 +135,20 @@ export const computeEffectiveStats = (
   parsedData: ParsedData,
   settings: Settings
 ): Pick<Stats, 'blacklistCount' | 'whitelistCount' | 'validCount'> => {
-  const { removeWildcard, dedupDomains } = settings;
-  const stripWildcard = (d: string) => (removeWildcard ? d.replace(/^\*\./, '') : d);
+  // 与 generateRules 共用同一变换，保证统计面板与导出头部口径永不漂移（T-P2-07）
+  const { filteredWhitelist, blockedDomains, customDns } = prepareRuleData(
+    parsedData.domains,
+    parsedData.whitelist,
+    parsedData.customDns,
+    settings
+  );
 
-  let domains = parsedData.domains.map(stripWildcard);
-  let whitelist = parsedData.whitelist.map(stripWildcard);
-  if (dedupDomains) {
-    domains = [...new Set(domains)];
-    whitelist = [...new Set(whitelist)];
-  }
-
-  const whitelistSet = new Set(whitelist);
-  const blockedDomains = domains.filter(d => !whitelistSet.has(d));
-
-  // 有效行 = 黑名单(已剔除白名单) + 白名单 + 自定义 DNS。
+  // 有效规则数 = 黑名单(已剔除白名单) + 白名单豁免 + 自定义 DNS。
   // 白名单域名若同时出现在黑名单中只计一次，故用并集去重，避免重复计数。
-  const uniqueValidDomains = new Set([...domains, ...whitelist]);
+  const uniqueValidDomains = new Set([...blockedDomains, ...filteredWhitelist]);
   return {
-    // 黑名单 = 实际拦截域名 + 自定义 DNS（与 generateRules 生成总量一致）
-    blacklistCount: blockedDomains.length + parsedData.customDns.length,
-    whitelistCount: whitelist.length,
-    validCount: uniqueValidDomains.size + parsedData.customDns.length
+    blacklistCount: blockedDomains.length + customDns.length,
+    whitelistCount: filteredWhitelist.length,
+    validCount: uniqueValidDomains.size + customDns.length
   };
 };

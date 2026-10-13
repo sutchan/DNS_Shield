@@ -71,7 +71,8 @@
     "urlsFetched": "已獲取全部 URLs",
     "loading": "載入中...",
     "invalidUrl": "請輸入有效的 URL 位址",
-    "invalidUrlsFiltered": "已過濾 {count} 個無效 URL"
+    "invalidUrlsFiltered": "已過濾 {count} 個無效 URL",
+    "done": "已完成"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq 廣告過濾列表",
@@ -215,5 +216,12 @@
   "routerScriptCopied": "路由器更新腳本已複製至剪貼簿",
   "mosdnsFormat": "Mosdns",
   "clashFormat": "Clash Meta",
-  "corednsFormat": "CoreDNS"
+  "corednsFormat": "CoreDNS",
+  "category": {
+    "adguard": "AdGuard",
+    "easylist": "EasyList",
+    "neohosts": "neoHosts",
+    "stevenblack": "StevenBlack",
+    "youslist": "YouSList"
+  }
 }
