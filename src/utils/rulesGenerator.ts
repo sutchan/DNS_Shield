@@ -1,10 +1,10 @@
-// src/utils/rulesGenerator.ts v3.9.0
+// src/utils/rulesGenerator.ts v3.12.0
 // 规则生成核心：将解析后的域名数据转换为 Dnsmasq / Hosts / AdGuard / 白名单 /
 // Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS 12 种格式。纯函数、可单测。
 // 头部注释配置（HEADER_CONFIGS）已拆分至 headerConfigs.ts。
-import { CustomDnsEntry, Settings, OutputContent, Translation, FormatType, ParsedData, Stats } from '../types';
+import { CustomDnsEntry, Settings, OutputContent, Translation, FormatType, ParsedData, Stats, RegexRule } from '../types';
 import { HEADER_CONFIGS } from './headerConfigs';
-import { buildBlockedRules, buildCustomDnsRules, buildWhitelistRules, buildHeaders, mergeContents } from './formatGenerators';
+import { buildBlockedRules, buildCustomDnsRules, buildWhitelistRules, buildRegexRules, buildHeaders, mergeContents } from './formatGenerators';
 
 // 生成头部
 export const generateHeader = (
@@ -65,7 +65,8 @@ export const generateRules = (
   whitelist: string[],
   customDns: CustomDnsEntry[],
   settings: Settings,
-  t: Translation
+  t: Translation,
+  regexRules: RegexRule[] = []
 ): OutputContent => {
   const { addHeader, dedupDomains, removeWildcard } = settings;
 
@@ -101,6 +102,7 @@ export const generateRules = (
     buildHeaders(totalDomains, whitelistCount, dateStr, settings, t),
     buildBlockedRules(blockedDomains, settings),
     buildCustomDnsRules(customDns),
+    buildRegexRules(regexRules),
     buildWhitelistRules(filteredWhitelist, settings, t, addHeader)
   );
 

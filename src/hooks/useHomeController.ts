@@ -78,7 +78,7 @@ export function useHomeController() {
     copyOutput,
     setFormat,
     syncOutputScroll,
-  } = useRules(parsedData, sourceInput, settings, t, showToast, parseSourceData, handleEffectiveStats);
+  } = useRules(parsedData, settings, t, showToast, handleEffectiveStats);
 
   // URL管理
   const {

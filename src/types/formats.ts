@@ -64,11 +64,17 @@ export const CORE_FORMATS: FormatType[] = [
 
 /** 单行解析结果：区分空行 / 注释 / 各类格式命中 */
 export interface ParseResult {
-  type: 'empty' | 'comment' | 'whitelist' | 'customDns' | 'hosts' | 'dnsmasq' | 'adguard' | 'domain';
+  type: 'empty' | 'comment' | 'whitelist' | 'customDns' | 'hosts' | 'dnsmasq' | 'adguard' | 'domain' | 'regex';
   domain?: string;
   ip?: string;
   isValid?: boolean;
   originalLine: string;
+  /** 正则表达式本体（type === 'regex' 时有效，不含分隔符与 regex: 前缀） */
+  pattern?: string;
+  /** 正则规则的来源语法：adguard（/pattern/）或 pihole（regex:pattern） */
+  regexSource?: 'adguard' | 'pihole';
+  /** 是否为例外（白名单）规则 */
+  regexException?: boolean;
 }
 
 /** 解析源文本后的统计聚合，与真实注释/空行分开计数，避免数字失真 */

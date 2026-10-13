@@ -1,6 +1,6 @@
-// src/utils/parser.ts v3.11.0
+// src/utils/parser.ts v3.12.0
 import { parseDomainLine, ParseStats } from './domainValidator';
-import { CustomDnsEntry, ParsedData } from '../types';
+import { CustomDnsEntry, ParsedData, RegexRule } from '../types';
 
 // 进度回调触发间隔：每 N 行上报一次，避免高频回调拖慢解析（Worker 内 postMessage 有开销）
 const PROGRESS_INTERVAL = 2000;
@@ -21,6 +21,7 @@ export const parseSource = (
   const domains: string[] = [];
   const whitelist: string[] = [];
   const customDns: CustomDnsEntry[] = [];
+  const regexRules: RegexRule[] = [];
   let commentCount = 0;
   let invalidCount = 0;
 
@@ -61,6 +62,21 @@ export const parseSource = (
       continue;
     }
 
+    // 正则规则：保留原始 pattern 与来源语法，供生成阶段按目标格式转换
+    if (parsed.type === 'regex') {
+      if (parsed.pattern) {
+        regexRules.push({
+          pattern: parsed.pattern,
+          source: parsed.regexSource ?? 'adguard',
+          isException: parsed.regexException ?? false,
+          originalLine: line
+        });
+      } else {
+        invalidCount++;
+      }
+      continue;
+    }
+
     if (parsed.type === 'hosts' || parsed.type === 'dnsmasq' || parsed.type === 'adguard' || parsed.type === 'domain') {
       if (parsed.isValid && parsed.domain) {
         domains.push(parsed.domain);
@@ -72,6 +88,11 @@ export const parseSource = (
 
     // 其余无法识别的行同样计入无效行
     invalidCount++;
+  }
+
+  // 尾段不足 PROGRESS_INTERVAL 行时补报 100%，避免进度条停在 <100%（T-P3-05）
+  if (onProgress && total > 0) {
+    onProgress(total, total);
   }
 
   // 去重和处理冲突
@@ -105,7 +126,8 @@ export const parseSource = (
     data: {
       domains: filteredDomains,
       whitelist: uniqueWhitelist,
-      customDns: uniqueCustomDns
+      customDns: uniqueCustomDns,
+      regexRules
     },
     stats
   };

@@ -1,8 +1,9 @@
-// src/utils/formatGenerators.ts v3.9.0
+// src/utils/formatGenerators.ts v3.12.0
 // 12 种输出格式的单行规则拼接逻辑，从 rulesGenerator.ts 拆分以保持生成器主文件聚焦编排。
 // 每个 helper 返回 OutputContent（9 个格式字段），调用方按阶段累加。
-import type { Settings, CustomDnsEntry, OutputContent, Translation } from '../types';
+import type { Settings, CustomDnsEntry, OutputContent, Translation, RegexRule } from '../types';
 import { generateHeader } from './rulesGenerator';
+import { toAdGuardRegex, toPiHoleRegex } from './regexRules';
 
 type Contents = OutputContent;
 
@@ -139,6 +140,22 @@ export function buildHeaders(
   out.mosdns = generateHeader('mosdns', totalDomains, whitelistCount, dateStr, settings, t);
   out.clash = generateHeader('clash', totalDomains, whitelistCount, dateStr, settings, t);
   out.coredns = generateHeader('coredns', totalDomains, whitelistCount, dateStr, settings, t);
+  return out;
+}
+
+/**
+ * 正则规则按目标格式输出，实现 AdGuard ↔ Pi-hole FTL 双向转换：
+ *   - adguard 格式统一输出 /pattern/（例外为 @@/pattern/）；
+ *   - pihole 格式统一输出 regex:pattern（例外语义 Pi-hole FTL 不支持，降级为注释）；
+ *   - 其余格式（含 dnsmasq）本身不支持正则，不生成规则，避免产出无法生效的配置。
+ */
+export function buildRegexRules(regexRules: RegexRule[]): Contents {
+  const out = emptyContents();
+  if (regexRules.length === 0) return out;
+  regexRules.forEach((rule) => {
+    out.adguard += toAdGuardRegex(rule.pattern, rule.isException) + '\n';
+    out.pihole += (rule.isException ? '# ' : '') + toPiHoleRegex(rule.pattern) + '\n';
+  });
   return out;
 }
 

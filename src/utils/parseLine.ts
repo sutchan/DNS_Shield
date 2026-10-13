@@ -6,6 +6,7 @@
 
 import { type ParseResult } from '../types/formats';
 import { isValidDomain, isValidIp, normalizeDomain } from './domainPrimitives';
+import { parseRegexRule } from './regexRules';
 
 // 解析单行域名
 export const parseDomainLine = (line: string): ParseResult => {
@@ -28,6 +29,20 @@ export const parseDomainLine = (line: string): ParseResult => {
 
   if (content.startsWith('!')) {
     return { type: 'comment', originalLine: line };
+  }
+
+  // 正则规则：AdGuard /pattern/、例外 @@/pattern/、Pi-hole regex:pattern。
+  // 必须在域名分支之前识别，否则 /ads\./ 会落到纯域名分支被判为无效行丢弃。
+  const regexRule = parseRegexRule(content);
+  if (regexRule) {
+    return {
+      type: 'regex',
+      pattern: regexRule.pattern,
+      regexSource: regexRule.source,
+      regexException: regexRule.isException,
+      isValid: true,
+      originalLine: line
+    };
   }
 
   // 白名单 (+)

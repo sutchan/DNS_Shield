@@ -2,7 +2,9 @@
 // 全局类型定义集中处：Settings / ParsedData / OutputContent 等。
 // FormatType 已拆分至 formats.ts，此处统一 re-export 以保持外部契约不变。
 import type { FormatType } from './formats';
+import type { RegexRule } from '../utils/regexRules';
 export type { FormatType } from './formats';
+export type { RegexRule };
 
 export interface OutputContent {
   dnsmasq: string;
@@ -28,6 +30,11 @@ export interface ParsedData {
   domains: string[];
   whitelist: string[];
   customDns: CustomDnsEntry[];
+  /**
+   * 正则规则（AdGuard `/pattern/` 与 Pi-hole FTL `regex:pattern`）。
+   * 可选字段：历史调用方无需初始化即可编译，读取时统一用 `?? []` 兜底。
+   */
+  regexRules?: RegexRule[];
 }
 
 export interface Stats {

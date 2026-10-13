@@ -7,6 +7,7 @@ import { config } from '../config';
 import { logger } from '../utils/logger';
 import { isValidAutosave, writeAutosave, clearAutosave } from './autosaveStorage';
 import { useAsyncRuleProcessing } from './useAsyncRuleProcessing';
+import { WORKER_LINE_THRESHOLD } from './useRuleWorker';
 import { useAutosave } from './useAutosave';
 
 export const useDomainData = (showToast: (key: string, params?: { [key: string]: string | number }) => void) => {
@@ -14,7 +15,8 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   const [parsedData, setParsedData] = useState<ParsedData>({
     domains: [],
     whitelist: [],
-    customDns: []
+    customDns: [],
+    regexRules: []
   });
   const [stats, setStats] = useState<Stats>({
     domainCount: 0,
@@ -113,17 +115,19 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     restoredRef: autosaveRestoredRef
   });
 
-  // 防抖解析：用户停止输入 300ms 后再解析，避免频繁计算
+  // 防抖解析：小文本（低于 Worker 阈值）立即解析以保持预览实时性；
+  // 大文本保留 300ms 防抖，避免每次按键都触发 Worker 计算（T-P1-05）
   useEffect(() => {
+    const isLarge = sourceInput.split('\n').length >= WORKER_LINE_THRESHOLD;
     const timer = setTimeout(() => {
       parseSourceData(sourceInput);
-    }, 300);
+    }, isLarge ? 300 : 0);
     return () => clearTimeout(timer);
   }, [sourceInput, parseSourceData]);
 
   const clearAll = useCallback(() => {
     setSourceInput('');
-    setParsedData({ domains: [], whitelist: [], customDns: [] });
+    setParsedData({ domains: [], whitelist: [], customDns: [], regexRules: [] });
     setStats({ domainCount: 0, validCount: 0, commentCount: 0, blacklistCount: 0, whitelistCount: 0, customDnsCount: 0, totalLines: 0, invalidCount: 0 });
     // 同步清除本地自动保存与时间戳，避免清空后加载/刷新时旧内容复现
     void clearAutosave();
