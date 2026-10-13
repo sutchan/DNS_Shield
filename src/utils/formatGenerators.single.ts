@@ -85,7 +85,8 @@ function whitelistHeader(format: FormatType, settings: Settings, t: Translation)
     case 'whitelist':
       return `# ${t.whitelist.title}\n`;
     case 'pihole':
-      // Pi-hole 原生不支持白名单语法：与 buildWhitelistRules 一致，不输出段标题
+    case 'bind':
+      // Pi-hole / Bind RPZ 原生不支持白名单语法：与 buildWhitelistRules 一致，不输出段标题
       return '';
     default:
       // unbound / domains / smartdns / mosdns / clash / coredns
