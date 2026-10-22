@@ -1,0 +1,128 @@
+# 已完成任务归档
+
+> 本文件归档 DNS Shield 项目**已完成**的任务条目。
+> 活跃任务清单见 [tasks.md](./tasks.md)（唯一来源，仅保留未完成任务与实时指标）。
+> 归档时间：2026-10-19 20:30（自 tasks.md「五、已完成任务」迁出）
+> 维护团队：Sut / ArcesTeam
+
+---
+
+## 一、结构化任务（T-Px-xx 编号）
+
+| 任务编号 | 任务名称 | 负责 | 完成版本 | 关键成果 |
+|---|---|---|---|---|
+| T-P0-01 | 测试覆盖率工具链与阈值门禁 | Core Team | v3.9.x | 配置 `@vitest/coverage-v8` 与 `vitest.config.ts` 门禁 |
+| T-P0-02 | 关键工具与核心模块单元测试 | Core Team | v3.9.x | 覆盖 `ruleMatcher` / `scriptGenerator` / `buildFlowPool` 等 |
+| T-P0-03 | 生产日志收敛 | Core Team | v3.9.x | `console.error`/`warn` 收敛至 `src/utils/logger.ts`，按 `NODE_ENV` 生产静默 |
+| T-P0-04 | 修正覆盖率统计与门禁 | Core Team | v3.9.x | 根因查明报告值 47.85% 系 Vitest 2.1.9 按盘符大小写重复统计同一源文件；落地真实门禁 + `coverage.exclude` 防御性排除 |
+| T-P2-02 | 在线 DNS 拦截规则匹配测试器 | Feature Team | v3.10.x | `RuleTesterModal.tsx` 实时分析域名命中的规则层级 |
+| T-P2-03 | 规则格式扩展（Mosdns / Clash Meta / CoreDNS） | Feature Team | v3.10.x | 纳入 `ALL_FORMATS` / 输出 Tab / 下载复制链路与 16 语 i18n |
+| T-P3-01 | 路由器一键同步脚本 | Infra Team | v3.10.x | `ScriptGeneratorModal.tsx` 支持 OpenWrt / Merlin / Padavan / SmartDNS / Pi-hole |
+| T-P3-03 | 上游聚合 GitHub Action | Infra Team | v3.10.x | `.github/workflows/aggregate.yml`（每周一 03:17 UTC）+ `scripts/aggregate-upstream.mjs`，聚合 5 个上游去重后自动发起 PR 供人工审核 |
+| T-P1-04 | 拆分超 200 行源文件 | Core Team | v3.10.2 | 4 个超行文件按职责拆分且公开 API 不变（`translation.parts` / `useHomeController` / `useModalA11y` / `OutputPanel.parts`），拆分后单文件均 ≤200 行 |
+| — | GA4 衡量 ID 环境变量化 | Core Team | v3.10.3 | 移除 `layout.tsx` 硬编码兜底 ID，改由 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 驱动；新增 `analytics.ts` + `ga-scripts.tsx` + `analytics.test.ts`（13 例） |
+| T-P1-03 | 离线与增量存储（IndexedDB） | Dev Team | v3.11.0 | 新增 `idb.ts` / `httpCache.ts` / `cachedFetch.ts`；存储上限 5MB → 50MB，localStorage 降级并一次性迁移旧草稿 |
+| T-P1-01 | Web Worker 异步解析 | Dev Team | v3.11.0 | 新增 `ruleProcessor.worker.ts`（按 2000 行分片上报进度）与 `useRuleWorker` / `useAsyncRuleProcessing`（阈值 5000 行、请求序号守卫防竞态、Worker 不可用自动回退） |
+| T-P1-02 | 预览区虚拟渲染 | Dev Team | v3.11.0 | 新增 `useVirtualList` 与 `OutputPreview`：行数 ≥500 仅挂载可视区切片，行号列 DOM 节点数保持 O(1) |
+| T-P4-01 | 升级 Vitest 至 3.2.7 | Core Team | v3.11.0 | 根治 Windows 盘符大小写导致的覆盖率重复统计，报告值回归真实；阈值提升至 80/75/85/80 |
+| T-P3-02 | OpenWrt LuCI 配置包 | Infra Team | v3.11.0 | 新增 `openwrt-package/`：LuCI 应用 Makefile、订阅控制器（10MB 上限 + URL 白名单校验防命令注入）、菜单与 rpcd ACL、UCI 默认配置 |
+| — | 构建门禁修复与格式切换 UI 找回 | Core Team | v3.11.1 | 恢复被误删的 `<FormatTabs>` 渲染；清理 3 处 unused 变量与 2 处 hooks 依赖告警；移除 `FIELD_MAP` + `updateSettings` 死代码 |
+| T-P2-04 / T-P2-06 | 正则规则双向语法转换 | Feature Team | v3.11.0 建库 / v3.12.0 接入 | 新增 `regexRules.ts`（AdGuard `/pattern/` ↔ Pi-hole FTL `regex:pattern`）；dnsmasq 不支持正则如实跳过；v3.12.0 完成 `parseLine` → `parser` → `buildRegexRules` → `useRules` 全链路贯通 |
+| T-P2-01 / T-P2-05 | 域名分类与标签过滤（含 UI 接入） | Feature Team | v3.11.0 建库 / v3.13.0 接入 | 新增 `domainCategory.ts` 按真实命中的上游源打标；v3.13.0 由 `CategoryFilter` + `useCategoryIndex` + `useCategoryFilter` 接入 `InputPanel` 并接通 `useRules(filteredData)`，实现按类选择性导出；i18n 补 5 键 × 16 语 |
+| T-P1-05 | 消除解析重复计算 | Dev Team | v3.12.0 | `useRules.runGenerate` 复用 `useDomainData` 的 `parsedData`（单一解析源），单次输入由 2~3 次完整解析降为 1 次 |
+| T-P2-07 | 统一统计口径 | Core Team | v3.12.0 | `rulesGenerator.ts` 抽出 `prepareRuleData` 作为 `generateRules` 与 `computeEffectiveStats` 的唯一公共变换，两处口径永不漂移 |
+| T-P3-04 | 脚本生成器 URL shell 转义加固 | Core Team | v3.12.0 | 新增 `shellQuote`（单引号包裹 + `'\''` 转义），5 处 `URL=` 均安全注入，彻底阻断命令注入；删除 `customDnsIp` 死参数 |
+| T-P3-05 | parseSource 进度补报 + i18n 缺键降级 | Core Team | v3.12.0 | 循环结束补报 `onProgress(total, total)`；缺 toast 键时降级为 `t.toast.done`，不再向用户暴露裸 key |
+| T-P1-06 | runGenerate 按当前格式惰性生成 | Dev Team | v3.13.0 | 仅生成 `currentFormat`，下载/复制按需全量（10 万行输入约省 11/12 拼接成本）；一致性由 `formatGenerators.single.test.ts` 逐字节断言 |
+| T-P1-06（回归修复） | 单格式/全量生成器白名单口径对齐 | Core Team | 2026-10-19 | 修复 `bind` 格式多输出白名单段标题的不一致缺陷（详见下节） |
+| T-P1-07 | 补齐编排层（`src/hooks`）单元测试 | Core Team | 2026-10-19 | 新增 **7 个测试文件 / 112 个用例**（`useRules` 15 / `useDomainData` 26 / `useHomeController` 22 / `useUrlManager` 20 / `useTheme` 9 / `useLoading` 12 / `useFlowTokens` 8）。全局覆盖率由 语句 53.31% → **87.42%**、分支 85.77% → 86.05%、函数 80.43% → **89.83%**、行 53.31% → **87.42%**；`src/hooks` 层由 10.65% → **88.52%**。达标后 `vitest.config.ts` 阈值由临时的 50/75/80/50 提升回项目原定的 **80/75/85/80**。测试总数 136 → **248**，套件 20 → **27** |
+
+### T-P1-07 关键契约的断言方式
+
+- **T-P1-06 惰性生成**：对 `generateSingleFormat` 与全量 `generateRules` 同时注册间谍。断言挂载只调用单格式生成器 **1 次**、4 次格式切换的序列严格等于 `['dnsmasq','adguard','hosts','whitelist']`、生成种类数 `4 < ALL_FORMATS.length`，且 **`generateRules` 一次都未被调用**；另断言 `currentOutput` 随 `currentFormat` 切换为对应格式文本。
+- **T-P1-05 单一解析源**：对 `../utils/parser` 的 `parseSource` 注册透传间谍，断言全生命周期 `not.toHaveBeenCalled()`，并断言传入的 `domains`/`whitelist` 按引用原样透传、未被二次加工。将来谁把解析塞进 `useRules` 会立即失败。
+
+| T-P2-08 | 补齐 `toast.cleared` 缺失的 i18n 键（16 语） | Feature Team | 2026-10-19 | `useDomainData.ts:134` 调用 `showToast('cleared')` 但 16 语全缺该键，点「清空」只显示通用「已完成」。补齐 16 语自然译文（每文件 1 行、16 insertions / 0 deletions），并在手工维护的 `TranslationToast` 接口补 `cleared: string;`（不从 zh-cn.json 推导，否则 TS2339）。键总数 213 → **214**，测试 248 → **249** |
+| T-P0-02a | 增强 `check-locales.mjs` 捕获「集体缺键」 | Core Team | 2026-10-22 | 引入独立基线清单 `scripts/locale-baseline.json`（214 键，源 `zh-cn.json`）；先比对 `zh-cn` 与基线、再比对各包与 `zh-cn`；新增 `pnpm locales:baseline`（`--update-baseline`）刷新基线；破坏性反证：16 包同删 `toast.cleared` → EXIT 1 且指明键名，恢复后正常通过（详见下节） |
+
+### T-P2-08 译文与守卫设计
+
+16 语译文均与各自 `toast.done` 措辞风格一致，且**均不等于 `done`**（防止将来被填成同值而静默退化）：
+
+`ar تم المسح` / `cs Vymazáno` / `en Cleared` / `es Borrado` / `hi साफ़ किया गया` / `id Dibersihkan` / `it Svuotato` / `nl Gewist` / `pl Wyczyszczono` / `ru Очищено` / `sv Rensat` / `th ล้างแล้ว` / `tr Temizlendi` / `vi Đã xóa` / `zh-cn 已清空` / `zh-tw 已清空`
+
+**三层守卫**（经破坏性实验反证均真实有效）：
+
+1. `clearAll` 后断言 toast 收到的是 `t.toast.cleared` 真实译文，并交叉断言 `cleared !== done`
+2. **T-P3-05 降级守卫保留**：用 `someNonExistentKey` 断言仍降级为 `t.toast.done`、不向用户暴露裸 key
+3. **集体守卫（不可替代）**：显式断言 16 个语言包均含 `toast.cleared` 且值符合预期。因 `check-locales` 仅在**部分**语言包缺键时才报错，**16 包同缺时会 ✅ 通过**（主理人已实测复现，见 T-P0-02a），故此守卫是当时唯一能拦住「集体缺键」的防线；T-P0-02a 完成后，工具层已补齐该防线。
+
+### T-P0-02a 独立基线门禁设计（2026-10-22）
+
+`scripts/check-locales.mjs` 原仅做「各语言包相对 `zh-cn.json` 的两两一致性」比对。但 `zh-cn.json` 自身也是语言包之一，若它（连同其余 15 包）同时缺失某键，基线会被静默缩水、CI 假通过——这正是 T-P2-08 缺陷能长期存在的机制性原因。
+
+**修复方案**：引入**独立基线清单** `scripts/locale-baseline.json`，由 `zh-cn.json` 生成、需经 `pnpm locales:baseline`（`--update-baseline`）显式刷新并提交，构成「双源硬门禁」：
+1. 先校验 `zh-cn.json` 与基线清单一致（检出「集体缺键」与「新增键未同步清单」两类偏差）；
+2. 再校验各语言包相对 `zh-cn.json` 一致（既有逐包比对）；
+3. 新增 `pnpm locales:baseline` 用于在**有意新增键**时刷新基线，避免合法变更被误拦；首次运行无清单时自动引导生成并提示提交。
+
+**破坏性反证（验收 #2 实跑）**：从全部 16 个语言包（含 `zh-cn.json`）同时删除 `toast.cleared` 后，脚本 **EXIT CODE 1** 并打印 `基线有但 zh-cn 缺失（集体缺键，CI 必须拦截）(1): toast.cleared`；恢复后正常态 `✅ 通过（16 语 / 214 键）`。门禁真实生效，不再有「集体缺键」静默溜过的路径。
+
+> 覆盖率未满 100% 的原因已查明且属环境上限：`useRuleWorker`(35%)、`autosaveStorage`(47.6%)、`idb.ts`(21%) 依赖 `Worker` / `indexedDB`，而本仓 jsdom 环境不提供，在不引入新依赖的前提下已达可达上限。`Worker` 缺失反而天然覆盖了 `useRuleWorker` 的主线程回退路径（符合项目设计意图）。
+
+> 门禁真实性已由主理人反证：将 `statements` 阈值临时抬至 99 后实跑，`EXIT CODE 1`（CI 真实阻断），恢复 80 后通过——非「配了但从不校验」的假门禁。
+
+### T-P1-06 隐藏回归修复（2026-10-19）
+
+实跑 `vitest run` 时发现 `formatGenerators.single.test.ts` **实有 2 个 `bind`（RPZ）格式用例失败**（文档此前误记「逐字节一致、全绿」）。
+
+- **根因**：`formatGenerators.single.ts` 的 `whitelistHeader()` 在 `default` 分支对 `bind` 输出了 `# 白名单` 段标题，而全量路径 `buildWhitelistRules` 明确将 `bind` / `pihole` 排除在白名单之外（RPZ 与 Pi-hole 原生无白名单语义）。
+- **修复**：单格式生成器为 `pihole` / `bind` 显式返回空字符串，与全量生成器口径一致。
+- **结果**：20 套件 / 136 用例全绿。
+- **教训**：「测试全绿」这一结论同样必须实跑验证，不能从文档继承。
+
+---
+
+## 二、专项整改与审查
+
+- [x] **目录结构审查与 P0 整改（2026-10-05，v3.12.0）** — ① 删除根目录垃圾与占位配置（`{const`、`metadata.json`、`pnpm-workspace.yaml` 占位串、`tsconfig.tsbuildinfo`、临时 `_*.txt`）；② 删除投机死模块 `src/utils/statsAggregator.ts` 及其测试；③ 修 `count-domains.mjs` 的 `--write` 硬编码 `3.7.34` → 改读 `package.json`；④ 默认设置收敛为 `src/config/defaults.json` 单一来源（此前 `ipv4` 值两处冲突）；⑤ 安全响应头以 `vercel.json` 为准回写 `next.config.js`（补 HSTS/COOP/CORP/X-Frame-Options，收紧 `frame-ancestors`）；⑥ 新增 `scripts/sync-facts.mjs` 把版本号写入 13 处文档展示位并纳入 CI 硬门禁；⑦ 补 hooks 层单测并把 `src/hooks` 纳入覆盖率门禁；⑧ 修正 T-P2-01 / T-P2-04 任务状态口径
+- [x] **工作流审查整改（2026-10-04，v3.11.2）** — ① 入库 `pnpm-lock.yaml` + `packageManager`/`engines`/`.npmrc`，解除「无锁文件却 `--frozen-lockfile`」的不可复现安装；② Release 资产清单改由 `gen-format-files.mjs --list-files` 单一来源导出；③ `aggregate.yml` 补 `contents: write`（原权限必 403）；④ 生成产物漂移提为硬门禁；⑤ 部署改 `workflow_run` 门禁；⑥ EdgeOne 产物路径修正；⑦ CLI 钉版本 + 全 job `timeout-minutes`；⑧ 修测试摘要 grep + 新增 `.gitattributes` 固定 LF
+- [x] **ESLint 陈旧闭包修复（2026-10-19）** — `src/components/OutputPanel.derived.ts` 的 `useMemo` 依赖数组仅列 `settings` 的 5 个字段，但回调体内经 `prepareRuleData(..., settings)` 间接读取去重/通配符等字段，构成陈旧闭包风险。修复：依赖数组收敛为 `settings` 整体 + `parsedData`。`next lint` 由 1 warning → **0 warning 0 error**
+- [x] **任务文档数据漂移全面修正（2026-10-19）** — 按「数字必须实算」纪律重跑全部指标：测试 19 → **20 套件**、129 → **136 用例**；i18n 145 → **146** 顶层键、207 → **213** 递归键；覆盖率 84.46/86.85/91.07/84.46 → **53.31/85.77/80.43/53.31**（旧值为 v3.12.0 纳入 `src/hooks` 之前的数据，早已失真）。三项偏差方向不一致，再次印证凭旧记录继承数字必然失真
+- [x] **任务文档合并（2026-10-04）** — 原 `TASKS.md` 与 `REMAINING_TASKS.md` 合并为 `tasks.md`，删除冗余文档，消除剩余任务数口径矛盾
+- [x] **已完成任务归档拆分（2026-10-19）** — 本轮将已完成条目自 `tasks.md` 迁出至本文件，使 `tasks.md` 仅保留未完成任务与实时指标
+
+### 测试编写经验（2026-10-19 T-P1-07 沉淀）
+
+- **localStorage 在本仓 jsdom 中真实可用**（`typeof localStorage === 'object'`）。依赖初始语言的用例必须清理，否则语言偏好会跨用例泄漏、导致偶发失败。新增的 7 个测试文件均在 `beforeEach` 做 `localStorage.clear()` 隔离。
+- **传给 hook 的 `showToast` 必须是稳定引用**（生产代码用 `useCallback`）。若在 `renderHook` 回调里内联 `vi.fn()`，`runGenerate` 的引用会抖动导致 effect 反复触发，伪装成「多次生成」，掩盖真实的惰性生成断言。
+- **建间谍用 `vi.hoisted()` 挂在单一对象上**（`mocks.x` 访问）比顶层解构稳妥；`vi.mocked()` 对 `importOriginal` 型 mock 在模块顶层会踩 TDZ。
+- 本仓 jsdom 缺 `Worker` / `matchMedia` / `indexedDB` / `navigator.clipboard` / `URL.createObjectURL` / `scrollIntoView`。`useTheme` / `useFlowTokens` 需 `vi.stubGlobal('matchMedia', ...)`。
+
+---
+
+## 三、历史开发任务（v3.0 前后，已归档）
+
+- [x] 设计系统全面重构（v3.0：oklch 色彩、Swiss Precision 排版、Apple 风格动效）
+- [x] 添加 Accordion 折叠面板组件
+- [x] 完善按钮交互效果（点击缩放 `active:scale-[0.98]`）
+- [x] 优化面板悬停效果（hover-lift 上浮阴影）
+- [x] 优化 Web 管理工具界面（Apple 设计风格）
+- [x] 添加新的预设源（内置 / AdGuard / EasyList / NeoHosts）
+- [x] 改进规则生成算法（支持白名单 / 自定义DNS）
+- [x] 建立完整设计系统（`prototype/shadcn/design-system.md`）
+- [x] 建立组件库规范（`prototype/shadcn/component-library.md`）
+- [x] 建立交互标准（`prototype/shadcn/interaction-standards.md`）
+- [x] 创建高保真原型目录（`prototype/`）
+- [x] 全面使用 Lucide 图标替换 emoji
+- [x] 升级 shadcn/ui 组件（Button isLoading / Badge 变体 / Tabs 圆角）
+- [x] 添加单元测试（Vitest：`rulesGenerator.test.ts` 等）
+- [x] 优化浏览器兼容性
+- [x] 完善国际化支持（16 种语言）
+- [x] 改进文档质量和完整性
+- [x] 优化构建和部署流程（corepack + pnpm）
+- [x] 增强安全性和性能（CSP 头部、URL 验证）
+
+---
+
+> **未完成任务**：见 [tasks.md](./tasks.md)「三、待办任务」。截至 2026-10-22 全部任务已完成，`docs/tasks.md` 待办区已清空；Web Worker 超大规模性能为后续增强项（非阻断）。
