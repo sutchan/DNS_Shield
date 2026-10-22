@@ -76,11 +76,9 @@ export function useVisibleFormats(
         (hasRegex && REGEX_FORMATS.has(f))
     );
   }, [
-    settings.showAllFormats,
-    settings.visibleFormats,
-    settings.adguardIncludeWhitelist,
-    settings.dedupDomains,
-    settings.removeWildcard,
+    // prepareRuleData 内部还会读取 settings 的其余字段（去重 / 通配符 / 白名单开关等），
+    // 故此处依赖整个 settings 对象，避免 memo 命中陈旧闭包导致可见格式判定失真。
+    settings,
     parsedData
   ]);
 }
