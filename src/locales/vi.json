@@ -72,6 +72,7 @@
     "loading": "Đang tải...",
     "invalidUrl": "Vui lòng nhập URL hợp lệ",
     "invalidUrlsFiltered": "Đã lọc {count} URL không hợp lệ",
+    "cleared": "Đã xóa",
     "done": "Hoàn thành"
   },
   "header": {

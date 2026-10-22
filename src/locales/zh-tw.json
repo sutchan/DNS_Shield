@@ -72,6 +72,7 @@
     "loading": "載入中...",
     "invalidUrl": "請輸入有效的 URL 位址",
     "invalidUrlsFiltered": "已過濾 {count} 個無效 URL",
+    "cleared": "已清空",
     "done": "已完成"
   },
   "header": {

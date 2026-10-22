@@ -72,6 +72,7 @@
     "loading": "Memuat...",
     "invalidUrl": "Silakan masukkan URL yang valid",
     "invalidUrlsFiltered": "Menyaring {count} URL tidak valid",
+    "cleared": "Dibersihkan",
     "done": "Selesai"
   },
   "header": {

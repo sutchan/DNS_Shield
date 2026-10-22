@@ -76,6 +76,7 @@
     "loading": "Loading...",
     "invalidUrl": "Please enter a valid URL",
     "invalidUrlsFiltered": "Filtered {count} invalid URLs",
+    "cleared": "Cleared",
     "done": "Done"
   },
   "header": {

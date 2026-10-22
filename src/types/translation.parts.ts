@@ -77,6 +77,8 @@ export interface TranslationToast {
   loading: string;
   invalidUrl: string;
   invalidUrlsFiltered: string;
+  /** 清空输入后的完成提示（16 语言均已含该键） */
+  cleared: string;
   /** 缺翻译键时的通用降级提示（T-P3-05，16 语言均已含该键） */
   done: string;
 }

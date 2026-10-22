@@ -81,6 +81,7 @@
     "loading": "加载中...",
     "invalidUrl": "请输入有效的 URL 地址",
     "invalidUrlsFiltered": "已过滤 {count} 个无效 URL",
+    "cleared": "已清空",
     "done": "已完成"
   },
   "header": {

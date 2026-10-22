@@ -72,6 +72,7 @@
     "loading": "Načítání...",
     "invalidUrl": "Zadejte prosím platnou URL adresu",
     "invalidUrlsFiltered": "Filtrováno {count} neplatných URL",
+    "cleared": "Vymazáno",
     "done": "Hotovo"
   },
   "header": {

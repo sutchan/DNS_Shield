@@ -72,6 +72,7 @@
     "loading": "Cargando...",
     "invalidUrl": "Por favor, introduzca una URL válida",
     "invalidUrlsFiltered": "Se filtraron {count} URL no válidas",
+    "cleared": "Borrado",
     "done": "Hecho"
   },
   "header": {

@@ -72,6 +72,7 @@
     "loading": "جاري التحميل...",
     "invalidUrl": "يرجى إدخال عنوان URL صالح",
     "invalidUrlsFiltered": "تم تصفية {count} عناوين URL غير صالحة",
+    "cleared": "تم المسح",
     "done": "تم"
   },
   "header": {

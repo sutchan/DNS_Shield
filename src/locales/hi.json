@@ -72,6 +72,7 @@
     "loading": "लोड हो रहा है...",
     "invalidUrl": "कृपया एक मान्य URL दर्ज करें",
     "invalidUrlsFiltered": "{count} अमान्य URL फ़िल्टर किए गए",
+    "cleared": "साफ़ किया गया",
     "done": "पूर्ण"
   },
   "header": {

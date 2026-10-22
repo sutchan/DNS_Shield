@@ -72,6 +72,7 @@
     "loading": "กำลังโหลด...",
     "invalidUrl": "กรุณาใส่ URL ที่ถูกต้อง",
     "invalidUrlsFiltered": "กรอง URL ไม่ถูกต้อง {count} รายการ",
+    "cleared": "ล้างแล้ว",
     "done": "เสร็จแล้ว"
   },
   "header": {

@@ -72,6 +72,7 @@
     "loading": "Ładowanie...",
     "invalidUrl": "Wprowadź prawidłowy adres URL",
     "invalidUrlsFiltered": "Filtrowano {count} nieprawidłowych URL-i",
+    "cleared": "Wyczyszczono",
     "done": "Gotowe"
   },
   "header": {

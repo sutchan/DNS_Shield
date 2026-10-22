@@ -72,6 +72,7 @@
     "loading": "Laddar...",
     "invalidUrl": "Ange en giltig URL",
     "invalidUrlsFiltered": "Filtrerade {count} ogiltiga URL:er",
+    "cleared": "Rensat",
     "done": "Klart"
   },
   "header": {
