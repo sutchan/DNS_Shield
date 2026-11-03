@@ -5,6 +5,16 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.13.5]
+
+### Changed（首屏右侧可视化静态化）
+- 应用户要求移除首屏（Hero）右侧域名「下落 token」动效，整体优化该区域 UI 设计
+- 删除 `useFlowTokens`（650ms `setInterval` 驱动 token 生成 + `fvDrop` CSS 动画）及其测试——消除定时器触发的持续重渲染与 CPU 开销
+- `FlowViz` 改为**静态数据快照面板**：按黑名单 4 / 白名单 2 / 改道 2 三态比例确定性抽样（`buildSnapshot`，不随机、不随时间变化），以静态彩色徽章陈列；空数据时居中显示等待文案
+- `globals.css`：`.fv-track`/`.fv-token`/`@keyframes fvDrop` 及两处 fv-token reduced-motion 覆盖块删除，新增 `.fv-panel`/`.fv-chip`/`.fv-empty` 静态样式；`id="fvTrack"` 锚点保留（兼容既有 e2e 定位）
+- 死代码清理：删除 `src/hooks/useFlowTokens.ts` 与 `useFlowTokens.test.ts`；`buildFlowPool` 保留（静态抽样仍消费）
+- 同步 bump 版本至 v3.13.5
+
 ## [3.13.4]
 
 ### Fixed（格式标签栏换行叠画错乱）

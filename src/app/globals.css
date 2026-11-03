@@ -933,47 +933,25 @@
   max-width: 150px;
 }
 
-/* 签名轨道：域名 token 从顶部落入 */
-.fv-track {
-  @apply relative flex-1 min-h-[120px] overflow-hidden rounded-md;
+/* 数据快照面板（v3.13.5 静态化）：三态抽样徽章静态陈列，无动画、无定时器 */
+.fv-panel {
+  @apply flex-1 min-h-[120px] flex flex-wrap content-start items-start gap-1.5 p-3 rounded-md overflow-hidden;
   background: hsl(var(--muted) / 0.5);
   border: 1px solid hsl(var(--border));
 }
 
-.fv-track::before {
-  content: '';
-  @apply absolute left-0 right-0 bottom-0 h-0.5;
-  background: linear-gradient(90deg, hsl(var(--destructive)), hsl(var(--success)), hsl(var(--primary)));
-  opacity: 0.8;
-}
-
-.fv-token {
-  @apply absolute whitespace-nowrap text-primary-foreground rounded-full pointer-events-none;
-  top: -22px;
+.fv-chip {
+  @apply inline-flex items-center max-w-full whitespace-nowrap rounded-full px-2.5 py-1 text-[0.6875rem] text-primary-foreground;
   font-family: var(--font-mono);
-  font-size: 12px;
-  padding: 2px 7px;
-  animation: fvDrop 2.6s linear forwards;
-  will-change: transform, opacity;
 }
 
-.fv-token.block { background: hsl(var(--destructive)); }
-.fv-token.allow { background: hsl(var(--success)); }
-.fv-token.dns { background: hsl(var(--primary)); }
+.fv-chip.block { background: hsl(var(--destructive)); }
+.fv-chip.allow { background: hsl(var(--success)); }
+.fv-chip.dns { background: hsl(var(--primary)); }
 
-@keyframes fvDrop {
-  0% { transform: translateY(0); opacity: 0; }
-  10% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { transform: translateY(162px); opacity: 0; }
-}
-
-/* Reduced-motion：flowviz 动画已在全局块统一降级（animation-duration≈0），
-   此处额外保证轨道 token 不显示，避免静态视觉噪点 */
-@media (prefers-reduced-motion: reduce) {
-  .fv-token {
-    display: none !important;
-  }
+.fv-empty {
+  @apply m-auto text-[0.75rem] text-muted-foreground;
+  font-family: var(--font-mono);
 }
 
 /* ============================================
@@ -1020,16 +998,6 @@
 
 .preview-stat-value {
   @apply font-semibold text-foreground tabular-nums;
-}
-
-/* Reduced-motion：flowviz 动画已在全局块统一降级（animation-duration≈0），
-   此处额外保证管道 token 静态可见，避免空管视觉效果缺失 */
-@media (prefers-reduced-motion: reduce) {
-  .fv-token {
-    opacity: 0.55 !important;
-    transform: translate(-50%, 320%) scale(1) !important;
-    animation: none !important;
-  }
 }
 
 /* ============================================

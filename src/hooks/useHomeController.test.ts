@@ -34,7 +34,7 @@ beforeEach(() => {
   // 若不清理，switchLang('en') 会串到后续用例，故每个用例从干净偏好起步。
   localStorage.clear();
   // jsdom 无 Worker / matchMedia / indexedDB：前者触发主线程回退，
-  // 后两者需补最小桩，否则 useTheme 与 useFlowTokens 会抛错。
+  // 后两者需补最小桩，否则 useTheme 会抛错。
   vi.stubGlobal('matchMedia', (query: string) => ({
     matches: false,
     media: query,

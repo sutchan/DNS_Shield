@@ -1,13 +1,13 @@
-// src/components/FlowViz.tsx v3.10.1
-// DNS 流量可视化签名区：对齐原型 flowviz —— 单条横向流量管道，真实域名 token 下落。
-// token 从解析后的黑名单/白名单/改道数据中随机抽样，按三态比例落入轨道。
-// 动画遵循全局 prefers-reduced-motion 降级（globals.css 已统一处理）。
+// src/components/FlowViz.tsx v3.13.5
+// 首屏签名区：左侧文案 + 右侧数据快照面板。
+// v3.13.5 起移除 token 下落动画（useFlowTokens 定时器驱动的持续重渲染已删除），
+// 改为按三态比例确定性抽样的静态徽章面板——零动画、零定时器、零运行时开销。
 'use client';
 import * as React from 'react';
 import { Sparkles, Settings2 } from 'lucide-react';
 import { ParsedData } from '../types';
 import { useT } from '../context/AppContext';
-import { useFlowTokens } from '../hooks/useFlowTokens';
+import { buildFlowPool, FlowPoolItem } from '../utils/buildFlowPool';
 import { Button } from './ui/Button';
 
 interface FlowVizProps {
@@ -17,10 +17,34 @@ interface FlowVizProps {
   onToggleSettings?: () => void;
 }
 
-/** 流量可视化签名区：左侧文案 + 右侧实时流量轨道 */
+// 静态快照抽样上限：黑名单 4 / 白名单 2 / 改道 2，交错排列保持三态可读性。
+const SNAPSHOT_LIMITS: Record<FlowPoolItem['kind'], number> = {
+  block: 4,
+  allow: 2,
+  dns: 2,
+};
+
+/** 按三态比例确定性抽样（不随机、不随时间变化），供静态徽章陈列。 */
+function buildSnapshot(parsedData: ParsedData): FlowPoolItem[] {
+  const pool = buildFlowPool(parsedData);
+  const byKind = (kind: FlowPoolItem['kind']) =>
+    pool.filter((item) => item.kind === kind).slice(0, SNAPSHOT_LIMITS[kind]);
+  const groups = [byKind('block'), byKind('allow'), byKind('dns')];
+  const max = groups.reduce((acc, g) => Math.max(acc, g.length), 0);
+  const out: FlowPoolItem[] = [];
+  for (let i = 0; i < max; i += 1) {
+    for (const group of groups) {
+      const item = group[i];
+      if (item) out.push(item);
+    }
+  }
+  return out;
+}
+
+/** 首屏签名区：左侧文案 + 右侧数据快照面板 */
 const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ parsedData, onStart, onToggleSettings }) {
   const t = useT();
-  const tokens = useFlowTokens(parsedData);
+  const snapshot = React.useMemo(() => buildSnapshot(parsedData), [parsedData]);
   const block = parsedData.domains.length;
   const allow = parsedData.whitelist.length;
   const dns = parsedData.customDns.length;
@@ -98,16 +122,16 @@ const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ parsedData
                 : t.fvAwait}
             </span>
           </div>
-          <div className="fv-track" id="fvTrack" aria-hidden="true">
-            {tokens.map((token) => (
-              <span
-                key={token.id}
-                className={`fv-token ${token.kind}`}
-                style={{ left: token.left, animationDuration: token.duration }}
-              >
-                {token.name}
-              </span>
-            ))}
+          <div className="fv-panel" id="fvTrack" aria-hidden="true">
+            {hasData ? (
+              snapshot.map((item) => (
+                <span key={`${item.kind}-${item.name}`} className={`fv-chip ${item.kind}`}>
+                  {item.name}
+                </span>
+              ))
+            ) : (
+              <span className="fv-empty">{t.fvAwait}</span>
+            )}
           </div>
         </div>
       </div>
