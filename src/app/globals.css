@@ -505,7 +505,11 @@
 }
 
 .format-tabs {
-  @apply inline-flex items-center p-0.5 rounded-xl bg-muted gap-0.5 flex-wrap;
+  /* h-auto + min-h 覆盖 ui/Tabs.tsx TabsList 基类的固定 h-10：
+     12 个格式标签 flex-wrap 换行时，若高度锁死 40px，换行行会溢出药丸、
+     叠画到下方统计行（线上实测「AdGuard 黑名单/白名单」叠字错乱）；
+     改为随行数自适应增高，justify-start 使换行行左对齐。 */
+  @apply inline-flex items-center justify-start p-0.5 rounded-xl bg-muted gap-0.5 flex-wrap h-auto min-h-[2.5rem];
 }
 
 .format-tab {

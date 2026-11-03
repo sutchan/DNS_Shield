@@ -5,6 +5,14 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.13.4]
+
+### Fixed（格式标签栏换行叠画错乱）
+- 修复输出面板格式标签栏布局错乱（用户截图取证）：12 个格式标签在 `flex-wrap` 换行后，`TabsList` 基类的固定 `h-10`（40px）高度不随之增高，换行的标签触发器溢出药丸、叠画到下方合并统计行与预览统计条上（截图中的「AdGuard 黑名单」「AdGuard 白名单」及统计条上的「ol」「le」碎片均为被叠画的标签，中文标签见 zh-cn.json `adguardFormat`/`whitelistFormat`）
+- `.format-tabs` 覆盖基类固定高度为 `h-auto min-h-[2.5rem]`：药丸随换行行数自适应增高，换行标签不再溢出；`justify-start` 使换行行左对齐
+- 根因链：`.output-toolbar` 占满剩余宽度（v3.13.3）→ 标签栏可变窄 → 标签换行 → 固定高度裁切失效暴露为叠画
+- 同步 bump 版本至 v3.13.4
+
 ## [3.13.3]
 
 ### Fixed（输出面板头部布局错乱）
