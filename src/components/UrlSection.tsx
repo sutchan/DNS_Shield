@@ -1,5 +1,6 @@
-// src/components/UrlSection.tsx v3.9.5
+// src/components/UrlSection.tsx v3.13.6
 // URL 导入区域组件 —— 从 InputPanel 拆分
+// DOM id 统一为 kebab-case 语义命名（url-input / url-list）。
 'use client';
 import * as React from 'react';
 import { X, Link, ExternalLink } from 'lucide-react';
@@ -92,10 +93,10 @@ const UrlSection: React.FC<UrlSectionProps> = ({
         <div className="loading-bar-fill" />
       </div>
       <div className="url-input-row" id="url-input-row">
-        <label htmlFor="urlInput" className="sr-only">{t.urlPlaceholder}</label>
+        <label htmlFor="url-input" className="sr-only">{t.urlPlaceholder}</label>
         <Input
           type="text"
-          id="urlInput"
+          id="url-input"
           value={urlInput}
           onChange={(e) => setUrlInput(e.target.value)}
           placeholder={t.urlPlaceholder}
@@ -117,7 +118,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
       </div>
 
       {/* URL 列表 */}
-      <div className="url-list" id="urlList" role="list" aria-label={t.urlListAria}>
+      <div className="url-list" id="url-list" role="list" aria-label={t.urlListAria}>
         {urls.length > 0 && urls.map((url: string, index: number) => (
             <div key={`${url}:${index}`} className="url-item" id={`url-item-${index}`} role="listitem">
               <Link className="url-item-icon h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.8} aria-hidden="true" />

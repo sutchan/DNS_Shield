@@ -1,0 +1,92 @@
+/* src/styles/layout.css v3.13.6 — 布局骨架与面板容器（原 globals.css Layout/Panel 段） */
+
+/* ============================================
+   Layout
+   ============================================ */
+.container,
+.container-main {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10;
+}
+
+.main-content {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+}
+
+.app-header {
+  @apply flex flex-col gap-3 mb-8;
+}
+
+.header-top {
+  @apply flex items-center justify-between flex-wrap gap-3;
+}
+
+.header-brand {
+  @apply flex items-center gap-3;
+}
+
+.brand-icon {
+  @apply flex items-center justify-center w-10 h-10 rounded-xl;
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.12), hsl(var(--primary) / 0.04));
+}
+
+.app-title {
+  @apply text-[1.625rem] sm:text-2xl font-semibold tracking-tight leading-tight;
+  letter-spacing: -0.02em;
+  font-family: var(--font-serif);
+}
+
+.app-subtitle {
+  @apply text-sm text-muted-foreground tracking-normal;
+}
+
+/* ============================================
+   Panel — the container for input/output
+   ============================================ */
+.panel {
+  @apply flex flex-col flex-1 rounded-xl border border-border bg-card shadow-[0_1px_2px_0_rgba(0,0,0,0.04)] overflow-hidden;
+}
+
+.panel-body {
+  @apply p-5 sm:p-6;
+}
+
+.panel-header {
+  @apply flex items-center justify-between mb-5;
+}
+
+.panel-title {
+  @apply flex items-center gap-2.5;
+}
+
+.panel-title h2 {
+  @apply text-[1.0625rem] font-semibold tracking-tight;
+}
+
+/* Input section — 输入面板的左边框强调；
+   内边距与 output-body（p-5 sm:p-6）保持一致，使左右面板文本框在同一基线对齐 */
+.input-section {
+  @apply flex flex-col p-5 sm:p-6;
+}
+
+/* Section header — 区段标题栏（含折叠按钮） */
+.section-header {
+  @apply flex items-center justify-between mb-4 gap-2;
+}
+
+.section-header h2 {
+  @apply text-[1.0625rem] font-semibold tracking-tight;
+}
+
+/* Collapse button — 折叠/展开按钮 */
+.collapse-btn {
+  @apply inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground;
+}
+
+.collapse-icon {
+  @apply inline-block text-[0.625rem] transition-transform duration-200;
+  transform: rotate(0deg);
+}
+
+.collapse-icon.collapsed {
+  transform: rotate(-90deg);
+}

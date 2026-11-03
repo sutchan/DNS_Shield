@@ -1,6 +1,15 @@
-// src/app/layout.tsx v3.10.3
+// src/app/layout.tsx v3.13.6
 import type { ReactNode } from 'react';
+// 全局样式：globals.css 提供 Tailwind 指令与基础层 token，其余样式按职责拆分到
+// src/styles/*.css。导入顺序即级联顺序，须与拆分前的 globals.css 保持一致。
 import './globals.css';
+import '../styles/layout.css';
+import '../styles/stats.css';
+import '../styles/input.css';
+import '../styles/output.css';
+import '../styles/footer.css';
+import '../styles/feedback.css';
+import '../styles/hero.css';
 import { Inter, JetBrains_Mono, Noto_Sans_SC, Spectral } from 'next/font/google';
 import { metadata, viewport, jsonLd } from './(seo)/site-meta';
 import GaScripts from './(seo)/ga-scripts';

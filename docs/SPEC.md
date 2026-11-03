@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-02（与 package.json v3.13.1 对齐；同步文件结构/hooks/utils 清单、修正端口与 vitest 版本、CSP 与实际配置对齐）
+> 最后审查：2026-11-02（与 package.json v3.13.6 对齐；同步文件结构/hooks/utils 清单、修正端口与 vitest 版本、CSP 与实际配置对齐）
 
 ## 1. 项目概述
 
@@ -13,8 +13,8 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.13.1 |
-| 拦截域名 | 866 条（黑名单 634 + 白名单 232，本地 `public/domains.txt`）| 实测值，以 `node scripts/count-domains.mjs` 为准 |
+| 当前版本 | v3.13.6 |
+| 拦截域名 | 867 条（黑名单 635 + 白名单 232，本地 `public/domains.txt`） | 实测值，以 `node scripts/count-domains.mjs` 为准 |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
 | 通知组件 | sonner |
@@ -60,8 +60,8 @@ dns-shield/
 │   ├── app/                        # App Router 目录
 │   │   ├── page.tsx                # 主页面入口
 │   │   ├── Home.tsx                # 主组件（组合各业务组件与 hook）
-│   │   ├── globals.css             # 全局样式（CSS 变量 + Tailwind + 业务组件）
-│   │   ├── layout.tsx              # 根布局（Metadata + SEO + 安全头部接入）
+│   │   ├── globals.css             # 全局样式入口（Tailwind 指令 + 基础层 design tokens）
+│   │   ├── layout.tsx              # 根布局（Metadata + SEO + 安全头部接入，按序导入 src/styles/*.css）
 │   │   ├── (seo)/                  # <head> 注入类关注点（元数据、GA 脚本）
 │   │   │   ├── site-meta.ts        # 站点元数据与 JSON-LD 常量
 │   │   │   └── ga-scripts.tsx      # GA4 脚本注入（衡量 ID 取自环境变量，缺失/非法则不注入）
@@ -73,6 +73,7 @@ dns-shield/
 │   │   ├── Footer.tsx              # 页脚（链接 + 使用说明）
 │   │   ├── InputEditor.tsx         # 域名编辑器子组件
 │   │   ├── InputPanel.tsx          # 输入面板（域名编辑 + URL 导入）
+│   │   ├── InputPanel.types.ts     # 输入面板 props 接口与统计常量（v3.13.6 拆分）
 │   │   ├── OutputPanel.tsx        # 输出面板（规则预览 + 设置）
 │   │   ├── OutputPanel.parts.tsx   # 输出面板拆分子组件
 │   │   ├── OutputPreview.tsx       # 规则预览窗（虚拟滚动）
@@ -98,7 +99,8 @@ dns-shield/
 │   │   ├── useSettings.ts          # 设置管理
 │   │   ├── useLoading.ts           # 加载状态管理
 │   │   ├── useHomeController.ts   # 首页交互编排（toast 回退/进度）
-│   │   ├── useFlowTokens.ts        # FlowViz 动效令牌
+│   │   ├── useHomeController.types.ts # 首页控制器返回契约类型（v3.13.6 拆分）
+│   │   ├── useHomeUiState.ts      # 首页本地 UI 状态编排（折叠/弹窗/滚动聚焦，v3.13.6 拆分）
 │   │   ├── useLineNumbers.ts       # 输出行号同步
 │   │   ├── useAsyncRuleProcessing.ts # Worker 解析/排序/去重调度
 │   │   ├── useRuleWorker.ts        # Web Worker 封装与阈值
@@ -115,6 +117,17 @@ dns-shield/
 │   │   ├── hi.json, id.json, it.json, nl.json
 │   │   ├── pl.json, ru.json, sv.json, th.json
 │   │   ├── tr.json, vi.json, zh-cn.json, zh-tw.json
+│   ├── styles/                     # 设计系统样式模块（v3.13.6 由 globals.css 按职责拆分）
+│   │   ├── layout.css              # 布局骨架与面板容器
+│   │   ├── stats.css               # 统计胶囊与 Worker 进度条
+│   │   ├── input.css               # URL 导入区 / 编辑器 / 预览 / 预设标签
+│   │   ├── output.css              # 输出面板与设置弹窗
+│   │   ├── footer.css              # 页脚与使用指南
+│   │   ├── feedback.css            # 加载态 / 弹窗 / 可访问性工具类
+│   │   └── hero.css                # Hero/FlowViz / 预览统计 / 动效降级
+│   ├── test-utils/                 # 测试辅助（coverage.exclude 排除，不计入覆盖率）
+│   │   ├── renderHook.ts           # 极简 renderHook（不依赖 testing-library）
+│   │   └── setup.ts               # jsdom localStorage/matchMedia 桩（vitest setupFiles）
 │   ├── types/
 │   │   └── index.ts                # TypeScript 类型定义
 │   └── utils/                      # 工具函数
@@ -140,8 +153,10 @@ dns-shield/
 │       ├── buildFlowPool.ts        # FlowViz 动画令牌池
 │       ├── logger.ts              # 生产日志收敛（T-P0-03）
 │       └── domainPrimitives.ts     # 原始域名/IP 类型原语
-├── prototype/                        # 原型目录（高保真可交互 + 真实数据 + 设计规范）
-│   ├── index.html                   # 高保真原型（独立 HTML，极简风格/真实数据/响应式，可直接浏览器打开）
+├── prototype/                        # 设计快照（v3.12.0 起冻结，停留 v3.9.x~v3.10.x，不代表当前实现）
+│   ├── prototype.html               # 高保真可交互原型（独立 HTML，极简风格/真实数据/响应式）
+│   ├── wireframes.html              # 线框与组件库规范（Wireframes & Component Library）
+│   ├── flows.html                   # 关键业务流程交互原型（Interactive Flows）
 │   ├── README.md                    # 原型总览与设计规范索引
 │   └── shadcn/                       # 设计规范（单一来源，对齐 globals.css token）
 │       ├── design-system.md          # 设计系统（色彩/字体/间距/图标/动效）
@@ -217,7 +232,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.13.1 |
+| 版本号 | 3.13.6 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

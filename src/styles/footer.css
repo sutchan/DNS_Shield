@@ -1,0 +1,91 @@
+/* src/styles/footer.css v3.13.6 — 页脚与使用指南（原 globals.css 相应段） */
+
+/* ============================================
+   Footer
+   ============================================ */
+.app-footer {
+  @apply mt-10 text-center;
+}
+
+.footer-content {
+  @apply flex flex-col items-center gap-3;
+}
+
+.footer-top {
+  @apply flex items-center justify-center flex-wrap gap-5;
+}
+
+.footer-links {
+  @apply flex items-center justify-center gap-5 mb-2;
+}
+
+.footer-link {
+  @apply inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-lg px-2 py-1 -mx-2 transition-all duration-150;
+}
+
+.footer-star-link {
+  @apply inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 hover:bg-primary/10 transition-all duration-150 px-2.5 py-1 rounded-full border border-primary/30 bg-primary/5;
+}
+
+.footer-version {
+  @apply text-[0.75rem] text-muted-foreground/70 font-mono;
+}
+
+/* Usage guide — 使用指南（可折叠） */
+.usage-toggle {
+  @apply inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-lg px-2 py-1 -mx-2 transition-all duration-150 cursor-pointer bg-transparent border-0;
+}
+
+.toggle-arrow {
+  @apply inline-block transition-transform duration-200;
+  transform: rotate(0deg);
+}
+
+.toggle-arrow.collapsed {
+  transform: rotate(-90deg);
+}
+
+.usage-guide {
+  overflow: hidden;
+  transition: max-height 350ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 250ms ease,
+              margin 250ms ease;
+  max-height: 800px;
+  opacity: 1;
+  margin-top: 1rem;
+}
+
+.usage-guide-title {
+  @apply text-base font-semibold text-foreground mb-3;
+  font-family: var(--font-serif);
+}
+
+.usage-guide.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+}
+
+.usage-steps {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4;
+}
+
+.usage-step {
+  @apply flex items-start gap-3 p-3 rounded-xl bg-muted/40 text-left;
+}
+
+.step-number {
+  @apply flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-[0.75rem] font-semibold;
+}
+
+.step-content {
+  @apply flex flex-col gap-0.5;
+}
+
+.step-title {
+  @apply text-[0.8125rem] font-medium text-foreground;
+}
+
+.step-desc {
+  @apply text-[0.75rem] text-muted-foreground leading-relaxed;
+}

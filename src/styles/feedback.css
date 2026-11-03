@@ -1,0 +1,174 @@
+/* src/styles/feedback.css v3.13.6 — 加载态、弹窗、可访问性工具类（原 globals.css 相应段） */
+
+/* ============================================
+   Loading
+   ============================================ */
+.loading-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center;
+  background: hsl(var(--background) / 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.loading-spinner {
+  @apply w-8 h-8;
+  border: 2px solid hsl(var(--border));
+  border-top-color: hsl(var(--primary));
+  border-radius: 50%;
+  animation: spin 0.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.loading-text {
+  @apply mt-4 text-sm text-muted-foreground;
+}
+
+.loading-content {
+  @apply flex flex-col items-center justify-center;
+}
+
+/* URL 细进度条（对齐原型 loading-bar：替代全屏遮罩，保持可交互性） */
+.loading-bar {
+  height: 3px;
+  width: 100%;
+  background: hsl(var(--muted));
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.loading-bar.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.loading-bar-fill {
+  height: 100%;
+  width: 40%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, hsl(var(--primary) / 0.4), hsl(var(--primary)));
+  animation: url-progress 1.2s ease-in-out infinite;
+}
+
+@keyframes url-progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+
+/* ============================================
+   使用指南弹窗（对齐原型 #guideModal）
+   ============================================ */
+.guide-modal-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+  background: hsl(var(--background) / 0.6);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.guide-modal-overlay.open {
+  opacity: 1;
+}
+
+.guide-modal-overlay.closing {
+  opacity: 0;
+}
+
+.guide-modal {
+  @apply w-full max-w-md rounded-xl border bg-card p-5 shadow-lg;
+  max-height: 85vh;
+  overflow-y: auto;
+  transform: translateY(8px) scale(0.98);
+  transition: transform 0.2s ease;
+}
+
+.guide-modal-overlay.open .guide-modal {
+  transform: translateY(0) scale(1);
+}
+
+.guide-modal-header {
+  @apply flex items-center justify-between mb-4;
+}
+
+.guide-modal-title {
+  @apply text-lg font-semibold text-foreground;
+}
+
+.guide-steps {
+  @apply flex flex-col gap-3 list-none p-0 m-0;
+}
+
+.guide-step {
+  @apply flex items-start gap-3;
+}
+
+.guide-step-badge {
+  @apply flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-xs font-semibold text-primary-foreground;
+  background: hsl(var(--primary));
+}
+
+.guide-step-body {
+  @apply flex flex-col;
+}
+
+.guide-step-title {
+  @apply text-sm font-medium text-foreground;
+}
+
+.guide-step-desc {
+  @apply text-xs text-muted-foreground leading-relaxed;
+}
+
+.guide-note {
+  @apply mt-4 rounded-lg border border-dashed p-3;
+  border-color: hsl(var(--border));
+  background: hsl(var(--muted) / 0.4);
+}
+
+.guide-note-title {
+  @apply mb-2 text-xs font-semibold text-foreground;
+}
+
+.guide-note-list {
+  @apply flex flex-col gap-1.5 list-none p-0 m-0;
+}
+
+.guide-note-item {
+  @apply flex flex-col gap-0.5;
+}
+
+.guide-note-name {
+  @apply text-xs font-medium text-foreground;
+}
+
+.guide-note-desc {
+  @apply text-xs text-muted-foreground leading-relaxed;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   Logo SVG
+   ============================================ */
+.logo-shield {
+  color: hsl(var(--primary));
+  stroke: hsl(var(--primary) / 0.3);
+}
+
+/* ============================================
+   Utilities
+   ============================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

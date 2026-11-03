@@ -1,0 +1,190 @@
+/* src/styles/input.css v3.13.6 — URL 导入区、编辑器、预览、预设标签（原 globals.css 相应段） */
+
+/* ============================================
+   URL Section (collapsible)
+   ============================================ */
+.url-section {
+  overflow: hidden;
+  transition: max-height 350ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 250ms ease,
+              margin 250ms ease;
+  max-height: 600px;
+  opacity: 1;
+  margin-bottom: 1.25rem;
+}
+
+.url-section.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin-bottom: 0;
+  border: 0;
+  padding: 0;
+}
+
+.url-panel {
+  @apply p-4 rounded-xl border border-border bg-muted/40;
+}
+
+.url-input-row {
+  @apply flex gap-2 mb-3;
+}
+
+.url-input {
+  @apply flex-1;
+}
+
+.url-actions {
+  @apply flex flex-wrap gap-2 mb-3;
+}
+
+.url-list {
+  @apply flex flex-col gap-1.5 mb-3 max-h-32 overflow-y-auto;
+}
+
+.url-item {
+  @apply flex items-center gap-2 px-2 py-1.5 rounded-lg bg-muted/50 text-[0.8125rem] font-mono;
+}
+
+.url-item-icon {
+  @apply flex-shrink-0 text-muted-foreground;
+}
+
+.url-item-text {
+  @apply flex-1 truncate text-muted-foreground;
+}
+
+.url-remove-btn {
+  @apply flex-shrink-0 h-6 w-6;
+}
+
+/* ============================================
+   Editor
+   ============================================ */
+.editor-container,
+.editor-wrapper {
+  @apply relative mb-5 border border-border rounded-xl overflow-hidden h-[504px];
+  transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editor-container:focus-within,
+.editor-wrapper:focus-within {
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.1);
+}
+
+.line-numbers {
+  @apply absolute left-0 top-0 bottom-0 w-11 pt-3 pr-2 text-right text-[0.75rem] leading-6 text-muted-foreground/60 select-none bg-muted/40 font-mono overflow-hidden border-r border-border;
+  white-space: pre;
+  pointer-events: none;
+}
+
+.editor-textarea {
+  /* 固定高度 = 20 行（24px × 20）+ 上下内边距（12px × 2）= 504px，
+     避免内容增减导致输入框忽高忽低；禁止拖拽 resize。
+     容器已固定 h-[504px]，此处同步高度保证左右严格对齐 */
+  @apply w-full h-full pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent resize-none;
+  line-height: 1.5rem;
+  tab-size: 2;
+}
+
+.editor-textarea::placeholder {
+  @apply text-muted-foreground/50;
+}
+
+.editor-textarea:focus {
+  outline: none;
+}
+
+/* Output preview (div-based, no resize, allow scroll) */
+/* 虚拟化预览：仅渲染可视区切片，容器保持总高度以维持滚动条比例 */
+.editor-preview.is-virtualized {
+  white-space: pre;
+}
+
+.preview-virtual {
+  position: relative;
+  width: 100%;
+}
+
+.preview-virtual-rows {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  will-change: transform;
+}
+
+.preview-line {
+  line-height: 1.5rem;
+  min-height: 1.5rem;
+  white-space: pre;
+}
+
+/* 域名分类筛选 chips：按上游来源多选过滤（数值来自真实分类索引） */
+.category-filter {
+  @apply flex flex-wrap items-center gap-2 mb-3;
+}
+
+.category-chip {
+  @apply inline-flex items-center gap-1.5 rounded-full border border-border bg-muted/60 px-2.5 py-1 text-xs text-muted-foreground transition-colors;
+}
+
+.category-chip:hover {
+  @apply bg-muted;
+}
+
+.category-chip.active {
+  @apply border-primary bg-primary/10 text-primary;
+}
+
+.category-chip-count {
+  @apply rounded-full bg-background/70 px-1.5 text-[0.65rem] tabular-nums;
+}
+
+.category-chip.clear {
+  @apply border-dashed;
+}
+
+.editor-preview {
+  /* 与输入区一致固定 20 行高度（504px），内容超出内部滚动，避免面板忽高忽低。
+     容器已固定 h-[504px]，此处 h-full 保证与左侧输入框严格等高对齐 */
+  @apply w-full h-full pt-3 pb-3 pl-[3.25rem] pr-3 text-[0.8125rem] font-mono bg-transparent overflow-auto whitespace-pre-wrap;
+  line-height: 1.5rem;
+  tab-size: 2;
+  /* 长文本预览：屏外跳过渲染，降低首次布局/绘制成本（contain-intrinsic-size 防止滚动条抖动） */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 504px;
+}
+
+.editor-actions {
+  @apply flex flex-wrap gap-2 justify-end mt-auto;
+}
+
+/* ============================================
+   Presets
+   ============================================ */
+.preset-group,
+.preset-section {
+  @apply flex flex-wrap items-center gap-2 mb-4;
+}
+
+.preset-tags {
+  @apply flex flex-wrap items-center gap-1.5;
+}
+
+.preset-label {
+  @apply text-[0.8125rem] font-medium text-muted-foreground mr-1;
+}
+
+.preset-chip,
+.preset-tag {
+  @apply inline-flex items-center px-2.5 py-1 rounded-lg text-[0.75rem] font-medium cursor-pointer transition-all duration-150;
+}
+
+.preset-chip-default {
+  @apply bg-primary text-primary-foreground shadow-sm;
+}
+
+.preset-chip-outline {
+  @apply bg-muted text-muted-foreground hover:bg-secondary;
+}

@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.ts v3.11.0
+// src/hooks/useDomainData.ts v3.13.6
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchWithCache } from '../utils/cachedFetch';
 import { generateLineNumbers } from './useLineNumbers';

@@ -1,5 +1,7 @@
-// src/components/InputEditor.tsx v3.9.0
+// src/components/InputEditor.tsx v3.13.6
 // 域名编辑器组件 —— 从 InputPanel 拆分
+// DOM id 统一为 kebab-case 语义命名（source-editor / input-line-numbers），
+// 与项目规范及 useHomeController.scrollToInput 的 getElementById 契约一致。
 'use client';
 import * as React from 'react';
 import { useT } from '../context/AppContext';
@@ -23,20 +25,20 @@ const InputEditor: React.FC<InputEditorProps> = ({
   return (
     <>
       <div className="editor-container" id="editor-container">
-        <div className="line-numbers" id="inputLineNumbers" ref={lineNumbersRef} aria-hidden="true"></div>
-        <label htmlFor="sourceInput" className="sr-only">{t.inputPlaceholder}</label>
+        <div className="line-numbers" id="input-line-numbers" ref={lineNumbersRef} aria-hidden="true"></div>
+        <label htmlFor="source-editor" className="sr-only">{t.inputPlaceholder}</label>
         <textarea
-          id="sourceInput"
+          id="source-editor"
           placeholder={t.inputPlaceholder}
           value={sourceInput}
           onChange={handleSourceInput}
           onScroll={syncScroll}
           ref={sourceTextareaRef}
-          aria-describedby="sourceInput-help"
+          aria-describedby="source-editor-help"
           className="editor-textarea"
         />
       </div>
-      <div id="sourceInput-help" className="sr-only">
+      <div id="source-editor-help" className="sr-only">
         {t.inputHelp}
       </div>
     </>

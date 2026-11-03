@@ -4,8 +4,16 @@
 > 已完成任务条目已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改与历史开发任务明细），本文件不再重复维护已完成条目，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-03（第九轮：任务归档分离——已完成任务「四、任务状态追踪 / 五、已完成任务 / 九、应用问题诊断详述」整体迁移至 [tasks-done.md](./tasks-done.md)，本文件仅保留未完成任务清单与实时指标）
+> 最后审查：2026-11-03（与 package.json v3.13.6 对齐；第十轮：全项目代码审查与质量加固；第九轮：任务归档分离——已完成任务整体迁移至 [tasks-done.md](./tasks-done.md)，本文件仅保留未完成任务清单与实时指标）
 > 维护团队：Sut / ArcesTeam
+>
+> **本次更新（2026-11-03 第十轮：全项目代码审查与质量加固，v3.13.5 → v3.13.6）**。按用户指令"审查项目代码、修复 bug/语法/安全/性能、对齐规范与原型、补语义化 ID、拆分 >200 行源文件、测试功能完整性、更新文档、提交推送"执行：
+> ① **测试基线修复**——新增 `src/test-utils/setup.ts` 补齐 jsdom 缺失的 `localStorage`/`matchMedia` 桩，修复 `useTheme.test.ts`/`useHomeController.test.ts` 共 32 例因 `localStorage.clear()` 抛错导致的失败；全套 26 套件 / 241 用例恢复全绿；
+> ② **Worker 进度失效修复**——`useRuleWorker.ts` 的 `run()` 未透传 `onProgress`，进度消息被丢弃、进度条恒为 0%；已透传并改为基于本任务真实 total 收尾；
+> ③ **CTA 聚焦失效修复**——`scrollToInput` 用 `getElementById('source-editor')` 但 textarea 实际 id 为 camelCase `sourceInput`，聚焦点名不符静默失败；统一 6 个 DOM id 为 kebab-case 语义命名（`source-editor`/`input-line-numbers`/`url-input`/`url-list`/`output-line-numbers`/`output-preview`），并改用 ref 优先聚焦；
+> ④ **性能与安全**——`useDomainData.ts` 每次按键全量 `split('\n')` 计数改为非分配换行计数；`fileUtils.ts` 无流式读取回退路径补 `content-length` 硬拒，防绕过 10MB 体积上限；
+> ⑤ **源文件拆分**——`useHomeController.ts`(216)/`InputPanel.tsx`(205) 抽离 types 与 UI 状态 hook；`globals.css`(1018) 按职责拆为 `src/styles/*.css` 7 模块（均由 layout.tsx 按级联顺序导入）；全部 production 源文件 ≤200 行；
+> ⑥ **验证**：`tsc --noEmit` 0 错、`next lint` 0 错、`vitest run` 全绿、`sync-facts.mjs --check` 13 处版本位一致（待复跑）。未完成待办仍为 0 项。
 >
 > **本次更新（2026-11-02 第八轮：线上实测 UI 缺陷修复）**。本轮基于 https://dns.ewuse.com/ 桌面 1280×960 真实浏览器取证（截图 + 控制台 + 网络三路），定位 10 项问题并落地代码修复：
 > ① **P0 Tabs 受控切换警告已修**——根因：`OutputPanel.tsx` 的 effect 在远端数据未加载时 `useVisibleFormats` 返回空数组 `[]`，effect 把 `currentFormat` 设成 `visibleFormats[0]` 即 `undefined`，导致 Radix Tabs value 从受控字符串变非受控再变回受控（对应控制台 "controlled→uncontrolled" 与 "uncontrolled→controlled" 两条警告）。修复：effect 开头加 `if (visibleFormats.length === 0) return;` guard；
@@ -49,7 +57,7 @@
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.13.5 | `package.json` version（权威源） |
+| 应用版本 | v3.13.6 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 **146** 键、递归合计 **214** 键 | 脚本统计 `src/locales/zh-cn.json`；`check:locales` 输出为递归口径 **214**（2026-10-19 补齐 `toast.cleared` 后由 213 增至 214；顶层键数不变，`cleared` 为 `toast` 子键，toast 由 21 → 22 键） |
 | 测试套件 / 用例 | **27 套件 / 249 用例**（全通过） | `vitest run`（权威计数，2026-10-19 实测；原记 19 / 129 有误。T-P1-07 使其由 20 / 136 增至 27 / 248，T-P2-08 新增集体守卫用例后为 27 / 249） |

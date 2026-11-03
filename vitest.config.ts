@@ -1,4 +1,4 @@
-// vitest.config.ts v3.12.0
+// vitest.config.ts v3.13.6
 // 单元测试配置：覆盖纯逻辑层（src/utils）与编排层（src/hooks）。
 // Since Vitest 3.2.7 the v8 provider no longer double-counts sources on Windows
 // (the old drive-letter casing bug `e:\...` vs `E:\...` is fixed), so the reported

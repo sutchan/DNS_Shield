@@ -1,0 +1,132 @@
+/* src/styles/output.css v3.13.6 — 输出面板与设置面板（原 globals.css 相应段） */
+
+/* ============================================
+   Output Panel Specific
+   ============================================ */
+.output-body {
+  @apply flex flex-1 flex-col p-5 sm:p-6;
+}
+
+.output-header {
+  @apply flex items-center justify-between gap-3 mb-5 flex-wrap;
+}
+
+.output-header .panel-title {
+  @apply flex items-center gap-2.5 flex-shrink-0;
+}
+
+.output-toolbar {
+  @apply flex items-center justify-between gap-2 flex-wrap flex-1 min-w-0;
+}
+
+.format-tabs {
+  /* h-auto + min-h 覆盖 ui/Tabs.tsx TabsList 基类的固定 h-10：
+     12 个格式标签 flex-wrap 换行时，若高度锁死 40px，换行行会溢出药丸、
+     叠画到下方统计行（线上实测「AdGuard 黑名单/白名单」叠字错乱）；
+     改为随行数自适应增高，justify-start 使换行行左对齐。 */
+  @apply inline-flex items-center justify-start p-0.5 rounded-xl bg-muted gap-0.5 flex-wrap h-auto min-h-[2.5rem];
+}
+
+.format-tab {
+  @apply inline-flex items-center justify-center px-3 py-1.5 text-[0.8125rem] font-medium rounded-lg transition-all duration-150 text-muted-foreground;
+}
+
+.format-tab.active {
+  @apply bg-card text-foreground shadow-sm;
+}
+
+.output-stats {
+  @apply text-[0.75rem] text-muted-foreground mb-4 px-0.5;
+}
+
+/* ============================================
+   Settings Panel
+   ============================================ */
+.settings-panel {
+  overflow: hidden;
+  transition: max-height 350ms cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 250ms ease,
+              margin 250ms ease;
+  max-height: 800px;
+  opacity: 1;
+  margin-bottom: 1.25rem;
+}
+
+/* L2：设置面板改为居中弹窗 modal（对齐原型 settings-modal / settings-dialog） */
+.settings-modal {
+  @apply fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-6 overflow-y-auto;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.settings-dialog {
+  @apply relative w-full max-w-[560px] mt-12 sm:mt-16 rounded-xl border border-border bg-background shadow-xl;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
+}
+
+.settings-dialog-header {
+  @apply flex items-center justify-between px-5 py-4 border-b border-border sticky top-0 bg-background z-10;
+}
+
+.settings-dialog-title {
+  @apply text-sm font-semibold text-foreground;
+}
+
+.settings-close {
+  @apply inline-flex items-center justify-center h-8 w-8 rounded-md border border-border bg-background text-muted-foreground transition-colors hover:bg-accent;
+}
+
+.settings-inner {
+  @apply p-4 sm:p-5;
+}
+
+.settings-group {
+  @apply flex flex-col gap-2 pt-3 mt-3 border-t border-border first:border-t-0 first:pt-0 first:mt-0;
+}
+
+.settings-group-title {
+  @apply text-xs font-semibold uppercase tracking-wide text-muted-foreground;
+}
+
+.theme-seg-btn {
+  @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm border border-border bg-background text-muted-foreground transition-colors hover:bg-accent;
+}
+
+.theme-seg-btn.active {
+  @apply bg-primary text-primary-foreground border-primary;
+}
+
+/* C：设置生成选项卡片 checkbox 网格（对齐原型 .opt-row + .box 视觉，2 列） */
+.opt-grid {
+  @apply grid grid-cols-2 gap-2.5 mt-2;
+}
+
+.opt-card {
+  @apply inline-flex items-center gap-2.5 px-3 py-2.5 rounded-md border border-border bg-background text-sm cursor-pointer select-none transition-colors hover:bg-accent;
+}
+
+.opt-card:has(input[data-state="checked"]) {
+  @apply border-primary bg-primary/5;
+}
+
+.opt-card-inline {
+  @apply mb-2.5;
+}
+
+.opt-card-label {
+  @apply text-sm text-foreground;
+}
+
+/* 输出规则类型：9 个格式独立显示/隐藏开关（对齐原型 .box + .on） */
+.fmt-grid {
+  @apply grid gap-2 mt-1;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+}
+
+.fmt-box {
+  @apply inline-flex items-center justify-center px-2.5 py-2 rounded-md border border-border bg-background text-sm text-muted-foreground cursor-pointer select-none transition-colors hover:bg-accent;
+}
+
+.fmt-box.on {
+  @apply border-primary bg-primary text-primary-foreground;
+}

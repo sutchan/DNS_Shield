@@ -5,6 +5,22 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.13.6]
+
+### Fixed（全项目代码审查与质量加固）
+- 修复测试基线：`src/test-utils/setup.ts` 补齐 jsdom 缺失的 `localStorage` / `matchMedia` 桩，修复 `useTheme.test.ts` / `useHomeController.test.ts` 共 32 例因 `localStorage.clear()` 抛错（"Cannot read properties of undefined (reading 'clear')"）导致的失败；全套 26 套件 / 241 用例恢复全绿
+- 修复 Worker 实时进度失效：`useRuleWorker.ts` 的 `run()` 未透传 `onProgress`，进度消息被静默丢弃、进度条恒为 0%；改为透传回调并基于本任务真实 total 收尾
+- 修复 Hero CTA 聚焦失效：`scrollToInput` 以 `getElementById('source-editor')` 定位，但 textarea 实际 id 为 camelCase `sourceInput`，名实不符导致聚焦静默失败；改用 ref 优先 + 语义 id 回退
+- 安全加固：`fileUtils.ts` 无流式读取能力的回退路径补 `content-length` 硬拒，防止绕过 10MB 响应体积上限（DoS 护栏）
+- 性能优化：`useDomainData.ts` 防抖判断中每次按键全量 `split('\n')` 计数（10 万行级分配巨大数组）改为非分配换行计数
+- 统一 6 个 DOM id 为 kebab-case 语义命名（`source-editor` / `input-line-numbers` / `url-input` / `url-list` / `output-line-numbers` / `output-preview`），同步 `htmlFor` / `aria-describedby`，对齐规范文档与原型
+- 拆分超 200 行源文件：`useHomeController.ts`(216)/`InputPanel.tsx`(205) 抽离 types 常量与 UI 状态 hook（`useHomeUiState`/`useHomeController.types`/`InputPanel.types`）；`globals.css`(1018) 按职责拆为 `src/styles/*.css` 7 模块，由 `layout.tsx` 按原级联顺序导入；全部 production 源文件 ≤200 行
+- 移除 `Home.tsx` 冗余的 `globals.css` 重复导入，统一由根布局按序装配
+- 文档同步：SPEC/DEPLOYMENT/tasks/CHECKLIST/config.yaml/README 版本展示位统一至 v3.13.6（sync-facts 13 处校验通过）；修正 SPEC 文件结构与 prototype 目录描述、DEPLOYMENT 陈旧版本叙述
+
+### Verified
+- `tsc --noEmit` 0 错、`vitest run` 26 套件 / 241 用例全绿、`next lint` 0 错、`sync-facts.mjs --check` 13 处一致、`node scripts/check-locales.mjs` 16 语键一致
+
 ## [3.13.5]
 
 ### Changed（首屏右侧可视化静态化）

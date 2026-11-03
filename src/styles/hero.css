@@ -1,0 +1,134 @@
+/* src/styles/hero.css v3.13.6 — Hero/FlowViz 签名可视化、预览统计、动效降级（原 globals.css 相应段） */
+
+/* ============================================
+   Hero + FlowViz (对齐原型 flowviz 签名可视化)
+   ============================================ */
+.hero {
+  @apply mb-6 rounded-xl border border-border bg-card overflow-hidden;
+  background:
+    radial-gradient(120% 140% at 0% 0%, hsl(var(--primary) / 0.06), transparent 55%),
+    radial-gradient(120% 140% at 100% 0%, hsl(var(--success) / 0.05), transparent 55%);
+}
+
+.hero-inner {
+  @apply grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-6 p-5 sm:p-7 items-center;
+}
+
+.hero-copy {
+  @apply flex flex-col gap-4;
+}
+
+.hero-kicker {
+  @apply inline-flex items-center gap-1.5 text-[0.8125rem] font-medium uppercase tracking-wide text-primary;
+}
+
+.hero-title {
+  @apply text-[1.75rem] sm:text-[2.25rem] font-bold tracking-tight leading-[1.1] font-serif;
+  letter-spacing: -0.015em;
+}
+
+.hero-desc {
+  @apply text-[0.9375rem] sm:text-[1.0625rem] leading-relaxed text-muted-foreground;
+  max-width: 34rem;
+}
+
+/* 流量可视化容器：标题行 + 单条下落轨道 */
+.flowviz {
+  @apply flex flex-col gap-2 w-full h-full;
+}
+
+.flowviz-row {
+  @apply flex items-center gap-2 font-mono text-[0.75rem];
+}
+
+.fv-dot {
+  @apply w-[7px] h-[7px] rounded-full flex-shrink-0 flex-grow-0;
+}
+
+.fv-dot.block { background: hsl(var(--destructive)); }
+.fv-dot.allow { background: hsl(var(--success)); }
+.fv-dot.dns { background: hsl(var(--primary)); }
+
+.fv-name {
+  @apply text-muted-foreground overflow-hidden text-ellipsis whitespace-nowrap;
+  max-width: 150px;
+}
+
+/* 数据快照面板（v3.13.5 静态化）：三态抽样徽章静态陈列，无动画、无定时器 */
+.fv-panel {
+  @apply flex-1 min-h-[120px] flex flex-wrap content-start items-start gap-1.5 p-3 rounded-md overflow-hidden;
+  background: hsl(var(--muted) / 0.5);
+  border: 1px solid hsl(var(--border));
+}
+
+.fv-chip {
+  @apply inline-flex items-center max-w-full whitespace-nowrap rounded-full px-2.5 py-1 text-[0.6875rem] text-primary-foreground;
+  font-family: var(--font-mono);
+}
+
+.fv-chip.block { background: hsl(var(--destructive)); }
+.fv-chip.allow { background: hsl(var(--success)); }
+.fv-chip.dns { background: hsl(var(--primary)); }
+
+.fv-empty {
+  @apply m-auto text-[0.75rem] text-muted-foreground;
+  font-family: var(--font-mono);
+}
+
+/* ============================================
+   Output Preview Stats (对齐原型 previewStats)
+   ============================================ */
+.preview-stats {
+  @apply flex flex-wrap items-center gap-x-3 gap-y-2 mb-4 pt-3 text-[0.75rem] text-muted-foreground;
+  border-top: 1px solid hsl(var(--border));
+}
+
+/* 域名分类筛选（T-P2-01 / T-P2-05，挂载于 InputPanel，索引不可用时整体隐藏） */
+.category-filter {
+  @apply flex flex-wrap items-center gap-2 mb-4;
+}
+
+.category-chip {
+  @apply inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-[0.75rem] text-foreground transition-colors;
+}
+
+.category-chip:hover {
+  @apply border-primary/50;
+}
+
+.category-chip.active {
+  @apply border-primary bg-primary/10 text-primary;
+}
+
+.category-chip.clear {
+  @apply border-dashed text-muted-foreground;
+}
+
+.category-chip-count {
+  @apply rounded-full bg-muted px-1.5 text-[0.65rem] text-muted-foreground;
+}
+
+.category-chip.active .category-chip-count {
+  @apply bg-primary/15 text-primary;
+}
+
+.preview-stat {
+  @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1;
+  background: hsl(var(--muted));
+}
+
+.preview-stat-value {
+  @apply font-semibold text-foreground tabular-nums;
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

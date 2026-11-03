@@ -33,17 +33,18 @@ export function useHomeUiState(lineNumbersRef: React.RefObject<HTMLDivElement>) 
   const openSettings = useCallback(() => setIsSettingsOpen(true), []);
   const closeSettings = useCallback(() => setIsSettingsOpen(false), []);
 
-  // Hero CTA：滚动到输入面板并聚焦编辑器
+  // Hero CTA：滚动到输入面板并聚焦编辑器。
+  // 优先用 ref 聚焦（不依赖 DOM id，SSR/挂载时序更稳），回退到语义 id #source-editor。
   const scrollToInput = useCallback(() => {
-    if (typeof document !== 'undefined') {
-      const el = document.getElementById('input-panel');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        const editor = document.getElementById('source-editor');
-        (editor as HTMLTextAreaElement | null)?.focus?.();
-      }
-    }
-  }, []);
+    if (typeof document === 'undefined') return;
+    const el = document.getElementById('input-panel');
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const editor =
+      sourceTextareaRef.current ??
+      (document.getElementById('source-editor') as HTMLTextAreaElement | null);
+    editor?.focus?.();
+  }, [sourceTextareaRef]);
 
   return {
     isUrlSectionCollapsed,

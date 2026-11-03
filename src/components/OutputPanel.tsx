@@ -1,5 +1,6 @@
-// src/components/OutputPanel.tsx v3.13.0
+// src/components/OutputPanel.tsx v3.13.6
 // 输出面板：编排格式切换 / 设置弹窗 / 规则测试 / 路由器脚本 / 预览 / 操作按钮。
+// DOM id 统一为 kebab-case 语义命名（output-line-numbers / output-preview）。
 // 纯展示子组件与派生逻辑已抽离至 OutputPanel.parts.tsx 以保持主文件 ≤200 行。
 // 惰性生成（T-P1-06）：仅消费当前格式文本 currentOutput，不再持有全量 OutputContent。
 'use client';
@@ -157,13 +158,13 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
 
         {/* Output Preview（超长文本启用虚拟渲染，见 OutputPreview） */}
         <div className="editor-wrapper" id="output-preview-area">
-          <div className="line-numbers" id="outputLineNumbers" ref={outputLineNumbersRef} aria-hidden="true"></div>
+          <div className="line-numbers" id="output-line-numbers" ref={outputLineNumbersRef} aria-hidden="true"></div>
           {currentOutput ? (
             <OutputPreview
               content={currentOutput}
               scrollRef={outputPreviewRef}
               onScroll={syncOutputScroll}
-              id="outputPreview"
+              id="output-preview"
               ariaLabel={t.outputFormatAria.replace('{format}', currentFormat)}
             />
           ) : (

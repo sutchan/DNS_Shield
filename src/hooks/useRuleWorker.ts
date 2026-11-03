@@ -1,4 +1,4 @@
-// src/hooks/useRuleWorker.ts v3.11.1
+// src/hooks/useRuleWorker.ts v3.13.6
 // 规则处理 Worker 的主线程控制器：负责 Worker 生命周期、请求/响应配对、
 // 进度回调与耗时统计。不支持 Worker 的环境（SSR / 老旧浏览器）返回 null，
 // 由调用方回退主线程同步处理，保证功能不中断。

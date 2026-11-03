@@ -1,4 +1,4 @@
-// src/utils/fileUtils.ts v3.9.0
+// src/utils/fileUtils.ts v3.13.6
 import { logger } from './logger';
 
 const MAX_URL_LENGTH = 2048;
