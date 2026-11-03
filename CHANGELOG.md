@@ -5,6 +5,23 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.13.3]
+
+### Fixed（输出面板头部布局错乱）
+- 修复「生成过滤规则」输出面板头部布局错乱：原 `.output-header` 为 flex 行布局，`.output-toolbar` 未占满剩余宽度，导致 12 个格式标签与标题争夺空间、标签栏溢出或被右侧图标按钮挤压（窄屏尤为明显）
+- `.output-toolbar` 增加 `flex-1 min-w-0` 占据头部剩余宽度，使内部 `FormatTabs` 的 `flex-1` 真正生效、标签在栏内换行、三个图标按钮固定在右
+- `.panel-title` 增加 `flex-shrink-0` 防止标题被压缩
+- 同步 bump 版本至 v3.13.3（package.json / src/config/version.ts / next.config.js env.version）
+
+## [3.13.2]
+
+### Added（页脚构建编号）
+- 落地「全局编码规范 · 页脚构建号」：页脚区（footer）现展示「版本号 + build 编号」，不再仅显示版本号
+- `next.config.js` 在构建/启动时为 `env.NEXT_PUBLIC_BUILD_ID` 注入本地构建时间到分钟（`yyyymmddhhmm`，如 `202611031209`）；CI 可覆盖该值反映真实构建时间
+- `src/components/Footer.tsx` 读取 `process.env.NEXT_PUBLIC_BUILD_ID` 展示 `v{version} · build {buildId}`；注入缺失时回退为版本号
+- footer 容器语义化 id 由 `about-panel` 修正为 `app-footer`（符合无障碍与测试定位规范）
+- 同步 bump 版本至 v3.13.2（package.json / src/config/version.ts / next.config.js env.version）
+
 ## [3.13.1]
 
 ### Fixed（单格式生成器 Pi-hole 口径对齐）

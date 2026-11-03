@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v3.10.1
+// src/components/Footer.tsx v3.13.2
 'use client';
 import React from 'react';
 import { useT } from '../context/AppContext';
@@ -14,9 +14,12 @@ const Footer = React.memo(function Footer({
   onOpenGuide,
 }: FooterProps) {
   const t = useT();
+  // 构建编号：构建时由 next.config.js 注入（NEXT_PUBLIC_BUILD_ID，格式 yyyymmddhhmm）；
+  // 缺失时回退为版本号，保证页脚始终有可识别的构建标识。
+  const buildId = process.env.NEXT_PUBLIC_BUILD_ID ?? version;
 
   return (
-    <footer className="app-footer" id="about-panel" role="contentinfo">
+    <footer className="app-footer" id="app-footer" role="contentinfo">
       <div className="footer-content" id="footer-content">
         <div className="footer-top" id="footer-top">
           <a 
@@ -79,7 +82,7 @@ const Footer = React.memo(function Footer({
               <line x1="12" y1="17" x2="12.01" y2="17"></line>
             </svg>
           </button>
-          <span className="footer-version" id="version-display" aria-label={`${t.versionLabel} ${version}`}>v{version}</span>
+          <span className="footer-version" id="version-display" aria-label={`${t.versionLabel} ${version} · build ${buildId}`}>v{version} · build {buildId}</span>
         </div>
       </div>
     </footer>

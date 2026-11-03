@@ -497,11 +497,11 @@
 }
 
 .output-header .panel-title {
-  @apply flex items-center gap-2.5;
+  @apply flex items-center gap-2.5 flex-shrink-0;
 }
 
 .output-toolbar {
-  @apply flex items-center justify-between gap-2 flex-wrap;
+  @apply flex items-center justify-between gap-2 flex-wrap flex-1 min-w-0;
 }
 
 .format-tabs {
