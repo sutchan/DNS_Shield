@@ -131,7 +131,9 @@ src/
 │   ├── useSettings.ts # 设置管理
 │   └── useLoading.ts # 加载状态管理
 ├── lib/              # 工具库（cn 类名合并等）
-├── locales/          # 16 种语言翻译文件（112 键 100% 覆盖）
+├── locales/          # 16 种语言翻译文件（214 键 100% 覆盖，check-locales 校验）
+├── styles/           # 设计系统样式（7 模块，由 globals.css 按职责拆分）
+├── test-utils/       # 测试辅助（renderHook + jsdom 环境桩 setup.ts）
 ├── types/            # TypeScript 类型定义
 ├── utils/            # 工具函数（含 *.test.ts 单元测试）
 │   ├── parser.ts     # 域名解析与排序去重（行级解析、提取域名）
@@ -142,9 +144,8 @@ src/
 │   ├── domainFetch.ts # 远程域名列表拉取（超时/兜底/体积上限）
 │   ├── fileUtils.ts  # 文件操作（下载/复制）
 │   ├── i18n.ts       # 国际化配置
-│   ├── i18n.ts       # 国际化配置
 │   ├── analytics.ts   # GA4 衡量 ID 读取/校验与 gtag 片段生成
-│   ├── regexRules.ts / domainCategory.ts # 正则互转 / 域名分类（库已就绪，UI 未接入）
+│   ├── regexRules.ts / domainCategory.ts # 正则互转 / 域名分类（已接入生成链路与分类筛选 UI）
 │   ├── idb.ts / httpCache.ts / cachedFetch.ts # 存储与 HTTP 缓存层
 │   └── *.test.ts     # 与被测模块同目录的单元测试（Vitest）
 └── ...
@@ -158,11 +159,14 @@ src/
 - `sitemap.ts` — 自动生成 `sitemap.xml`（站点地图）
 - `(seo)/site-meta.ts` / `(seo)/ga-scripts.tsx` — 站点元数据与 GA4 脚本注入（衡量 ID 取自环境变量）
 - PWA 与 Service Worker 以静态文件提供：`public/manifest.json`、`public/service-worker.js`（非 `src/app/` 下的 TS 模块）
-- `globals.css`、`i18n.ts` — 全局样式与路由级国际化
+- `globals.css` — 全局样式入口（Tailwind 指令 + 基础层 design tokens）；其余业务样式按职责拆分到 `src/styles/*.css`（layout / stats / input / output / footer / feedback / hero 共 7 模块），由 `layout.tsx` 按级联顺序统一导入
+- `i18n.ts` — 路由级国际化
 
 ```
-prototype/            # 设计快照（已冻结，停留 v3.9.x，不代表当前实现）
-├── index.html        # 自包含高保真原型（HTML/CSS/JS）
+prototype/            # 设计快照（已冻结，停留 v3.9.x~v3.10.x，不代表当前实现）
+├── prototype.html    # 自包含高保真可交互原型（HTML/CSS/JS）
+├── wireframes.html   # 线框与组件库规范
+├── flows.html        # 关键业务流程交互原型
 ├── README.md         # 原型总览与使用说明
 └── shadcn/           # shadcn 设计规范（design-system/component-library/interaction-standards）
 ```
