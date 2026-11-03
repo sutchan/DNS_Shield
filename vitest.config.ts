@@ -11,6 +11,8 @@ import { defineConfig } from 'vitest/config';
 export default defineConfig({
   test: {
     environment: 'node',
+    // 补齐 jsdom 缺失的 localStorage / matchMedia 桩（见 src/test-utils/setup.ts）
+    setupFiles: ['src/test-utils/setup.ts'],
     include: ['src/**/*.{test,spec}.ts'],
     coverage: {
       provider: 'v8',
