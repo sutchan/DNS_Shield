@@ -358,7 +358,7 @@
    ============================================ */
 .editor-container,
 .editor-wrapper {
-  @apply relative mt-auto mb-5 border border-border rounded-xl overflow-hidden h-[504px];
+  @apply relative mb-5 border border-border rounded-xl overflow-hidden h-[504px];
   transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -453,7 +453,7 @@
 }
 
 .editor-actions {
-  @apply flex flex-wrap gap-2 justify-end;
+  @apply flex flex-wrap gap-2 justify-end mt-auto;
 }
 
 /* ============================================

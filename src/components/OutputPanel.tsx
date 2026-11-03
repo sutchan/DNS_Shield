@@ -70,8 +70,12 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   // 各输出格式的展示标签。
   const formatLabel = buildFormatLabel(t);
 
-  // 当前选中格式被隐藏时，回退到首个可见格式，避免空面板
+  // 当前选中格式被隐藏时，回退到首个可见格式，避免空面板。
+  // 注意：visibleFormats 在远端数据加载完成前可能为空数组，此时不能取 [0]（即 undefined），
+  // 否则 Tabs 的 value 从受控字符串变 undefined 再变回字符串，触发
+  // "Tabs is changing from controlled to uncontrolled" 双向警告。
   React.useEffect(() => {
+    if (visibleFormats.length === 0) return;
     if (!visibleFormats.includes(currentFormat)) {
       setFormat(visibleFormats[0]);
     }

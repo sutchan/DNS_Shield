@@ -88,6 +88,8 @@ interface OutputToolbarProps {
 }
 
 // 输出面板顶部工具栏：格式切换标签栏 + 规则测试 / 路由器脚本 / 设置三个图标按钮。
+// 布局：FormatTabs 占满弹性宽度（flex-1），三个图标按钮固定在右侧不收缩（flex-shrink-0），
+// 避免 Tab 换行时图标按钮插入到 TabsList 的行之间、把首尾 Tab 文字裁切（线上实测问题）。
 export const OutputToolbar: FC<OutputToolbarProps> = ({
   t,
   onOpenRuleTester,
@@ -97,41 +99,43 @@ export const OutputToolbar: FC<OutputToolbarProps> = ({
   children,
 }) => (
   <div className="output-toolbar flex items-center gap-1.5" id="output-toolbar">
-    {children}
-    <Button
-      type="button"
-      variant={'outline' as const}
-      size={'icon' as const}
-      onClick={onOpenRuleTester}
-      title={t.ruleTesterTitle}
-      id="rule-tester-toggle-btn"
-      aria-label={t.ruleTesterTitle}
-    >
-      <SearchCheck className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-    </Button>
-    <Button
-      type="button"
-      variant={'outline' as const}
-      size={'icon' as const}
-      onClick={onOpenScriptGen}
-      title={t.routerScriptTitle}
-      id="router-script-toggle-btn"
-      aria-label={t.routerScriptTitle}
-    >
-      <Terminal className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-    </Button>
-    <Button
-      type="button"
-      variant={'outline' as const}
-      size={'icon' as const}
-      onClick={onOpenSettings}
-      title={t.settingsTitle}
-      id="settings-panel-toggle-btn"
-      aria-expanded={isSettingsOpen}
-      aria-controls="settings-panel"
-    >
-      <SettingsIcon className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-    </Button>
+    <div className="flex-1 min-w-0 flex items-center">{children}</div>
+    <div className="flex items-center gap-1.5 flex-shrink-0">
+      <Button
+        type="button"
+        variant={'outline' as const}
+        size={'icon' as const}
+        onClick={onOpenRuleTester}
+        title={t.ruleTesterTitle}
+        id="rule-tester-toggle-btn"
+        aria-label={t.ruleTesterTitle}
+      >
+        <SearchCheck className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+      </Button>
+      <Button
+        type="button"
+        variant={'outline' as const}
+        size={'icon' as const}
+        onClick={onOpenScriptGen}
+        title={t.routerScriptTitle}
+        id="router-script-toggle-btn"
+        aria-label={t.routerScriptTitle}
+      >
+        <Terminal className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+      </Button>
+      <Button
+        type="button"
+        variant={'outline' as const}
+        size={'icon' as const}
+        onClick={onOpenSettings}
+        title={t.settingsTitle}
+        id="settings-panel-toggle-btn"
+        aria-expanded={isSettingsOpen}
+        aria-controls="settings-panel"
+      >
+        <SettingsIcon className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+      </Button>
+    </div>
   </div>
 );
 
@@ -149,7 +153,7 @@ export const OutputActions: FC<OutputActionsProps> = ({
   onDownload,
   onCopy,
 }) => (
-  <div className="flex flex-wrap gap-2 justify-end" id="output-actions" role="group" aria-label={t.outputActionsAria}>
+  <div className="flex flex-wrap gap-2 justify-end mt-auto" id="output-actions" role="group" aria-label={t.outputActionsAria}>
     <Button type="button" variant={'default' as const} onClick={onGenerate} id="generate-rules-btn" className="font-semibold shadow-md">
       <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
       {t.generateBtn}

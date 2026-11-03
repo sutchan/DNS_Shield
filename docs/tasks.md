@@ -4,8 +4,22 @@
 > 所有新增、变更、完成任务必须更新本文件；项目内其他位置（README、SPEC、CHECKLIST、CHANGELOG、原型等）**不得另建任务清单**。
 > 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-10-22 21:10（第六轮：全量复核 — 全部任务已完成，修正单测用例数漂移 248→249）
+> 最后审查：2026-11-02（第八轮：线上 dns.ewuse.com 实测 UI 缺陷修复；P0/P1 视觉问题已落到代码，待部署验证）
 > 维护团队：Sut / ArcesTeam
+>
+> **本次更新（2026-11-02 第八轮：线上实测 UI 缺陷修复）**。基于 https://dns.ewuse.com/ 桌面 1280×960 真实浏览器取证（截图 + 控制台 + 网络三路），定位 10 项问题并落地代码修复：
+> ① **P0 Tabs 受控切换警告已修**——根因：`OutputPanel.tsx` 的 effect 在远端数据未加载时 `useVisibleFormats` 返回空数组 `[]`，effect 把 `currentFormat` 设成 `visibleFormats[0]` 即 `undefined`，导致 Radix Tabs value 从受控字符串变非受控再变回受控（对应控制台 "controlled→uncontrolled" 与 "uncontrolled→controlled" 两条警告）。修复：effect 开头加 `if (visibleFormats.length === 0) return;` guard；
+> ② **P1 格式 Tab 栏被圆形按钮裁切已修**——根因：`OutputToolbar` 把 FormatTabs（children）和三个 icon button（规则测试/路由器脚本/设置）放在同一 `flex items-center gap-1.5` 容器里，flex-wrap 时 icon button 插入到 TabsList 换行行之间，把首尾 Tab 文字（Unbound→nbound、SmartDNS→SmartDN、Clash Meta→ClashMeta）裁切。修复：FormatTabs 外包 `<div className="flex-1 min-w-0 flex items-center">`，三个 icon button 包 `<div className="flex items-center gap-1.5 flex-shrink-0">`；
+> ③ **P1 两栏底部按钮不对齐已修**——根因：`globals.css` 里 `.editor-container, .editor-wrapper` 用 `mt-auto` 把编辑器推到底部，但两栏前置内容高度不同，导致编辑器位置不同、按钮错位。修复：把 `mt-auto` 从 editor 移到 `.editor-actions` 和 `#output-actions`，让按钮永远贴 panel 底部对齐；
+> ④ **P3 域名计数漂移已修**——实算 `public/domains.txt`：白名单 232（Grep `^\+`）、改道 0、注释 15、线上实时黑名单 634，合计 866。SPEC.md §1 原写"867 条（635+232）"已改为"866 条（634+232）"；
+> ⑤ **未处理项（待后续决策或部署后复查）**：P0 404 资源具体文件未在 network 日志中复抓（浏览器会话异常）；P1 Hero 右侧 FlowViz 空面板未改；P2 两个"生成规则"按钮重复属交互流程变更、URL 导入藏在折叠区、预置数据无可清空提示、远端 raw.githubusercontent.com 加载失败无感知告警——均为产品 UX 决策，本轮保守未动；
+> ⑥ **验证状态**：代码改动均在 UNC 网络盘上，`tsc`/`lint`/`test` 因 IO 极慢无法实跑；改动均为低风险可逆的 UI 布局与 guard，建议在本地磁盘或 CI 复跑 `pnpm install && pnpm test && pnpm lint && pnpm check:locales` 后部署到线上验证控制台警告与 Tab 栏布局。
+>
+> **本次更新（2026-11-02 第七轮：全项目审查 + SPEC 文档漂移修正）**。本轮按用户指令"完成剩余任务并审查项目"执行：
+> ① **未完成任务仍为 0 项**——tasks.md 待办区自第六轮后无新增任务，代码层经静态阅读确认无功能性缺陷；
+> ② **SPEC.md 文档漂移已修正**（详见 [tasks-done.md](./tasks-done.md) 第二节）——§2 文件结构补全 18 hooks / 18 utils / 8 业务组件，§5.1 端口 8082→3000，§9.2 vitest ^2.1.9→^3.2.7，§12 重复章节号改为 §13，§12.1 CSP 移除未启用的 `require-trusted-types-for`；
+> ③ **门禁实跑受环境限制**——项目位于 UNC 网络盘（`\\Tanas3\jz_1t\Github\DNS_Shield`），`tsc --noEmit` / `next lint` / `vitest run` 在该路径下 IO 延迟极高，实跑 30 分钟无输出（本地 SSD 应 <1 分钟）。本轮以静态阅读核对为主：版本号 3.13.1 在 package.json / version.ts / next.config.js 三处一致；16 语言文件与 214 键基线确认存在；代码质量（类型严格、安全头、shellQuote 防注入、prepareRuleData 统一口径、惰性生成、Worker 大文本处理）经逐文件阅读无缺陷。**建议在本地磁盘（非网络盘）或 CI 环境复跑 `pnpm install && pnpm test && pnpm lint && pnpm check:locales` 以取得权威计数**；
+> ④ **环境注意**：当前 shell 的 node 为 v22.23.2，低于项目 `engines.node >=24.11.0` 要求；若在本机跑构建/测试需先切到 Node 24+。
 >
 > **本次更新（2026-10-22 21:10 第六轮：全量复核 + 数据漂移修正）**。按「数字必须实算」纪律复核：① **全部任务已完成**（未完成合计 0 项），无新增待办，已完成条目均归档于 [tasks-done.md](./tasks-done.md)；② **修正单测用例数漂移**——「二、开发进度全景」单元测试行仍记 248 例，与指标表及实跑结果（`vitest run`：27 套件 / **249** 例）矛盾，已改为 249；③ 门禁状态维持：`check:locales` ✅（16 语 / 214 键）、`tsc` 0 错、`next lint` 0/0。
 >

@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-10-04（与 package.json v3.13.1 对齐）
+> 最后审查：2026-11-02（与 package.json v3.13.1 对齐；同步文件结构/hooks/utils 清单、修正端口与 vitest 版本、CSP 与实际配置对齐）
 
 ## 1. 项目概述
 
@@ -14,7 +14,7 @@
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
 | 当前版本 | v3.13.1 |
-| 拦截域名 | 867 条（黑名单 635 + 白名单 232，本地 `public/domains.txt`）| 实测值，以 `node scripts/count-domains.mjs` 为准 |
+| 拦截域名 | 866 条（黑名单 634 + 白名单 232，本地 `public/domains.txt`）| 实测值，以 `node scripts/count-domains.mjs` 为准 |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
 | 通知组件 | sonner |
@@ -68,39 +68,46 @@ dns-shield/
 │   │   ├── robots.ts               # 自动生成 robots.txt（含 sitemap 索引）
 │   │   └── sitemap.ts              # 自动生成 sitemap.xml
 │   ├── components/                 # 业务组件
-│   │   ├── ui/                     # shadcn/ui 基础组件
-│   │   │   ├── Badge.tsx
-│   │   │   ├── Button.tsx
-│   │   │   ├── Card.tsx
-│   │   │   ├── Checkbox.tsx
-│   │   │   ├── DropdownMenu.tsx
-│   │   │   ├── Input.tsx
-│   │   │   ├── Label.tsx
-│   │   │   ├── Loading.tsx
-│   │   │   ├── Select.tsx
-│   │   │   ├── Switch.tsx
-│   │   │   ├── Tabs.tsx
-│   │   │   └── Toast.tsx
+│   │   ├── ui/                     # shadcn/ui 基础组件（12 个）
 │   │   ├── Header.tsx              # 页头（Shield 图标 + 语言/主题切换）
 │   │   ├── Footer.tsx              # 页脚（链接 + 使用说明）
-│   │   ├── InputEditor.tsx          # 域名编辑器子组件
+│   │   ├── InputEditor.tsx         # 域名编辑器子组件
 │   │   ├── InputPanel.tsx          # 输入面板（域名编辑 + URL 导入）
-│   │   ├── OutputPanel.tsx         # 输出面板（规则预览 + 设置）
+│   │   ├── OutputPanel.tsx        # 输出面板（规则预览 + 设置）
+│   │   ├── OutputPanel.parts.tsx   # 输出面板拆分子组件
+│   │   ├── OutputPreview.tsx       # 规则预览窗（虚拟滚动）
 │   │   ├── SettingsPanel.tsx       # 设置面板子组件
-│   │   └── UrlSection.tsx          # URL 导入区域子组件
+│   │   ├── SettingsForm.tsx        # 设置表单控件
+│   │   ├── UrlSection.tsx          # URL 导入区域子组件
+│   │   ├── CategoryFilter.tsx      # 上游分类筛选（T-P2-01/05）
+│   │   ├── RuleTesterModal.tsx    # 域名匹配测试弹窗
+│   │   ├── ScriptGeneratorModal.tsx # 路由器同步脚本弹窗
+│   │   ├── GuideModal.tsx           # 使用指南弹窗
+│   │   └── FlowViz.tsx            # 流程动效
 │   ├── config/
 │   │   ├── index.ts                # 应用配置（预设源 URL、多镜像）
 │   │   └── version.ts              # 版本号单一来源（APP_VERSION，派生自 package.json）
 │   ├── context/
 │   │   └── AppContext.tsx          # 应用上下文（集中提供 i18n 翻译 t）
 │   ├── hooks/                      # 自定义 Hooks
-│   │   ├── useDomainData.ts        # 域名数据管理
-│   │   ├── useLanguage.ts          # 语言切换
-│   │   ├── useRules.ts             # 规则生成
+│   │   ├── useDomainData.ts        # 域名数据管理（Web Worker 解析 + 自动保存）
+│   │   ├── useLanguage.ts           # 语言切换
+│   │   ├── useRules.ts             # 规则生成（惰性单格式生成 T-P1-06）
 │   │   ├── useTheme.ts             # 主题切换
 │   │   ├── useUrlManager.ts        # URL 管理
 │   │   ├── useSettings.ts          # 设置管理
-│   │   └── useLoading.ts           # 加载状态管理
+│   │   ├── useLoading.ts           # 加载状态管理
+│   │   ├── useHomeController.ts   # 首页交互编排（toast 回退/进度）
+│   │   ├── useFlowTokens.ts        # FlowViz 动效令牌
+│   │   ├── useLineNumbers.ts       # 输出行号同步
+│   │   ├── useAsyncRuleProcessing.ts # Worker 解析/排序/去重调度
+│   │   ├── useRuleWorker.ts        # Web Worker 封装与阈值
+│   │   ├── useAutosave.ts          # 草稿自动保存编排
+│   │   ├── autosaveStorage.ts      # localStorage 草稿读写
+│   │   ├── useCategoryFilter.ts    # 分类筛选 UI 状态
+│   │   ├── useCategoryIndex.ts     # 上游分类索引加载
+│   │   ├── useModalA11y.ts         # 弹窗无障碍焦点管理
+│   │   └── useVirtualList.ts      # 虚拟滚动（超大规模预览）
 │   ├── lib/
 │   │   └── utils.ts                # 工具函数（cn 等）
 │   ├── locales/                    # 国际化翻译文件（16 种语言）
@@ -112,15 +119,27 @@ dns-shield/
 │   │   └── index.ts                # TypeScript 类型定义
 │   └── utils/                      # 工具函数
 │       ├── analytics.ts            # GA4 衡量 ID 读取/校验与 gtag 片段生成（纯逻辑）
-│       ├── domainValidator.ts      # 域名验证与行解析
+│       ├── domainValidator.ts       # 域名验证与行解析
 │       ├── domainFetch.ts          # 远程域名列表拉取（超时/兜底/体积上限）
 │       ├── parser.ts               # 域名解析器（行级解析、提取域名）
 │       ├── sortDedupe.ts           # 域名排序与去重（纯函数）
-│       ├── rulesGenerator.ts       # 规则生成器（Dnsmasq/Hosts/AdGuard/白名单）
-│       ├── rulesGenerator.test.ts  # 规则生成器单元测试（Vitest）
-│       ├── fileUtils.ts            # 文件操作（下载、复制、URL 获取）
+│       ├── rulesGenerator.ts       # 规则生成核心（12 格式编排 + prepareRuleData 统一口径）
+│       ├── formatGenerators.ts     # 全量格式拼接（blocked/customDns/whitelist/regex/header）
+│       ├── formatGenerators.single.ts # 惰性单格式生成（T-P1-06，与全量逐字节一致）
+│       ├── headerConfigs.ts         # 各格式头部注释配置（HEADER_CONFIGS）
+│       ├── fileUtils.ts            # 文件操作（下载、复制、URL 获取、sanitizeFilename）
 │       ├── i18n.ts                 # 国际化配置
-│       └── uiUtils.ts              # UI 工具（行号生成、滚动同步）
+│       ├── uiUtils.ts              # UI 工具（行号生成、滚动同步）
+│       ├── parseLine.ts            # 单行多格式识别（hosts/dnsmasq/adguard/regex）
+│       ├── domainCategory.ts       # 上游分类索引解析与筛选（T-P2-01/05）
+│       ├── regexRules.ts           # AdGuard/Pi-hole 正则双向转换（T-P2-04/06）
+│       ├── scriptGenerator.ts       # 路由器一键同步 Shell 脚本生成（shellQuote 防注入 T-P3-04）
+│       ├── ruleMatcher.ts          # 域名匹配测试器引擎
+│       ├── idb.ts                  # IndexedDB 持久化（T-P1-03）
+│       ├── httpCache.ts / cachedFetch.ts # ETag 条件请求 + 离线缓存
+│       ├── buildFlowPool.ts        # FlowViz 动画令牌池
+│       ├── logger.ts              # 生产日志收敛（T-P0-03）
+│       └── domainPrimitives.ts     # 原始域名/IP 类型原语
 ├── prototype/                        # 原型目录（高保真可交互 + 真实数据 + 设计规范）
 │   ├── index.html                   # 高保真原型（独立 HTML，极简风格/真实数据/响应式，可直接浏览器打开）
 │   ├── README.md                    # 原型总览与设计规范索引
@@ -212,7 +231,7 @@ dns-shield/
 
 1. 编辑 `public/domains.txt`，添加新域名
 2. 启动开发服务器：`pnpm dev`
-3. 访问 http://localhost:8082
+3. 访问 http://localhost:3000（端口由 `package.json` 的 `dev` 脚本固定）
 4. 加载 `domains.txt` 或手动输入
 5. 配置输出选项
 6. 点击"生成规则"
@@ -306,7 +325,7 @@ refactor: 优化规则生成逻辑
 | tailwindcss | ^3.4.3 | 实用优先 CSS 框架 |
 | tailwindcss-animate | ^1.0.7 | Tailwind 动画插件 |
 | typescript | ^5 | TypeScript 语言 |
-| vitest | ^2.1.9 | 单元测试框架 |
+| vitest | ^3.2.7 | 单元测试框架（T-P4-01 升级，覆盖率 v8 provider 已修复 Windows 盘符重复统计） |
 
 ### 9.3 预设源 URL
 
@@ -336,7 +355,7 @@ refactor: 优化规则生成逻辑
 
 | 头部 | 值 | 说明 |
 |------|-----|------|
-| Content-Security-Policy | default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https: blob: https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; upgrade-insecure-requests; require-trusted-types-for 'script' | 内容安全策略，防止 XSS 和数据注入 |
+| Content-Security-Policy | default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https: blob: https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; upgrade-insecure-requests | 内容安全策略，防止 XSS 和数据注入（与 `next.config.js` 实际配置一致；`require-trusted-types-for` 暂未启用） |
 | Strict-Transport-Security | max-age=63072000; includeSubDomains; preload | HSTS，强制 HTTPS |
 | Cross-Origin-Opener-Policy | same-origin | 防止跨窗口攻击 |
 | Cross-Origin-Resource-Policy | same-origin | 限制跨域资源加载 |
@@ -358,7 +377,7 @@ refactor: 优化规则生成逻辑
 - 防止路径遍历攻击（../、..\\）
 - 文件名仅允许字母、数字、点、下划线、连字符
 
-## 12. 版本历史
+## 13. 版本历史
 
 | 版本 | 日期 | 变更 |
 |------|------|------|
