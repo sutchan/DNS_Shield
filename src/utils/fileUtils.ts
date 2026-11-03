@@ -69,6 +69,12 @@ const MAX_RESPONSE_SIZE = 10 * 1024 * 1024;
 const readBodyWithSizeLimit = async (response: Response, maxSize: number): Promise<string> => {
   const reader = response.body?.getReader();
   if (!reader) {
+    // 无流式读取能力时（少数环境），回退一次性读取前先按 content-length 硬拒，
+    // 避免绕过 10MB 体积上限（DoS 护栏）一次性载入超大响应。
+    const declaredLength = Number(response.headers.get('content-length') ?? 0);
+    if (declaredLength > maxSize) {
+      throw new Error(`响应体积超过上限（${Math.round(maxSize / 1024 / 1024)}MB）`);
+    }
     return await response.text();
   }
   let received = 0;

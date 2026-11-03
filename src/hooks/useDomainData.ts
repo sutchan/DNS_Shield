@@ -118,7 +118,13 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   // 防抖解析：小文本（低于 Worker 阈值）立即解析以保持预览实时性；
   // 大文本保留 300ms 防抖，避免每次按键都触发 Worker 计算（T-P1-05）
   useEffect(() => {
-    const isLarge = sourceInput.split('\n').length >= WORKER_LINE_THRESHOLD;
+    // 仅计数换行数判断规模，避免每次按键都 split 分配整块数组阻塞主线程
+    // （10 万行级输入下，split 会瞬时分配巨大数组并拖慢输入响应）。
+    let lineCount = 1;
+    for (let i = 0; i < sourceInput.length; i++) {
+      if (sourceInput.charCodeAt(i) === 10) lineCount++;
+    }
+    const isLarge = lineCount >= WORKER_LINE_THRESHOLD;
     const timer = setTimeout(() => {
       parseSourceData(sourceInput);
     }, isLarge ? 300 : 0);

@@ -1,4 +1,4 @@
-// src/components/InputPanel.tsx v3.11.0
+// src/components/InputPanel.tsx v3.13.6
 'use client';
 import * as React from 'react';
 import { Button } from './ui/Button';
@@ -6,44 +6,8 @@ import { Badge } from './ui/Badge';
 import InputEditor from './InputEditor';
 import UrlSection, { PresetTags } from './UrlSection';
 import { CategoryFilter } from './CategoryFilter';
-import type { CategoryIndex, CategoryKey } from '../utils/domainCategory';
-import { Translation, Stats } from '../types';
 import { useT } from '../context/AppContext';
-
-interface InputPanelProps {
-  sourceInput: string;
-  urls: string[];
-  isUrlSectionCollapsed: boolean;
-  stats: Stats;
-  activePreset: string;
-  lineNumbersRef: React.RefObject<HTMLDivElement>;
-  sourceTextareaRef: React.RefObject<HTMLTextAreaElement>;
-  urlInput: string;
-  setUrlInput: (value: string) => void;
-  toggleSection: (section: string) => void;
-  handleSourceInput: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  syncScroll: () => void;
-  clearAll: () => void;
-  sortDomains: () => void;
-  generateRules: () => void;
-  dedupeDomains: () => void;
-  loadPreset: (preset: string) => void;
-  fetchFromUrl: () => void;
-  addUrl: () => void;
-  sortUrls: () => void;
-  fetchAllUrls: () => void;
-  setUrls: (urls: string[]) => void;
-  isLoading: boolean;
-  /** Worker 处理进度（大文本解析/排序/去重进行中非空） */
-  progress: { processed: number; total: number; elapsed: number | null } | null;
-  isProcessing: boolean;
-  /** 分类索引是否可用（不可用时隐藏分类筛选控件） */
-  categoryAvailable: boolean;
-  categoryIndex: CategoryIndex;
-  selectedCategories: ReadonlySet<CategoryKey>;
-  onToggleCategory: (key: CategoryKey) => void;
-  onClearCategories: () => void;
-}
+import { InputPanelProps, STAT_ITEMS } from './InputPanel.types';
 
 const InputPanel: React.FC<InputPanelProps> = ({
   sourceInput,
@@ -84,15 +48,6 @@ const InputPanel: React.FC<InputPanelProps> = ({
       ? Math.min(100, Math.round((progress.processed / progress.total) * 100))
       : 0;
   const elapsedLabel = progress?.elapsed != null ? ` · ${progress.elapsed}ms` : '';
-  // 统计项与彩色圆点语义映射，对齐原型 .input-panel 的 .stat-dot（block/allow/dns）
-  const statItems = [
-    { key: 'blacklistCount' as const, labelKey: 'blacklistCount' as keyof Translation, dot: 'block' as const },
-    { key: 'whitelistCount' as const, labelKey: 'whitelistCount' as keyof Translation, dot: 'allow' as const },
-    { key: 'customDnsCount' as const, labelKey: 'customDnsCount' as keyof Translation, dot: 'dns' as const },
-    { key: 'commentCount' as const, labelKey: 'commentCount' as keyof Translation, dot: null },
-    { key: 'invalidCount' as const, labelKey: 'invalidCount' as keyof Translation, dot: null },
-    { key: 'totalLines' as const, labelKey: 'totalLines' as keyof Translation, dot: null },
-  ] as const;
 
   return (
     <section className="panel input-section" id="input-panel" aria-labelledby="input-title">
@@ -150,7 +105,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
 
       {/* 统计信息：带彩色圆点胶囊（对齐原型 .stat / .stat-dot） */}
       <div className="stats-compact" id="stats-bar" role="region" aria-label={t.statsAria}>
-        {statItems.map(({ key, labelKey, dot }) => (
+        {STAT_ITEMS.map(({ key, labelKey, dot }) => (
           <Badge key={key} variant="secondary" className="stat-badge" role="status" aria-live="polite">
             {dot && <span className={`stat-dot ${dot}`} aria-hidden="true" />}
             <span className="stat-value" id={key} aria-label={String(t[labelKey])}>{stats[key]}</span>

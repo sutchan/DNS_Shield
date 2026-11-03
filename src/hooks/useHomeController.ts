@@ -1,8 +1,8 @@
-// src/hooks/useHomeController.ts v3.13.0
+// src/hooks/useHomeController.ts v3.13.6
 // Home 页面的状态编排钩子：聚合所有领域钩子（主题/语言/域名数据/规则/URL/设置）
-// 与稳定交互回调，保持 Home.tsx 仅负责渲染。从 Home.tsx 抽离以控制主文件行数，
-// 公开渲染契约不变（返回类型由 TS 推断，Home.tsx 直接解构使用）。
-import { useState, useRef, useEffect, useCallback } from 'react';
+// 与稳定交互回调，保持 Home.tsx 仅负责渲染。本地 UI 状态已抽离至 useHomeUiState，
+// 返回契约类型见 useHomeController.types.ts，公开渲染契约不变（Home.tsx 直接解构）。
+import { useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import type { Stats } from '../types';
 import { logger } from '../utils/logger';
@@ -13,8 +13,10 @@ import { useRules } from './useRules';
 import { useCategoryFilter } from './useCategoryFilter';
 import { useUrlManager } from './useUrlManager';
 import { useSettings } from './useSettings';
+import { useHomeUiState } from './useHomeUiState';
+import type { UseHomeControllerReturn } from './useHomeController.types';
 
-export function useHomeController() {
+export function useHomeController(): UseHomeControllerReturn {
   const { theme, toggleTheme } = useTheme();
   const { currentLang, supportedLanguages, t, switchLang } = useLanguage();
 
@@ -109,46 +111,22 @@ export function useHomeController() {
     setUrls,
   } = useUrlManager(setSourceInput, parseSourceData, showToast, lineNumbersRef);
 
-  // 区域折叠状态
-  const [isUrlSectionCollapsed, setIsUrlSectionCollapsed] = useState(true);
-  // 设置面板弹窗开关（对齐原型 settings-modal：L2 由侧栏折叠改为居中弹窗）
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  // 使用指南弹窗开关（对齐原型 #guideModal：页脚 linkGuide 触发）
-  const [isGuideOpen, setIsGuideOpen] = useState(false);
-  const openGuide = useCallback(() => setIsGuideOpen(true), [setIsGuideOpen]);
-
-  // 引用
-  const sourceTextareaRef = useRef<HTMLTextAreaElement>(null);
-
-  // 同步滚动（仅用 ref，依赖为空，useCallback 稳定引用）
-  const syncScroll = useCallback(() => {
-    if (sourceTextareaRef.current && lineNumbersRef.current) {
-      lineNumbersRef.current.scrollTop = sourceTextareaRef.current.scrollTop;
-    }
-  }, [sourceTextareaRef, lineNumbersRef]);
-
-  // 切换区域（函数式 setState 使依赖为空，useCallback 稳定引用，避免下游重渲染）
-  const toggleSection = useCallback((section: string) => {
-    if (section === 'url-section') {
-      setIsUrlSectionCollapsed(prev => !prev);
-    }
-  }, []);
-
-  // 设置面板弹窗开关（对齐原型 settings-modal）
-  const openSettings = useCallback(() => setIsSettingsOpen(true), []);
-  const closeSettings = useCallback(() => setIsSettingsOpen(false), []);
-
-  // Hero CTA：滚动到输入面板并聚焦编辑器
-  const scrollToInput = useCallback(() => {
-    if (typeof document !== 'undefined') {
-      const el = document.getElementById('input-panel');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        const editor = document.getElementById('source-editor');
-        (editor as HTMLTextAreaElement | null)?.focus?.();
-      }
-    }
-  }, []);
+  // 本地 UI 状态编排（区域折叠 / 弹窗 / 滚动同步 / 焦点）
+  const {
+    isUrlSectionCollapsed,
+    setIsUrlSectionCollapsed,
+    isSettingsOpen,
+    setIsSettingsOpen,
+    isGuideOpen,
+    setIsGuideOpen,
+    openGuide,
+    sourceTextareaRef,
+    syncScroll,
+    toggleSection,
+    openSettings,
+    closeSettings,
+    scrollToInput,
+  } = useHomeUiState(lineNumbersRef);
 
   return {
     theme,

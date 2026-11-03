@@ -104,7 +104,13 @@ export const useRuleWorker = () => {
       if (!worker) return Promise.resolve(null);
       const id = ++seqRef.current;
       return new Promise<RuleWorkerResult>((resolve) => {
-        pendingRef.current.set(id, { resolve });
+        // 关键修复：必须透传 onProgress，否则 Worker 的 progress 消息（每 2000 行上报）
+        // 在 onmessage 中被静默丢弃，进度条始终停留在 0%。完成分支基于本条任务的真实
+        // total（prev.total 由 onProgress 持续写入）收尾为 100%。
+        pendingRef.current.set(id, {
+          resolve,
+          onProgress: (p) => setProgress({ processed: p.processed, total: p.total, elapsed: null }),
+        });
         setIsProcessing(true);
         setProgress({ processed: 0, total: text.split('\n').length, elapsed: null });
         worker.postMessage({ id, task, text });
