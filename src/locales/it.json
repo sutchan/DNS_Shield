@@ -73,7 +73,8 @@
     "invalidUrl": "Inserisci un URL valido",
     "invalidUrlsFiltered": "Filtrati {count} URL non validi",
     "cleared": "Svuotato",
-    "done": "Fatto"
+    "done": "Fatto",
+    "domainsLoadFailed": "Impossibile caricare l'origine dei domini, controlla la connessione"
   },
   "header": {
     "dnsmasqTitle": "Elenco Blocco Pubblicità Dnsmasq",

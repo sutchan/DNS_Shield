@@ -1,4 +1,4 @@
-// src/hooks/useAsyncRuleProcessing.ts v3.11.0
+// src/hooks/useAsyncRuleProcessing.ts v3.14.0
 // 统一的规则处理入口：小文本走主线程同步处理（Worker 启动开销大于收益），
 // 超过阈值的大文本移交 Web Worker；解析结果以序号守卫丢弃过期响应，
 // 避免快速连续输入时旧结果覆盖新输入。
@@ -10,6 +10,7 @@ import {
   sortDomains as sortDomainsUtil,
   dedupeDomains as dedupeDomainsUtil
 } from '../utils/parser';
+import { countLines } from '../utils/lineCount';
 import { useRuleWorker, WORKER_LINE_THRESHOLD } from './useRuleWorker';
 import type { ParsedData } from '../types';
 import type { ParseStats } from '../types/formats';
@@ -18,8 +19,6 @@ export interface ParseOutcome {
   data: ParsedData;
   stats: ParseStats;
 }
-
-const countLines = (text: string): number => (text ? text.split('\n').length : 0);
 
 export const useAsyncRuleProcessing = () => {
   const { run, progress, isProcessing, isSupported } = useRuleWorker();

@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.ts v3.13.6
+// src/hooks/useDomainData.ts v3.14.0
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchWithCache } from '../utils/cachedFetch';
 import { generateLineNumbers } from './useLineNumbers';
@@ -8,6 +8,7 @@ import { logger } from '../utils/logger';
 import { isValidAutosave, writeAutosave, clearAutosave } from './autosaveStorage';
 import { useAsyncRuleProcessing } from './useAsyncRuleProcessing';
 import { WORKER_LINE_THRESHOLD } from './useRuleWorker';
+import { countLines } from '../utils/lineCount';
 import { useAutosave } from './useAutosave';
 
 export const useDomainData = (showToast: (key: string, params?: { [key: string]: string | number }) => void) => {
@@ -94,8 +95,11 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
       }
       // 所有源均失败且无内容：保留空状态（loadAll 的 finally 会统一处理 UI）
       logger.warn('Could not load any domains source (remote and local both empty).');
+      // 用户可见告警：远端域名源不可用时不能只写日志（T-P1-09）
+      showToastRef.current('domainsLoadFailed');
     } catch (error) {
       logger.warn('Could not load domains.txt:', error);
+      showToastRef.current('domainsLoadFailed');
     } finally {
       setIsLoading(false);
     }
@@ -120,11 +124,8 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   useEffect(() => {
     // 仅计数换行数判断规模，避免每次按键都 split 分配整块数组阻塞主线程
     // （10 万行级输入下，split 会瞬时分配巨大数组并拖慢输入响应）。
-    let lineCount = 1;
-    for (let i = 0; i < sourceInput.length; i++) {
-      if (sourceInput.charCodeAt(i) === 10) lineCount++;
-    }
-    const isLarge = lineCount >= WORKER_LINE_THRESHOLD;
+    // 计数逻辑统一收敛到 utils/lineCount（T-P1-08），与 Worker 侧同源同实现。
+    const isLarge = countLines(sourceInput) >= WORKER_LINE_THRESHOLD;
     const timer = setTimeout(() => {
       parseSourceData(sourceInput);
     }, isLarge ? 300 : 0);

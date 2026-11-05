@@ -73,7 +73,8 @@
     "invalidUrl": "Silakan masukkan URL yang valid",
     "invalidUrlsFiltered": "Menyaring {count} URL tidak valid",
     "cleared": "Dibersihkan",
-    "done": "Selesai"
+    "done": "Selesai",
+    "domainsLoadFailed": "Gagal memuat sumber domain, periksa koneksi Anda"
   },
   "header": {
     "dnsmasqTitle": "Daftar Blok Iklan Dnsmasq",

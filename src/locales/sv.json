@@ -73,7 +73,8 @@
     "invalidUrl": "Ange en giltig URL",
     "invalidUrlsFiltered": "Filtrerade {count} ogiltiga URL:er",
     "cleared": "Rensat",
-    "done": "Klart"
+    "done": "Klart",
+    "domainsLoadFailed": "Det gick inte att läsa in domänkällan, kontrollera din anslutning"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq annonsblockeringslista",

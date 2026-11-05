@@ -1,4 +1,4 @@
-// src/hooks/useRuleWorker.ts v3.13.6
+// src/hooks/useRuleWorker.ts v3.14.0
 // 规则处理 Worker 的主线程控制器：负责 Worker 生命周期、请求/响应配对、
 // 进度回调与耗时统计。不支持 Worker 的环境（SSR / 老旧浏览器）返回 null，
 // 由调用方回退主线程同步处理，保证功能不中断。
@@ -6,6 +6,7 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { logger } from '../utils/logger';
+import { countLines } from '../utils/lineCount';
 import type { ParsedData } from '../types';
 import type { ParseStats } from '../types/formats';
 import type { RuleWorkerResponse, RuleWorkerTask } from '../workers/ruleProcessor.worker';
@@ -112,7 +113,8 @@ export const useRuleWorker = () => {
           onProgress: (p) => setProgress({ processed: p.processed, total: p.total, elapsed: null }),
         });
         setIsProcessing(true);
-        setProgress({ processed: 0, total: text.split('\n').length, elapsed: null });
+        // 进度总数用非分配换行计数（T-P1-08），避免大文本每次任务都分配整块数组
+        setProgress({ processed: 0, total: countLines(text), elapsed: null });
         worker.postMessage({ id, task, text });
       });
     },

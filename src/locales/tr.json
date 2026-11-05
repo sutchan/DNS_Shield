@@ -73,7 +73,8 @@
     "invalidUrl": "Lütfen geçerli bir URL girin",
     "invalidUrlsFiltered": "{count} geçersiz URL filtrelendi",
     "cleared": "Temizlendi",
-    "done": "Tamamlandı"
+    "done": "Tamamlandı",
+    "domainsLoadFailed": "Alan kaynağı yüklenemedi, lütfen bağlantınızı kontrol edin"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq Reklam Engelleme Listesi",

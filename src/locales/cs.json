@@ -73,7 +73,8 @@
     "invalidUrl": "Zadejte prosím platnou URL adresu",
     "invalidUrlsFiltered": "Filtrováno {count} neplatných URL",
     "cleared": "Vymazáno",
-    "done": "Hotovo"
+    "done": "Hotovo",
+    "domainsLoadFailed": "Nepodařilo se načíst zdroj domén, zkontrolujte připojení"
   },
   "header": {
     "dnsmasqTitle": "Seznam blokování reklam Dnsmasq",

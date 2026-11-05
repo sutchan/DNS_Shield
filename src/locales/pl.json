@@ -73,7 +73,8 @@
     "invalidUrl": "Wprowadź prawidłowy adres URL",
     "invalidUrlsFiltered": "Filtrowano {count} nieprawidłowych URL-i",
     "cleared": "Wyczyszczono",
-    "done": "Gotowe"
+    "done": "Gotowe",
+    "domainsLoadFailed": "Nie udało się wczytać źródła domen, sprawdź połączenie"
   },
   "header": {
     "dnsmasqTitle": "Lista blokowania reklam Dnsmasq",

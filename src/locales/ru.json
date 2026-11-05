@@ -73,7 +73,8 @@
     "invalidUrl": "Введите действительный URL-адрес",
     "invalidUrlsFiltered": "Отфильтровано {count} недействительных URL",
     "cleared": "Очищено",
-    "done": "Готово"
+    "done": "Готово",
+    "domainsLoadFailed": "Не удалось загрузить источник доменов, проверьте подключение"
   },
   "header": {
     "dnsmasqTitle": "Список блокировки рекламы Dnsmasq",

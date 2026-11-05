@@ -73,7 +73,8 @@
     "invalidUrl": "Voer een geldige URL in",
     "invalidUrlsFiltered": "{count} ongeldige URLs gefilterd",
     "cleared": "Gewist",
-    "done": "Gereed"
+    "done": "Gereed",
+    "domainsLoadFailed": "Kan domeinbron niet laden, controleer uw verbinding"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq advertentieblokkeringslijst",

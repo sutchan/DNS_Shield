@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.test.ts v3.13.1
+// src/hooks/useDomainData.test.ts v3.14.0
 // @vitest-environment jsdom
 // 解析编排契约（T-P1-05）：
 //   小文本（< WORKER_LINE_THRESHOLD）立即解析以保预览实时；大文本走 300ms 防抖，
@@ -295,6 +295,29 @@ describe('useDomainData · 远端/本地源加载', () => {
     const { result, unmount } = renderHook(() => useDomainData(vi.fn()));
     await advance(0);
 
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.sourceInput).toBe('');
+    unmount();
+  });
+
+  it('远端与本地源均为空时提示 domainsLoadFailed（用户可感知，T-P1-09）', async () => {
+    fetchWithCacheMock.mockResolvedValue(null);
+    isValidAutosaveMock.mockReturnValue(false);
+    const showToast = vi.fn();
+    const { unmount } = renderHook(() => useDomainData(showToast));
+    await advance(0);
+
+    expect(showToast).toHaveBeenCalledWith('domainsLoadFailed');
+    unmount();
+  });
+
+  it('远端抛错时提示 domainsLoadFailed 且保持空状态（T-P1-09）', async () => {
+    fetchWithCacheMock.mockRejectedValue(new Error('network down'));
+    const showToast = vi.fn();
+    const { result, unmount } = renderHook(() => useDomainData(showToast));
+    await advance(0);
+
+    expect(showToast).toHaveBeenCalledWith('domainsLoadFailed');
     expect(result.current.isLoading).toBe(false);
     expect(result.current.sourceInput).toBe('');
     unmount();

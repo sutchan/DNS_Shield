@@ -73,7 +73,8 @@
     "invalidUrl": "कृपया एक मान्य URL दर्ज करें",
     "invalidUrlsFiltered": "{count} अमान्य URL फ़िल्टर किए गए",
     "cleared": "साफ़ किया गया",
-    "done": "पूर्ण"
+    "done": "पूर्ण",
+    "domainsLoadFailed": "डोमेन स्रोत लोड करने में विफल, कृपया कनेक्शन जाँचें"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq विज्ञापन ब्लॉक सूची",

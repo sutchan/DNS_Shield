@@ -5,6 +5,29 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.14.0]
+
+### Added（域名源加载失败用户告警 · T-P1-09）
+- `useDomainData.loadDomainData` 在远端预设源与同源 `/domains.txt` 回退**全部失败**时，此前仅写 `logger.warn`（生产环境 logger 静默），用户完全无感知；现追加用户可见 toast `toast.domainsLoadFailed`
+- i18n 新增 `toast.domainsLoadFailed` × 16 语言（zh-cn「域名源加载失败，请检查网络连接」、en「Failed to load the domains source, please check your connection」等），`TranslationToast` 接口同步补字段声明
+- `scripts/locale-baseline.json` 基线由 214 键刷新至 **215 键**（`pnpm locales:baseline`），`check-locales` 双源硬门禁校验通过
+- `useDomainData.test.ts` 补 2 例：源全空 / 远端抛错时均断言 toast 被调用
+
+### Changed（统一行数统计，消除重复实现与全量 split 分配 · T-P1-08）
+- 新增 `src/utils/lineCount.ts`：非分配换行计数 `countLines`，语义与 `split('\n').length` 完全一致，零额外内存分配
+- 同一「文本行数」逻辑此前散落 3 处、其中 2 处用 `text.split('\n').length`（10 万行输入每次分配 10 万元素数组，主线程可感知卡顿）：`useAsyncRuleProcessing`（本地重复实现）、`useDomainData`（内联计数循环）、`useRuleWorker`（进度总数）—— 现统一收敛到 `utils/lineCount`
+- 新增 `src/utils/lineCount.test.ts`（7 例）：空串 / 单行 / 换行 / 结尾换行语义、与 `split('\n').length` 的样本一致性、10 万行性能回归守卫
+
+### Fixed（任务文档数据漂移修正）
+- `docs/tasks.md` 指标表「测试套件 / 用例」长期记 27 / 249，实为 v3.13.5 删除 `useFlowTokens`（-1 套件 / -8 用例）后的过期值；按 2026-11-05 实跑修正为 **27 / 250**
+- 覆盖率数值由 2026-10-19 的 87.42 / 86.05 / 89.83 更新为 **2026-11-05 实测 87.20 / 85.59 / 90.75**（语句 / 分支 / 函数 / 行）
+- i18n 递归键数 214 → **215**；`docs/tasks.md` 登记本轮 T-P1-08 / T-P1-09（🟡 P1）并在其完成后归档至 `docs/tasks-done.md`
+- 「超大规模数据性能 (Web Worker)」进度 40% → **55%**（主线程 O(n) 分配已消除；分片并行化未实施，仍为后续增强项）
+
+### Verified
+- `tsc --noEmit` 0 错、`next lint` 0 warning 0 error、`vitest run` **27 套件 / 250 用例**全绿、`check-locales` 16 语 / 215 键一致、`sync-facts.mjs --check` 13 处版本展示位一致
+- 同步 bump 版本至 v3.14.0（`package.json` / `src/config/version.ts` / `next.config.js` env.version + 13 处文档展示位 + `public/` 规则产物头部版本号）
+
 ## [3.13.6]
 
 ### Fixed（全项目代码审查与质量加固）

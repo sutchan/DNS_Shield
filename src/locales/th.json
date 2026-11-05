@@ -73,7 +73,8 @@
     "invalidUrl": "กรุณาใส่ URL ที่ถูกต้อง",
     "invalidUrlsFiltered": "กรอง URL ไม่ถูกต้อง {count} รายการ",
     "cleared": "ล้างแล้ว",
-    "done": "เสร็จแล้ว"
+    "done": "เสร็จแล้ว",
+    "domainsLoadFailed": "โหลดแหล่งข้อมูลโดเมนไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่อ"
   },
   "header": {
     "dnsmasqTitle": "รายการบล็อกโฆษณา Dnsmasq",

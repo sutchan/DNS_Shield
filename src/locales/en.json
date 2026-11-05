@@ -77,7 +77,8 @@
     "invalidUrl": "Please enter a valid URL",
     "invalidUrlsFiltered": "Filtered {count} invalid URLs",
     "cleared": "Cleared",
-    "done": "Done"
+    "done": "Done",
+    "domainsLoadFailed": "Failed to load the domains source, please check your connection"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq Ad Block List",

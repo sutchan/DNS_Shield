@@ -73,7 +73,8 @@
     "invalidUrl": "يرجى إدخال عنوان URL صالح",
     "invalidUrlsFiltered": "تم تصفية {count} عناوين URL غير صالحة",
     "cleared": "تم المسح",
-    "done": "تم"
+    "done": "تم",
+    "domainsLoadFailed": "فشل تحميل مصدر النطاقات، يرجى التحقق من اتصالك"
   },
   "header": {
     "dnsmasqTitle": "قائمة فلترة Ad Block لـ Dnsmasq",

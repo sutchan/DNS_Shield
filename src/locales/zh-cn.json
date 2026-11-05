@@ -82,7 +82,8 @@
     "invalidUrl": "请输入有效的 URL 地址",
     "invalidUrlsFiltered": "已过滤 {count} 个无效 URL",
     "cleared": "已清空",
-    "done": "已完成"
+    "done": "已完成",
+    "domainsLoadFailed": "域名源加载失败，请检查网络连接"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq 广告过滤列表",
