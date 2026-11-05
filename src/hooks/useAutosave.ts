@@ -1,4 +1,4 @@
-// src/hooks/useAutosave.ts v3.11.1
+// src/hooks/useAutosave.ts v3.15.0
 // 自动保存编排：挂载时恢复本地草稿（IndexedDB 优先，localStorage 降级），
 // 并按固定间隔持久化当前输入。存储读写细节见 autosaveStorage / utils/idb。
 
@@ -35,10 +35,10 @@ export const useAutosave = ({
     if (restoredRef.current) return; // 严格单次守卫（StrictMode 双调用亦只执行一次）
     void (async () => {
       const autosave = await readAutosave();
-      // 远端加载可能已填充内容，此时不让本地草稿覆盖
-      if (!autosave || sourceInputRef.current.trim()) {
-        return;
-      }
+      if (!autosave) return;
+      // 草稿优先：本地自动保存始终优先于远端默认清单。
+      // 旧逻辑在「远端先落地」时直接放弃草稿，会造成用户编辑丢失；
+      // 现改为无条件恢复草稿，远端加载完成后再由 restoredRef 判定放弃远端内容。
       setSourceInput(autosave);
       parseSourceData(autosave);
       generateLineNumbers(autosave, lineNumbersRef);

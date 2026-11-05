@@ -1,4 +1,4 @@
-// src/utils/rulesGenerator.ts v3.12.0
+// src/utils/rulesGenerator.ts v3.15.0
 // 规则生成核心：将解析后的域名数据转换为 Dnsmasq / Hosts / AdGuard / 白名单 /
 // Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS 12 种格式。纯函数、可单测。
 // 头部注释配置（HEADER_CONFIGS）已拆分至 headerConfigs.ts。
@@ -51,7 +51,13 @@ export const generateHeader = (
     lines.push(`${commentChar} ${t.header.whitelist}: ${whitelistCount} ${t.header.domainsCount}`);
   }
   if (extraUsage) {
-    lines.push(extraUsage);
+    // usage 说明必须逐行补上格式注释符：否则 dnsmasq/unbound 会因「未知指令」
+    // 拒绝加载整个配置（路由器 DNS 失效），hosts/AdGuard 清单会混入非法条目，
+    // Bind RPZ 区域文件会语法报错（T-P1-10）。
+    for (const usageLine of extraUsage.split('\n')) {
+      const trimmed = usageLine.trim();
+      if (trimmed) lines.push(`${commentChar} ${trimmed}`);
+    }
   }
   lines.push(`${commentChar} ${t.header.project} https://github.com/sutchan/DNS_Shield`);
   lines.push(`${commentChar} ${t.header.demo} https://dns.ewuse.com/`);

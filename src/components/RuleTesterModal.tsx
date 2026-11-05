@@ -1,4 +1,4 @@
-// src/components/RuleTesterModal.tsx v3.10.1
+// src/components/RuleTesterModal.tsx v3.15.0
 // 域名拦截匹配独立测试弹窗：支持实时输入任意域名或 URL 进行规则匹配分析
 'use client';
 import * as React from 'react';
@@ -8,6 +8,8 @@ import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { ParsedData } from '../types';
 import { matchDomainRule, RuleMatchResult } from '../utils/ruleMatcher';
+import { lockScroll, unlockScroll } from '../utils/scrollLock';
+import { useModalEscape } from '../hooks/useModalEscape';
 
 interface RuleTesterModalProps {
   open: boolean;
@@ -21,25 +23,25 @@ export const RuleTesterModal: React.FC<RuleTesterModalProps> = ({ open, onClose,
   const [queryInput, setQueryInput] = React.useState('');
   const [matchResult, setMatchResult] = React.useState<RuleMatchResult | null>(null);
 
+  // 关闭后延迟卸载以播放退出动画
   React.useEffect(() => {
     if (open) {
       setMounted(true);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      const timer = setTimeout(() => setMounted(false), 200);
-      return () => clearTimeout(timer);
+      return;
     }
+    const timer = setTimeout(() => setMounted(false), 200);
+    return () => clearTimeout(timer);
   }, [open]);
 
+  // 滚动锁：引用计数实现，与其他弹窗叠放时互不破坏（T-P1-17）
   React.useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open, onClose]);
+    lockScroll();
+    return () => unlockScroll();
+  }, [open]);
+
+  // ESC 关闭：仅栈顶弹窗响应，避免叠放弹窗被一次按键全关（T-P1-16）
+  useModalEscape(open, onClose);
 
   const handleTest = (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -53,7 +55,7 @@ export const RuleTesterModal: React.FC<RuleTesterModalProps> = ({ open, onClose,
   return (
     <div
       className={`guide-modal-overlay ${open ? 'open' : 'closing'}`}
-      id="ruleTesterModal"
+      id="rule-tester-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="rule-tester-modal-title"

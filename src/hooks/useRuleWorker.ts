@@ -1,4 +1,4 @@
-// src/hooks/useRuleWorker.ts v3.14.0
+// src/hooks/useRuleWorker.ts v3.15.0
 // 规则处理 Worker 的主线程控制器：负责 Worker 生命周期、请求/响应配对、
 // 进度回调与耗时统计。不支持 Worker 的环境（SSR / 老旧浏览器）返回 null，
 // 由调用方回退主线程同步处理，保证功能不中断。
@@ -94,6 +94,8 @@ export const useRuleWorker = () => {
     return () => {
       workerRef.current?.terminate();
       workerRef.current = null;
+      // 释放挂起任务：必须 resolve，否则调用方的 await 永挂、进度条永久卡死（T-P1-14）
+      pendingTasks.forEach((p) => p.resolve({ kind: 'text', text: '', elapsed: 0 }));
       pendingTasks.clear();
     };
   }, []);
@@ -115,7 +117,16 @@ export const useRuleWorker = () => {
         setIsProcessing(true);
         // 进度总数用非分配换行计数（T-P1-08），避免大文本每次任务都分配整块数组
         setProgress({ processed: 0, total: countLines(text), elapsed: null });
-        worker.postMessage({ id, task, text });
+        try {
+          worker.postMessage({ id, task, text });
+        } catch (error) {
+          // postMessage 失败（如数据不可结构化克隆）：立即结算该任务，
+          // 否则 Promise 永挂、进度条常驻（T-P1-14）
+          pendingRef.current.delete(id);
+          setIsProcessing(pendingRef.current.size > 0);
+          logger.warn('Rule worker postMessage failed:', error);
+          resolve({ kind: 'text', text: '', elapsed: 0 });
+        }
       });
     },
     [ensureWorker]

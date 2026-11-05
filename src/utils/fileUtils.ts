@@ -1,4 +1,4 @@
-// src/utils/fileUtils.ts v3.13.6
+// src/utils/fileUtils.ts v3.15.0
 import { logger } from './logger';
 
 const MAX_URL_LENGTH = 2048;
@@ -141,12 +141,28 @@ export interface FetchUrlsResult {
   content: string;
   failedUrls: { url: string; error: string }[];
 }
+
+// 多 URL 合并后的总体积上限（50MB）：单 URL 已有 10MB 护栏，但 N 个 URL 累加
+// 仍可能耗尽标签页内存（20 个 URL × 10MB = 200MB），需设置总量上限（T-P2-06）
+const MAX_TOTAL_SIZE = 50 * 1024 * 1024;
+
 export const fetchFromUrls = async (urls: string[], timeout = 10000): Promise<FetchUrlsResult> => {
   const results = await Promise.allSettled(urls.map((url) => fetchFromUrl(url, timeout)));
   const failedUrls: { url: string; error: string }[] = [];
   let allContent = '';
+  let totalSize = 0;
   results.forEach((result, index) => {
     if (result.status === 'fulfilled') {
+      // 以字符长度近似字节数：Unicode 码元数对 UTF-8 体积偏保守
+      const size = result.value.length;
+      if (totalSize + size > MAX_TOTAL_SIZE) {
+        failedUrls.push({
+          url: urls[index],
+          error: `累计体积超过上限（${Math.round(MAX_TOTAL_SIZE / 1024 / 1024)}MB），已跳过`,
+        });
+        return;
+      }
+      totalSize += size;
       allContent += result.value + '\n';
     } else {
       failedUrls.push({

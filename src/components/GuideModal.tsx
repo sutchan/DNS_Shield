@@ -1,10 +1,12 @@
-// src/components/GuideModal.tsx v3.9.0
-// 使用指南独立弹窗（对齐原型 #guideModal：页脚 linkGuide 触发）
+// src/components/GuideModal.tsx v3.15.0
+// 使用指南独立弹窗（对齐原型 #guide-modal52：页脚 linkGuide 触发）
 'use client';
 import * as React from 'react';
 import { X } from 'lucide-react';
 import { useT } from '../context/AppContext';
 import { Button } from './ui/Button';
+import { lockScroll, unlockScroll } from '../utils/scrollLock';
+import { useModalEscape } from '../hooks/useModalEscape';
 
 interface GuideModalProps {
   open: boolean;
@@ -15,27 +17,25 @@ const GuideModal: React.FC<GuideModalProps> = ({ open, onClose }) => {
   const t = useT();
   const [mounted, setMounted] = React.useState(open);
 
-  // 打开时锁定滚动，关闭后延迟卸载以播放退出动画
+  // 关闭后延迟卸载以播放退出动画
   React.useEffect(() => {
     if (open) {
       setMounted(true);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      const timer = setTimeout(() => setMounted(false), 200);
-      return () => clearTimeout(timer);
+      return;
     }
+    const timer = setTimeout(() => setMounted(false), 200);
+    return () => clearTimeout(timer);
   }, [open]);
 
-  // ESC 关闭
+  // 滚动锁：引用计数实现，与其他弹窗叠放时互不破坏（T-P1-17）
   React.useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open, onClose]);
+    lockScroll();
+    return () => unlockScroll();
+  }, [open]);
+
+  // ESC 关闭：仅栈顶弹窗响应，避免叠放弹窗被一次按键全关（T-P1-16）
+  useModalEscape(open, onClose);
 
   if (!mounted) return null;
 
@@ -48,7 +48,7 @@ const GuideModal: React.FC<GuideModalProps> = ({ open, onClose }) => {
   return (
     <div
       className={`guide-modal-overlay ${open ? 'open' : 'closing'}`}
-      id="guideModal"
+      id="guide-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="guide-modal-title"

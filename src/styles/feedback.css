@@ -1,4 +1,4 @@
-/* src/styles/feedback.css v3.13.6 — 加载态、弹窗、可访问性工具类（原 globals.css 相应段） */
+/* src/styles/feedback.css v3.15.0 — 加载态、弹窗、可访问性工具类（原 globals.css 相应段） */
 
 /* ============================================
    Loading
@@ -57,7 +57,7 @@
 }
 
 /* ============================================
-   使用指南弹窗（对齐原型 #guideModal）
+   使用指南弹窗（对齐原型 #guide-modal1388）
    ============================================ */
 .guide-modal-overlay {
   @apply fixed inset-0 z-50 flex items-center justify-center p-4;

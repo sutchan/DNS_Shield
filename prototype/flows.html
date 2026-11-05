@@ -123,7 +123,7 @@
     <div class="flow" id="flow-url">
       <div class="flow-head"><span class="flow-num">1</span><h3>URL 批量导入 → 解析</h3></div>
       <p class="flow-desc">从远程 URL 流式读取域名（含 10MB 字节上限防 DoS），解析并合并入编辑区，实时更新统计。</p>
-      <div class="stepper" id="urlSteps">
+      <div class="stepper" id="url-steps">
         <div class="step-node active" data-step="1"><span class="step-dot">1</span><span class="step-label">输入 URL</span></div>
         <div class="step-line"></div>
         <div class="step-node" data-step="2"><span class="step-dot">2</span><span class="step-label">获取中</span></div>
@@ -132,13 +132,13 @@
       </div>
       <div class="stage">
         <div class="row">
-          <input class="input" id="fUrl" value="https://example.com/ads.txt" style="flex:1" />
-          <button class="btn btn-primary" id="fUrlBtn">获取</button>
+          <input class="input" id="f-url" value="https://example.com/ads.txt" style="flex:1" />
+          <button class="btn btn-primary" id="f-url-btn">获取</button>
         </div>
-        <div class="loading-bar" id="fUrlLoad"><div class="fill"></div></div>
+        <div class="loading-bar" id="f-url-load"><div class="fill"></div></div>
         <div class="row" style="font-size:12px">
-          <span class="pill idle" id="fUrlPill">待操作</span>
-          <span class="mono" id="fUrlCount" style="color:hsl(var(--muted-foreground))">已导入 0 行</span>
+          <span class="pill idle" id="f-url-pill">待操作</span>
+          <span class="mono" id="f-url-count" style="color:hsl(var(--muted-foreground))">已导入 0 行</span>
         </div>
       </div>
     </div>
@@ -148,7 +148,7 @@
       <div class="flow-head"><span class="flow-num">2</span><h3>输出格式切换</h3></div>
       <p class="flow-desc">12 种格式实时生成预览，切换有淡入动效。点击 Tab 体验状态转换。</p>
       <div class="row">
-        <div class="tabs" id="fFmtTabs">
+        <div class="tabs" id="f-fmt-tabs">
           <button class="tab active" data-f="dnsmasq">Dnsmasq</button>
           <button class="tab" data-f="hosts">Hosts</button>
           <button class="tab" data-f="adguard">AdGuard</button>
@@ -162,9 +162,9 @@
           <button class="tab" data-f="clash">Clash Meta</button>
           <button class="tab" data-f="coredns">CoreDNS</button>
         </div>
-        <button class="btn btn-outline" id="fCopyBtn">复制</button>
+        <button class="btn btn-outline" id="f-copy-btn">复制</button>
       </div>
-      <div class="preview-pane"><div class="code" id="fPreview"></div></div>
+      <div class="preview-pane"><div class="code" id="f-preview"></div></div>
     </div>
 
     <!-- Flow 3: 设置驱动生成 -->
@@ -173,14 +173,14 @@
       <p class="flow-desc">修改项目名 / 版本 / 重定向 IP，切换头部注释与 IPv6 开关，预览即时重渲染（双向绑定）。</p>
       <div class="stage">
         <div class="row">
-          <input class="input" id="fName" value="家庭网络屏蔽" style="width:180px" placeholder="项目名" />
-          <input class="input" id="fIp" value="0.0.0.0" style="width:130px" placeholder="IPv4" />
+          <input class="input" id="f-name" value="家庭网络屏蔽" style="width:180px" placeholder="项目名" />
+          <input class="input" id="f-ip" value="0.0.0.0" style="width:130px" placeholder="IPv4" />
         </div>
         <div class="row">
-          <label class="check"><span class="box on" id="fHeadBox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>添加头部注释</label>
-          <label class="check"><span class="box" id="fIp6Box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>屏蔽 IPv6</label>
+          <label class="check"><span class="box on" id="f-head-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>添加头部注释</label>
+          <label class="check"><span class="box" id="f-ip6-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>屏蔽 IPv6</label>
         </div>
-        <div class="preview-pane"><div class="code" id="fSetPreview"></div></div>
+        <div class="preview-pane"><div class="code" id="f-set-preview"></div></div>
       </div>
     </div>
 
@@ -190,19 +190,19 @@
       <p class="flow-desc">暗色模式整体缓动过渡；语言切换即时重渲染文案（对齐 src/locales 多语言）。</p>
       <div class="row">
         <span class="mono" style="color:hsl(var(--muted-foreground))">主题：</span>
-        <button class="sw on" id="fTheme" aria-label="切换主题"><span class="thumb"></span></button>
-        <span class="mono" id="fThemeLabel">Dark</span>
+        <button class="sw on" id="f-theme" aria-label="切换主题"><span class="thumb"></span></button>
+        <span class="mono" id="f-theme-label">Dark</span>
         <span style="width:1px;height:20px;background:hsl(var(--border));margin:0 8px"></span>
         <span class="mono" style="color:hsl(var(--muted-foreground))">语言：</span>
-        <button class="btn btn-outline btn-sm" id="fLang">中文 / English</button>
-        <span class="mono" id="fLangLabel">当前：中文</span>
+        <button class="btn btn-outline btn-sm" id="f-lang">中文 / English</button>
+        <span class="mono" id="f-lang-label">当前：中文</span>
       </div>
-      <div class="callout" id="fThemeCallout">主题与语言偏好持久化至 localStorage，刷新保持。</div>
+      <div class="callout" id="f-theme-callout">主题与语言偏好持久化至 localStorage，刷新保持。</div>
     </div>
 
     <div class="callout">全部流程为纯前端原型，无后端依赖；动效时长与缓动曲线对齐 <code class="mono">wireframes.html</code> 动效规范。</div>
   </div>
-  <div class="toast" id="flowToast" role="status" aria-live="polite"></div>
+  <div class="toast" id="flow-toast" role="status" aria-live="polite"></div>
 
   <script>
   (function () {
@@ -215,22 +215,22 @@
     var lang = 'zh'; var theme = 'dark';
     var SAMPLE = ['doubleclick.net','google-analytics.com','adservice.google.com','+github.com','@cdn.example.com=1.2.3.4'].join('\n');
 
-    function toast(m) { var t = $('flowToast'); t.textContent = m; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 1800); }
+    function toast(m) { var t = $('flow-toast'); t.textContent = m; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 1800); }
 
     /* Flow 1: URL import */
-    $('fUrlBtn').addEventListener('click', function () {
-      var nodes = $('urlSteps').querySelectorAll('.step-node');
-      var lines = $('urlSteps').querySelectorAll('.step-line');
+    $('f-url-btn').addEventListener('click', function () {
+      var nodes = $('url-steps').querySelectorAll('.step-node');
+      var lines = $('url-steps').querySelectorAll('.step-line');
       nodes[0].classList.remove('active','done'); nodes[0].classList.add('done');
       nodes[1].classList.add('active'); lines[0].classList.add('done');
-      $('fUrlPill').className = 'pill run'; $('fUrlPill').textContent = I18N[lang].gen;
-      $('fUrlLoad').classList.add('on'); $('fUrlBtn').disabled = true;
+      $('f-url-pill').className = 'pill run'; $('f-url-pill').textContent = I18N[lang].gen;
+      $('f-url-load').classList.add('on'); $('f-url-btn').disabled = true;
       setTimeout(function () {
         nodes[1].classList.remove('active'); nodes[1].classList.add('done');
         nodes[2].classList.add('active','done'); lines[1].classList.add('done');
-        $('fUrlLoad').classList.remove('on'); $('fUrlBtn').disabled = false;
-        $('fUrlPill').className = 'pill ok'; $('fUrlPill').textContent = I18N[lang].fetched;
-        $('fUrlCount').textContent = '已导入 ' + 5 + ' 行';
+        $('f-url-load').classList.remove('on'); $('f-url-btn').disabled = false;
+        $('f-url-pill').className = 'pill ok'; $('f-url-pill').textContent = I18N[lang].fetched;
+        $('f-url-count').textContent = '已导入 ' + 5 + ' 行';
         toast(I18N[lang].fetched);
       }, 900);
     });
@@ -251,26 +251,26 @@
       coredns: '0.0.0.0 doubleclick.net\n0.0.0.0 google-analytics.com\n# 白名单\n# 已白名单: github.com'
     };
     function renderFmt(f) {
-      $('fPreview').innerHTML = '<span class="fade-in">' + fmtGen[f] + '</span>';
+      $('f-preview').innerHTML = '<span class="fade-in">' + fmtGen[f] + '</span>';
     }
     renderFmt('dnsmasq');
-    $('fFmtTabs').querySelectorAll('.tab').forEach(function (t) {
+    $('f-fmt-tabs').querySelectorAll('.tab').forEach(function (t) {
       t.addEventListener('click', function () {
-        $('fFmtTabs').querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active'); });
+        $('f-fmt-tabs').querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active'); });
         t.classList.add('active'); renderFmt(t.dataset.f);
       });
     });
-    $('fCopyBtn').addEventListener('click', function () { toast(I18N[lang].copied); });
+    $('f-copy-btn').addEventListener('click', function () { toast(I18N[lang].copied); });
 
     /* Flow 3: settings */
     function renderSet() {
-      var name = $('fName').value || 'DNS Shield';
-      var ip = $('fIp').value || '0.0.0.0';
-      var head = $('fHeadBox').classList.contains('on');
-      var ip6 = $('fIp6Box').classList.contains('on');
+      var name = $('f-name').value || 'DNS Shield';
+      var ip = $('f-ip').value || '0.0.0.0';
+      var head = $('f-head-box').classList.contains('on');
+      var ip6 = $('f-ip6-box').classList.contains('on');
       var out = (head ? '# 版本::3.10.1 项目:' + name + '\n' : '') + 'address=/doubleclick.net/' + ip + '\n';
       if (ip6) out += 'address=/doubleclick.net/::\n';
-      $('fSetPreview').innerHTML = out;
+      $('f-set-preview').innerHTML = out;
     }
     ['fName','fIp'].forEach(function (id) { $(id).addEventListener('input', renderSet); });
     ['fHeadBox','fIp6Box'].forEach(function (id) {
@@ -281,16 +281,16 @@
     /* Flow 4: theme / lang */
     function applyTheme() {
       document.documentElement.classList.toggle('dark', theme === 'dark');
-      $('fTheme').classList.toggle('on', theme === 'dark');
-      $('fThemeLabel').textContent = I18N[lang].theme;
+      $('f-theme').classList.toggle('on', theme === 'dark');
+      $('f-theme-label').textContent = I18N[lang].theme;
     }
-    $('fTheme').addEventListener('click', function () {
+    $('f-theme').addEventListener('click', function () {
       theme = theme === 'dark' ? 'light' : 'dark'; applyTheme();
     });
-    $('fLang').addEventListener('click', function () {
+    $('f-lang').addEventListener('click', function () {
       lang = lang === 'zh' ? 'en' : 'zh';
-      $('fLangLabel').textContent = lang === 'zh' ? I18N.zh.lang : I18N.en.lang;
-      $('fThemeLabel').textContent = I18N[lang].theme;
+      $('f-lang-label').textContent = lang === 'zh' ? I18N.zh.lang : I18N.en.lang;
+      $('f-theme-label').textContent = I18N[lang].theme;
     });
     applyTheme();
   })();

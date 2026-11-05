@@ -1,4 +1,4 @@
-// src/hooks/useHomeUiState.ts v3.13.6
+// src/hooks/useHomeUiState.ts v3.15.0
 // 首页本地 UI 状态编排（从 useHomeController 抽离）：区域折叠 / 设置弹窗 / 指南弹窗
 // 的开关、编辑器滚动同步、滚动到输入区并聚焦。与领域数据/规则生成解耦，单一职责。
 import { useState, useRef, useCallback } from 'react';
@@ -8,7 +8,7 @@ export function useHomeUiState(lineNumbersRef: React.RefObject<HTMLDivElement>) 
   const [isUrlSectionCollapsed, setIsUrlSectionCollapsed] = useState(true);
   // 设置面板弹窗开关（对齐原型 settings-modal：L2 由侧栏折叠改为居中弹窗）
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  // 使用指南弹窗开关（对齐原型 #guideModal：页脚 linkGuide 触发）
+  // 使用指南弹窗开关（对齐原型 #guide-modal495：页脚 linkGuide 触发）
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const openGuide = useCallback(() => setIsGuideOpen(true), [setIsGuideOpen]);
 

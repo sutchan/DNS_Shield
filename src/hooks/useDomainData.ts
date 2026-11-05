@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.ts v3.14.0
+// src/hooks/useDomainData.ts v3.15.0
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchWithCache } from '../utils/cachedFetch';
 import { generateLineNumbers } from './useLineNumbers';
@@ -77,13 +77,14 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   const loadDomainData = useCallback(async () => {
     setIsLoading(true);
     try {
-      // 若用户已有本地自动保存草稿，则不拉取远端覆盖（优先本地草稿）
-      if (autosaveRestoredRef.current && sourceInputRef.current.trim()) {
-        return;
-      }
       // 优先远端预设源，失败则回退同源 /domains.txt；
       // fetchWithCache 内置 ETag 条件请求（304 复用）与离线缓存兜底
       const remote = await fetchWithCache(config.domainsUrl);
+      // 网络往返期间本地草稿可能已恢复（IndexedDB 异步读取）：此时必须放弃
+      // 远端内容，否则用户草稿会被内置清单静默覆盖（数据丢失，T-P1-11）。
+      if (autosaveRestoredRef.current && sourceInputRef.current.trim()) {
+        return;
+      }
       if (remote && remote.trim()) {
         await loadLocalDomains(remote);
         return;
@@ -142,8 +143,11 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   }, []);
 
   const sortDomains = useCallback(() => {
-    void processSort(sourceInputRef.current).then((sorted) => {
+    const snapshot = sourceInputRef.current;
+    void processSort(snapshot).then((sorted) => {
       if (sorted === null) return;
+      // 处理期间用户继续输入时，不得用「点击瞬间」的旧文本覆盖新内容（T-P1-15）
+      if (sourceInputRef.current !== snapshot) return;
       setSourceInput(sorted);
       parseSourceData(sorted);
       showToastRef.current('domainsSorted');
@@ -151,8 +155,11 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   }, [processSort, parseSourceData]);
 
   const dedupeDomains = useCallback(() => {
-    void processDedupe(sourceInputRef.current).then((result) => {
+    const snapshot = sourceInputRef.current;
+    void processDedupe(snapshot).then((result) => {
       if (!result) return;
+      // 同上：用户已修改输入则放弃本次去重结果
+      if (sourceInputRef.current !== snapshot) return;
       setSourceInput(result.content);
       parseSourceData(result.content);
       showToastRef.current('duplicatesRemoved', { count: result.removedCount });

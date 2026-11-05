@@ -1,4 +1,4 @@
-// vitest.config.ts v3.13.6
+// vitest.config.ts v3.15.0
 // 单元测试配置：覆盖纯逻辑层（src/utils）与编排层（src/hooks）。
 // Since Vitest 3.2.7 the v8 provider no longer double-counts sources on Windows
 // (the old drive-letter casing bug `e:\...` vs `E:\...` is fixed), so the reported
@@ -16,6 +16,11 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.ts'],
     coverage: {
       provider: 'v8',
+      // 统计口径：仅统计被测试实际加载到的源文件（all=false）。
+      // 显式声明以避免不同环境下 `all` 默认行为差异导致门禁数值忽高忽低
+      // （v3.15.0 实测：默认 all=true 会把未被 import 的文件按 0% 计入，
+      //   全局覆盖率由 88.85% 跌至 35.27% 而误判门禁失败）。
+      all: false,
       // utils = 纯逻辑层；hooks = 状态编排层（v3.12.0 起纳入门禁）
       include: ['src/utils/**/*.ts', 'src/hooks/**/*.ts'],
       // test-utils 为测试辅助代码（renderHook 等），不属于被测源码

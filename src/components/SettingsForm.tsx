@@ -1,4 +1,4 @@
-// src/components/SettingsForm.tsx v3.10.2
+// src/components/SettingsForm.tsx v3.15.0
 // 设置面板内部的表单内容（项目信息 / 生成选项 / 输出格式开关 / 外观主题）。
 // 从 SettingsPanel 抽离以保持主文件 ≤200 行，公开渲染契约不变。
 'use client';
@@ -26,40 +26,40 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, t
       <div className="settings-group" id="settings-group-project">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-3" id="settings-fields-grid">
           <div className="flex flex-col gap-1.5" id="settings-field-project">
-            <Label htmlFor="projectNameInput" className="text-xs font-medium text-muted-foreground">{t.projectName}</Label>
+            <Label htmlFor="project-name-input" className="text-xs font-medium text-muted-foreground">{t.projectName}</Label>
             <Input
               type="text"
-              id="projectNameInput"
+              id="project-name-input"
               name="projectName"
               value={settings.projectName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings((prev) => ({ ...prev, projectName: e.target.value }))}
             />
           </div>
           <div className="flex flex-col gap-1.5" id="settings-field-version">
-            <Label htmlFor="versionInput" className="text-xs font-medium text-muted-foreground">{t.version}</Label>
+            <Label htmlFor="version-input" className="text-xs font-medium text-muted-foreground">{t.version}</Label>
             <Input
               type="text"
-              id="versionInput"
+              id="version-input"
               name="version"
               value={settings.version}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings((prev) => ({ ...prev, version: e.target.value }))}
             />
           </div>
           <div className="flex flex-col gap-1.5" id="settings-field-ipv4">
-            <Label htmlFor="ipv4Input" className="text-xs font-medium text-muted-foreground">{t.ipV4}</Label>
+            <Label htmlFor="ipv4-input" className="text-xs font-medium text-muted-foreground">{t.ipV4}</Label>
             <Input
               type="text"
-              id="ipv4Input"
+              id="ipv4-input"
               name="ipv4"
               value={settings.ipv4}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings((prev) => ({ ...prev, ipv4: e.target.value }))}
             />
           </div>
           <div className="flex flex-col gap-1.5" id="settings-field-ipv6">
-            <Label htmlFor="ipv6Input" className="text-xs font-medium text-muted-foreground">{t.ipV6}</Label>
+            <Label htmlFor="ipv6-input" className="text-xs font-medium text-muted-foreground">{t.ipV6}</Label>
             <Input
               type="text"
-              id="ipv6Input"
+              id="ipv6-input"
               name="ipv6"
               value={settings.ipv6}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSettings((prev) => ({ ...prev, ipv6: e.target.value }))}
@@ -75,7 +75,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, t
         <div className="opt-grid" id="settings-options-grid">
           <label className="opt-card" id="settings-option-addheader">
             <Checkbox
-              id="addHeader"
+              id="add-header"
               checked={settings.addHeader}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, addHeader: checked === true }))}
             />
@@ -83,7 +83,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, t
           </label>
           <label className="opt-card" id="settings-option-blockipv6">
             <Checkbox
-              id="blockIPv6"
+              id="block-ipv6"
               checked={settings.blockIPv6}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, blockIPv6: checked === true }))}
             />
@@ -91,7 +91,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, t
           </label>
           <label className="opt-card" id="settings-option-dedup">
             <Checkbox
-              id="dedupDomains"
+              id="dedup-domains"
               checked={settings.dedupDomains}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, dedupDomains: checked === true }))}
             />
@@ -99,7 +99,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, t
           </label>
           <label className="opt-card" id="settings-option-removewildcard">
             <Checkbox
-              id="removeWildcard"
+              id="remove-wildcard"
               checked={settings.removeWildcard}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, removeWildcard: checked === true }))}
             />
@@ -107,7 +107,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, t
           </label>
           <label className="opt-card" id="settings-option-adguard-include-whitelist">
             <Checkbox
-              id="adguardIncludeWhitelist"
+              id="adguard-include-whitelist"
               checked={settings.adguardIncludeWhitelist}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, adguardIncludeWhitelist: checked === true }))}
             />
@@ -120,7 +120,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, t
           <h3 className="settings-group-title" id="settings-group-outtypes-title">{t.fmtGroup}</h3>
           <label className="opt-card opt-card-inline" id="settings-option-show-all-formats">
             <Checkbox
-              id="showAllFormats"
+              id="show-all-formats"
               checked={settings.showAllFormats}
               onCheckedChange={(checked) => setSettings((prev) => ({ ...prev, showAllFormats: checked === true }))}
             />
@@ -158,7 +158,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, t
               className={`theme-seg-btn ${theme === 'light' ? 'active' : ''}`}
               onClick={() => theme !== 'light' && toggleTheme()}
               aria-pressed={theme === 'light'}
-              id="themeSegLight"
+              id="theme-seg-light"
             >
               <Sun className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
               <span>{t.themeLight}</span>
@@ -168,7 +168,7 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, t
               className={`theme-seg-btn ${theme === 'dark' ? 'active' : ''}`}
               onClick={() => theme !== 'dark' && toggleTheme()}
               aria-pressed={theme === 'dark'}
-              id="themeSegDark"
+              id="theme-seg-dark"
             >
               <Moon className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
               <span>{t.themeDark}</span>

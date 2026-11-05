@@ -5,6 +5,38 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [3.15.0]
+
+### Fixed（P0/P1 缺陷修复）
+- **T-P1-10 导出头部 usage 行缺注释符（最高优先级）**：`rulesGenerator.generateHeader` 把用法说明整行推入头部而未加格式注释符，导致导出的 `dnsmasq.conf` 出现「使用方法:」等 3 行裸指令（dnsmasq 判定为未知指令并**拒绝加载整个配置**，路由器 DNS 失效），`unbound.conf` / `pihole.txt` / `domains.txt` / `rpz.db` / `smartdns.conf` / `mosdns_domain_set.txt` / `clash_dns.yaml` / `coredns_hosts.txt` 各混入 1 行非法内容。现逐行补注释符（`# ` / `! ` / `; `），并新增 `rulesGenerator.header.test.ts` 断言「所有格式头部非空行均以注释符开头」
+- **T-P1-11 本地草稿被远端清单静默覆盖（数据丢失）**：`useDomainData.loadDomainData` 的草稿守卫在 `await` 之前求值，网络往返期间恢复的草稿会被远端内置清单顶掉；`useAutosave` 也在「远端先落地」时直接放弃草稿。现确立**草稿优先**契约：草稿无条件恢复，远端加载完成后检测到草稿已恢复即放弃远端内容（两种时序均有回归用例覆盖）
+- **T-P1-13 设置变更后预览/导出/统计不刷新**：`useRules.runGenerate` 依赖数组缺 `settings`/`t`，改 IP、项目名、去通配/去重开关或切换语言后预览仍停留在旧口径。现把 `settings`、`t` 纳入依赖并移除失效的 `settingsRef`/`tRef`
+- **T-P1-14 Worker 任务失败被静默吞掉、挂起任务永不结算**：Worker 任务失败返回空文本后 `processParse` 直接返回 `null`，输入内容与解析结果长期不一致；Worker 卸载时 `pendingTasks.clear()` 未 resolve，调用方 `await` 永挂、进度条常驻；`postMessage` 失败无兜底。现分别改为「回退主线程同步解析」「卸载时逐个 resolve 兜底结果」「postMessage 异常即时结算」
+- **T-P1-15 排序/去重结果覆盖用户新输入**：处理期间用户继续输入时，点击瞬间的旧文本结果会覆盖新内容。现新增转换序号（排序/去重共用）+ 输入快照双重守卫
+- **T-P1-12 RTL 语言刷新后方向错误**：`useLanguage` 仅在切换语言时写 `<html dir>`，刷新后 RTL 语言首屏仍按 LTR 排版。现初始化即同步方向
+- **T-P1-16 一次 Escape 关闭多个叠放弹窗**：各弹窗各自监听 `window`/`document` 的 keydown。现抽出 `useModalEscape` 弹窗栈，仅栈顶弹窗响应 Escape
+- **T-P1-17 弹窗滚动锁互相破坏**：各弹窗直接写 `body.style.overflow`，关闭内层弹窗会解除外层锁定（背景穿透），且开→关→开时计数泄漏导致页面永久不可滚动。现抽出 `utils/scrollLock` 引用计数实现，四个弹窗统一使用
+- **T-P2-11 URL 全部抓取失败仍提示「获取成功」**：`fetchFromUrls` 全失败时 `onSuccess` 提前返回，但 `withLoading` 仍走成功分支弹提示。现全失败时抛出错误走失败分支
+- **T-P2-07 AdGuard 内容恰为 `||` 时按非法位置切片**：`Math.min(...[])` 得 `Infinity`，现回退到行尾
+- **T-P2-09 正则本体含 `#` 被内联注释剥离截断**（如 `/\d+#/`）：正则识别提前到注释剥离之前
+- **T-P2-08 hosts 行仅识别 `0.0.0.0 ` / `127.0.0.1 `**：现支持任意合法 IP 与 Tab 分隔
+
+### Changed（语义化 ID 统一与超长文件拆分）
+- **DOM id 全量统一为 kebab-case**：源码 154 处 id（此前 28 处为 camelCase，如 `shareBtn` / `settingsBtn` / `projectNameInput` / `guideModal`）全部改为 `share-btn` / `settings-btn` / `project-name-input` / `guide-modal` 等，同步 `htmlFor` / `aria-*` / JS 选择器引用；`prototype/prototype.html`、`flows.html`、`wireframes.html` 的 id 同步 kebab 化并校验所有 `$('x')` 引用均能命中，无重复 id
+- **拆分全部超 200 行源文件**：5 个超长测试文件（`useDomainData.test.ts` 558 / `useHomeController.test.ts` 435 / `useRules.test.ts` 392 / `useUrlManager.test.ts` 389 / `useLoading.test.ts` 215）按关注点拆为 18 个测试文件，共享装置抽到 `src/test-utils/{domainData,rules,urlManager}TestKit.ts`；`src` 下现无超过 200 行的源文件
+- 性能：行号生成改用非分配计数并在行数未变时跳过重绘（`useLineNumbers`）、`OutputPanel` 行数统计改用 `countLines` 并 memo 化、弹窗滚动锁改引用计数
+- `scripts/lib/formatHeaders.mjs` 与运行时 `generateHeader` 对齐（Bind RPZ 注释符由 `#` 修正为 `;`，补齐带注释符的 usage 行），`public/` 11 个预生成规则产物同步更新
+
+### Added
+- `src/utils/scrollLock.ts`：引用计数滚动锁（叠放弹窗互不破坏）
+- `src/hooks/useModalEscape.ts`：弹窗栈 Escape 管理（仅栈顶响应）
+- 新增测试：`rulesGenerator.header.test.ts`、`parseLine.edge.test.ts`、`scrollLock.test.ts`、`useModalEscape.test.ts`、`useLineNumbers.test.ts`、`useRules.settings.test.ts`，用例总数 250 → **282**
+
+### Verified
+- `tsc --noEmit` 0 错、`eslint src --ext .ts,.tsx` 0 warning 0 error、`vitest run` **47 套件 / 282 用例**全绿、覆盖率 **88.85 / 85.45 / 91.74 / 88.85**（语句/分支/函数/行）、`check-locales` 16 语 / 215 键一致、`sync-facts.mjs` 13 处版本展示位一致
+- 覆盖率统计口径显式声明 `all: false`（`vitest.config.ts`）：默认 `all=true` 会把未被 import 的文件按 0% 计入，全局覆盖率由 88.85% 跌至 35.27% 并误判门禁失败；显式声明后门禁数值跨环境稳定
+- 同步 bump 版本至 v3.15.0（`package.json` / `src/config/version.ts` / `next.config.js` env.version + 13 处文档展示位 + `public/` 规则产物头部版本号）
+
 ## [3.14.0]
 
 ### Added（域名源加载失败用户告警 · T-P1-09）

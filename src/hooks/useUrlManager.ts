@@ -1,4 +1,4 @@
-// src/hooks/useUrlManager.ts v3.11.0
+// src/hooks/useUrlManager.ts v3.15.0
 import { useState, useCallback } from 'react';
 import { fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
 import { fetchWithCache } from '../utils/cachedFetch';
@@ -134,13 +134,13 @@ export const useUrlManager = (
           const failedCount = result.failedUrls.length;
           showToast('invalidUrlsFiltered', { count: failedCount });
         }
+        // 全部 URL 失败：抛出错误走失败分支，避免仍弹出「获取成功」（T-P2-11）
+        if (result.content.trim() === '' && result.failedUrls.length >= validUrls.length) {
+          throw new Error('All URL fetches failed');
+        }
         return result;
       },
       onSuccess: (result: FetchUrlsResult) => {
-        // 全部 URL 失败时 content 为空，避免清空用户已有输入造成数据丢失
-        if (result.content.trim() === '' && result.failedUrls.length === validUrls.length) {
-          return;
-        }
         setSourceInput(result.content);
         parseSourceData(result.content);
         generateLineNumbers(result.content, lineNumbersRef);

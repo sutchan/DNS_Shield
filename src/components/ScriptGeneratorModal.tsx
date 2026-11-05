@@ -1,4 +1,4 @@
-// src/components/ScriptGeneratorModal.tsx v3.10.1
+// src/components/ScriptGeneratorModal.tsx v3.15.0
 // 路由器与 DNS 守护进程同步脚本生成弹窗
 'use client';
 import * as React from 'react';
@@ -8,6 +8,8 @@ import { Button } from './ui/Button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/Select';
 import { copyToClipboard } from '../utils/fileUtils';
 import { generateRouterScript, RouterScriptTarget } from '../utils/scriptGenerator';
+import { lockScroll, unlockScroll } from '../utils/scrollLock';
+import { useModalEscape } from '../hooks/useModalEscape';
 
 interface ScriptGeneratorModalProps {
   open: boolean;
@@ -21,25 +23,25 @@ export const ScriptGeneratorModal: React.FC<ScriptGeneratorModalProps> = ({ open
   const [target, setTarget] = React.useState<RouterScriptTarget>('openwrt');
   const [copied, setCopied] = React.useState(false);
 
+  // 关闭后延迟卸载以播放退出动画
   React.useEffect(() => {
     if (open) {
       setMounted(true);
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      const timer = setTimeout(() => setMounted(false), 200);
-      return () => clearTimeout(timer);
+      return;
     }
+    const timer = setTimeout(() => setMounted(false), 200);
+    return () => clearTimeout(timer);
   }, [open]);
 
+  // 滚动锁：引用计数实现，与其他弹窗叠放时互不破坏（T-P1-17）
   React.useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open, onClose]);
+    lockScroll();
+    return () => unlockScroll();
+  }, [open]);
+
+  // ESC 关闭：仅栈顶弹窗响应，避免叠放弹窗被一次按键全关（T-P1-16）
+  useModalEscape(open, onClose);
 
   const scriptContent = React.useMemo(() => {
     return generateRouterScript({
@@ -62,7 +64,7 @@ export const ScriptGeneratorModal: React.FC<ScriptGeneratorModalProps> = ({ open
   return (
     <div
       className={`guide-modal-overlay ${open ? 'open' : 'closing'}`}
-      id="scriptGeneratorModal"
+      id="script-generator-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="script-generator-modal-title"

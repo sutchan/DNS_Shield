@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-02（与 package.json v3.14.0 对齐；同步文件结构/hooks/utils 清单、修正端口与 vitest 版本、CSP 与实际配置对齐）
+> 最后审查：2026-11-05（与 package.json v3.15.0 对齐；新增 §4.4 交互与 DOM 约定——语义化 id 全量 kebab-case、弹窗栈 Escape、共享滚动锁；§4.1 补充草稿优先契约；§4.2 补充头部注释符契约）
 
 ## 1. 项目概述
 
@@ -13,7 +13,7 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.14.0 |
+| 当前版本 | v3.15.0 |
 | 拦截域名 | 867 条（黑名单 635 + 白名单 232，本地 `public/domains.txt`） | 实测值，以 `node scripts/count-domains.mjs` 为准 |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -109,6 +109,7 @@ dns-shield/
 │   │   ├── useCategoryFilter.ts    # 分类筛选 UI 状态
 │   │   ├── useCategoryIndex.ts     # 上游分类索引加载
 │   │   ├── useModalA11y.ts         # 弹窗无障碍焦点管理
+│   │   ├── useModalEscape.ts       # 弹窗栈 Escape 管理（仅栈顶响应，T-P1-16）
 │   │   └── useVirtualList.ts      # 虚拟滚动（超大规模预览）
 │   ├── lib/
 │   │   └── utils.ts                # 工具函数（cn 等）
@@ -127,7 +128,10 @@ dns-shield/
 │   │   └── hero.css                # Hero/FlowViz / 预览统计 / 动效降级
 │   ├── test-utils/                 # 测试辅助（coverage.exclude 排除，不计入覆盖率）
 │   │   ├── renderHook.ts           # 极简 renderHook（不依赖 testing-library）
-│   │   └── setup.ts               # jsdom localStorage/matchMedia 桩（vitest setupFiles）
+│   │   ├── setup.ts               # jsdom localStorage/matchMedia 桩（vitest setupFiles）
+│   │   ├── domainDataTestKit.ts   # useDomainData 测试装置（mock 实例 + 异步辅助）
+│   │   ├── rulesTestKit.ts        # useRules 测试装置（翻译表/基础设置/样例数据）
+│   │   └── urlManagerTestKit.ts   # useUrlManager 测试装置（统一装配）
 │   ├── types/
 │   │   └── index.ts                # TypeScript 类型定义
 │   └── utils/                      # 工具函数
@@ -152,6 +156,8 @@ dns-shield/
 │       ├── httpCache.ts / cachedFetch.ts # ETag 条件请求 + 离线缓存
 │       ├── buildFlowPool.ts        # FlowViz 动画令牌池
 │       ├── logger.ts              # 生产日志收敛（T-P0-03）
+│       ├── lineCount.ts           # 非分配换行计数（T-P1-08）
+│       ├── scrollLock.ts          # 共享滚动锁（引用计数，T-P1-17）
 │       └── domainPrimitives.ts     # 原始域名/IP 类型原语
 ├── prototype/                        # 设计快照（v3.12.0 起冻结，停留 v3.9.x~v3.10.x，不代表当前实现）
 │   ├── prototype.html               # 高保真可交互原型（独立 HTML，极简风格/真实数据/响应式）
@@ -208,7 +214,7 @@ dns-shield/
 | 多格式解析 | 输入支持 hosts / dnsmasq / AdGuard / 纯域名混合，`parseDomainLine` 逐行识别格式并提取域名、白名单(`+domain`)、自定义 DNS(`@domain=ip`)、注释(`#`) |
 | 格式转换 | 粘贴任意格式清单，自动解析为统一域名条目结构后再输出为目标格式，实现不同格式互转 |
 | 自动保存 | 每 30 秒自动保存到 localStorage |
-| 自动恢复 | 页面加载时恢复未保存内容 |
+| 自动恢复 | 页面加载时恢复未保存内容；**草稿优先契约**：本地草稿始终优先于远端预设清单——草稿无条件恢复，远端加载完成后若检测到草稿已恢复即放弃远端内容（两种网络/存储时序下用户编辑都不得被内置清单覆盖，见 T-P1-11） |
 | 隐私统计 | 可选接入 Google Analytics 4（衡量 ID 仅从环境变量 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 注入，源码不硬编码；须形如 `G-XXXXXXXXXX`，留空或格式非法则不注入统计脚本并输出开发期诊断日志；CSP 已放通 gtag 域名） |
 
 ### 4.2 输出功能
@@ -223,7 +229,7 @@ dns-shield/
 | Clash Meta 格式 | `DOMAIN-SUFFIX,domain,reject`（白名单为 `DIRECT`） |
 | CoreDNS 格式 | `0.0.0.0 domain`（hosts 插件格式） |
 | 十二种目标格式 | Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS，由统一中间结构生成 |
-| 头部注释 | 自动生成项目信息头 |
+| 头部注释 | 自动生成项目信息头；**注释符契约**：头部每一行（含「使用方法」等说明行）都必须以该格式的注释符开头（`#` / `!` / `;`），否则 dnsmasq/unbound 会因未知指令拒绝加载整个配置、hosts/AdGuard 清单会混入非法条目、Bind RPZ 区域文件会语法报错（见 T-P1-10） |
 | 一键下载 | 下载生成的文件 |
 | 剪贴板复制 | 复制生成的内容 |
 
@@ -232,13 +238,23 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.14.0 |
+| 版本号 | 3.15.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
 | 阻止 IPv6 | 关闭 |
 | 自动去重 | 开启 |
 | 移除通配符前缀 | 开启 |
+
+### 4.4 交互与 DOM 约定
+
+| 约定 | 说明 |
+|------|------|
+| 语义化 DOM id | 所有可定位元素使用 kebab-case 语义 id（如 `source-editor` / `share-btn` / `guide-modal`），与 `prototype/` 的 id 保持一一对应；`htmlFor` / `aria-*` / JS 选择器必须同步，禁止 camelCase 与无语义命名（如 `div1`）；不得出现重复 id |
+| 弹窗 Escape | 所有弹窗统一经 `useModalEscape` 注册到弹窗栈，一次 Escape 只关闭栈顶弹窗，避免叠放弹窗被同一个按键全部关闭 |
+| 滚动锁 | 弹窗打开期间锁定 `body` 滚动，统一使用 `utils/scrollLock` 的引用计数实现，禁止直接写 `document.body.style.overflow`，避免内层弹窗关闭时解除外层锁定 |
+| 异步竞态 | Worker 解析/排序/去重等异步结果落地前必须校验请求序号与输入快照，过期结果直接丢弃；Worker 卸载时须结算全部挂起任务，不得让调用方 `await` 永挂 |
+| 设置联动 | 设置项（IP、项目名、去通配/去重开关）与界面语言变更后必须重新生成预览与导出内容，避免预览停留在旧口径 |
 
 ## 5. 维护流程
 

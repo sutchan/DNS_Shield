@@ -1,4 +1,4 @@
-// src/components/Header.tsx v3.9.3
+// src/components/Header.tsx v3.15.0
 'use client';
 
 import * as React from 'react';
@@ -109,7 +109,7 @@ const Header: React.FC<HeaderProps> = ({
             onClick={handleShare}
             aria-label={t.shareBtn}
             title={t.shareTitle}
-            id="shareBtn"
+            id="share-btn"
           >
             <svg className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="18" cy="5" r="3" />
@@ -127,7 +127,7 @@ const Header: React.FC<HeaderProps> = ({
             onClick={onOpenSettings}
             aria-label={t.settingsTitle}
             title={t.settingsTitle}
-            id="settingsBtn"
+            id="settings-btn"
           >
             <svg className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="3" />

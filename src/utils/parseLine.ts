@@ -1,4 +1,4 @@
-// src/utils/parseLine.ts v3.9.0
+// src/utils/parseLine.ts v3.15.0
 // 单行域名解析：支持 12 种过滤格式的入站解析（hosts/dnsmasq/AdGuard/Pi-hole/Bind RPZ/
 // SmartDNS/Unbound/纯域名/白名单），实现「粘贴任意格式 → 统一结构」。
 // 校验原语（isValidDomain/isValidIp/normalizeDomain）复用 domainPrimitives，避免重复定义；
@@ -21,19 +21,9 @@ export const parseDomainLine = (line: string): ParseResult => {
     return { type: 'comment', originalLine: line };
   }
 
-  const content = hashIndex >= 0 ? trimmed.substring(0, hashIndex).trim() : trimmed;
-
-  if (!content) {
-    return { type: 'comment', originalLine: line };
-  }
-
-  if (content.startsWith('!')) {
-    return { type: 'comment', originalLine: line };
-  }
-
-  // 正则规则：AdGuard /pattern/、例外 @@/pattern/、Pi-hole regex:pattern。
-  // 必须在域名分支之前识别，否则 /ads\./ 会落到纯域名分支被判为无效行丢弃。
-  const regexRule = parseRegexRule(content);
+  // 正则规则：必须在剥离内联注释之前识别——AdGuard 正则本体可能包含 '#'
+  // （如 /\d+#/），先剥离注释会把规则截断成非法正则（T-P2-09）。
+  const regexRule = parseRegexRule(trimmed);
   if (regexRule) {
     return {
       type: 'regex',
@@ -43,6 +33,16 @@ export const parseDomainLine = (line: string): ParseResult => {
       isValid: true,
       originalLine: line
     };
+  }
+
+  const content = hashIndex >= 0 ? trimmed.substring(0, hashIndex).trim() : trimmed;
+
+  if (!content) {
+    return { type: 'comment', originalLine: line };
+  }
+
+  if (content.startsWith('!')) {
+    return { type: 'comment', originalLine: line };
   }
 
   // 白名单 (+)
@@ -91,9 +91,10 @@ export const parseDomainLine = (line: string): ParseResult => {
     return { type: 'comment', originalLine: line };
   }
 
-  // Hosts 格式
-  if (content.startsWith('0.0.0.0 ') || content.startsWith('127.0.0.1 ')) {
-    const domain = normalizeDomain(content.replace(/^(0\.0\.0\.0|127\.0\.0\.1)\s+/, ''));
+  // Hosts 格式：<IP> <域名>（任意合法 IP，空格或 Tab 分隔；多别名行取首个域名）
+  const hostsMatch = content.match(/^(\S+)[ \t]+(\S+)/);
+  if (hostsMatch && isValidIp(hostsMatch[1])) {
+    const domain = normalizeDomain(hostsMatch[2]);
     return {
       type: 'hosts',
       domain,
@@ -121,9 +122,10 @@ export const parseDomainLine = (line: string): ParseResult => {
   // 取 || 之后到首个 ^ / $ / 行尾之间的部分作为域名，兼容 $important 等修饰符
   if (content.startsWith('||')) {
     const after = content.substring(2);
-    const endIdx = Math.min(
-      ...[after.indexOf('^'), after.indexOf('$'), after.length].filter((i) => i > 0)
-    );
+    // 边界：内容恰为 "||" 时候选位置全为 -1，Math.min() 会得到 Infinity，
+    // 必须回退到行尾，避免得到非法切片（T-P2-07）
+    const candidates = [after.indexOf('^'), after.indexOf('$'), after.length].filter((i) => i > 0);
+    const endIdx = candidates.length > 0 ? Math.min(...candidates) : after.length;
     const domain = normalizeDomain(after.substring(0, endIdx));
     return {
       type: 'adguard',

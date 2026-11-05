@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.13.6
+// src/components/OutputPanel.tsx v3.15.0
 // 输出面板：编排格式切换 / 设置弹窗 / 规则测试 / 路由器脚本 / 预览 / 操作按钮。
 // DOM id 统一为 kebab-case 语义命名（output-line-numbers / output-preview）。
 // 纯展示子组件与派生逻辑已抽离至 OutputPanel.parts.tsx 以保持主文件 ≤200 行。
@@ -18,6 +18,7 @@ import {
 import { buildFormatLabel, useVisibleFormats } from './OutputPanel.derived';
 import { Settings as SettingsType, FormatType, ParsedData } from '../types';
 import { useT } from '../context/AppContext';
+import { countLines } from '../utils/lineCount';
 
 interface OutputPanelProps {
   /** 当前格式的规则文本（惰性生成，T-P1-06） */
@@ -82,7 +83,8 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
     }
   }, [visibleFormats, currentFormat, setFormat]);
 
-  const ruleLines = currentOutput ? currentOutput.split('\n').length : 0;
+  // 行数统计使用非分配实现并 memo 化：避免每次渲染都对完整输出 split 整块字符串（T-P2-03）
+const ruleLines = React.useMemo(() => (currentOutput ? countLines(currentOutput) : 0), [currentOutput]);
   const domainTotal = parsedData.domains.length + parsedData.whitelist.length + parsedData.customDns.length;
 
   return (
@@ -134,7 +136,7 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
         />
 
         {/* Merge Info */}
-        <div className="output-stats" id="mergeInfo" role="status" aria-live="polite">
+        <div className="output-stats" id="merge-info" role="status" aria-live="polite">
           {parsedData.domains.length > 0 || parsedData.whitelist.length > 0 || parsedData.customDns.length > 0 ? (
             <span>{t.mergeStats
               .replace('{blacklist}', String(parsedData.domains.length))
