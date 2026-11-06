@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   DNS Shield — Global stylesheet entry (v3.13.6)
+   DNS Shield — Global stylesheet entry (v3.15.3)
    设计系统已按职责拆分到 src/styles/*.css（见 layout.tsx 的导入清单），
    本文件仅保留 Tailwind 指令与基础层（design tokens / 全局基础样式）。
    ============================================ */
@@ -55,15 +55,20 @@
     --radius-xl: 0.75rem;
     --radius-2xl: 1rem;
 
-    /* --- Typography tokens (参考 Claude Code 官方风格) --- */
-    /* 正文：Inter（由 next/font 注入，变量 --font-inter），回退系统栈 */
-    --font-sans: var(--font-inter), system-ui, -apple-system, 'Segoe UI', Roboto,
-      'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-    /* 等宽/代码：JetBrains Mono（由 next/font 注入，变量 --font-jetbrains-mono），回退系统栈 */
-    --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular,
-      'SF Mono', Menlo, Consolas, 'Liberation Mono', 'Courier New', monospace;
-    /* 品牌标头：Spectral（由 next/font 注入，变量 --font-spectral），仅用于页面级标题 */
-    --font-serif: var(--font-spectral), Georgia, 'Times New Roman', serif;
+    /* --- Typography tokens --- */
+    /* 字体策略：不加载任何外部字体。next/font/google 在构建期会请求
+       fonts.googleapis.com，EdgeOne / CI 等离线构建环境取不到 CSS 时
+       next/font loader 会抛 TypeError（null[1]）导致 next build 失败。
+       如需恢复品牌字体，请改为自托管 woff2 + next/font/local。 */
+    /* 正文：系统 UI 栈（含中文回退） */
+    --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+      Arial, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+    /* 等宽/代码：系统等宽栈 */
+    --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+      'Liberation Mono', 'Courier New', monospace;
+    /* 品牌标头衬线：含中文衬线回退，避免中文标题落到默认黑体 */
+    --font-serif: Georgia, 'Times New Roman', 'Noto Serif CJK SC',
+      'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
   }
 
   .dark {
@@ -112,7 +117,7 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-sans);
-    /* Inter 字符变体：优化数字、括号与连字，贴近 Claude Code 排版细节 */
+    /* 数字/连字 OpenType 特性：系统字体支持时生效，不支持则忽略 */
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

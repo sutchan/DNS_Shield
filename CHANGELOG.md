@@ -7,6 +7,16 @@
 
 ## [Unreleased]
 
+## [3.15.3] - 2026-11-06
+
+### Fixed（修复 EdgeOne 构建期字体加载失败）
+- `next build` 在 EdgeOne / CI 离线环境失败：`src/app/layout.tsx` 用 `next/font/google` 加载 Inter / JetBrains Mono / Noto Sans SC / Spectral，构建期需访问 `fonts.googleapis.com`；取不到 CSS 时 next/font loader 抛 `TypeError: Cannot read properties of null (reading '1')`，构建在 `next/font` 阶段中断
+- 移除 4 个 `next/font/google` 实例与 `<body>` 上的字体变量类名；`src/app/globals.css` 的 `--font-sans` / `--font-mono` / `--font-serif` 改回纯系统字体栈（含中文回退），不再依赖 `var(--font-inter)` 等注入变量。不引入外部字体 `<link>`，避免重新触发 EO 静态导出的 `no-page-custom-font` 警告
+- 构建期不再产生任何外部字体网络请求；功能与 DOM 契约不变（`id="app-body"` / `id="app-shell"` 保留），视觉改为系统字体栈
+- CSP 中 `fonts.googleapis.com` / `fonts.gstatic.com` allowlist 保留（已不再实际请求），`next.config.js` / `vercel.json` / `edgeone.json` 安全头未改动
+- 版本按 patch 规则升至 v3.15.3：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 13 处文档展示位 / `public/` 11 个规则产物头部（由 `gen-format-files.mjs` 重生成）
+- 仅被改动文件 `layout.tsx` / `globals.css` / `version.ts` 头注释同步至 v3.15.3，其余源文件头注释按「仅被改文件更新」规则保持不变
+
 ## [3.15.2] - 2026-11-06
 
 ### Changed（首屏精简与格式选择优化）
@@ -1504,7 +1514,9 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.15.1...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.15.3...HEAD
+[3.15.3]: https://github.com/sutchan/DNS_Shield/compare/v3.15.2...v3.15.3
+[3.15.2]: https://github.com/sutchan/DNS_Shield/compare/v3.15.1...v3.15.2
 [3.15.1]: https://github.com/sutchan/DNS_Shield/compare/v3.15.0...v3.15.1
 [3.10.1]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.10.1
 [3.9.12]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.9.12
