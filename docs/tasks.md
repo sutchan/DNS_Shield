@@ -1,160 +1,58 @@
 # 项目任务清单（未完成任务唯一来源 + 实时指标）
 
 > **本文件是项目「未完成任务」与「实时指标」的唯一来源（Single Source of Truth）**。
-> 已完成任务条目已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改与历史开发任务明细），本文件不再重复维护已完成条目，避免两处口径漂移。
+> 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-05（与 package.json v3.15.0 对齐；第十二轮：全量缺陷修复与规范化——导出头部 usage 注释符 T-P1-10 + 草稿优先契约 T-P1-11 + 设置联动 T-P1-13 + Worker 健壮性 T-P1-14 + 弹窗栈/滚动锁 T-P1-16/T-P1-17 + 语义化 ID 全量 kebab-case + 全部超长文件拆分；第十一轮：性能与可用性加固——行数统计统一收敛 T-P1-08 + 域名源加载失败用户告警 T-P1-09；第十轮：全项目代码审查与质量加固；第九轮：任务归档分离——已完成任务整体迁移至 [tasks-done.md](./tasks-done.md)，本文件仅保留未完成任务清单与实时指标）
+> 最后审查：2026-11-06（与 package.json v3.15.0 对齐；待办区清零，历史叙述与进度全景已迁移至 tasks-done.md）
 > 维护团队：Sut / ArcesTeam
 >
-> **本次更新（2026-11-05 第十二轮：全量缺陷修复与规范化，v3.14.0 → v3.15.0）**。按用户指令「审查项目代码、识别并修复 bug/语法错误/安全漏洞/性能问题；对齐规范文档与原型；补语义化 ID；拆分所有 >200 行源文件；测试功能完整性与鲁棒性；更新文档与项目记忆；版本 bump；提交推送」执行：
-> ① **P0 级缺陷修复（影响用户可直接导入的产物）**——**T-P1-10 导出头部 usage 行缺注释符**：`rulesGenerator.generateHeader` 把「使用方法:」等说明整行推入头部而未加格式注释符，导出的 `dnsmasq.conf` 出现 3 行裸指令（dnsmasq 判定未知指令并**拒绝加载整个配置**，路由器 DNS 失效），其余 8 种格式各混入 1 行非法内容、Bind RPZ 注释符本身还用错（`#` 而非 `;`）；现已逐行补注释符并新增 `rulesGenerator.header.test.ts` 断言「所有格式头部非空行均以注释符开头」，`scripts/lib/formatHeaders.mjs` 同步对齐运行时；
-> ② **数据丢失级缺陷修复**——**T-P1-11 本地草稿被远端清单静默覆盖**：`loadDomainData` 的草稿守卫在 `await` 之前求值，网络往返期间恢复的草稿会被远端内置清单顶掉；现确立**草稿优先**契约（草稿无条件恢复、远端检测到草稿已恢复即放弃），两种时序均有回归用例；
-> ③ **功能一致性修复**——T-P1-13 设置/IP/项目名/语言变更后预览与导出不刷新；T-P1-14 Worker 任务失败被静默吞掉、卸载时挂起任务永不结算（进度条常驻）；T-P1-15 排序/去重结果覆盖用户新输入；T-P1-12 RTL 语言刷新后方向错误；T-P1-16 一次 Escape 关闭多个叠放弹窗；T-P1-17 弹窗滚动锁互相破坏（关闭内层弹窗解除外层锁定）；T-P2-11 URL 全部抓取失败仍提示「获取成功」；T-P2-07 `||` 边界非法切片；T-P2-09 正则含 `#` 被截断；T-P2-08 hosts 仅识别 `0.0.0.0`/`127.0.0.1`；
-> ④ **语义化 ID 全量规范化**——源码 154 处 id 全部统一 kebab-case（此前 28 处 camelCase，如 `shareBtn`/`projectNameInput`/`guideModal`），同步 `htmlFor`/`aria-*`/JS 选择器；`prototype/` 三个 HTML 的 id 同步 kebab 化并校验全部 `$('x')` 引用可命中，无重复 id；
-> ⑤ **全部 >200 行源文件拆分完成**——5 个超长测试文件（558/435/392/389/215 行）按关注点拆为 18 个测试文件，共享装置抽到 `src/test-utils/` 三个 TestKit；`src` 下现无超过 200 行的源文件（含测试）；
-> ⑥ **性能**——行号生成改非分配计数且行数未变时跳过重绘、`OutputPanel` 行数统计 memo 化、滚动锁改引用计数、URL 合并加 50MB 总量护栏；
-> ⑦ **验证（全部实跑）**——`tsc --noEmit` 0 错、`eslint src` 0 warning 0 error、`vitest run` **47 套件 / 282 用例**全绿、覆盖率 **88.85 / 85.45 / 91.74 / 88.85**（语句/分支/函数/行，门禁 80/75/85/80）、`check:locales` 16 语 / 215 键一致、`sync-facts.mjs` 13 处版本位一致。另发现覆盖率口径随环境漂移（默认 `all=true` 会把未被 import 的文件按 0% 计入，全局跌至 35.27% 并误判门禁失败），已在 `vitest.config.ts` 显式声明 `all: false` 固化口径。未完成待办仍为 0 项。
->
-> **本次更新（2026-11-03 第十轮：全项目代码审查与质量加固，v3.13.5 → v3.13.6）**。按用户指令"审查项目代码、修复 bug/语法/安全/性能、对齐规范与原型、补语义化 ID、拆分 >200 行源文件、测试功能完整性、更新文档、提交推送"执行：
-> ① **测试基线修复**——新增 `src/test-utils/setup.ts` 补齐 jsdom 缺失的 `localStorage`/`matchMedia` 桩，修复 `useTheme.test.ts`/`useHomeController.test.ts` 共 32 例因 `localStorage.clear()` 抛错导致的失败；全套 26 套件 / 241 用例恢复全绿；
-> ② **Worker 进度失效修复**——`useRuleWorker.ts` 的 `run()` 未透传 `onProgress`，进度消息被丢弃、进度条恒为 0%；已透传并改为基于本任务真实 total 收尾；
-> ③ **CTA 聚焦失效修复**——`scrollToInput` 用 `getElementById('source-editor')` 但 textarea 实际 id 为 camelCase `sourceInput`，聚焦点名不符静默失败；统一 6 个 DOM id 为 kebab-case 语义命名（`source-editor`/`input-line-numbers`/`url-input`/`url-list`/`output-line-numbers`/`output-preview`），并改用 ref 优先聚焦；
-> ④ **性能与安全**——`useDomainData.ts` 每次按键全量 `split('\n')` 计数改为非分配换行计数；`fileUtils.ts` 无流式读取回退路径补 `content-length` 硬拒，防绕过 10MB 体积上限；
-> ⑤ **源文件拆分**——`useHomeController.ts`(216)/`InputPanel.tsx`(205) 抽离 types 与 UI 状态 hook；`globals.css`(1018) 按职责拆为 `src/styles/*.css` 7 模块（均由 layout.tsx 按级联顺序导入）；全部 production 源文件 ≤200 行；
-> ⑥ **验证**：`tsc --noEmit` 0 错、`next lint` 0 错、`vitest run` 全绿、`sync-facts.mjs --check` 13 处版本位一致（待复跑）。未完成待办仍为 0 项。
-
-> **本次更新（2026-11-05 第十一轮：性能与可用性加固，v3.13.6 → v3.14.0）**。按用户指令「推进 tasks.md 任务 → 更新任务文档 → 完成剩余任务 → 同步进度」执行，流程为 **登记待办 → 实现 → 门禁验证 → 归档**：
-> ① **基线实跑（不继承记忆）**——`tsc --noEmit` 0 错、`next lint` 0 warning 0 error、`check-locales` ✅、`sync-facts --check` 13 处版本位一致、`vitest run` 全绿；**发现并修正指标漂移**：本文档长期记载的「27 套件 / 249 用例」系 v3.13.5 删除 `useFlowTokens`（-1 套件 / -8 用例）后的过期值未同步；
-> ② **实查发现两处真实缺陷并登记为新任务**——同一「文本行数」逻辑散落 3 处（`useAsyncRuleProcessing` / `useDomainData` / `useRuleWorker`），其中 2 处用 `text.split('\n').length`（10 万行输入每次分配 10 万元素数组，主线程可感知卡顿）；域名源（远端 + 本地回退）全部加载失败时仅写 `logger.warn`，**用户完全无感知**（生产环境 logger 静默），即第八轮遗留的 P2「远端源加载失败无感知告警」；
-> ③ **本轮登记并完成 T-P1-08 / T-P1-09**（明细见 [tasks-done.md](./tasks-done.md)）；
-> ④ **此前「待办 0 项」并非真无任务**——进度表中「Web Worker 超大规模性能（≥50,000 行）40% 🔵 后续增强」长期被排除在清单外，本轮将其纳入可执行任务（T-P1-08 正是该方向的主线程分配消除）；
-> ⑤ **验证环境备注**——本机跑 `vitest --coverage` 前须先删除 `coverage/` 目录，否则 vitest 的 coverage provider 清理动作会触发 IDE safe-delete shim 超时，属环境限制而非代码缺陷。
->
-> **本次更新（2026-11-02 第八轮：线上实测 UI 缺陷修复）**。本轮基于 https://dns.ewuse.com/ 桌面 1280×960 真实浏览器取证（截图 + 控制台 + 网络三路），定位 10 项问题并落地代码修复：
-> ① **P0 Tabs 受控切换警告已修**——根因：`OutputPanel.tsx` 的 effect 在远端数据未加载时 `useVisibleFormats` 返回空数组 `[]`，effect 把 `currentFormat` 设成 `visibleFormats[0]` 即 `undefined`，导致 Radix Tabs value 从受控字符串变非受控再变回受控（对应控制台 "controlled→uncontrolled" 与 "uncontrolled→controlled" 两条警告）。修复：effect 开头加 `if (visibleFormats.length === 0) return;` guard；
-> ② **P1 格式 Tab 栏被圆形按钮裁切已修**——根因：`OutputToolbar` 把 FormatTabs（children）和三个 icon button（规则测试/路由器脚本/设置）放在同一 `flex items-center gap-1.5` 容器里，flex-wrap 时 icon button 插入到 TabsList 换行行之间，把首尾 Tab 文字（Unbound→nbound、SmartDNS→SmartDN、Clash Meta→ClashMeta）裁切。修复：FormatTabs 外包 `<div className="flex-1 min-w-0 flex items-center">`，三个 icon button 包 `<div className="flex items-center gap-1.5 flex-shrink-0">`；
-> ③ **P1 两栏底部按钮不对齐已修**——根因：`globals.css` 里 `.editor-container, .editor-wrapper` 用 `mt-auto` 把编辑器推到底部，但两栏前置内容高度不同，导致编辑器位置不同、按钮错位。修复：把 `mt-auto` 从 editor 移到 `.editor-actions` 和 `#output-actions`，让按钮永远贴 panel 底部对齐；
-> ④ **P3 域名计数漂移已修**——实算 `public/domains.txt`：白名单 232（Grep `^\+`）、改道 0、注释 15、线上实时黑名单 634，合计 866。SPEC.md §1 原写"867 条（635+232）"已改为"866 条（634+232）"；
-> ⑤ **未处理项（待后续决策或部署后复查）**：P0 404 资源具体文件未在 network 日志中复抓（浏览器会话异常）；P1 Hero 右侧 FlowViz 空面板未改；P2 两个"生成规则"按钮重复属交互流程变更、URL 导入藏在折叠区、预置数据无可清空提示、远端 raw.githubusercontent.com 加载失败无感知告警——均为产品 UX 决策，本轮保守未动；
-> ⑥ **验证状态**：代码改动均在 UNC 网络盘上，`tsc`/`lint`/`test` 因 IO 极慢无法实跑；改动均为低风险可逆的 UI 布局与 guard，建议在本地磁盘或 CI 复跑 `pnpm install && pnpm test && pnpm lint && pnpm check:locales` 后部署到线上验证控制台警告与 Tab 栏布局。
->
-> **本次更新（2026-11-02 第七轮：全项目审查 + SPEC 文档漂移修正）**。本轮按用户指令"完成剩余任务并审查项目"执行：
-> ① **未完成任务仍为 0 项**——tasks.md 待办区自第六轮后无新增任务，代码层经静态阅读确认无功能性缺陷；
-> ② **SPEC.md 文档漂移已修正**（详见 [tasks-done.md](./tasks-done.md) 第二节）——§2 文件结构补全 18 hooks / 18 utils / 8 业务组件，§5.1 端口 8082→3000，§9.2 vitest ^2.1.9→^3.2.7，§12 重复章节号改为 §13，§12.1 CSP 移除未启用的 `require-trusted-types-for`；
-> ③ **门禁实跑受环境限制**——项目位于 UNC 网络盘（`\\Tanas3\jz_1t\Github\DNS_Shield`），`tsc --noEmit` / `next lint` / `vitest run` 在该路径下 IO 延迟极高，实跑 30 分钟无输出（本地 SSD 应 <1 分钟）。本轮以静态阅读核对为主：版本号 3.13.1 在 package.json / version.ts / next.config.js 三处一致；16 语言文件与 214 键基线确认存在；代码质量（类型严格、安全头、shellQuote 防注入、prepareRuleData 统一口径、惰性生成、Worker 大文本处理）经逐文件阅读无缺陷。**建议在本地磁盘（非网络盘）或 CI 环境复跑 `pnpm install && pnpm test && pnpm lint && pnpm check:locales` 以取得权威计数**；
-> ④ **环境注意**：当前 shell 的 node 为 v22.23.2，低于项目 `engines.node >=24.11.0` 要求；若在本机跑构建/测试需先切到 Node 24+。
->
-> **本次更新（2026-10-22 21:10 第六轮：全量复核 + 数据漂移修正）**。按「数字必须实算」纪律复核：① **全部任务已完成**（未完成合计 0 项），无新增待办，已完成条目均归档于 [tasks-done.md](./tasks-done.md)；② **修正单测用例数漂移**——「二、开发进度全景」单元测试行仍记 248 例，与指标表及实跑结果（`vitest run`：27 套件 / **249** 例）矛盾，已改为 249；③ 门禁状态维持：`check:locales` ✅（16 语 / 214 键）、`tsc` 0 错、`next lint` 0/0。
->
-> **本次更新（2026-10-22 15:30 第五轮：T-P0-02a 完成 — 增强 check-locales 捕获集体缺键）**。本轮完成唯一剩余任务，并以破坏性实验反证修复有效：
-> ① **T-P0-02a 完成**——`scripts/check-locales.mjs` 原仅做「各语言包相对 `zh-cn.json` 的两两一致性」比对，`zh-cn.json` 自身也是语言包，16 包 + zh-cn 同时缺同一键时基线被静默缩水、CI 假通过（T-P2-08 缺陷能长期存在的机制性原因）。修复：引入**独立基线清单** `scripts/locale-baseline.json`（由 `zh-cn.json` 生成、需显式刷新），先比对 `zh-cn.json` 与基线，再比对各包与 `zh-cn`。新增 `pnpm locales:baseline`（`--update-baseline`）用于新增键时刷新基线；首次运行无清单自动引导生成；
-> ② **破坏性反证（验收 #2 实跑）**——从全部 16 个语言包（含 `zh-cn.json`）同时删除 `toast.cleared` 后，脚本**非零退出（EXIT 1）并精确指明缺失键 `toast.cleared`**；恢复后正常态 `✅ 通过（16 语 / 214 键）`；
-> ③ **基线清单已生成**：`scripts/locale-baseline.json`（214 键，源 `zh-cn.json`），作为独立门禁基线，杜绝「集体缺键」再次静默溜过 CI。
->
-> **本次更新（2026-10-19 21:35 第四轮：全链路实测复核 + T-P1-07 完成 + 数据漂移修正 + ESLint 归零）**。本轮不依赖记忆，逐项实跑核验并修正了文档中长期存在的**数据漂移**，消除 2 处真实代码隐患，并完成 T-P1-07：
-> ① **测试规模漂移已修正**——实测为 **27 套件 / 248 用例**（文档此前长期记 19 / 129），来源 `vitest run` 权威计数，全绿；
-> ② **i18n 键数漂移已修正**——详见下方指标表（`check:locales` 确认 16 语全部一致）；
-> ③ **覆盖率数据失真已修正**——此前记「语句 84.46 / 分支 86.85 / 函数 91.07 / 行 84.46」系 v3.12.0 之前的旧值；`coverage.include` 纳入 `src/hooks` 后真实值为 **语句 53.31 / 分支 85.77 / 函数 80.43 / 行 53.31**。**T-P1-07 完成后已跃升至 语句 87.42 / 分支 86.05 / 函数 89.83 / 行 87.42**，门禁阈值随之由临时的 50/75/80/50 **提升回项目原定的 80/75/85/80**；
-> ④ **T-P1-06 隐藏回归已修复**（详见 [tasks-done.md](./tasks-done.md)）——`formatGenerators.single.ts` 对 `bind`/`pihole` 多输出一行白名单段标题，与全量生成器不一致，`formatGenerators.single.test.ts` 实有 2 个 bind 用例失败（文档此前误记「全绿」），现已修复并由测试断言保证；
-> ⑤ **ESLint 归零**——修复 `OutputPanel.derived.ts` 的 `useMemo` 陈旧闭包隐患（依赖数组漏列 `settings` 整体，`prepareRuleData` 间接读取其去重/通配符字段），`next lint` 由 1 warning → **0 warning 0 error**；
-> ⑥ **`toast.cleared` 缺键已修复**——`useDomainData.ts:134` 调用 `showToast('cleared')` 但 16 个语言包均无该键，用户点「清空」只显示通用「已完成」，语义丢失。已补齐 16 语自然译文（zh-cn 已清空 / en Cleared / ru Очищено / th ล้างแล้ว 等，均不等于各自 `done`），并在手工维护的 `TranslationToast` 接口补 `cleared: string;` 声明（不从 zh-cn.json 推导，否则 `tsc` 报 TS2339）。测试改为断言真实译文并新增「16 语均含该键」集体守卫；键总数 213 → **214**；
-> ⑦ **工具链缺陷已实测复现并升级为 P0**——`scripts/check-locales.mjs` 只做各语言包相对 `zh-cn.json` 的**相互一致性**比对，**16 个包同时缺失同一个键时依然输出 ✅ 通过、EXIT CODE 0**（主理人已实测复现：删光该键后基线由 214 静默退回 213 仍通过）。这正是 ⑥ 能长期存在的机制性原因，已登记 T-P0-02a；
-> ⑦ 复核通过项：`tsc --noEmit` 零错误、生产构建编译成功（`static/` + `server/app` 产物齐全）、覆盖率门禁经「临时抬阈至99 → EXIT CODE 1」反证为真门禁、`sync-facts.mjs` 13 处版本展示位与 `package.json` 3.13.1 全一致。
->
-> 上一轮（2026-10-13 第三轮：实况核验 + 任务清单收尾，与 package.json v3.13.1 对齐；经代码实读确认 T-P2-01/05 与 T-P1-06 已在 v3.13.0 落地，仅文档待办区脱节已修正）
->
-> 上一轮（2026-10-13 第二轮：实况核验 + 剩余任务收尾）。① 逐项以真实代码核验 v3.12.0 时登记的 9 项待办——**6 项已被 v3.12.0 落地完成**：T-P2-04/06（`parseLine.ts` 识别正则行 + `parser.ts` 收集 + `formatGenerators.buildRegexRules` + `useRules` 贯通）、T-P2-07（`prepareRuleData` 公共变换统一 `generateRules` 与 `computeEffectiveStats` 口径）、T-P1-05（`useRules.runGenerate` 直接复用 `useDomainData` 的 `parsedData`，消除 2~3 次重复 `parseSource`）、T-P3-04（`scriptGenerator.ts` `shellQuote` 单引号包裹 + `'\''` 转义，`customDnsIp` 死参数已删除）、T-P3-05（`parser.ts` 循环结束补报 `onProgress(total,total)` + `useHomeController` 缺键降级 `t.toast.done`，该键 16 语已存在）；② 剩余 **2 个工作项**（分类 UI 接入 T-P2-01/05、惰性生成 T-P1-06）本轮实施。
-> 上一轮（2026-10-13 首轮）应用问题诊断：在不改动产品代码的前提下实读 `src/` 梳理出 7 类真实问题并登记为 T-P2-05~07 / T-P1-05~06 / T-P3-04~05（证据见 [tasks-done.md](./tasks-done.md) 第六章「应用问题诊断详述」）。
-> 上一轮（2026-10-05）目录结构审查与 P0 整改完成，升 **v3.12.0**；工作流审查整改（v3.11.2）与 EdgeOne 构建修复（v3.11.1）见历史段落。
-> 上一轮（20:40）修复 EdgeOne 构建失败（ESLint 门禁）并找回丢失的 `<FormatTabs>` 渲染，升至 v3.11.1。
+> **本次更新（2026-11-06 第十三轮：任务文档彻底精简）**。按用户指令「tasks.md 仅保存未完成任务清单，已完成任务与历史叙述迁移至 tasks-done.md」执行：
+> ① **待办区状态**：「未完成任务合计：0 项」（自 2026-11-05 第十二轮后维持）；所有 T-P0-01~04/02a、T-P1-01~17、T-P2-01~13、T-P3-01~05、T-P4-01 均已完成并归档；
+> ② **迁移历史叙述**：移除顶部第十二轮及更早的各轮「本次更新」冗长历史块，改为指向 [tasks-done.md](./tasks-done.md) 的指针，避免两处重复维护；
+> ③ **迁移开发进度全景**：原「二、开发进度全景」完成度表整体迁入 [tasks-done.md](./tasks-done.md) 第七章，使本文件仅聚焦未完成清单；
+> ④ **保留**：实时指标表、待办区（0 项）、日常 / 定期 / 版本发布维护清单；
+> ⑤ **剩余任务**：编号任务清单已清零，无编号任务可推进；`Web Worker 分片并行化（多核并行求值）`仍为后续增强项（非阻断，不计入清单）。
 
 ---
+
+## 一、实时指标
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
 | 应用版本 | v3.15.0 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
-| i18n 语言 / 键数 | 16 种 / 顶层 **146** 键、递归合计 **215** 键 | 脚本统计 `src/locales/zh-cn.json`；`check:locales` 输出为递归口径 **215**（2026-11-05 补齐 `toast.domainsLoadFailed` 后由 214 增至 215；2026-10-19 补齐 `toast.cleared` 后由 213 增至 214；顶层键数不变，`cleared` 为 `toast` 子键，toast 由 21 → 22 键） |
-| 测试套件 / 用例 | **47 套件 / 282 用例**（全通过） | `vitest run`（权威计数，**2026-11-05 第十二轮实测**；由 27 / 250 增至 47 / 282：5 个超长测试文件按关注点拆为 18 个（套件 +13），新增 6 个测试文件补齐本轮缺陷回归（`rulesGenerator.header` / `parseLine.edge` / `scrollLock` / `useModalEscape` / `useLineNumbers` / `useRules.settings`），用例净增 32） |
-| 覆盖率门禁 | 已生效且为真实值；含 `src/utils` + `src/hooks`，门槛 **语句 80 / 分支 75 / 函数 85 / 行 80**（T-P1-07 完成后已从临时的 50/75/80/50 提升回原定目标）；统计口径已在 `vitest.config.ts` 显式声明 `all: false`，避免不同环境下 `all` 默认行为差异导致数值忽高忽低 | `vitest run --coverage`；**2026-11-05 第十二轮实测：语句 88.85 / 分支 85.45 / 函数 91.74 / 行 88.85，全部达标且有余量**。已反证门禁真实生效：临时抬阈至 99 时 `EXIT CODE 1` |
+| i18n 语言 / 键数 | 16 种 / 顶层 **146** 键、递归合计 **215** 键 | 脚本统计 `src/locales/zh-cn.json`；`check:locales` 输出为递归口径 **215**（2026-11-05 补齐 `toast.domainsLoadFailed` 后由 214 增至 215；2026-10-19 补齐 `toast.cleared` 后由 213 增至 214） |
+| 测试套件 / 用例 | **47 套件 / 282 用例**（全通过） | `vitest run`（权威计数，2026-11-05 第十二轮实测；由 27 / 250 增至 47 / 282） |
+| 覆盖率门禁 | 已生效且为真实值；含 `src/utils` + `src/hooks`，门槛 **语句 80 / 分支 75 / 函数 85 / 行 80**；`vitest.config.ts` 显式声明 `all: false` | `vitest run --coverage`；2026-11-05 第十二轮实测：语句 88.85 / 分支 85.45 / 函数 91.74 / 行 88.85，全部达标且有余量；曾以「临时抬阈至 99 → EXIT CODE 1」反证门禁真实生效 |
 | 组件规模 | 顶层 **14** 个 `.tsx` + `OutputPanel.derived.ts`，`ui/` 12 个 | `src/components/` 实测 |
-| 源文件 >200 行 | `ts/tsx/css` **0** 个（**含测试文件**，第十二轮把 5 个超长测试文件拆为 18 个后达成）；`globals.css` 已于 v3.13.6 拆为 `src/styles/*.css` 7 模块 | 行数扫描 |
+| 源文件 >200 行 | `ts/tsx/css` **0** 个（含测试文件）；`globals.css` 已于 v3.13.6 拆为 `src/styles/*.css` 7 模块 | 行数扫描 |
 | 静态门禁 | `tsc --noEmit` 零错误；`next lint` **0 warning 0 error**；`sync-facts.mjs` 13 处版本展示位与 package.json 全一致 | 2026-10-19 实跑 |
 
 > **教训**：本文件中的数据型数字（键数 / 用例数 / 覆盖率 / 行数）历史上多次与实现脱节。修改前务必用脚本实算，禁止凭记忆书写。
-> 2026-10-19 复核再次印证：键数、用例数、覆盖率三项均曾长期偏离真实值，且**偏差方向不一致**（键数偏少、用例数偏少、覆盖率偏高），说明凭旧记录继承数字必然失真。
+> 2026-10-19 复核再次印证：键数、用例数、覆盖率三项均曾长期偏离真实值，且偏差方向不一致，说明凭旧记录继承数字必然失真。
 
 ---
 
-## 二、开发进度全景
+## 二、待办任务（未完成，按优先级划分）
 
-```
-[████████████████████████] 100% 全局就绪度（核心任务清单全部完成；Web Worker 大规模性能为后续增强项）
-```
-
-| 模块 / 维度 | 完成度 | 状态 | 关键成果 |
-|---|:---:|:---:|---|
-| **核心规则生成引擎** | 100% | ✅ 稳定 | 支持 12 种输出格式（含 Mosdns/Clash Meta/CoreDNS）、通配符/白名单/自定义DNS前缀解析、高效去重与排序 |
-| **Web 交互界面 (GUI)** | 98% | ✅ 完善 | Swiss Precision 排版、规则测试弹窗、路由器脚本弹窗、FlowViz 动效 |
-| **单元测试 (Unit Test)** | 100% | ✅ 优秀 | Vitest **47 个测试套件、282 个测试用例**全部通过（与指标表一致，2026-11-05 第十二轮实测）；测试文件按关注点拆分，单文件均 ≤200 行 |
-| **测试覆盖率与 CI 门禁** | 95% | ✅ 门禁已生效且已反证 | Vitest 3.2.7 已根治 Windows 盘符重复统计，报告值即真实值；**thresholds 为 语句 80 / 分支 75 / 函数 85 / 行 80，当前实测 语句 88.85 / 分支 85.45 / 函数 91.74 / 行 88.85，四项均有余量**；已用「临时抬阈至 99 → EXIT CODE 1」反证门禁真实生效；统计口径显式 `all: false`（v3.15.0 固化） |
-| **国际化 (i18n)** | 100% | ✅ 完成 | 16 种多语言本地化（顶层 146 键、递归 **215** 键），`check:locales` 100% 通过；`toast.cleared` 缺键缺陷已于 2026-10-19 修复（16 语补齐，并新增「16 语均含该键且不等于各自 `done`」集体守卫） |
-| **域名规则匹配与测试引擎** | 100% | ✅ 完成 | 完整实现域名/URL 匹配分析引擎与前端交互弹窗 |
-| **路由器自动化同步脚本** | 90% | ✅ 完成 | 支持 OpenWrt、Merlin、Padavan、SmartDNS、Pi-hole 自动化更新脚本一键生成 |
-| **超大规模数据性能 (Web Worker)** | 55% | 🔵 后续增强（非阻断） | T-P1-08 已消除主线程行数统计的 O(n) 数组分配（3 处调用点统一为非分配计数），50,000+ 级输入的按键响应卡顿明显缓解；**剩余分片并行化（多核并行求值）未实施**，仍按需排期，不影响当前功能可用性 |
-
----
-
-## 三、待办任务（未完成，按优先级划分）
-
-> **实施顺序总览**：本轮（2026-11-05 第十二轮）新登记 **12 项** 待办并当轮完成：T-P1-10（导出头部 usage 注释符，P0 级）、T-P1-11（草稿优先契约，数据丢失级）、T-P1-12（RTL 方向初始化）、T-P1-13（设置/语言变更联动）、T-P1-14（Worker 失败与挂起任务结算）、T-P1-15（排序/去重竞态）、T-P1-16（弹窗栈 Escape）、T-P1-17（共享滚动锁）、T-P2-07（`||` 边界切片）、T-P2-08（hosts 通用 IP 识别）、T-P2-09（正则含 `#` 不被截断）、T-P2-11（URL 全失败误报成功）。此前 T-P1-08 / T-P1-09（第十一轮）、T-P0-02a（2026-10-22）、T-P2-08（`toast.cleared`，2026-10-19）、T-P1-07（2026-10-19）均已完成并归档。
-> 剩余：Web Worker 分片并行化（多核并行求值）仍为后续增强项（非阻断），不计入任务清单。
-> 历史任务明细（含验收标准与状态追踪）见 [tasks-done.md](./tasks-done.md) 第四章「任务验收标准与状态追踪」；应用问题诊断证据见该文件第六章。
+> **未完成任务合计：0 项**。所有 T-P0/P1/P2/P3/P4 编号任务均已完成并归档至 [tasks-done.md](./tasks-done.md)；Web Worker 分片并行化（多核并行求值）为后续增强项（非阻断，不计入任务清单）。历史任务明细（含验收标准与状态追踪）见 [tasks-done.md](./tasks-done.md) 第四章；应用问题诊断证据见该文件第六章。
 
 ### 🔴 P0 - 核心工程与质量门禁
-
-> 当前无未完成的 P0 任务。T-P0-01 / 02 / 03 / 04 与 T-P0-02a 全部完成并归档（详见 [tasks-done.md](./tasks-done.md)）。T-P0-02a 于 2026-10-22 完成：增强 `check-locales.mjs` 以独立基线清单捕获「集体缺键」，并以破坏性实验反证门禁真实生效。
+> 当前无未完成的 P0 任务。T-P0-01 / 02 / 03 / 04 与 T-P0-02a 全部完成并归档（详见 [tasks-done.md](./tasks-done.md)）。
 
 ### 🟡 P1 - 性能优化与大数据集体验
-
-当前无未完成的 P1 任务。**本轮（2026-11-05 第十二轮）新登记并完成 T-P1-10 ~ T-P1-17**：
-
-| 任务编号 | 任务名称 | 优先级 | 状态 | 验收标准 | 归档 |
-|---|---|:---:|:---:|---|---|
-| T-P1-08 | 统一行数统计、消除重复实现与全量 `split` 分配 | 🟡 P1 | ✅ 已完成 | 单一 `countLines` 工具（零分配）；3 处调用点全部替换；10 万行输入不再产生 O(n) 数组分配；单测覆盖语义一致性与性能回归 | [tasks-done.md](./tasks-done.md) |
-| T-P1-09 | 域名源加载失败的用户可见告警 | 🟡 P1 | ✅ 已完成 | 远端 + 本地回退全部失败时弹出 toast（16 语言键齐备、基线同步至 215 键）；不再只写 logger；单测断言 toast 被调用 | [tasks-done.md](./tasks-done.md) |
-| T-P1-10 | 导出头部 usage 行补格式注释符（P0 级） | 🟡 P1 | ✅ 已完成 | 12 种格式头部每一非空行均以注释符开头；dnsmasq 头部不再出现裸指令；Bind RPZ 注释符修正为 `;`；`scripts/lib/formatHeaders.mjs` 与运行时一致；`rulesGenerator.header.test.ts` 逐格式断言 | [tasks-done.md](./tasks-done.md) |
-| T-P1-11 | 草稿优先契约（禁止远端清单覆盖用户草稿） | 🟡 P1 | ✅ 已完成 | 草稿无条件恢复；远端加载完成后检测到草稿已恢复即放弃远端内容；「草稿先落地」「远端先落地」两种时序均有回归用例 | [tasks-done.md](./tasks-done.md) |
-| T-P1-12 | RTL 语言方向在初始化时同步 `<html dir>` | 🟡 P1 | ✅ 已完成 | 刷新后 RTL 语言首屏按 rtl 排版；切换语言仍同步方向 | [tasks-done.md](./tasks-done.md) |
-| T-P1-13 | 设置项/语言变更触发重新生成 | 🟡 P1 | ✅ 已完成 | 改 IP、项目名、去通配/去重开关、切换语言后预览、导出与统计同步更新；`useRules.settings.test.ts` 断言调用次数与入参 | [tasks-done.md](./tasks-done.md) |
-| T-P1-14 | Worker 任务失败与挂起任务结算 | 🟡 P1 | ✅ 已完成 | 解析任务失败回退主线程同步解析；Worker 卸载时逐个 resolve 挂起任务；`postMessage` 异常即时结算 | [tasks-done.md](./tasks-done.md) |
-| T-P1-15 | 排序/去重结果不得覆盖用户新输入 | 🟡 P1 | ✅ 已完成 | 转换序号（排序/去重共用）+ 输入快照双重守卫，旧结果自动丢弃 | [tasks-done.md](./tasks-done.md) |
-| T-P1-16 | 弹窗栈：一次 Escape 只关闭栈顶弹窗 | 🟡 P1 | ✅ 已完成 | 新增 `useModalEscape` 弹窗栈；四个弹窗统一使用；叠放场景有回归用例 | [tasks-done.md](./tasks-done.md) |
-| T-P1-17 | 共享滚动锁（叠放弹窗互不破坏） | 🟡 P1 | ✅ 已完成 | 新增 `utils/scrollLock` 引用计数实现；关闭内层弹窗不解除外层锁定；全部关闭后恢复原始 `overflow` | [tasks-done.md](./tasks-done.md) |
-
-T-P1-01~07 全部完成：T-P1-07 于 2026-10-19 为 `useRules` / `useDomainData` / `useUrlManager` / `useHomeController` / `useTheme` / `useLoading` / `useFlowTokens` 补齐 112 个用例，语句/行覆盖率由 53.31% 升至 87.42%，达标后已将 `vitest.config.ts` 阈值由临时的 50/75/80/50 提升回原定的 80/75/85/80。
+> 当前无未完成的 P1 任务。T-P1-01 ~ T-P1-17 全部完成并归档至 [tasks-done.md](./tasks-done.md)。
 
 ### 🟢 P2 - 规则引擎与国际化完善
-
-当前无未完成的 P2 任务。**本轮（2026-11-05 第十二轮）新登记并完成 T-P2-07 / T-P2-08 / T-P2-09 / T-P2-11**：
-
-| 任务编号 | 任务名称 | 优先级 | 状态 | 验收标准 | 归档 |
-|---|---|:---:|:---:|---|---|
-| T-P2-07 | AdGuard 内容恰为 `\|\|` 时不得非法切片 | 🟢 P2 | ✅ 已完成 | `Math.min` 空数组回退到行尾；`parseLine.edge.test.ts` 断言 `domain` 为空且 `isValid` 为 false | [tasks-done.md](./tasks-done.md) |
-| T-P2-08 | hosts 行支持任意合法 IP 与 Tab 分隔 | 🟢 P2 | ✅ 已完成 | `10.0.0.1 cdn.example.com` 识别为 hosts 类型；非 IP 前缀不误判 | [tasks-done.md](./tasks-done.md) |
-| T-P2-09 | 正则本体含 `#` 不被内联注释剥离截断 | 🟢 P2 | ✅ 已完成 | `/\d+#/`、`regex:/ads\/#/` 均完整保留；正则识别前置于注释剥离 | [tasks-done.md](./tasks-done.md) |
-| T-P2-11 | URL 全部抓取失败时不得提示「获取成功」 | 🟢 P2 | ✅ 已完成 | 全失败时走失败分支提示；部分失败仍视为成功 | [tasks-done.md](./tasks-done.md) |
+> 当前无未完成的 P2 任务（T-P2-07 / T-P2-08 / T-P2-09 / T-P2-11 已于 2026-11-05 第十二轮完成并归档至 [tasks-done.md](./tasks-done.md)）。
 
 ### ⚪ P3 / ⚙️ P4
-
-当前无未完成的 P3 / P4 任务，全部条目已完成并归档至 [tasks-done.md](./tasks-done.md)。
-
-> **未完成任务合计：0 项**（本轮登记的 12 项 T-P1-10~T-P1-17 / T-P2-07~T-P2-11 已完成并归档至 [tasks-done.md](./tasks-done.md)；Web Worker 超大规模性能为后续增强项，非阻断，不计入任务清单）
+> 当前无未完成的 P3 / P4 任务，全部条目已完成并归档至 [tasks-done.md](./tasks-done.md)。
 
 ---
 
-## 四、日常维护清单
+## 三、日常维护清单
 
 - [ ] 检查现有规则有效性
 - [ ] 测试新广告域名
@@ -166,7 +64,7 @@ T-P1-01~07 全部完成：T-P1-07 于 2026-10-19 为 `useRules` / `useDomainData
 - [ ] 更新 `public/adguard.txt`
 - [ ] 更新 `public/whitelist.txt`
 
-## 五、定期任务
+## 四、定期任务
 
 - [ ] 每 2 周检查一次规则有效性
 - [ ] 清理无效 / 过期域名
@@ -175,7 +73,7 @@ T-P1-01~07 全部完成：T-P1-07 于 2026-10-19 为 `useRules` / `useDomainData
 - [ ] 检查并更新依赖版本
 - [ ] 运行构建确保功能正常（`pnpm build`）
 
-## 六、版本发布清单
+## 五、版本发布清单
 
 - [ ] 递增版本号（SemVer）— 同步更新所有单一来源（全量 `search_content` 核对，勿漏）
 - [ ] `package.json` version（权威源）
