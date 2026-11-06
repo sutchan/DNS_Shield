@@ -10,17 +10,17 @@
 - **AdGuard 扩展/软件**：使用 `adguard.txt`
 - **AdGuard 白名单**：使用 `whitelist.txt`
 
-详细使用方法请参考 [README.md](README.md)。
+详细使用方法请参考 [README.md](../README.md)。
 
 ### 2. 如何添加自定义域名到黑名单？
 
-1. 编辑 `domains.txt` 文件，每行添加一个域名
-2. 运行 `pnpm build` 重新生成所有过滤列表
+1. 编辑 `public/domains.txt` 文件，每行添加一个域名（`+` 前缀表示白名单，`@` 前缀表示自定义 DNS，`#` 表示注释）
+2. 运行 `node scripts/gen-format-files.mjs`（或 `pnpm build:formats`）重新生成全部 12 种过滤列表
 3. 部署更新后的文件到您的设备
 
 ### 3. 如何添加域名到白名单？
 
-编辑 `whitelist.txt` 文件，每行添加一个域名。
+在 `public/domains.txt` 中以 `+域名` 形式添加；`public/whitelist.txt` 是生成产物，请勿直接编辑。
 
 ### 4. 过滤列表更新频率是多少？
 
@@ -71,7 +71,7 @@
 
 ## 资源
 
-- [部署指南](DEPLOYMENT.md)
+- [部署指南](../DEPLOYMENT.md)
 - [贡献指南](CONTRIBUTING.md)
 - [安全指南](SECURITY.md)
-- [变更日志](CHANGELOG.md)
+- [变更日志](../CHANGELOG.md)

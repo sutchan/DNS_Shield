@@ -1,8 +1,8 @@
-![DNS Shield Brand Banner](brand/brand-banner.svg)
+![DNS Shield Brand Banner](public/brand-banner.svg)
 
-![DNS Shield](brand/logo.svg)
+![DNS Shield](public/logo.svg)
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.15.0-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.15.1-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Router-level DNS-based ad blocking filter list with web management tool. It both **generates** rule lists from a unified domain source and **converts** existing lists between different formats.
 
@@ -36,7 +36,7 @@ Copy all content from `dnsmasq.conf` and paste into the custom dnsmasq configura
 #### OpenWrt
 
 ```bash
-curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf >> /etc/dnsmasq.conf
+curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmasq.conf >> /etc/dnsmasq.conf
 ```
 
 ### Method 2: Hosts Format
@@ -64,7 +64,7 @@ Import `hosts.txt` into your router's ad blocking settings.
 # Services → DNS and DHCP → Extra hosts fields
 
 # Method 2: Via CLI
-curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt >> /etc/hosts
+curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/hosts.txt >> /etc/hosts
 ```
 
 #### Other Routers
@@ -110,17 +110,17 @@ This project provides pre-generated filter rule files that can be downloaded and
 
 | File | Use Case | Download Link |
 |------|----------|---------------|
-| [dnsmasq.conf](dnsmasq.conf) | Routers with dnsmasq support (Merlin/OpenWrt) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/dnsmasq.conf) |
-| [hosts.txt](hosts.txt) | Routers with hosts support (Xiaomi/ASUS/TP-Link) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/hosts.txt) |
-| [adguard.txt](adguard.txt) | AdGuard browser extension/AdGuard Home | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/adguard.txt) |
-| [whitelist.txt](whitelist.txt) | Whitelist (domains that need to be allowed) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/whitelist.txt) |
-| [unbound.conf](unbound.conf) | Unbound (local-zone refuse) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/unbound.conf) |
-| [pihole.txt](pihole.txt) | Pi-hole gravity | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/pihole.txt) |
-| [rpz.db](rpz.db) | Bind RPZ | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/rpz.db) |
-| [smartdns.conf](smartdns.conf) | SmartDNS | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/smartdns.conf) |
-| [mosdns_domain_set.txt](mosdns_domain_set.txt) | Mosdns domain-set | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/mosdns_domain_set.txt) |
-| [clash_dns.yaml](clash_dns.yaml) | Clash Meta DNS | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/clash_dns.yaml) |
-| [coredns_hosts.txt](coredns_hosts.txt) | CoreDNS hosts | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/coredns_hosts.txt) |
+| [dnsmasq.conf](public/dnsmasq.conf) | Routers with dnsmasq support (Merlin/OpenWrt) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmasq.conf) |
+| [hosts.txt](public/hosts.txt) | Routers with hosts support (Xiaomi/ASUS/TP-Link) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/hosts.txt) |
+| [adguard.txt](public/adguard.txt) | AdGuard browser extension/AdGuard Home | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/adguard.txt) |
+| [whitelist.txt](public/whitelist.txt) | Whitelist (domains that need to be allowed) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/whitelist.txt) |
+| [unbound.conf](public/unbound.conf) | Unbound (local-zone refuse) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/unbound.conf) |
+| [pihole.txt](public/pihole.txt) | Pi-hole gravity | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/pihole.txt) |
+| [rpz.db](public/rpz.db) | Bind RPZ | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/rpz.db) |
+| [smartdns.conf](public/smartdns.conf) | SmartDNS | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/smartdns.conf) |
+| [mosdns_domain_set.txt](public/mosdns_domain_set.txt) | Mosdns domain-set | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/mosdns_domain_set.txt) |
+| [clash_dns.yaml](public/clash_dns.yaml) | Clash Meta DNS | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/clash_dns.yaml) |
+| [coredns_hosts.txt](public/coredns_hosts.txt) | CoreDNS hosts | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/coredns_hosts.txt) |
 
 ### Whitelist Usage Instructions
 
@@ -162,11 +162,11 @@ domains.txt (Source of Truth, including + whitelist / @ custom DNS / # comment)
         ↓
   Next.js App (Web Tool, real-time generation)
         ↓
-  ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
-  ↓     ↓     ↓     ↓     ↓     ↓     ↓     ↓     ↓
-dns   hosts adguard white  unbound pihole domains  rpz   smartdns mosdns clash coredns
-masq         .txt  list   .conf  .txt           .db   .conf
-  └────────────────────────────────────────────────────┘
+  ┌─────────────────────────────────────────────────────────────┐
+  │ 12 output formats (src/types/formats.ts → ALL_FORMATS)        │
+  │ dnsmasq · hosts · adguard · whitelist · unbound · pihole       │
+  │ domains · bind (rpz) · smartdns · mosdns · clash · coredns     │
+  └─────────────────────────────────────────────────────────────┘
                   Output: copy / download
 ```
 

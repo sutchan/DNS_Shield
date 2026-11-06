@@ -1,6 +1,6 @@
 # 质量检查清单
 
-> 最后审查：2026-11-05（与 package.json v3.15.0 对齐；新增「导出头部注释符契约」「草稿优先契约」「语义化 id 与弹窗交互约定」三类检查项）
+> 最后审查：2026-11-06（与 package.json v3.15.1 对齐；全量文档核查：ui 组件文件名改实际 PascalCase、任务文档检查项按 tasks.md / tasks-done.md 分工补齐）
 
 ## UI/UX 设计规范
 
@@ -42,12 +42,12 @@
 
 ## shadcn/ui 组件规范
 
-- [ ] `src/components/ui/button.tsx` 使用 cva 管理变体
-- [ ] `src/components/ui/button.tsx` 支持 isLoading 状态
-- [ ] `src/components/ui/card.tsx` 使用圆角 2xl
-- [ ] `src/components/ui/badge.tsx` 支持 success/warning/error 变体
-- [ ] `src/components/ui/tabs.tsx` 使用圆角 lg
-- [ ] `src/components/ui/input.tsx` 支持 ref 传递
+- [ ] `src/components/ui/Button.tsx` 使用 cva 管理变体
+- [ ] `src/components/ui/Button.tsx` 支持 isLoading 状态
+- [ ] `src/components/ui/Card.tsx` 使用圆角 2xl
+- [ ] `src/components/ui/Badge.tsx` 支持 success/warning/error 变体
+- [ ] `src/components/ui/Tabs.tsx` 使用圆角 lg
+- [ ] `src/components/ui/Input.tsx` 支持 ref 传递
 - [ ] 所有组件使用 `cn()` 合并类名
 - [ ] 所有组件使用 `forwardRef`
 
@@ -65,7 +65,8 @@
 - [ ] `.github/ISSUE_TEMPLATE/` 含 bug_report 与 feature_request 模板
 - [ ] `DEPLOYMENT.md` 部署指南完整
 - [ ] `docs/SPEC.md` 规范文档完整
-- [ ] `docs/tasks.md` 任务清单完整（任务记录唯一来源，不得在其他文档另建任务清单）
+- [ ] `docs/tasks.md` 未完成任务清单 + 实时指标完整（未完成任务唯一来源，不得在其他文档另建任务清单）
+- [ ] `docs/tasks-done.md` 已完成任务归档完整（含开发进度全景，与 tasks.md 不重复维护）
 - [ ] `docs/CHECKLIST.md` 检查清单完整
 - [ ] `docs/config.yaml` 配置文件完整且 version 与 package.json 一致
 

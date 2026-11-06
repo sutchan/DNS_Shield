@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-05（与 package.json v3.15.0 对齐；新增 §4.4 交互与 DOM 约定——语义化 id 全量 kebab-case、弹窗栈 Escape、共享滚动锁；§4.1 补充草稿优先契约；§4.2 补充头部注释符契约）
+> 最后审查：2026-11-06（与 package.json v3.15.1 对齐；全量文档核查：修 §1 表格列数与域名口径、补全 §2 结构树 docs/scripts/public/components/config/types/workers、§5.3 任务记录规范按 tasks.md / tasks-done.md 分工重写、§9.2 补齐开发依赖；端口统一 3000）
 
 ## 1. 项目概述
 
@@ -13,8 +13,8 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.15.0 |
-| 拦截域名 | 867 条（黑名单 635 + 白名单 232，本地 `public/domains.txt`） | 实测值，以 `node scripts/count-domains.mjs` 为准 |
+| 当前版本 | v3.15.1 |
+| 拦截域名 | 规则 867 条（黑名单 635 + 白名单 232；`public/domains.txt` 共 882 行，含注释 15 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准） |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
 | 通知组件 | sonner |
@@ -38,24 +38,33 @@ dns-shield/
 │   └── ISSUE_TEMPLATE/             # Issue 模板（bug_report / feature_request）
 ├── docs/                            # 项目规范文档
 │   ├── SPEC.md                     # 项目规范（本文件）
-│   ├── tasks.md                    # 任务清单（唯一来源）
+│   ├── tasks.md                    # 未完成任务清单（唯一来源）+ 实时指标
+│   ├── tasks-done.md               # 已完成任务归档（含第七章开发进度全景）
 │   ├── CHECKLIST.md                # 质量检查清单
+│   ├── STRUCTURE-REVIEW.md         # 结构审查快照（v3.12.0 起冻结，不再回填）
 │   └── config.yaml                 # 规范配置
 ├── scripts/                        # 构建/校验脚本
-│   └── check-locales.mjs           # 国际化键覆盖校验（pnpm check:locales）
+│   ├── check-locales.mjs           # 国际化键覆盖校验（pnpm check:locales）
+│   ├── sync-facts.mjs              # 版本号写入 13 处文档展示位（--check 为 CI 门禁）
+│   ├── gen-format-files.mjs        # 生成 12 种规则产物（pnpm build:formats）
+│   ├── count-domains.mjs           # 域名计数实算（pnpm count:domains）
+│   ├── aggregate-upstream.mjs      # 上游规则聚合（aggregate.yml 调用）
+│   ├── gen-icons.mjs               # PWA 图标生成
+│   ├── locale-baseline.json        # i18n 独立基线清单（防「集体缺键」）
+│   └── lib/                        # 共享脚本模块
+│       ├── domainSource.mjs        # 域名源读取
+│       ├── formatHeaders.mjs       # 各格式头部（与运行时对齐）
+│       └── formatRules.mjs         # 规则文本生成
 ├── public/                         # 静态资源
 │   ├── assets/icons/               # PWA 图标（72x72 ~ 512x512）
-│   ├── domains.txt                 # 本地域名列表（供前端加载）
-│   ├── whitelist.txt               # 白名单文件
+│   ├── domains.txt                 # 域名单一来源（含 + 白名单 / @ 改道 / # 注释）
 │   ├── manifest.json               # Web 应用清单
 │   ├── service-worker.js           # Service Worker
-│   ├── adguard.txt                 # 预生成 AdGuard 格式
-│   ├── dnsmasq.conf                # 预生成 Dnsmasq 格式
-│   ├── hosts.txt                   # 预生成 Hosts 格式
-│   ├── unbound.conf                # 预生成 Unbound 格式（local-zone refuse）
-│   ├── pihole.txt                  # 预生成 Pi-hole 格式（0.0.0.0 gravity）
-│   ├── rpz.db                      # 预生成 Bind RPZ 格式
-│   └── smartdns.conf               # 预生成 SmartDNS 格式（address /domain/#）
+│   ├── brand-banner.svg / logo.svg / logo-mono.svg / favicon.svg # 品牌资源
+│   ├── brand-colors.md             # 品牌色板（冻结快照）
+│   ├── adguard.txt / dnsmasq.conf / hosts.txt / unbound.conf / pihole.txt
+│   ├── whitelist.txt / rpz.db / smartdns.conf
+│   └── mosdns_domain_set.txt / clash_dns.yaml / coredns_hosts.txt  # 12 种规则产物
 ├── src/                            # Next.js 源代码
 │   ├── app/                        # App Router 目录
 │   │   ├── page.tsx                # 主页面入口
@@ -75,6 +84,7 @@ dns-shield/
 │   │   ├── InputPanel.tsx          # 输入面板（域名编辑 + URL 导入）
 │   │   ├── InputPanel.types.ts     # 输入面板 props 接口与统计常量（v3.13.6 拆分）
 │   │   ├── OutputPanel.tsx        # 输出面板（规则预览 + 设置）
+│   │   ├── OutputPanel.derived.ts  # 输出面板派生状态（useMemo 聚合）
 │   │   ├── OutputPanel.parts.tsx   # 输出面板拆分子组件
 │   │   ├── OutputPreview.tsx       # 规则预览窗（虚拟滚动）
 │   │   ├── SettingsPanel.tsx       # 设置面板子组件
@@ -86,8 +96,11 @@ dns-shield/
 │   │   ├── GuideModal.tsx           # 使用指南弹窗
 │   │   └── FlowViz.tsx            # 流程动效
 │   ├── config/
+│   │   ├── defaults.json           # 默认设置单一来源（v3.12.0 收敛）
 │   │   ├── index.ts                # 应用配置（预设源 URL、多镜像）
 │   │   └── version.ts              # 版本号单一来源（APP_VERSION，派生自 package.json）
+│   ├── workers/
+│   │   └── ruleProcessor.worker.ts # 大文本解析 Worker（分片 + 进度上报）
 │   ├── context/
 │   │   └── AppContext.tsx          # 应用上下文（集中提供 i18n 翻译 t）
 │   ├── hooks/                      # 自定义 Hooks
@@ -133,7 +146,10 @@ dns-shield/
 │   │   ├── rulesTestKit.ts        # useRules 测试装置（翻译表/基础设置/样例数据）
 │   │   └── urlManagerTestKit.ts   # useUrlManager 测试装置（统一装配）
 │   ├── types/
-│   │   └── index.ts                # TypeScript 类型定义
+│   │   ├── formats.ts              # FormatType / ALL_FORMATS（12 格式权威源）
+│   │   ├── index.ts                # TypeScript 类型定义
+│   │   ├── translation.ts          # 翻译类型
+│   │   └── translation.parts.ts    # 翻译类型拆分片段
 │   └── utils/                      # 工具函数
 │       ├── analytics.ts            # GA4 衡量 ID 读取/校验与 gtag 片段生成（纯逻辑）
 │       ├── domainValidator.ts       # 域名验证与行解析
@@ -238,7 +254,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.15.0 |
+| 版本号 | 3.15.1 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -277,16 +293,17 @@ dns-shield/
 
 > **本节为项目长期遵循的强制规则，不因单次任务而放宽。**
 
-1. **唯一来源**：[`docs/tasks.md`](./tasks.md) 是项目任务记录的唯一来源（Single Source of Truth）。所有剩余任务、待办项、已完成任务与周期性清单**只能**记录在该文件。
+1. **唯一来源**：[`docs/tasks.md`](./tasks.md) 是项目**未完成任务**与**实时指标**的唯一来源（Single Source of Truth）；已完成任务、历轮变更叙述与开发进度全景归档于 [`docs/tasks-done.md`](./tasks-done.md)。两文件按「活跃清单 / 归档」分工，不重复维护同一条目，避免两处口径漂移。
 2. **禁止另建**：项目内其他位置（`README.md`、`docs/SPEC.md`、`docs/CHECKLIST.md`、`CHANGELOG.md`、`prototype/`、源码注释等）**不得**另建任务清单或以 `- [ ]` 形式维护任务条目。
 3. **文档分工**：
-   - `docs/tasks.md` — 任务与待办的**唯一**记录处
+   - `docs/tasks.md` — **未完成任务**清单（当前 0 项）+ 实时指标 + 日常/定期/版本发布维护清单
+   - `docs/tasks-done.md` — **已完成任务**归档（结构化任务、专项整改、验收标准、诊断证据、开发进度全景）
    - `docs/CHECKLIST.md` — 发布/验收前的**质量核验清单**（非任务跟踪，不含排期与优先级）
    - `docs/SPEC.md` — 规范定义（不含任务状态）
    - `CHANGELOG.md` — 已发布版本的历史变更记录（不可篡改）
-4. **更新时机**：新增任务、完成任务、任务状态或优先级变更、发现新缺陷时，**必须**同步更新 `docs/tasks.md`，并在其「最后审查」时间戳中记录更新时间。
-5. **数据准确性**：`docs/tasks.md` 中的数据型数字（i18n 键数、测试用例数、覆盖率、文件行数、格式数量等）**必须用脚本实算**后填写，禁止凭记忆书写；修改前先实查 `package.json` 等权威源。
-6. **删除冗余**：若发现其他文档存在任务清单内容，须迁移至 `docs/tasks.md` 并删除冗余文档。
+4. **更新时机**：新增任务、完成任务、任务状态或优先级变更、发现新缺陷时，**必须**同步更新 `docs/tasks.md`，并在其「最后审查」时间戳中记录更新时间；任务完成后将条目移入 `docs/tasks-done.md`，使 `tasks.md` 仅保留未完成项。
+5. **数据准确性**：`docs/tasks.md` 中的数据型数字（i18n 键数、测试用例数、覆盖率、文件行数、格式数量等）**必须用脚本实算**后填写，禁止凭记忆书写；修改前先实查 `package.json` 等权威源。无法实跑时沿用最近一次实测值并注明，不得凭静态计数臆改。
+6. **删除冗余**：若发现其他文档存在任务清单内容，须按「未完成 → `docs/tasks.md`、已完成 → `docs/tasks-done.md`」迁移，并删除冗余文档。
 7. **CHECKLIST 例外**：`docs/CHECKLIST.md` 是**发布验收清单**（每次发版逐项核验），允许使用 `- [ ]` 复选框，不受第 2 条「禁止 `- [ ]`」约束；但严禁在其中记录任务状态或新增任务条目。
 
 ## 6. 路由器兼容列表
@@ -349,9 +366,11 @@ refactor: 优化规则生成逻辑
 | @types/node | ^24.0.0 | Node.js 类型定义（匹配运行环境 Node 24） |
 | @types/react | ^18 | React 类型定义 |
 | @types/react-dom | ^18 | React DOM 类型定义 |
+| @vitest/coverage-v8 | ^3.2.7 | Vitest v8 覆盖率 provider（门禁数据来源） |
 | autoprefixer | ^10.4.19 | CSS 自动前缀 |
 | eslint | ^8 | 代码质量检查 |
 | eslint-config-next | ^14 | Next.js ESLint 配置 |
+| jsdom | ^30.1.2 | hooks 测试用 DOM 环境（逐文件 `@vitest-environment jsdom`） |
 | postcss | ^8.4.38 | CSS 处理工具 |
 | tailwindcss | ^3.4.3 | 实用优先 CSS 框架 |
 | tailwindcss-animate | ^1.0.7 | Tailwind 动画插件 |

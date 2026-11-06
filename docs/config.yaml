@@ -8,14 +8,14 @@ context: |
   Project structure follows Next.js App Router conventions
   We use SemVer for versioning
   We maintain a single source of truth in public/domains.txt
-  We support multiple output formats: dnsmasq, hosts, AdGuard, whitelist, Unbound, Pi-hole, plain domains, Bind RPZ, and SmartDNS
+  We support 12 output formats: dnsmasq, hosts, AdGuard, whitelist, Unbound, Pi-hole, plain domains, Bind RPZ, SmartDNS, Mosdns, Clash Meta, and CoreDNS
   We follow strict file header format with version and date
   We maintain whitelist.txt for whitelist rules
   We use Next.js App Router with page.tsx, layout.tsx, and Home.tsx components
   We have 16 internationalization languages
   We use shadcn/ui components (Radix UI based) with Tailwind CSS
   We use sonner for toast notifications
-  Dev server runs on port 8082 (pnpm dev)
+  Dev server runs on port 3000 (pnpm dev)
 
 # Per-artifact rules
 rules:
@@ -76,4 +76,4 @@ components:
       file: "src/components/ui/Toast.tsx"
       parts: ["Toast", "toast"]
 
-version: "3.15.0"
+version: "3.15.1"

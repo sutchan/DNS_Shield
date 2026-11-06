@@ -57,7 +57,7 @@ git checkout -b feature/your-feature-name
 
 根据你的贡献类型进行相应的修改：
 
-- **添加/修改域名**：编辑 `domains.txt` 文件
+- **添加/修改域名**：编辑 `public/domains.txt` 文件
 - **修改 Web 管理工具**：编辑 `src/` 目录下的文件
 - **更新文档**：编辑相应的文档文件
 
@@ -142,8 +142,8 @@ pnpm start
 
 ### 1. 域名管理
 
-- **添加域名**：在 `domains.txt` 中添加新域名，遵循格式规范
-- **删除域名**：从 `domains.txt` 中删除无效或过期的域名
+- **添加域名**：在 `public/domains.txt` 中添加新域名，遵循格式规范
+- **删除域名**：从 `public/domains.txt` 中删除无效或过期的域名
 - **更新规则**：使用 Web 管理工具生成更新后的规则文件
 
 ### 2. 版本发布

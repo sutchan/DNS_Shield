@@ -1,10 +1,10 @@
-![DNS Shield 品牌横幅](brand/brand-banner.svg)
+![DNS Shield 品牌横幅](public/brand-banner.svg)
 
-![DNS Shield](brand/logo.svg)
+![DNS Shield](public/logo.svg)
 
 # DNS Shield - 路由器广告过滤工具
 
-[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.15.0-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.15.1-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告和保护隐私。既支持从统一域名数据源**生成**多种格式规则，也支持将已有清单在**不同格式间互相转换**。
 
@@ -107,6 +107,8 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmas
 - **PWA 安全** - Service Worker 仅缓存同源静态资源，扩展名白名单过滤
 
 ## 项目结构
+
+> 以下为节选（仅列主要模块），完整文件清单见 [docs/SPEC.md](docs/SPEC.md) §2。实测：`src/hooks` 20 个、`src/utils` 24 个、`src/components` 顶层 15 个 `.tsx`、`src/components/ui` 12 个。
 
 ```
 src/
@@ -226,7 +228,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
 # 安装依赖
 pnpm install
 
-# 开发模式（端口 8082）
+# 开发模式（端口 3000）
 pnpm dev
 
 # 构建生产版本
@@ -277,7 +279,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.15.0
+当前版本：v3.15.1
 
 ## 更新日志
 

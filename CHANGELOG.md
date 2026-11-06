@@ -5,6 +5,22 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+## [Unreleased]
+
+## [3.15.1] - 2026-11-06
+
+### Changed（文档全量勘误与版本同步，2026-11-06）
+- 全项目文档与代码实况对齐，仅文档与版本展示位变更，无运行时功能变更；权威指标经脚本实算：v3.15.1 / 12 格式 / 16 语 146 顶层键 215 递归键 / 47 测试套件 / `src` 无 >200 行源文件 / `public/domains.txt` 非空 882 行（15 注释 + 867 规则 = 黑名单 635 + 白名单 232）
+- 统一开发端口 8082 → 3000（`README.md`、`DEPLOYMENT.md`、`docs/config.yaml`），与 `package.json` 脚本及 `CHANGELOG` 历史修正记录一致
+- 修复失效链接：`README.md` / `README.en.md` 品牌图路径改 `public/`、`README.en.md` 全部 raw 下载链接补 `public/` 前缀、`.github/SUPPORT.md` 相对链接补 `../`
+- 修正路径与命令：`.github/CONTRIBUTING.md` 域名源改 `public/domains.txt`；`.github/SUPPORT.md` 生成命令改 `node scripts/gen-format-files.mjs`、白名单改 `+域名` 语法；`docs/CHECKLIST.md` ui 组件文件名改 PascalCase；`.github/PULL_REQUEST_TEMPLATE.md` 移除已删除的 `CODE_REVIEW.md` 引用
+- `docs/config.yaml` 补齐 12 种输出格式；`docs/SPEC.md` 修 §1 表格列数与域名口径、补全 §2 结构树（`docs/scripts/public/components/config/types/workers`）、重写 §5.3 任务记录规范为 `tasks.md`（未完成）/ `tasks-done.md`（已完成归档）分工、§9.2 补齐 `@vitest/coverage-v8` 与 `jsdom`
+- `README.en.md` 输出格式图改显式列 12 种，消除「9 列 vs 12 格式」自相矛盾；`DEPLOYMENT.md` 陈旧版本 3.14.0 → 当前版本
+- 冻结快照按各自声明不改：`CHANGELOG` 历史段、`prototype/**`、`public/brand-colors.md`、`docs/STRUCTURE-REVIEW.md`、`docs/tasks-done.md` 历史实测值
+- 版本按 patch 规则由 v3.15.0 升至 v3.15.1：`package.json`（权威源）/ `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 13 处文档展示位 / `public/` 11 个规则产物头部；`src` 其余文件头注释按「仅被改文件更新」规则保持 v3.15.0
+- 本轮静态校验实跑通过：`sync-facts.mjs --check`（13 处展示位一致）、`check-locales.mjs`（16 语 / 215 键）、`src` 行数扫描（0 个 >200 行）、活跃文档相对链接检查（0 失效）；`public/` 11 个产物由 `gen-format-files.mjs` 重生成
+- 注：本机无 `node_modules`，`vitest` / `lint` 未能实跑；测试 282 用例与覆盖率为 2026-11-05 实测值，按「数字必须实算」纪律沿用并注明，未凭静态计数臆改
+
 ## [3.15.0]
 
 ### Fixed（P0/P1 缺陷修复）
@@ -1478,7 +1494,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.10.1...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.15.1...HEAD
+[3.15.1]: https://github.com/sutchan/DNS_Shield/compare/v3.15.0...v3.15.1
 [3.10.1]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.10.1
 [3.9.12]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.9.12
 [3.8.1]: https://github.com/sutchan/DNS_Shield/releases/tag/v3.8.1
