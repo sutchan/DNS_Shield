@@ -4,9 +4,9 @@
 #
 # Clash Meta DNS 规则（DOMAIN-SUFFIX 命中后 reject）
 #
-# 版本:: 3.15.1
+# 版本:: 3.15.2
 # 更新:: 2026.11.06
-# 域名:: 634 个唯一域名
+# 域名:: 644 个唯一域名
 # 白名单:: 232 个域名
 #
 # 用法：追加到 Clash Meta DNS ruleset
@@ -194,8 +194,10 @@ DOMAIN-SUFFIX,api.kingdata.ksyun.com,reject
 DOMAIN-SUFFIX,api.kuaishou.com,reject
 DOMAIN-SUFFIX,api.onesignal.com,reject
 DOMAIN-SUFFIX,api.ts.feedback.qy.net,reject
+DOMAIN-SUFFIX,api.tv.mi.com,reject
 DOMAIN-SUFFIX,api.vc.bilibili.com,reject
 DOMAIN-SUFFIX,api.vungle.com,reject
+DOMAIN-SUFFIX,app.feedback.xiaomi.com,reject
 DOMAIN-SUFFIX,applog-perf.uc.cn,reject
 DOMAIN-SUFFIX,applog.uc.cn,reject
 DOMAIN-SUFFIX,applovin.com,reject
@@ -245,6 +247,7 @@ DOMAIN-SUFFIX,callback.ad.xiaomi.com,reject
 DOMAIN-SUFFIX,casalemedia.com,reject
 DOMAIN-SUFFIX,cctv-ad.cdn.cctv.cn,reject
 DOMAIN-SUFFIX,cctv.adsunion.com,reject
+DOMAIN-SUFFIX,cdn.ad.xiaomi.com,reject
 DOMAIN-SUFFIX,cdn.hpplay.com.cn,reject
 DOMAIN-SUFFIX,centertime.ksyun.com,reject
 DOMAIN-SUFFIX,chartboost.com,reject
@@ -300,6 +303,7 @@ DOMAIN-SUFFIX,ets.tanx.com,reject
 DOMAIN-SUFFIX,exelate.com,reject
 DOMAIN-SUFFIX,exelator.com,reject
 DOMAIN-SUFFIX,extlog.snssdk.com,reject
+DOMAIN-SUFFIX,feed.xiaomi.com,reject
 DOMAIN-SUFFIX,finder.video.qq.com,reject
 DOMAIN-SUFFIX,fix.hpplay.cn,reject
 DOMAIN-SUFFIX,flashtalking.com,reject
@@ -310,6 +314,7 @@ DOMAIN-SUFFIX,g.dtv.cn.miaozhen.com,reject
 DOMAIN-SUFFIX,g.pandora.xiaomi.com,reject
 DOMAIN-SUFFIX,g.rs.dbankcloud.com,reject
 DOMAIN-SUFFIX,galaxy.ad.iqiyi.com,reject
+DOMAIN-SUFFIX,gallery.pandora.xiaomi.com,reject
 DOMAIN-SUFFIX,game.weixin.qq.com,reject
 DOMAIN-SUFFIX,gdt.qq.com,reject
 DOMAIN-SUFFIX,gifshow.com,reject
@@ -407,6 +412,8 @@ DOMAIN-SUFFIX,minigame.qq.com,reject
 DOMAIN-SUFFIX,misc.in.duokanbox.com,reject
 DOMAIN-SUFFIX,misc.pandora.xiaomi.com,reject
 DOMAIN-SUFFIX,mishop.pandora.xiaomi.com,reject
+DOMAIN-SUFFIX,mishop.tv.mi.com,reject
+DOMAIN-SUFFIX,mistat.tv.mi.com,reject
 DOMAIN-SUFFIX,mitv.tracking.miui.com,reject
 DOMAIN-SUFFIX,moat.com,reject
 DOMAIN-SUFFIX,moatads.com,reject
@@ -497,6 +504,7 @@ DOMAIN-SUFFIX,piximedia.tv,reject
 DOMAIN-SUFFIX,platforms.adx1.com,reject
 DOMAIN-SUFFIX,poweredby.zergnet.com,reject
 DOMAIN-SUFFIX,prod-ms.applovin.com,reject
+DOMAIN-SUFFIX,prod.tv.api.mi.com,reject
 DOMAIN-SUFFIX,ptgy.gitv.tv,reject
 DOMAIN-SUFFIX,ptmi.gitv.tv,reject
 DOMAIN-SUFFIX,pubmatic.com,reject
@@ -520,6 +528,7 @@ DOMAIN-SUFFIX,ramp.com,reject
 DOMAIN-SUFFIX,recommend.cctv.com,reject
 DOMAIN-SUFFIX,reflow.amemv.com,reject
 DOMAIN-SUFFIX,regist.tv.kuyun.com,reject
+DOMAIN-SUFFIX,report.tv.mi.com,reject
 DOMAIN-SUFFIX,res-ga.smzdm.com,reject
 DOMAIN-SUFFIX,resstatic.servicewechat.com,reject
 DOMAIN-SUFFIX,revcontent.com,reject
@@ -547,6 +556,7 @@ DOMAIN-SUFFIX,secure.chn.imrworldwide.com,reject
 DOMAIN-SUFFIX,sentry.in.zhihu.com,reject
 DOMAIN-SUFFIX,serverbid.com,reject
 DOMAIN-SUFFIX,sharethrough.com,reject
+DOMAIN-SUFFIX,shop.xiaomi.com,reject
 DOMAIN-SUFFIX,smaato.net,reject
 DOMAIN-SUFFIX,smartadserver.com,reject
 DOMAIN-SUFFIX,snssdk.com,reject
@@ -555,6 +565,7 @@ DOMAIN-SUFFIX,sovrn.com,reject
 DOMAIN-SUFFIX,spns.cctv.com,reject
 DOMAIN-SUFFIX,spotx.tv,reject
 DOMAIN-SUFFIX,spotxchange.com,reject
+DOMAIN-SUFFIX,stat.pandora.xiaomi.com,reject
 DOMAIN-SUFFIX,stats.amemv.com,reject
 DOMAIN-SUFFIX,synacor.com,reject
 DOMAIN-SUFFIX,t.track.ad.xiaomi.com,reject
@@ -563,6 +574,7 @@ DOMAIN-SUFFIX,t7z.cupid.ptqy.gitv.tv,reject
 DOMAIN-SUFFIX,taboola.com,reject
 DOMAIN-SUFFIX,talkingdata.com,reject
 DOMAIN-SUFFIX,tapjoy.com,reject
+DOMAIN-SUFFIX,tat.pandora.xiaomi.com,reject
 DOMAIN-SUFFIX,teads.tv,reject
 DOMAIN-SUFFIX,theqoo.net,reject
 DOMAIN-SUFFIX,time.video.ptqy.gitv.tv,reject
@@ -575,8 +587,10 @@ DOMAIN-SUFFIX,triplelift.com,reject
 DOMAIN-SUFFIX,turn.com,reject
 DOMAIN-SUFFIX,tv.aiseet.atianqi.com,reject
 DOMAIN-SUFFIX,tv.api.iqiyi.com,reject
+DOMAIN-SUFFIX,tv.api.mi.com,reject
 DOMAIN-SUFFIX,tvapi.kuyun.com,reject
 DOMAIN-SUFFIX,tvapp.hpplay.cn,reject
+DOMAIN-SUFFIX,tvlog.mi.com,reject
 DOMAIN-SUFFIX,tx-ad.a.yximgs.com,reject
 DOMAIN-SUFFIX,tyaqy.m.cn.miaozhen.com,reject
 DOMAIN-SUFFIX,ugc.amemv.com,reject
@@ -645,10 +659,6 @@ DOMAIN-SUFFIX,yximgs.com,reject
 DOMAIN-SUFFIX,zedo.com,reject
 DOMAIN-SUFFIX,zemanta.com,reject
 DOMAIN-SUFFIX,zeus-api.vemarsdev.com,reject
-DOMAIN-SUFFIX,cdn.ad.xiaomi.com,reject
-DOMAIN-SUFFIX,gallery.pandora.xiaomi.com,reject
-DOMAIN-SUFFIX,stat.pandora.xiaomi.com,reject
-DOMAIN-SUFFIX,tat.pandora.xiaomi.com,reject
 
 # 白名单 (允许这些域名)
 DOMAIN-SUFFIX,access.speech.ai.xiaomi.com,DIRECT
@@ -798,9 +808,8 @@ DOMAIN-SUFFIX,bilibili.com,DIRECT
 DOMAIN-SUFFIX,douyin.com,DIRECT
 DOMAIN-SUFFIX,douyu.com,DIRECT
 DOMAIN-SUFFIX,huya.com,DIRECT
-DOMAIN-SUFFIX,kuaishou.com,DIRECT
-DOMAIN-SUFFIX,xigua.com,DIRECT
 DOMAIN-SUFFIX,iqiyi.com,DIRECT
+DOMAIN-SUFFIX,kuaishou.com,DIRECT
 DOMAIN-SUFFIX,kugou.com,DIRECT
 DOMAIN-SUFFIX,kuwo.cn,DIRECT
 DOMAIN-SUFFIX,letv.com,DIRECT
@@ -809,6 +818,7 @@ DOMAIN-SUFFIX,miguvideo.com,DIRECT
 DOMAIN-SUFFIX,music.163.com,DIRECT
 DOMAIN-SUFFIX,pptv.com,DIRECT
 DOMAIN-SUFFIX,tv.sohu.com,DIRECT
+DOMAIN-SUFFIX,xigua.com,DIRECT
 DOMAIN-SUFFIX,y.qq.com,DIRECT
 DOMAIN-SUFFIX,youku.com,DIRECT
 DOMAIN-SUFFIX,163.com,DIRECT
@@ -852,12 +862,12 @@ DOMAIN-SUFFIX,teambition.com,DIRECT
 DOMAIN-SUFFIX,upyun.com,DIRECT
 DOMAIN-SUFFIX,weiyun.com,DIRECT
 DOMAIN-SUFFIX,wps.cn,DIRECT
-DOMAIN-SUFFIX,console.cloud.tencent.com,DIRECT
-DOMAIN-SUFFIX,cloud.tencent.com,DIRECT
 DOMAIN-SUFFIX,baiducloud.com,DIRECT
 DOMAIN-SUFFIX,bing.com,DIRECT
+DOMAIN-SUFFIX,cloud.tencent.com,DIRECT
 DOMAIN-SUFFIX,cn.bing.com,DIRECT
 DOMAIN-SUFFIX,cnblogs.com,DIRECT
+DOMAIN-SUFFIX,console.cloud.tencent.com,DIRECT
 DOMAIN-SUFFIX,csdn.net,DIRECT
 DOMAIN-SUFFIX,developer.aliyun.com,DIRECT
 DOMAIN-SUFFIX,gitee.com,DIRECT

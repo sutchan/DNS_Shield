@@ -7,6 +7,16 @@
 
 ## [Unreleased]
 
+## [3.15.2] - 2026-11-06
+
+### Changed（首屏精简与格式选择优化）
+- 移除首屏 Hero 右侧「黑名单/白名单」可视化窗口（原 `.flowviz` 数据快照面板），Hero 回归单栏信息布局；`FlowViz` 删除 `buildSnapshot` / `SNAPSHOT_LIMITS` 与 `buildFlowPool` 引用，`hero.css` 删除 `.flowviz` / `.fv-*` 样式
+- 清理死代码：删除仅被该面板使用的 `src/utils/buildFlowPool.ts` 及其测试 `buildFlowPool.test.ts`
+- 优化「生成过滤规则」格式选择：原 12 个格式标签平铺在窄屏会换行堆叠成两列，改为「核心 4 格式标签（dnsmasq / hosts / AdGuard 黑名单 / AdGuard 白名单）+ 更多格式下拉」，高级格式收进下拉菜单；格式控件抽离为 `OutputPanel.formatTabs.tsx`，`OutputPanel.parts.tsx` 仅 re-export 保持导出契约
+- 新增 i18n 键 `moreFormats`（16 语言），用于「更多格式」下拉标签
+- 版本按 patch 规则升至 v3.15.2：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 文档展示位
+- 重整 `public/domains.txt`：清除开头 14 个空行与堆在文件头的 15 个孤立分类注释，恢复「黑名单 645 条全局字典序 + 白名单 232 条按 13 个真实分类分组（组内字典序）」结构并补规范文件头；域名集合完全不变，`public/` 11 个产物由 `gen-format-files.mjs` 重生成（头部 v3.15.2 / 644 唯一域名 / 232 白名单）
+
 ## [3.15.1] - 2026-11-06
 
 ### Changed（文档全量勘误与版本同步，2026-11-06）

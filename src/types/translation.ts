@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.13.0
+// src/types/translation.ts v3.15.2
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 // 嵌套子类型（header/whitelist/toast）已抽离至 translation.parts.ts 以控制主文件行数。
 import type { TranslationHeader, TranslationWhitelist, TranslationToast } from './translation.parts';
@@ -43,13 +43,8 @@ export interface Translation {
   removeWildcard: string;
   adguardIncludeWhitelist: string;
   showAllFormats: string;
-  // 流量可视化签名区（对齐原型 flowviz）
-  fvTagline: string;
-  fvBlock: string;
-  fvAllow: string;
-  fvDns: string;
-  fvAwait: string;
-  fvDomains: string;
+  /** 输出面板「更多格式」下拉标签 */
+  moreFormats: string;
   mergeInfo: string;
   previewPlaceholder: string;
   // 输出预览统计条（对齐原型 previewStats）

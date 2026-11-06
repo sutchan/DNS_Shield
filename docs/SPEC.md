@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-06（与 package.json v3.15.1 对齐；全量文档核查：修 §1 表格列数与域名口径、补全 §2 结构树 docs/scripts/public/components/config/types/workers、§5.3 任务记录规范按 tasks.md / tasks-done.md 分工重写、§9.2 补齐开发依赖；端口统一 3000）
+> 最后审查：2026-11-06（与 package.json v3.15.2 对齐；全量文档核查：修 §1 表格列数与域名口径、补全 §2 结构树 docs/scripts/public/components/config/types/workers、§5.3 任务记录规范按 tasks.md / tasks-done.md 分工重写、§9.2 补齐开发依赖；端口统一 3000）
 
 ## 1. 项目概述
 
@@ -13,8 +13,8 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.15.1 |
-| 拦截域名 | 规则 867 条（黑名单 635 + 白名单 232；`public/domains.txt` 共 882 行，含注释 15 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准） |
+| 当前版本 | v3.15.2 |
+| 拦截域名 | 规则 877 条（黑名单 645 + 白名单 232；`public/domains.txt` 非空 897 行，含注释 20 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准） |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
 | 通知组件 | sonner |
@@ -254,7 +254,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.15.1 |
+| 版本号 | 3.15.2 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -335,6 +335,19 @@ refactor: 优化规则生成逻辑
 | 主版本号 (MAJOR) | 重大规则变更/格式变化 |
 | 次版本号 (MINOR) | 新增功能/规则 |
 | 修订号 (PATCH) | 规则修正/优化 |
+
+### 8.1 页脚版本号与构建编号（展示规范）
+
+应用页脚（`src/components/Footer.tsx`）**必须**同时展示「版本号」与「构建编号」，格式为：
+
+```
+V{APP_VERSION}· build {NEXT_PUBLIC_BUILD_ID}
+```
+
+- **版本号**：取自 `src/config/version.ts` 的 `APP_VERSION`（单一来源，派生自 `package.json`），与 `next.config.js` 的 `env.version` 一致。
+- **构建编号（build）**：格式 **`yymmddhhmm`（2 位年 + 月日时分）**，例如 `2611061430`；由 `next.config.js` 的 `buildTimeId()` 在构建时生成并注入客户端环境变量 `NEXT_PUBLIC_BUILD_ID`。CI 可覆盖该值以反映真实构建时间。
+- **回退**：`NEXT_PUBLIC_BUILD_ID` 缺失时（如静态导出场景），页脚回退为版本号，保证始终有可识别标识。
+- **发版无需手动同步**：页脚内容由 `env.version` + 运行时 `NEXT_PUBLIC_BUILD_ID` 驱动，[tasks.md 第五章]发布清单无需单独登记页脚项；改动 `next.config.js` 的 `buildTimeId()` 或 `Footer.tsx` 展示格式时，须保持两者一致并同步本规范。
 
 ## 9. 依赖关系
 

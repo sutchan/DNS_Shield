@@ -1,38 +1,16 @@
-// src/components/OutputPanel.parts.tsx v3.11.1
-// OutputPanel 的纯展示子组件：格式切换标签栏、预览统计条、工具栏与操作按钮。
-// 派生逻辑（格式标签映射 / 可见格式计算）已抽离至 OutputPanel.derived.ts 以保持本文件 ≤200 行。
+// src/components/OutputPanel.parts.tsx v3.15.2
+// OutputPanel 的纯展示子组件：预览统计条、工具栏与操作按钮。
+// 格式切换控件已抽离至 OutputPanel.formatTabs.tsx（核心标签 + 更多下拉），此处仅 re-export 保持导出契约。
+// 派生逻辑（格式标签映射 / 可见格式计算）已抽离至 OutputPanel.derived.ts。
 
 import type { FC, ReactNode } from 'react';
-import { Tabs, TabsList, TabsTrigger } from './ui/Tabs';
 import { Button } from './ui/Button';
 import { SearchCheck, Terminal, Settings as SettingsIcon, Sparkles, Download, Copy } from 'lucide-react';
 import { FormatType } from '../types';
 import type { Translation } from '../types/translation';
 
-interface FormatTabsProps {
-  currentFormat: FormatType;
-  visibleFormats: FormatType[];
-  formatLabel: Record<FormatType, string>;
-  onFormatChange: (format: FormatType) => void;
-}
-
-// 格式切换标签栏：点击切换输出格式，对齐原型「输出规则类型」显示/隐藏开关
-export const FormatTabs: FC<FormatTabsProps> = ({
-  currentFormat,
-  visibleFormats,
-  formatLabel,
-  onFormatChange,
-}) => (
-  <Tabs value={currentFormat} onValueChange={(v: string) => onFormatChange(v as FormatType)}>
-    <TabsList className="format-tabs" id="output-format-tabs">
-      {visibleFormats.map((fmt) => (
-        <TabsTrigger key={fmt} value={fmt} id={`format-${fmt}-btn`}>
-          {formatLabel[fmt]}
-        </TabsTrigger>
-      ))}
-    </TabsList>
-  </Tabs>
-);
+export type { FormatTabsProps } from './OutputPanel.formatTabs';
+export { FormatTabs } from './OutputPanel.formatTabs';
 
 interface PreviewStatsProps {
   currentFormat: FormatType;

@@ -1,57 +1,25 @@
-// src/components/FlowViz.tsx v3.15.0
-// 首屏签名区：左侧文案 + 右侧数据快照面板。
-// v3.13.5 起移除 token 下落动画（useFlowTokens 定时器驱动的持续重渲染已删除），
-// 改为按三态比例确定性抽样的静态徽章面板——零动画、零定时器、零运行时开销。
+// src/components/FlowViz.tsx v3.15.2
+// 首屏 Hero 区：左侧文案 + 快速入门 + CTA。
+// v3.15.2 移除右侧「黑名单/白名单」可视化窗口（原 flowviz 数据面板），
+// 首屏回归单栏信息布局，降低视觉噪音与无关数据干扰。
 'use client';
 import * as React from 'react';
 import { Sparkles, Settings2 } from 'lucide-react';
-import { ParsedData } from '../types';
 import { useT } from '../context/AppContext';
-import { buildFlowPool, FlowPoolItem } from '../utils/buildFlowPool';
 import { Button } from './ui/Button';
 
 interface FlowVizProps {
-  parsedData: ParsedData;
   // Hero CTA 回调（对齐原型 ctaStart / ctaSettings）
   onStart?: () => void;
   onToggleSettings?: () => void;
 }
 
-// 静态快照抽样上限：黑名单 4 / 白名单 2 / 改道 2，交错排列保持三态可读性。
-const SNAPSHOT_LIMITS: Record<FlowPoolItem['kind'], number> = {
-  block: 4,
-  allow: 2,
-  dns: 2,
-};
-
-/** 按三态比例确定性抽样（不随机、不随时间变化），供静态徽章陈列。 */
-function buildSnapshot(parsedData: ParsedData): FlowPoolItem[] {
-  const pool = buildFlowPool(parsedData);
-  const byKind = (kind: FlowPoolItem['kind']) =>
-    pool.filter((item) => item.kind === kind).slice(0, SNAPSHOT_LIMITS[kind]);
-  const groups = [byKind('block'), byKind('allow'), byKind('dns')];
-  const max = groups.reduce((acc, g) => Math.max(acc, g.length), 0);
-  const out: FlowPoolItem[] = [];
-  for (let i = 0; i < max; i += 1) {
-    for (const group of groups) {
-      const item = group[i];
-      if (item) out.push(item);
-    }
-  }
-  return out;
-}
-
-/** 首屏签名区：左侧文案 + 右侧数据快照面板 */
-const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ parsedData, onStart, onToggleSettings }) {
+/** 首屏 Hero 区：文案 + 快速入门 + CTA（不含数据可视化面板） */
+const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ onStart, onToggleSettings }) {
   const t = useT();
-  const snapshot = React.useMemo(() => buildSnapshot(parsedData), [parsedData]);
-  const block = parsedData.domains.length;
-  const allow = parsedData.whitelist.length;
-  const dns = parsedData.customDns.length;
-  const hasData = block > 0 || allow > 0 || dns > 0;
 
   return (
-    <section className="hero" id="hero" aria-label={t.fvTagline}>
+    <section className="hero" id="hero" aria-label={t.heroTitle}>
       <div className="hero-inner">
         <div className="hero-copy">
           <span className="hero-kicker" id="hero-kicker">
@@ -110,28 +78,6 @@ const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ parsedData
                 {t.ctaSettings}
               </Button>
             </div>
-          </div>
-        </div>
-
-        <div className="flowviz" id="flowviz" aria-label={t.fvTagline}>
-          <div className="flowviz-row fv-summary" id="fv-summary">
-            <span className="fv-dot block" aria-hidden="true" />
-            <span className="fv-name" id="fv-summary-txt">
-              {hasData
-                ? `${block} ${t.fvBlock} / ${allow} ${t.fvAllow} / ${dns} ${t.fvDns}`
-                : t.fvAwait}
-            </span>
-          </div>
-          <div className="fv-panel" id="fv-track" aria-hidden="true">
-            {hasData ? (
-              snapshot.map((item) => (
-                <span key={`${item.kind}-${item.name}`} className={`fv-chip ${item.kind}`}>
-                  {item.name}
-                </span>
-              ))
-            ) : (
-              <span className="fv-empty">{t.fvAwait}</span>
-            )}
           </div>
         </div>
       </div>

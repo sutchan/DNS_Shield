@@ -4,9 +4,9 @@
 #
 # Mosdns domain-set 列表（domain: 前缀匹配域名与子域）
 #
-# 版本:: 3.15.1
+# 版本:: 3.15.2
 # 更新:: 2026.11.06
-# 域名:: 634 个唯一域名
+# 域名:: 644 个唯一域名
 # 白名单:: 232 个域名
 #
 # 用法：包含于 Mosdns rule-set / domain-set
@@ -194,8 +194,10 @@ domain:api.kingdata.ksyun.com
 domain:api.kuaishou.com
 domain:api.onesignal.com
 domain:api.ts.feedback.qy.net
+domain:api.tv.mi.com
 domain:api.vc.bilibili.com
 domain:api.vungle.com
+domain:app.feedback.xiaomi.com
 domain:applog-perf.uc.cn
 domain:applog.uc.cn
 domain:applovin.com
@@ -245,6 +247,7 @@ domain:callback.ad.xiaomi.com
 domain:casalemedia.com
 domain:cctv-ad.cdn.cctv.cn
 domain:cctv.adsunion.com
+domain:cdn.ad.xiaomi.com
 domain:cdn.hpplay.com.cn
 domain:centertime.ksyun.com
 domain:chartboost.com
@@ -300,6 +303,7 @@ domain:ets.tanx.com
 domain:exelate.com
 domain:exelator.com
 domain:extlog.snssdk.com
+domain:feed.xiaomi.com
 domain:finder.video.qq.com
 domain:fix.hpplay.cn
 domain:flashtalking.com
@@ -310,6 +314,7 @@ domain:g.dtv.cn.miaozhen.com
 domain:g.pandora.xiaomi.com
 domain:g.rs.dbankcloud.com
 domain:galaxy.ad.iqiyi.com
+domain:gallery.pandora.xiaomi.com
 domain:game.weixin.qq.com
 domain:gdt.qq.com
 domain:gifshow.com
@@ -407,6 +412,8 @@ domain:minigame.qq.com
 domain:misc.in.duokanbox.com
 domain:misc.pandora.xiaomi.com
 domain:mishop.pandora.xiaomi.com
+domain:mishop.tv.mi.com
+domain:mistat.tv.mi.com
 domain:mitv.tracking.miui.com
 domain:moat.com
 domain:moatads.com
@@ -497,6 +504,7 @@ domain:piximedia.tv
 domain:platforms.adx1.com
 domain:poweredby.zergnet.com
 domain:prod-ms.applovin.com
+domain:prod.tv.api.mi.com
 domain:ptgy.gitv.tv
 domain:ptmi.gitv.tv
 domain:pubmatic.com
@@ -520,6 +528,7 @@ domain:ramp.com
 domain:recommend.cctv.com
 domain:reflow.amemv.com
 domain:regist.tv.kuyun.com
+domain:report.tv.mi.com
 domain:res-ga.smzdm.com
 domain:resstatic.servicewechat.com
 domain:revcontent.com
@@ -547,6 +556,7 @@ domain:secure.chn.imrworldwide.com
 domain:sentry.in.zhihu.com
 domain:serverbid.com
 domain:sharethrough.com
+domain:shop.xiaomi.com
 domain:smaato.net
 domain:smartadserver.com
 domain:snssdk.com
@@ -555,6 +565,7 @@ domain:sovrn.com
 domain:spns.cctv.com
 domain:spotx.tv
 domain:spotxchange.com
+domain:stat.pandora.xiaomi.com
 domain:stats.amemv.com
 domain:synacor.com
 domain:t.track.ad.xiaomi.com
@@ -563,6 +574,7 @@ domain:t7z.cupid.ptqy.gitv.tv
 domain:taboola.com
 domain:talkingdata.com
 domain:tapjoy.com
+domain:tat.pandora.xiaomi.com
 domain:teads.tv
 domain:theqoo.net
 domain:time.video.ptqy.gitv.tv
@@ -575,8 +587,10 @@ domain:triplelift.com
 domain:turn.com
 domain:tv.aiseet.atianqi.com
 domain:tv.api.iqiyi.com
+domain:tv.api.mi.com
 domain:tvapi.kuyun.com
 domain:tvapp.hpplay.cn
+domain:tvlog.mi.com
 domain:tx-ad.a.yximgs.com
 domain:tyaqy.m.cn.miaozhen.com
 domain:ugc.amemv.com
@@ -645,10 +659,6 @@ domain:yximgs.com
 domain:zedo.com
 domain:zemanta.com
 domain:zeus-api.vemarsdev.com
-domain:cdn.ad.xiaomi.com
-domain:gallery.pandora.xiaomi.com
-domain:stat.pandora.xiaomi.com
-domain:tat.pandora.xiaomi.com
 
 # 白名单 (允许这些域名)
 # 白名单 access.speech.ai.xiaomi.com
@@ -798,9 +808,8 @@ domain:tat.pandora.xiaomi.com
 # 白名单 douyin.com
 # 白名单 douyu.com
 # 白名单 huya.com
-# 白名单 kuaishou.com
-# 白名单 xigua.com
 # 白名单 iqiyi.com
+# 白名单 kuaishou.com
 # 白名单 kugou.com
 # 白名单 kuwo.cn
 # 白名单 letv.com
@@ -809,6 +818,7 @@ domain:tat.pandora.xiaomi.com
 # 白名单 music.163.com
 # 白名单 pptv.com
 # 白名单 tv.sohu.com
+# 白名单 xigua.com
 # 白名单 y.qq.com
 # 白名单 youku.com
 # 白名单 163.com
@@ -852,12 +862,12 @@ domain:tat.pandora.xiaomi.com
 # 白名单 upyun.com
 # 白名单 weiyun.com
 # 白名单 wps.cn
-# 白名单 console.cloud.tencent.com
-# 白名单 cloud.tencent.com
 # 白名单 baiducloud.com
 # 白名单 bing.com
+# 白名单 cloud.tencent.com
 # 白名单 cn.bing.com
 # 白名单 cnblogs.com
+# 白名单 console.cloud.tencent.com
 # 白名单 csdn.net
 # 白名单 developer.aliyun.com
 # 白名单 gitee.com

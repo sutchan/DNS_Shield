@@ -148,12 +148,6 @@
   "changelogLabel": "Wijzigingslog",
   "starLink": "Star",
   "starLinkAria": "Geef dit project een ster op GitHub (opent in een nieuw venster)",
-  "fvTagline": "Visualiseer in realtime hoe je DNS-verkeer wordt geblokkeerd, toegestaan en omgeleid",
-  "fvBlock": "Geblokkeerd",
-  "fvAllow": "Toegestaan",
-  "fvDns": "Omgeleid",
-  "fvAwait": "Wachtend",
-  "fvDomains": "domeinen",
   "psFormat": "Formaat",
   "psLines": "regels",
   "psDomains": "domeinen",
@@ -225,5 +219,6 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "moreFormats": "Meer formaten"
 }

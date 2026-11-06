@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.15.0
+// src/components/OutputPanel.tsx v3.15.2
 // 输出面板：编排格式切换 / 设置弹窗 / 规则测试 / 路由器脚本 / 预览 / 操作按钮。
 // DOM id 统一为 kebab-case 语义命名（output-line-numbers / output-preview）。
 // 纯展示子组件与派生逻辑已抽离至 OutputPanel.parts.tsx 以保持主文件 ≤200 行。
@@ -107,6 +107,7 @@ const ruleLines = React.useMemo(() => (currentOutput ? countLines(currentOutput)
               visibleFormats={visibleFormats}
               formatLabel={formatLabel}
               onFormatChange={setFormat}
+              moreFormatsLabel={t.moreFormats}
             />
           </OutputToolbar>
         </div>

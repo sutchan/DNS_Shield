@@ -1,4 +1,4 @@
-// src/app/Home.tsx v3.13.6
+// src/app/Home.tsx v3.15.2
 // 首页编排：仅负责组合布局与渲染，所有状态逻辑已抽离至 useHomeController（保持主文件 ≤200 行）。
 // 全局样式统一由 app/layout.tsx 导入（含拆分后的 src/styles/*.css），此处不再重复导入。
 'use client';
@@ -26,7 +26,6 @@ export default function Home() {
         />
 
         <FlowViz
-          parsedData={c.parsedData}
           onStart={c.scrollToInput}
           onToggleSettings={c.openSettings}
         />

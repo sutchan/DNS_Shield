@@ -152,12 +152,6 @@
   "starLinkAria": "Star this project on GitHub (opens in new window)",
   "starPrompt": "If this helps, please give the project a Star ⭐",
   "showAllFormats": "Show all output rule types",
-  "fvTagline": "Visualize in real time how your DNS traffic is blocked, allowed, and smart-routed",
-  "fvBlock": "Blocklist",
-  "fvAllow": "Allowlist",
-  "fvDns": "Rerouted",
-  "fvAwait": "Pending",
-  "fvDomains": "domains",
   "shareBtn": "Share",
   "shareTitle": "Share DNS Shield",
   "copied": "Copied to clipboard",
@@ -226,5 +220,6 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "moreFormats": "More formats"
 }

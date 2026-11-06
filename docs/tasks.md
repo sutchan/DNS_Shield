@@ -4,7 +4,7 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-06（与 package.json v3.15.1 对齐；待办区清零，历史叙述与进度全景已迁移至 tasks-done.md；全项目文档完成一次实算核查与勘误）
+> 最后审查：2026-11-06（与 package.json v3.15.2 对齐；待办区清零，历史叙述与进度全景已迁移至 tasks-done.md；全项目文档完成一次实算核查与勘误）
 > 维护团队：Sut / ArcesTeam
 >
 > **本次更新（2026-11-06 全项目文档核查）**：以代码实况为权威源，实算并统一全部活跃文档——核查基线 v3.15.0（收尾发布 v3.15.1）/ 12 格式 / 16 语 146 顶层键 215 递归键 / 47 测试套件 / `src` 无 >200 行源文件 / `public/domains.txt` 非空 882 行（15 注释 + 规则 867 条 = 黑名单 635 + 白名单 232）。修正项：端口 8082 → 3000（README / DEPLOYMENT / config.yaml）、失效链接（README×2 品牌图、README.en 全部 raw 下载链接、SUPPORT 相对链接）、路径与命令（CONTRIBUTING 域名源、SUPPORT 生成命令与白名单语法、CHECKLIST ui PascalCase、PR 模板失效引用）、SPEC 结构树与 §5.3 任务记录规范、config.yaml 格式清单、README.en 格式图（9 列 → 显式 12 格式）、CHANGELOG 勘误段收编为 `[3.15.1]` 发布说明。冻结快照（CHANGELOG 历史段 / prototype / public/brand-colors.md / STRUCTURE-REVIEW.md / tasks-done.md 历史实测值）按各自声明未改。**注**：本机无 `node_modules`，`vitest` / `lint` 未能实跑；下表 282 用例与覆盖率为 2026-11-05 实测值，按「数字必须实算」纪律沿用并注明，未凭静态计数臆改。
@@ -22,7 +22,7 @@
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.15.1 | `package.json` version（权威源） |
+| 应用版本 | v3.15.2 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 **146** 键、递归合计 **215** 键 | 脚本统计 `src/locales/zh-cn.json`；`check:locales` 输出为递归口径 **215**（2026-11-05 补齐 `toast.domainsLoadFailed` 后由 214 增至 215；2026-10-19 补齐 `toast.cleared` 后由 213 增至 214） |
 | 测试套件 / 用例 | **47 套件 / 282 用例**（全通过） | `vitest run`（权威计数，2026-11-05 第十二轮实测；由 27 / 250 增至 47 / 282） |
@@ -89,5 +89,6 @@
 - [ ] `README.en.md` 版本徽章
 - [ ] `DEPLOYMENT.md` 变量表 + 示例
 - [ ] `public/*.txt` / `*.conf` / `*.yaml` 静态样例头部版本号（`# 版本::` / `! 版本::`）— 运行 `node scripts/gen-format-files.mjs`
+- [ ] 页脚版本号/build 编号展示正确（`Footer.tsx` 输出 `V{version}· build{yymmddhhmm}`，2 位年，规范见 SPEC §8.1）
 - [ ] 更新 `CHANGELOG.md` 变更记录（新增 `## [x.y.z]` 小节，分类 feat/fix/docs/...）
 - [ ] 创建 GitHub Release（含 tag `vX.Y.Z` 与 release 锚点）

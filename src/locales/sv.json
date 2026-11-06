@@ -148,12 +148,6 @@
   "changelogLabel": "Ändringslogg",
   "starLink": "Star",
   "starLinkAria": "Ge detta projekt en stjärna på GitHub (öppnas i ett nytt fönster)",
-  "fvTagline": "Visualisera i realtid hur din DNS-trafik blockeras, tillåts och omdirigeras",
-  "fvBlock": "Blockerad",
-  "fvAllow": "Tillåten",
-  "fvDns": "Omdirigerad",
-  "fvAwait": "Väntar",
-  "fvDomains": "domäner",
   "psFormat": "Format",
   "psLines": "rader",
   "psDomains": "domäner",
@@ -225,5 +219,6 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "moreFormats": "Fler format"
 }

@@ -1,7 +1,7 @@
-/* src/styles/hero.css v3.13.6 — Hero/FlowViz 签名可视化、预览统计、动效降级（原 globals.css 相应段） */
+/* src/styles/hero.css v3.15.2 — Hero 区、预览统计、动效降级（原 globals.css 相应段） */
 
 /* ============================================
-   Hero + FlowViz (对齐原型 flowviz 签名可视化)
+   Hero（v3.15.2 移除右侧 black/white 可视化面板，回归单栏布局）
    ============================================ */
 .hero {
   @apply mb-6 rounded-xl border border-border bg-card overflow-hidden;
@@ -11,7 +11,7 @@
 }
 
 .hero-inner {
-  @apply grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] gap-6 p-5 sm:p-7 items-center;
+  @apply grid grid-cols-1 gap-6 p-5 sm:p-7 items-center;
 }
 
 .hero-copy {
@@ -30,49 +30,6 @@
 .hero-desc {
   @apply text-[0.9375rem] sm:text-[1.0625rem] leading-relaxed text-muted-foreground;
   max-width: 34rem;
-}
-
-/* 流量可视化容器：标题行 + 单条下落轨道 */
-.flowviz {
-  @apply flex flex-col gap-2 w-full h-full;
-}
-
-.flowviz-row {
-  @apply flex items-center gap-2 font-mono text-[0.75rem];
-}
-
-.fv-dot {
-  @apply w-[7px] h-[7px] rounded-full flex-shrink-0 flex-grow-0;
-}
-
-.fv-dot.block { background: hsl(var(--destructive)); }
-.fv-dot.allow { background: hsl(var(--success)); }
-.fv-dot.dns { background: hsl(var(--primary)); }
-
-.fv-name {
-  @apply text-muted-foreground overflow-hidden text-ellipsis whitespace-nowrap;
-  max-width: 150px;
-}
-
-/* 数据快照面板（v3.13.5 静态化）：三态抽样徽章静态陈列，无动画、无定时器 */
-.fv-panel {
-  @apply flex-1 min-h-[120px] flex flex-wrap content-start items-start gap-1.5 p-3 rounded-md overflow-hidden;
-  background: hsl(var(--muted) / 0.5);
-  border: 1px solid hsl(var(--border));
-}
-
-.fv-chip {
-  @apply inline-flex items-center max-w-full whitespace-nowrap rounded-full px-2.5 py-1 text-[0.6875rem] text-primary-foreground;
-  font-family: var(--font-mono);
-}
-
-.fv-chip.block { background: hsl(var(--destructive)); }
-.fv-chip.allow { background: hsl(var(--success)); }
-.fv-chip.dns { background: hsl(var(--primary)); }
-
-.fv-empty {
-  @apply m-auto text-[0.75rem] text-muted-foreground;
-  font-family: var(--font-mono);
 }
 
 /* ============================================

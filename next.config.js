@@ -53,13 +53,13 @@ const securityHeaders = [
   }
 ];
 
-// 构建编号：本地构建时间到分钟（yyyymmddhhmm），由构建流程在启动时生成并注入客户端。
+// 构建编号：本地构建时间到分钟（yymmddhhmm，2 位年），由构建流程在启动时生成并注入客户端。
 // 经 NEXT_PUBLIC_ 前缀暴露给浏览器端；CI 可覆盖该值以反映真实构建时间。
 // 注入缺失时页脚回退为版本号（见 src/components/Footer.tsx）。
 const buildTimeId = () => {
   const d = new Date();
   const p = (n) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}${p(d.getHours())}${p(d.getMinutes())}`;
+  return `${String(d.getFullYear()).slice(-2)}${p(d.getMonth() + 1)}${p(d.getDate())}${p(d.getHours())}${p(d.getMinutes())}`;
 };
 
 const nextConfig = {
@@ -70,7 +70,7 @@ const nextConfig = {
     unoptimized: true
   },
   env: {
-    version: '3.15.1',
+    version: '3.15.2',
     NEXT_PUBLIC_BUILD_ID: buildTimeId()
   },
   devIndicators: {

@@ -4,9 +4,9 @@
 !
 ! 兼容 AdGuard 的广告过滤规则
 !
-! 版本:: 3.15.1
+! 版本:: 3.15.2
 ! 更新:: 2026.11.06
-! 域名:: 634 个唯一域名
+! 域名:: 644 个唯一域名
 ! 白名单:: 232 个域名
 !
 ! 项目: https://github.com/sutchan/DNS_Shield
@@ -193,8 +193,10 @@
 ||api.kuaishou.com^
 ||api.onesignal.com^
 ||api.ts.feedback.qy.net^
+||api.tv.mi.com^
 ||api.vc.bilibili.com^
 ||api.vungle.com^
+||app.feedback.xiaomi.com^
 ||applog-perf.uc.cn^
 ||applog.uc.cn^
 ||applovin.com^
@@ -244,6 +246,7 @@
 ||casalemedia.com^
 ||cctv-ad.cdn.cctv.cn^
 ||cctv.adsunion.com^
+||cdn.ad.xiaomi.com^
 ||cdn.hpplay.com.cn^
 ||centertime.ksyun.com^
 ||chartboost.com^
@@ -299,6 +302,7 @@
 ||exelate.com^
 ||exelator.com^
 ||extlog.snssdk.com^
+||feed.xiaomi.com^
 ||finder.video.qq.com^
 ||fix.hpplay.cn^
 ||flashtalking.com^
@@ -309,6 +313,7 @@
 ||g.pandora.xiaomi.com^
 ||g.rs.dbankcloud.com^
 ||galaxy.ad.iqiyi.com^
+||gallery.pandora.xiaomi.com^
 ||game.weixin.qq.com^
 ||gdt.qq.com^
 ||gifshow.com^
@@ -406,6 +411,8 @@
 ||misc.in.duokanbox.com^
 ||misc.pandora.xiaomi.com^
 ||mishop.pandora.xiaomi.com^
+||mishop.tv.mi.com^
+||mistat.tv.mi.com^
 ||mitv.tracking.miui.com^
 ||moat.com^
 ||moatads.com^
@@ -496,6 +503,7 @@
 ||platforms.adx1.com^
 ||poweredby.zergnet.com^
 ||prod-ms.applovin.com^
+||prod.tv.api.mi.com^
 ||ptgy.gitv.tv^
 ||ptmi.gitv.tv^
 ||pubmatic.com^
@@ -519,6 +527,7 @@
 ||recommend.cctv.com^
 ||reflow.amemv.com^
 ||regist.tv.kuyun.com^
+||report.tv.mi.com^
 ||res-ga.smzdm.com^
 ||resstatic.servicewechat.com^
 ||revcontent.com^
@@ -546,6 +555,7 @@
 ||sentry.in.zhihu.com^
 ||serverbid.com^
 ||sharethrough.com^
+||shop.xiaomi.com^
 ||smaato.net^
 ||smartadserver.com^
 ||snssdk.com^
@@ -554,6 +564,7 @@
 ||spns.cctv.com^
 ||spotx.tv^
 ||spotxchange.com^
+||stat.pandora.xiaomi.com^
 ||stats.amemv.com^
 ||synacor.com^
 ||t.track.ad.xiaomi.com^
@@ -562,6 +573,7 @@
 ||taboola.com^
 ||talkingdata.com^
 ||tapjoy.com^
+||tat.pandora.xiaomi.com^
 ||teads.tv^
 ||theqoo.net^
 ||time.video.ptqy.gitv.tv^
@@ -574,8 +586,10 @@
 ||turn.com^
 ||tv.aiseet.atianqi.com^
 ||tv.api.iqiyi.com^
+||tv.api.mi.com^
 ||tvapi.kuyun.com^
 ||tvapp.hpplay.cn^
+||tvlog.mi.com^
 ||tx-ad.a.yximgs.com^
 ||tyaqy.m.cn.miaozhen.com^
 ||ugc.amemv.com^
@@ -644,10 +658,6 @@
 ||zedo.com^
 ||zemanta.com^
 ||zeus-api.vemarsdev.com^
-||cdn.ad.xiaomi.com^
-||gallery.pandora.xiaomi.com^
-||stat.pandora.xiaomi.com^
-||tat.pandora.xiaomi.com^
 
 ! 白名单 (允许这些域名)
 @@||access.speech.ai.xiaomi.com^
@@ -797,9 +807,8 @@
 @@||douyin.com^
 @@||douyu.com^
 @@||huya.com^
-@@||kuaishou.com^
-@@||xigua.com^
 @@||iqiyi.com^
+@@||kuaishou.com^
 @@||kugou.com^
 @@||kuwo.cn^
 @@||letv.com^
@@ -808,6 +817,7 @@
 @@||music.163.com^
 @@||pptv.com^
 @@||tv.sohu.com^
+@@||xigua.com^
 @@||y.qq.com^
 @@||youku.com^
 @@||163.com^
@@ -851,12 +861,12 @@
 @@||upyun.com^
 @@||weiyun.com^
 @@||wps.cn^
-@@||console.cloud.tencent.com^
-@@||cloud.tencent.com^
 @@||baiducloud.com^
 @@||bing.com^
+@@||cloud.tencent.com^
 @@||cn.bing.com^
 @@||cnblogs.com^
+@@||console.cloud.tencent.com^
 @@||csdn.net^
 @@||developer.aliyun.com^
 @@||gitee.com^

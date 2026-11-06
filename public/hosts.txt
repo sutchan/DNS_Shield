@@ -4,9 +4,9 @@
 #
 # 路由器级广告过滤 hosts 文件
 #
-# 版本:: 3.15.1
+# 版本:: 3.15.2
 # 更新:: 2026.11.06
-# 域名:: 634 个唯一域名
+# 域名:: 644 个唯一域名
 # 白名单:: 232 个域名
 #
 # 使用方法: 导入到路由器广告过滤设置
@@ -194,8 +194,10 @@
 127.0.0.1 api.kuaishou.com
 127.0.0.1 api.onesignal.com
 127.0.0.1 api.ts.feedback.qy.net
+127.0.0.1 api.tv.mi.com
 127.0.0.1 api.vc.bilibili.com
 127.0.0.1 api.vungle.com
+127.0.0.1 app.feedback.xiaomi.com
 127.0.0.1 applog-perf.uc.cn
 127.0.0.1 applog.uc.cn
 127.0.0.1 applovin.com
@@ -245,6 +247,7 @@
 127.0.0.1 casalemedia.com
 127.0.0.1 cctv-ad.cdn.cctv.cn
 127.0.0.1 cctv.adsunion.com
+127.0.0.1 cdn.ad.xiaomi.com
 127.0.0.1 cdn.hpplay.com.cn
 127.0.0.1 centertime.ksyun.com
 127.0.0.1 chartboost.com
@@ -300,6 +303,7 @@
 127.0.0.1 exelate.com
 127.0.0.1 exelator.com
 127.0.0.1 extlog.snssdk.com
+127.0.0.1 feed.xiaomi.com
 127.0.0.1 finder.video.qq.com
 127.0.0.1 fix.hpplay.cn
 127.0.0.1 flashtalking.com
@@ -310,6 +314,7 @@
 127.0.0.1 g.pandora.xiaomi.com
 127.0.0.1 g.rs.dbankcloud.com
 127.0.0.1 galaxy.ad.iqiyi.com
+127.0.0.1 gallery.pandora.xiaomi.com
 127.0.0.1 game.weixin.qq.com
 127.0.0.1 gdt.qq.com
 127.0.0.1 gifshow.com
@@ -407,6 +412,8 @@
 127.0.0.1 misc.in.duokanbox.com
 127.0.0.1 misc.pandora.xiaomi.com
 127.0.0.1 mishop.pandora.xiaomi.com
+127.0.0.1 mishop.tv.mi.com
+127.0.0.1 mistat.tv.mi.com
 127.0.0.1 mitv.tracking.miui.com
 127.0.0.1 moat.com
 127.0.0.1 moatads.com
@@ -497,6 +504,7 @@
 127.0.0.1 platforms.adx1.com
 127.0.0.1 poweredby.zergnet.com
 127.0.0.1 prod-ms.applovin.com
+127.0.0.1 prod.tv.api.mi.com
 127.0.0.1 ptgy.gitv.tv
 127.0.0.1 ptmi.gitv.tv
 127.0.0.1 pubmatic.com
@@ -520,6 +528,7 @@
 127.0.0.1 recommend.cctv.com
 127.0.0.1 reflow.amemv.com
 127.0.0.1 regist.tv.kuyun.com
+127.0.0.1 report.tv.mi.com
 127.0.0.1 res-ga.smzdm.com
 127.0.0.1 resstatic.servicewechat.com
 127.0.0.1 revcontent.com
@@ -547,6 +556,7 @@
 127.0.0.1 sentry.in.zhihu.com
 127.0.0.1 serverbid.com
 127.0.0.1 sharethrough.com
+127.0.0.1 shop.xiaomi.com
 127.0.0.1 smaato.net
 127.0.0.1 smartadserver.com
 127.0.0.1 snssdk.com
@@ -555,6 +565,7 @@
 127.0.0.1 spns.cctv.com
 127.0.0.1 spotx.tv
 127.0.0.1 spotxchange.com
+127.0.0.1 stat.pandora.xiaomi.com
 127.0.0.1 stats.amemv.com
 127.0.0.1 synacor.com
 127.0.0.1 t.track.ad.xiaomi.com
@@ -563,6 +574,7 @@
 127.0.0.1 taboola.com
 127.0.0.1 talkingdata.com
 127.0.0.1 tapjoy.com
+127.0.0.1 tat.pandora.xiaomi.com
 127.0.0.1 teads.tv
 127.0.0.1 theqoo.net
 127.0.0.1 time.video.ptqy.gitv.tv
@@ -575,8 +587,10 @@
 127.0.0.1 turn.com
 127.0.0.1 tv.aiseet.atianqi.com
 127.0.0.1 tv.api.iqiyi.com
+127.0.0.1 tv.api.mi.com
 127.0.0.1 tvapi.kuyun.com
 127.0.0.1 tvapp.hpplay.cn
+127.0.0.1 tvlog.mi.com
 127.0.0.1 tx-ad.a.yximgs.com
 127.0.0.1 tyaqy.m.cn.miaozhen.com
 127.0.0.1 ugc.amemv.com
@@ -645,10 +659,6 @@
 127.0.0.1 zedo.com
 127.0.0.1 zemanta.com
 127.0.0.1 zeus-api.vemarsdev.com
-127.0.0.1 cdn.ad.xiaomi.com
-127.0.0.1 gallery.pandora.xiaomi.com
-127.0.0.1 stat.pandora.xiaomi.com
-127.0.0.1 tat.pandora.xiaomi.com
 
 # 白名单 (允许这些域名)
 # hosts 原生不支持白名单语法，仅作参考标注
@@ -799,9 +809,8 @@
 # 白名单 douyin.com
 # 白名单 douyu.com
 # 白名单 huya.com
-# 白名单 kuaishou.com
-# 白名单 xigua.com
 # 白名单 iqiyi.com
+# 白名单 kuaishou.com
 # 白名单 kugou.com
 # 白名单 kuwo.cn
 # 白名单 letv.com
@@ -810,6 +819,7 @@
 # 白名单 music.163.com
 # 白名单 pptv.com
 # 白名单 tv.sohu.com
+# 白名单 xigua.com
 # 白名单 y.qq.com
 # 白名单 youku.com
 # 白名单 163.com
@@ -853,12 +863,12 @@
 # 白名单 upyun.com
 # 白名单 weiyun.com
 # 白名单 wps.cn
-# 白名单 console.cloud.tencent.com
-# 白名单 cloud.tencent.com
 # 白名单 baiducloud.com
 # 白名单 bing.com
+# 白名单 cloud.tencent.com
 # 白名单 cn.bing.com
 # 白名单 cnblogs.com
+# 白名单 console.cloud.tencent.com
 # 白名单 csdn.net
 # 白名单 developer.aliyun.com
 # 白名单 gitee.com

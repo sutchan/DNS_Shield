@@ -152,12 +152,6 @@
   "starLinkAria": "在 GitHub 上为本项目标星（新窗口打开）",
   "starPrompt": "如果对你有帮助，请给项目点个 Star ⭐",
   "showAllFormats": "显示全部输出规则类型",
-  "fvTagline": "实时可视化你的 DNS 流量如何被拦截、放行与智能改道",
-  "fvBlock": "黑名单",
-  "fvAllow": "白名单",
-  "fvDns": "改道",
-  "fvAwait": "待解析",
-  "fvDomains": "个域名",
   "shareBtn": "分享",
   "shareTitle": "分享 DNS Shield",
   "copied": "已复制到剪贴板",
@@ -226,5 +220,6 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "moreFormats": "更多格式"
 }

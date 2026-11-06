@@ -148,12 +148,6 @@
   "changelogLabel": "Registro de cambios",
   "starLink": "Star",
   "starLinkAria": "Dale una estrella a este proyecto en GitHub (se abre en una nueva ventana)",
-  "fvTagline": "Visualiza en tiempo real cómo tu tráfico DNS es bloqueado, permitido y redirigido",
-  "fvBlock": "Bloqueado",
-  "fvAllow": "Permitido",
-  "fvDns": "Redirigido",
-  "fvAwait": "Pendiente",
-  "fvDomains": "dominios",
   "psFormat": "Formato",
   "psLines": "líneas",
   "psDomains": "dominios",
@@ -225,5 +219,6 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "moreFormats": "Más formatos"
 }

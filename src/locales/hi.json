@@ -148,12 +148,6 @@
   "changelogLabel": "परिवर्तन लॉग",
   "starLink": "Star",
   "starLinkAria": "GitHub पर इस परियोजना को स्टार करें (नई विंडो में खुलता है)",
-  "fvTagline": "रीयल-टाइम में देखें कि आपका DNS ट्रैफ़िक कैसे ब्लॉक, अनुमत और पुनर्निर्देशित किया जाता है",
-  "fvBlock": "अवरुद्ध",
-  "fvAllow": "अनुमत",
-  "fvDns": "पुनर्निर्देशित",
-  "fvAwait": "लंबित",
-  "fvDomains": "डोमेन",
   "psFormat": "प्रारूप",
   "psLines": "पंक्तियाँ",
   "psDomains": "डोमेन",
@@ -225,5 +219,6 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "moreFormats": "अधिक प्रारूप"
 }
