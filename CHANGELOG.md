@@ -7,6 +7,21 @@
 
 ## [Unreleased]
 
+## [3.15.6] - 2026-11-07
+
+### Changed（首屏与面板视觉优化）
+- Hero 单栏视觉增强：CTA 由「快速入门三步」之后上移至描述下方更醒目；新增 `.hero-cta` 按钮组布局（flex + gap）；Hero 圆角升为 `rounded-2xl`、内边距/标题字号加大、渐变底纹增强
+- 快速入门三步卡片由低对比 `bg-muted/40` 改为描边卡片（`bg-background` + `border`）+ hover 主色描边，序号徽章放至 `w-7 h-7` 并加阴影，在 Hero 白底上形成清晰层次
+- 新增 `.quickstart` 顶部分隔线，正文与快速入门层次分离
+- 面板层次：`.panel` 阴影由单层 1px/0.04 加强为双层柔和阴影；`.panel-title` 图标统一主色，输入/输出两侧视觉一致
+
+### Fixed（线上页面分析与可访问性 / SEO 修正）
+- 线上实测分析 https://dns.ewuse.com/ （桌面 1280 + 移动 375 取证）：输出面板头部裁切与格式标签栏溢出已由 v3.15.5 单一下拉重构修复，本轮处理剩余两项结构问题
+- 修复页面存在两个 `<h1>`（`Header.tsx` 品牌名与 Hero 主标题）：品牌名降级为 `<p>`（保留 `app-title` 样式与 `aria-describedby`），页面回归单一主标题，符合可访问性与 SEO 规范
+- 修复 `site-meta.ts` 的 hreflang 指向不存在的 `/en`、`/zh-TW` 路由：语言为客户端切换、无独立 URL，删除 `alternates.languages` 仅保留 canonical，避免搜索引擎抓取 404
+- JSON-LD `featureList` 由「7 种格式 + 等」改为列全 12 种输出格式，与页面「12 种格式」宣传一致
+- 版本按 patch 规则升至 v3.15.6：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 文档展示位 / `public/` 11 个规则产物头部
+
 ## [3.15.5] - 2026-11-07
 
 ### Changed（格式切换控件改为单一「格式」下拉）
@@ -1537,7 +1552,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.15.5...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.15.6...HEAD
+[3.15.6]: https://github.com/sutchan/DNS_Shield/compare/v3.15.5...v3.15.6
 [3.15.5]: https://github.com/sutchan/DNS_Shield/compare/v3.15.4...v3.15.5
 [3.15.4]: https://github.com/sutchan/DNS_Shield/compare/v3.15.3...v3.15.4
 [3.15.3]: https://github.com/sutchan/DNS_Shield/compare/v3.15.2...v3.15.3

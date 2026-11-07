@@ -62,7 +62,8 @@ const Header: React.FC<HeaderProps> = ({
             />
           </div>
           <div>
-            <h1 className="app-title" aria-describedby="app-subtitle">DNS Shield</h1>
+            {/* 品牌名用 p 而非 h1：页面唯一主标题是 Hero 的 hero-title，避免双 h1（a11y/SEO） */}
+            <p className="app-title" aria-describedby="app-subtitle">DNS Shield</p>
             <p className="app-subtitle" id="app-subtitle">
               {t.subtitle}
             </p>

@@ -51,11 +51,9 @@ export const metadata: Metadata = {
     creator: '@sutchan',
   },
   alternates: {
+    // 语言为客户端切换（单页无 /en、/zh-TW 独立路由），不输出 hreflang，
+    // 避免指向不存在路径被搜索引擎判 404（2026-11-07 线上分析修正）。
     canonical: SITE_URL,
-    languages: {
-      'en-US': `${SITE_URL}/en`,
-      'zh-TW': `${SITE_URL}/zh-TW`,
-    },
   },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || 'google-site-verification-code',
@@ -104,7 +102,7 @@ export const jsonLd = {
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'CNY' },
   author: { '@type': 'Person', name: 'sutchan', url: GITHUB_URL },
   featureList: [
-    '支持 Dnsmasq、Hosts、AdGuard、Unbound、Pi-hole、Bind RPZ、SmartDNS 等格式规则生成',
+    '支持 12 种格式规则生成：Dnsmasq、Hosts、AdGuard 黑名单、AdGuard 白名单、纯域名列表、Unbound、Pi-hole、Bind RPZ、SmartDNS、Mosdns、Clash Meta、CoreDNS',
     '兼容梅林固件、小米路由器、OpenWrt',
     '自定义黑白名单管理',
     '实时预览过滤规则',
