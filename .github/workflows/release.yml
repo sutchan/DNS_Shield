@@ -1,68 +1,95 @@
 # .github/workflows/release.yml
 # ---------------------------------------------------------------------------
-# Release —— 版本发布
+# Release —— 自动发布（无需手动打 tag）
 #
-# 触发：推送形如 v3.11.2 的 tag
+# 触发：Deploy 工作流（deploy.yml）在 main 分支「完成后」自动触发。
+#   - deploy.yml 本身已在 ci.yml 全部门禁（lint/typecheck/test/build/data）
+#     成功后才运行，因此本流程实际前置 = CI 全绿 → 部署尝试完成（Deploy 全 skip
+#     仍算 success，故开关未开也不会阻塞发布）。
+#   - 即发布链路：push → CI → Deploy → Release，每一步绿才继续。
 #
-# 做三件事：
-#   1. 校验 tag 与 package.json 的 version 一致（防止打错版本号发布）
-#   2. 以 public/domains.txt 为单一数据源，重新生成全部过滤规则文件
-#   3. 把规则文件打包为 GitHub Release 资产（同时提供 zip 与单文件）
+# 行为：
+#   1. 读取 package.json 的 version 作为权威版本，构造 tag `vX.Y.Z`
+#   2. 若 tag 已存在则跳过（避免每次 main 提交都发版；只有版本号变更时才发）
+#   3. 否则自动创建轻量 tag 并推送到 origin
+#   4. 以 public/domains.txt 为单一数据源重新生成全部过滤规则文件
+#   5. 打包为 GitHub Release 资产（zip + 全部单文件）
 #
-# 资产清单来自 `node scripts/gen-format-files.mjs --list-files`（唯一来源 = 生成脚本的
-# OUTPUT_FILES），不再在 workflow 里手写文件名——新增输出格式时无需再改本文件，
-# 杜绝"加了格式却漏发 Release 资产"的历史问题。
+# 资产清单来自 `node scripts/gen-format-files.mjs --list-files`（唯一来源 =
+# 生成脚本的 OUTPUT_FILES），不再在 workflow 里手写文件名——新增输出格式时
+# 无需再改本文件，杜绝「加了格式却漏发 Release 资产」的历史问题。
 #
-# 推荐发布流程：
-#   pnpm version patch|minor|major   # 自动改 package.json 并打 tag
-#   git push --follow-tags
+# 推荐发布流程（开发者侧）：
+#   pnpm version patch|minor|major   # 改 package.json 版本号
+#   git push                         # CI 绿 → 部署 → 本流程自动打 tag + 发布
 # ---------------------------------------------------------------------------
 name: Release
 
 on:
-  push:
-    tags: ['v*']
+  workflow_run:
+    workflows: [Deploy]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: write
 
 jobs:
   release:
-    name: Build & Publish rule files
+    name: Auto-publish Release on green workflows
     runs-on: ubuntu-latest
+    # 仅在 Deploy 真正成功（含全 skip）且由 main 触发时发布；Deploy 失败的
+    # completed 不发布，避免「部署红了还发版」。
+    if: >-
+      ${{ github.event.workflow_run.conclusion == 'success'
+          && github.event.workflow_run.head_branch == 'main' }}
     # 挂死保护：正常 1~2 分钟内完成，超时即失败，避免空耗额度
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          # 检出「触发 CI 的那个 commit」，保证发布内容与被验证代码一致
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
 
       - uses: ./.github/actions/setup
         with:
           install: 'false'
 
-      # tag 与 package.json 版本号必须一致，否则产出的规则文件头会与源码版本脱节
-      - name: Verify tag matches package.json
+      # 读取版本并判断 tag 是否已存在：已存在则整条发布链跳过
+      - name: Resolve version & detect existing tag
+        id: ver
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           PKG_VERSION="v$(node -p "require('./package.json').version")"
-          echo "tag = ${GITHUB_REF_NAME}"
-          echo "pkg = ${PKG_VERSION}"
-          if [ "${GITHUB_REF_NAME}" != "${PKG_VERSION}" ]; then
-            echo "::error::tag ${GITHUB_REF_NAME} 与 package.json 版本 ${PKG_VERSION} 不一致"
-            exit 1
+          echo "version=${PKG_VERSION}" >> "$GITHUB_OUTPUT"
+          if gh api "repos/${{ github.repository }}/git/ref/tags/${PKG_VERSION}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "tag ${PKG_VERSION} 已存在，跳过发布（版本号未变更）"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "tag ${PKG_VERSION} 不存在，将自动发布"
           fi
 
       - name: Regenerate rule files
+        if: ${{ steps.ver.outputs.exists != 'true' }}
         run: node scripts/gen-format-files.mjs
 
       - name: Count domains
+        if: ${{ steps.ver.outputs.exists != 'true' }}
         id: count
         run: |
           node scripts/count-domains.mjs | tee _count.log
-          echo "body<<EOF" >> "$GITHUB_OUTPUT"
-          cat _count.log >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
+          {
+            echo 'body<<EOF'
+            cat _count.log
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
       # 资产清单：来自生成脚本的单一来源，逐行一个 public/ 相对路径
       - name: Collect artifact list
+        if: ${{ steps.ver.outputs.exists != 'true' }}
         id: artifacts
         run: |
           mapfile -t FILES < <(node scripts/gen-format-files.mjs --list-files)
@@ -79,19 +106,30 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Package rule files
+        if: ${{ steps.ver.outputs.exists != 'true' }}
         id: package
         run: |
           mapfile -t FILES < <(node scripts/gen-format-files.mjs --list-files)
-          ZIP="dns-shield-rules-${GITHUB_REF_NAME}.zip"
+          ZIP="dns-shield-rules-${{ steps.ver.outputs.version }}.zip"
           # 用 zip 保持目录结构；runner 自带 zip。-j 压平目录，规则文件均在 public/ 根级
           zip -j "$ZIP" "${FILES[@]}"
           echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
           ls -lh "$ZIP"
 
+      - name: Create and push tag
+        if: ${{ steps.ver.outputs.exists != 'true' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "${{ steps.ver.outputs.version }}"
+          git push origin "${{ steps.ver.outputs.version }}"
+
       - name: Create GitHub Release
+        if: ${{ steps.ver.outputs.exists != 'true' }}
         uses: softprops/action-gh-release@v2
         with:
-          name: DNS Shield ${{ github.ref_name }}
+          tag_name: ${{ steps.ver.outputs.version }}
+          name: DNS Shield ${{ steps.ver.outputs.version }}
           generate_release_notes: true
           body: |
             ## 规则文件统计

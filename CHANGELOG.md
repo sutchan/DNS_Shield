@@ -15,6 +15,11 @@
 - `src/components/OutputPanel.parts.tsx` / `src/components/OutputPanel.tsx` / `src/app/Home.tsx` 头注释同步 v3.17.2
 - 版本按 patch 规则升至 v3.17.2：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 13 处文档展示位 / `public/` 11 个规则产物头部
 
+### CI（所有工作流全绿后自动发布 Releases）
+- `release.yml` 触发方式由「手动推 `v*` tag」改为监听 `Deploy` 工作流在 main 分支 `completed` 且 `conclusion == success`，形成 `push → CI → Deploy → Release` 全绿链路后自动发布
+- 发布时按 `package.json` 版本自动创建轻量 tag 并推送；tag 已存在则跳过（仅版本号变更才发版，避免每次提交都发 Release）
+- 同步更新 `deploy.yml` 注释（移除旧的「tag 触发 Release」说明）
+
 ## [3.17.1] - 2026-11-07
 
 ### Changed（取消预览统计条胶囊轮廓）

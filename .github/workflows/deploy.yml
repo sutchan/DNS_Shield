@@ -6,7 +6,7 @@
 #   - main 分支的 CI（ci.yml）**成功**后自动部署（workflow_run）
 #   - 手动触发（workflow_dispatch，可选目标环境）
 #   - ⚠️ 不再由 main push / tag push 直接触发：CI 红了不许部署
-#     （tag 只用于触发 Release 发规则文件，部署由 main 提交覆盖）
+#     Release 由本工作流成功后经 release.yml 自动发布（无需手动打 tag）
 #
 # 四个可选目标，全部通过仓库变量（Settings → Secrets and variables → Actions → Variables）
 # 开关，未开启的 job 会 skipped，不会让工作流变红：
