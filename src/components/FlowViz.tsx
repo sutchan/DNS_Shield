@@ -1,7 +1,9 @@
-// src/components/FlowViz.tsx v3.15.6
-// 首屏 Hero 区：单栏信息布局（kicker / 标题 / 描述 / CTA / 快速入门三步）。
+// src/components/FlowViz.tsx v3.16.1
+// 首屏 Hero 区：信息布局（kicker / 标题 / 描述 / CTA + 快速入门三步）。
 // v3.15.2 移除右侧「黑名单/白名单」可视化窗口，首屏回归单栏；
 // v3.15.6 UI 优化：CTA 上移至描述下方更醒目；快速入门三步改为通栏卡片并以分隔线与正文区分。
+// v3.16.1 布局优化：lg+ 改为「左文案 + 右快速入门」双栏消除大屏右侧留白，
+//   快速入门在大屏竖排并以左分隔线与文案区隔；CTA 按钮升级 default 尺寸。
 'use client';
 import * as React from 'react';
 import { Sparkles, Settings2 } from 'lucide-react';
@@ -33,7 +35,6 @@ const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ onStart, o
             <Button
               type="button"
               variant="default"
-              size="sm"
               onClick={onStart}
               id="cta-start"
               className="font-semibold"
@@ -44,7 +45,6 @@ const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ onStart, o
             <Button
               type="button"
               variant="outline"
-              size="sm"
               onClick={onToggleSettings}
               id="cta-settings"
             >
@@ -52,30 +52,30 @@ const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ onStart, o
               {t.ctaSettings}
             </Button>
           </div>
+        </div>
 
-          <div className="quickstart" id="quickstart-panel" aria-label={t.usageTitle}>
-            <h3 className="usage-guide-title">{t.usageTitle}</h3>
-            <div className="usage-steps">
-              <div className="usage-step">
-                <span className="step-number" aria-hidden="true">1</span>
-                <div className="step-content">
-                  <span className="step-title">{t.step1t}</span>
-                  <span className="step-desc">{t.step1d}</span>
-                </div>
+        <div className="quickstart" id="quickstart-panel" aria-label={t.usageTitle}>
+          <h3 className="usage-guide-title">{t.usageTitle}</h3>
+          <div className="usage-steps">
+            <div className="usage-step">
+              <span className="step-number" aria-hidden="true">1</span>
+              <div className="step-content">
+                <span className="step-title">{t.step1t}</span>
+                <span className="step-desc">{t.step1d}</span>
               </div>
-              <div className="usage-step">
-                <span className="step-number" aria-hidden="true">2</span>
-                <div className="step-content">
-                  <span className="step-title">{t.step2t}</span>
-                  <span className="step-desc">{t.step2d}</span>
-                </div>
+            </div>
+            <div className="usage-step">
+              <span className="step-number" aria-hidden="true">2</span>
+              <div className="step-content">
+                <span className="step-title">{t.step2t}</span>
+                <span className="step-desc">{t.step2d}</span>
               </div>
-              <div className="usage-step">
-                <span className="step-number" aria-hidden="true">3</span>
-                <div className="step-content">
-                  <span className="step-title">{t.step3t}</span>
-                  <span className="step-desc">{t.step3d}</span>
-                </div>
+            </div>
+            <div className="usage-step">
+              <span className="step-number" aria-hidden="true">3</span>
+              <div className="step-content">
+                <span className="step-title">{t.step3t}</span>
+                <span className="step-desc">{t.step3d}</span>
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-/* src/styles/output.css v3.15.5 — 输出面板与设置面板（原 globals.css 相应段） */
+/* src/styles/output.css v3.16.1 — 输出面板与设置面板（原 globals.css 相应段） */
 
 /* ============================================
    Output Panel Specific
@@ -90,7 +90,8 @@
 }
 
 .settings-dialog {
-  @apply relative w-full max-w-[560px] mt-12 sm:mt-16 rounded-xl border border-border bg-background shadow-xl;
+  /* v3.16.1：宽度由 560px 放宽至 600px，给 2 列字段与 3 列格式开关留出呼吸感 */
+  @apply relative w-full max-w-[600px] mt-12 sm:mt-16 rounded-xl border border-border bg-background shadow-xl;
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
 }
@@ -140,6 +141,11 @@
   @apply border-primary bg-primary/5;
 }
 
+/* v3.16.1：奇数个卡片时末项整行铺满，避免右下角半行留白 */
+.opt-card-wide {
+  grid-column: 1 / -1;
+}
+
 .opt-card-inline {
   @apply mb-2.5;
 }
@@ -148,16 +154,28 @@
   @apply text-sm text-foreground;
 }
 
-/* 输出规则类型：9 个格式独立显示/隐藏开关（对齐原型 .box + .on） */
+/* 输出规则类型：12 个格式独立显示/隐藏开关（对齐原型 .box + .on）。
+   v3.16.1：由 auto-fill(minmax 80px) 改等宽 3 列——原方案在同一行塞下 5 个
+   按钮，长标签（AdGuard 黑名单 / 纯域名列表）被迫折行且各按钮宽度不一。 */
 .fmt-grid {
-  @apply grid gap-2 mt-1;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  @apply grid grid-cols-3 gap-2 mt-1;
 }
 
 .fmt-box {
-  @apply inline-flex items-center justify-center px-2.5 py-2 rounded-md border border-border bg-background text-sm text-muted-foreground cursor-pointer select-none transition-colors hover:bg-accent;
+  /* 等高 + 单行不折行，长度差异仅体现在留白而非行高 */
+  @apply inline-flex items-center justify-center px-2 py-2.5 rounded-md border border-border bg-background text-[0.8125rem] font-medium text-muted-foreground cursor-pointer select-none transition-colors hover:bg-accent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .fmt-box.on {
   @apply border-primary bg-primary text-primary-foreground;
+}
+
+/* 窄屏（≤480px）：格式开关回落 2 列，保证最长的「AdGuard 黑名单」不被截断 */
+@media (max-width: 480px) {
+  .fmt-grid {
+    @apply grid-cols-2;
+  }
 }

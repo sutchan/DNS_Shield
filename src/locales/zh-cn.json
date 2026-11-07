@@ -192,7 +192,7 @@
   "step1t": "输入域名",
   "step1d": "粘贴或导入广告域名",
   "step2t": "选择格式",
-  "step2d": "dnsmasq / hosts / AdGuard…",
+  "step2d": "dnsmasq / hosts / AdGuard 等 12 种格式",
   "step3t": "导出部署",
   "step3d": "复制到路由器或 DNS 服务",
   "invalidCount": "无效行",

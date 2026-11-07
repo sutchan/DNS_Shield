@@ -1,7 +1,8 @@
-/* src/styles/hero.css v3.15.6 — Hero 区、预览统计、动效降级（原 globals.css 相应段） */
+/* src/styles/hero.css v3.16.1 — Hero 区、预览统计、动效降级（原 globals.css 相应段） */
 
 /* ============================================
-   Hero（v3.15.2 移除右侧 black/white 面板；v3.15.6 单栏视觉增强）
+   Hero（v3.15.2 移除右侧 black/white 面板；v3.15.6 单栏视觉增强；
+   v3.16.1 lg+ 改「左文案 + 右快速入门」双栏，消除大屏右侧留白）
    ============================================ */
 .hero {
   @apply mb-6 rounded-2xl border border-border bg-card overflow-hidden;
@@ -11,7 +12,7 @@
 }
 
 .hero-inner {
-  @apply grid grid-cols-1 gap-5 p-5 sm:p-8;
+  @apply grid grid-cols-1 gap-5 p-5 sm:p-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-center lg:gap-10;
 }
 
 .hero-copy {
@@ -37,13 +38,33 @@
   @apply flex flex-wrap items-center gap-2.5;
 }
 
-/* 快速入门：与正文以细分隔线区分，三步卡片通栏铺开（v3.15.6） */
+/* 快速入门：窄屏与正文以细分隔线区分，三步卡片通栏铺开；
+   大屏（lg+）移入右栏竖排，改为左侧细分隔线与文案区隔（v3.15.7） */
 .quickstart {
   @apply mt-1 pt-5 border-t border-border/70;
 }
 
 .quickstart .usage-guide-title {
   @apply mb-3;
+}
+
+/* Hero 内快速入门贴住卡片底部，去掉 Footer 场景的 mb-4 */
+.quickstart .usage-steps {
+  margin-bottom: 0;
+}
+
+@media (min-width: 1024px) {
+  .quickstart {
+    @apply mt-0 border-t-0 pt-0 border-l border-border/70 pl-10;
+  }
+
+  .quickstart .usage-steps {
+    @apply grid-cols-1 gap-3;
+  }
+
+  .quickstart .usage-step {
+    @apply p-3;
+  }
 }
 
 /* ============================================

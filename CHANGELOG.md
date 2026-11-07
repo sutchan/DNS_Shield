@@ -7,6 +7,24 @@
 
 ## [Unreleased]
 
+## [3.16.1] - 2026-11-07
+
+### Fixed（设置弹窗结构缺陷）
+- 修复「输出规则类型」分组标题渲染两次：`SettingsForm.tsx` 中存在一个只含标题的空分组（`settings-group-format`），其下方 5 个生成选项卡片未归属任何分组；删除空分组并把选项卡片归入独立的 `settings-group-options`（所有既有 field / option / format-toggle / theme 元素 id 保持不变）
+
+### Changed（设置弹窗视觉优化）
+- 首屏 Hero 大屏（lg+）改「左文案 + 右快速入门」双栏布局（`hero-inner` 两列 grid），消除大屏右侧留白；快速入门移入右栏竖排并以左分隔线与文案区隔，CTA 按钮升级 default 尺寸（`FlowViz.tsx` / `hero.css`）
+- 项目信息字段网格由 4 列改 2 列（`sm/lg:grid-cols-4` → `grid-cols-2`）：600px 弹窗内 IPv6 等长值不再被挤压截断；弹窗宽度上限 560px → 600px
+- 生成选项卡片末项（「包含白名单(AdGuard黑名单)」）整行铺满（`.opt-card-wide`），消除奇数项右下角半行留白
+- 格式显示开关由 `auto-fill(minmax 80px)` 改等宽 3 列（窄屏 ≤480px 回落 2 列），按钮等高、单行不折行、超长标签省略；修复原方案单行塞 5 个按钮导致「AdGuard 黑名单」「纯域名列表」折行、各按钮宽度不一的问题
+- 版本按 patch 规则升至 v3.16.1：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 文档展示位 / `public/` 11 个规则产物头部
+
+### Changed（Hero 区 UI 布局优化）
+- 大屏（lg+）Hero 改为「左文案 + 右快速入门」双栏布局：`FlowViz` 将快速入门面板从 `hero-copy` 移出成为 `hero-inner` 第二栏（右栏竖排三步卡片、左细分隔线区隔），消除 1280 宽下右侧约 40% 的留白；窄屏保持单栏、三步通栏三列不变
+- CTA 按钮（开始使用 / 配置生成）由 `size="sm"` 升级为 default（h-10），主行动更醒目
+- 修复快速入门步骤描述「dnsmasq / hosts / AdGuard…」尾部省略号视觉上像被截断的问题：16 语言统一改为明示「还有 9 种」的完整文案（zh-cn / zh-tw 为「等 12 种格式」）
+- Hero 内快速入门卡片贴住卡片底部，去除 Footer 场景 `mb-4` 造成的多余下边距
+
 ## [3.16.0] - 2026-11-07
 
 ### Added（Web Worker 分片并行化：多核并行求值）
@@ -1562,7 +1580,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.16.0...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.16.1...HEAD
+[3.16.1]: https://github.com/sutchan/DNS_Shield/compare/v3.16.0...v3.16.1
 [3.16.0]: https://github.com/sutchan/DNS_Shield/compare/v3.15.6...v3.16.0
 [3.15.6]: https://github.com/sutchan/DNS_Shield/compare/v3.15.5...v3.15.6
 [3.15.5]: https://github.com/sutchan/DNS_Shield/compare/v3.15.4...v3.15.5
