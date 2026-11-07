@@ -177,7 +177,7 @@ jobs:
       - name: Verify version facts are synced
         run: node scripts/sync-facts.mjs --check
 
-      # 硬门禁：重新生成 12 种规则文件并与仓库内容比对。
+      # 硬门禁：重新生成 11 个格式产物文件并与仓库内容比对。
       # public/* 头部含「版本::」与「更新::」两行：
       #   - 「更新::」是生成日期，每天都会变，属噪声，从比对中剔除；
       #   - 「版本::」必须与 package.json 一致，属真实漂移，需要阻断。

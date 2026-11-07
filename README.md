@@ -4,7 +4,7 @@
 
 # DNS Shield - 路由器广告过滤工具
 
-[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.17.2-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.17.3-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告和保护隐私。既支持从统一域名数据源**生成**多种格式规则，也支持将已有清单在**不同格式间互相转换**。
 
@@ -140,6 +140,7 @@ src/
 ├── lib/              # 工具库（cn 类名合并等）
 ├── locales/          # 16 种语言翻译文件（zh-cn 140 顶层键 / 209 递归键，check-locales 校验）
 ├── styles/           # 设计系统样式（7 模块，由 globals.css 按职责拆分）
+├── config/           # 应用配置（defaults.json 默认设置 / version.ts 版本单一来源）
 ├── test-utils/       # 测试辅助（renderHook + jsdom 环境桩 setup.ts）
 ├── types/            # TypeScript 类型定义
 ├── utils/            # 工具函数（含 *.test.ts 单元测试）
@@ -168,7 +169,6 @@ src/
 - `(seo)/site-meta.ts` / `(seo)/ga-scripts.tsx` — 站点元数据与 GA4 脚本注入（衡量 ID 取自环境变量）
 - PWA 与 Service Worker 以静态文件提供：`public/manifest.json`、`public/service-worker.js`（非 `src/app/` 下的 TS 模块）
 - `globals.css` — 全局样式入口（Tailwind 指令 + 基础层 design tokens）；其余业务样式按职责拆分到 `src/styles/*.css`（layout / stats / input / output / footer / feedback / hero 共 7 模块），由 `layout.tsx` 按级联顺序统一导入
-- `i18n.ts` — 路由级国际化
 
 ```
 prototype/            # 设计快照（已冻结，停留 v3.9.x~v3.10.x，不代表当前实现）
@@ -286,7 +286,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.17.2
+当前版本：v3.17.3
 
 ## 更新日志
 

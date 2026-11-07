@@ -15,7 +15,7 @@
 ### 2. 如何添加自定义域名到黑名单？
 
 1. 编辑 `public/domains.txt` 文件，每行添加一个域名（`+` 前缀表示白名单，`@` 前缀表示自定义 DNS，`#` 表示注释）
-2. 运行 `node scripts/gen-format-files.mjs`（或 `pnpm build:formats`）重新生成全部 12 种过滤列表
+2. 运行 `node scripts/gen-format-files.mjs`（或 `pnpm build:formats`）重新生成全部 11 种格式产物文件（`domains` 格式即数据源 `domains.txt` 本身，无需重建）
 3. 部署更新后的文件到您的设备
 
 ### 3. 如何添加域名到白名单？

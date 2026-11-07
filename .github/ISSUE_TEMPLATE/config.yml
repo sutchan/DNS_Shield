@@ -16,7 +16,7 @@ contact_links:
 
   - name: 🚀 部署指南
     url: https://github.com/ArcesTeam/DNS_Shield/blob/main/DEPLOYMENT.md
-    about: 本地部署、服务器部署和容器化部署
+    about: 本地部署与云端部署（Vercel / EdgeOne Pages）
 
   - name: 📋 变更日志
     url: https://github.com/ArcesTeam/DNS_Shield/blob/main/CHANGELOG.md

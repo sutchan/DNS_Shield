@@ -4,8 +4,10 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-07（与 package.json v3.17.2 对齐；最后一项增强任务 T-P1-18「Web Worker 分片并行化」已完成并归档，待办区保持清零；2026-11-07 第十五轮全量文档核查：实算修正测试/组件指标，活跃文档结构描述与社区文档指引同步，冻结快照按声明保留）
+> 最后审查：2026-11-07（与 package.json v3.17.3 对齐；待办区保持清零；2026-11-07 第十六轮全量文档核查：README/SPEC 幽灵文件修正、DEPLOYMENT 同步自动发布实况与漂移硬门禁、社区文档口径统一、代码注释 Tab→下拉修正，冻结快照按声明保留）
 > 维护团队：Sut / ArcesTeam
+>
+> **本次更新（2026-11-07 第十六轮：全量文档核查与漂移修正）**：以代码实况为权威源复核全部活跃文档。修正项：README 删除 `src/app/i18n.ts` 幽灵条目（实际位于 `src/utils/i18n.ts`）、结构树补 `src/config/`；SPEC 删除 `uiUtils.ts` / `buildFlowPool.ts` 幽灵条目（`src/utils` 实测无此二文件，系第十五轮误入）、§12.1 CSP 改为如实描述 `next.config.js` 与 `vercel.json` 双源差异；DEPLOYMENT 工作流总览 / 标准发布流程 / 漂移门禁全面同步自动发布实况（`push → CI → Deploy → Release` 自动打 tag；漂移检测为硬门禁）、删除无代码消费的 `PORT` / `NEXT_PUBLIC_APP_NAME` 环境变量行；SUPPORT 与 ci.yml 注释产物计数口径修正（11 个格式产物文件，`domains` 格式即数据源本身）；ISSUE 模板移除不存在的容器化部署；`src/types/formats.ts` 注释 Tab→下拉修正。**遗留疑问**：仓库地址 `sutchan`（README.en 链接）vs `ArcesTeam`（SPEC/SUPPORT/SECURITY）待拍板；`vercel.json` CSP 含 `require-trusted-types-for` 而 `next.config.js` 不含，统一方案待定。冻结快照（CHANGELOG 历史段 / prototype / public/brand-colors.md / STRUCTURE-REVIEW.md / tasks-done.md 历史实测值）按各自声明未改。
 >
 > **本次更新（2026-11-07 第十五轮：全量文档核查与漂移修正）**：以代码实况为权威源，重新实算并统一全部活跃文档——16 语 / 顶层 140 键 / 递归 209 键、47 个测试文件 / 288 处 `it()`、顶层 16 个 `.tsx`、`ui/` 12 个、`src` 无 >200 行源文件、`public/domains.txt` 非空 897 行（20 注释 + 877 条规则 = 黑名单 645 + 白名单 232）。修正项：README 项目结构树补 `workers/` / `useWorkerPool` / `parseAggregate` / `OutputPanel.formatSelect` 与 parser 两段式描述、输出格式控件 Tabs → 单一下拉；README.en 同步语言优先级与多核并行能力；DEPLOYMENT 陈旧硬编码版本号与示例死版本号改为指向单一来源；SPEC 结构树组件与 FlowViz 静态快照描述；tasks 实时指标；CHECKLIST 审查时间；SUPPORT 白名单指引自相矛盾；CONTRIBUTING 提交类型与版本发布清单；PR 模板版本单一来源；SECURITY 废弃响应头；config.yaml 上下文。冻结快照（CHANGELOG 历史段 / prototype / public/brand-colors.md / STRUCTURE-REVIEW.md / tasks-done.md 历史实测值）按各自声明未改。
 >
@@ -26,7 +28,7 @@
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.17.2 | `package.json` version（权威源） |
+| 应用版本 | v3.17.3 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 **140** 键、递归合计 **209** 键 | 脚本统计 `src/locales/zh-cn.json`（flatten 叶子口径，与 `check:locales` 输出及 `scripts/locale-baseline.json` keyCount 一致；v3.15.5 移除 `moreFormats` 死键，2026-11-07 实算） |
 | 测试套件 / 用例 | **47 套件 / 288 用例**（2026-11-07 脚本实算：47 个 `*.test.ts(x)` 文件、288 处 `it()` / `test()` 调用、无 `it.each`） | `vitest run` 为权威计数；本机无 `node_modules`，本轮静态计数供参考，待 CI / 本机实跑复核 |

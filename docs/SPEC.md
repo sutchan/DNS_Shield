@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-07（与 package.json v3.17.2 对齐；§2 结构树补入多核并行解析新增模块：workers/parseShard.worker.ts、hooks/useWorkerPool.ts、utils/parseAggregate.ts，parser.ts 描述更新为 collectLines + finalizeParsed 两段式；v3.15.5 格式切换改单一「格式」下拉、v3.15.6 双 h1 / hreflang 修正后结构树已同步；2026-11-07 第十五轮全量文档核查：修正实时指标、结构树组件与 FlowViz 描述，冻结快照按声明保留）
+> 最后审查：2026-11-07（与 package.json v3.17.3 对齐；§2 结构树删除第十五轮误入的 uiUtils.ts / buildFlowPool.ts 幽灵条目；2026-11-07 第十六轮全量文档核查：§12.1 CSP 双源差异如实描述、脚本产物计数口径统一为 11 个格式产物文件；冻结快照按声明保留）
 
 ## 1. 项目概述
 
@@ -13,7 +13,7 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.17.2 |
+| 当前版本 | v3.17.3 |
 | 拦截域名 | 规则 877 条（黑名单 645 + 白名单 232；`public/domains.txt` 非空 897 行，含注释 20 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准） |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -46,7 +46,7 @@ dns-shield/
 ├── scripts/                        # 构建/校验脚本
 │   ├── check-locales.mjs           # 国际化键覆盖校验（pnpm check:locales）
 │   ├── sync-facts.mjs              # 版本号写入 13 处文档展示位（--check 为 CI 门禁）
-│   ├── gen-format-files.mjs        # 生成 12 种规则产物（pnpm build:formats）
+│   ├── gen-format-files.mjs        # 生成 11 种格式产物文件（pnpm build:formats；domains 格式即数据源本身）
 │   ├── count-domains.mjs           # 域名计数实算（pnpm count:domains）
 │   ├── aggregate-upstream.mjs      # 上游规则聚合（aggregate.yml 调用）
 │   ├── gen-icons.mjs               # PWA 图标生成
@@ -166,7 +166,6 @@ dns-shield/
 │       ├── headerConfigs.ts         # 各格式头部注释配置（HEADER_CONFIGS）
 │       ├── fileUtils.ts            # 文件操作（下载、复制、URL 获取、sanitizeFilename）
 │       ├── i18n.ts                 # 国际化配置
-│       ├── uiUtils.ts              # UI 工具（行号生成、滚动同步）
 │       ├── parseLine.ts            # 单行多格式识别（hosts/dnsmasq/adguard/regex）
 │       ├── domainCategory.ts       # 上游分类索引解析与筛选（T-P2-01/05）
 │       ├── regexRules.ts           # AdGuard/Pi-hole 正则双向转换（T-P2-04/06）
@@ -174,7 +173,6 @@ dns-shield/
 │       ├── ruleMatcher.ts          # 域名匹配测试器引擎
 │       ├── idb.ts                  # IndexedDB 持久化（T-P1-03）
 │       ├── httpCache.ts / cachedFetch.ts # ETag 条件请求 + 离线缓存
-│       ├── buildFlowPool.ts        # FlowViz 静态快照抽样池
 │       ├── logger.ts              # 生产日志收敛（T-P0-03）
 │       ├── lineCount.ts           # 非分配换行计数（T-P1-08）
 │       ├── scrollLock.ts          # 共享滚动锁（引用计数，T-P1-17）
@@ -258,7 +256,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.17.2 |
+| 版本号 | 3.17.3 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -426,7 +424,7 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 
 | 头部 | 值 | 说明 |
 |------|-----|------|
-| Content-Security-Policy | default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https: blob: https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; upgrade-insecure-requests | 内容安全策略，防止 XSS 和数据注入（与 `next.config.js` 实际配置一致；`require-trusted-types-for` 暂未启用） |
+| Content-Security-Policy | default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https: blob: https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; upgrade-insecure-requests | 内容安全策略，防止 XSS 和数据注入。注意：`next.config.js`（自托管 / `next start` 路径）与 `vercel.json`（Vercel 部署路径）各定义一份，当前**后者额外启用 `require-trusted-types-for 'script'`** 而前者未启用，两处尚未统一（见 tasks.md 遗留疑问） |
 | Strict-Transport-Security | max-age=63072000; includeSubDomains; preload | HSTS，强制 HTTPS |
 | Cross-Origin-Opener-Policy | same-origin | 防止跨窗口攻击 |
 | Cross-Origin-Resource-Policy | same-origin | 限制跨域资源加载 |

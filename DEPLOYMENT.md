@@ -2,7 +2,7 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
-> 当前版本：v3.17.2
+> 当前版本：v3.17.3
 
 ## 部署环境
 
@@ -174,8 +174,8 @@ certbot renew --dry-run
 | 工作流 | 文件 | 触发时机 | 职责 |
 |--------|------|----------|------|
 | CI | `ci.yml` | push/PR → `main`、`dev`；手动 | 质量门禁：ESLint、TypeScript、Vitest（含覆盖率）、Next.js 构建、多语言与数据一致性 |
-| Deploy | `deploy.yml` | push → `main`、push tag `v*`；手动 | 部署到 Vercel / EdgeOne Pages |
-| Release | `release.yml` | push tag `v*` | 校验版本号、重新生成全部规则文件、创建 GitHub Release 并附带规则文件资产 |
+| Deploy | `deploy.yml` | `main` 的 CI 成功后自动（`workflow_run`）；手动 | 部署到 Vercel / EdgeOne Pages |
+| Release | `release.yml` | `main` 的 Deploy 完成且成功后自动（`workflow_run`） | 按 `package.json` 版本自动打 tag、重新生成全部格式产物、创建 GitHub Release 并附带规则文件资产 |
 | Aggregate | `aggregate.yml` | 每周一定时；手动 | 聚合 AdGuard / EasyList / NeoHosts / StevenBlack / YousList 上游域名，去重合并后自动发起 Pull Request 更新 `public/domains.txt` |
 
 CI 采用「并行 job + 聚合门禁」结构：`lint`、`typecheck`、`test`、`build`、`data` 并行执行，最后由 `ci` 汇总结果。
@@ -216,29 +216,30 @@ CI 采用「并行 job + 聚合门禁」结构：`lint`、`typecheck`、`test`�
 # 1. 跑一遍本地校验（等价于 CI 的 lint/typecheck/test）
 pnpm run lint && pnpm exec tsc --noEmit && pnpm run test
 
-# 2. 升级版本并打 tag（会同步修改 package.json）
+# 2. 升级版本（会同步修改 package.json；无需手动打 tag）
 pnpm version patch        # 或 minor / major
 
-# 3. 推送（含 tag）
-git push --follow-tags
+# 3. 推送 main
+git push
 
-# 之后自动完成：
+# 之后全自动完成：
 #   - CI 质量门禁
 #   - Deploy 部署到已启用的目标
-#   - Release 生成规则文件并发布 Release 资产
+#   - Release 按 package.json 版本自动打 tag 并发布 Release 资产
 ```
 
 > 版本号必须保持单一来源：`package.json` 的 `version` 决定 tag、`src/config/version.ts` 的
 > `APP_VERSION`、`next.config.js` 的 `env.version`，以及规则文件头部的版本注释。
-> `release.yml` 会强制校验 tag 与 `package.json` 一致。
+> `release.yml` 按 `package.json` 版本自动创建 tag `vX.Y.Z` 并发布；tag 已存在则跳过，
+> 因此仅版本号升级的提交会触发新 Release。
 
-### 5. 已知问题：规则文件漂移
+### 5. 规则文件漂移（硬门禁）
 
 `public/*.txt|conf|db` 由 `scripts/gen-format-files.mjs` 从 `public/domains.txt` 生成，文件头带版本号与生成日期。
 规则产物的头部版本与域名计数由生成脚本写入（当前**规则 877 条 = 黑名单 645 + 白名单 232**；`public/domains.txt` 非空 **897 行**，含注释 20 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准；`package.json` 为版本单一来源（由 `sync-facts.mjs` / `gen-format-files.mjs` 自动派生，勿在此硬编码））。改动数据源后须运行 `node scripts/gen-format-files.mjs` 重建产物。
 
-因此 CI 中的漂移检测目前是**软门禁**（`continue-on-error`），只在工作流 Summary 中提示、不阻断流水线。
-补齐方式：
+CI 中的漂移检测是**硬门禁**（产物与数据源不一致即 `exit 1` 阻断流水线）；比对时自动剔除产物头部的
+「更新::」日期行（每天变化，属噪声），仅对「版本::」与实际内容漂移拦截。补齐方式：
 
 ```bash
 node scripts/gen-format-files.mjs   # 重新生成（版本号取自 package.json，禁止硬编码）
@@ -246,19 +247,15 @@ node scripts/count-domains.mjs       # 核对计数
 git add public && git commit -m "chore: 同步生成规则文件"
 ```
 
-同步完成后，删除 `.github/workflows/ci.yml` 中 `Detect generated rule files drift` 步骤的
-`continue-on-error: true`，即可升级为硬门禁，杜绝后续再漂移。
-
 ## 配置选项
 
 ### 1. 环境变量
 
 | 环境变量 | 说明 | 默认值 |
 |----------|------|--------|
-| `PORT` | 服务器端口 | 3000 |
 | `NODE_ENV` | 运行环境 | production |
-| `NEXT_PUBLIC_APP_NAME` | 应用名称 | DNS Shield |
-| `NEXT_PUBLIC_APP_VERSION` | 应用版本（同时由 `src/config/version.ts` APP_VERSION 与 `next.config.js` env.version 提供） | 3.17.2 |
+| `NEXT_PUBLIC_BUILD_ID` | 页脚构建编号（`yymmddhhmm`，由 `next.config.js` 构建期生成并注入，见 SPEC §8.1） | 构建时生成 |
+| `NEXT_PUBLIC_APP_VERSION` | 应用版本（构建期由 `next.config.js` env.version 注入；应用内展示实际读取 `src/config/version.ts` 的 APP_VERSION） | 3.17.3 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（须形如 `G-XXXXXXXXXX`；留空或格式非法则不启用统计，详见 `.env.example`） | 空 |
 
 ### 2. Next.js 配置
@@ -272,7 +269,7 @@ const nextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   env: {
-    version: '3.17.2'
+    version: '3.17.3'
   },
   async headers() {
     return [

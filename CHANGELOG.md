@@ -7,6 +7,17 @@
 
 ## [Unreleased]
 
+## [3.17.3] - 2026-11-07
+
+### Docs（第十六轮全量文档核查）
+- README：删除 `src/app/i18n.ts` 幽灵条目（实际位于 `src/utils/i18n.ts`）；结构树补 `src/config/`
+- SPEC：删除 `uiUtils.ts` / `buildFlowPool.ts` 幽灵条目（第十五轮误入）；§12.1 CSP 如实描述 `next.config.js` 与 `vercel.json` 双源差异（后者额外启用 `require-trusted-types-for`，统一方案待定）
+- DEPLOYMENT：工作流总览 / 标准发布流程 / 漂移门禁同步自动发布实况（`push → CI → Deploy → Release` 自动打 tag；漂移检测为硬门禁）；删除无代码消费的 `PORT` / `NEXT_PUBLIC_APP_NAME`
+- SUPPORT / `ci.yml` 注释：产物计数口径修正（11 个格式产物文件，`domains` 格式即数据源本身）
+- ISSUE 模板：移除不存在的容器化部署描述
+- `src/types/formats.ts` 注释：Tab → 「格式」下拉修正（v3.15.5 起）
+- 版本按 patch 规则升至 v3.17.3：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 13 处文档展示位 / `public/` 11 个规则产物头部
+
 ## [3.17.2] - 2026-11-07
 
 ### Changed（移除输出工具栏设置按钮）
