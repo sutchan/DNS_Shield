@@ -162,7 +162,7 @@ pnpm start
 - 运行 `node scripts/gen-format-files.mjs` 重建 `public/` 11 个产物头部版本
 - 仅更新被改动文件的头注释版本号（禁止全仓库批量刷写）
 - 新增 `CHANGELOG.md` 对应版本小节并记录版本变更说明
-- 创建 GitHub Release
+- **GitHub Release 自动发布（无需手动打 tag）**：`release.yml` 在 `Deploy` 工作流于 `main` 分支全绿（即 `push → CI → Deploy` 门禁链路全部成功）后，自动按 `package.json` 版本创建轻量 tag `vX.Y.Z` 并发布 Release（含规则文件 zip 与全部单文件资产）；tag 已存在则跳过。开发者侧只需本地执行 `pnpm version patch|minor|major` 后 `git push`，无需手动打 tag
 
 ## 行为准则
 

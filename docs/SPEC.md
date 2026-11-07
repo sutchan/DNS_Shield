@@ -353,6 +353,10 @@ V{APP_VERSION}· build {NEXT_PUBLIC_BUILD_ID}
 - **回退**：`NEXT_PUBLIC_BUILD_ID` 缺失时（如静态导出场景），页脚回退为版本号，保证始终有可识别标识。
 - **发版无需手动同步**：页脚内容由 `env.version` + 运行时 `NEXT_PUBLIC_BUILD_ID` 驱动，[tasks.md 第五章]发布清单无需单独登记页脚项；改动 `next.config.js` 的 `buildTimeId()` 或 `Footer.tsx` 展示格式时，须保持两者一致并同步本规范。
 
+### 8.2 自动发布（CI 全绿后自动发版）
+
+GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支的 `push → CI → Deploy` 门禁链路全部成功后，`release.yml` 读取 `package.json` 版本号创建轻量 tag `vX.Y.Z` 并发布（含规则产物资产）；tag 已存在则跳过，仅版本号升级时才发版。开发者只需本地 `pnpm version patch|minor|major` 并 `git push`。
+
 ## 9. 依赖关系
 
 ### 9.1 核心依赖
