@@ -78,4 +78,4 @@ components:
       file: "src/components/ui/Toast.tsx"
       parts: ["Toast", "toast"]
 
-version: "3.17.1"
+version: "3.17.2"

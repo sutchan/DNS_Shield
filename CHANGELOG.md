@@ -7,6 +7,14 @@
 
 ## [Unreleased]
 
+## [3.17.2] - 2026-11-07
+
+### Changed（移除输出工具栏设置按钮）
+- 输出面板工具栏（`OutputToolbar`）移除设置齿轮按钮（`#settings-panel-toggle-btn`）：仅保留「规则测试」与「路由器脚本」两个图标按钮，设置统一走 Header 入口（`#settings-btn`），消除双入口冗余
+- `OutputToolbar` props 随之精简（移除 `onOpenSettings` / `isSettingsOpen`）；`OutputPanel` 不再接收 `onOpenSettings`，`Home.tsx` 同步移除传递；`SettingsPanel` 弹窗本身及 Header 入口行为不变
+- `src/components/OutputPanel.parts.tsx` / `src/components/OutputPanel.tsx` / `src/app/Home.tsx` 头注释同步 v3.17.2
+- 版本按 patch 规则升至 v3.17.2：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 13 处文档展示位 / `public/` 11 个规则产物头部
+
 ## [3.17.1] - 2026-11-07
 
 ### Changed（取消预览统计条胶囊轮廓）

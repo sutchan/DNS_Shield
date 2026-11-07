@@ -1,11 +1,12 @@
-// src/components/OutputPanel.parts.tsx v3.15.5
+// src/components/OutputPanel.parts.tsx v3.17.2
 // OutputPanel 的纯展示子组件：预览统计条、工具栏与操作按钮。
 // 格式切换控件已抽离至 OutputPanel.formatSelect.tsx（单一「格式」下拉），此处仅 re-export 保持导出契约。
 // 派生逻辑（格式标签映射 / 可见格式计算）已抽离至 OutputPanel.derived.ts。
+// v3.17.2 移除工具栏设置按钮：设置面板保留 Header 入口（#settings-btn），避免双入口冗余。
 
 import type { FC, ReactNode } from 'react';
 import { Button } from './ui/Button';
-import { SearchCheck, Terminal, Settings as SettingsIcon, Sparkles, Download, Copy } from 'lucide-react';
+import { SearchCheck, Terminal, Sparkles, Download, Copy } from 'lucide-react';
 import { FormatType } from '../types';
 import type { Translation } from '../types/translation';
 
@@ -59,21 +60,18 @@ interface OutputToolbarProps {
   t: Translation;
   onOpenRuleTester: () => void;
   onOpenScriptGen: () => void;
-  onOpenSettings: () => void;
-  isSettingsOpen: boolean;
   /** 工具栏左侧插槽：格式切换下拉（保持与 v3.10.0 一致的 DOM 顺序） */
   children?: ReactNode;
 }
 
-// 输出面板顶部工具栏：格式切换下拉 + 规则测试 / 路由器脚本 / 设置三个图标按钮。
+// 输出面板顶部工具栏：格式切换下拉 + 规则测试 / 路由器脚本两个图标按钮。
+// 设置入口保留在 Header（#settings-btn），工具栏不再重复（v3.17.2 起）。
 // 布局：格式区（output-format-slot）可压缩；图标按钮区（output-tool-actions）
 // 固定不收缩且置于上层，避免左侧控件溢出覆盖按钮（v3.15.4 起）。
 export const OutputToolbar: FC<OutputToolbarProps> = ({
   t,
   onOpenRuleTester,
   onOpenScriptGen,
-  onOpenSettings,
-  isSettingsOpen,
   children,
 }) => (
   <div className="output-toolbar flex items-center gap-1.5" id="output-toolbar">
@@ -100,18 +98,6 @@ export const OutputToolbar: FC<OutputToolbarProps> = ({
         aria-label={t.routerScriptTitle}
       >
         <Terminal className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-      </Button>
-      <Button
-        type="button"
-        variant={'outline' as const}
-        size={'icon' as const}
-        onClick={onOpenSettings}
-        title={t.settingsTitle}
-        id="settings-panel-toggle-btn"
-        aria-expanded={isSettingsOpen}
-        aria-controls="settings-panel"
-      >
-        <SettingsIcon className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
       </Button>
     </div>
   </div>
