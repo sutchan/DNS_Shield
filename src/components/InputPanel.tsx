@@ -2,7 +2,6 @@
 'use client';
 import * as React from 'react';
 import { Button } from './ui/Button';
-import { Badge } from './ui/Badge';
 import InputEditor from './InputEditor';
 import UrlSection, { PresetTags } from './UrlSection';
 import { CategoryFilter } from './CategoryFilter';
@@ -103,14 +102,14 @@ const InputPanel: React.FC<InputPanelProps> = ({
         />
       )}
 
-      {/* 统计信息：带彩色圆点胶囊（对齐原型 .stat / .stat-dot） */}
+      {/* 统计信息：彩色圆点 + 纯文本（v3.17.0 由胶囊 Badge 简化，对齐原型 .stat-dot） */}
       <div className="stats-compact" id="stats-bar" role="region" aria-label={t.statsAria}>
         {STAT_ITEMS.map(({ key, labelKey, dot }) => (
-          <Badge key={key} variant="secondary" className="stat-badge" role="status" aria-live="polite">
+          <span key={key} className="stat-badge" role="status" aria-live="polite">
             {dot && <span className={`stat-dot ${dot}`} aria-hidden="true" />}
             <span className="stat-value" id={key} aria-label={String(t[labelKey])}>{stats[key]}</span>
             <span className="stat-label">{String(t[labelKey])}</span>
-          </Badge>
+          </span>
         ))}
       </div>
 

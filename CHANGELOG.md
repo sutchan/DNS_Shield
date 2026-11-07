@@ -7,6 +7,19 @@
 
 ## [Unreleased]
 
+## [3.17.0] - 2026-11-07
+
+### Changed（国际化补全与语言优先级规范）
+- 输入区统计条由胶囊 `Badge` 简化为「色点 + 纯文本」（`InputPanel.tsx` / `stats.css`），加大水平间距替代胶囊分隔，视觉更轻量
+- 完善全部 16 语国际化字符串：系统性排查各语言与英文原文相同的残留串，共补译 **764 处**——13 语（ar / cs / es / hi / id / it / nl / pl / ru / sv / th / tr / vi）各约 54-61 键（`usageTitle` / `heroTitle` / `heroDesc` / `shareTexts` / `copied` / `urlHint` / 各格式 `header.*` 说明与用法 / 部署提示 / 外观与设置标签等）、zh-tw 38 键（分享文案 / Hero / 快速入门 / 部署提示等）；仅替换仍与英文相同的值，不覆盖任何既有翻译
+- 补齐全部 14 个非基准语言缺失的 `shareTexts.3`（分享文案第 4 条，此前仅 zh-cn / en 有，其余语言靠深合并回退显示中文）
+- 语言优先级写入全局规范：**默认简体中文 → 繁体中文 → 英语**。`i18n.ts` 的 `supportedLanguages` 顺序调整为 zh-cn / zh-tw / en 置前三（语言切换菜单与 `useLanguage` 校验共用此清单）；SEO 结构化数据 `inLanguage` 由 `['zh-CN','en-US']` 扩为 `['zh-CN','zh-TW','en-US']`；`docs/config.yaml` 项目上下文与 `docs/SPEC.md` §1 写入该规范（默认语言 `useLanguage` 与 `<html lang="zh-CN">` 原本已为简中，无需改动）
+- 合理同形保留：纯格式专名按钮（Dnsmasq / Hosts / Unbound / Pi-hole / Bind (RPZ) / SmartDNS / Mosdns / Clash Meta / CoreDNS / `gStep2d` 格式列表）、上游源名（`category.*`）与目标语言本就与英文同形的词（印尼语 Valid、瑞典语 Version 等）不视为残留，保持原样
+- `check:locales` 通过（16 语 / 209 键一致）；版本按 minor 规则升至 v3.17.0（国际化行为与规范变更）：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 文档展示位 / `public/` 11 个规则产物头部
+
+### Changed（统计条简化）
+- 输入面板统计条由胶囊形 Badge（`Badge variant="secondary"` 底色圆角）简化为「彩色圆点 + 纯文本」：`InputPanel.tsx` 改用纯 `span.stat-badge`（保留逐项 `role="status"` / `aria-live`），`stats.css` 去掉 `.stat-badge` 内边距并以 `gap-x-5` 加大项间距替代胶囊分隔；语义色点（黑名单红 / 白名单绿 / 改道蓝）不变
+
 ## [3.16.1] - 2026-11-07
 
 ### Fixed（设置弹窗结构缺陷）
@@ -1580,7 +1593,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.16.1...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.17.0...HEAD
+[3.17.0]: https://github.com/sutchan/DNS_Shield/compare/v3.16.1...v3.17.0
 [3.16.1]: https://github.com/sutchan/DNS_Shield/compare/v3.16.0...v3.16.1
 [3.16.0]: https://github.com/sutchan/DNS_Shield/compare/v3.15.6...v3.16.0
 [3.15.6]: https://github.com/sutchan/DNS_Shield/compare/v3.15.5...v3.15.6

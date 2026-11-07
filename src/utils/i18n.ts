@@ -1,4 +1,4 @@
-// src/utils/i18n.ts v3.9.0
+// src/utils/i18n.ts v3.17.0
 import ar from '../locales/ar.json';
 import cs from '../locales/cs.json';
 import en from '../locales/en.json';
@@ -37,11 +37,12 @@ export const translations: Record<string, Translation> = {
   'zh-tw': zhTW
 };
 
-// 支持的语言列表
+// 支持的语言列表（v3.17.0 规范：默认简体中文第一、繁体中文第二、英语第三，
+// 其余语言按原顺序跟随；切换菜单、useLanguage 校验均以此顺序为准）
 export const supportedLanguages: Language[] = [
-  { code: 'en', name: 'English', icon: '' },
   { code: 'zh-cn', name: '中文简体', icon: '' },
   { code: 'zh-tw', name: '中文繁體', icon: '' },
+  { code: 'en', name: 'English', icon: '' },
   { code: 'ar', name: 'العربية', icon: '', rtl: true },
   { code: 'cs', name: 'Čeština', icon: '' },
   { code: 'es', name: 'Español', icon: '' },

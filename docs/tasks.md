@@ -4,7 +4,7 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-07（与 package.json v3.16.1 对齐；最后一项增强任务 T-P1-18「Web Worker 分片并行化」已完成并归档，待办区保持清零）
+> 最后审查：2026-11-07（与 package.json v3.17.0 对齐；最后一项增强任务 T-P1-18「Web Worker 分片并行化」已完成并归档，待办区保持清零）
 > 维护团队：Sut / ArcesTeam
 >
 > **本次更新（2026-11-07 第十四轮：T-P1-18 多核并行求值落地）**：推进并完成待办区唯一剩余增强项 `Web Worker 分片并行化（多核并行求值）`，编号 **T-P1-18**，随 v3.16.0（minor，新功能）发布并归档至 [tasks-done.md](./tasks-done.md)。要点：`parser.ts` 拆为 `collectLines`（可分片逐行收集）+ `finalizeParsed`（全局后处理）两段，`parseSource` 契约不变；新增 `workers/parseShard.worker.ts` / `hooks/useWorkerPool.ts` / `utils/parseAggregate.ts`；`useRuleWorker.run('parse')` 达到 20000 行阈值自动走多核并行，失败逐级回退单 Worker → 主线程同步；并行与串行结果等价契约由新增 `parseAggregate.test.ts`（1 套件 12 用例，静态计数）断言。本机无 `node_modules`，`vitest` / `tsc` / `lint` 未实跑，`read_lints` 0 诊断，待 CI 复核。
@@ -24,7 +24,7 @@
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.16.1 | `package.json` version（权威源） |
+| 应用版本 | v3.17.0 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 **140** 键、递归合计 **209** 键 | 脚本统计 `src/locales/zh-cn.json`（flatten 叶子口径，与 `check:locales` 输出及 `scripts/locale-baseline.json` keyCount 一致；v3.15.5 移除 `moreFormats` 死键，2026-11-07 实算） |
 | 测试套件 / 用例 | **48 套件 / 294 用例**（静态计数：v3.16.0 新增 `parseAggregate.test.ts` 1 套件 12 用例；上一轮 `vitest` 实测 47 / 282） | `vitest run` 为权威计数（2026-11-05 实测 47 / 282）；本机无 `node_modules`，v3.16.0 增量按 `it()` 静态计数，待 CI / 本机实跑复核 |

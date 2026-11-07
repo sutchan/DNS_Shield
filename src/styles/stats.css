@@ -1,4 +1,4 @@
-/* src/styles/stats.css v3.13.6 — 统计胶囊与 Worker 进度条（原 globals.css Stats 段） */
+/* src/styles/stats.css v3.17.0 — 统计条与 Worker 进度条（原 globals.css Stats 段） */
 
 /* ============================================
    Stats
@@ -7,8 +7,9 @@
   @apply grid grid-cols-5 gap-2 mb-5;
 }
 
+/* v3.16.1：统计项由胶囊底 Badge 简化为「色点 + 纯文本」，加大水平间距替代胶囊分隔 */
 .stats-compact {
-  @apply flex flex-wrap gap-2 mb-5;
+  @apply flex flex-wrap gap-x-5 gap-y-2 mb-5;
 }
 
 /* Worker 处理进度条：仅大文本解析/排序/去重进行时出现 */
@@ -33,7 +34,7 @@
 }
 
 .stat-badge {
-  @apply inline-flex items-center gap-1.5 px-2.5 py-1;
+  @apply inline-flex items-center gap-1.5;
 }
 
 .stat-value {

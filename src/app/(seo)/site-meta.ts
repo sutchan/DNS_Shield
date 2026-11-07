@@ -108,6 +108,6 @@ export const jsonLd = {
     '实时预览过滤规则',
     '一键复制/下载规则文件',
   ],
-  inLanguage: ['zh-CN', 'en-US'],
+  inLanguage: ['zh-CN', 'zh-TW', 'en-US'],
   screenshot: ICON_512,
 };
