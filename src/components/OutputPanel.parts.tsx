@@ -1,4 +1,4 @@
-// src/components/OutputPanel.parts.tsx v3.15.2
+// src/components/OutputPanel.parts.tsx v3.15.4
 // OutputPanel 的纯展示子组件：预览统计条、工具栏与操作按钮。
 // 格式切换控件已抽离至 OutputPanel.formatTabs.tsx（核心标签 + 更多下拉），此处仅 re-export 保持导出契约。
 // 派生逻辑（格式标签映射 / 可见格式计算）已抽离至 OutputPanel.derived.ts。
@@ -66,8 +66,8 @@ interface OutputToolbarProps {
 }
 
 // 输出面板顶部工具栏：格式切换标签栏 + 规则测试 / 路由器脚本 / 设置三个图标按钮。
-// 布局：FormatTabs 占满弹性宽度（flex-1），三个图标按钮固定在右侧不收缩（flex-shrink-0），
-// 避免 Tab 换行时图标按钮插入到 TabsList 的行之间、把首尾 Tab 文字裁切（线上实测问题）。
+// 布局：格式区（output-format-slot）可压缩并约束内部 Tabs 宽度；图标按钮区
+// （output-tool-actions）固定不收缩且置于上层，避免标签栏溢出覆盖按钮（v3.15.4）。
 export const OutputToolbar: FC<OutputToolbarProps> = ({
   t,
   onOpenRuleTester,
@@ -77,8 +77,8 @@ export const OutputToolbar: FC<OutputToolbarProps> = ({
   children,
 }) => (
   <div className="output-toolbar flex items-center gap-1.5" id="output-toolbar">
-    <div className="flex-1 min-w-0 flex items-center">{children}</div>
-    <div className="flex items-center gap-1.5 flex-shrink-0">
+    <div className="output-format-slot flex-1 min-w-0 flex items-center">{children}</div>
+    <div className="output-tool-actions flex items-center gap-1.5 flex-shrink-0">
       <Button
         type="button"
         variant={'outline' as const}

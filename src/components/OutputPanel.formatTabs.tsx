@@ -1,7 +1,9 @@
-// src/components/OutputPanel.formatTabs.tsx v3.15.2
+// src/components/OutputPanel.formatTabs.tsx v3.15.4
 // 格式切换控件：核心格式（CORE_FORMATS）以标签直接切换，其余高级格式收进「更多格式」下拉。
 // v3.15.2 起不再把 12 个格式平铺成标签（窄屏会换行堆叠成两列），
 // 改为「核心 4 标签 + 更多下拉」，保持单行整洁并保留快速切换能力。
+// v3.15.4：Tabs.Root 增加 format-tabs-root 宽度约束，避免标签栏撑破工具栏、
+// 溢出并覆盖右侧工具按钮（线上 606px 实测重叠 155px）。
 'use client';
 import type { FC } from 'react';
 import { ChevronDown } from 'lucide-react';
@@ -41,7 +43,7 @@ export const FormatTabs: FC<FormatTabsProps> = ({
 
   return (
     <div className="format-controls" id="output-format-controls">
-      <Tabs value={currentFormat} onValueChange={(v: string) => onFormatChange(v as FormatType)}>
+      <Tabs className="format-tabs-root" value={currentFormat} onValueChange={(v: string) => onFormatChange(v as FormatType)}>
         <TabsList className="format-tabs" id="output-format-tabs">
           {coreFormats.map((fmt) => (
             <TabsTrigger key={fmt} value={fmt} id={`format-${fmt}-btn`}>

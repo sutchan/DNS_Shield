@@ -1,4 +1,4 @@
-/* src/styles/output.css v3.15.2 — 输出面板与设置面板（原 globals.css 相应段） */
+/* src/styles/output.css v3.15.4 — 输出面板与设置面板（原 globals.css 相应段） */
 
 /* ============================================
    Output Panel Specific
@@ -19,21 +19,77 @@
   @apply flex items-center justify-between gap-2 flex-wrap flex-1 min-w-0;
 }
 
-/* 格式控制区：核心格式标签（一行）+「更多格式」下拉，避免 12 个标签换行堆叠。
+/* 工具栏两个分区：格式区可压缩，图标按钮区固定且置于上层（z-index），
+   杜绝标签栏溢出后覆盖按钮（v3.15.4 线上实测修复）。 */
+.output-format-slot {
+  @apply flex-1 min-w-0 flex items-center;
+}
+
+.output-tool-actions {
+  @apply flex items-center gap-1.5 flex-shrink-0;
+  position: relative;
+  z-index: 1;
+}
+
+/* 格式控制区：核心格式标签（可横向滚动）+「更多格式」下拉，始终同一行。
    核心格式固定为 dnsmasq/hosts/adguard/whitelist（CORE_FORMATS），
-   其余高级格式收进下拉菜单（见 OutputPanel.parts.tsx FormatTabs）。 */
+   其余高级格式收进下拉菜单（见 OutputPanel.formatTabs.tsx）。 */
 .format-controls {
-  @apply flex items-center gap-1.5 min-w-0 max-w-full flex-wrap;
+  @apply flex items-center gap-1.5 min-w-0 max-w-full flex-nowrap;
+}
+
+/* Radix Tabs.Root 默认渲染无 class 的 div，其 min-width:auto 会按内容撑开
+   （线上 606px 实测 417px 撑破 254px 的父级），使 TabsList 的
+   max-w-full / overflow-x-auto 失效并溢出覆盖右侧按钮。显式约束宽度后，
+   空间不足时标签栏改为内部横向滚动，不再与外部元素重叠。 */
+.format-tabs-root {
+  min-width: 0;
+  max-width: 100%;
+  flex: 1 1 auto;
 }
 
 .format-tabs {
-  /* 仅渲染核心格式（≤4 个），保持单行不换行；极窄屏时横向滚动兜底，
-     彻底消除 12 标签 flex-wrap 堆叠成两列的错乱。 */
-  @apply inline-flex items-center justify-start p-0.5 rounded-xl bg-muted gap-0.5 flex-nowrap h-auto min-h-[2.5rem] max-w-full overflow-x-auto;
+  /* 仅渲染核心格式（≤4 个），保持单行不换行；宽度不足时内部横向滚动兜底。 */
+  @apply inline-flex items-center justify-start p-0.5 rounded-xl bg-muted gap-0.5 flex-nowrap h-auto min-h-[2.5rem] max-w-full min-w-0 overflow-x-auto;
+  scrollbar-width: none;
+}
+
+.format-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .format-more-trigger {
   @apply flex-shrink-0;
+}
+
+/* 窄屏（≤768px）：标题 / 格式区 / 图标按钮分三行垂直排列，
+   彻底消除横向挤压、文字截断与按钮重叠。 */
+@media (max-width: 768px) {
+  .output-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .output-toolbar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .output-format-slot {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .output-tool-actions {
+    margin-left: auto;
+  }
+
+  .format-tabs [role="tab"] {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 0.75rem;
+  }
 }
 
 .format-tab {

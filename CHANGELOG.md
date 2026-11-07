@@ -7,6 +7,18 @@
 
 ## [Unreleased]
 
+## [3.15.4] - 2026-11-06
+
+### Fixed（输出面板工具栏 UI 重叠）
+- 修复「生成过滤规则」头部在窄屏/中间宽度（如 606px）下，核心格式标签栏撑破工具栏并覆盖右侧「规则测试 / 路由器脚本 / 设置」图标按钮，导致「AdGuard 白名单」等标签文字被截断、按钮压在标签上；线上实测标签栏右边界 592px > 按钮左边界 437px，重叠 155px，且「更多格式」被挤到第二行
+- 根因：Radix `Tabs.Root` 渲染的无 class div 使用默认 `min-width:auto`，按内容撑到 417px（父级仅 254px），使 `TabsList` 的 `max-w-full` / `overflow-x-auto` 失效；叠加 `.format-controls` 的 `flex-wrap` 让下拉换行
+- `OutputPanel.formatTabs.tsx`：给 `Tabs.Root` 加 `format-tabs-root` 宽度约束（min-width:0 / max-width:100% / flex:1 1 auto），空间不足时标签栏改为内部横向滚动
+- `src/styles/output.css`：格式控制区改 `flex-nowrap`；工具栏拆为 `output-format-slot` / `output-tool-actions` 两区，按钮区固定不收缩且 `z-index:1` 置于上层；隐藏标签栏滚动条；≤768px 时标题 / 格式区 / 按钮分三行垂直排列并缩小标签内边距
+- `OutputPanel.parts.tsx`：为两个分区加语义类名，DOM 顺序与导出契约不变
+- 版本按 patch 规则升至 v3.15.4：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 13 处文档展示位 / `public/` 产物头部
+- 仅被改动文件 `OutputPanel.formatTabs.tsx` / `OutputPanel.parts.tsx` / `output.css` / `version.ts` 头注释同步至 v3.15.4，其余源文件头注释按规则保持不变
+- 注：本机无 `node_modules`，`next build` / `vitest` / `lint` 未能实跑；问题由线上 DOM 边界矩形实测定位，修复效果需部署后复核
+
 ## [3.15.3] - 2026-11-06
 
 ### Fixed（修复 EdgeOne 构建期字体加载失败）
@@ -1514,7 +1526,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.15.3...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.15.4...HEAD
+[3.15.4]: https://github.com/sutchan/DNS_Shield/compare/v3.15.3...v3.15.4
 [3.15.3]: https://github.com/sutchan/DNS_Shield/compare/v3.15.2...v3.15.3
 [3.15.2]: https://github.com/sutchan/DNS_Shield/compare/v3.15.1...v3.15.2
 [3.15.1]: https://github.com/sutchan/DNS_Shield/compare/v3.15.0...v3.15.1
