@@ -1,17 +1,17 @@
-/* src/styles/hero.css v3.15.2 — Hero 区、预览统计、动效降级（原 globals.css 相应段） */
+/* src/styles/hero.css v3.15.6 — Hero 区、预览统计、动效降级（原 globals.css 相应段） */
 
 /* ============================================
-   Hero（v3.15.2 移除右侧 black/white 可视化面板，回归单栏布局）
+   Hero（v3.15.2 移除右侧 black/white 面板；v3.15.6 单栏视觉增强）
    ============================================ */
 .hero {
-  @apply mb-6 rounded-xl border border-border bg-card overflow-hidden;
+  @apply mb-6 rounded-2xl border border-border bg-card overflow-hidden;
   background:
-    radial-gradient(120% 140% at 0% 0%, hsl(var(--primary) / 0.06), transparent 55%),
-    radial-gradient(120% 140% at 100% 0%, hsl(var(--success) / 0.05), transparent 55%);
+    radial-gradient(120% 140% at 0% 0%, hsl(var(--primary) / 0.09), transparent 55%),
+    radial-gradient(120% 140% at 100% 0%, hsl(var(--success) / 0.06), transparent 55%);
 }
 
 .hero-inner {
-  @apply grid grid-cols-1 gap-6 p-5 sm:p-7 items-center;
+  @apply grid grid-cols-1 gap-5 p-5 sm:p-8;
 }
 
 .hero-copy {
@@ -23,13 +23,27 @@
 }
 
 .hero-title {
-  @apply text-[1.75rem] sm:text-[2.25rem] font-bold tracking-tight leading-[1.1] font-serif;
-  letter-spacing: -0.015em;
+  @apply text-[1.75rem] sm:text-[2.375rem] font-bold tracking-tight leading-[1.12] font-serif;
+  letter-spacing: -0.02em;
 }
 
 .hero-desc {
   @apply text-[0.9375rem] sm:text-[1.0625rem] leading-relaxed text-muted-foreground;
-  max-width: 34rem;
+  max-width: 38rem;
+}
+
+/* CTA 组：位于描述下方、快速入门之前，主次按钮并排（v3.15.6 上移更醒目） */
+.hero-cta {
+  @apply flex flex-wrap items-center gap-2.5;
+}
+
+/* 快速入门：与正文以细分隔线区分，三步卡片通栏铺开（v3.15.6） */
+.quickstart {
+  @apply mt-1 pt-5 border-t border-border/70;
+}
+
+.quickstart .usage-guide-title {
+  @apply mb-3;
 }
 
 /* ============================================

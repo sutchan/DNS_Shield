@@ -1,7 +1,7 @@
-// src/components/FlowViz.tsx v3.15.2
-// 首屏 Hero 区：左侧文案 + 快速入门 + CTA。
-// v3.15.2 移除右侧「黑名单/白名单」可视化窗口（原 flowviz 数据面板），
-// 首屏回归单栏信息布局，降低视觉噪音与无关数据干扰。
+// src/components/FlowViz.tsx v3.15.6
+// 首屏 Hero 区：单栏信息布局（kicker / 标题 / 描述 / CTA / 快速入门三步）。
+// v3.15.2 移除右侧「黑名单/白名单」可视化窗口，首屏回归单栏；
+// v3.15.6 UI 优化：CTA 上移至描述下方更醒目；快速入门三步改为通栏卡片并以分隔线与正文区分。
 'use client';
 import * as React from 'react';
 import { Sparkles, Settings2 } from 'lucide-react';
@@ -14,7 +14,7 @@ interface FlowVizProps {
   onToggleSettings?: () => void;
 }
 
-/** 首屏 Hero 区：文案 + 快速入门 + CTA（不含数据可视化面板） */
+/** 首屏 Hero 区：文案 + CTA + 快速入门（不含数据可视化面板） */
 const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ onStart, onToggleSettings }) {
   const t = useT();
 
@@ -29,7 +29,31 @@ const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ onStart, o
           <h1 className="hero-title" id="hero-title">{t.heroTitle}</h1>
           <p className="hero-desc" id="hero-desc">{t.heroDesc}</p>
 
-          <div className="usage-guide quickstart" id="quickstart-panel" aria-label={t.usageTitle}>
+          <div className="hero-cta" id="hero-cta">
+            <Button
+              type="button"
+              variant="default"
+              size="sm"
+              onClick={onStart}
+              id="cta-start"
+              className="font-semibold"
+            >
+              <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
+              {t.ctaStart}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={onToggleSettings}
+              id="cta-settings"
+            >
+              <Settings2 className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
+              {t.ctaSettings}
+            </Button>
+          </div>
+
+          <div className="quickstart" id="quickstart-panel" aria-label={t.usageTitle}>
             <h3 className="usage-guide-title">{t.usageTitle}</h3>
             <div className="usage-steps">
               <div className="usage-step">
@@ -53,30 +77,6 @@ const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ onStart, o
                   <span className="step-desc">{t.step3d}</span>
                 </div>
               </div>
-            </div>
-
-            <div className="hero-cta" id="hero-cta">
-              <Button
-                type="button"
-                variant="default"
-                size="sm"
-                onClick={onStart}
-                id="cta-start"
-                className="font-semibold"
-              >
-                <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
-                {t.ctaStart}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={onToggleSettings}
-                id="cta-settings"
-              >
-                <Settings2 className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
-                {t.ctaSettings}
-              </Button>
             </div>
           </div>
         </div>

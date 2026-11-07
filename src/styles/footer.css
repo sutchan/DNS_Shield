@@ -1,4 +1,4 @@
-/* src/styles/footer.css v3.13.6 — 页脚与使用指南（原 globals.css 相应段） */
+/* src/styles/footer.css v3.15.6 — 页脚与使用指南（原 globals.css 相应段） */
 
 /* ============================================
    Footer
@@ -70,12 +70,18 @@
   @apply grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4;
 }
 
+/* v3.15.6：快速入门三步由低对比 bg-muted/40 改为描边卡片 + hover 高亮，
+   序号徽章放大并加阴影，在 Hero 白色背景上形成清晰层次。 */
 .usage-step {
-  @apply flex items-start gap-3 p-3 rounded-xl bg-muted/40 text-left;
+  @apply flex items-start gap-3 p-3.5 rounded-xl bg-background border border-border text-left transition-colors;
+}
+
+.usage-step:hover {
+  @apply border-primary/40;
 }
 
 .step-number {
-  @apply flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-primary text-primary-foreground text-[0.75rem] font-semibold;
+  @apply flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-primary text-primary-foreground text-[0.75rem] font-semibold shadow-sm;
 }
 
 .step-content {
@@ -83,7 +89,7 @@
 }
 
 .step-title {
-  @apply text-[0.8125rem] font-medium text-foreground;
+  @apply text-[0.8125rem] font-semibold text-foreground;
 }
 
 .step-desc {

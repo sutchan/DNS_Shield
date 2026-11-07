@@ -1,4 +1,4 @@
-/* src/styles/layout.css v3.13.6 — 布局骨架与面板容器（原 globals.css Layout/Panel 段） */
+/* src/styles/layout.css v3.15.6 — 布局骨架与面板容器（原 globals.css Layout/Panel 段） */
 
 /* ============================================
    Layout
@@ -42,8 +42,9 @@
 /* ============================================
    Panel — the container for input/output
    ============================================ */
+/* v3.15.6：面板阴影由 1px/0.04 加强为双层柔和阴影，与 98.5% 背景拉开层次 */
 .panel {
-  @apply flex flex-col flex-1 rounded-xl border border-border bg-card shadow-[0_1px_2px_0_rgba(0,0,0,0.04)] overflow-hidden;
+  @apply flex flex-col flex-1 rounded-xl border border-border bg-card shadow-[0_1px_3px_0_rgba(0,0,0,0.06),0_1px_2px_-1px_rgba(0,0,0,0.04)] overflow-hidden;
 }
 
 .panel-body {
@@ -56,6 +57,11 @@
 
 .panel-title {
   @apply flex items-center gap-2.5;
+}
+
+/* v3.15.6：面板标题图标统一主色，输入/输出两侧视觉一致 */
+.panel-title > svg {
+  @apply text-primary;
 }
 
 .panel-title h2 {
