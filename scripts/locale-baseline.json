@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-11-06T14:30:52.327Z",
   "source": "src/locales/zh-cn.json",
-  "keyCount": 210,
+  "keyCount": 209,
   "keys": [
     "addUrl",
     "adguard",
@@ -116,7 +116,6 @@
     "lightMode",
     "mergeInfo",
     "mergeStats",
-    "moreFormats",
     "mosdnsFormat",
     "neohosts",
     "outputActionsAria",

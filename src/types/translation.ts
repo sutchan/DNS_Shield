@@ -43,8 +43,6 @@ export interface Translation {
   removeWildcard: string;
   adguardIncludeWhitelist: string;
   showAllFormats: string;
-  /** 输出面板「更多格式」下拉标签 */
-  moreFormats: string;
   mergeInfo: string;
   previewPlaceholder: string;
   // 输出预览统计条（对齐原型 previewStats）

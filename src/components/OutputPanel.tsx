@@ -1,5 +1,6 @@
-// src/components/OutputPanel.tsx v3.15.2
+// src/components/OutputPanel.tsx v3.15.5
 // 输出面板：编排格式切换 / 设置弹窗 / 规则测试 / 路由器脚本 / 预览 / 操作按钮。
+// v3.15.5：格式切换控件改为单一「格式」下拉（FormatSelect），覆盖全部可见格式。
 // DOM id 统一为 kebab-case 语义命名（output-line-numbers / output-preview）。
 // 纯展示子组件与派生逻辑已抽离至 OutputPanel.parts.tsx 以保持主文件 ≤200 行。
 // 惰性生成（T-P1-06）：仅消费当前格式文本 currentOutput，不再持有全量 OutputContent。
@@ -10,7 +11,7 @@ import { OutputPreview } from './OutputPreview';
 import RuleTesterModal from './RuleTesterModal';
 import ScriptGeneratorModal from './ScriptGeneratorModal';
 import {
-  FormatTabs,
+  FormatSelect,
   PreviewStats,
   OutputToolbar,
   OutputActions,
@@ -102,12 +103,11 @@ const ruleLines = React.useMemo(() => (currentOutput ? countLines(currentOutput)
             onOpenSettings={onOpenSettings}
             isSettingsOpen={isSettingsOpen}
           >
-            <FormatTabs
+            <FormatSelect
               currentFormat={currentFormat}
               visibleFormats={visibleFormats}
               formatLabel={formatLabel}
               onFormatChange={setFormat}
-              moreFormatsLabel={t.moreFormats}
             />
           </OutputToolbar>
         </div>

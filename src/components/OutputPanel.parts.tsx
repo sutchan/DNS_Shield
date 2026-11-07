@@ -1,6 +1,6 @@
-// src/components/OutputPanel.parts.tsx v3.15.4
+// src/components/OutputPanel.parts.tsx v3.15.5
 // OutputPanel 的纯展示子组件：预览统计条、工具栏与操作按钮。
-// 格式切换控件已抽离至 OutputPanel.formatTabs.tsx（核心标签 + 更多下拉），此处仅 re-export 保持导出契约。
+// 格式切换控件已抽离至 OutputPanel.formatSelect.tsx（单一「格式」下拉），此处仅 re-export 保持导出契约。
 // 派生逻辑（格式标签映射 / 可见格式计算）已抽离至 OutputPanel.derived.ts。
 
 import type { FC, ReactNode } from 'react';
@@ -9,8 +9,8 @@ import { SearchCheck, Terminal, Settings as SettingsIcon, Sparkles, Download, Co
 import { FormatType } from '../types';
 import type { Translation } from '../types/translation';
 
-export type { FormatTabsProps } from './OutputPanel.formatTabs';
-export { FormatTabs } from './OutputPanel.formatTabs';
+export type { FormatSelectProps } from './OutputPanel.formatSelect';
+export { FormatSelect } from './OutputPanel.formatSelect';
 
 interface PreviewStatsProps {
   currentFormat: FormatType;
@@ -61,13 +61,13 @@ interface OutputToolbarProps {
   onOpenScriptGen: () => void;
   onOpenSettings: () => void;
   isSettingsOpen: boolean;
-  /** 工具栏左侧插槽：格式切换标签栏（保持与 v3.10.0 一致的 DOM 顺序） */
+  /** 工具栏左侧插槽：格式切换下拉（保持与 v3.10.0 一致的 DOM 顺序） */
   children?: ReactNode;
 }
 
-// 输出面板顶部工具栏：格式切换标签栏 + 规则测试 / 路由器脚本 / 设置三个图标按钮。
-// 布局：格式区（output-format-slot）可压缩并约束内部 Tabs 宽度；图标按钮区
-// （output-tool-actions）固定不收缩且置于上层，避免标签栏溢出覆盖按钮（v3.15.4）。
+// 输出面板顶部工具栏：格式切换下拉 + 规则测试 / 路由器脚本 / 设置三个图标按钮。
+// 布局：格式区（output-format-slot）可压缩；图标按钮区（output-tool-actions）
+// 固定不收缩且置于上层，避免左侧控件溢出覆盖按钮（v3.15.4 起）。
 export const OutputToolbar: FC<OutputToolbarProps> = ({
   t,
   onOpenRuleTester,

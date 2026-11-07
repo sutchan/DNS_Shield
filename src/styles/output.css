@@ -1,4 +1,4 @@
-/* src/styles/output.css v3.15.4 — 输出面板与设置面板（原 globals.css 相应段） */
+/* src/styles/output.css v3.15.5 — 输出面板与设置面板（原 globals.css 相应段） */
 
 /* ============================================
    Output Panel Specific
@@ -31,34 +31,14 @@
   z-index: 1;
 }
 
-/* 格式控制区：核心格式标签（可横向滚动）+「更多格式」下拉，始终同一行。
-   核心格式固定为 dnsmasq/hosts/adguard/whitelist（CORE_FORMATS），
-   其余高级格式收进下拉菜单（见 OutputPanel.formatTabs.tsx）。 */
+/* 格式控制区：v3.15.5 起为单一「格式」下拉（FormatSelect），12 种格式收敛到一个
+   菜单，不再有核心标签栏与「更多格式」两级入口；窄屏天然单行，
+   彻底消除标签栏溢出覆盖工具按钮的问题（v3.15.4 线上实测重叠 155px）。 */
 .format-controls {
   @apply flex items-center gap-1.5 min-w-0 max-w-full flex-nowrap;
 }
 
-/* Radix Tabs.Root 默认渲染无 class 的 div，其 min-width:auto 会按内容撑开
-   （线上 606px 实测 417px 撑破 254px 的父级），使 TabsList 的
-   max-w-full / overflow-x-auto 失效并溢出覆盖右侧按钮。显式约束宽度后，
-   空间不足时标签栏改为内部横向滚动，不再与外部元素重叠。 */
-.format-tabs-root {
-  min-width: 0;
-  max-width: 100%;
-  flex: 1 1 auto;
-}
-
-.format-tabs {
-  /* 仅渲染核心格式（≤4 个），保持单行不换行；宽度不足时内部横向滚动兜底。 */
-  @apply inline-flex items-center justify-start p-0.5 rounded-xl bg-muted gap-0.5 flex-nowrap h-auto min-h-[2.5rem] max-w-full min-w-0 overflow-x-auto;
-  scrollbar-width: none;
-}
-
-.format-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.format-more-trigger {
+.format-select-trigger {
   @apply flex-shrink-0;
 }
 
@@ -84,20 +64,6 @@
   .output-tool-actions {
     margin-left: auto;
   }
-
-  .format-tabs [role="tab"] {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    font-size: 0.75rem;
-  }
-}
-
-.format-tab {
-  @apply inline-flex items-center justify-center px-3 py-1.5 text-[0.8125rem] font-medium rounded-lg transition-all duration-150 text-muted-foreground;
-}
-
-.format-tab.active {
-  @apply bg-card text-foreground shadow-sm;
 }
 
 .output-stats {

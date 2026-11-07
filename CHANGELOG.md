@@ -7,7 +7,18 @@
 
 ## [Unreleased]
 
-## [3.15.4] - 2026-11-06
+## [3.15.5] - 2026-11-07
+
+### Changed（格式切换控件改为单一「格式」下拉）
+- 「生成过滤规则」面板的格式切换控件由「核心 4 标签 + 更多格式下拉」（v3.15.2 引入）改为单一「格式」下拉菜单（`FormatSelect`）：12 种格式收敛到同一个菜单，不再有核心/高级两级入口，选择路径统一；触发器仅显示当前格式名 + 箭头，窄屏天然单行，彻底消除 v3.15.4 所修的标签栏溢出覆盖工具按钮问题
+- 格式清单核对：`ALL_FORMATS` 共 12 种（dnsmasq / hosts / adguard / whitelist / unbound / pihole / domains / bind / smartdns / mosdns / clash / coredns）全部进入下拉，无丢失；沿用 `useVisibleFormats` 的「有产出才显示」惰性过滤（按黑名单 / 自定义 DNS / 白名单 / 正则段推导），某格式暂无产出时不出现属设计行为，并未隐藏任何可产出格式
+- 新组件 `src/components/OutputPanel.formatSelect.tsx` 取代 `OutputPanel.formatTabs.tsx`；`OutputPanel.parts.tsx` re-export 同步为 `FormatSelect` / `FormatSelectProps`，`OutputPanel.tsx` 调用点不再传 `moreFormatsLabel`
+- DOM id 变更：容器 `output-format-controls` 保留；`output-format-tabs` / `format-more-btn` / `format-more-menu` / `format-more-item-{fmt}` / `format-{fmt}-btn` 由 `output-format-select-btn` / `output-format-menu` / `format-item-{fmt}` 取代（全量 kebab-case）
+- 样式：`output.css` 移除 `.format-tabs-root` / `.format-tabs` / `.format-tab(.active)` / `.format-more-trigger` 及标签栏滚动条、≤768px 标签缩小规则；新增 `.format-select-trigger`；保留 v3.15.4 的工具栏分区（`output-format-slot` / `output-tool-actions`）与窄屏三行布局
+- i18n：16 语 locale 与 `translation.ts` 移除不再使用的 `moreFormats` 死键（键对称性保持）
+- 注：`src/components/ui/Tabs.tsx` 与 `@radix-ui/react-tabs` 依赖暂保留（本机无 `node_modules` 无法重生成 `pnpm-lock.yaml`，移除依赖留待后续版本）
+- 版本按 patch 规则升至 v3.15.5：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 文档展示位 / `public/` 产物头部；被改文件头注释同步至 v3.15.5
+
 
 ### Fixed（输出面板工具栏 UI 重叠）
 - 修复「生成过滤规则」头部在窄屏/中间宽度（如 606px）下，核心格式标签栏撑破工具栏并覆盖右侧「规则测试 / 路由器脚本 / 设置」图标按钮，导致「AdGuard 白名单」等标签文字被截断、按钮压在标签上；线上实测标签栏右边界 592px > 按钮左边界 437px，重叠 155px，且「更多格式」被挤到第二行
@@ -1526,7 +1537,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.15.4...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.15.5...HEAD
+[3.15.5]: https://github.com/sutchan/DNS_Shield/compare/v3.15.4...v3.15.5
 [3.15.4]: https://github.com/sutchan/DNS_Shield/compare/v3.15.3...v3.15.4
 [3.15.3]: https://github.com/sutchan/DNS_Shield/compare/v3.15.2...v3.15.3
 [3.15.2]: https://github.com/sutchan/DNS_Shield/compare/v3.15.1...v3.15.2
