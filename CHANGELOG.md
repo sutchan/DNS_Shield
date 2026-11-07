@@ -7,6 +7,16 @@
 
 ## [Unreleased]
 
+## [3.16.0] - 2026-11-07
+
+### Added（Web Worker 分片并行化：多核并行求值）
+- 落地任务清单中最后一项增强 `Web Worker 分片并行化（多核并行求值）`（编号 T-P1-18）：超过 `PARALLEL_PARSE_THRESHOLD`（20000 行）的解析任务按行边界切分为多片，派发到 `min(硬件核心数, 8, 满额分片数)` 个分片 Worker 并行求值，主线程收齐后聚合，充分利用多核缩短超大输入（10 万行级）的解析耗时；中等文本仍走单 Worker 串行，小文本仍走主线程同步，阈值策略不变
+- `parser.ts` 拆为两段并保持 `parseSource` 签名与行为完全兼容：`collectLines`（纯逐行收集，无跨行状态，可安全分片）+ `finalizeParsed`（跨行去重、白名单/自定义 DNS 剔除黑名单与统计组装，必须全局执行一次）；新导出 `RawCollected` / `RawCounters`
+- 新增 `workers/parseShard.worker.ts`（分片收集 Worker，含进度上报）、`hooks/useWorkerPool.ts`（池管理：按需扩展、最闲优先负载均衡、进度求和、聚合收口）、`utils/parseAggregate.ts`（并行度决策 / 行边界分片 / 原始产物聚合纯函数）；`useRuleWorker.run('parse')` 自动按行数选择并行/串行路径，并行失败逐级回退单 Worker → 主线程同步，排序/去重路径不变
+- 并行等价契约：分片收集 + 聚合 + 全局后处理与单线程整段 `parseSource` 逐字段相等（含跨分片白名单剔除与跨分片重复域名场景），由新增 `utils/parseAggregate.test.ts` 断言；T-P1-14 结算契约延续（分片失败 / Worker 崩溃 / postMessage 异常 / 卸载时全部挂起任务以 null 结算回退）
+- 新增测试 1 套件 12 用例（静态计数；本机无 `node_modules`，`vitest` / `tsc` / `lint` 未实跑，以 `read_lints` 0 诊断与等价契约静态核对为准，待 CI 复核）
+- 版本按 minor 规则升至 v3.16.0（新功能）：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 文档展示位 / `public/` 11 个规则产物头部；任务清单同步 `docs/tasks.md` / `docs/tasks-done.md`
+
 ## [3.15.6] - 2026-11-07
 
 ### Changed（首屏与面板视觉优化）
@@ -1552,7 +1562,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.15.6...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.16.0...HEAD
+[3.16.0]: https://github.com/sutchan/DNS_Shield/compare/v3.15.6...v3.16.0
 [3.15.6]: https://github.com/sutchan/DNS_Shield/compare/v3.15.5...v3.15.6
 [3.15.5]: https://github.com/sutchan/DNS_Shield/compare/v3.15.4...v3.15.5
 [3.15.4]: https://github.com/sutchan/DNS_Shield/compare/v3.15.3...v3.15.4

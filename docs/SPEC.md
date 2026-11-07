@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-06（与 package.json v3.15.6 对齐；全量文档核查：修 §1 表格列数与域名口径、补全 §2 结构树 docs/scripts/public/components/config/types/workers、§5.3 任务记录规范按 tasks.md / tasks-done.md 分工重写、§9.2 补齐开发依赖；端口统一 3000）
+> 最后审查：2026-11-07（与 package.json v3.16.0 对齐；§2 结构树补入多核并行解析新增模块：workers/parseShard.worker.ts、hooks/useWorkerPool.ts、utils/parseAggregate.ts，parser.ts 描述更新为 collectLines + finalizeParsed 两段式；v3.15.5 格式切换改单一「格式」下拉、v3.15.6 双 h1 / hreflang 修正后结构树已同步）
 
 ## 1. 项目概述
 
@@ -13,7 +13,7 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.15.6 |
+| 当前版本 | v3.16.0 |
 | 拦截域名 | 规则 877 条（黑名单 645 + 白名单 232；`public/domains.txt` 非空 897 行，含注释 20 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准） |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -100,7 +100,8 @@ dns-shield/
 │   │   ├── index.ts                # 应用配置（预设源 URL、多镜像）
 │   │   └── version.ts              # 版本号单一来源（APP_VERSION，派生自 package.json）
 │   ├── workers/
-│   │   └── ruleProcessor.worker.ts # 大文本解析 Worker（分片 + 进度上报）
+│   │   ├── ruleProcessor.worker.ts # 大文本解析 Worker（分片 + 进度上报，串行路径）
+│   │   └── parseShard.worker.ts    # 多核并行解析分片 Worker（逐行收集，v3.16.0）
 │   ├── context/
 │   │   └── AppContext.tsx          # 应用上下文（集中提供 i18n 翻译 t）
 │   ├── hooks/                      # 自定义 Hooks
@@ -116,7 +117,8 @@ dns-shield/
 │   │   ├── useHomeUiState.ts      # 首页本地 UI 状态编排（折叠/弹窗/滚动聚焦，v3.13.6 拆分）
 │   │   ├── useLineNumbers.ts       # 输出行号同步
 │   │   ├── useAsyncRuleProcessing.ts # Worker 解析/排序/去重调度
-│   │   ├── useRuleWorker.ts        # Web Worker 封装与阈值
+│   │   ├── useRuleWorker.ts        # Web Worker 封装与阈值（parse 超阈值走多核并行池）
+│   │   ├── useWorkerPool.ts        # 分片解析 Worker 池（负载均衡/聚合/回退，v3.16.0）
 │   │   ├── useAutosave.ts          # 草稿自动保存编排
 │   │   ├── autosaveStorage.ts      # localStorage 草稿读写
 │   │   ├── useCategoryFilter.ts    # 分类筛选 UI 状态
@@ -154,7 +156,8 @@ dns-shield/
 │       ├── analytics.ts            # GA4 衡量 ID 读取/校验与 gtag 片段生成（纯逻辑）
 │       ├── domainValidator.ts       # 域名验证与行解析
 │       ├── domainFetch.ts          # 远程域名列表拉取（超时/兜底/体积上限）
-│       ├── parser.ts               # 域名解析器（行级解析、提取域名）
+│       ├── parser.ts               # 域名解析器（collectLines 逐行收集 + finalizeParsed 全局后处理，v3.16.0 拆分支持分片并行）
+│       ├── parseAggregate.ts       # 并行度决策 / 行边界分片 / 原始产物聚合（v3.16.0）
 │       ├── sortDedupe.ts           # 域名排序与去重（纯函数）
 │       ├── rulesGenerator.ts       # 规则生成核心（12 格式编排 + prepareRuleData 统一口径）
 │       ├── formatGenerators.ts     # 全量格式拼接（blocked/customDns/whitelist/regex/header）
@@ -254,7 +257,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.15.6 |
+| 版本号 | 3.16.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

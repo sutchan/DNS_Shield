@@ -1,4 +1,4 @@
-// src/utils/parser.ts v3.12.0
+// src/utils/parser.ts v3.16.0
 import { parseDomainLine, ParseStats } from './domainValidator';
 import { CustomDnsEntry, ParsedData, RegexRule } from '../types';
 
@@ -8,13 +8,28 @@ const PROGRESS_INTERVAL = 2000;
 // 排序 / 去重职责抽离到 sortDedupe，保持公开 API 稳定
 export { sortDomains, dedupeDomains } from './sortDedupe';
 
-// 解析源文本（hosts / dnsmasq / adguard / 无限界文本），输出结构化数据。
-// onProgress 为可选进度回调（供 Web Worker 分片上报解析进度）；
-// 不传该参数时行为与此前完全一致，向后兼容。
-export const parseSource = (
+/** 逐行收集阶段的原始产物：未做跨行去重 / 白名单剔除（v3.16.0 供多核分片并行解析） */
+export interface RawCollected {
+  domains: string[];
+  whitelist: string[];
+  customDns: CustomDnsEntry[];
+  regexRules: RegexRule[];
+}
+
+/** 逐行收集阶段的计数器：各分片的计数可直接相加 */
+export interface RawCounters {
+  commentCount: number;
+  invalidCount: number;
+  totalLines: number;
+}
+
+// 逐行收集：纯逐行解析，无跨行状态（v3.16.0 自 parseSource 拆出，
+// 供多核并行时按行分片派发到多个 Worker 求值）。
+// onProgress 为可选进度回调（供 Worker 分片上报解析进度），尾部补报 100%（T-P3-05）。
+export const collectLines = (
   text: string,
   onProgress?: (processed: number, total: number) => void
-): { data: ParsedData; stats: ParseStats } => {
+): { raw: RawCollected; counters: RawCounters } => {
   const lines = text.split('\n');
   const total = lines.length;
 
@@ -95,6 +110,22 @@ export const parseSource = (
     onProgress(total, total);
   }
 
+  return {
+    raw: { domains, whitelist, customDns, regexRules },
+    counters: { commentCount, invalidCount, totalLines: lines.length }
+  };
+};
+
+// 全局后处理：跨行去重、白名单/自定义 DNS 剔除黑名单与统计组装。
+// 必须在「全部分片聚合之后」整体执行一次，禁止按分片各自执行——
+// 否则跨分片的白名单剔除与去重会漏算（并行等价契约，见 parseAggregate.test.ts）。
+export const finalizeParsed = (
+  raw: RawCollected,
+  counters: RawCounters
+): { data: ParsedData; stats: ParseStats } => {
+  const { domains, whitelist, customDns, regexRules } = raw;
+  const { commentCount, invalidCount } = counters;
+
   // 去重和处理冲突
   const whitelistSet = new Set(whitelist.map((w) => w.replace(/^\*\./, '')));
   // customDns 按 domain 去重（保留首次出现），避免生成重复 DNS 规则
@@ -118,7 +149,7 @@ export const parseSource = (
     blacklistCount: filteredDomains.length,
     whitelistCount: uniqueWhitelist.length,
     customDnsCount: uniqueCustomDns.length,
-    totalLines: lines.length,
+    totalLines: counters.totalLines,
     invalidCount
   };
 
@@ -133,3 +164,14 @@ export const parseSource = (
   };
 };
 
+// 解析源文本（hosts / dnsmasq / adguard / 无限界文本），输出结构化数据。
+// 单线程整段解析 = collectLines + finalizeParsed；多核并行路径见
+// workers/parseShard.worker.ts + hooks/useWorkerPool.ts，两者结果等价。
+// onProgress 为可选进度回调；不传该参数时行为与此前完全一致，向后兼容。
+export const parseSource = (
+  text: string,
+  onProgress?: (processed: number, total: number) => void
+): { data: ParsedData; stats: ParseStats } => {
+  const { raw, counters } = collectLines(text, onProgress);
+  return finalizeParsed(raw, counters);
+};

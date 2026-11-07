@@ -1,0 +1,181 @@
+// src/hooks/useWorkerPool.ts v3.16.0
+// 分片解析 Worker 池的主线程控制器（多核并行求值）：
+// - 池按需扩展至分片数，分片派发采用最闲优先负载均衡；
+// - 收齐全部分片后聚合原始产物并统一执行跨行后处理（finalizeParsed），
+//   保证结果与单线程整段解析等价；
+// - 任一分片失败 / Worker 崩溃 / postMessage 异常 / 组件卸载时，
+//   全部挂起任务以 null 结算，由调用方回退主线程同步路径（T-P1-14 契约）。
+'use client';
+import { useCallback, useEffect, useRef } from 'react';
+import { logger } from '../utils/logger';
+import { aggregateRaw, splitIntoShards } from '../utils/parseAggregate';
+import { finalizeParsed } from '../utils/parser';
+import type { RawCollected, RawCounters } from '../utils/parser';
+import type { ParsedData } from '../types';
+import type { ParseStats } from '../types/formats';
+import type { ParseShardResponse } from '../workers/parseShard.worker';
+
+export interface ParallelParseResult {
+  data: ParsedData;
+  stats: ParseStats;
+  elapsed: number;
+}
+
+interface ShardResult {
+  raw: RawCollected;
+  counters: RawCounters;
+}
+
+interface TaskState {
+  shardTotal: number;
+  collected: Map<number, ShardResult>;
+  shardProgress: Map<number, { processed: number; total: number }>;
+  failed: boolean;
+  startedAt: number;
+  resolve: (value: ParallelParseResult | null) => void;
+  onProgress?: (p: { processed: number; total: number }) => void;
+}
+
+export const useWorkerPool = () => {
+  const workersRef = useRef<Worker[]>([]);
+  // 每个 Worker 当前承接的分片数（最闲优先派发的依据）
+  const loadRef = useRef<number[]>([]);
+  const tasksRef = useRef<Map<number, TaskState>>(new Map());
+  const seqRef = useRef(0);
+
+  const terminateAll = useCallback(() => {
+    workersRef.current.forEach((worker) => worker.terminate());
+    workersRef.current = [];
+    loadRef.current = [];
+  }, []);
+
+  // 响应路由：负载计数回收与任务推进（迟到消息只减负载不报错）
+  const handleResponse = useCallback((workerIndex: number, message: ParseShardResponse) => {
+    loadRef.current[workerIndex] = Math.max(0, (loadRef.current[workerIndex] ?? 1) - 1);
+    const task = tasksRef.current.get(message.taskId);
+    if (!task) return;
+
+    if (message.kind === 'progress') {
+      task.shardProgress.set(message.shardIndex, { processed: message.processed, total: message.total });
+      let processed = 0;
+      let total = 0;
+      task.shardProgress.forEach((shard) => {
+        processed += shard.processed;
+        total += shard.total;
+      });
+      task.onProgress?.({ processed, total });
+      return;
+    }
+
+    if (message.kind === 'error') {
+      logger.warn('Parse shard task failed:', message.message);
+      if (!task.failed) {
+        task.failed = true;
+        tasksRef.current.delete(message.taskId);
+        task.resolve(null);
+      }
+      return;
+    }
+
+    task.collected.set(message.shardIndex, { raw: message.raw, counters: message.counters });
+    if (task.collected.size === task.shardTotal && !task.failed) {
+      tasksRef.current.delete(message.taskId);
+      const parts = [...task.collected.entries()]
+        .sort((a, b) => a[0] - b[0])
+        .map(([, value]) => value);
+      const { raw, counters } = aggregateRaw(parts);
+      const { data, stats } = finalizeParsed(raw, counters);
+      task.resolve({ data, stats, elapsed: Date.now() - task.startedAt });
+    }
+  }, []);
+
+  // 池按需扩展；创建失败时用现有 worker 兜底（分片会在单 worker 上排队）
+  const ensureWorkers = useCallback(
+    (size: number): boolean => {
+      while (workersRef.current.length < size) {
+        try {
+          const worker = new Worker(new URL('../workers/parseShard.worker.ts', import.meta.url));
+          const index = workersRef.current.length;
+          worker.onmessage = (event: MessageEvent<ParseShardResponse>) => handleResponse(index, event.data);
+          worker.onerror = (event) => {
+            logger.warn('Parse shard worker error:', event.message);
+            terminateAll();
+            tasksRef.current.forEach((task) => task.resolve(null));
+            tasksRef.current.clear();
+          };
+          workersRef.current.push(worker);
+          loadRef.current.push(0);
+        } catch (error) {
+          logger.warn('Parse shard worker unavailable:', error);
+          break;
+        }
+      }
+      return workersRef.current.length > 0;
+    },
+    [handleResponse, terminateAll]
+  );
+
+  // 并行解析入口：分片派发 → 收齐聚合 → finalizeParsed；失败 resolve null
+  const runParallel = useCallback(
+    (
+      text: string,
+      shardCount: number,
+      onProgress?: (p: { processed: number; total: number }) => void
+    ): Promise<ParallelParseResult | null> => {
+      // 单分片无并行收益：直接返回 null，由调用方走单 Worker 串行路径
+      if (shardCount <= 1) return Promise.resolve(null);
+      const shards = splitIntoShards(text, shardCount);
+      if (!ensureWorkers(shards.length)) return Promise.resolve(null);
+      const taskId = ++seqRef.current;
+      return new Promise<ParallelParseResult | null>((resolve) => {
+        const task: TaskState = {
+          shardTotal: shards.length,
+          collected: new Map(),
+          shardProgress: new Map(),
+          failed: false,
+          startedAt: Date.now(),
+          resolve,
+          onProgress
+        };
+        tasksRef.current.set(taskId, task);
+        for (let shardIndex = 0; shardIndex < shards.length; shardIndex++) {
+          // 最闲优先：选当前承接分片数最少的 worker
+          let target = 0;
+          for (let i = 1; i < loadRef.current.length; i++) {
+            if (loadRef.current[i] < loadRef.current[target]) target = i;
+          }
+          loadRef.current[target]++;
+          try {
+            workersRef.current[target].postMessage({
+              id: taskId * 1000 + shardIndex,
+              taskId,
+              shardIndex,
+              text: shards[shardIndex]
+            });
+          } catch (error) {
+            loadRef.current[target] = Math.max(0, loadRef.current[target] - 1);
+            logger.warn('Parse shard postMessage failed:', error);
+            if (!task.failed) {
+              tasksRef.current.delete(taskId);
+              task.resolve(null);
+            }
+            break;
+          }
+        }
+      });
+    },
+    [ensureWorkers]
+  );
+
+  // 卸载：释放全部 Worker 并结算挂起任务，避免调用方 await 永挂（T-P1-14）
+  useEffect(() => {
+    const tasks = tasksRef.current;
+    return () => {
+      terminateAll();
+      tasks.forEach((task) => task.resolve(null));
+      tasks.clear();
+    };
+  }, [terminateAll]);
+
+  return { runParallel };
+};

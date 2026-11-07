@@ -52,6 +52,7 @@
 | T-P2-11 | URL 全部抓取失败时不得提示「获取成功」 | Core Team | v3.15.0 | 全失败抛错走失败分支；部分失败仍视为成功 |
 | — | 语义化 ID 全量规范化（kebab-case） | Core Team | v3.15.0 | 源码 154 处 id 全部统一 kebab-case（此前 28 处 camelCase）；同步 `htmlFor`/`aria-*`/JS 选择器；`prototype/` 三个 HTML 同步并校验 `$('x')` 引用全部可命中，无重复 id |
 | — | 超长测试文件拆分与测试装置抽离 | Core Team | v3.15.0 | 5 个超长测试文件（558/435/392/389/215 行）按关注点拆为 18 个，共享装置抽到 `src/test-utils/` 三个 TestKit；`src` 下无超过 200 行的源文件（含测试） |
+| T-P1-18 | Web Worker 分片并行化（多核并行求值） | Dev Team | v3.16.0 | `parser.ts` 拆为 `collectLines`（无跨行状态、可分片逐行收集）+ `finalizeParsed`（全局后处理），`parseSource` 契约不变；新增 `workers/parseShard.worker.ts` / `hooks/useWorkerPool.ts`（按需扩展、最闲优先负载均衡、进度求和、失败/卸载全结算）/ `utils/parseAggregate.ts`（并行度决策/行边界分片/聚合）；`useRuleWorker.run('parse')` 达 20000 行阈值自动多核并行（`min(核数, 8, 满额分片数)` 片），失败逐级回退单 Worker → 主线程；并行与串行等价契约由 `parseAggregate.test.ts` 断言（新增 1 套件 12 用例，静态计数待实跑复核） |
 
 ### T-P1-07 关键契约的断言方式
 
