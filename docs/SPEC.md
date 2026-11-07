@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-07（与 package.json v3.17.0 对齐；§2 结构树补入多核并行解析新增模块：workers/parseShard.worker.ts、hooks/useWorkerPool.ts、utils/parseAggregate.ts，parser.ts 描述更新为 collectLines + finalizeParsed 两段式；v3.15.5 格式切换改单一「格式」下拉、v3.15.6 双 h1 / hreflang 修正后结构树已同步）
+> 最后审查：2026-11-07（与 package.json v3.17.1 对齐；§2 结构树补入多核并行解析新增模块：workers/parseShard.worker.ts、hooks/useWorkerPool.ts、utils/parseAggregate.ts，parser.ts 描述更新为 collectLines + finalizeParsed 两段式；v3.15.5 格式切换改单一「格式」下拉、v3.15.6 双 h1 / hreflang 修正后结构树已同步；2026-11-07 第十五轮全量文档核查：修正实时指标、结构树组件与 FlowViz 描述，冻结快照按声明保留）
 
 ## 1. 项目概述
 
@@ -13,7 +13,7 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.17.0 |
+| 当前版本 | v3.17.1 |
 | 拦截域名 | 规则 877 条（黑名单 645 + 白名单 232；`public/domains.txt` 非空 897 行，含注释 20 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准） |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -84,6 +84,7 @@ dns-shield/
 │   │   ├── InputPanel.tsx          # 输入面板（域名编辑 + URL 导入）
 │   │   ├── InputPanel.types.ts     # 输入面板 props 接口与统计常量（v3.13.6 拆分）
 │   │   ├── OutputPanel.tsx        # 输出面板（规则预览 + 设置）
+│   │   ├── OutputPanel.formatSelect.tsx # 单一「格式」下拉（v3.15.5）
 │   │   ├── OutputPanel.derived.ts  # 输出面板派生状态（useMemo 聚合）
 │   │   ├── OutputPanel.parts.tsx   # 输出面板拆分子组件
 │   │   ├── OutputPreview.tsx       # 规则预览窗（虚拟滚动）
@@ -94,7 +95,7 @@ dns-shield/
 │   │   ├── RuleTesterModal.tsx    # 域名匹配测试弹窗
 │   │   ├── ScriptGeneratorModal.tsx # 路由器同步脚本弹窗
 │   │   ├── GuideModal.tsx           # 使用指南弹窗
-│   │   └── FlowViz.tsx            # 流程动效
+│   │   └── FlowViz.tsx            # 静态数据快照面板（v3.13.5 起移除下落 token 动效）
 │   ├── config/
 │   │   ├── defaults.json           # 默认设置单一来源（v3.12.0 收敛）
 │   │   ├── index.ts                # 应用配置（预设源 URL、多镜像）
@@ -173,7 +174,7 @@ dns-shield/
 │       ├── ruleMatcher.ts          # 域名匹配测试器引擎
 │       ├── idb.ts                  # IndexedDB 持久化（T-P1-03）
 │       ├── httpCache.ts / cachedFetch.ts # ETag 条件请求 + 离线缓存
-│       ├── buildFlowPool.ts        # FlowViz 动画令牌池
+│       ├── buildFlowPool.ts        # FlowViz 静态快照抽样池
 │       ├── logger.ts              # 生产日志收敛（T-P0-03）
 │       ├── lineCount.ts           # 非分配换行计数（T-P1-08）
 │       ├── scrollLock.ts          # 共享滚动锁（引用计数，T-P1-17）
@@ -257,7 +258,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.17.0 |
+| 版本号 | 3.17.1 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

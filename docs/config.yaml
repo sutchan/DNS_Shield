@@ -13,9 +13,11 @@ context: |
   We maintain whitelist.txt for whitelist rules
   We use Next.js App Router with page.tsx, layout.tsx, and Home.tsx components
   We have 16 internationalization languages (default Simplified Chinese, then Traditional Chinese, then English)
+  Language priority zh-cn > zh-tw > en; <html lang> and SEO inLanguage stay in sync
   We use shadcn/ui components (Radix UI based) with Tailwind CSS
   We use sonner for toast notifications
   Dev server runs on port 3000 (pnpm dev)
+  Large inputs (>=20000 lines) use multi-core Web Worker shard parsing with graceful fallback
 
 # Per-artifact rules
 rules:
@@ -76,4 +78,4 @@ components:
       file: "src/components/ui/Toast.tsx"
       parts: ["Toast", "toast"]
 
-version: "3.17.0"
+version: "3.17.1"

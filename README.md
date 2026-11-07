@@ -4,7 +4,7 @@
 
 # DNS Shield - 路由器广告过滤工具
 
-[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.17.0-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.17.1-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告和保护隐私。既支持从统一域名数据源**生成**多种格式规则，也支持将已有清单在**不同格式间互相转换**。
 
@@ -27,6 +27,8 @@
 - **深色/浅色模式** - 一键切换主题配色
 - **安全加固** - CSP 安全头部、HSTS、Service Worker 安全缓存策略、文件名安全验证
 - **单元测试** - 基于 Vitest 覆盖核心纯函数（解析/校验/规则生成/国际化）
+- **多核并行解析** - 超大输入（≥20000 行）自动分片到多个 Web Worker 并行求值，失败逐级回退单 Worker → 主线程同步
+- **语言优先级** - 默认简体中文 → 繁体中文 → 英语；与 `<html lang>` / SEO `inLanguage` 保持一致
 
 ## 快速开始
 
@@ -108,7 +110,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmas
 
 ## 项目结构
 
-> 以下为节选（仅列主要模块），完整文件清单见 [docs/SPEC.md](docs/SPEC.md) §2。实测：`src/hooks` 20 个、`src/utils` 24 个、`src/components` 顶层 15 个 `.tsx`、`src/components/ui` 12 个。
+> 以下为节选（仅列主要模块），完整文件清单见 [docs/SPEC.md](docs/SPEC.md) §2。实测：`src/hooks` 21 个、`src/utils` 24 个、`src/components` 顶层 16 个 `.tsx`、`src/components/ui` 12 个（均不含 `*.test.*`）。
 
 ```
 src/
@@ -120,6 +122,7 @@ src/
 │   ├── InputPanel.tsx # 输入面板
 │   ├── InputEditor.tsx # 域名编辑器子组件（行号 + 自动保存）
 │   ├── OutputPanel.tsx # 输出面板（格式切换 + 空状态）
+│   ├── OutputPanel.formatSelect.tsx # 单一「格式」下拉（v3.15.5）
 │   ├── SettingsPanel.tsx # 设置面板子组件
 │   └── UrlSection.tsx # URL 导入区域子组件
 ├── context/          # 应用上下文
@@ -131,14 +134,17 @@ src/
 │   ├── useRules.ts   # 规则生成（实时解析同步）
 │   ├── useUrlManager.ts # URL 管理
 │   ├── useSettings.ts # 设置管理
+│   ├── useWorkerPool.ts # 分片并行解析 Worker 池（v3.16.0）
 │   └── useLoading.ts # 加载状态管理
+├── workers/          # Web Worker（ruleProcessor 串行 + parseShard 分片并行）
 ├── lib/              # 工具库（cn 类名合并等）
-├── locales/          # 16 种语言翻译文件（215 键 100% 覆盖，check-locales 校验）
+├── locales/          # 16 种语言翻译文件（zh-cn 140 顶层键 / 209 递归键，check-locales 校验）
 ├── styles/           # 设计系统样式（7 模块，由 globals.css 按职责拆分）
 ├── test-utils/       # 测试辅助（renderHook + jsdom 环境桩 setup.ts）
 ├── types/            # TypeScript 类型定义
 ├── utils/            # 工具函数（含 *.test.ts 单元测试）
-│   ├── parser.ts     # 域名解析与排序去重（行级解析、提取域名）
+│   ├── parser.ts     # 域名解析（collectLines 逐行收集 + finalizeParsed 全局后处理，v3.16.0 起支持分片并行）
+│   ├── parseAggregate.ts # 并行度决策 / 分片聚合（v3.16.0）
 │   ├── sortDedupe.ts # 域名排序与去重（纯函数，含测试）
 │   ├── domainValidator.ts # 域名验证与行解析
 │   ├── rulesGenerator.ts  # 规则生成器（Dnsmasq/Hosts/AdGuard/白名单/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS/Mosdns/Clash Meta/CoreDNS）
@@ -182,6 +188,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
         │  useDomainData（远端拉取 + 超时/兜底）
         ▼
   域名解析（utils/parser.ts + domainValidator.ts）
+        │  ≥20000 行走 useWorkerPool 多核分片并行（回退单 Worker → 主线程）
         │  提取域名 / 白名单(+) / 自定义 DNS(@) / 注释(#)
         ▼
   排序去重（utils/sortDedupe.ts）
@@ -207,7 +214,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
 | 配置项 | 位置 | 说明 |
 |--------|------|------|
 | 预设数据源 | `src/config/index.ts` | AdGuard、EasyList、NeoHosts 等内置预设源 URL |
-| 输出格式 | UI 切换（Tabs） | Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS |
+| 输出格式 | UI 切换（单一「格式」下拉，v3.15.5） | Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS |
 | 自定义 DNS 指向 | 输入语法 `@domain=ip` | 自定义域名解析目标 IP |
 | 白名单 | 输入语法 `+domain` | 放行指定域名 |
 | 自动保存间隔 | `useDomainData` 内部 | 默认 30 秒 |
@@ -279,7 +286,7 @@ MIT License
 
 ## 版本
 
-当前版本：v3.17.0
+当前版本：v3.17.1
 
 ## 更新日志
 

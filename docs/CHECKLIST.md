@@ -1,6 +1,6 @@
 # 质量检查清单
 
-> 最后审查：2026-11-06（与 package.json v3.17.0 对齐；全量文档核查：ui 组件文件名改实际 PascalCase、任务文档检查项按 tasks.md / tasks-done.md 分工补齐）
+> 最后审查：2026-11-07（与 package.json v3.17.1 对齐；第十五轮全量文档核查：实时指标实算修正、结构树与 FlowViz 描述、DEPLOYMENT 陈旧版本叙述、SUPPORT 白名单指引自相矛盾、社区文档提交类型与版本清单；冻结快照按声明保留）
 
 ## UI/UX 设计规范
 

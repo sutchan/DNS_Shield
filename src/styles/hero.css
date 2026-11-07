@@ -1,8 +1,9 @@
-/* src/styles/hero.css v3.16.1 — Hero 区、预览统计、动效降级（原 globals.css 相应段） */
+/* src/styles/hero.css v3.17.1 — Hero 区、预览统计、动效降级（原 globals.css 相应段） */
 
 /* ============================================
    Hero（v3.15.2 移除右侧 black/white 面板；v3.15.6 单栏视觉增强；
-   v3.16.1 lg+ 改「左文案 + 右快速入门」双栏，消除大屏右侧留白）
+   v3.16.1 lg+ 改「左文案 + 右快速入门」双栏，消除大屏右侧留白；
+   v3.17.0 双栏竖向分隔线改由伪元素绘制并定位在两栏间隙中点，视觉居中）
    ============================================ */
 .hero {
   @apply mb-6 rounded-2xl border border-border bg-card overflow-hidden;
@@ -39,7 +40,7 @@
 }
 
 /* 快速入门：窄屏与正文以细分隔线区分，三步卡片通栏铺开；
-   大屏（lg+）移入右栏竖排，改为左侧细分隔线与文案区隔（v3.15.7） */
+   大屏（lg+）移入右栏竖排，竖向分隔线改由伪元素绘制（v3.17.0） */
 .quickstart {
   @apply mt-1 pt-5 border-t border-border/70;
 }
@@ -55,7 +56,17 @@
 
 @media (min-width: 1024px) {
   .quickstart {
-    @apply mt-0 border-t-0 pt-0 border-l border-border/70 pl-10;
+    @apply relative mt-0 border-t-0 pt-0 pl-10;
+  }
+
+  /* 竖向分隔线：原 border-l 贴住右栏内容左缘、偏居间隙一侧；
+     改为绝对定位在 lg:gap-10（2.5rem）的中点（右栏左缘外 1.25rem），
+     使线条在 hero-inner 两栏之间居中，高度与右栏内容齐平 */
+  .quickstart::before {
+    content: "";
+    @apply absolute top-0 bottom-0 w-px;
+    left: -1.25rem;
+    background: hsl(var(--border) / 0.7);
   }
 
   .quickstart .usage-steps {
@@ -71,7 +82,8 @@
    Output Preview Stats (对齐原型 previewStats)
    ============================================ */
 .preview-stats {
-  @apply flex flex-wrap items-center gap-x-3 gap-y-2 mb-4 pt-3 text-[0.75rem] text-muted-foreground;
+  /* v3.17.1：取消胶囊后改由间距分隔（与输入区 .stats-compact 的 gap-x-5 统一） */
+  @apply flex flex-wrap items-center gap-x-5 gap-y-2 mb-4 pt-3 text-[0.75rem] text-muted-foreground;
   border-top: 1px solid hsl(var(--border));
 }
 
@@ -104,9 +116,10 @@
   @apply bg-primary/15 text-primary;
 }
 
+/* v3.17.1：取消胶囊形轮廓（圆角 / 内边距 / 灰底），改纯文本；
+   与输入区统计条「色点 + 纯文本」的轻量视觉保持一致 */
 .preview-stat {
-  @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1;
-  background: hsl(var(--muted));
+  @apply inline-flex items-center gap-1.5;
 }
 
 .preview-stat-value {

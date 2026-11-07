@@ -2,7 +2,7 @@
 
 ![DNS Shield](public/logo.svg)
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.17.0-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.17.1-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Router-level DNS-based ad blocking filter list with web management tool. It both **generates** rule lists from a unified domain source and **converts** existing lists between different formats.
 
@@ -17,9 +17,10 @@ This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 - **Single source workflow** - One domain list generates all output formats
 - **Router compatible** - Works with Merlin, OpenWrt, Xiaomi, ASUS, TP-Link, and more
 - **Whitelist management** - Independent whitelist editing interface with import/export support
-- **Multi-language support** - Supports 16 languages, can be switched on the interface
+- **Multi-language support** - 16 languages with priority zh-cn (default) > zh-tw > en, kept in sync with `<html lang>` and SEO `inLanguage`
 - **Next.js framework** - Modern Next.js 14 App Router with modular architecture
 - **Security hardening** - CSP headers, HSTS, Service Worker secure caching, filename sanitization
+- **Multi-core parsing** - Inputs of 20000+ lines are sharded across Web Workers with graceful fallback to a single worker / main thread
 
 ## Usage
 
@@ -152,7 +153,8 @@ The project is now based on Next.js. You can:
 - Auto save to localStorage every 30s and restore on reload
 - Auto deduplicate and sort domains
 - Independent whitelist editing interface with import/export support
-- Multi-language support, can switch between 16 languages on the interface
+- Multi-language support, 16 languages (default Simplified Chinese > Traditional Chinese > English)
+- Multi-core sharded parsing for very large inputs (>=20000 lines)
 - Download or copy generated files to clipboard
 
 ## Single Source Workflow

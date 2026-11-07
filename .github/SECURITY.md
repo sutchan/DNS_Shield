@@ -56,7 +56,7 @@ pnpm update
 - **CORS 配置**：正确配置跨域资源共享
 - **Content Security Policy**：配置内容安全策略
 - **X-Frame-Options**：防止点击劫持
-- **X-XSS-Protection**：启用浏览器 XSS 保护
+- **安全响应头**：HSTS / COOP / CORP / Referrer-Policy / Permissions-Policy / X-Content-Type-Options（见 `next.config.js`；`X-XSS-Protection` 已被现代浏览器废弃，不再依赖）
 
 ### 3. 应用安全
 

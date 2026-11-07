@@ -7,6 +7,26 @@
 
 ## [Unreleased]
 
+## [3.17.1] - 2026-11-07
+
+### Changed（取消预览统计条胶囊轮廓）
+- 输出面板预览统计条（「当前格式 / 规则行数 / 域名总数 / 可见格式数」4 项）取消胶囊形轮廓：`.preview-stat` 移除 `rounded-full` / `px-2.5 py-1` / `bg-muted` 灰底，改为纯文本；`.preview-stats` 水平间距 `gap-x-3` → `gap-x-5` 以间距替代胶囊分隔，与输入区统计条 v3.17.0 的「色点 + 纯文本」轻量视觉统一（`hero.css`）
+- 结构不动：`OutputPanel.parts.tsx` 的 `PreviewStats` 组件、4 个 `<span className="preview-stat">`、`preview-stat-value` 与所有 DOM id 均保持不变，仅样式层调整
+- 顺带落入上一轮未提交的 Hero 样式优化：大屏双栏竖向分隔线改由伪元素绘制并定位在两栏间隙中点（视觉居中）
+- `prototype/prototype.html` 的 `.ps` 胶囊样式为冻结原型快照，按既有规范不改
+- 版本按 patch 规则升至 v3.17.1：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 文档展示位 / `public/` 11 个规则产物头部
+
+### Changed（第十五轮全量文档核查与漂移修正）
+- 以代码实况为权威源实算并统一全部活跃文档：16 语 / 顶层 140 键 / 递归 209 键、47 个测试文件 / 288 处 `it()`、顶层 16 个 `.tsx`、`ui/` 12 个、`src` 无 >200 行源文件、`public/domains.txt` 非空 897 行（20 注释 + 877 条规则 = 黑名单 645 + 白名单 232）
+- `README.md`：项目结构树补 `workers/` / `useWorkerPool` / `parseAggregate` / `OutputPanel.formatSelect`，`parser.ts` 更新为 collectLines + finalizeParsed 两段式；输出格式控件由 Tabs 修正为单一「格式」下拉；补多核并行解析与语言优先级特性
+- `README.en.md`：同步语言优先级与多核并行解析能力
+- `DEPLOYMENT.md`：删除陈旧硬编码版本号与示例死版本号，改为指向 `package.json` 单一来源
+- `docs/SPEC.md` / `docs/tasks.md` / `docs/CHECKLIST.md` / `docs/config.yaml`：结构树组件、FlowViz 静态快照描述、实时指标实算修正、审查时间与上下文同步
+- `.github/SUPPORT.md`：修复「误屏蔽时直接编辑 whitelist.txt」与「whitelist.txt 是生成产物请勿编辑」自相矛盾
+- `.github/CONTRIBUTING.md` / `PULL_REQUEST_TEMPLATE.md` / `SECURITY.md`：补齐提交类型、分支命名、版本发布清单、版本单一来源、废弃响应头修正
+- 冻结快照（CHANGELOG 历史段 / `prototype/` / `public/brand-colors.md` / `STRUCTURE-REVIEW.md` / `tasks-done.md` 历史实测值）按各自声明不回填
+- 静态校验：`sync-facts.mjs --check` 13 处一致、`check-locales.mjs` 16 语 / 209 键一致；本机无 `node_modules`，`tsc` / `lint` / `vitest` 待 CI 复核
+
 ## [3.17.0] - 2026-11-07
 
 ### Changed（国际化补全与语言优先级规范）
@@ -1593,7 +1613,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.17.0...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.17.1...HEAD
+[3.17.1]: https://github.com/sutchan/DNS_Shield/compare/v3.17.0...v3.17.1
 [3.17.0]: https://github.com/sutchan/DNS_Shield/compare/v3.16.1...v3.17.0
 [3.16.1]: https://github.com/sutchan/DNS_Shield/compare/v3.16.0...v3.16.1
 [3.16.0]: https://github.com/sutchan/DNS_Shield/compare/v3.15.6...v3.16.0

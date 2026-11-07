@@ -54,6 +54,6 @@
 ## 检查清单
 
 - [ ] 提交信息遵循 `type: 描述` 规范
-- [ ] 已同步更新版本号（单一来源：package.json / next.config.js / 头注释）
+- [ ] 已同步更新版本号（package.json / src/config/version.ts / next.config.js / docs/config.yaml / 13 处文档展示位 / public/ 产物头部 / 被改动文件头注释）
 - [ ] 已更新 CHANGELOG.md
 - [ ] 无密钥、Token 等敏感信息泄露

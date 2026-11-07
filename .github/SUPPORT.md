@@ -59,8 +59,8 @@
 
 ### 误屏蔽正常网站
 
-1. 将被误屏蔽的域名添加到 `whitelist.txt`
-2. 重新生成过滤列表
+1. 在 `public/domains.txt` 中以 `+域名` 形式添加白名单（`public/whitelist.txt` 是生成产物，请勿直接编辑）
+2. 运行 `node scripts/gen-format-files.mjs` 重新生成过滤列表
 3. 部署更新后的文件
 
 ### 性能问题

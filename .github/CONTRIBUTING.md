@@ -52,6 +52,9 @@ git checkout -b feature/your-feature-name
 - 功能分支：`feature/功能名称`
 - 修复分支：`fix/问题描述`
 - 文档分支：`docs/文档名称`
+- 紧急修复分支：`hotfix/问题描述`
+- 非紧急缺陷分支：`bugfix/问题描述`
+- 发布准备分支：`release/版本号`
 
 #### 2.4  进行修改
 
@@ -89,6 +92,11 @@ git commit -m "docs: 更新文档描述"    # 文档更新
 - `docs: 描述` - 文档更新
 - `chore: 描述` - 其他更改
 - `refactor: 描述` - 代码重构
+- `style: 描述` - 代码风格调整
+- `test: 描述` - 测试相关
+- `perf: 描述` - 性能优化
+- `ci: 描述` - CI/CD 配置变更
+- `revert: 描述` - 回滚提交
 
 #### 2.7  推送分支
 
@@ -148,10 +156,12 @@ pnpm start
 
 ### 2. 版本发布
 
-- 遵循 SemVer 版本号规范
-- 更新 CHANGELOG.md
-- 更新输出文件版本号
-- 更新 README 版本号
+- 遵循 SemVer 版本号规范（patch / minor / major 按变更级别）
+- 更新 `package.json` version（权威源）与 `src/config/version.ts` APP_VERSION、`next.config.js` env.version、`docs/config.yaml`
+- 运行 `node scripts/sync-facts.mjs` 同步 13 处文档展示位，`--check` 校验
+- 运行 `node scripts/gen-format-files.mjs` 重建 `public/` 11 个产物头部版本
+- 仅更新被改动文件的头注释版本号（禁止全仓库批量刷写）
+- 新增 `CHANGELOG.md` 对应版本小节并记录版本变更说明
 - 创建 GitHub Release
 
 ## 行为准则
