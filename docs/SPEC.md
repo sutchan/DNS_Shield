@@ -64,7 +64,7 @@ dns-shield/
 │   ├── brand-colors.md             # 品牌色板（冻结快照）
 │   ├── adguard.txt / dnsmasq.conf / hosts.txt / unbound.conf / pihole.txt
 │   ├── whitelist.txt / rpz.db / smartdns.conf
-│   └── mosdns_domain_set.txt / clash_dns.yaml / coredns_hosts.txt  # 12 种规则产物
+│   └── mosdns_domain_set.txt / clash_dns.yaml / coredns_hosts.txt  # 11 种格式产物（domains 即数据源本身）
 ├── src/                            # Next.js 源代码
 │   ├── app/                        # App Router 目录
 │   │   ├── page.tsx                # 主页面入口

@@ -58,7 +58,7 @@ runs:
       if: inputs.install == 'true'
       shell: bash
       run: |
-        if [ "${{ inputs.frozen }}" = "true"; then
+        if [ "${{ inputs.frozen }}" = "true" ]; then
           pnpm install --frozen-lockfile
         else
           pnpm install --no-frozen-lockfile

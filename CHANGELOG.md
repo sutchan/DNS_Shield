@@ -18,6 +18,10 @@
 - `src/types/formats.ts` 注释：Tab → 「格式」下拉修正（v3.15.5 起）
 - 版本按 patch 规则升至 v3.17.3：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 13 处文档展示位 / `public/` 11 个规则产物头部
 
+### Fix（CI：增量复核定位自动发布链路从未发版的根因）
+- `.github/actions/setup/action.yml`：修复 `Install dependencies` 步骤 bash 语法错误（`if [ ... = "true";` 缺失右方括号 `]`）——该错误导致需装依赖的全部 job（ESLint / TypeScript / Vitest / Build）在 setup 步骤必然失败，CI Gate 长期红，Deploy 与 Release 均被 skip，自动发布链路从未成功打 tag（远程 tag 停在 v3.7.31）
+- SPEC §2：`public/` 结构树产物计数「12 种规则产物」→「11 种格式产物」（口径统一）
+
 ## [3.17.2] - 2026-11-07
 
 ### Changed（移除输出工具栏设置按钮）
