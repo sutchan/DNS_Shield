@@ -22,6 +22,7 @@
 - `.github/actions/setup/action.yml`：修复 `Install dependencies` 步骤 bash 语法错误（`if [ ... = "true";` 缺失右方括号 `]`）——该错误导致需装依赖的全部 job（ESLint / TypeScript / Vitest / Build）在 setup 步骤必然失败，CI Gate 长期红，Deploy 与 Release 均被 skip，自动发布链路从未成功打 tag（远程 tag 停在 v3.7.31）
 - SPEC §2：`public/` 结构树产物计数「12 种规则产物」→「11 种格式产物」（口径统一）
 - `ci.yml` 漂移检测：剔除「更新::」日期行的正则字符类补 `;` 前缀——Bind RPZ 等格式注释用 `;`，跨天运行时该行 diff 未被剔除导致 `Data Integrity` 硬门禁误报（本地复现：剔除后仅剩 `; 更新::` 两行差异）
+- `.github/actions/setup`：弃用 `actions/setup-node` 内置 `cache: 'pnpm'`，改为显式 `actions/cache` 缓存 `pnpm store path`——setup-node@v4 的 pnpm 缓存实现面向 pnpm ≤10，与 pnpm 11 的 store 路径变更不兼容，曾导致启用缓存的 4 个 job（ESLint / TypeScript / Vitest / Build）在 setup 必败（排除法：data job 无缓存而幸免；lockfile 与 package.json 同步性、上游版本存在性、本地等价全新安装均已逐一验证排除）
 
 ## [3.17.2] - 2026-11-07
 

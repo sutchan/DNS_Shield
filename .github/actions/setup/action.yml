@@ -3,16 +3,20 @@
 # 复合动作（composite action）：统一 CI / Deploy / Release 四个工作流的运行时准备。
 #
 # 关键点（踩坑记录，勿随意改动顺序）：
-#   1. pnpm/action-setup 必须在 actions/setup-node 之前执行：
-#      setup-node 的 cache: 'pnpm' 需要 pnpm 已存在于 PATH 才能解析 store 路径。
+#   1. pnpm/action-setup 必须在需要 pnpm 的步骤之前执行。
 #   2. pnpm 版本不在此硬编码 —— 读取 package.json 的 packageManager 字段
 #      （pnpm@11.24.0）。若在此写死 version，会触发 ERR_PNPM_BAD_PM_VERSION。
 #   3. Node 版本对齐 package.json 的 engines.node（>=24.11.0），且 .npmrc 开启了
 #      engine-strict=true，版本不匹配会直接 install 失败。
-#   4. 本项目使用 pnpm-lock.yaml（非 npm/yarn），cache 只能是 'pnpm'，
-#      设为 'npm' 会因找不到 package-lock.json 而报错。
+#   4. 本项目使用 pnpm-lock.yaml（非 npm/yarn）。
 #   5. pnpm-lock.yaml 必须入库：CI 一律 --frozen-lockfile。若锁文件缺失，
 #      本步骤会在 install 前显式报错，而不是让 pnpm 静默解析出与仓库不一致的依赖树。
+#   6. 依赖缓存不使用 setup-node 内置的 cache: 'pnpm'：
+#      setup-node@v4 的 pnpm 缓存实现面向 pnpm ≤10 的 `pnpm store path` 输出，
+#      与 pnpm 11（store/全局虚拟存储路径大改，见 pnpm 11 release notes）不兼容，
+#      曾导致启用缓存的所有 job 在 setup 步骤必败（data job 因 install=false
+#      跳过缓存而幸免）。改为显式 actions/cache 缓存 `pnpm store path`，与
+#      pnpm 大版本解耦。
 # ---------------------------------------------------------------------------
 name: 'Setup DNS Shield'
 description: '安装 pnpm + Node.js，恢复依赖缓存并按锁定文件安装依赖'
@@ -41,9 +45,21 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.node-version }}
-        cache: ${{ inputs.install == 'true' && 'pnpm' || '' }}
-        # 显式指定锁文件，避免 setup-node 在缺失时报错或算出错误的缓存键
-        cache-dependency-path: pnpm-lock.yaml
+
+    - name: Resolve pnpm store directory
+      if: inputs.install == 'true'
+      id: pnpm-store
+      shell: bash
+      run: echo "dir=$(pnpm store path)" >> "$GITHUB_OUTPUT"
+
+    - name: Cache pnpm store
+      if: inputs.install == 'true'
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.pnpm-store.outputs.dir }}
+        key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+        restore-keys: |
+          pnpm-store-${{ runner.os }}-
 
     - name: Assert lockfile is tracked
       if: inputs.install == 'true' && inputs.frozen == 'true'
