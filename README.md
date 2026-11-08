@@ -14,7 +14,7 @@
 - **支付保护** - 屏蔽扫码支付跳转链接（微信、支付宝）
 - **隐私防护** - 阻止追踪器和数据采集
 - **多设备生效** - 路由器设置一次，所有连接设备自动生效
-- **多种格式支持** - Dnsmasq、Hosts、AdGuard、Unbound、Pi-hole、Bind RPZ、SmartDNS、白名单、Mosdns、Clash Meta、CoreDNS 等格式
+- **多种格式支持** - Dnsmasq、Hosts、AdGuard、Unbound、Pi-hole、Bind RPZ、SmartDNS、白名单、纯域名、Mosdns、Clash Meta、CoreDNS 共 12 种格式
 - **格式互转** - 粘贴任意格式（hosts / dnsmasq / AdGuard / 纯域名）清单，自动解析并转换为目标格式
 - **白名单管理** - 自定义白名单，避免误拦截关键服务
 - **自定义 DNS 指向** - 支持 @domain=ip 语法，自定义域名解析

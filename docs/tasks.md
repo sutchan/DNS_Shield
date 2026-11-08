@@ -2,10 +2,12 @@
 
 > **本文件是项目「未完成任务」与「实时指标」的唯一来源（Single Source of Truth）**。
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
-> 规则固化见 [SPEC.md §5.4 任务记录规范](./SPEC.md)。
+> 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
 
 > 最后审查：2026-11-07（与 package.json v3.17.3 对齐；待办区保持清零；2026-11-07 第十六轮全量文档核查：README/SPEC 幽灵文件修正、DEPLOYMENT 同步自动发布实况与漂移硬门禁、社区文档口径统一、代码注释 Tab→下拉修正，冻结快照按声明保留）
 > 维护团队：Sut / ArcesTeam
+>
+> **本次更新（2026-11-07 第十七轮：全量文档核查与漂移修正）**：以代码实况复核全部活跃文档（版本 3.17.3 / 12 种输出格式 / 16 语 140 顶层键 / 47 个测试文件 288 处 `it()` 均与实测一致）。修正项：本文件交叉引用 §5.4→§5.3（SPEC 任务记录规范实为 §5.3）；`prototype/README.md` 4 处 `public/brand/` 幽灵路径改为实际 `public/brand-colors.md`，并删除「与 `src/config/version.ts` 一致」的误导声明改为冻结快照表述；README 功能清单补「纯域名」使中英文 12 种格式口径一致；DEPLOYMENT `next.config.js` 示例补 `output: 'standalone'` 与实文一致。CHANGELOG 复核 `6fcd7da..HEAD` 仅 `dd7eefc`（CI setup 复合动作语法修复）且已入账 `[3.17.3]`。冻结快照（CHANGELOG 历史段 / prototype 设计章节 / public/brand-colors.md / STRUCTURE-REVIEW.md / tasks-done.md）按各自声明未改。
 >
 > **本次更新（2026-11-07 第十六轮：全量文档核查与漂移修正）**：以代码实况为权威源复核全部活跃文档。修正项：README 删除 `src/app/i18n.ts` 幽灵条目（实际位于 `src/utils/i18n.ts`）、结构树补 `src/config/`；SPEC 删除 `uiUtils.ts` / `buildFlowPool.ts` 幽灵条目（`src/utils` 实测无此二文件，系第十五轮误入）、§12.1 CSP 改为如实描述 `next.config.js` 与 `vercel.json` 双源差异；DEPLOYMENT 工作流总览 / 标准发布流程 / 漂移门禁全面同步自动发布实况（`push → CI → Deploy → Release` 自动打 tag；漂移检测为硬门禁）、删除无代码消费的 `PORT` / `NEXT_PUBLIC_APP_NAME` 环境变量行；SUPPORT 与 ci.yml 注释产物计数口径修正（11 个格式产物文件，`domains` 格式即数据源本身）；ISSUE 模板移除不存在的容器化部署；`src/types/formats.ts` 注释 Tab→下拉修正。**遗留疑问**：仓库地址 `sutchan`（README.en 链接）vs `ArcesTeam`（SPEC/SUPPORT/SECURITY）待拍板；`vercel.json` CSP 含 `require-trusted-types-for` 而 `next.config.js` 不含，统一方案待定。冻结快照（CHANGELOG 历史段 / prototype / public/brand-colors.md / STRUCTURE-REVIEW.md / tasks-done.md 历史实测值）按各自声明未改。
 >

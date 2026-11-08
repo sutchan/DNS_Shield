@@ -265,6 +265,7 @@ git add public && git commit -m "chore: 同步生成规则文件"
 ```javascript
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   reactStrictMode: true,
   trailingSlash: true,
   images: { unoptimized: true },

@@ -64,7 +64,7 @@ prototype/
 
 ## 品牌形象（Brand Assets）
 
-品牌资产统一存放于 `public/`（应用运行时直接读取），线上品牌说明位于 `public/brand/`：
+品牌资产统一存放于 `public/`（应用运行时直接读取），线上品牌说明位于 `public/brand-colors.md`：
 
 | 资源 | 应用路径（`public/`） | 用途 |
 |------|------|------|
@@ -72,18 +72,18 @@ prototype/
 | 网站图标 | `public/favicon.svg` | 盾牌 + 防护对勾，浅底主蓝，浏览器标签（`<link rel="icon" type="image/svg+xml">`） |
 | 反白标志 | `public/logo-mono.svg` | 深色背景 / 单色印刷 |
 | PWA 图标集 | `public/assets/icons/icon-{72,96,128,144,152,192,384,512}.png` | 安装到主屏、manifest 引用 |
-| 调色板规范 | `public/brand/brand-colors.md` | 主色 / 色阶 / 中性 / 语义色 |
+| 调色板规范 | `public/brand-colors.md` | 主色 / 色阶 / 中性 / 语义色 |
 
 **品牌色（与 `shadcn/design-system.md` 的 `--primary` 严格一致）**
 - 主蓝（Light）：`hsl(217 89% 47%)` ≈ `#0D5FE2`
 - 主蓝（Dark）：`hsl(217 85% 55%)` ≈ `#2674F2`
-- 语义：保护 / 防护 / 可信。`manifest` 与 `viewport.themeColor` 已统一使用上述值（旧 `#007AFF` 已弃用）。完整色阶见 `public/brand/brand-colors.md`。
+- 语义：保护 / 防护 / 可信。`manifest` 与 `viewport.themeColor` 已统一使用上述值（旧 `#007AFF` 已弃用）。完整色阶见 `public/brand-colors.md`。
 
 **使用规则**
 - 优先使用矢量 `public/logo.svg` / `public/favicon.svg`（任意缩放清晰）；PNG 仅用于需要位图的场景（PWA / 旧客户端）。
 - 图标主色始终取品牌主蓝，禁止随意改色；深色背景用 `public/logo-mono.svg`。
 - 应用内导航栏 Logo 复用 `lucide-react` 的 `Shield` 图标（`text-primary`），与 `favicon.svg` 视觉一致。
-- 修改标志时直接更新 `public/` 下对应资产，并保持 `public/brand/` 文档同步。
+- 修改标志时直接更新 `public/` 下对应资产，并保持 `public/brand-colors.md` 文档同步。
 
 ## 与真实引擎的同步状态（v3.9.3）
 
@@ -102,4 +102,4 @@ prototype/
 
 ## 版本
 
-当前原型版本 **v3.9.3**，与 `src/config/version.ts`、`docs/SPEC.md`、`docs/config.yaml` 一致。
+原型快照版本 **v3.9.3**（冻结于 v3.12.0 结构审查，此后不再随实现回填）；当前实现版本以 `package.json` / `src/config/version.ts` 为准，勿以本节版本号核对主工程。
