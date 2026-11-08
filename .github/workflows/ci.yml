@@ -186,11 +186,12 @@ jobs:
         id: drift
         run: |
           node scripts/gen-format-files.mjs
-          # 过滤掉仅日期行产生的差异（+/- 两种前缀），剩余即真实内容漂移
+          # 过滤掉仅日期行产生的差异（+/- 两种前缀），剩余即真实内容漂移。
+          # 注释前缀因格式而异：#（hosts/dnsmasq 等）、!（AdGuard）、;（Bind RPZ）——三者都要剔除
           DRIFT_LINES=$(git diff -- public \
             | grep -E '^[+-]' \
             | grep -vE '^(\+\+\+|---)' \
-            | grep -vE '^[+-][[:space:]!#]*更新::' || true)
+            | grep -vE '^[+-][[:space:]!#;]*更新::' || true)
           if [ -z "$(echo "$DRIFT_LINES" | tr -d '[:space:]')" ]; then
             echo "drift=false" >> "$GITHUB_OUTPUT"
             echo "生成的规则文件与 public/domains.txt 一致（已忽略头部日期行）"

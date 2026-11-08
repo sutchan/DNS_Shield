@@ -21,6 +21,7 @@
 ### Fix（CI：增量复核定位自动发布链路从未发版的根因）
 - `.github/actions/setup/action.yml`：修复 `Install dependencies` 步骤 bash 语法错误（`if [ ... = "true";` 缺失右方括号 `]`）——该错误导致需装依赖的全部 job（ESLint / TypeScript / Vitest / Build）在 setup 步骤必然失败，CI Gate 长期红，Deploy 与 Release 均被 skip，自动发布链路从未成功打 tag（远程 tag 停在 v3.7.31）
 - SPEC §2：`public/` 结构树产物计数「12 种规则产物」→「11 种格式产物」（口径统一）
+- `ci.yml` 漂移检测：剔除「更新::」日期行的正则字符类补 `;` 前缀——Bind RPZ 等格式注释用 `;`，跨天运行时该行 diff 未被剔除导致 `Data Integrity` 硬门禁误报（本地复现：剔除后仅剩 `; 更新::` 两行差异）
 
 ## [3.17.2] - 2026-11-07
 
