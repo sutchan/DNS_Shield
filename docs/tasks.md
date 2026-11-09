@@ -4,7 +4,7 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-07（与 package.json v3.17.3 对齐；待办区保持清零；2026-11-07 第十六轮全量文档核查：README/SPEC 幽灵文件修正、DEPLOYMENT 同步自动发布实况与漂移硬门禁、社区文档口径统一、代码注释 Tab→下拉修正，冻结快照按声明保留）
+> 最后审查：2026-11-07（与 package.json v3.17.4 对齐；待办区保持清零；2026-11-07 第十六轮全量文档核查：README/SPEC 幽灵文件修正、DEPLOYMENT 同步自动发布实况与漂移硬门禁、社区文档口径统一、代码注释 Tab→下拉修正，冻结快照按声明保留）
 > 维护团队：Sut / ArcesTeam
 >
 > **本次更新（2026-11-07 第十七轮：全量文档核查与漂移修正）**：以代码实况复核全部活跃文档（版本 3.17.3 / 12 种输出格式 / 16 语 140 顶层键 / 47 个测试文件 288 处 `it()` 均与实测一致）。修正项：本文件交叉引用 §5.4→§5.3（SPEC 任务记录规范实为 §5.3）；`prototype/README.md` 4 处 `public/brand/` 幽灵路径改为实际 `public/brand-colors.md`，并删除「与 `src/config/version.ts` 一致」的误导声明改为冻结快照表述；README 功能清单补「纯域名」使中英文 12 种格式口径一致；DEPLOYMENT `next.config.js` 示例补 `output: 'standalone'` 与实文一致。CHANGELOG 复核 `6fcd7da..HEAD` 仅 `dd7eefc`（CI setup 复合动作语法修复）且已入账 `[3.17.3]`。冻结快照（CHANGELOG 历史段 / prototype 设计章节 / public/brand-colors.md / STRUCTURE-REVIEW.md / tasks-done.md）按各自声明未改。
@@ -30,7 +30,7 @@
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.17.3 | `package.json` version（权威源） |
+| 应用版本 | v3.17.4 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 **140** 键、递归合计 **209** 键 | 脚本统计 `src/locales/zh-cn.json`（flatten 叶子口径，与 `check:locales` 输出及 `scripts/locale-baseline.json` keyCount 一致；v3.15.5 移除 `moreFormats` 死键，2026-11-07 实算） |
 | 测试套件 / 用例 | **47 套件 / 288 用例**（2026-11-07 脚本实算：47 个 `*.test.ts(x)` 文件、288 处 `it()` / `test()` 调用、无 `it.each`） | `vitest run` 为权威计数；本机无 `node_modules`，本轮静态计数供参考，待 CI / 本机实跑复核 |

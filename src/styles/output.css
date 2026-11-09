@@ -42,6 +42,11 @@
   @apply flex-shrink-0;
 }
 
+/* v3.17.4：格式下拉与面板标题之间留出呼吸位（此前紧贴标题，读起来像同一串文字） */
+.output-format-slot {
+  padding-left: 0.75rem;
+}
+
 /* 窄屏（≤768px）：标题 / 格式区 / 图标按钮分三行垂直排列，
    彻底消除横向挤压、文字截断与按钮重叠。 */
 @media (max-width: 768px) {
@@ -59,6 +64,7 @@
   .output-format-slot {
     flex: 1 1 100%;
     min-width: 0;
+    padding-left: 0;
   }
 
   .output-tool-actions {
@@ -66,8 +72,11 @@
   }
 }
 
+/* v3.17.4：合并统计与预览统计两条信息带：分隔线上移到信息组顶部，
+   组内两行紧邻（内容语义有重叠，视觉上并作一组），避免两条灰字带割裂面板。 */
 .output-stats {
-  @apply text-[0.75rem] text-muted-foreground mb-4 px-0.5;
+  @apply text-[0.75rem] text-muted-foreground mb-1 px-0.5 pt-3;
+  border-top: 1px solid hsl(var(--border));
 }
 
 /* ============================================

@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-07（与 package.json v3.17.3 对齐；§2 结构树删除第十五轮误入的 uiUtils.ts / buildFlowPool.ts 幽灵条目；2026-11-07 第十六轮全量文档核查：§12.1 CSP 双源差异如实描述、脚本产物计数口径统一为 11 个格式产物文件；冻结快照按声明保留）
+> 最后审查：2026-11-07（与 package.json v3.17.4 对齐；§2 结构树删除第十五轮误入的 uiUtils.ts / buildFlowPool.ts 幽灵条目；2026-11-07 第十六轮全量文档核查：§12.1 CSP 双源差异如实描述、脚本产物计数口径统一为 11 个格式产物文件；冻结快照按声明保留）
 
 ## 1. 项目概述
 
@@ -13,7 +13,7 @@
 | 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.17.3 |
+| 当前版本 | v3.17.4 |
 | 拦截域名 | 规则 877 条（黑名单 645 + 白名单 232；`public/domains.txt` 非空 897 行，含注释 20 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准） |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -256,7 +256,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.17.3 |
+| 版本号 | 3.17.4 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

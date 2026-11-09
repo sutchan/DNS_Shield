@@ -13,7 +13,7 @@
 }
 
 .hero-inner {
-  @apply grid grid-cols-1 gap-5 p-5 sm:p-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-center lg:gap-10;
+  @apply grid grid-cols-1 gap-5 p-5 sm:p-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-center lg:gap-10;
 }
 
 .hero-copy {
@@ -24,14 +24,18 @@
   @apply inline-flex items-center gap-1.5 text-[0.8125rem] font-medium uppercase tracking-wide text-primary;
 }
 
+/* v3.17.4：标题用 text-wrap: balance 消除「末字单独成行」的孤字断行，
+   字号略降一档（lg 2.375rem → 2.25rem）以适配更窄的文案列。 */
 .hero-title {
-  @apply text-[1.75rem] sm:text-[2.375rem] font-bold tracking-tight leading-[1.12] font-serif;
+  @apply text-[1.75rem] sm:text-[2.25rem] font-bold tracking-tight leading-[1.15] font-serif;
   letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .hero-desc {
   @apply text-[0.9375rem] sm:text-[1.0625rem] leading-relaxed text-muted-foreground;
   max-width: 38rem;
+  text-wrap: balance;
 }
 
 /* CTA 组：位于描述下方、快速入门之前，主次按钮并排（v3.15.6 上移更醒目） */
@@ -82,9 +86,10 @@
    Output Preview Stats (对齐原型 previewStats)
    ============================================ */
 .preview-stats {
-  /* v3.17.1：取消胶囊后改由间距分隔（与输入区 .stats-compact 的 gap-x-5 统一） */
-  @apply flex flex-wrap items-center gap-x-5 gap-y-2 mb-4 pt-3 text-[0.75rem] text-muted-foreground;
-  border-top: 1px solid hsl(var(--border));
+  /* v3.17.1：取消胶囊后改由间距分隔（与输入区 .stats-compact 的 gap-x-5 统一）
+     v3.17.4：顶部分隔线上移至信息组顶部（见 output.css .output-stats），
+     与 merge-info 并作一组，避免两条灰字带割裂面板 */
+  @apply flex flex-wrap items-center gap-x-5 gap-y-2 mb-4 text-[0.75rem] text-muted-foreground;
 }
 
 /* 域名分类筛选（T-P2-01 / T-P2-05，挂载于 InputPanel，索引不可用时整体隐藏） */
