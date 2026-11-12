@@ -46,7 +46,7 @@ jobs:
     # 挂死保护：正常 1~2 分钟内完成，超时即失败，避免空耗额度
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # 检出「触发 CI 的那个 commit」，保证发布内容与被验证代码一致
           ref: ${{ github.event.workflow_run.head_sha }}

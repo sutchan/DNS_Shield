@@ -34,7 +34,7 @@ jobs:
     # 挂死保护：上游 5 个源串行拉取，正常 2~5 分钟；超时即失败
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: ./.github/actions/setup
         with:
