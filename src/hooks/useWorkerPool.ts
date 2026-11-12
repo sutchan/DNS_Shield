@@ -44,7 +44,11 @@ export const useWorkerPool = () => {
   const seqRef = useRef(0);
   // 并行解析单飞：避免调用方在引用抖动 / 频繁重渲染时堆积多个并行任务
   // （每个任务都会把整块文本克隆到各 Worker，大输入下将线性放大内存直至 OOM）
-  const parallelInflightRef = useRef<Promise<ParallelParseResult | null> | null>(null);
+  const parallelInflightRef = useRef<{
+    text: string;
+    taskId: number;
+    promise: Promise<ParallelParseResult | null>;
+  } | null>(null);
 
   const terminateAll = useCallback(() => {
     workersRef.current.forEach((worker) => worker.terminate());
@@ -125,10 +129,21 @@ export const useWorkerPool = () => {
       shardCount: number,
       onProgress?: (p: { processed: number; total: number }) => void
     ): Promise<ParallelParseResult | null> => {
-      // 单飞：进行中的并行解析直接复用其结果，防止调用方在引用抖动或频繁
-      // 重渲染时堆积多个并行任务（每个任务都会把整块文本克隆到各 Worker，
-      // 大输入下将线性放大内存直至 OOM）。仅首个并发调用真正派发。
-      if (parallelInflightRef.current) return parallelInflightRef.current;
+      // 单飞：同一份文本的重复请求复用进行中的任务，杜绝并发堆积（每个任务都会
+      // 把整块文本克隆到各 Worker，大输入下将线性放大内存直至 OOM）；
+      // 文本已变化时作废旧任务——其结果已过期，调用方按序号守卫丢弃，
+      // 不能让旧文本的解析结果被当作新输入的结果。
+      const inflight = parallelInflightRef.current;
+      if (inflight) {
+        if (inflight.text === text) return inflight.promise;
+        const stale = tasksRef.current.get(inflight.taskId);
+        if (stale && !stale.failed) {
+          stale.failed = true;
+          tasksRef.current.delete(inflight.taskId);
+          stale.resolve(null);
+        }
+        parallelInflightRef.current = null;
+      }
       // 单分片无并行收益：直接返回 null，由调用方走单 Worker 串行路径
       if (shardCount <= 1) return Promise.resolve(null);
       const shards = splitIntoShards(text, shardCount);
@@ -170,8 +185,10 @@ export const useWorkerPool = () => {
           }
         }
       });
-      parallelInflightRef.current = promise;
-      promise.finally(() => { parallelInflightRef.current = null; }).catch(() => {});
+      parallelInflightRef.current = { text, taskId, promise };
+      promise.finally(() => {
+        if (parallelInflightRef.current?.promise === promise) parallelInflightRef.current = null;
+      }).catch(() => {});
       return promise;
     },
     [ensureWorkers]

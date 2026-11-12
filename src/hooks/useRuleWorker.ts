@@ -30,7 +30,8 @@ export interface RuleProgress {
 }
 
 interface PendingTask {
-  resolve: (value: RuleWorkerResult) => void;
+  // 允许 null：表示任务已过期被作废（调用方按序号守卫丢弃，不触发主线程兜底重解析）
+  resolve: (value: RuleWorkerResult | null) => void;
   onProgress?: (progress: { processed: number; total: number }) => void;
 }
 
@@ -39,6 +40,10 @@ export const useRuleWorker = () => {
   // 分片 Worker 池：超大文本 parse 任务的多核并行求值（v3.16.0）
   const pool = useWorkerPool();
   const pendingRef = useRef<Map<number, PendingTask>>(new Map());
+  // 单 Worker 任务的单飞记录：同一 (task,text) 的重复请求复用进行中的任务，
+  // 避免每次都 postMessage 克隆整块文本到大 Worker——Worker 处理速度跟不上
+  // 投递速度时，文本副本会在 Worker 侧堆积，内存随投递次数线性放大直至 OOM
+  const inflightRef = useRef<{ key: string; id: number; promise: Promise<RuleWorkerResult | null> } | null>(null);
   const seqRef = useRef(0);
   const [isSupported] = useState(
     () => typeof window !== 'undefined' && typeof Worker !== 'undefined'
@@ -111,12 +116,14 @@ export const useRuleWorker = () => {
       // 多核并行分支（v3.16.0）：超大文本按行分片派发多个 Worker 求值，
       // 各分片仅执行无跨行状态的逐行收集，主线程聚合后统一执行跨行
       // 去重 / 白名单剔除（finalizeParsed），结果与串行路径等价。
-      if (task === 'parse' && countLines(text) >= PARALLEL_PARSE_THRESHOLD) {
+      // 行数只统计一次：大文本扫描本身有成本，避免同一请求内重复扫描
+      const lineCount = countLines(text);
+      if (task === 'parse' && lineCount >= PARALLEL_PARSE_THRESHOLD) {
         const cores =
           typeof navigator !== 'undefined' ? navigator.hardwareConcurrency || 1 : 1;
         const parallel = await pool.runParallel(
           text,
-          decideShardCount(countLines(text), cores),
+          decideShardCount(lineCount, cores),
           (p) => setProgress({ processed: p.processed, total: p.total, elapsed: null })
         );
         if (parallel) {
@@ -138,8 +145,22 @@ export const useRuleWorker = () => {
       const worker = ensureWorker();
       // Worker 不可用：返回 null，由调用方回退同步处理
       if (!worker) return Promise.resolve(null);
+      // 单飞：同一 (task,text) 的重复请求复用进行中的任务，避免重复 postMessage
+      // 克隆整块文本；任务已变化时作废旧任务（resolve(null) 表示结果过期，
+      // 调用方按序号守卫丢弃），不能让过期结果被当作新输入的结果
+      const key = `${task}\u0000${text}`;
+      const inflight = inflightRef.current;
+      if (inflight) {
+        if (inflight.key === key) return inflight.promise;
+        const stale = pendingRef.current.get(inflight.id);
+        if (stale) {
+          pendingRef.current.delete(inflight.id);
+          stale.resolve(null);
+        }
+        inflightRef.current = null;
+      }
       const id = ++seqRef.current;
-      return new Promise<RuleWorkerResult>((resolve) => {
+      const promise = new Promise<RuleWorkerResult | null>((resolve) => {
         // 关键修复：必须透传 onProgress，否则 Worker 的 progress 消息（每 2000 行上报）
         // 在 onmessage 中被静默丢弃，进度条始终停留在 0%。完成分支基于本条任务的真实
         // total（prev.total 由 onProgress 持续写入）收尾为 100%。
@@ -149,7 +170,7 @@ export const useRuleWorker = () => {
         });
         setIsProcessing(true);
         // 进度总数用非分配换行计数（T-P1-08），避免大文本每次任务都分配整块数组
-        setProgress({ processed: 0, total: countLines(text), elapsed: null });
+        setProgress({ processed: 0, total: lineCount, elapsed: null });
         try {
           worker.postMessage({ id, task, text });
         } catch (error) {
@@ -161,6 +182,11 @@ export const useRuleWorker = () => {
           resolve({ kind: 'text', text: '', elapsed: 0 });
         }
       });
+      inflightRef.current = { key, id, promise };
+      promise.finally(() => {
+        if (inflightRef.current?.promise === promise) inflightRef.current = null;
+      }).catch(() => {});
+      return promise;
     },
     [ensureWorker, pool]
   );
