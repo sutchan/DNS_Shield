@@ -24,8 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="zh-CN">
       <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="manifest" href="/manifest.json" />
+        {/* icon 与 manifest 由 metadata.icons / metadata.manifest 统一输出（v3.18.0 移除手写的重复 link） */}
         <meta name="version" content={APP_VERSION} />
         <script
           type="application/ld+json"
@@ -40,6 +39,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </a>
         <div id="app-shell" className="flex min-h-screen flex-col">
           {children}
+          {/* 不执行 JavaScript 的抓取器 / 浏览器仍可获得事实文本与可直接订阅的规则文件 */}
+          <noscript>
+            <div className="seo-noscript" lang="zh-CN">
+              <h2>DNS Shield - 路由器级广告过滤规则生成工具</h2>
+              <p>
+                本站需要 JavaScript 才能生成规则。无需脚本也可直接下载预生成的规则文件：
+                <a href="/dnsmasq.conf">dnsmasq.conf</a>、
+                <a href="/hosts.txt">hosts.txt</a>、
+                <a href="/adguard.txt">adguard.txt</a>、
+                <a href="/whitelist.txt">whitelist.txt</a>。
+                单一数据源为 <a href="/domains.txt">domains.txt</a>；
+                给生成式引擎的站点说明见 <a href="/llms.txt">llms.txt</a>。
+              </p>
+            </div>
+          </noscript>
         </div>
       </body>
     </html>

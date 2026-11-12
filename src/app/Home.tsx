@@ -7,6 +7,7 @@ import InputPanel from '../components/InputPanel';
 import OutputPanel from '../components/OutputPanel';
 import FlowViz from '../components/FlowViz';
 import Footer from '../components/Footer';
+import SeoContent from '../components/SeoContent';
 import GuideModal from '../components/GuideModal';
 import { ToastProvider } from '../components/ui/Toast';
 import { AppProvider } from '../context/AppContext';
@@ -84,6 +85,9 @@ export default function Home() {
             showToast={c.showToast}
           />
         </main>
+
+        {/* 站点事实内容：服务端预渲染即进入 HTML，供搜索引擎与生成式引擎引用 */}
+        <SeoContent />
 
         <Footer onOpenGuide={c.openGuide} />
 
