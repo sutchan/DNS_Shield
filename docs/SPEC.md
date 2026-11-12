@@ -73,12 +73,14 @@ dns-shield/
 │   │   ├── globals.css             # 全局样式入口（Tailwind 指令 + 基础层 design tokens）
 │   │   ├── layout.tsx              # 根布局（Metadata + SEO + 安全头部接入，按序导入 src/styles/*.css）
 │   │   ├── (seo)/                  # <head> 注入类关注点（元数据、GA 脚本）
-│   │   │   ├── site-meta.ts        # 站点元数据与 JSON-LD 常量
+│   │   │   ├── site-meta.ts        # 站点元数据与 JSON-LD @graph（v3.18.0 五实体）
 │   │   │   └── ga-scripts.tsx      # GA4 脚本注入（衡量 ID 取自环境变量，缺失/非法则不注入）
-│   │   ├── robots.ts               # 自动生成 robots.txt（含 sitemap 索引）
-│   │   └── sitemap.ts              # 自动生成 sitemap.xml
+│   │   ├── robots.ts               # 自动生成 robots.txt（含 sitemap 索引与 AI 爬虫白名单）
+│   │   ├── sitemap.ts              # 自动生成 sitemap.xml（单页唯一有效 URL）
+│   │   └── llms.txt/route.ts       # 生成式引擎站点简报 /llms.txt（force-static 预渲染）
 │   ├── components/                 # 业务组件
-│   │   ├── ui/                     # shadcn/ui 基础组件（12 个；含 Tabs.tsx，v3.15.5 起已废弃、仅暂保留勿新增引用）
+│   │   ├── ui/                     # shadcn/ui 基础组件（8 个；v3.18.0 清理未引用的 Card / Loading / Switch / Tabs）
+│   │   ├── SeoContent.tsx          # 关于 / 12 格式清单 / FAQ（SSR 可见事实文本，v3.18.0）
 │   │   ├── Header.tsx              # 页头（Shield 图标 + 语言/主题切换）
 │   │   ├── Footer.tsx              # 页脚（链接 + 使用说明）
 │   │   ├── InputEditor.tsx         # 域名编辑器子组件
@@ -100,7 +102,10 @@ dns-shield/
 │   ├── config/
 │   │   ├── defaults.json           # 默认设置单一来源（v3.12.0 收敛）
 │   │   ├── index.ts                # 应用配置（预设源 URL、多镜像）
-│   │   └── version.ts              # 版本号单一来源（APP_VERSION，派生自 package.json）
+│   │   ├── version.ts              # 版本号单一来源（APP_VERSION，派生自 package.json）
+│   │   ├── site.ts                 # 站点事实常量（URL / OG 图 / 16 语 / AI 爬虫 UA）
+│   │   ├── seo-content.ts          # GEO 文案单一来源（关于 / 12 格式 / FAQ / HowTo / llms.txt）
+│   │   └── seo.test.ts             # SEO/GEO 输出回归测试（15 用例）
 │   ├── workers/
 │   │   ├── ruleProcessor.worker.ts # 大文本解析 Worker（分片 + 进度上报，串行路径）
 │   │   └── parseShard.worker.ts    # 多核并行解析分片 Worker（逐行收集，v3.16.0）
@@ -142,7 +147,8 @@ dns-shield/
 │   │   ├── output.css              # 输出面板与设置弹窗
 │   │   ├── footer.css              # 页脚与使用指南
 │   │   ├── feedback.css            # 加载态 / 弹窗 / 可访问性工具类
-│   │   └── hero.css                # Hero/FlowViz / 预览统计 / 动效降级
+│   │   ├── hero.css                # Hero/FlowViz / 预览统计 / 动效降级
+│   │   └── seo.css                 # 关于 / 格式清单 / FAQ 与 noscript 兜底（v3.18.0）
 │   ├── test-utils/                 # 测试辅助（coverage.exclude 排除，不计入覆盖率）
 │   │   ├── renderHook.ts           # 极简 renderHook（不依赖 testing-library）
 │   │   ├── setup.ts               # jsdom localStorage/matchMedia 桩（vitest setupFiles）

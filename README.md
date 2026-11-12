@@ -145,8 +145,8 @@ src/
 ├── workers/          # Web Worker（ruleProcessor 串行 + parseShard 分片并行）
 ├── lib/              # 工具库（cn 类名合并等）
 ├── locales/          # 16 种语言翻译文件（zh-cn 140 顶层键 / 209 递归键，check-locales 校验）
-├── styles/           # 设计系统样式（7 模块，由 globals.css 按职责拆分）
-├── config/           # 应用配置（defaults.json 默认设置 / version.ts 版本单一来源）
+├── styles/           # 设计系统样式（8 模块，由 globals.css 按职责拆分，含 seo.css）
+├── config/           # 应用配置（defaults.json 默认设置 / version.ts 版本单一来源 / site.ts 站点事实 / seo-content.ts GEO 文案）
 ├── test-utils/       # 测试辅助（renderHook + jsdom 环境桩 setup.ts）
 ├── types/            # TypeScript 类型定义
 ├── utils/            # 工具函数（含 *.test.ts 单元测试）
@@ -170,11 +170,12 @@ src/
 
 - `page.tsx` / `Home.tsx` — 主页面与首页编排组件
 - `layout.tsx` — 根布局（元数据、主题 Provider、安全/SEO 基础）
-- `robots.ts` — 自动生成 `robots.txt`（含 sitemap 索引）
-- `sitemap.ts` — 自动生成 `sitemap.xml`（站点地图）
-- `(seo)/site-meta.ts` / `(seo)/ga-scripts.tsx` — 站点元数据与 GA4 脚本注入（衡量 ID 取自环境变量）
-- PWA 与 Service Worker 以静态文件提供：`public/manifest.json`、`public/service-worker.js`（非 `src/app/` 下的 TS 模块）
-- `globals.css` — 全局样式入口（Tailwind 指令 + 基础层 design tokens）；其余业务样式按职责拆分到 `src/styles/*.css`（layout / stats / input / output / footer / feedback / hero 共 7 模块），由 `layout.tsx` 按级联顺序统一导入
+- `robots.ts` — 自动生成 `robots.txt`（含 sitemap 索引与 AI 爬虫白名单）
+- `sitemap.ts` — 自动生成 `sitemap.xml`（单页应用唯一有效 URL）
+- `llms.txt/route.ts` — 生成 `/llms.txt` 生成式引擎站点简报（构建期静态预渲染）
+- `(seo)/site-meta.ts` / `(seo)/ga-scripts.tsx` — 站点元数据、JSON-LD `@graph` 与 GA4 脚本注入（衡量 ID 取自环境变量）
+- PWA 与 Service Worker 以静态文件提供：`public/manifest.json`、`public/service-worker.js`（非 `src/app/` 下的 TS 模块，SW 当前未注册）
+- `globals.css` — 全局样式入口（Tailwind 指令 + 基础层 design tokens）；其余业务样式按职责拆分到 `src/styles/*.css`（layout / stats / input / output / footer / feedback / hero / seo 共 8 模块），由 `layout.tsx` 按级联顺序统一导入
 
 ```
 prototype/            # 设计快照（已冻结，停留 v3.9.x~v3.10.x，不代表当前实现）
@@ -242,7 +243,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
 | 站点地图 | `src/app/sitemap.ts` | 单页应用只登记唯一有效 URL，不输出 fragment 伪条目与每次构建都变的时间戳 |
 | 可引用正文 | `src/components/SeoContent.tsx` | 关于、12 种导出格式清单、5 条 FAQ 在服务端预渲染即进入 HTML；`layout.tsx` 另有 `<noscript>` 兜底 |
 | 社交分享图 | `public/og-image.png` | 真实 1200×630 PNG，与 OG / Twitter 声明尺寸一致 |
-| 回归测试 | `src/config/seo.test.ts` | 14 用例覆盖上述输出，防止占位验证值、错误尺寸、虚假锚点等回潮 |
+| 回归测试 | `src/config/seo.test.ts` | 15 用例覆盖上述输出，防止占位验证值、错误尺寸、虚假锚点等回潮 |
 
 补充说明：
 

@@ -4,9 +4,11 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { APP_VERSION } from './version';
 import { metadata, jsonLd } from '../app/(seo)/site-meta';
 import robots from '../app/robots';
 import sitemap from '../app/sitemap';
+import { GET as llmsGet, dynamic as llmsDynamic } from '../app/llms.txt/route';
 import {
   SITE_URL, AI_CRAWLERS, IN_LANGUAGE, OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT,
 } from './site';
@@ -125,5 +127,15 @@ describe('llms.txt 与可见事实文本', () => {
     expect(txt).toContain('无需注册');
     expect(txt).toContain(`${SITE_URL}/robots.txt`);
     expect(txt).toContain(`${SITE_URL}/sitemap.xml`);
+  });
+
+  it('路由以纯文本静态预渲染输出，且注入当前应用版本', async () => {
+    expect(llmsDynamic).toBe('force-static');
+    const res = llmsGet();
+    expect(res.headers.get('Content-Type')).toBe('text/plain; charset=utf-8');
+    const body = await res.text();
+    expect(body.startsWith('# DNS Shield')).toBe(true);
+    expect(body).toContain(`v${APP_VERSION}`);
+    expect(body).toContain('## FAQ (English)');
   });
 });

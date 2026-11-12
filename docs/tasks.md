@@ -35,10 +35,10 @@
 | 应用版本 | v3.18.0 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 **140** 键、递归合计 **209** 键 | 脚本统计 `src/locales/zh-cn.json`（flatten 叶子口径，与 `check:locales` 输出及 `scripts/locale-baseline.json` keyCount 一致；v3.15.5 移除 `moreFormats` 死键，2026-11-07 实算） |
-| 测试套件 / 用例 | **48 套件 / 293 用例**（2026-11-12 脚本实算：48 个 `*.test.ts` 文件、293 处 `it()` / `test()` 调用、无 `it.each`；v3.17.3 新增 `useWorkerPool.singleflight.test.ts` 1 套件 5 用例） | `vitest run` 为权威计数；本机已安装 `node_modules`，本轮为静态实算，待 CI / 本机实跑复核 |
+| 测试套件 / 用例 | **49 套件 / 313 用例**（2026-11-12 `vitest run` 实跑：49 个 `*.test.ts` 文件全部通过；v3.18.0 新增 `src/config/seo.test.ts` 1 套件 15 用例，覆盖 metadata / JSON-LD / robots / sitemap / llms.txt） | `vitest run` 为权威计数，本轮已实跑复核 |
 | 覆盖率门禁 | 已生效且为真实值；含 `src/utils` + `src/hooks`，门槛 **语句 80 / 分支 75 / 函数 85 / 行 80**；`vitest.config.ts` 显式声明 `all: false` | `vitest run --coverage`；2026-11-05 第十二轮实测：语句 88.85 / 分支 85.45 / 函数 91.74 / 行 88.85，全部达标且有余量；曾以「临时抬阈至 99 → EXIT CODE 1」反证门禁真实生效 |
-| 组件规模 | 顶层 **16** 个 `.tsx`（含 `OutputPanel.parts.tsx` / `OutputPanel.formatSelect.tsx`）+ `OutputPanel.derived.ts` / `InputPanel.types.ts`，`ui/` 12 个（含已废弃的 `Tabs.tsx`） | `src/components/` 实测（2026-11-07 实算，由 15 修正为 16） |
-| 源文件 >200 行 | `ts/tsx/css` **0** 个（含测试文件）；`globals.css` 已于 v3.13.6 拆为 `src/styles/*.css` 7 模块 | 行数扫描 |
+| 组件规模 | 顶层 **17** 个 `.tsx`（含 `OutputPanel.parts.tsx` / `OutputPanel.formatSelect.tsx` / 新增 `SeoContent.tsx`）+ `OutputPanel.derived.ts` / `InputPanel.types.ts`，`ui/` 8 个（v3.18.0 清理 4 个未被引用的孤儿组件 `Card` / `Loading` / `Switch` / `Tabs`） | `src/components/` 实测（2026-11-12 实算） |
+| 源文件 >200 行 | `ts/tsx/css` **1** 个：`src/hooks/useWorkerPool.ts`（并行会话 v3.17.4 引入，待拆分）；`globals.css` 已于 v3.13.6 拆为 `src/styles/*.css` 8 模块（v3.18.0 新增 `seo.css`） | 行数扫描（2026-11-12 实算） |
 | 静态门禁 | `sync-facts.mjs --check` 13 处版本展示位与 package.json 全一致；`check-locales.mjs` 16 语 / 209 键一致；`check-root-clean.mjs` 根目录临时文件洁净度（`rootclean` job） | 2026-11-12 实跑（`sync-facts --check` / `check:locales`）；本机已安装 `node_modules`，`tsc` / `next lint` / `vitest` 待实跑复核 |
 
 > **教训**：本文件中的数据型数字（键数 / 用例数 / 覆盖率 / 行数）历史上多次与实现脱节。修改前务必用脚本实算，禁止凭记忆书写。

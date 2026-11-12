@@ -16,7 +16,7 @@
 - 新增页面可见的「关于 DNS Shield / 支持的 12 种导出格式 / 常见问题（5 条）」区块（`SeoContent.tsx` + `seo.css`），服务端预渲染即进入 HTML。此前页面除 Hero 描述与快速入门三步外几乎无可引用事实文本，格式清单与部署提示又藏在需点击才渲染的弹窗里，抓取器与 LLM 无从引用
 - `layout.tsx` 新增 `<noscript>` 兜底事实文本与 4 个可直接订阅的规则文件链接，覆盖不执行 JavaScript 的抓取器
 - 新增 `src/config/site.ts`（站点 URL / OG 图 / 16 语 BCP47 标签 / 22 个 AI 爬虫 UA 的单一来源）与 `src/config/seo-content.ts`（关于、12 格式、FAQ、HowTo、llms.txt 生成器）；新增真实 1200×630 社交分享图 `public/og-image.png`
-- 新增 `src/config/seo.test.ts`（14 用例）：覆盖 canonical / 无 hreflang / 标题不含版本号 / 无占位验证值 / OG 尺寸与真实 PNG 一致 / JSON-LD 五实体与引用闭环 / 16 语 inLanguage / FAQ 与可见文本逐字一致 / HowTo position / robots 不屏蔽 `_next` / AI UA 全覆盖 / sitemap 无 fragment 伪条目 / llms.txt 文件真实存在 / 中英 FAQ 同源。此前 `src/app/**` 的 SEO 输出零测试覆盖
+- 新增 `src/config/seo.test.ts`（15 用例）：覆盖 canonical / 无 hreflang / 标题不含版本号 / 无占位验证值 / OG 尺寸与真实 PNG 一致 / JSON-LD 五实体与引用闭环 / 16 语 inLanguage / FAQ 与可见文本逐字一致 / HowTo position / robots 不屏蔽 `_next` / AI UA 全覆盖 / sitemap 无 fragment 伪条目 / llms.txt 文件真实存在 / 中英 FAQ 同源 / 路由纯文本静态预渲染。此前 `src/app/**` 的 SEO 输出零测试覆盖
 
 ### Changed（元数据与爬虫策略修正）
 - JSON-LD 由单一 `SoftwareApplication` 升级为 `@graph` 五实体：`Organization` / `WebSite` / `SoftwareApplication` / `FAQPage` / `HowTo`；补 `publisher`、`dateModified`、`image`、`isAccessibleForFree`、`browserRequirements`，`inLanguage` 由 3 种扩为真实 16 种；FAQ 与 HowTo 文案与页面可见文本同源，避免结构化数据与正文不符

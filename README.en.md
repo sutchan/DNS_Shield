@@ -200,7 +200,7 @@ The site serves both classic search engines and LLM retrieval / citation. All fa
 - **`robots.txt`** — explicitly allows 22 AI / generative-engine crawlers (GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, CCBot, …) and no longer blocks `/_next/`, so Googlebot can fetch the JS/CSS needed to render the page.
 - **`sitemap.xml`** — one valid URL for the single-page app; no fragment pseudo-entries, no build-time timestamps.
 - **Metadata** — canonical, Open Graph, Twitter Card and a real 1200×630 `og-image.png`. No hreflang is emitted because language switching is client-side with no per-language URLs.
-- **Regression tests** — `src/config/seo.test.ts` (14 cases) guard all of the above.
+- **Regression tests** — `src/config/seo.test.ts` (15 cases) guard all of the above.
 
 ## Deployment
 
