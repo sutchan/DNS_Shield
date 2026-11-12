@@ -30,6 +30,7 @@ Thumbs.db
 
 # Testing
 coverage
+reports/
 *.lcov
 .pytest_cache/
 test-output/
@@ -44,7 +45,11 @@ build
 .env.test.local
 .env.production.local
 .cache
+# 临时文件统一存放于根目录 .tmp/ 子目录（一次性脚本、探针、运行日志、中间产物）。
+# 根目录及其他顶层位置禁止散落临时文件，由 CI 门禁 scripts/check-root-clean.mjs 拦截。
 *.tmp
+.tmp/
+.tmp/**
 tmp/
 cache/
 *err.txt
@@ -89,5 +94,4 @@ review_*.md
 CODE_REVIEW_*.md
 *.err
 _*.txt
-scripts/_*.mjs
-_*.mjs
+# 临时脚本不再允许散落于 scripts/ 或根目录（曾用 _ 前缀），统一存放于根 .tmp/ 子目录（已被忽略）

@@ -51,6 +51,21 @@ env:
   CI: 'true'
 
 jobs:
+  # --------------------------------------------------- root cleanliness
+  rootclean:
+    name: Root Tmp Hygiene
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+        with:
+          install: 'false'
+
+      - name: Verify no stray temp files at repo root
+        run: node scripts/check-root-clean.mjs
+
   # ---------------------------------------------------------------- lint
   lint:
     name: ESLint
@@ -218,17 +233,19 @@ jobs:
     name: CI Gate
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [lint, typecheck, test, build, data]
+    needs: [rootclean, lint, typecheck, test, build, data]
     if: always()
     steps:
       - name: Check upstream results
         run: |
+          echo "root-clean = ${{ needs.rootclean.result }}"
           echo "lint      = ${{ needs.lint.result }}"
           echo "typecheck = ${{ needs.typecheck.result }}"
           echo "test      = ${{ needs.test.result }}"
           echo "build     = ${{ needs.build.result }}"
           echo "data      = ${{ needs.data.result }}"
           if printf '%s\n' \
+            "${{ needs.rootclean.result }}" \
             "${{ needs.lint.result }}" \
             "${{ needs.typecheck.result }}" \
             "${{ needs.test.result }}" \
