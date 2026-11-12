@@ -6,7 +6,7 @@
 // - 任一分片失败 / Worker 崩溃 / postMessage 异常 / 组件卸载时，
 //   全部挂起任务以 null 结算，由调用方回退主线程同步路径（T-P1-14 契约）。
 'use client';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { logger } from '../utils/logger';
 import { aggregateRaw, splitIntoShards } from '../utils/parseAggregate';
 import { finalizeParsed } from '../utils/parser';
@@ -42,6 +42,9 @@ export const useWorkerPool = () => {
   const loadRef = useRef<number[]>([]);
   const tasksRef = useRef<Map<number, TaskState>>(new Map());
   const seqRef = useRef(0);
+  // 并行解析单飞：避免调用方在引用抖动 / 频繁重渲染时堆积多个并行任务
+  // （每个任务都会把整块文本克隆到各 Worker，大输入下将线性放大内存直至 OOM）
+  const parallelInflightRef = useRef<Promise<ParallelParseResult | null> | null>(null);
 
   const terminateAll = useCallback(() => {
     workersRef.current.forEach((worker) => worker.terminate());
@@ -122,12 +125,16 @@ export const useWorkerPool = () => {
       shardCount: number,
       onProgress?: (p: { processed: number; total: number }) => void
     ): Promise<ParallelParseResult | null> => {
+      // 单飞：进行中的并行解析直接复用其结果，防止调用方在引用抖动或频繁
+      // 重渲染时堆积多个并行任务（每个任务都会把整块文本克隆到各 Worker，
+      // 大输入下将线性放大内存直至 OOM）。仅首个并发调用真正派发。
+      if (parallelInflightRef.current) return parallelInflightRef.current;
       // 单分片无并行收益：直接返回 null，由调用方走单 Worker 串行路径
       if (shardCount <= 1) return Promise.resolve(null);
       const shards = splitIntoShards(text, shardCount);
       if (!ensureWorkers(shards.length)) return Promise.resolve(null);
       const taskId = ++seqRef.current;
-      return new Promise<ParallelParseResult | null>((resolve) => {
+      const promise = new Promise<ParallelParseResult | null>((resolve) => {
         const task: TaskState = {
           shardTotal: shards.length,
           collected: new Map(),
@@ -163,6 +170,9 @@ export const useWorkerPool = () => {
           }
         }
       });
+      parallelInflightRef.current = promise;
+      promise.finally(() => { parallelInflightRef.current = null; }).catch(() => {});
+      return promise;
     },
     [ensureWorkers]
   );
@@ -177,5 +187,9 @@ export const useWorkerPool = () => {
     };
   }, [terminateAll]);
 
-  return { runParallel };
+  // 池对象必须稳定引用：下游 useDomainData 的 processParseImpl 依赖 [pool]，
+  // 引用每帧变化会沿链（processParse → parseSourceData → loadLocalDomains →
+  // loadDomainData）引发 useEffect([loadDomainData]) 每帧执行，导致大输入下
+  // runParallel 被无限堆积调用（每个克隆整块文本）→ 内存暴涨。memo 切断该链。
+  return useMemo(() => ({ runParallel }), [runParallel]);
 };
