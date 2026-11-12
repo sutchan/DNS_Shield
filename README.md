@@ -229,12 +229,27 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
 | 构建版本号 | `next.config.js` → `env.version` | 注入运行时的应用版本 |
 | 隐私统计 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（构建期由环境变量注入，源码不硬编码）；留空或格式非法（须形如 `G-XXXXXXXXXX`）时不注入任何统计脚本；CSP 已放通 gtag 域名 |
 
-## SEO 与元数据
+## SEO 与 GEO（生成式引擎优化）
 
-- `src/app/robots.ts` 自动生成 `robots.txt`，并声明 sitemap 索引地址。
-- `src/app/sitemap.ts` 自动生成 `sitemap.xml`，登记站点地图。
-- `src/app/layout.tsx` 定义页面元数据（标题、描述、Open Graph、主题色）；安全响应头由 `next.config.js` 的 `headers()` 统一下发（CSP / HSTS / COOP / CORP 等 8 头），`vercel.json` 另有一份 CSP 供 Vercel 部署路径使用，后者额外启用 `require-trusted-types-for 'script'`（两处差异见 SPEC §12.1；`next dev` 按 `NODE_ENV` 自动为 `script-src` 追加 `'unsafe-eval'`，生产不含，详见 DEPLOYMENT「Next.js 配置」）。
-- `public/manifest.json` 提供 PWA manifest，`public/service-worker.js` 负责离线缓存，支持安装到桌面与离线可用。
+站点同时面向传统搜索引擎与 LLM 检索 / 引用。所有事实文本由 `src/config/seo-content.ts` 单一来源派生，页面可见正文、JSON-LD 与 `/llms.txt` 三者不会互相矛盾。
+
+| 能力 | 实现 | 要点 |
+| --- | --- | --- |
+| 站点元数据 | `src/app/(seo)/site-meta.ts` | 标题 / 描述 / canonical / Open Graph / Twitter / robots 指令；标题不嵌版本号，避免发版导致关键词漂移 |
+| 结构化数据 | `src/app/layout.tsx` 注入 JSON-LD `@graph` | Organization / WebSite / SoftwareApplication / FAQPage / HowTo；FAQ 与 HowTo 文案与页面可见文本逐字一致 |
+| 生成式引擎简报 | `src/app/llms.txt/route.ts` → `/llms.txt` | 中英双语站点说明（隐私边界、12 个规则文件、使用步骤、FAQ），构建期静态预渲染，版本号由 `APP_VERSION` 注入 |
+| 爬虫策略 | `src/app/robots.ts` | 显式 `Allow` 22 个主流 AI / 生成式引擎 UA（GPTBot、OAI-SearchBot、ClaudeBot、PerplexityBot、Google-Extended、CCBot 等）；不屏蔽 `/_next/`，保证 Googlebot 能取到 JS/CSS 完成渲染 |
+| 站点地图 | `src/app/sitemap.ts` | 单页应用只登记唯一有效 URL，不输出 fragment 伪条目与每次构建都变的时间戳 |
+| 可引用正文 | `src/components/SeoContent.tsx` | 关于、12 种导出格式清单、5 条 FAQ 在服务端预渲染即进入 HTML；`layout.tsx` 另有 `<noscript>` 兜底 |
+| 社交分享图 | `public/og-image.png` | 真实 1200×630 PNG，与 OG / Twitter 声明尺寸一致 |
+| 回归测试 | `src/config/seo.test.ts` | 14 用例覆盖上述输出，防止占位验证值、错误尺寸、虚假锚点等回潮 |
+
+补充说明：
+
+- 语言由客户端 `localStorage` 切换，无 `/en`、`/zh-TW` 独立 URL，因此**不输出 hreflang**（避免指向 404）；16 种语言仅体现在 JSON-LD `inLanguage` 与界面。
+- `verification.google` 仅在配置 `NEXT_PUBLIC_GOOGLE_VERIFICATION` 时输出，未配置时不生成任何占位验证 meta。
+- `public/manifest.json` 提供 PWA manifest；`public/service-worker.js` 目前**未注册**，不参与离线缓存，也不影响爬虫抓取。
+- 安全响应头由 `next.config.js` 的 `headers()` 统一下发（CSP / HSTS / COOP / CORP 等 8 头），`vercel.json` 另有一份 CSP 供 Vercel 部署路径使用，后者额外启用 `require-trusted-types-for 'script'`（两处差异见 SPEC §12.1；`next dev` 按 `NODE_ENV` 自动为 `script-src` 追加 `'unsafe-eval'`，生产不含，详见 DEPLOYMENT「Next.js 配置」）。
 
 ## 开发
 

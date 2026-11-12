@@ -5,9 +5,29 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-12（与 package.json v3.17.4 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
+> 最后审查：2026-11-12（与 package.json v3.18.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
 
 ## [Unreleased]
+
+## [3.18.0] - 2026-11-12
+
+### Added（SEO 与生成式引擎优化 GEO）
+- 新增 `/llms.txt`：给生成式引擎（LLM 检索 / 引用）的站点简报，含项目定义、隐私边界、12 个预生成规则文件链接、使用步骤、中英双语 FAQ 与机器可读元数据入口。由 `src/app/llms.txt/route.ts` 以 `force-static` 在构建期预渲染；内容由 `src/config/seo-content.ts` 单一来源派生并注入 `APP_VERSION`，版本号不会漂移。采用 App Router Route Handler 而非 `public/` 静态文件，是因为 EdgeOne 部署工作流只上传 `.next/`
+- 新增页面可见的「关于 DNS Shield / 支持的 12 种导出格式 / 常见问题（5 条）」区块（`SeoContent.tsx` + `seo.css`），服务端预渲染即进入 HTML。此前页面除 Hero 描述与快速入门三步外几乎无可引用事实文本，格式清单与部署提示又藏在需点击才渲染的弹窗里，抓取器与 LLM 无从引用
+- `layout.tsx` 新增 `<noscript>` 兜底事实文本与 4 个可直接订阅的规则文件链接，覆盖不执行 JavaScript 的抓取器
+- 新增 `src/config/site.ts`（站点 URL / OG 图 / 16 语 BCP47 标签 / 22 个 AI 爬虫 UA 的单一来源）与 `src/config/seo-content.ts`（关于、12 格式、FAQ、HowTo、llms.txt 生成器）；新增真实 1200×630 社交分享图 `public/og-image.png`
+- 新增 `src/config/seo.test.ts`（14 用例）：覆盖 canonical / 无 hreflang / 标题不含版本号 / 无占位验证值 / OG 尺寸与真实 PNG 一致 / JSON-LD 五实体与引用闭环 / 16 语 inLanguage / FAQ 与可见文本逐字一致 / HowTo position / robots 不屏蔽 `_next` / AI UA 全覆盖 / sitemap 无 fragment 伪条目 / llms.txt 文件真实存在 / 中英 FAQ 同源。此前 `src/app/**` 的 SEO 输出零测试覆盖
+
+### Changed（元数据与爬虫策略修正）
+- JSON-LD 由单一 `SoftwareApplication` 升级为 `@graph` 五实体：`Organization` / `WebSite` / `SoftwareApplication` / `FAQPage` / `HowTo`；补 `publisher`、`dateModified`、`image`、`isAccessibleForFree`、`browserRequirements`，`inLanguage` 由 3 种扩为真实 16 种；FAQ 与 HowTo 文案与页面可见文本同源，避免结构化数据与正文不符
+- 修复 `verification.google` 未配置环境变量时仍输出占位值 `google-site-verification-code`（向搜索引擎声明无效验证）：改为仅在配置真实 token 时输出
+- 修复 Open Graph / Twitter 使用 512×512 图标却声明 1200×630 的无效尺寸：改指向新增的真实 1200×630 `og-image.png`
+- 标题去掉内嵌版本号（发版导致标题漂移，不利于关键词稳定性）；description 重写为可引用的事实句；补 `applicationName` / `category` / `formatDetection` / `appleWebApp`，keywords 补 AdGuard / Pi-hole / Clash Meta
+- `robots.txt` 移除 `Disallow: /_next/`（会阻断 Googlebot 抓取 JS/CSS，使依赖客户端渲染的页面无法被正确渲染与索引），并显式 `Allow` 22 个主流 AI / 生成式引擎 UA（GPTBot、OAI-SearchBot、ClaudeBot、PerplexityBot、Google-Extended、CCBot 等）
+- `sitemap.xml` 移除 3 条带 fragment 的伪 URL（会被搜索引擎归一化为 `/`，形成重复条目）与每次构建都变的 `new Date()` 时间戳，收敛为唯一有效 URL
+- 移除 `layout.tsx <head>` 中手写的 `icon` / `manifest` link（与 metadata 输出重复）
+- 本地 `.nvmdrc` 由开发环境按当前 Node 自动生成、内容随环境变化，纳入 `.gitignore`：`check-root-clean.mjs` 对 gitignored 条目直接放行，根目录门禁不再反复失败；项目 Node 版本约束仍以 `package.json engines` 与 CI setup 输入为准
+- 版本按 minor 规则升至 v3.18.0（新增 SEO/GEO 能力）：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 13 处文档展示位 / `public/` 11 个规则产物头部
 
 ### Fixed（本地预览被 CSP 拦截 eval）
 - `next.config.js` 的 `headers()` 增加 dev/prod 分支：`NODE_ENV !== 'production'` 时为 `script-src` 追加 `'unsafe-eval'`，使 `next dev` 的 webpack eval 模块可在带 CSP 的浏览器 / 内嵌 WebView 预览中正常执行，修复 `Refused to evaluate a string as JavaScript`
@@ -15,7 +35,7 @@
 - `DEPLOYMENT.md` / `SPEC.md §12.1` 同步：把「本地调试需临时手工追加」的排障说明改为「配置已内置 dev 分支」
 - 同步修正 `next.config.js` 文件头「CI 有安全头一致性检查」的陈旧注释（实际 CI 无该检查，需手工核对两处 CSP）
 
-### Fixed（解析任务内存堆积，已合入 main、尚未 bump 版本）
+### Fixed（解析任务内存堆积）
 - `useRuleWorker` 引入 `inflightRef` 单飞：以内容键 `task + '\0' + text` 复用同一解析任务、作废旧输入结果；`useWorkerPool` 并行分支同样按文本单飞，并用 `useMemo` 稳定池引用，避免 `loadDomainData` 每帧重复派发导致 `postMessage` 反复克隆大文本（线上曾观测页面内存飙升至 5GB）
 - 新增 `src/hooks/useWorkerPool.singleflight.test.ts`（5 用例）覆盖单飞复用、内容键与池引用稳定性；测试实算 **48 文件 / 293 用例**（`src/**/*.test.ts` 静态计数）
 
@@ -1677,7 +1697,11 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.17.1...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.18.0...HEAD
+[3.18.0]: https://github.com/sutchan/DNS_Shield/compare/v3.17.4...v3.18.0
+[3.17.4]: https://github.com/sutchan/DNS_Shield/compare/v3.17.3...v3.17.4
+[3.17.3]: https://github.com/sutchan/DNS_Shield/compare/v3.17.2...v3.17.3
+[3.17.2]: https://github.com/sutchan/DNS_Shield/compare/v3.17.1...v3.17.2
 [3.17.1]: https://github.com/sutchan/DNS_Shield/compare/v3.17.0...v3.17.1
 [3.17.0]: https://github.com/sutchan/DNS_Shield/compare/v3.16.1...v3.17.0
 [3.16.1]: https://github.com/sutchan/DNS_Shield/compare/v3.16.0...v3.16.1

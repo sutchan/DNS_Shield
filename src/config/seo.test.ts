@@ -21,7 +21,8 @@ describe('metadata', () => {
   });
 
   it('标题不嵌版本号，避免发版造成标题漂移', () => {
-    const title = typeof metadata.title === 'object' ? metadata.title.default : metadata.title;
+    const raw = metadata.title;
+    const title = raw && typeof raw === 'object' && 'default' in raw ? raw.default : raw;
     expect(title).toBeTruthy();
     expect(String(title)).not.toMatch(/v\d+\.\d+\.\d+/);
   });

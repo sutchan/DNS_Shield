@@ -190,6 +190,18 @@ Run tests using:
 pnpm test
 ```
 
+## SEO & GEO (Generative Engine Optimization)
+
+The site serves both classic search engines and LLM retrieval / citation. All factual copy comes from a single source (`src/config/seo-content.ts`), so the visible page, JSON-LD and `/llms.txt` can never drift apart.
+
+- **`/llms.txt`** — a bilingual site brief for generative engines (privacy boundary, 12 pre-generated rule files, usage steps, FAQ). Statically prerendered by `src/app/llms.txt/route.ts`; the version is injected from `APP_VERSION`.
+- **JSON-LD `@graph`** — Organization / WebSite / SoftwareApplication / FAQPage / HowTo, injected in `layout.tsx`. FAQ and HowTo text is byte-identical to the visible `#faq` section.
+- **Visible, citable copy** — `SeoContent.tsx` renders an About section, the 12-format list and 5 FAQs into the server-rendered HTML; `layout.tsx` adds a `<noscript>` fallback.
+- **`robots.txt`** — explicitly allows 22 AI / generative-engine crawlers (GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, CCBot, …) and no longer blocks `/_next/`, so Googlebot can fetch the JS/CSS needed to render the page.
+- **`sitemap.xml`** — one valid URL for the single-page app; no fragment pseudo-entries, no build-time timestamps.
+- **Metadata** — canonical, Open Graph, Twitter Card and a real 1200×630 `og-image.png`. No hreflang is emitted because language switching is client-side with no per-language URLs.
+- **Regression tests** — `src/config/seo.test.ts` (14 cases) guard all of the above.
+
 ## Deployment
 
 Please refer to [Deployment Guide](DEPLOYMENT.md) to learn how to deploy the web management tool.

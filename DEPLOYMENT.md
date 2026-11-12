@@ -327,6 +327,19 @@ pm2 restart dns-shield
 - **进程监控**：`pm2 monit`
 - **可用性与性能**：Uptime Robot、New Relic、Datadog 等
 
+### 5. SEO / GEO 端点验收
+
+部署后逐个确认下列端点返回 `200` 且 `Content-Type: text/plain; charset=utf-8`（`llms.txt`）：
+
+```bash
+curl -sI https://dns.ewuse.com/llms.txt   # 生成式引擎站点简报
+curl -sI https://dns.ewuse.com/robots.txt # 爬虫策略（含 AI UA 白名单）
+curl -sI https://dns.ewuse.com/sitemap.xml
+curl -sI https://dns.ewuse.com/og-image.png
+```
+
+`/llms.txt` 由 `src/app/llms.txt/route.ts` 以 `force-static` 在构建期预渲染，产物落在 `.next/` 内：Vercel 与 EdgeOne（部署工作流只上传 `./.next`）两条路径都能覆盖，因此**不要**改为 `public/` 静态文件。若需更新站点事实描述，改 `src/config/seo-content.ts` 单一来源并同步 `src/config/site.ts` 的 `SITE_LAST_MODIFIED`，再跑 `pnpm test src/config/seo.test.ts` 验证 JSON-LD / llms.txt / 页面文本三者一致。
+
 ## 故障排除
 
 ### 1. 服务器启动失败
