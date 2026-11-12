@@ -1,0 +1,77 @@
+/* src/styles/seo.css v3.18.0 — 站点事实内容（关于 / 格式清单 / FAQ）与 noscript 兜底 */
+
+/* 视觉上刻意保持安静：位于工具区与页脚之间，不抢主操作区的注意力；
+   排版密度靠字号与分栏控制，内容与 JSON-LD 同源而非为爬虫隐藏文本。 */
+.seo-content {
+  @apply mt-10 rounded-xl border border-border bg-card px-5 py-6 sm:px-8 sm:py-7;
+}
+
+.seo-grid {
+  @apply grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12;
+}
+
+.seo-content h2 {
+  @apply text-base font-semibold text-foreground mb-3;
+  font-family: var(--font-serif);
+}
+
+.seo-content h3 {
+  @apply text-[0.8125rem] font-semibold text-foreground mb-2 mt-6;
+}
+
+.seo-content p {
+  @apply text-[0.8125rem] leading-relaxed text-muted-foreground;
+}
+
+.seo-content .seo-en {
+  @apply text-[0.75rem] mt-2;
+}
+
+.seo-formats {
+  @apply grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 list-none p-0 m-0;
+}
+
+.seo-formats li {
+  @apply flex flex-col text-[0.75rem] text-muted-foreground;
+}
+
+.seo-formats a {
+  @apply font-medium text-foreground hover:text-primary transition-colors;
+}
+
+.seo-formats span {
+  @apply text-[0.6875rem] text-muted-foreground/70;
+}
+
+.seo-faq {
+  @apply flex flex-col gap-3.5 m-0;
+}
+
+.seo-faq dt {
+  @apply text-[0.8125rem] font-semibold text-foreground;
+}
+
+.seo-faq dd {
+  @apply text-[0.75rem] leading-relaxed text-muted-foreground m-0 mt-1;
+}
+
+.seo-machine {
+  @apply mt-7 pt-4 border-t border-border/70 text-[0.75rem] text-muted-foreground;
+}
+
+.seo-machine a {
+  @apply font-mono text-primary hover:underline;
+}
+
+/* 无 JS 环境（含不执行脚本的抓取器）的兜底事实文本 */
+.seo-noscript {
+  @apply mx-auto mt-6 max-w-3xl rounded-xl border border-border bg-card p-5 text-sm leading-relaxed text-muted-foreground;
+}
+
+.seo-noscript h2 {
+  @apply text-base font-semibold text-foreground mb-2;
+}
+
+.seo-noscript a {
+  @apply font-mono text-primary hover:underline;
+}

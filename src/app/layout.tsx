@@ -13,6 +13,7 @@ import '../styles/output.css';
 import '../styles/footer.css';
 import '../styles/feedback.css';
 import '../styles/hero.css';
+import '../styles/seo.css';
 import { metadata, viewport, jsonLd } from './(seo)/site-meta';
 import GaScripts from './(seo)/ga-scripts';
 import { APP_VERSION } from '../config/version';
