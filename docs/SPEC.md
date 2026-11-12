@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-12（与 package.json v3.17.4 对齐；第十八轮全量文档核查：结构树补 `scripts/check-root-clean.mjs`、标注 Tabs 废弃、§4 补 v3.16.1~v3.17.4 UI 与内存护栏、§12.1 补双源 CSP 与开发模式 `unsafe-eval` 说明；冻结快照按声明保留）
+> 最后审查：2026-11-12（与 package.json v3.18.0 对齐；第十八轮全量文档核查：结构树补 `scripts/check-root-clean.mjs`、标注 Tabs 废弃、§4 补 v3.16.1~v3.17.4 UI 与内存护栏、§12.1 补双源 CSP 与开发模式 `unsafe-eval` 说明；冻结快照按声明保留）
 
 ## 1. 项目概述
 
@@ -13,7 +13,7 @@
 | 项目地址（主页/治理） | https://github.com/sutchan/DNS_Shield（以 `git remote -v` 为准；`ArcesTeam` 为历史维护团队名，非仓库地址） |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.17.4 |
+| 当前版本 | v3.18.0 |
 | 拦截域名 | 规则 877 条（黑名单 645 + 白名单 232；`public/domains.txt` 非空 897 行，含注释 20 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准） |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -257,7 +257,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.17.4 |
+| 版本号 | 3.18.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

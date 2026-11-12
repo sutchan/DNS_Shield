@@ -1,4 +1,4 @@
-// src/app/layout.tsx v3.15.3
+// src/app/layout.tsx v3.18.0
 // 字体策略：不使用 next/font/google。构建期它会请求 fonts.googleapis.com，
 // EdgeOne / CI 等离线构建环境取不到 CSS 时，next/font loader 会抛 TypeError
 // 导致 next build 失败；字体统一由 globals.css 的系统字体栈提供。

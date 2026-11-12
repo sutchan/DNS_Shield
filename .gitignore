@@ -97,3 +97,8 @@ _*.txt
 # 临时脚本（_ 前缀）只允许存在于根 .tmp/ 子目录；散落在根目录或 scripts/ 会被
 # scripts/check-root-clean.mjs 拦截并要求归位。下方忽略规则仅兜底防止误入库。
 _*.mjs
+
+# 本地 nvm 版本文件：由开发环境按当前 Node 自动生成，每次可能不同；
+# 项目的 Node 版本约束以 package.json engines 与 CI setup 输入为准，此文件不入库。
+# check-root-clean.mjs 对 gitignored 条目直接放行，无需登记白名单。
+.nvmdrc

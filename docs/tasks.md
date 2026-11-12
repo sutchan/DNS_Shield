@@ -4,7 +4,7 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-12（与 package.json v3.17.4 对齐；待办区保持清零；2026-11-12 第十八轮全量文档核查：实时指标按实算更新、活跃文档统一审查锚点与仓库地址、补充新增能力与废弃标注，冻结快照按声明保留）
+> 最后审查：2026-11-12（与 package.json v3.18.0 对齐；待办区保持清零；2026-11-12 第十八轮全量文档核查：实时指标按实算更新、活跃文档统一审查锚点与仓库地址、补充新增能力与废弃标注，冻结快照按声明保留）
 > 维护团队：Sut / ArcesTeam
 >
 > **本次更新（2026-11-12 第十八轮：全量文档核查与漂移修正）**：以代码实况为权威源复核全部活跃文档——版本 **3.17.4** / 12 格式 / 16 语 140 顶层键·209 递归键 / **48 个测试文件 293 处 `it()`** / 11 个格式产物。修正项：统一全部活跃文档头部审查锚点，仓库地址按 `git remote` 统一为 `sutchan/DNS_Shield`（原第十六轮遗留疑问至此关闭）；测试指标由 47/288 实算更新为 48/293；`SPEC.md` 结构树补 `scripts/check-root-clean.mjs`、§4 补 v3.16.1~v3.17.4 UI 与单飞内存护栏、§12.1 补双源 CSP 与开发模式 `unsafe-eval` 排障；`DEPLOYMENT.md` 补 `rootclean` job、四个工作流与 action 升级、真实 `next.config.js` 配置；`config.yaml` / `CHECKLIST.md` / README 标注 `ui/Tabs.tsx` 与 `@radix-ui/react-tabs` 已废弃；`CHANGELOG [Unreleased]` 补记 v3.17.4 之后已合入但未 bump 的内存修复与 CI 提交。冻结快照（CHANGELOG 历史段 / `prototype/` / `public/brand-colors.md` / `STRUCTURE-REVIEW.md` / `tasks-done.md`）按各自声明不回填数值，仅补冻结与废弃标注。**遗留疑问**：`vercel.json` CSP 含 `require-trusted-types-for 'script'` 而 `next.config.js` 不含，统一方案仍待定（当前状态见 SPEC §12.1）。
@@ -32,7 +32,7 @@
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.17.4 | `package.json` version（权威源） |
+| 应用版本 | v3.18.0 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 **140** 键、递归合计 **209** 键 | 脚本统计 `src/locales/zh-cn.json`（flatten 叶子口径，与 `check:locales` 输出及 `scripts/locale-baseline.json` keyCount 一致；v3.15.5 移除 `moreFormats` 死键，2026-11-07 实算） |
 | 测试套件 / 用例 | **48 套件 / 293 用例**（2026-11-12 脚本实算：48 个 `*.test.ts` 文件、293 处 `it()` / `test()` 调用、无 `it.each`；v3.17.3 新增 `useWorkerPool.singleflight.test.ts` 1 套件 5 用例） | `vitest run` 为权威计数；本机已安装 `node_modules`，本轮为静态实算，待 CI / 本机实跑复核 |
