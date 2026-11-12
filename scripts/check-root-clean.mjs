@@ -57,13 +57,15 @@ for (const e of entries) {
 
 // 额外检查：scripts/ 子目录禁止临时脚本散落（_ 前缀文件）。
 // 临时脚本（一次性验证/转换脚本）统一存放于根 .tmp/ 子目录，不得占用正式工具目录。
+// 已被 .gitignore 忽略的运行日志（如 _out.txt / _err.txt）不会进仓库，不在此拦截；
+// 仅拦截「未忽略、会被提交进仓库」的 _ 前缀文件——那才是真正的污染风险。
 const scriptsDir = path.join(ROOT, 'scripts');
 if (fs.existsSync(scriptsDir)) {
   for (const e of fs.readdirSync(scriptsDir, { withFileTypes: true })) {
     if (e.isDirectory()) continue; // lib/ 等正式子目录放行
-    if (e.name.startsWith('_')) {
-      violations.push(`文件 "scripts/${e.name}" 不应出现在 scripts/（临时脚本请统一移入根目录 .tmp/ 子目录）`);
-    }
+    if (!e.name.startsWith('_')) continue;
+    if (isIgnored(path.join('scripts', e.name))) continue;
+    violations.push(`文件 "scripts/${e.name}" 不应出现在 scripts/（临时脚本请统一移入根目录 .tmp/ 子目录）`);
   }
 }
 
