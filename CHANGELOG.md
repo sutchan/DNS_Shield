@@ -24,7 +24,8 @@
 - 修复 Open Graph / Twitter 使用 512×512 图标却声明 1200×630 的无效尺寸：改指向新增的真实 1200×630 `og-image.png`
 - 标题去掉内嵌版本号（发版导致标题漂移，不利于关键词稳定性）；description 重写为可引用的事实句；补 `applicationName` / `category` / `formatDetection` / `appleWebApp`，keywords 补 AdGuard / Pi-hole / Clash Meta
 - `robots.txt` 移除 `Disallow: /_next/`（会阻断 Googlebot 抓取 JS/CSS，使依赖客户端渲染的页面无法被正确渲染与索引），并显式 `Allow` 22 个主流 AI / 生成式引擎 UA（GPTBot、OAI-SearchBot、ClaudeBot、PerplexityBot、Google-Extended、CCBot 等）
-- `sitemap.xml` 移除 3 条带 fragment 的伪 URL（会被搜索引擎归一化为 `/`，形成重复条目）与每次构建都变的 `new Date()` 时间戳，收敛为唯一有效 URL
+- `sitemap.xml` 移除 3 条带 fragment 的伪 URL（会被搜索引擎归一化为 `/`，形成重复条目）与每次构建都变的 `new Date()` 时间戳，收敛为唯一有效 URL，并补尾斜杠与 `canonical` 保持一致
+- 修复 JSON-LD 被注入两份：React 19 会 hoist 显式 `<head>` 内的内联 script，hydration 后重复挂载（浏览器实测 `HEAD` 内 2 份 3558 字节）；按 Next 官方做法移至 `<body>`，实测回落为 1 份
 - 移除 `layout.tsx <head>` 中手写的 `icon` / `manifest` link（与 metadata 输出重复）
 - 本地 `.nvmdrc` 由开发环境按当前 Node 自动生成、内容随环境变化，纳入 `.gitignore`：`check-root-clean.mjs` 对 gitignored 条目直接放行，根目录门禁不再反复失败；项目 Node 版本约束仍以 `package.json engines` 与 CI setup 输入为准
 - 版本按 minor 规则升至 v3.18.0（新增 SEO/GEO 能力）：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 13 处文档展示位 / `public/` 11 个规则产物头部

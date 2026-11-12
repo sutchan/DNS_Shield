@@ -26,14 +26,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         {/* icon 与 manifest 由 metadata.icons / metadata.manifest 统一输出（v3.18.0 移除手写的重复 link） */}
         <meta name="version" content={APP_VERSION} />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
         {/* Google Analytics 4（gtag）：衡量 ID 来自环境变量，缺失/非法时自动跳过注入 */}
         <GaScripts />
       </head>
       <body id="app-body">
+        {/* JSON-LD 放在 body 而非显式 <head>：React 19 会 hoist head 内的内联 script，
+            hydration 后注入两份重复的结构化数据（v3.18.0 线上实测发现）。 */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:shadow">
           跳到主要内容
         </a>

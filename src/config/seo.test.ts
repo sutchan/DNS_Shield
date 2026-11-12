@@ -97,7 +97,8 @@ describe('robots / sitemap', () => {
   it('sitemap 只含唯一有效 URL，无 fragment 伪条目与动态时间戳', () => {
     const entries = sitemap();
     expect(entries).toHaveLength(1);
-    expect(entries[0].url).toBe(SITE_URL);
+    // 与 canonical 一致（trailingSlash: true 的规范形式带尾斜杠）
+    expect(entries[0].url).toBe(`${SITE_URL}/`);
     expect(entries[0].url).not.toContain('#');
     expect(entries[0].lastModified).toBeUndefined();
   });

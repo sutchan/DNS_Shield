@@ -8,7 +8,8 @@ import { SITE_URL } from '../config/site';
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: SITE_URL,
+      // trailingSlash: true 的规范形式是带尾斜杠的根 URL，与 canonical 输出保持一致
+      url: `${SITE_URL}/`,
       changeFrequency: 'weekly',
       priority: 1.0,
     },
