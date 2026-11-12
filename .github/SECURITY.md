@@ -1,3 +1,5 @@
+<!-- 最后审查：2026-11-12（与 package.json v3.17.4 对齐；第十八轮全量文档核查） -->
+
 # 安全指南
 
 本指南将帮助你了解 DNS Shield 项目的安全最佳实践，确保项目在开发和部署过程中保持安全。
@@ -54,9 +56,10 @@ pnpm update
 
 - **HTTPS**：使用 HTTPS 加密传输
 - **CORS 配置**：正确配置跨域资源共享
-- **Content Security Policy**：配置内容安全策略
+- **Content Security Policy**：配置内容安全策略。`next.config.js` 与 `vercel.json` 各定义一份（后者额外启用 `require-trusted-types-for 'script'`，两处尚未统一，见 SPEC §12.1）；CI 目前无自动一致性检查，改一处须手工核对另一处
 - **X-Frame-Options**：防止点击劫持
 - **安全响应头**：HSTS / COOP / CORP / Referrer-Policy / Permissions-Policy / X-Content-Type-Options（见 `next.config.js`；`X-XSS-Protection` 已被现代浏览器废弃，不再依赖）
+- **开发模式例外**：生产 CSP 的 `script-src` 不含 `'unsafe-eval'`；`next dev` 的 webpack 依赖 `eval` 执行模块，`next.config.js` 以 `NODE_ENV !== 'production'` 为条件**仅开发模式**追加 `'unsafe-eval'`（修复内嵌 WebView 预览的 `Refused to evaluate a string as JavaScript`），生产与 Vercel 路径保持严格（详见 DEPLOYMENT「Next.js 配置」）
 
 ### 3. 应用安全
 

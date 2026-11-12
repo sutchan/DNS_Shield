@@ -1,6 +1,6 @@
 # 质量检查清单
 
-> 最后审查：2026-11-07（与 package.json v3.17.4 对齐；第十六轮全量文档核查：README 结构树幽灵文件修正、DEPLOYMENT 发布流程与漂移门禁同步自动发布实况、SPEC 幽灵文件与 CSP 双源描述、社区文档口径统一；冻结快照按声明保留）
+> 最后审查：2026-11-12（与 package.json v3.17.4 对齐；第十八轮全量文档核查：Tabs 验收项标注废弃、结构抽查补新模块与 CI 门禁、术语与 build 编号占位符统一；冻结快照按声明保留）
 
 ## UI/UX 设计规范
 
@@ -46,7 +46,7 @@
 - [ ] `src/components/ui/Button.tsx` 支持 isLoading 状态
 - [ ] `src/components/ui/Card.tsx` 使用圆角 2xl
 - [ ] `src/components/ui/Badge.tsx` 支持 success/warning/error 变体
-- [ ] `src/components/ui/Tabs.tsx` 使用圆角 lg
+- [ ] `src/components/ui/Tabs.tsx` 使用圆角 lg — **已废弃（v3.15.5 起）**：由 `OutputPanel.formatSelect.tsx` 单一「格式」下拉取代，组件与 `@radix-ui/react-tabs` 依赖仅暂保留、勿新增引用；验收改查下拉触发器 `output-format-select-btn` 与菜单项 `format-item-{fmt}`
 - [ ] `src/components/ui/Input.tsx` 支持 ref 传递
 - [ ] 所有组件使用 `cn()` 合并类名
 - [ ] 所有组件使用 `forwardRef`
@@ -78,7 +78,8 @@
 - [ ] `.github/` 目录 Community Health Files 完整（见文档完整性清单）
 - [ ] `public/` 静态产出（domains.txt / whitelist.txt / hosts.txt / dnsmasq.conf / adguard.txt / manifest.json / service-worker.js）存在且格式正确
 - [ ] `src/app/` 路由文件（page.tsx / Home.tsx / globals.css / layout.tsx / robots.ts / sitemap.ts）存在且功能完整
-- [ ] `src/components/`、`src/hooks/`、`src/utils/`、`src/types/`、`src/config/`、`src/locales/` 模块齐全
+- [ ] `src/components/`、`src/hooks/`、`src/utils/`、`src/types/`、`src/config/`、`src/locales/`、`src/workers/` 模块齐全；重点存在性抽查：`OutputPanel.formatSelect.tsx` / `useWorkerPool.ts` / `parseAggregate.ts` / `parseShard.worker.ts` / `useWorkerPool.singleflight.test.ts`
+- [ ] `scripts/check-root-clean.mjs` 与 `.github/actions/setup/action.yml` 存在，且 `ci.yml` 的 `CI Gate` `needs` 含 `rootclean`
 - [ ] `prototype/` 目录及 `prototype/shadcn/` 设计规范完整
 - [ ] 根配置文件（`package.json` / `next.config.js` / `tsconfig.json` / `tailwind.config.js` / `postcss.config.js`）正确且依赖完整
 

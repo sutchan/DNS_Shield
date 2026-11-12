@@ -256,7 +256,7 @@ const listItemVariants = {
 ### 7.2 ARIA 模式
 
 ```tsx
-// Tabs
+// Tabs（**已废弃**：v3.15.5 起为单一「格式」下拉，ARIA 模式改由 DropdownMenu 承担）
 <div role="tablist" aria-label="输出格式">
   <button role="tab" aria-selected={true} id="tab-dnsmasq">Dnsmasq</button>
   <button role="tab" aria-selected={false} id="tab-hosts">Hosts</button>

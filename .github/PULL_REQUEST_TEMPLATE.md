@@ -1,3 +1,4 @@
+<!-- 最后审查：2026-11-12（与 package.json v3.17.4 对齐；第十八轮全量文档核查） -->
 <!-- 提交 Pull Request 前请填写以下信息，删除不必要的部分 -->
 
 ## 变更说明
@@ -34,6 +35,7 @@
 - [ ] `pnpm lint` 通过
 - [ ] `pnpm test` 通过（如涉及规则生成/解析逻辑）
 - [ ] `pnpm build` 成功
+- [ ] `node scripts/check-root-clean.mjs` 通过（CI 首步 `rootclean` 门禁）与 `node scripts/sync-facts.mjs --check` 通过（文档版本展示位）
 - [ ] 手动验证主流程（域名解析、规则生成、复制/下载）
 
 ## 代码审查自查清单（提交前）

@@ -5,7 +5,32 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
+> 最后审查：2026-11-12（与 package.json v3.17.4 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
+
 ## [Unreleased]
+
+### Fixed（本地预览被 CSP 拦截 eval）
+- `next.config.js` 的 `headers()` 增加 dev/prod 分支：`NODE_ENV !== 'production'` 时为 `script-src` 追加 `'unsafe-eval'`，使 `next dev` 的 webpack eval 模块可在带 CSP 的浏览器 / 内嵌 WebView 预览中正常执行，修复 `Refused to evaluate a string as JavaScript`
+- 生产构建（`next build` / `next start`）与 `vercel.json` 保持严格 CSP，不含 `unsafe-eval`，不扩大线上脚本注入面
+- `DEPLOYMENT.md` / `SPEC.md §12.1` 同步：把「本地调试需临时手工追加」的排障说明改为「配置已内置 dev 分支」
+- 同步修正 `next.config.js` 文件头「CI 有安全头一致性检查」的陈旧注释（实际 CI 无该检查，需手工核对两处 CSP）
+
+### Fixed（解析任务内存堆积，已合入 main、尚未 bump 版本）
+- `useRuleWorker` 引入 `inflightRef` 单飞：以内容键 `task + '\0' + text` 复用同一解析任务、作废旧输入结果；`useWorkerPool` 并行分支同样按文本单飞，并用 `useMemo` 稳定池引用，避免 `loadDomainData` 每帧重复派发导致 `postMessage` 反复克隆大文本（线上曾观测页面内存飙升至 5GB）
+- 新增 `src/hooks/useWorkerPool.singleflight.test.ts`（5 用例）覆盖单飞复用、内容键与池引用稳定性；测试实算 **48 文件 / 293 用例**（`src/**/*.test.ts` 静态计数）
+
+### CI（质量门禁与工具链）
+- 新增根目录临时文件洁净度门禁 `scripts/check-root-clean.mjs`（根目录与 `scripts/` 下的 `_*.mjs` 一律违规，唯一合法临时位置为根 `.tmp/`），以 `rootclean` job 纳入 CI Gate 的 `needs`
+- 修复 `.github/actions/setup` 复合动作的 bash 语法错误与 pnpm 11 store 路径兼容（改用显式 `actions/cache`）；`ci.yml` 漂移检测剔除正则兼容 `; 更新::` 注释前缀
+- 官方 action 升级至最新主版本：`actions/checkout@v5`、`actions/setup-node@v6`、`pnpm/action-setup@v6`、`actions/cache@v5`、`actions/upload-artifact@v5`
+
+### Docs（第十八轮全量文档核查，2026-11-12）
+- 统一全部活跃文档头部审查锚点、仓库地址（以 `git remote` 的 `sutchan/DNS_Shield` 为准）与术语；实时指标按实算更新（48 测试文件 / 293 用例）
+- 补充新增能力说明：解析任务单飞/内容键、CI `rootclean` 门禁与 action 升级、设置弹窗分组修复、统计条与输出面板信息层次、Hero 双栏
+- 标注已废弃内容：`ui/Tabs.tsx` / `@radix-ui/react-tabs`（v3.15.5 起由单一「格式」下拉取代，暂保留勿新增引用）、`OutputPanel.formatTabs.tsx`、`moreFormats` 键、旧 9 格式列表、旧端口 8082
+- 补 `next.config.js` / `vercel.json` 双源 CSP 现状与开发模式 `unsafe-eval` 排障说明；冻结快照（CHANGELOG 历史段 / `prototype/` / `public/brand-colors.md` / `STRUCTURE-REVIEW.md` / `tasks-done.md`）按声明不回填数值，仅补冻结与废弃标注
+
+> 以上提交均在 v3.17.4 之后合入 `main`，版本未 bump；发布时统一收编为正式版本小节。
 
 ## [3.17.4] - 2026-11-09
 

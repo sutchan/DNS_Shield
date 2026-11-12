@@ -28,7 +28,7 @@ prototype/
   - 主题切换（Light/Dark，持久化 `localStorage` + `prefers-color-scheme`）
   - 16 语言下拉（对齐 `src/utils/i18n.ts` `supportedLanguages`）
   - 实时解析统计（黑名单 / 白名单 / 自定义 DNS / 注释 / 无效行）
-  - 12 种格式输出（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS）Tab 切换
+  - 12 种格式输出（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS）Tab 切换（**已废弃**：当前实现自 v3.15.5 起为单一「格式」下拉 `OutputPanel.formatSelect.tsx`）
   - 行号编辑器、排序、去重、清空、复制、下载
   - 预设数据（内置 / AdGuard / EasyList / NeoHosts）
   - **设置面板**（项目名 / 版本 / IPv4 / IPv6 / 头部注释 / IPv6 屏蔽 / 去重 / 通配符，实时驱动生成，对齐 `src/components/SettingsPanel.tsx`）
@@ -47,12 +47,12 @@ prototype/
 
 ## 业务流程原型（`flows.html`）
 
-纯前端可交互流程，带动效：① URL 导入→解析（步进器 + 加载态）；② 9 格式切换（淡入 + 复制）；③ 设置变更→实时重生成（双向绑定）；④ 主题 / 语言切换（整体缓动过渡）。
+纯前端可交互流程，带动效：① URL 导入→解析（步进器 + 加载态）；② 9 格式切换（淡入 + 复制）（**已废弃**：当前为 12 种格式、单一「格式」下拉）；③ 设置变更→实时重生成（双向绑定）；④ 主题 / 语言切换（整体缓动过渡）。
 
 ## 设计规范索引
 - **3.7.29 语义**：白名单域名不进入黑名单拦截列表，仅以 `server=/`（Dnsmasq）、`# 已白名单:`（Hosts）、`@@||domain^$important`（AdGuard 白名单）呈现。
 - **响应式**：≥768px 双栏，移动端单列堆叠；sticky 顶栏；Toast 反馈。
-- **语义化 id / 无障碍**：主要容器与控件均带 `id`（`app-header`/`main-content`/`input-panel`/`output-panel`/`lang-selector-btn`/`settingsBtn`/`shareBtn` 等，主题切换位于设置弹窗内对应 `theme-seg-btn`），支持键盘与 ARIA。
+- **语义化 id / 无障碍**：主要容器与控件均带 `id`（`app-header`/`main-content`/`input-panel`/`output-panel`/`lang-selector-btn`/`settings-btn`/`share-btn` 等，主题切换位于设置弹窗内对应 `theme-seg-btn`），支持键盘与 ARIA；`settingsBtn` / `shareBtn` 等 camelCase 写法自 v3.15.0 起**已废弃**，一律 kebab-case。
 
 ## 设计规范索引
 
@@ -93,7 +93,7 @@ prototype/
 - **去重**：自定义 DNS 按 domain 去重（3.7.10）；域名/白名单按归一化键去重。
 - **白名单语义（3.7.29）**：黑名单拦截列表剔除白名单域名。
 - **头部**：每种格式输出版本与域名计数（对齐 `generateHeader`）。
-- **组件对齐**：`wireframes.html` 组件库对齐 `src/components/ui/` 全部 12 个 shadcn 封装；`flows.html` 业务流程对齐 `SettingsPanel` / `UrlSection` / `Footer` 交互语义。
+- **组件对齐**：`wireframes.html` 组件库对齐 `src/components/ui/` 全部 12 个 shadcn 封装（其中 `Tabs` 自 v3.15.5 起已废弃、仅暂保留）；`flows.html` 业务流程对齐 `SettingsPanel` / `UrlSection` / `Footer` 交互语义。
 - **未同步（原型边界）**：URL 为模拟 fetch（真实实现见 `src/utils/domainFetch.ts` 流式读取 + 10MB 上限）、完整 merlin/openwrt usage 多行。
 
 ## 使用方式

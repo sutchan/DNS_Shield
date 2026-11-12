@@ -20,7 +20,7 @@ src/components/
 ├── composite/             # 复合组件（分子层）
 │   ├── code-editor.tsx    # 代码编辑器（行号 + 文本区）
 │   ├── stat-badge.tsx     # 统计徽章
-│   ├── format-tabs.tsx    # 格式切换标签
+│   ├── format-tabs.tsx    # 格式切换标签（**已移除**：现为 OutputPanel.formatSelect.tsx 单一「格式」下拉）
 │   ├── url-input-row.tsx  # URL 输入行
 │   ├── preset-tags.tsx    # 预设标签组
 │   ├── empty-state.tsx    # 空状态
@@ -66,7 +66,7 @@ const buttonVariants = cva(
     },
     defaultVariants: {
       variant: 'default',
-      size: 'md',
+      size: 'md',  // 已废弃变体：当前 Button 仅支持 default / sm / lg / icon
     },
   }
 );
@@ -190,7 +190,9 @@ const badgeVariants = cva(
 );
 ```
 
-### 2.5 Tabs
+### 2.5 Tabs（已废弃）
+
+> **废弃说明**：v3.15.5 起格式切换改为单一「格式」下拉（`OutputPanel.formatSelect.tsx`），本节 Tabs 组件规范仅作设计留档，勿用于新增实现；`ui/Tabs.tsx` 与 `@radix-ui/react-tabs` 仅暂保留。
 
 ```typescript
 // tabs.tsx

@@ -1,5 +1,7 @@
 # DNS Shield 目录结构与可维护性审查报告
 
+> **冻结快照声明**：本报告停留在 v3.12.0（2026-10-05），文中目录计数、CSP 结论与结构清单**不代表当前实现**，按既有规范不回填。当前权威实况见 [SPEC.md](SPEC.md) §2 与 [tasks.md](tasks.md) 实时指标，版本号以 `package.json` 为准。已知过时结论：`§5` 的「CSP 两处已统一」已被后续修订推翻（`vercel.json` 额外启用 `require-trusted-types-for 'script'`）；`workers/` 现为 2 个、`scripts/` 新增 `check-root-clean.mjs`。
+>
 > 审查日期：2026-10-05 ｜ 审查版本：v3.12.0 ｜ 审查范围：全仓（219 文件 / 39594 行）
 > 方法：脚本实测（目录树 + 行数 + 引用关系 grep）+ 子代理交叉核验，结论均以实际文件为证据。
 > 结论摘要：**结构整体健康**（App Router 惯例清晰、200 行规则达标、无冗余嵌套），
@@ -73,7 +75,7 @@ openwrt-package/  LuCI 包（Makefile / lua / root / usr）
 
 | 事实 | 处置 |
 |---|---|
-| CSP 安全头 `next.config.js`（4 头）vs `vercel.json`（8 头） | **已统一**：以 `vercel.json` 为准回写 `next.config.js`（补 HSTS/COOP/CORP/X-Frame-Options，`frame-ancestors` 由 `*` 收紧为 `none`，移除生产不需要的 `unsafe-eval`） |
+| CSP 安全头 `next.config.js`（4 头）vs `vercel.json`（8 头） | **已统一**（当时结论，现已过时）：以 `vercel.json` 为准回写 `next.config.js`（补 HSTS/COOP/CORP/X-Frame-Options，`frame-ancestors` 由 `*` 收紧为 `none`，移除生产不需要的 `unsafe-eval`）。当前两处 CSP 仍未统一（`vercel.json` 多 `require-trusted-types-for 'script'`），见 SPEC §12.1 |
 | settings 默认值两份且 `ipv4` 冲突（`127.0.0.1` vs `0.0.0.0`） | **已收敛**为 `src/config/defaults.json`（TS 与 Node 脚本双端可读） |
 | 版本号 40+ 处手工同步 | **已脚本化**：`scripts/sync-facts.mjs`（13 处展示位）+ CI 硬门禁；脚本故意不覆盖 `CHANGELOG`（历史）与 `prototype/`（快照） |
 | `scripts/count-domains.mjs --write` 硬编码 `版本:: 3.7.34` | **已修**：改读 `package.json`（此前一次执行就会把 3 个产物头部写回旧版本） |

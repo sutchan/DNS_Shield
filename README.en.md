@@ -2,6 +2,8 @@
 
 ![DNS Shield](public/logo.svg)
 
+<!-- Last reviewed: 2026-11-12 (aligned with package.json v3.17.4; 18th full documentation audit) -->
+
 [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.17.4-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Router-level DNS-based ad blocking filter list with web management tool. It both **generates** rule lists from a unified domain source and **converts** existing lists between different formats.
@@ -19,8 +21,12 @@ This project provides a dnsmasq/hosts-based ad blocking solution that includes:
 - **Whitelist management** - Independent whitelist editing interface with import/export support
 - **Multi-language support** - 16 languages with priority zh-cn (default) > zh-tw > en, kept in sync with `<html lang>` and SEO `inLanguage`
 - **Next.js framework** - Modern Next.js 14 App Router with modular architecture
-- **Security hardening** - CSP headers, HSTS, Service Worker secure caching, filename sanitization
+- **Security hardening** - CSP headers (defined in both `next.config.js` and `vercel.json`, the latter additionally enabling `require-trusted-types-for 'script'`), HSTS, Service Worker secure caching, filename sanitization; local dev adds `unsafe-eval` via a `NODE_ENV` guard (production stays strict); see DEPLOYMENT
 - **Multi-core parsing** - Inputs of 20000+ lines are sharded across Web Workers with graceful fallback to a single worker / main thread
+- **Parse-task memory guard** - Single-flight by content key (`task + text`) plus a stable worker-pool reference prevents repeated dispatch / OOM on very large inputs
+- **Settings dialog** - 2-column project fields, equal-width 3-column format toggles, no duplicated group headings (v3.16.1)
+- **Lightweight information layers** - Two-column Hero on large screens, dot + plain-text stats bars, merged preview info band (v3.16.1 ~ v3.17.4)
+- **CI hygiene gate** - `rootclean` job in CI Gate and latest-major GitHub actions
 
 ## Usage
 
@@ -101,7 +107,7 @@ Besides generating rules from a unified domain source, DNS Shield also **convert
 
 - **Input detection** - When you paste hosts, dnsmasq, AdGuard or plain-domain text, `parseDomainLine` automatically detects each line's format and extracts domains / whitelist (`+domain`) / custom DNS (`@domain=ip`) / comments (`#`).
 - **Unified intermediate model** - Regardless of the source format, entries are parsed into a unified domain-item model (blocked or not, target IP, whitelist flag).
-- **Any-format output** - Switch the target format in the output panel to generate the corresponding list (Dnsmasq / Hosts / AdGuard / Whitelist / Unbound / Pi-hole / Domains / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS).
+- **Any-format output** - Pick the target format from the single "Format" dropdown in the output panel (`FormatSelect`, since v3.15.5; the former core-tabs + "more formats" two-level entry has been removed) to generate the corresponding list (Dnsmasq / Hosts / AdGuard / Whitelist / Unbound / Pi-hole / Domains / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS).
 
 Typical use: paste an AdGuard rule list into the input box and convert it to dnsmasq or Pi-hole in one click; or turn a legacy hosts list into SmartDNS / Bind RPZ.
 

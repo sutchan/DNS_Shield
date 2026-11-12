@@ -1,3 +1,5 @@
+<!-- 最后审查：2026-11-12（与 package.json v3.17.4 对齐；第十八轮全量文档核查） -->
+
 # 贡献指南
 
 欢迎参与 DNS Shield 项目的开发和维护！本指南将帮助你了解如何为项目做出贡献。
@@ -8,7 +10,7 @@
 
 如果你发现了 bug 或有新功能建议，请在 GitHub 上创建一个 issue：
 
-1. 访问 [GitHub Issues](https://github.com/ArcesTeam/DNS_Shield/issues)
+1. 访问 [GitHub Issues](https://github.com/sutchan/DNS_Shield/issues)
 2. 点击 "New Issue"
 3. 选择合适的模板（Bug 报告或功能请求）
 4. 填写详细信息，包括：
@@ -25,7 +27,7 @@
 
 #### 2.1  Fork 仓库
 
-1. 访问 [DNS Shield 仓库](https://github.com/ArcesTeam/DNS_Shield)
+1. 访问 [DNS Shield 仓库](https://github.com/sutchan/DNS_Shield)
 2. 点击右上角的 "Fork" 按钮，将仓库复制到你的 GitHub 账户
 
 #### 2.2  克隆仓库
@@ -38,7 +40,7 @@ git clone https://github.com/YOUR_USERNAME/DNS_Shield.git
 cd DNS_Shield
 
 # 添加 upstream 远程仓库
-git remote add upstream https://github.com/ArcesTeam/DNS_Shield.git
+git remote add upstream https://github.com/sutchan/DNS_Shield.git
 ```
 
 #### 2.3  创建分支
@@ -153,6 +155,7 @@ pnpm start
 - **应放入 `.tmp/`**：一次性脚本与探针、调试输出、运行日志、中间产物、转换/翻译类临时程序
 - **禁止散落**：仓库根、`scripts/` 等正式目录不得出现 `_` 前缀的临时脚本或测试文件（如 `_probe.mjs`、`_tmp.test.ts`）
 - **门禁**：`scripts/check-root-clean.mjs` 是 CI 首步的根目录清洁度门禁，会拦截上述散落条目并要求归位到 `.tmp/`
+- **工作流工具链**：`.github/actions/setup` 与各工作流已升级至 `actions/checkout@v5` / `actions/setup-node@v6` / `pnpm/action-setup@v6` / `actions/cache@v5` / `actions/upload-artifact@v5`（2026-11-12 实况；升级记录见 CHANGELOG `[Unreleased]`）
 - **会话结束即清理**：`.tmp/` 内容视为可随时删除的缓存；需要长期留存的证据（截图、报告）应写入 `docs/`，或固化为测试断言随代码入库
 - **正式产物目录**：测试覆盖率、审计报告等输出写入 `coverage/`、`reports/`（均已 gitignore），不得写入仓库根
 
@@ -185,6 +188,6 @@ pnpm start
 
 如果有任何问题或建议，可以通过以下方式联系项目维护者：
 
-- GitHub Issues：[https://github.com/ArcesTeam/DNS_Shield/issues](https://github.com/ArcesTeam/DNS_Shield/issues)
+- GitHub Issues：[https://github.com/sutchan/DNS_Shield/issues](https://github.com/sutchan/DNS_Shield/issues)
 
 感谢你的贡献！

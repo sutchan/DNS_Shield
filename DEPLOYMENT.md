@@ -3,6 +3,7 @@
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
 > 当前版本：v3.17.4
+> 最后审查：2026-11-12（第十八轮全量文档核查；权威版本源为 `package.json`）
 
 ## 部署环境
 
@@ -173,15 +174,15 @@ certbot renew --dry-run
 
 | 工作流 | 文件 | 触发时机 | 职责 |
 |--------|------|----------|------|
-| CI | `ci.yml` | push/PR → `main`、`dev`；手动 | 质量门禁：ESLint、TypeScript、Vitest（含覆盖率）、Next.js 构建、多语言与数据一致性 |
+| CI | `ci.yml` | push/PR → `main`、`dev`；手动 | 质量门禁：根目录临时文件洁净度（`rootclean`）、ESLint、TypeScript、Vitest（含覆盖率）、Next.js 构建、多语言与数据一致性 |
 | Deploy | `deploy.yml` | `main` 的 CI 成功后自动（`workflow_run`）；手动 | 部署到 Vercel / EdgeOne Pages |
 | Release | `release.yml` | `main` 的 Deploy 完成且成功后自动（`workflow_run`） | 按 `package.json` 版本自动打 tag、重新生成全部格式产物、创建 GitHub Release 并附带规则文件资产 |
 | Aggregate | `aggregate.yml` | 每周一定时；手动 | 聚合 AdGuard / EasyList / NeoHosts / StevenBlack / YousList 上游域名，去重合并后自动发起 Pull Request 更新 `public/domains.txt` |
 
-CI 采用「并行 job + 聚合门禁」结构：`lint`、`typecheck`、`test`、`build`、`data` 并行执行，最后由 `ci` 汇总结果。
+CI 采用「并行 job + 聚合门禁」结构：`rootclean`、`lint`、`typecheck`、`test`、`build`、`data` 并行执行，最后由 `ci` 汇总（`needs` 含 `rootclean`）。`rootclean` 执行 `node scripts/check-root-clean.mjs`，拦截散落在根目录或 `scripts/` 下的 `_*.mjs` 临时脚本（唯一合法临时位置为根 `.tmp/`）。
 配置分支保护时**只需把 `CI Gate` 勾选为必需检查**，后续增删 job 无需再改保护规则。
 
-三个工作流的运行时准备统一收敛到复合动作 `.github/actions/setup`（安装 pnpm + Node 24 + 恢复依赖缓存），避免每处重复。
+CI / Deploy / Release / Aggregate 四个工作流的运行时准备统一收敛到复合动作 `.github/actions/setup`（安装 pnpm + Node 24 + 显式 `actions/cache` 恢复 pnpm store），避免每处重复。当前官方 action 版本：`actions/checkout@v5`、`actions/setup-node@v6`、`pnpm/action-setup@v6`、`actions/cache@v5`、`actions/upload-artifact@v5`（2026-11-12 实况；升级记录见 CHANGELOG `[Unreleased]`）。
 
 `aggregate.yml` 不参与发布链路，仅做上游数据源聚合：每周一定时拉取各上游列表，合并去重后更新 `public/domains.txt` 并自动发起 Pull Request，需人工 review 后合并，从而保证过滤数据持续更新。
 
@@ -244,8 +245,13 @@ CI 中的漂移检测是**硬门禁**（产物与数据源不一致即 `exit 1` 
 ```bash
 node scripts/gen-format-files.mjs   # 重新生成（版本号取自 package.json，禁止硬编码）
 node scripts/count-domains.mjs       # 核对计数
+node scripts/sync-facts.mjs --check  # 13 处文档版本展示位一致性
+node scripts/check-locales.mjs       # 16 语 / 209 键一致性
+node scripts/check-root-clean.mjs    # 根目录临时文件洁净度（CI rootclean job 同款）
 git add public && git commit -m "chore: 同步生成规则文件"
 ```
+
+除产物漂移外，CI 首步 `rootclean` 还会拦截散落在根目录或 `scripts/` 的 `_*.mjs` 临时脚本（唯一合法临时位置为根 `.tmp/`），提交前可用上表最后一条命令本地自检。
 
 ## 配置选项
 
@@ -264,28 +270,32 @@ git add public && git commit -m "chore: 同步生成规则文件"
 
 ```javascript
 /** @type {import('next').NextConfig} */
+// securityHeaders：CSP / HSTS / COOP / CORP / X-Frame-Options 等 8 个响应头（完整定义见文件实文）
+const securityHeaders = [ /* ... */ ];
+const buildTimeId = () => { /* 本地构建时间 yymmddhhmm */ };
+
 const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   trailingSlash: true,
   images: { unoptimized: true },
   env: {
-    version: '3.17.4'
+    version: '3.17.4',                    // 展示位由 sync-facts.mjs 从 package.json 派生，勿另处硬编码
+    NEXT_PUBLIC_BUILD_ID: buildTimeId()  // 构建期注入，页脚 build 编号（缺失时回退版本号）
   },
+  devIndicators: { buildActivity: false },
+  onDemandEntries: { maxInactiveAge: 25 * 1000, pagesBufferLength: 2 },
   async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          // Content-Security-Policy、HSTS、COOP/CORP 等安全头部
-        ]
-      }
-    ];
+    // dev: CSP script-src 追加 'unsafe-eval'（webpack eval）；prod: 严格 CSP
+    return [{ source: '/(.*)', headers: securityHeaders }];
   }
 };
 
 module.exports = nextConfig;
 ```
+
+> **CSP 双源**：`vercel.json` 另有一份逐字相同的 CSP，末尾额外启用 `require-trusted-types-for 'script'`；两处尚未统一（见 SPEC §12.1）。CI 目前**没有**自动一致性检查，修改一处须手工核对另一处。
+> **本地开发提示（已内置修复）**：`next dev` 的 webpack 需以 `eval` 执行模块，若 CSP 不含 `'unsafe-eval'`，带 CSP 的浏览器 / 内嵌 WebView 预览会被拦截并报 `Refused to evaluate a string as JavaScript`。现 `next.config.js` 的 `headers()` 按 `NODE_ENV` 分支：dev 自动为 `script-src` 追加 `'unsafe-eval'`，生产（`next build` / `next start`）保持严格不含该指令；`vercel.json` 属生产部署路径，同样不含。无需临时手工改配置或更换预览方式。
 
 ## 部署后操作
 

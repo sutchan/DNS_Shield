@@ -1,4 +1,5 @@
 schema: spec-driven
+lastReviewed: "2026-11-12"
 
 # Project context
 context: |
@@ -10,7 +11,7 @@ context: |
   We maintain a single source of truth in public/domains.txt
   We support 12 output formats: dnsmasq, hosts, AdGuard, whitelist, Unbound, Pi-hole, plain domains, Bind RPZ, SmartDNS, Mosdns, Clash Meta, and CoreDNS
   We follow strict file header format with version and date
-  We maintain whitelist.txt for whitelist rules
+  whitelist.txt is a generated artifact (scripts/gen-format-files.mjs); do not edit it directly
   We use Next.js App Router with page.tsx, layout.tsx, and Home.tsx components
   We have 16 internationalization languages (default Simplified Chinese, then Traditional Chinese, then English)
   Language priority zh-cn > zh-tw > en; <html lang> and SEO inLanguage stay in sync
@@ -18,6 +19,10 @@ context: |
   We use sonner for toast notifications
   Dev server runs on port 3000 (pnpm dev)
   Large inputs (>=20000 lines) use multi-core Web Worker shard parsing with graceful fallback
+  Parse tasks are single-flighted by a content key (task + text) and the worker pool reference is stable (memory guard)
+  CI runs a root temp-script hygiene gate (scripts/check-root-clean.mjs) before the CI Gate aggregator
+  GitHub actions use latest majors: checkout@v5, setup-node@v6, pnpm/action-setup@v6, cache@v5, upload-artifact@v5
+  ui/Tabs.tsx and @radix-ui/react-tabs are deprecated since v3.15.5 (single Format dropdown replaces them)
 
 # Per-artifact rules
 rules:
@@ -72,6 +77,8 @@ components:
       file: "src/components/ui/Switch.tsx"
       parts: ["Switch"]
     - name: "Tabs"
+      deprecated: true
+      note: "Deprecated since v3.15.5; replaced by OutputPanel.formatSelect.tsx (single Format dropdown). File and @radix-ui/react-tabs kept temporarily - do not add new references."
       file: "src/components/ui/Tabs.tsx"
       parts: ["Tabs", "TabsList", "TabsTrigger", "TabsContent"]
     - name: "Toast"

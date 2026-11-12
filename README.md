@@ -4,6 +4,8 @@
 
 # DNS Shield - 路由器广告过滤工具
 
+> 最后审查：2026-11-12（与 package.json v3.17.4 对齐；第十八轮全量文档核查）
+
 [![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.17.4-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告和保护隐私。既支持从统一域名数据源**生成**多种格式规则，也支持将已有清单在**不同格式间互相转换**。
@@ -14,7 +16,7 @@
 - **支付保护** - 屏蔽扫码支付跳转链接（微信、支付宝）
 - **隐私防护** - 阻止追踪器和数据采集
 - **多设备生效** - 路由器设置一次，所有连接设备自动生效
-- **多种格式支持** - Dnsmasq、Hosts、AdGuard、Unbound、Pi-hole、Bind RPZ、SmartDNS、白名单、纯域名、Mosdns、Clash Meta、CoreDNS 共 12 种格式
+- **多种格式支持** - Dnsmasq、Hosts、AdGuard、AdGuard 白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS、Mosdns、Clash Meta、CoreDNS 共 12 种格式（顺序同 `src/types/formats.ts` 的 `ALL_FORMATS`）
 - **格式互转** - 粘贴任意格式（hosts / dnsmasq / AdGuard / 纯域名）清单，自动解析并转换为目标格式
 - **白名单管理** - 自定义白名单，避免误拦截关键服务
 - **自定义 DNS 指向** - 支持 @domain=ip 语法，自定义域名解析
@@ -29,6 +31,10 @@
 - **单元测试** - 基于 Vitest 覆盖核心纯函数（解析/校验/规则生成/国际化）
 - **多核并行解析** - 超大输入（≥20000 行）自动分片到多个 Web Worker 并行求值，失败逐级回退单 Worker → 主线程同步
 - **语言优先级** - 默认简体中文 → 繁体中文 → 英语；与 `<html lang>` / SEO `inLanguage` 保持一致
+- **设置弹窗分组** - 项目信息 2 列、格式开关等宽 3 列、选项末项整行铺满，重复分组标题已修复（v3.16.1）
+- **轻量信息层次** - Hero 大屏双栏、输入区「色点 + 纯文本」统计条、输出侧预览统计去胶囊并合并信息带（v3.16.1 ~ v3.17.4）
+- **解析任务内存护栏** - 单飞 + 内容键复用、Worker 池引用稳定，避免超大输入重复派发导致内存堆积（v3.17.4 后已合入）
+- **CI 质量门禁** - 根目录临时文件洁净度 `rootclean` 纳入 CI Gate，官方 action 已升级至最新主版本
 
 ## 快速开始
 
@@ -116,7 +122,7 @@ curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmas
 src/
 ├── app/              # Next.js App Router（布局、页面、全局样式）
 ├── components/       # React 组件
-│   ├── ui/           # shadcn/ui 基础组件（12 个：Badge/Button/Card/Checkbox/DropdownMenu/Input/Label/Loading/Select/Switch/Tabs/Toast）
+│   ├── ui/           # shadcn/ui 基础组件（12 个：Badge/Button/Card/Checkbox/DropdownMenu/Input/Label/Loading/Select/Switch/Tabs/Toast；Tabs 自 v3.15.5 起已废弃，文件与依赖暂保留、勿新增引用）
 │   ├── Header.tsx    # 页头组件（主题/语言切换）
 │   ├── Footer.tsx    # 页脚组件
 │   ├── InputPanel.tsx # 输入面板
@@ -189,6 +195,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
         ▼
   域名解析（utils/parser.ts + domainValidator.ts）
         │  ≥20000 行走 useWorkerPool 多核分片并行（回退单 Worker → 主线程）
+        │  单飞护栏：内容键 task+text 复用同一解析任务、作废旧结果；池引用 useMemo 稳定
         │  提取域名 / 白名单(+) / 自定义 DNS(@) / 注释(#)
         ▼
   排序去重（utils/sortDedupe.ts）
@@ -226,7 +233,7 @@ DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域�
 
 - `src/app/robots.ts` 自动生成 `robots.txt`，并声明 sitemap 索引地址。
 - `src/app/sitemap.ts` 自动生成 `sitemap.xml`，登记站点地图。
-- `src/app/layout.tsx` 定义页面元数据（标题、描述、Open Graph、主题色），并注入安全响应头（CSP/HSTS/COOP/CORP，见 `next.config.js`）。
+- `src/app/layout.tsx` 定义页面元数据（标题、描述、Open Graph、主题色）；安全响应头由 `next.config.js` 的 `headers()` 统一下发（CSP / HSTS / COOP / CORP 等 8 头），`vercel.json` 另有一份 CSP 供 Vercel 部署路径使用，后者额外启用 `require-trusted-types-for 'script'`（两处差异见 SPEC §12.1；`next dev` 按 `NODE_ENV` 自动为 `script-src` 追加 `'unsafe-eval'`，生产不含，详见 DEPLOYMENT「Next.js 配置」）。
 - `public/manifest.json` 提供 PWA manifest，`public/service-worker.js` 负责离线缓存，支持安装到桌面与离线可用。
 
 ## 开发

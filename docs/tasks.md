@@ -4,8 +4,10 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-07（与 package.json v3.17.4 对齐；待办区保持清零；2026-11-07 第十六轮全量文档核查：README/SPEC 幽灵文件修正、DEPLOYMENT 同步自动发布实况与漂移硬门禁、社区文档口径统一、代码注释 Tab→下拉修正，冻结快照按声明保留）
+> 最后审查：2026-11-12（与 package.json v3.17.4 对齐；待办区保持清零；2026-11-12 第十八轮全量文档核查：实时指标按实算更新、活跃文档统一审查锚点与仓库地址、补充新增能力与废弃标注，冻结快照按声明保留）
 > 维护团队：Sut / ArcesTeam
+>
+> **本次更新（2026-11-12 第十八轮：全量文档核查与漂移修正）**：以代码实况为权威源复核全部活跃文档——版本 **3.17.4** / 12 格式 / 16 语 140 顶层键·209 递归键 / **48 个测试文件 293 处 `it()`** / 11 个格式产物。修正项：统一全部活跃文档头部审查锚点，仓库地址按 `git remote` 统一为 `sutchan/DNS_Shield`（原第十六轮遗留疑问至此关闭）；测试指标由 47/288 实算更新为 48/293；`SPEC.md` 结构树补 `scripts/check-root-clean.mjs`、§4 补 v3.16.1~v3.17.4 UI 与单飞内存护栏、§12.1 补双源 CSP 与开发模式 `unsafe-eval` 排障；`DEPLOYMENT.md` 补 `rootclean` job、四个工作流与 action 升级、真实 `next.config.js` 配置；`config.yaml` / `CHECKLIST.md` / README 标注 `ui/Tabs.tsx` 与 `@radix-ui/react-tabs` 已废弃；`CHANGELOG [Unreleased]` 补记 v3.17.4 之后已合入但未 bump 的内存修复与 CI 提交。冻结快照（CHANGELOG 历史段 / `prototype/` / `public/brand-colors.md` / `STRUCTURE-REVIEW.md` / `tasks-done.md`）按各自声明不回填数值，仅补冻结与废弃标注。**遗留疑问**：`vercel.json` CSP 含 `require-trusted-types-for 'script'` 而 `next.config.js` 不含，统一方案仍待定（当前状态见 SPEC §12.1）。
 >
 > **本次更新（2026-11-07 第十七轮：全量文档核查与漂移修正）**：以代码实况复核全部活跃文档（版本 3.17.3 / 12 种输出格式 / 16 语 140 顶层键 / 47 个测试文件 288 处 `it()` 均与实测一致）。修正项：本文件交叉引用 §5.4→§5.3（SPEC 任务记录规范实为 §5.3）；`prototype/README.md` 4 处 `public/brand/` 幽灵路径改为实际 `public/brand-colors.md`，并删除「与 `src/config/version.ts` 一致」的误导声明改为冻结快照表述；README 功能清单补「纯域名」使中英文 12 种格式口径一致；DEPLOYMENT `next.config.js` 示例补 `output: 'standalone'` 与实文一致。CHANGELOG 复核 `6fcd7da..HEAD` 仅 `dd7eefc`（CI setup 复合动作语法修复）且已入账 `[3.17.3]`。冻结快照（CHANGELOG 历史段 / prototype 设计章节 / public/brand-colors.md / STRUCTURE-REVIEW.md / tasks-done.md）按各自声明未改。
 >
@@ -33,11 +35,11 @@
 | 应用版本 | v3.17.4 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 **140** 键、递归合计 **209** 键 | 脚本统计 `src/locales/zh-cn.json`（flatten 叶子口径，与 `check:locales` 输出及 `scripts/locale-baseline.json` keyCount 一致；v3.15.5 移除 `moreFormats` 死键，2026-11-07 实算） |
-| 测试套件 / 用例 | **47 套件 / 288 用例**（2026-11-07 脚本实算：47 个 `*.test.ts(x)` 文件、288 处 `it()` / `test()` 调用、无 `it.each`） | `vitest run` 为权威计数；本机无 `node_modules`，本轮静态计数供参考，待 CI / 本机实跑复核 |
+| 测试套件 / 用例 | **48 套件 / 293 用例**（2026-11-12 脚本实算：48 个 `*.test.ts` 文件、293 处 `it()` / `test()` 调用、无 `it.each`；v3.17.3 新增 `useWorkerPool.singleflight.test.ts` 1 套件 5 用例） | `vitest run` 为权威计数；本机已安装 `node_modules`，本轮为静态实算，待 CI / 本机实跑复核 |
 | 覆盖率门禁 | 已生效且为真实值；含 `src/utils` + `src/hooks`，门槛 **语句 80 / 分支 75 / 函数 85 / 行 80**；`vitest.config.ts` 显式声明 `all: false` | `vitest run --coverage`；2026-11-05 第十二轮实测：语句 88.85 / 分支 85.45 / 函数 91.74 / 行 88.85，全部达标且有余量；曾以「临时抬阈至 99 → EXIT CODE 1」反证门禁真实生效 |
-| 组件规模 | 顶层 **16** 个 `.tsx`（含 `OutputPanel.parts.tsx` / `OutputPanel.formatSelect.tsx`）+ `OutputPanel.derived.ts` / `InputPanel.types.ts`，`ui/` 12 个 | `src/components/` 实测（2026-11-07 实算，由 15 修正为 16） |
+| 组件规模 | 顶层 **16** 个 `.tsx`（含 `OutputPanel.parts.tsx` / `OutputPanel.formatSelect.tsx`）+ `OutputPanel.derived.ts` / `InputPanel.types.ts`，`ui/` 12 个（含已废弃的 `Tabs.tsx`） | `src/components/` 实测（2026-11-07 实算，由 15 修正为 16） |
 | 源文件 >200 行 | `ts/tsx/css` **0** 个（含测试文件）；`globals.css` 已于 v3.13.6 拆为 `src/styles/*.css` 7 模块 | 行数扫描 |
-| 静态门禁 | `sync-facts.mjs --check` 13 处版本展示位与 package.json 全一致；`check-locales.mjs` 16 语 / 209 键一致 | 2026-11-07 实跑；`tsc` / `next lint` / `vitest` 本机无 `node_modules` 未实跑，待 CI 复核 |
+| 静态门禁 | `sync-facts.mjs --check` 13 处版本展示位与 package.json 全一致；`check-locales.mjs` 16 语 / 209 键一致；`check-root-clean.mjs` 根目录临时文件洁净度（`rootclean` job） | 2026-11-12 实跑（`sync-facts --check` / `check:locales`）；本机已安装 `node_modules`，`tsc` / `next lint` / `vitest` 待实跑复核 |
 
 > **教训**：本文件中的数据型数字（键数 / 用例数 / 覆盖率 / 行数）历史上多次与实现脱节。修改前务必用脚本实算，禁止凭记忆书写。
 > 2026-10-19 复核再次印证：键数、用例数、覆盖率三项均曾长期偏离真实值，且偏差方向不一致，说明凭旧记录继承数字必然失真。
@@ -97,6 +99,6 @@
 - [ ] `README.en.md` 版本徽章
 - [ ] `DEPLOYMENT.md` 变量表 + 示例
 - [ ] `public/*.txt` / `*.conf` / `*.yaml` 静态样例头部版本号（`# 版本::` / `! 版本::`）— 运行 `node scripts/gen-format-files.mjs`
-- [ ] 页脚版本号/build 编号展示正确（`Footer.tsx` 输出 `V{version}· build{yymmddhhmm}`，2 位年，规范见 SPEC §8.1）
+- [ ] 页脚版本号/build 编号展示正确（`Footer.tsx` 输出 `V{APP_VERSION}· build {NEXT_PUBLIC_BUILD_ID}`，2 位年，规范见 SPEC §8.1）
 - [ ] 更新 `CHANGELOG.md` 变更记录（新增 `## [x.y.z]` 小节，分类 feat/fix/docs/...）
 - [ ] 推送后由 `release.yml` 自动发布 GitHub Release：CI→Deploy 全绿后按 `package.json` 版本打 `vX.Y.Z` tag 并发布（tag 已存在则跳过，无需手动打 tag）

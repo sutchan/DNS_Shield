@@ -6,6 +6,8 @@ labels: ['bug', 'triage']
 assignees: ''
 ---
 
+<!-- 最后审查：2026-11-12（与 package.json v3.17.4 对齐；第十八轮全量文档核查；name 字段的 emoji 为 GitHub 模板元数据，非 UI 图标） -->
+
 ## 问题描述
 
 <!-- 清晰简洁地描述你遇到的问题 -->

@@ -6,6 +6,8 @@ labels: ['enhancement', 'triage']
 assignees: ''
 ---
 
+<!-- 最后审查：2026-11-12（与 package.json v3.17.4 对齐；第十八轮全量文档核查；name 字段的 emoji 为 GitHub 模板元数据，非 UI 图标） -->
+
 ## 功能描述
 
 <!-- 简要描述你希望添加的功能 -->

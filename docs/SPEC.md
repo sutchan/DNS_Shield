@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-07（与 package.json v3.17.4 对齐；§2 结构树删除第十五轮误入的 uiUtils.ts / buildFlowPool.ts 幽灵条目；2026-11-07 第十六轮全量文档核查：§12.1 CSP 双源差异如实描述、脚本产物计数口径统一为 11 个格式产物文件；冻结快照按声明保留）
+> 最后审查：2026-11-12（与 package.json v3.17.4 对齐；第十八轮全量文档核查：结构树补 `scripts/check-root-clean.mjs`、标注 Tabs 废弃、§4 补 v3.16.1~v3.17.4 UI 与内存护栏、§12.1 补双源 CSP 与开发模式 `unsafe-eval` 说明；冻结快照按声明保留）
 
 ## 1. 项目概述
 
@@ -10,7 +10,7 @@
 | 项目类型 | DNS 广告过滤规则库 + Web 管理工具 |
 | 核心功能 | 基于 dnsmasq/hosts 的路由器全局广告防护 |
 | 目标用户 | 使用梅林/OpenWrt/小米/华硕/TP-Link 等路由器的用户 |
-| 项目地址（主页/治理） | https://github.com/ArcesTeam/DNS_Shield |
+| 项目地址（主页/治理） | https://github.com/sutchan/DNS_Shield（以 `git remote -v` 为准；`ArcesTeam` 为历史维护团队名，非仓库地址） |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
 | 当前版本 | v3.17.4 |
@@ -45,6 +45,7 @@ dns-shield/
 │   └── config.yaml                 # 规范配置
 ├── scripts/                        # 构建/校验脚本
 │   ├── check-locales.mjs           # 国际化键覆盖校验（pnpm check:locales）
+│   ├── check-root-clean.mjs        # 根目录临时文件洁净度门禁（CI rootclean job；唯一合法临时位置根 .tmp/）
 │   ├── sync-facts.mjs              # 版本号写入 13 处文档展示位（--check 为 CI 门禁）
 │   ├── gen-format-files.mjs        # 生成 11 种格式产物文件（pnpm build:formats；domains 格式即数据源本身）
 │   ├── count-domains.mjs           # 域名计数实算（pnpm count:domains）
@@ -77,7 +78,7 @@ dns-shield/
 │   │   ├── robots.ts               # 自动生成 robots.txt（含 sitemap 索引）
 │   │   └── sitemap.ts              # 自动生成 sitemap.xml
 │   ├── components/                 # 业务组件
-│   │   ├── ui/                     # shadcn/ui 基础组件（12 个）
+│   │   ├── ui/                     # shadcn/ui 基础组件（12 个；含 Tabs.tsx，v3.15.5 起已废弃、仅暂保留勿新增引用）
 │   │   ├── Header.tsx              # 页头（Shield 图标 + 语言/主题切换）
 │   │   ├── Footer.tsx              # 页脚（链接 + 使用说明）
 │   │   ├── InputEditor.tsx         # 域名编辑器子组件
@@ -272,7 +273,10 @@ dns-shield/
 | 弹窗 Escape | 所有弹窗统一经 `useModalEscape` 注册到弹窗栈，一次 Escape 只关闭栈顶弹窗，避免叠放弹窗被同一个按键全部关闭 |
 | 滚动锁 | 弹窗打开期间锁定 `body` 滚动，统一使用 `utils/scrollLock` 的引用计数实现，禁止直接写 `document.body.style.overflow`，避免内层弹窗关闭时解除外层锁定 |
 | 异步竞态 | Worker 解析/排序/去重等异步结果落地前必须校验请求序号与输入快照，过期结果直接丢弃；Worker 卸载时须结算全部挂起任务，不得让调用方 `await` 永挂 |
+| 解析任务单飞 | `useRuleWorker` 以内容键 `task + '\0' + text` 复用同一解析任务并作废旧输入结果；`useWorkerPool` 并行分支按文本单飞且池引用必须 `useMemo` 稳定，避免重复派发导致 `postMessage` 克隆大文本堆积（内存护栏，2026-11-12） |
 | 设置联动 | 设置项（IP、项目名、去通配/去重开关）与界面语言变更后必须重新生成预览与导出内容，避免预览停留在旧口径 |
+| 设置弹窗布局 | 4 个分组（项目信息 / 生成选项 / 输出规则类型 / 外观）仅后两者带标题；字段 2 列、格式开关等宽 3 列（≤480px 回落 2 列）、选项末项整行铺满；不得恢复重复分组标题（v3.16.1） |
+| 信息层次 | 输入区统计条为「色点 + 纯文本」、输出侧预览统计去胶囊；预览统计与 merge-info 并组、分隔线上移至组顶部（v3.17.0 ~ v3.17.4） |
 
 ## 5. 维护流程
 
@@ -371,7 +375,7 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 | @radix-ui/react-select | ^2.0.0 | Select 组件 |
 | @radix-ui/react-slot | ^1.0.2 | Slot 组件 |
 | @radix-ui/react-switch | ^1.0.3 | Switch 组件 |
-| @radix-ui/react-tabs | ^1.0.4 | Tabs 组件 |
+| @radix-ui/react-tabs | ^1.0.4 | Tabs 组件（**已废弃**：v3.15.5 起由 `OutputPanel.formatSelect.tsx` 单一「格式」下拉取代；依赖与 `ui/Tabs.tsx` 暂保留，勿新增引用） |
 | @radix-ui/react-toast | ^1.1.5 | Toast 组件 |
 | lucide-react | ^0.312.0 | 图标库 |
 | tailwind-merge | ^2.2.0 | Tailwind 类合并 |
@@ -424,7 +428,7 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 
 | 头部 | 值 | 说明 |
 |------|-----|------|
-| Content-Security-Policy | default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https: blob: https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; upgrade-insecure-requests | 内容安全策略，防止 XSS 和数据注入。注意：`next.config.js`（自托管 / `next start` 路径）与 `vercel.json`（Vercel 部署路径）各定义一份，当前**后者额外启用 `require-trusted-types-for 'script'`** 而前者未启用，两处尚未统一（见 tasks.md 遗留疑问） |
+| Content-Security-Policy | default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https: blob: https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; upgrade-insecure-requests | 内容安全策略，防止 XSS 和数据注入。`next.config.js`（自托管 / `next start`）与 `vercel.json`（Vercel 路径）各定义一份，当前**后者额外启用 `require-trusted-types-for 'script'`** 而前者未启用，两处尚未统一（统一方案待定，见 tasks.md 第十八轮遗留疑问）；CI **无**自动「安全头一致性」检查（`next.config.js` 头部注释为陈旧声明），改一处须手工核对另一处；`next.config.js` 在 dev（`NODE_ENV !== 'production'`）时为 `script-src` 追加 `'unsafe-eval'` 以放行 webpack eval，生产构建与 `vercel.json` 均不含该指令（见 DEPLOYMENT「Next.js 配置」） |
 | Strict-Transport-Security | max-age=63072000; includeSubDomains; preload | HSTS，强制 HTTPS |
 | Cross-Origin-Opener-Policy | same-origin | 防止跨窗口攻击 |
 | Cross-Origin-Resource-Policy | same-origin | 限制跨域资源加载 |

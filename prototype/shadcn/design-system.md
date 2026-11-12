@@ -268,7 +268,9 @@
 
 ### 9.1 Logo 资产
 
-品牌资产统一归集于仓库根 `/brand`（权威源），应用运行时副本位于 `public/`：
+> **已废弃路径**：仓库根 `brand/` 目录已移除，品牌资产统一归入 `public/`；下表 `brand/*` 路径与 `brand/brand-colors.md` 引用均为历史设计，当前以 `public/logo.svg` / `public/favicon.svg` / `public/brand-colors.md` 为准。
+>
+> 品牌资产统一归集于仓库根 `/brand`（历史快照描述），应用运行时副本位于 `public/`：
 
 | 资源 | 权威源（`brand/`） | 应用副本（`public/`） | 格式 | 用途 |
 |------|------|------|------|------|
