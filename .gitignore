@@ -94,5 +94,6 @@ review_*.md
 CODE_REVIEW_*.md
 *.err
 _*.txt
-# 临时脚本不再允许散落于 scripts/ 或根目录（曾用 _ 前缀），统一存放于根 .tmp/ 子目录（已被忽略）
+# 临时脚本（_ 前缀）只允许存在于根 .tmp/ 子目录；散落在根目录或 scripts/ 会被
+# scripts/check-root-clean.mjs 拦截并要求归位。下方忽略规则仅兜底防止误入库。
 _*.mjs
