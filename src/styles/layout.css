@@ -1,19 +1,21 @@
-/* src/styles/layout.css v3.15.6 — 布局骨架与面板容器（原 globals.css Layout/Panel 段） */
+/* src/styles/layout.css v3.19.0 — 布局骨架与面板容器（原 globals.css Layout/Panel 段） */
 
 /* ============================================
    Layout
    ============================================ */
 .container,
 .container-main {
-  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10;
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-5 sm:py-8;
 }
 
+/* v3.19.0：大屏改为「输入 5 / 输出 7」非对称工作台，把更多宽度留给规则预览；
+   中等屏仍保持 1:1 便于逐行对照，窄屏单列。 */
 .main-content {
-  @apply grid grid-cols-1 md:grid-cols-2 gap-6;
+  @apply grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)];
 }
 
 .app-header {
-  @apply flex flex-col gap-3 mb-8;
+  @apply flex flex-col gap-3 mb-6;
 }
 
 .header-top {
@@ -30,9 +32,8 @@
 }
 
 .app-title {
-  @apply text-[1.625rem] sm:text-2xl font-semibold tracking-tight leading-tight;
+  @apply text-[1.625rem] sm:text-2xl font-bold tracking-tight leading-tight;
   letter-spacing: -0.02em;
-  font-family: var(--font-serif);
 }
 
 .app-subtitle {

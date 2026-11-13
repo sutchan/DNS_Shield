@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-06T14:30:52.327Z",
+  "generatedAt": "2026-11-13T12:26:27.271Z",
   "source": "src/locales/zh-cn.json",
-  "keyCount": 209,
+  "keyCount": 212,
   "keys": [
     "addUrl",
     "adguard",
@@ -131,6 +131,7 @@
     "psFormat",
     "psFormats",
     "psLines",
+    "refreshPreview",
     "removeUrlAria",
     "removeWildcard",
     "routerScriptCopied",
@@ -171,6 +172,7 @@
     "tabWhitelist",
     "themeDark",
     "themeLight",
+    "themeToggleAria",
     "toast.autosaveRestored",
     "toast.cleared",
     "toast.copied",
@@ -199,6 +201,7 @@
     "urlActionsAria",
     "urlHelp",
     "urlHint",
+    "urlImportToggle",
     "urlListAria",
     "urlPlaceholder",
     "usageGuideAria",

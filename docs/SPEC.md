@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-12（与 package.json v3.18.1 对齐；第十八轮全量文档核查：结构树补 `scripts/check-root-clean.mjs`、标注 Tabs 废弃、§4 补 v3.16.1~v3.17.4 UI 与内存护栏、§12.1 补双源 CSP 与开发模式 `unsafe-eval` 说明；冻结快照按声明保留）
+> 最后审查：2026-11-13（与 package.json v3.19.0 对齐；第十九轮 UI/布局改进：§4.4 补首屏本地化/主题、可读性、CTA 唯一性、统计口径、引导与 FAQ 折叠、工作台栅格等约定，并移除已废弃的 merge-info 描述；第十八轮全量文档核查：结构树补 `scripts/check-root-clean.mjs`、标注 Tabs 废弃、§4 补 v3.16.1~v3.17.4 UI 与内存护栏、§12.1 补双源 CSP 与开发模式 `unsafe-eval` 说明；冻结快照按声明保留）
 
 ## 1. 项目概述
 
@@ -13,7 +13,7 @@
 | 项目地址（主页/治理） | https://github.com/sutchan/DNS_Shield（以 `git remote -v` 为准；`ArcesTeam` 为历史维护团队名，非仓库地址） |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.18.1 |
+| 当前版本 | v3.19.0 |
 | 拦截域名 | 规则 877 条（黑名单 645 + 白名单 232；`public/domains.txt` 非空 897 行，含注释 20 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准） |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -263,7 +263,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.18.1 |
+| 版本号 | 3.19.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -282,7 +282,14 @@ dns-shield/
 | 解析任务单飞 | `useRuleWorker` 以内容键 `task + '\0' + text` 复用同一解析任务并作废旧输入结果；`useWorkerPool` 并行分支按文本单飞且池引用必须 `useMemo` 稳定，避免重复派发导致 `postMessage` 克隆大文本堆积（内存护栏，2026-11-12） |
 | 设置联动 | 设置项（IP、项目名、去通配/去重开关）与界面语言变更后必须重新生成预览与导出内容，避免预览停留在旧口径 |
 | 设置弹窗布局 | 4 个分组（项目信息 / 生成选项 / 输出规则类型 / 外观）仅后两者带标题；字段 2 列、格式开关等宽 3 列（≤480px 回落 2 列）、选项末项整行铺满；不得恢复重复分组标题（v3.16.1） |
-| 信息层次 | 输入区统计条为「色点 + 纯文本」、输出侧预览统计去胶囊；预览统计与 merge-info 并组、分隔线上移至组顶部（v3.17.0 ~ v3.17.4） |
+| 首屏本地化与主题 | `layout.tsx` 在 body 起始处用内联脚本按 localStorage 设置 `<html lang>` / `dir` / `.dark`；`useLanguage` 同步 `lang`+`dir`，`useTheme` 初始化只读偏好、**仅用户显式切换时写盘**，保留「跟随系统」语义，禁止把默认值写回 localStorage（v3.19.0） |
+| 可读性 | 辅助文本 ≥12px、正文 14px；`--muted-foreground` 与背景对比度 ≥4.5:1，禁止在灰字上叠加 `/70` 等透明度；分组标签不用全大写；`aria-live` 只在容器上声明一次，禁止逐项播报（v3.19.0） |
+| CTA 唯一性 | 主「生成规则」按钮固定为输入区 `#parse-btn`；输出区同类按钮只能是次级变体并明确写「刷新预览」，不得出现两个同名主按钮（v3.19.0） |
+| 统计口径 | 输入区 `#stats-bar` 只展示**输入解析结果**，输出区 `#preview-stats` 只展示**产物统计**；不得重复呈现黑名单/白名单/改道，行数标签须写清口径（输入行 vs 规则行）；`merge-info` 已移除（v3.19.0） |
+| 引导与折叠 | Hero 快速入门三步必须是可聚焦锚点（分别定位 `#source-editor` / `#output-format-select-btn` / `#download-btn`）；FAQ 用 `details/summary` 折叠且答案保留在 SSR HTML；折叠控件用 Lucide 图标而非字符（v3.19.0） |
+| 主题入口 | Header 常驻 `#theme-toggle-btn` 一键明暗切换；设置弹窗内保留主题分段控件作为扩展入口（v3.19.0） |
+| 空状态 | 统一使用 `src/components/ui/EmptyState.tsx`，带语义化 `id` 与 `role="status"`，禁止各处内联空态（v3.19.0） |
+| 视觉层级与栅格 | 设计方向为「控制台：规则文件就是产品」：Hero 无边框/纯色信息带、工具面板白卡+边框、SEO 区仅一条分隔线；`≥1024px` 工作台为「输入 5 / 输出 7」非对称双栏，中等屏 1:1、窄屏单列；中文标题统一 sans 700 + `-0.02em`，等宽仅用于代码/域名（v3.19.0，详见 `prototype/shadcn/design-system.md §2.1`） |
 
 ## 5. 维护流程
 

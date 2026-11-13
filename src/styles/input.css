@@ -1,4 +1,4 @@
-/* src/styles/input.css v3.13.6 — URL 导入区、编辑器、预览、预设标签（原 globals.css 相应段） */
+/* src/styles/input.css v3.19.0 — URL 导入区、编辑器、预览、预设标签（原 globals.css 相应段） */
 
 /* ============================================
    URL Section (collapsible)
@@ -73,7 +73,7 @@
 }
 
 .line-numbers {
-  @apply absolute left-0 top-0 bottom-0 w-11 pt-3 pr-2 text-right text-[0.75rem] leading-6 text-muted-foreground/60 select-none bg-muted/40 font-mono overflow-hidden border-r border-border;
+  @apply absolute left-0 top-0 bottom-0 w-11 pt-3 pr-2 text-right text-[0.75rem] leading-6 text-muted-foreground select-none bg-muted/40 font-mono overflow-hidden border-r border-border;
   white-space: pre;
   pointer-events: none;
 }
@@ -88,7 +88,7 @@
 }
 
 .editor-textarea::placeholder {
-  @apply text-muted-foreground/50;
+  @apply text-muted-foreground/80;
 }
 
 .editor-textarea:focus {

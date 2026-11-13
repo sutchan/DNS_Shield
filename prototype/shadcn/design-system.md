@@ -117,23 +117,34 @@
 
 ## 2. 字体系统
 
-### 2.1 字体栈（三元体系）
+### 2.1 字体栈（系统字体栈 + 等宽，二元体系）
 
-排版采用三层角色，避免单一种族造成的视觉扁平：
+> **v3.19.0 修订（与 `src/app/globals.css` 对齐）**：原「Inter + Spectral + JetBrains Mono」三元体系
+> 从未在应用侧落地——`next/font/google` 在 EdgeOne / CI 等离线构建环境取不到字体 CSS，
+> 会让 `next build` 失败。实现一直使用系统字体栈；且 Spectral/Georgia 的中文回退会落到
+> SimSun，造成「宋体标题 + 黑体正文」混排。故正式改为二元体系。
 
 | 角色 | 字体 | 用途 |
 |------|------|------|
-| 正文 / UI | Inter | 所有正文、按钮、标签、描述 |
-| 品牌标头 | Spectral（衬线） | 仅页面级品牌标题：`.brand-title`、`.hero-title`、`.card-title`、`.usage-title` |
-| 数据 / 代码 | JetBrains Mono | 编辑器、行号、URL 输入、flowviz token、指南 code |
+| 正文 / UI / 标题 | 系统 sans 栈 | 所有正文、按钮、标签、描述；标题统一 600/700 + 负字距分层 |
+| 数据 / 代码 | 系统等宽栈 | 编辑器、行号、URL 输入、规则预览、域名清单、版本号 |
 
 ```css
---font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
---font-serif: 'Spectral', Georgia, 'Times New Roman', serif;
---font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+--font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+  Arial, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+--font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+  'Liberation Mono', 'Courier New', monospace;
 ```
 
-> 约束：衬线仅用于「品牌标头」层级，功能数字（统计值）、步骤标题等保持 sans，避免同一信息单元内 serif/sans 混排割裂。
+> 约束：① 中文标题不再使用衬线；② 如需恢复品牌字体，必须自托管 woff2 +
+> `next/font/local`，禁止 `next/font/google` 与外部 `@import`；③ 等宽仅用于代码/域名文本。
+
+### 2.1.1 可读性与对比度（v3.19.0 新增）
+
+- 辅助文本最小 12px，正文 14px；禁止在 `--muted-foreground` 上叠加 `/70` 等透明度。
+- `--muted-foreground` 在浅色主题为 `240 4% 38%`、深色主题为 `240 3% 68%`，
+  与背景对比度均 ≥ 4.5:1（WCAG AA）。
+- 分组标签不使用全大写（`uppercase`）+ 宽字距，改用字重区分层级。
 
 ### 2.2 字体规格
 

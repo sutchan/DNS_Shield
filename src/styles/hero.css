@@ -1,19 +1,18 @@
-/* src/styles/hero.css v3.17.1 — Hero 区、预览统计、动效降级（原 globals.css 相应段） */
+/* src/styles/hero.css v3.19.0 — Hero 区、预览统计、动效降级（原 globals.css 相应段） */
 
 /* ============================================
    Hero（v3.15.2 移除右侧 black/white 面板；v3.15.6 单栏视觉增强；
    v3.16.1 lg+ 改「左文案 + 右快速入门」双栏，消除大屏右侧留白；
    v3.17.0 双栏竖向分隔线改由伪元素绘制并定位在两栏间隙中点，视觉居中）
    ============================================ */
+/* v3.19.0：去掉双层渐变「洗白」，工具型产品以纯色 + 1px 边框保持安静；
+   同时压缩内边距与外边距，把首屏权重让给下方编辑器。 */
 .hero {
-  @apply mb-6 rounded-2xl border border-border bg-card overflow-hidden;
-  background:
-    radial-gradient(120% 140% at 0% 0%, hsl(var(--primary) / 0.09), transparent 55%),
-    radial-gradient(120% 140% at 100% 0%, hsl(var(--success) / 0.06), transparent 55%);
+  @apply mb-5 rounded-xl border-0 bg-muted/40 overflow-hidden;
 }
 
 .hero-inner {
-  @apply grid grid-cols-1 gap-5 p-5 sm:p-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-center lg:gap-10;
+  @apply grid grid-cols-1 gap-4 px-5 py-5 sm:px-6 sm:py-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:items-center lg:gap-10;
 }
 
 .hero-copy {
@@ -21,19 +20,21 @@
 }
 
 .hero-kicker {
-  @apply inline-flex items-center gap-1.5 text-[0.8125rem] font-medium uppercase tracking-wide text-primary;
+  @apply inline-flex items-center gap-1.5 text-[0.8125rem] font-medium text-primary;
 }
 
 /* v3.17.4：标题用 text-wrap: balance 消除「末字单独成行」的孤字断行，
    字号略降一档（lg 2.375rem → 2.25rem）以适配更窄的文案列。 */
+/* v3.19.0：中文标题统一走 sans 700 + 负字距，避免 Georgia/SimSun 与
+   系统黑体正文混排；标题略收一档以配合压缩后的 Hero。 */
 .hero-title {
-  @apply text-[1.75rem] sm:text-[2.25rem] font-bold tracking-tight leading-[1.15] font-serif;
+  @apply text-[1.625rem] sm:text-[2rem] font-bold tracking-tight leading-[1.2] font-sans;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
 .hero-desc {
-  @apply text-[0.9375rem] sm:text-[1.0625rem] leading-relaxed text-muted-foreground;
+  @apply text-[0.9375rem] sm:text-[1rem] leading-relaxed text-muted-foreground;
   max-width: 38rem;
   text-wrap: balance;
 }
@@ -87,9 +88,9 @@
    ============================================ */
 .preview-stats {
   /* v3.17.1：取消胶囊后改由间距分隔（与输入区 .stats-compact 的 gap-x-5 统一）
-     v3.17.4：顶部分隔线上移至信息组顶部（见 output.css .output-stats），
-     与 merge-info 并作一组，避免两条灰字带割裂面板 */
-  @apply flex flex-wrap items-center gap-x-5 gap-y-2 mb-4 text-[0.75rem] text-muted-foreground;
+     v3.19.0：移除重复的 merge-info 后，此处是输出面板唯一的「产物统计」带，
+     字号提升到 13px 保证辅助文本可读性 */
+  @apply flex flex-wrap items-center gap-x-5 gap-y-2 mb-4 text-[0.8125rem] text-muted-foreground;
 }
 
 /* 域名分类筛选（T-P2-01 / T-P2-05，挂载于 InputPanel，索引不可用时整体隐藏） */

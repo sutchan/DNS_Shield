@@ -1,4 +1,4 @@
-/* src/styles/stats.css v3.17.0 — 统计条与 Worker 进度条（原 globals.css Stats 段） */
+/* src/styles/stats.css v3.19.0 — 统计条与 Worker 进度条（原 globals.css Stats 段） */
 
 /* ============================================
    Stats
@@ -42,7 +42,7 @@
 }
 
 .stat-label {
-  @apply inline-flex items-center gap-1 text-[0.6875rem] text-muted-foreground leading-none;
+  @apply inline-flex items-center gap-1 text-[0.75rem] text-muted-foreground leading-none;
 }
 
 /* 统计圆点 —— 对齐原型 .input-panel 的 .stat-dot（black/allow/dns 三类语义色） */

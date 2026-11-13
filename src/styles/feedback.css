@@ -1,4 +1,4 @@
-/* src/styles/feedback.css v3.15.0 — 加载态、弹窗、可访问性工具类（原 globals.css 相应段） */
+/* src/styles/feedback.css v3.19.0 — 加载态、弹窗、可访问性工具类（原 globals.css 相应段） */
 
 /* ============================================
    Loading
@@ -61,7 +61,7 @@
    ============================================ */
 .guide-modal-overlay {
   @apply fixed inset-0 z-50 flex items-center justify-center p-4;
-  background: hsl(var(--background) / 0.6);
+  background: hsl(var(--overlay) / 0.5);
   backdrop-filter: blur(4px);
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -117,7 +117,7 @@
 }
 
 .guide-step-desc {
-  @apply text-xs text-muted-foreground leading-relaxed;
+  @apply text-[0.8125rem] text-muted-foreground leading-relaxed;
 }
 
 .guide-note {

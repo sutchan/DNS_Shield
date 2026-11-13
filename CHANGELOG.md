@@ -5,9 +5,42 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-13（与 package.json v3.18.1 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
+> 最后审查：2026-11-13（与 package.json v3.19.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
 
 ## [Unreleased]
+
+## [3.19.0] - 2026-11-13
+
+按「页面布局与 UI 审查建议」实施三批改进：**合规与无障碍 → 信息架构 → 视觉规范**。设计方向定为「控制台：规则文件就是产品」，让工具台重新成为首屏主角。
+
+### Fixed（合规与无障碍）
+- **16 语言站 `<html lang>` 恒为 `zh-CN`**：`useLanguage` 原先只同步 `dir`；现 `applyDocumentLocale` 同时写入 `lang`（16 语言代码均可直接作 BCP 47 标签）与 `dir`。`layout.tsx` 在 body 起始处新增内联脚本（CSP 已允许 `'unsafe-inline'`），在 DOM 解析阶段即按 localStorage 恢复 `lang` / `dir` / `.dark`，消除刷新后的语言声明错误、RTL 布局跳动与深色模式闪白
+- **深色模式首屏闪白 + 主题偏好被固化**：`useTheme` 首轮 effect 会用默认 `light` 写回 localStorage 并抹掉首屏主题；现初始化只读偏好、首个同步 effect 跳过，且**仅用户显式切换时落盘**，保留「跟随系统」语义
+- **辅助文本对比度不足**：`--muted-foreground` 浅色 46%→38%、深色 55%→68%（对比度 ≥4.5:1）；统计标签、FAQ 答案、格式说明、步骤描述、指南正文由 11–12px 提升到 12–14px，移除灰字上的 `/70` 等透明度叠加
+- **`aria-live` 过度播报**：6 个统计胶囊原先各挂 `role="status" aria-live="polite"`，每敲一次键播报 6 次；现收敛到 `#stats-bar` 容器一处
+- **空状态无统一组件、折叠按钮用字符图标**：新增 `src/components/ui/EmptyState.tsx` 并用于输出预览空态；`InputPanel` 折叠图标由 `▼` 改为 Lucide `ChevronDown`
+- **页脚版本格式**：`V3.18.1· build …` 改为全局规范 `v3.19.0 · build 2611131645`（小写 v、空格分隔）
+- 弹窗遮罩由硬编码 `rgba(0,0,0,.45)` 收敛到 `--overlay` token；设置分组标题去掉 ALL CAPS
+
+### Changed（信息架构）
+- **统计口径去重**：移除输出面板 `#merge-info`（黑名单/白名单/改道与输入区 `#stats-bar` 重复，且两处「行」标签口径分别为输入行与规则行）；输出面板只保留一条产物统计带，字号提升至 13px
+- **主次 CTA 收敛**：主「生成规则」固定在输入区 `#parse-btn`，输出区按钮改为「刷新预览」并降为 outline 变体（`RefreshCw` 图标），消除两个同名主按钮
+- **折叠入口语义**：「高级选项」改为「URL 导入」，与实际控制的 `#url-section` 一致（保留 `aria-controls` / `aria-expanded`）
+- **主题入口上移**：Header 新增 `#theme-toggle-btn` 一键明暗切换（Sun/Moon 图标 + 无障碍标签），设置弹窗内仍保留主题分段控件
+- **引导可交互**：Hero 快速入门三步由静态 `div` 改为锚点链接，点击滚动并聚焦 `#source-editor` / `#output-format-select-btn` / `#download-btn`
+- **FAQ 折叠**：`SeoContent` 的 `dl/dt/dd` 改为 `details/summary`，默认收起答案缩短长页面；文本仍在 SSR HTML 中供 GEO 抓取。机器可读链接保留在正文末尾（抓取需要可见链接）但降低视觉权重
+- 新增 3 个 i18n 键（`refreshPreview` / `urlImportToggle` / `themeToggleAria`），16 语齐备，基线刷新至 **212 键**
+
+### Changed（视觉与设计规范对齐）
+- **字体栈规范与实现对齐**：`prototype/shadcn/design-system.md §2.1` 原规定 Inter + Spectral + JetBrains Mono 三元体系，但离线构建禁用 `next/font/google`，实现一直是系统字体栈，且 Georgia/SimSun 回退导致「宋体标题 + 黑体正文」混排。现正式改为「系统 sans + 系统等宽」二元体系：中文标题统一 700 + `-0.02em` 字距，等宽仅用于代码/域名；移除 `--font-serif` token；文档新增 §2.1.1 可读性与对比度约束
+- **Hero 去渐变并压缩**：移除双层 radial-gradient，改为无边框的浅灰信息带；内边距与外边距收窄、标题略收一档，把首屏权重让给编辑器
+- **容器层级区分**：Hero 无边框/浅灰底、工具面板保留白卡+边框、SEO 区去掉白卡改为一条分隔线，消除「每张卡都长一样」的堆叠感
+- **工作台宽度**：`≥1024px` 由 1:1 改为「输入 5 / 输出 7」非对称双栏，规则预览获得更多宽度；中等屏保持 1:1，窄屏单列
+- 补充快速入门锚点的 `:focus-visible` 反馈与 hover 状态
+
+### Tests
+- `useLanguage.test.ts` 新增「挂载与切换时同步 `<html lang>`」用例；`useTheme.test.ts` 新增「初始化（浅色或系统深色）都不写 localStorage」用例
+- 门禁实跑：`tsc --noEmit` 0 错、`eslint src` 0 warning 0 error、`vitest run` **51 套件 / 326 用例**全绿、覆盖率 **87.67 / 85.87 / 88.23 / 87.67**（门槛 80/75/85/80）、`check-locales` 16 语 / 212 键、`sync-facts --check` 13 处版本位一致；`src` 下无超过 200 行的源文件
 
 ## [3.18.1] - 2026-11-13
 

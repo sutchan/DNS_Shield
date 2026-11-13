@@ -1,9 +1,10 @@
-/* src/styles/seo.css v3.18.0 — 站点事实内容（关于 / 格式清单 / FAQ）与 noscript 兜底 */
+/* src/styles/seo.css v3.19.0 — 站点事实内容（关于 / 格式清单 / FAQ）与 noscript 兜底 */
 
 /* 视觉上刻意保持安静：位于工具区与页脚之间，不抢主操作区的注意力；
-   排版密度靠字号与分栏控制，内容与 JSON-LD 同源而非为爬虫隐藏文本。 */
+   排版密度靠字号与分栏控制，内容与 JSON-LD 同源而非为爬虫隐藏文本。
+   v3.19.0：去掉「又一张白卡」，改用一条分隔线与工具区区分层级。 */
 .seo-content {
-  @apply mt-10 rounded-xl border border-border bg-card px-5 py-6 sm:px-8 sm:py-7;
+  @apply mt-10 border-t border-border pt-7;
 }
 
 .seo-grid {
@@ -11,20 +12,20 @@
 }
 
 .seo-content h2 {
-  @apply text-base font-semibold text-foreground mb-3;
-  font-family: var(--font-serif);
+  @apply text-base font-bold tracking-tight text-foreground mb-3;
+  letter-spacing: -0.02em;
 }
 
 .seo-content h3 {
-  @apply text-[0.8125rem] font-semibold text-foreground mb-2 mt-6;
+  @apply text-[0.875rem] font-semibold text-foreground mb-2 mt-6;
 }
 
 .seo-content p {
-  @apply text-[0.8125rem] leading-relaxed text-muted-foreground;
+  @apply text-[0.875rem] leading-relaxed text-muted-foreground;
 }
 
 .seo-content .seo-en {
-  @apply text-[0.75rem] mt-2;
+  @apply text-[0.8125rem] mt-2;
 }
 
 .seo-formats {
@@ -32,7 +33,7 @@
 }
 
 .seo-formats li {
-  @apply flex flex-col text-[0.75rem] text-muted-foreground;
+  @apply flex flex-col text-[0.8125rem] text-muted-foreground;
 }
 
 .seo-formats a {
@@ -40,23 +41,38 @@
 }
 
 .seo-formats span {
-  @apply text-[0.6875rem] text-muted-foreground/70;
+  @apply text-[0.75rem] text-muted-foreground;
 }
 
+/* v3.19.0：FAQ 由平铺 dl/dt/dd 改为可折叠 details/summary。
+   答案默认收起以缩短长页面，文本仍在 SSR HTML 中供 GEO 抓取。 */
 .seo-faq {
-  @apply flex flex-col gap-3.5 m-0;
+  @apply flex flex-col gap-2 m-0;
 }
 
-.seo-faq dt {
-  @apply text-[0.8125rem] font-semibold text-foreground;
+.seo-faq-item {
+  @apply rounded-lg border border-border/70 bg-background/50 px-3 py-2;
 }
 
-.seo-faq dd {
-  @apply text-[0.75rem] leading-relaxed text-muted-foreground m-0 mt-1;
+.seo-faq-item summary {
+  @apply text-[0.875rem] font-semibold text-foreground cursor-pointer;
 }
 
+.seo-faq-item summary::marker {
+  color: hsl(var(--primary));
+}
+
+.seo-faq-item[open] summary {
+  @apply mb-2;
+}
+
+.seo-faq-item p {
+  @apply text-[0.8125rem] leading-relaxed text-muted-foreground;
+}
+
+/* 机器可读链接保留在正文末尾（GEO 抓取需要可见链接），仅降低视觉权重 */
 .seo-machine {
-  @apply mt-7 pt-4 border-t border-border/70 text-[0.75rem] text-muted-foreground;
+  @apply mt-6 pt-3 border-t border-border/70 text-[0.75rem] text-muted-foreground;
 }
 
 .seo-machine a {

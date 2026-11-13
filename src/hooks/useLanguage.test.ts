@@ -1,4 +1,4 @@
-// src/hooks/useLanguage.test.ts v3.18.1
+// src/hooks/useLanguage.test.ts v3.19.0
 // @vitest-environment jsdom
 // 注意：本仓 jsdom 环境不暴露全局 localStorage（探测确认 typeof localStorage === 'undefined'），
 // 而 useLanguage 直接使用裸 localStorage，故此处注入最小内存实现作为测试替身。
@@ -22,6 +22,7 @@ beforeEach(() => store.clear());
 afterEach(() => {
   document.body.innerHTML = '';
   document.documentElement.removeAttribute('dir');
+  document.documentElement.removeAttribute('lang');
 });
 
 describe('useLanguage', () => {
@@ -53,6 +54,17 @@ describe('useLanguage', () => {
     expect(document.documentElement.getAttribute('dir')).toBe('rtl');
     act(() => result.current.switchLang('en'));
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
+    unmount();
+  });
+
+  // v3.19.0：16 语言站必须让屏幕阅读器与 SEO 拿到真实语言声明
+  it('挂载与切换时同步 <html lang>', () => {
+    store.set('lang', 'vi');
+    const { result, unmount } = renderHook(() => useLanguage());
+    expect(document.documentElement.lang).toBe('vi');
+    act(() => result.current.switchLang('ar'));
+    expect(document.documentElement.lang).toBe('ar');
+    expect(document.documentElement.getAttribute('dir')).toBe('rtl');
     unmount();
   });
 });

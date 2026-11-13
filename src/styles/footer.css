@@ -1,4 +1,4 @@
-/* src/styles/footer.css v3.15.6 — 页脚与使用指南（原 globals.css 相应段） */
+/* src/styles/footer.css v3.19.0 — 页脚与使用指南（原 globals.css 相应段） */
 
 /* ============================================
    Footer
@@ -28,7 +28,7 @@
 }
 
 .footer-version {
-  @apply text-[0.75rem] text-muted-foreground/70 font-mono;
+  @apply text-[0.75rem] text-muted-foreground font-mono;
 }
 
 /* Usage guide — 使用指南（可折叠） */
@@ -56,8 +56,8 @@
 }
 
 .usage-guide-title {
-  @apply text-base font-semibold text-foreground mb-3;
-  font-family: var(--font-serif);
+  @apply text-base font-bold tracking-tight text-foreground mb-3;
+  letter-spacing: -0.02em;
 }
 
 .usage-guide.collapsed {
@@ -93,5 +93,15 @@
 }
 
 .step-desc {
-  @apply text-[0.75rem] text-muted-foreground leading-relaxed;
+  @apply text-[0.8125rem] text-muted-foreground leading-relaxed;
+}
+
+/* v3.19.0：快速入门三步改为可点击锚点，补齐键盘焦点反馈 */
+.usage-step:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+.usage-step:hover .step-title {
+  color: hsl(var(--primary));
 }

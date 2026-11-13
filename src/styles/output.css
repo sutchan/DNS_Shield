@@ -1,4 +1,4 @@
-/* src/styles/output.css v3.16.1 — 输出面板与设置面板（原 globals.css 相应段） */
+/* src/styles/output.css v3.19.0 — 输出面板与设置面板（原 globals.css 相应段） */
 
 /* ============================================
    Output Panel Specific
@@ -72,10 +72,10 @@
   }
 }
 
-/* v3.17.4：合并统计与预览统计两条信息带：分隔线上移到信息组顶部，
-   组内两行紧邻（内容语义有重叠，视觉上并作一组），避免两条灰字带割裂面板。 */
+/* v3.19.0：移除与输入区重复的 merge-info 后，输出面板只保留一条产物统计带，
+   分隔线保留用于区分「预览区」与「操作区」。 */
 .output-stats {
-  @apply text-[0.75rem] text-muted-foreground mb-1 px-0.5 pt-3;
+  @apply text-[0.8125rem] text-muted-foreground mb-1 px-0.5 pt-3;
   border-top: 1px solid hsl(var(--border));
 }
 
@@ -95,7 +95,7 @@
 /* L2：设置面板改为居中弹窗 modal（对齐原型 settings-modal / settings-dialog） */
 .settings-modal {
   @apply fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-6 overflow-y-auto;
-  background: rgba(0, 0, 0, 0.45);
+  background: hsl(var(--overlay) / 0.5);
 }
 
 .settings-dialog {
@@ -126,7 +126,7 @@
 }
 
 .settings-group-title {
-  @apply text-xs font-semibold uppercase tracking-wide text-muted-foreground;
+  @apply text-[0.8125rem] font-semibold text-muted-foreground;
 }
 
 .theme-seg-btn {

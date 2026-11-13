@@ -4,7 +4,7 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-13（与 package.json v3.18.1 对齐；待办区保持清零）。
+> 最后审查：2026-11-13（与 package.json v3.19.0 对齐；待办区保持清零）。
 > 维护团队：Sut / ArcesTeam
 >
 > **本轮整理（2026-11-13）**：依 SPEC §5.3 任务记录规范，将第十四~十八轮冗长的「本次更新」历史叙述统一归档至 [tasks-done.md](./tasks-done.md)，本文件仅保留未完成清单、实时指标、遗留疑问与维护清单；版本与指标经实算与代码实况对齐（v3.18.1 / 12 格式 / 16 语 140·209 键 / 51 套件 324 用例 / 17 组件 / >200 行源文件 1 个）。
@@ -18,7 +18,7 @@
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.18.1 | `package.json` version（权威源） |
+| 应用版本 | v3.19.0 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 顶层 **140** 键、递归合计 **209** 键 | 脚本统计 `src/locales/zh-cn.json`（flatten 叶子口径，与 `check:locales` 输出及 `scripts/locale-baseline.json` keyCount 一致；v3.15.5 移除 `moreFormats` 死键，2026-11-07 实算） |
 | 测试套件 / 用例 | **51 套件 / 324 用例**（2026-11-13 `vitest run` 实跑：51 个 `*.test.ts` 文件全部通过；v3.18.1 新增 `workerPoolFinalize.test.ts` / `useAsyncRuleProcessing.fallback.test.ts` 2 套件 7 用例，`useLanguage.test.ts` 追加 4 用例） | `vitest run` 为权威计数，本轮已实跑复核 |

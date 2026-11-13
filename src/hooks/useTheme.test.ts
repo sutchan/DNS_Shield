@@ -1,4 +1,4 @@
-// src/hooks/useTheme.test.ts v3.13.1
+// src/hooks/useTheme.test.ts v3.19.0
 // @vitest-environment jsdom
 // 主题契约：初始化优先级为 localStorage > 系统偏好；切换时同步 <html>.dark
 // 并持久化；隐私模式下存储不可用时静默降级，不影响主题切换。
@@ -139,5 +139,18 @@ describe('useTheme', () => {
     const second = renderHook(() => useTheme());
     expect(second.result.current.theme).toBe('dark');
     second.unmount();
+  });
+
+  // v3.19.0：初始化只读取偏好、不写盘，避免把「跟随系统」固化成显式值
+  it('初始化（浅色或系统深色）都不写 localStorage', () => {
+    const light = renderHook(() => useTheme());
+    expect(localStorage.getItem('theme')).toBeNull();
+    light.unmount();
+
+    stubPrefersDark(true);
+    const dark = renderHook(() => useTheme());
+    expect(dark.result.current.theme).toBe('dark');
+    expect(localStorage.getItem('theme')).toBeNull();
+    dark.unmount();
   });
 });

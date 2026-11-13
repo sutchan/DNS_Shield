@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   DNS Shield — Global stylesheet entry (v3.15.3)
+   DNS Shield — Global stylesheet entry (v3.19.0)
    设计系统已按职责拆分到 src/styles/*.css（见 layout.tsx 的导入清单），
    本文件仅保留 Tailwind 指令与基础层（design tokens / 全局基础样式）。
    ============================================ */
@@ -27,7 +27,10 @@
     --secondary-foreground: 240 4% 16%;
 
     --muted: 220 8% 94%;
-    --muted-foreground: 240 3% 46%;
+    /* v3.19.0：辅助文本对比度由约 3.9:1 提升至 ≥4.5:1（WCAG AA） */
+    --muted-foreground: 240 4% 38%;
+    /* 弹窗遮罩统一 token，替代散落的硬编码 rgba / 背景透明度 */
+    --overlay: 240 8% 12%;
 
     --accent: 217 70% 94%;
     --accent-foreground: 217 89% 47%;
@@ -66,9 +69,9 @@
     /* 等宽/代码：系统等宽栈 */
     --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
       'Liberation Mono', 'Courier New', monospace;
-    /* 品牌标头衬线：含中文衬线回退，避免中文标题落到默认黑体 */
-    --font-serif: Georgia, 'Times New Roman', 'Noto Serif CJK SC',
-      'Source Han Serif SC', 'Songti SC', 'SimSun', serif;
+    /* v3.19.0：标题统一走 sans 600/700 + 负字距。原 --font-serif 的
+       Georgia/SimSun 回退会让中文标题出现「宋体标题 + 黑体正文」混排，
+       且与离线构建（无外部字体）的现状不符；设计系统文档已同步。 */
   }
 
   .dark {
@@ -88,7 +91,8 @@
     --secondary-foreground: 0 0% 90%;
 
     --muted: 240 3% 14%;
-    --muted-foreground: 240 2% 55%;
+    --muted-foreground: 240 3% 68%;
+    --overlay: 240 6% 4%;
 
     --accent: 217 40% 20%;
     --accent-foreground: 217 85% 60%;
