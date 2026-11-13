@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 
-// 统一安全响应头：与 vercel.json 的 headers 保持一致（历史上两处各写一份且不同——
-// 此处曾缺 HSTS/COOP/CORP/X-Frame-Options，且 frame-ancestors 为 *）。
-// 改一处必须同步另一处（vercel.json 为生产部署路径）；CI 目前无自动一致性检查，需手工核对。
+// 统一安全响应头：生产环境的唯一来源（原 vercel.json 双写已移除，不再需要跨文件同步）。
+// 历史上两处各写一份且不一致——此处曾缺 HSTS/COOP/CORP/X-Frame-Options，
+// 且 frame-ancestors 为 *；现由本文件的 headers() 单点维护。
 // dev 差异：next dev 的 webpack 以 eval 执行模块，浏览器 / 内嵌 WebView 预览时
 // 会被 CSP 拦截（Refused to evaluate a string as JavaScript），故仅开发模式放行
-// 'unsafe-eval'；生产构建（next build / next start）与 vercel.json 保持严格。
+// 'unsafe-eval'；生产构建（next build / next start）保持严格。
 const isDev = process.env.NODE_ENV !== 'production';
 
 const securityHeaders = [
@@ -74,7 +74,7 @@ const nextConfig = {
     unoptimized: true
   },
   env: {
-    version: '3.18.0',
+    version: '3.18.1',
     NEXT_PUBLIC_BUILD_ID: buildTimeId()
   },
   devIndicators: {

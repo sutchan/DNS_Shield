@@ -20,6 +20,17 @@ export interface ShardResult {
   counters: RawCounters;
 }
 
+/** 主线程侧挂起任务的状态；类型与聚合逻辑同处一模块，避免控制器文件膨胀 */
+export interface TaskState {
+  shardTotal: number;
+  collected: Map<number, ShardResult>;
+  shardProgress: Map<number, { processed: number; total: number }>;
+  failed: boolean;
+  startedAt: number;
+  resolve: (value: ParallelParseResult | null) => void;
+  onProgress?: (p: { processed: number; total: number }) => void;
+}
+
 /**
  * 聚合全部分片并执行只跑一次的全局后处理（去重 / 白名单剔除）。
  * 任何异常都返回 null，由调用方落回单 Worker 串行路径；绝不向外抛出，

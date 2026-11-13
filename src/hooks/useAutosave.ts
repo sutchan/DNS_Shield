@@ -1,9 +1,10 @@
-// src/hooks/useAutosave.ts v3.15.0
+// src/hooks/useAutosave.ts v3.18.1
 // 自动保存编排：挂载时恢复本地草稿（IndexedDB 优先，localStorage 降级），
 // 并按固定间隔持久化当前输入。存储读写细节见 autosaveStorage / utils/idb。
 
 'use client';
 import { useEffect, type MutableRefObject, type RefObject } from 'react';
+import { logger } from '../utils/logger';
 import { generateLineNumbers } from './useLineNumbers';
 import { readAutosave, readAutosaveTime, writeAutosave } from './autosaveStorage';
 
@@ -50,7 +51,7 @@ export const useAutosave = ({
           showToastRef.current('autosaveRestored', { time: timeAgo });
         }
       }
-    })();
+    })().catch((error) => logger.error('Error restoring autosave:', error));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

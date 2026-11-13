@@ -70,9 +70,10 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   ...(googleVerification ? { verification: { google: googleVerification } } : {}),
+  // 仅声明国家/地区（CN）。geo.placename 语义上应为真实地名，本项目为在线服务无实体地点，
+  // 用站点名填充属语义错误，故省略（避免向抓取器输出无效地理标签）。
   other: {
     'geo.region': 'CN',
-    'geo.placename': SITE_NAME,
   },
   icons: [
     { rel: 'icon', type: 'image/svg+xml', url: '/favicon.svg' },
@@ -154,6 +155,7 @@ export const jsonLd = {
     {
       '@type': 'FAQPage',
       '@id': `${SITE_URL}/#faq`,
+      inLanguage: 'zh-CN',
       // 问题与答案必须与页面 #faq 区块的可见文本逐字一致，避免结构化数据与正文不符。
       mainEntity: FAQ_ITEMS.map((item) => ({
         '@type': 'Question',
@@ -164,8 +166,12 @@ export const jsonLd = {
     {
       '@type': 'HowTo',
       '@id': `${SITE_URL}/#howto`,
+      inLanguage: 'zh-CN',
       name: '如何使用 DNS Shield 生成路由器广告过滤规则',
       description: '从输入域名清单到导出部署的三步流程。',
+      totalTime: 'PT2M',
+      tool: [{ '@type': 'HowToTool', name: 'DNS Shield 在线工具（现代浏览器）' }],
+      supply: [{ '@type': 'HowToSupply', name: '需要过滤的广告 / 追踪域名清单' }],
       step: HOWTO_STEPS.map((s, i) => ({
         '@type': 'HowToStep',
         position: i + 1,

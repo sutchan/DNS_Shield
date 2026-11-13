@@ -1,4 +1,4 @@
-// src/hooks/useLanguage.ts v3.15.0
+// src/hooks/useLanguage.ts v3.18.1
 import { useState, useEffect, useMemo } from 'react';
 import { supportedLanguages, getTranslation } from '../utils/i18n';
 import { Translation } from '../types';
@@ -10,6 +10,11 @@ const applyDocumentDirection = (lang: string) => {
   document.documentElement.setAttribute('dir', found?.rtl ? 'rtl' : 'ltr');
 };
 
+/** 语言偏好来自 localStorage / 调用方，必须按支持清单做枚举校验后再落地，
+ *  否则非法值会让 currentLang、切换菜单高亮与翻译结果三者不一致。 */
+const normalizeLang = (lang: string): string =>
+  supportedLanguages.some((l) => l.code === lang) ? lang : 'zh-cn';
+
 export const useLanguage = () => {
   const [currentLang, setCurrentLang] = useState('zh-cn');
 
@@ -17,7 +22,7 @@ export const useLanguage = () => {
   useEffect(() => {
     let savedLang = '';
     try { savedLang = localStorage.getItem('lang') ?? ''; } catch { /* 隐私模式不可用 */ }
-    const lang = savedLang || 'zh-cn';
+    const lang = normalizeLang(savedLang || 'zh-cn');
     setCurrentLang(lang);
     // 初始化时同步方向：否则 RTL 语言用户刷新后首屏仍按 LTR 排版（T-P1-12）
     applyDocumentDirection(lang);
@@ -28,10 +33,11 @@ export const useLanguage = () => {
 
   // 切换语言
   const switchLang = (lang: string) => {
-    setCurrentLang(lang);
+    const safeLang = normalizeLang(lang);
+    setCurrentLang(safeLang);
     if (typeof window !== 'undefined') {
-      try { localStorage.setItem('lang', lang); } catch { /* 隐私模式不可用 */ }
-      applyDocumentDirection(lang);
+      try { localStorage.setItem('lang', safeLang); } catch { /* 隐私模式不可用 */ }
+      applyDocumentDirection(safeLang);
     }
   };
 

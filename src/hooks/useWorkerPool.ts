@@ -1,40 +1,19 @@
-// src/hooks/useWorkerPool.ts v3.16.0
+// src/hooks/useWorkerPool.ts v3.18.1
 // 分片解析 Worker 池的主线程控制器（多核并行求值）：
-// - 池按需扩展至分片数，分片派发采用最闲优先负载均衡；
-// - 收齐全部分片后聚合原始产物并统一执行跨行后处理（finalizeParsed），
-//   保证结果与单线程整段解析等价；
+// - 池按需扩展至分片数，分片派发采用最闲优先负载均衡（仅终态消息回收负载）；
+// - 收齐全部分片后由 workerPoolFinalize 聚合并统一执行跨行后处理，
+//   保证结果与单线程整段解析等价；聚合异常同样结算为 null，杜绝 await 永挂；
 // - 任一分片失败 / Worker 崩溃 / postMessage 异常 / 组件卸载时，
 //   全部挂起任务以 null 结算，由调用方回退主线程同步路径（T-P1-14 契约）。
 'use client';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { logger } from '../utils/logger';
-import { aggregateRaw, splitIntoShards } from '../utils/parseAggregate';
-import { finalizeParsed } from '../utils/parser';
-import type { RawCollected, RawCounters } from '../utils/parser';
-import type { ParsedData } from '../types';
-import type { ParseStats } from '../types/formats';
+import { splitIntoShards } from '../utils/parseAggregate';
 import type { ParseShardResponse } from '../workers/parseShard.worker';
-
-export interface ParallelParseResult {
-  data: ParsedData;
-  stats: ParseStats;
-  elapsed: number;
-}
-
-interface ShardResult {
-  raw: RawCollected;
-  counters: RawCounters;
-}
-
-interface TaskState {
-  shardTotal: number;
-  collected: Map<number, ShardResult>;
-  shardProgress: Map<number, { processed: number; total: number }>;
-  failed: boolean;
-  startedAt: number;
-  resolve: (value: ParallelParseResult | null) => void;
-  onProgress?: (p: { processed: number; total: number }) => void;
-}
+import { finalizeShardResults } from './workerPoolFinalize';
+import type { ParallelParseResult, TaskState } from './workerPoolFinalize';
+// 保持公开导出契约：聚合结果类型仍从本模块对外暴露
+export type { ParallelParseResult } from './workerPoolFinalize';
 
 export const useWorkerPool = () => {
   const workersRef = useRef<Worker[]>([]);
@@ -56,13 +35,11 @@ export const useWorkerPool = () => {
     loadRef.current = [];
   }, []);
 
-  // 响应路由：负载计数回收与任务推进（迟到消息只减负载不报错）
+  // 响应路由：中间态 progress 只推进进度；终态 collected/error 回收负载并结算
   const handleResponse = useCallback((workerIndex: number, message: ParseShardResponse) => {
-    loadRef.current[workerIndex] = Math.max(0, (loadRef.current[workerIndex] ?? 1) - 1);
     const task = tasksRef.current.get(message.taskId);
-    if (!task) return;
-
     if (message.kind === 'progress') {
+      if (!task) return;
       task.shardProgress.set(message.shardIndex, { processed: message.processed, total: message.total });
       let processed = 0;
       let total = 0;
@@ -73,6 +50,11 @@ export const useWorkerPool = () => {
       task.onProgress?.({ processed, total });
       return;
     }
+
+    // 一个分片派发时 +1，收到终态消息时 -1：progress 属中间态，不能扣减负载，
+    // 否则「最闲优先」的计数会被提前清零而失真（一个分片可发多条 progress）。
+    loadRef.current[workerIndex] = Math.max(0, (loadRef.current[workerIndex] ?? 1) - 1);
+    if (!task) return;
 
     if (message.kind === 'error') {
       logger.warn('Parse shard task failed:', message.message);
@@ -86,13 +68,14 @@ export const useWorkerPool = () => {
 
     task.collected.set(message.shardIndex, { raw: message.raw, counters: message.counters });
     if (task.collected.size === task.shardTotal && !task.failed) {
-      tasksRef.current.delete(message.taskId);
       const parts = [...task.collected.entries()]
         .sort((a, b) => a[0] - b[0])
         .map(([, value]) => value);
-      const { raw, counters } = aggregateRaw(parts);
-      const { data, stats } = finalizeParsed(raw, counters);
-      task.resolve({ data, stats, elapsed: Date.now() - task.startedAt });
+      // 聚合与全局后处理统一在纯函数内兜底异常：若先删任务再让异常抛到
+      // onmessage，onerror 与卸载 cleanup 都遍历不到它，上层 await 将永挂。
+      // 这里无论成功失败都 resolve，失败返回 null 由调用方落回串行路径。
+      tasksRef.current.delete(message.taskId);
+      task.resolve(finalizeShardResults(parts, task.startedAt));
     }
   }, []);
 

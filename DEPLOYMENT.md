@@ -2,7 +2,7 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
-> 当前版本：v3.18.0
+> 当前版本：v3.18.1
 > 最后审查：2026-11-12（第十八轮全量文档核查；权威版本源为 `package.json`）
 
 ## 部署环境
@@ -261,7 +261,7 @@ git add public && git commit -m "chore: 同步生成规则文件"
 |----------|------|--------|
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_BUILD_ID` | 页脚构建编号（`yymmddhhmm`，由 `next.config.js` 构建期生成并注入，见 SPEC §8.1） | 构建时生成 |
-| `NEXT_PUBLIC_APP_VERSION` | 应用版本（构建期由 `next.config.js` env.version 注入；应用内展示实际读取 `src/config/version.ts` 的 APP_VERSION） | 3.18.0 |
+| `APP_VERSION` | 应用版本单一来源（`src/config/version.ts`；权威源为 `package.json` version，文档展示位由 `sync-facts.mjs` 同步） | 3.18.1 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（须形如 `G-XXXXXXXXXX`；留空或格式非法则不启用统计，详见 `.env.example`） | 空 |
 
 ### 2. Next.js 配置
@@ -280,7 +280,7 @@ const nextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   env: {
-    version: '3.18.0',                    // 展示位由 sync-facts.mjs 从 package.json 派生，勿另处硬编码
+    version: '3.18.1',                    // 展示位由 sync-facts.mjs 从 package.json 派生，勿另处硬编码
     NEXT_PUBLIC_BUILD_ID: buildTimeId()  // 构建期注入，页脚 build 编号（缺失时回退版本号）
   },
   devIndicators: { buildActivity: false },

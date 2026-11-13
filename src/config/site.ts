@@ -12,8 +12,8 @@ export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
 export const ICON_512_PATH = '/assets/icons/icon-512x512.png';
 
-/** 站点事实文本最近更新日期；修改 seo-content.ts 中的事实描述时同步此值 */
-export const SITE_LAST_MODIFIED = '2026-11-12';
+/** 站点事实文本最近更新日期；修改 seo-content.ts / site-meta.ts 等 SEO 事实时同步此值 */
+export const SITE_LAST_MODIFIED = '2026-11-13';
 
 /** 界面 16 语对应的 BCP 47 标签，与 src/utils/i18n.ts supportedLanguages 一一对应 */
 export const IN_LANGUAGE = [

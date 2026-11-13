@@ -1,4 +1,4 @@
-// src/hooks/useAsyncRuleProcessing.ts v3.15.0
+// src/hooks/useAsyncRuleProcessing.ts v3.18.1
 // 统一的规则处理入口：小文本走主线程同步处理（Worker 启动开销大于收益），
 // 超过阈值的大文本移交 Web Worker；解析结果以序号守卫丢弃过期响应，
 // 避免快速连续输入时旧结果覆盖新输入。
@@ -58,7 +58,14 @@ export const useAsyncRuleProcessing = () => {
         return seq === transformSeqRef.current ? sorted : null;
       }
       const result = await run('sort', text);
-      if (result?.kind !== 'text' || seq !== transformSeqRef.current) return null;
+      if (seq !== transformSeqRef.current) return null;
+      // Worker 失败 / 崩溃 / postMessage 异常会以空文本或 null 兜底（T-P1-14）。
+      // 空文本若被当作成功结果写回输入框会清空用户数据，故与 processParse
+      // 一致回退主线程同步实现；空输入本身返回空串属正常结果，不触发回退。
+      if (result?.kind !== 'text' || (result.text === '' && text !== '')) {
+        const sorted = sortDomainsUtil(text);
+        return seq === transformSeqRef.current ? sorted : null;
+      }
       return result.text;
     },
     [isSupported, run]
@@ -72,7 +79,12 @@ export const useAsyncRuleProcessing = () => {
         return seq === transformSeqRef.current ? deduped : null;
       }
       const result = await run('dedupe', text);
-      if (result?.kind !== 'text' || seq !== transformSeqRef.current) return null;
+      if (seq !== transformSeqRef.current) return null;
+      // 同上：空文本兜底必须回退同步去重，否则输入框与预览被静默清空
+      if (result?.kind !== 'text' || (result.text === '' && text !== '')) {
+        const deduped = dedupeDomainsUtil(text);
+        return seq === transformSeqRef.current ? deduped : null;
+      }
       return { content: result.text, removedCount: result.removedCount ?? 0 };
     },
     [isSupported, run]

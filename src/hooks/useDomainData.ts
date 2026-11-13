@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.ts v3.15.0
+// src/hooks/useDomainData.ts v3.18.1
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchWithCache } from '../utils/cachedFetch';
 import { generateLineNumbers } from './useLineNumbers';
@@ -151,7 +151,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
       setSourceInput(sorted);
       parseSourceData(sorted);
       showToastRef.current('domainsSorted');
-    });
+    }).catch((error) => logger.error('Error sorting domains:', error));
   }, [processSort, parseSourceData]);
 
   const dedupeDomains = useCallback(() => {
@@ -163,7 +163,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
       setSourceInput(result.content);
       parseSourceData(result.content);
       showToastRef.current('duplicatesRemoved', { count: result.removedCount });
-    });
+    }).catch((error) => logger.error('Error deduping domains:', error));
   }, [processDedupe, parseSourceData]);
 
   const saveDomains = useCallback(() => {

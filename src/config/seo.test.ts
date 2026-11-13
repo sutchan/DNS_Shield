@@ -11,6 +11,7 @@ import sitemap from '../app/sitemap';
 import { GET as llmsGet, dynamic as llmsDynamic } from '../app/llms.txt/route';
 import {
   SITE_URL, AI_CRAWLERS, IN_LANGUAGE, OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT,
+  SITE_LAST_MODIFIED,
 } from './site';
 import { OUTPUT_FORMATS, FAQ_ITEMS, HOWTO_STEPS, buildLlmsTxt } from './seo-content';
 
@@ -60,6 +61,8 @@ describe('JSON-LD @graph', () => {
   it('inLanguage 覆盖全部 16 种界面语言', () => {
     expect(byType('SoftwareApplication')?.inLanguage).toEqual([...IN_LANGUAGE]);
     expect(byType('WebSite')?.inLanguage).toEqual([...IN_LANGUAGE]);
+    expect(byType('FAQPage')?.inLanguage).toBe('zh-CN');
+    expect(byType('HowTo')?.inLanguage).toBe('zh-CN');
   });
 
   it('FAQPage 与页面可见 FAQ 逐字一致（防止结构化数据与正文不符）', () => {
@@ -71,13 +74,19 @@ describe('JSON-LD @graph', () => {
     });
   });
 
-  it('HowTo 步骤与快速入门三步一致，position 从 1 递增', () => {
-    const steps = byType('HowTo')?.step as Array<{ position: number; name: string }>;
+  it('HowTo 步骤与快速入门三步一致，position 从 1 递增，且含 GEO 可引用字段', () => {
+    const howto = byType('HowTo') as Record<string, unknown>;
+    const steps = howto.step as Array<{ position: number; name: string }>;
     expect(steps).toHaveLength(HOWTO_STEPS.length);
     steps.forEach((step, i) => {
       expect(step.position).toBe(i + 1);
       expect(step.name).toBe(HOWTO_STEPS[i].name);
     });
+    expect(howto.totalTime).toBe('PT2M');
+    expect(Array.isArray(howto.tool)).toBe(true);
+    expect((howto.tool as Array<Record<string, unknown>>)[0]['@type']).toBe('HowToTool');
+    expect(Array.isArray(howto.supply)).toBe(true);
+    expect((howto.supply as Array<Record<string, unknown>>)[0]['@type']).toBe('HowToSupply');
   });
 });
 
@@ -94,13 +103,14 @@ describe('robots / sitemap', () => {
     for (const ua of AI_CRAWLERS) expect(text).toContain(ua);
   });
 
-  it('sitemap 只含唯一有效 URL，无 fragment 伪条目与动态时间戳', () => {
+  it('sitemap 只含唯一有效 URL，无 fragment 伪条目，lastModified 用稳定日期', () => {
     const entries = sitemap();
     expect(entries).toHaveLength(1);
     // 与 canonical 一致（trailingSlash: true 的规范形式带尾斜杠）
     expect(entries[0].url).toBe(`${SITE_URL}/`);
     expect(entries[0].url).not.toContain('#');
-    expect(entries[0].lastModified).toBeUndefined();
+    // 不用每次构建都变的 new Date()，改用手工维护的稳定日期，利于抓取调度
+    expect(entries[0].lastModified).toBe(SITE_LAST_MODIFIED);
   });
 });
 

@@ -1,4 +1,4 @@
-// src/hooks/useLanguage.test.ts v3.12.0
+// src/hooks/useLanguage.test.ts v3.18.1
 // @vitest-environment jsdom
 // 注意：本仓 jsdom 环境不暴露全局 localStorage（探测确认 typeof localStorage === 'undefined'），
 // 而 useLanguage 直接使用裸 localStorage，故此处注入最小内存实现作为测试替身。
@@ -53,6 +53,39 @@ describe('useLanguage', () => {
     expect(document.documentElement.getAttribute('dir')).toBe('rtl');
     act(() => result.current.switchLang('en'));
     expect(document.documentElement.getAttribute('dir')).toBe('ltr');
+    unmount();
+  });
+});
+
+// v3.18.1：语言偏好来自 localStorage / 切换回调，必须按支持清单做枚举校验，
+// 否则非法值会让 currentLang、菜单高亮与实际翻译三者不一致。
+describe('语言码枚举校验', () => {
+  it('localStorage 中非法语言码回退简中', () => {
+    store.set('lang', 'not-a-lang');
+    const { result, unmount } = renderHook(() => useLanguage());
+    expect(result.current.currentLang).toBe('zh-cn');
+    unmount();
+  });
+
+  it('switchLang 传入非法码时按简中落地并持久化', () => {
+    const { result, unmount } = renderHook(() => useLanguage());
+    act(() => { result.current.switchLang('../../evil'); });
+    expect(result.current.currentLang).toBe('zh-cn');
+    expect(store.get('lang')).toBe('zh-cn');
+    unmount();
+  });
+
+  it('合法语言码可正常切换并持久化', () => {
+    const { result, unmount } = renderHook(() => useLanguage());
+    act(() => { result.current.switchLang('zh-tw'); });
+    expect(result.current.currentLang).toBe('zh-tw');
+    expect(store.get('lang')).toBe('zh-tw');
+    unmount();
+  });
+
+  it('语言优先级前三为简中 / 繁中 / 英语', () => {
+    const { result, unmount } = renderHook(() => useLanguage());
+    expect(result.current.supportedLanguages.slice(0, 3).map((l) => l.code)).toEqual(['zh-cn', 'zh-tw', 'en']);
     unmount();
   });
 });

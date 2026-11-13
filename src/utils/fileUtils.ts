@@ -1,4 +1,4 @@
-// src/utils/fileUtils.ts v3.15.0
+// src/utils/fileUtils.ts v3.18.1
 import { logger } from './logger';
 
 const MAX_URL_LENGTH = 2048;
@@ -95,6 +95,8 @@ const readBodyWithSizeLimit = async (response: Response, maxSize: number): Promi
     result += decoder.decode();
   } catch (err) {
     if (received > maxSize) {
+      // 超限时主动关闭底层流，避免下载在后台继续占用带宽与内存
+      void reader.cancel().catch(() => {});
       throw new Error(`响应体积超过上限（${Math.round(maxSize / 1024 / 1024)}MB）`);
     }
     throw err;
@@ -153,8 +155,9 @@ export const fetchFromUrls = async (urls: string[], timeout = 10000): Promise<Fe
   let totalSize = 0;
   results.forEach((result, index) => {
     if (result.status === 'fulfilled') {
-      // 以字符长度近似字节数：Unicode 码元数对 UTF-8 体积偏保守
-      const size = result.value.length;
+      // 按 UTF-8 实际字节数累计：字符数会低估中文等多字节文本，
+      // 使 50MB 总量护栏被绕过（T-P2-06）
+      const size = new TextEncoder().encode(result.value).length;
       if (totalSize + size > MAX_TOTAL_SIZE) {
         failedUrls.push({
           url: urls[index],

@@ -5,9 +5,31 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-12（与 package.json v3.18.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
+> 最后审查：2026-11-13（与 package.json v3.18.1 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
 
 ## [Unreleased]
+
+## [3.18.1] - 2026-11-13
+
+### Changed（SEO / 生成式引擎优化 GEO 元数据修正与增强）
+- 修正 `site-meta.ts` 的 `geo.placename` 被错误填成站点名（`DNS Shield`）的问题：在线服务无实体地点，geo 标签语义上应为真实地名，故删除该键、仅保留 `geo.region: CN`，避免向抓取器输出无效地理标签
+- JSON-LD `@graph` 的 `FAQPage` 与 `HowTo` 两个节点补全 `inLanguage: 'zh-CN'`（此前仅 `SoftwareApplication` / `WebSite` 有）
+- 增强 `HowTo` 节点的可引用性：补充 `totalTime: 'PT2M'`、`tool`（HowToTool：DNS Shield 在线工具）、`supply`（HowToSupply：需过滤的域名清单），更利于生成式引擎直接引用三步流程
+- `sitemap.ts` 的 `lastModified` 由「刻意置空」改为稳定的 `SITE_LAST_MODIFIED`（`src/config/site.ts` 手工维护、仅在事实文案实际变更时更新），既避免每次构建都变的误导性时间戳，又给抓取调度提供有效锚点
+- 同步更新 `src/config/seo.test.ts`：sitemap 断言改为期望稳定日期，新增 FAQPage / HowTo 的 `inLanguage` 与 HowTo 的 `totalTime` / `tool` / `supply` 校验（仍覆盖原有 15 个用例）
+
+### Fixed（全面审查后的缺陷修复与护栏收敛）
+- **并行解析聚合异常导致 `await` 永挂**：`useWorkerPool` 原先把任务从 `tasksRef` 删除后才执行 `aggregateRaw` / `finalizeParsed`，聚合一旦抛错，异常落到 `worker.onmessage`，而 `onerror` 与卸载清理都遍历不到该任务，`useRuleWorker` 的 `await` 永久挂起、连串行兜底都到不了。新增 `src/hooks/workerPoolFinalize.ts` 的 `finalizeShardResults` 纯函数统一承接异常并返回 `null`，无论成败都 `resolve`，失败落回单 Worker 串行路径；同时把 `TaskState` / `ParallelParseResult` 类型集中到该模块，`useWorkerPool.ts` 由 213 行降回 200 行以内（公开导出契约不变）
+- **Worker 失败兜底的空文本清空用户输入**：`processSort` / `processDedupe` 原先把 Worker 错误 / 崩溃返回的 `{ kind:'text', text:'' }` 当成功结果，`useDomainData` 直接 `setSourceInput('')` 并弹出「已排序 / 已去重」成功提示。现与 `processParse` 一致回退主线程同步实现；`run` 返回 `null`（Worker 不可用）时也回退，不再静默失败；空输入本身返回空串仍属正常结果
+- **「最闲优先」负载计数失真**：`handleResponse` 原对每条响应（含中间态 `progress`）都 `-1`，而每个分片派发只 `+1`，计数被 clamp 到 0。现仅 `collected` / `error` 终态消息回收负载，`progress` 只推进进度
+- **未处理的 Promise rejection**：`useDomainData` 的排序 / 去重 `void ...then()` 与 `useAutosave` 的草稿恢复异步 IIFE 补 `.catch`（`logger.error`），避免静默失败
+- **语言码未做枚举校验**：`useLanguage` 直接使用 localStorage 与 `switchLang` 的任意字符串，非法值会让 `currentLang`、菜单高亮与实际翻译不一致。新增 `normalizeLang` 按 `supportedLanguages` 白名单校验，非法值统一回退 `zh-cn`
+- **fetch 护栏一致性**：`domainFetch` 补协议白名单校验（与 `fetchFromUrl` 共用 `isValidHttpUrl`，`config.domainsUrl` 可由环境变量覆盖）、无流式能力路径按 UTF-8 实际字节数补 10MB 上限、超限主动 `reader.cancel()`、超时判定改为按 `name === 'AbortError'` 兼容不同运行时、补 `TextDecoder` 尾部冲刷避免多字节字符跨 chunk 截断；`fileUtils` 超限同样关闭底层流，多 URL 合并的 50MB 总量按真实字节数累计（字符数会低估中文等多字节文本）
+- **配置与文档漂移**：`next.config.js` 注释移除已删除 `vercel.json` 的幽灵引用，明确安全响应头为单一来源；`DEPLOYMENT.md` 删除代码中不存在的 `NEXT_PUBLIC_APP_VERSION` 环境变量行，改为 `APP_VERSION` 单一来源说明，`scripts/sync-facts.mjs` 对应展示位规则同步（13 处版本门禁不变）
+
+### Tests
+- 新增 `workerPoolFinalize.test.ts`（3 用例：分片聚合与 `parseSource` 等价、聚合异常返回 null、异常后正常聚合）、`useAsyncRuleProcessing.fallback.test.ts`（4 用例：空文本 / null 兜底回退、正常结果直通）；`useLanguage.test.ts` 原有 4 用例完整保留并追加 4 用例（非法码回退、切换校验、合法码持久化、语言优先级）
+- `vitest run` 全绿、`tsc --noEmit` 通过、`sync-facts --check` 13 处展示位一致；版本按 patch 规则升至 v3.18.1：三源 / 13 处文档展示位 / `public/` 11 个规则产物头部
 
 ## [3.18.0] - 2026-11-12
 
@@ -1698,7 +1720,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.18.0...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.18.1...HEAD
+[3.18.1]: https://github.com/sutchan/DNS_Shield/compare/v3.18.0...v3.18.1
 [3.18.0]: https://github.com/sutchan/DNS_Shield/compare/v3.17.4...v3.18.0
 [3.17.4]: https://github.com/sutchan/DNS_Shield/compare/v3.17.3...v3.17.4
 [3.17.3]: https://github.com/sutchan/DNS_Shield/compare/v3.17.2...v3.17.3
