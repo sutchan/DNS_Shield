@@ -4,27 +4,13 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-12（与 package.json v3.18.1 对齐；待办区保持清零；2026-11-12 第十八轮全量文档核查：实时指标按实算更新、活跃文档统一审查锚点与仓库地址、补充新增能力与废弃标注，冻结快照按声明保留）
+> 最后审查：2026-11-13（与 package.json v3.18.1 对齐；待办区保持清零）。
 > 维护团队：Sut / ArcesTeam
 >
-> **本次更新（2026-11-12 第十八轮：全量文档核查与漂移修正）**：以代码实况为权威源复核全部活跃文档——版本 **3.17.4** / 12 格式 / 16 语 140 顶层键·209 递归键 / **48 个测试文件 293 处 `it()`** / 11 个格式产物。修正项：统一全部活跃文档头部审查锚点，仓库地址按 `git remote` 统一为 `sutchan/DNS_Shield`（原第十六轮遗留疑问至此关闭）；测试指标由 47/288 实算更新为 48/293；`SPEC.md` 结构树补 `scripts/check-root-clean.mjs`、§4 补 v3.16.1~v3.17.4 UI 与单飞内存护栏、§12.1 补双源 CSP 与开发模式 `unsafe-eval` 排障；`DEPLOYMENT.md` 补 `rootclean` job、四个工作流与 action 升级、真实 `next.config.js` 配置；`config.yaml` / `CHECKLIST.md` / README 标注 `ui/Tabs.tsx` 与 `@radix-ui/react-tabs` 已废弃；`CHANGELOG [Unreleased]` 补记 v3.17.4 之后已合入但未 bump 的内存修复与 CI 提交。冻结快照（CHANGELOG 历史段 / `prototype/` / `public/brand-colors.md` / `STRUCTURE-REVIEW.md` / `tasks-done.md`）按各自声明不回填数值，仅补冻结与废弃标注。**遗留疑问**：`vercel.json` CSP 含 `require-trusted-types-for 'script'` 而 `next.config.js` 不含，统一方案仍待定（当前状态见 SPEC §12.1）。
+> **本轮整理（2026-11-13）**：依 SPEC §5.3 任务记录规范，将第十四~十八轮冗长的「本次更新」历史叙述统一归档至 [tasks-done.md](./tasks-done.md)，本文件仅保留未完成清单、实时指标、遗留疑问与维护清单；版本与指标经实算与代码实况对齐（v3.18.1 / 12 格式 / 16 语 140·209 键 / 51 套件 324 用例 / 17 组件 / >200 行源文件 1 个）。
 >
-> **本次更新（2026-11-07 第十七轮：全量文档核查与漂移修正）**：以代码实况复核全部活跃文档（版本 3.17.3 / 12 种输出格式 / 16 语 140 顶层键 / 47 个测试文件 288 处 `it()` 均与实测一致）。修正项：本文件交叉引用 §5.4→§5.3（SPEC 任务记录规范实为 §5.3）；`prototype/README.md` 4 处 `public/brand/` 幽灵路径改为实际 `public/brand-colors.md`，并删除「与 `src/config/version.ts` 一致」的误导声明改为冻结快照表述；README 功能清单补「纯域名」使中英文 12 种格式口径一致；DEPLOYMENT `next.config.js` 示例补 `output: 'standalone'` 与实文一致。CHANGELOG 复核 `6fcd7da..HEAD` 仅 `dd7eefc`（CI setup 复合动作语法修复）且已入账 `[3.17.3]`。冻结快照（CHANGELOG 历史段 / prototype 设计章节 / public/brand-colors.md / STRUCTURE-REVIEW.md / tasks-done.md）按各自声明未改。
->
-> **本次更新（2026-11-07 第十六轮：全量文档核查与漂移修正）**：以代码实况为权威源复核全部活跃文档。修正项：README 删除 `src/app/i18n.ts` 幽灵条目（实际位于 `src/utils/i18n.ts`）、结构树补 `src/config/`；SPEC 删除 `uiUtils.ts` / `buildFlowPool.ts` 幽灵条目（`src/utils` 实测无此二文件，系第十五轮误入）、§12.1 CSP 改为如实描述 `next.config.js` 与 `vercel.json` 双源差异；DEPLOYMENT 工作流总览 / 标准发布流程 / 漂移门禁全面同步自动发布实况（`push → CI → Deploy → Release` 自动打 tag；漂移检测为硬门禁）、删除无代码消费的 `PORT` / `NEXT_PUBLIC_APP_NAME` 环境变量行；SUPPORT 与 ci.yml 注释产物计数口径修正（11 个格式产物文件，`domains` 格式即数据源本身）；ISSUE 模板移除不存在的容器化部署；`src/types/formats.ts` 注释 Tab→下拉修正。**遗留疑问**：仓库地址 `sutchan`（README.en 链接）vs `ArcesTeam`（SPEC/SUPPORT/SECURITY）待拍板；`vercel.json` CSP 含 `require-trusted-types-for` 而 `next.config.js` 不含，统一方案待定。冻结快照（CHANGELOG 历史段 / prototype / public/brand-colors.md / STRUCTURE-REVIEW.md / tasks-done.md 历史实测值）按各自声明未改。
->
-> **本次更新（2026-11-07 第十五轮：全量文档核查与漂移修正）**：以代码实况为权威源，重新实算并统一全部活跃文档——16 语 / 顶层 140 键 / 递归 209 键、47 个测试文件 / 288 处 `it()`、顶层 16 个 `.tsx`、`ui/` 12 个、`src` 无 >200 行源文件、`public/domains.txt` 非空 897 行（20 注释 + 877 条规则 = 黑名单 645 + 白名单 232）。修正项：README 项目结构树补 `workers/` / `useWorkerPool` / `parseAggregate` / `OutputPanel.formatSelect` 与 parser 两段式描述、输出格式控件 Tabs → 单一下拉；README.en 同步语言优先级与多核并行能力；DEPLOYMENT 陈旧硬编码版本号与示例死版本号改为指向单一来源；SPEC 结构树组件与 FlowViz 静态快照描述；tasks 实时指标；CHECKLIST 审查时间；SUPPORT 白名单指引自相矛盾；CONTRIBUTING 提交类型与版本发布清单；PR 模板版本单一来源；SECURITY 废弃响应头；config.yaml 上下文。冻结快照（CHANGELOG 历史段 / prototype / public/brand-colors.md / STRUCTURE-REVIEW.md / tasks-done.md 历史实测值）按各自声明未改。
->
-> **本次更新（2026-11-07 第十四轮：T-P1-18 多核并行求值落地）**：推进并完成待办区唯一剩余增强项 `Web Worker 分片并行化（多核并行求值）`，编号 **T-P1-18**，随 v3.16.0（minor，新功能）发布并归档至 [tasks-done.md](./tasks-done.md)。要点：`parser.ts` 拆为 `collectLines`（可分片逐行收集）+ `finalizeParsed`（全局后处理）两段，`parseSource` 契约不变；新增 `workers/parseShard.worker.ts` / `hooks/useWorkerPool.ts` / `utils/parseAggregate.ts`；`useRuleWorker.run('parse')` 达到 20000 行阈值自动走多核并行，失败逐级回退单 Worker → 主线程同步；并行与串行结果等价契约由新增 `parseAggregate.test.ts`（1 套件 12 用例，静态计数）断言。本机无 `node_modules`，`vitest` / `tsc` / `lint` 未实跑，`read_lints` 0 诊断，待 CI 复核。
-
-> **本次更新（2026-11-06 全项目文档核查）**：以代码实况为权威源，实算并统一全部活跃文档——核查基线 v3.15.0（收尾发布 v3.15.1）/ 12 格式 / 16 语 146 顶层键 215 递归键 / 47 测试套件 / `src` 无 >200 行源文件 / `public/domains.txt` 非空 882 行（15 注释 + 规则 867 条 = 黑名单 635 + 白名单 232）。修正项：端口 8082 → 3000（README / DEPLOYMENT / config.yaml）、失效链接（README×2 品牌图、README.en 全部 raw 下载链接、SUPPORT 相对链接）、路径与命令（CONTRIBUTING 域名源、SUPPORT 生成命令与白名单语法、CHECKLIST ui PascalCase、PR 模板失效引用）、SPEC 结构树与 §5.3 任务记录规范、config.yaml 格式清单、README.en 格式图（9 列 → 显式 12 格式）、CHANGELOG 勘误段收编为 `[3.15.1]` 发布说明。冻结快照（CHANGELOG 历史段 / prototype / public/brand-colors.md / STRUCTURE-REVIEW.md / tasks-done.md 历史实测值）按各自声明未改。**注**：本机无 `node_modules`，`vitest` / `lint` 未能实跑；下表 282 用例与覆盖率为 2026-11-05 实测值，按「数字必须实算」纪律沿用并注明，未凭静态计数臆改。
->
-> **本次更新（2026-11-06 第十三轮：任务文档彻底精简）**。按用户指令「tasks.md 仅保存未完成任务清单，已完成任务与历史叙述迁移至 tasks-done.md」执行：
-> ① **待办区状态**：「未完成任务合计：0 项」（自 2026-11-05 第十二轮后维持）；所有 T-P0-01~04/02a、T-P1-01~17、T-P2-01~13、T-P3-01~05、T-P4-01 均已完成并归档；
-> ② **迁移历史叙述**：移除顶部第十二轮及更早的各轮「本次更新」冗长历史块，改为指向 [tasks-done.md](./tasks-done.md) 的指针，避免两处重复维护；
-> ③ **迁移开发进度全景**：原「二、开发进度全景」完成度表整体迁入 [tasks-done.md](./tasks-done.md) 第七章，使本文件仅聚焦未完成清单；
-> ④ **保留**：实时指标表、待办区（0 项）、日常 / 定期 / 版本发布维护清单；
-> ⑤ **剩余任务**：编号任务清单已清零，无编号任务可推进；`Web Worker 分片并行化（多核并行求值）`仍为后续增强项（非阻断，不计入清单）。
+> **遗留疑问**（从第十六/十八轮收敛，待拍板）：
+> - `vercel.json` 的 CSP 含 `require-trusted-types-for 'script'` 而 `next.config.js` 不含，统一方案仍待定（当前状态见 SPEC §12.1）。
 
 ---
 
