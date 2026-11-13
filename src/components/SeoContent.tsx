@@ -1,4 +1,4 @@
-// src/components/SeoContent.tsx v3.18.0
+// src/components/SeoContent.tsx v3.19.0
 // 站点事实内容（关于 / 12 种格式 / 常见问题）：GEO 的核心是可抓取、可引用的可见文本。
 // 本项目是纯客户端单页应用，此前 HTML 中只有一句 Hero 描述与三步快速入门，
 // 搜索引擎与 LLM 几乎无从引用。此区块在服务端预渲染时即进入 HTML（不依赖 localStorage），
@@ -28,14 +28,15 @@ export default function SeoContent() {
 
         <section id="faq" aria-labelledby="faq-heading">
           <h2 id="faq-heading">常见问题</h2>
-          <dl className="seo-faq">
+          {/* 折叠问答：默认收起答案，缩短长页面；内容仍在 SSR HTML 中供 GEO 抓取 */}
+          <div className="seo-faq">
             {FAQ_ITEMS.map((item) => (
-              <div className="seo-faq-item" key={item.q}>
-                <dt>{item.q}</dt>
-                <dd>{item.a}</dd>
-              </div>
+              <details className="seo-faq-item" key={item.q}>
+                <summary>{item.q}</summary>
+                <p>{item.a}</p>
+              </details>
             ))}
-          </dl>
+          </div>
         </section>
       </div>
 

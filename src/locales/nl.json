@@ -220,5 +220,8 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "refreshPreview": "Voorbeeld vernieuwen",
+  "urlImportToggle": "URL-import",
+  "themeToggleAria": "Wissel licht/donker thema"
 }

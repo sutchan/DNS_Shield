@@ -1,12 +1,14 @@
-// src/hooks/useLanguage.ts v3.18.1
+// src/hooks/useLanguage.ts v3.19.0
 import { useState, useEffect, useMemo } from 'react';
 import { supportedLanguages, getTranslation } from '../utils/i18n';
 import { Translation } from '../types';
 
-/** 依据语言代码设置 <html dir>，确保 RTL 语言（如阿拉伯语）布局正确 */
-const applyDocumentDirection = (lang: string) => {
+/** 同步 <html> 的 lang 与 dir：16 语言站必须让屏幕阅读器与 SEO 拿到真实语言，
+ *  RTL 语言（ar）首屏即生效，避免刷新后方向跳动（T-UI-01）。 */
+const applyDocumentLocale = (lang: string) => {
   if (typeof document === 'undefined') return;
   const found = supportedLanguages.find((l) => l.code === lang);
+  document.documentElement.lang = lang;
   document.documentElement.setAttribute('dir', found?.rtl ? 'rtl' : 'ltr');
 };
 
@@ -24,8 +26,8 @@ export const useLanguage = () => {
     try { savedLang = localStorage.getItem('lang') ?? ''; } catch { /* 隐私模式不可用 */ }
     const lang = normalizeLang(savedLang || 'zh-cn');
     setCurrentLang(lang);
-    // 初始化时同步方向：否则 RTL 语言用户刷新后首屏仍按 LTR 排版（T-P1-12）
-    applyDocumentDirection(lang);
+    // 初始化时同步语言与方向：首屏内联脚本已先行设置，此处保持一致（T-UI-01）
+    applyDocumentLocale(lang);
   }, []);
 
   // 获取当前语言的翻译（useMemo 缓存，currentLang 不变则跳过深合并计算）
@@ -37,7 +39,7 @@ export const useLanguage = () => {
     setCurrentLang(safeLang);
     if (typeof window !== 'undefined') {
       try { localStorage.setItem('lang', safeLang); } catch { /* 隐私模式不可用 */ }
-      applyDocumentDirection(safeLang);
+      applyDocumentLocale(safeLang);
     }
   };
 

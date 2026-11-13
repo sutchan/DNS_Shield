@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.17.2
+// src/components/OutputPanel.tsx v3.19.0
 // 输出面板：编排格式切换 / 设置弹窗 / 规则测试 / 路由器脚本 / 预览 / 操作按钮。
 // v3.15.5：格式切换控件改为单一「格式」下拉（FormatSelect），覆盖全部可见格式。
 // v3.17.2：工具栏移除设置按钮（保留 Header 入口 #settings-btn），onOpenSettings 随之移除。
@@ -9,6 +9,7 @@
 import * as React from 'react';
 import SettingsPanel from './SettingsPanel';
 import { OutputPreview } from './OutputPreview';
+import { EmptyState } from './ui/EmptyState';
 import RuleTesterModal from './RuleTesterModal';
 import ScriptGeneratorModal from './ScriptGeneratorModal';
 import {
@@ -133,19 +134,9 @@ const ruleLines = React.useMemo(() => (currentOutput ? countLines(currentOutput)
           showToast={showToast}
         />
 
-        {/* Merge Info */}
-        <div className="output-stats" id="merge-info" role="status" aria-live="polite">
-          {parsedData.domains.length > 0 || parsedData.whitelist.length > 0 || parsedData.customDns.length > 0 ? (
-            <span>{t.mergeStats
-              .replace('{blacklist}', String(parsedData.domains.length))
-              .replace('{whitelist}', String(parsedData.whitelist.length))
-              .replace('{customDns}', String(parsedData.customDns.length))}
-            </span>
-          ) : (
-            t.mergeInfo
-          )}
-        </div>
-
+        {/* 统计口径：输入区 #stats-bar 展示「输入解析结果」，此处只展示「产物统计」。
+            原 #merge-info 与输入区重复呈现黑名单/白名单/改道，且两处「行」标签口径不同
+            （输入行 vs 规则行），极易误读，v3.19.0 移除（T-UI-05）。 */}
         {/* 输出预览统计条 */}
         <PreviewStats
           currentFormat={currentFormat}
@@ -168,14 +159,14 @@ const ruleLines = React.useMemo(() => (currentOutput ? countLines(currentOutput)
               ariaLabel={t.outputFormatAria.replace('{format}', currentFormat)}
             />
           ) : (
-            <div
-              className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground"
+            <EmptyState
               id="output-preview-empty"
-              aria-label={t.previewPlaceholder}
-            >
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="mb-4 opacity-40" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
-              <p className="text-sm">{t.previewPlaceholder}</p>
-            </div>
+              title={t.previewPlaceholder}
+              mono
+              icon={
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/></svg>
+              }
+            />
           )}
         </div>
 

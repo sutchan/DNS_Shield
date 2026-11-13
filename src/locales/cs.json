@@ -220,5 +220,8 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "refreshPreview": "Obnovit náhled",
+  "urlImportToggle": "Import URL",
+  "themeToggleAria": "Přepnout světlý/tmavý motiv"
 }

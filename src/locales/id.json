@@ -220,5 +220,8 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "refreshPreview": "Segarkan pratinjau",
+  "urlImportToggle": "Impor URL",
+  "themeToggleAria": "Alihkan tema terang/gelap"
 }

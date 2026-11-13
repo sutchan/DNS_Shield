@@ -220,5 +220,8 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "refreshPreview": "Önizlemeyi yenile",
+  "urlImportToggle": "URL içe aktar",
+  "themeToggleAria": "Açık/koyu temayı değiştir"
 }

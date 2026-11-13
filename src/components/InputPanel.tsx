@@ -1,6 +1,7 @@
-// src/components/InputPanel.tsx v3.13.6
+// src/components/InputPanel.tsx v3.19.0
 'use client';
 import * as React from 'react';
+import { ChevronDown } from 'lucide-react';
 import { Button } from './ui/Button';
 import InputEditor from './InputEditor';
 import UrlSection, { PresetTags } from './UrlSection';
@@ -66,8 +67,12 @@ const InputPanel: React.FC<InputPanelProps> = ({
           aria-expanded={!isUrlSectionCollapsed}
           aria-controls="url-section"
         >
-          <span className={`collapse-icon ${isUrlSectionCollapsed ? 'collapsed' : ''}`} aria-hidden="true">▼</span>
-          <span>{t.advanced}</span>
+          <ChevronDown
+            className={`collapse-icon h-3.5 w-3.5 ${isUrlSectionCollapsed ? 'collapsed' : ''}`}
+            strokeWidth={1.8}
+            aria-hidden="true"
+          />
+          <span>{t.urlImportToggle}</span>
         </Button>
       </div>
 
@@ -103,9 +108,9 @@ const InputPanel: React.FC<InputPanelProps> = ({
       )}
 
       {/* 统计信息：彩色圆点 + 纯文本（v3.17.0 由胶囊 Badge 简化，对齐原型 .stat-dot） */}
-      <div className="stats-compact" id="stats-bar" role="region" aria-label={t.statsAria}>
+      <div className="stats-compact" id="stats-bar" role="region" aria-label={t.statsAria} aria-live="polite">
         {STAT_ITEMS.map(({ key, labelKey, dot }) => (
-          <span key={key} className="stat-badge" role="status" aria-live="polite">
+          <span key={key} className="stat-badge">
             {dot && <span className={`stat-dot ${dot}`} aria-hidden="true" />}
             <span className="stat-value" id={key} aria-label={String(t[labelKey])}>{stats[key]}</span>
             <span className="stat-label">{String(t[labelKey])}</span>

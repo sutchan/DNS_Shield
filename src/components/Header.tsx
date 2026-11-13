@@ -1,9 +1,9 @@
-// src/components/Header.tsx v3.15.0
+// src/components/Header.tsx v3.19.0
 'use client';
 
 import * as React from 'react';
 import Image from 'next/image';
-import { Globe, Check } from 'lucide-react';
+import { Globe, Check, Sun, Moon } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './ui/Button';
 import {
@@ -20,6 +20,8 @@ interface HeaderProps {
   supportedLanguages: Language[];
   switchLang: (lang: string) => void;
   onOpenSettings: () => void;
+  theme: 'light' | 'dark';
+  onToggleTheme: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -27,6 +29,8 @@ const Header: React.FC<HeaderProps> = ({
   supportedLanguages,
   switchLang,
   onOpenSettings,
+  theme,
+  onToggleTheme,
 }) => {
   const t = useT();
   const current = supportedLanguages.find((lang) => lang.code === currentLang);
@@ -71,6 +75,22 @@ const Header: React.FC<HeaderProps> = ({
         </div>
 
         <div className="flex items-center gap-2" id="header-actions">
+          {/* 主题：一键明暗切换（v3.19.0 由设置弹窗上移至顶栏，设置内保留三态） */}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={onToggleTheme}
+            aria-label={t.themeToggleAria}
+            title={theme === 'dark' ? t.themeLight : t.themeDark}
+            id="theme-toggle-btn"
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+            ) : (
+              <Moon className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
+            )}
+          </Button>
+
           {/* Language Selector */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

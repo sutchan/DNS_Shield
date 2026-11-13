@@ -220,5 +220,8 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "refreshPreview": "تحديث المعاينة",
+  "urlImportToggle": "استيراد الروابط",
+  "themeToggleAria": "تبديل المظهر الداكن والفاتح"
 }

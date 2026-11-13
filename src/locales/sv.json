@@ -220,5 +220,8 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "refreshPreview": "Uppdatera förhandsvisning",
+  "urlImportToggle": "URL-import",
+  "themeToggleAria": "Växla ljust/mörkt tema"
 }

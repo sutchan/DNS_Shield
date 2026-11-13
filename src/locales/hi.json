@@ -220,5 +220,8 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "refreshPreview": "पूर्वावलोकन ताज़ा करें",
+  "urlImportToggle": "URL आयात",
+  "themeToggleAria": "थीम बदलें"
 }

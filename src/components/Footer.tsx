@@ -1,4 +1,4 @@
-// src/components/Footer.tsx v3.15.1
+// src/components/Footer.tsx v3.19.0
 'use client';
 import React from 'react';
 import { useT } from '../context/AppContext';
@@ -82,7 +82,7 @@ const Footer = React.memo(function Footer({
               <line x1="12" y1="17" x2="12.01" y2="17"></line>
             </svg>
           </button>
-          <span className="footer-version" id="version-display" aria-label={`${t.versionLabel} V${version} · build ${buildId}`}>V{version}· build {buildId}</span>
+          <span className="footer-version" id="version-display" aria-label={`${t.versionLabel} v${version} · build ${buildId}`}>v{version} · build {buildId}</span>
         </div>
       </div>
     </footer>

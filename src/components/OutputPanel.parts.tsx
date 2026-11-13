@@ -1,4 +1,4 @@
-// src/components/OutputPanel.parts.tsx v3.17.2
+// src/components/OutputPanel.parts.tsx v3.19.0
 // OutputPanel 的纯展示子组件：预览统计条、工具栏与操作按钮。
 // 格式切换控件已抽离至 OutputPanel.formatSelect.tsx（单一「格式」下拉），此处仅 re-export 保持导出契约。
 // 派生逻辑（格式标签映射 / 可见格式计算）已抽离至 OutputPanel.derived.ts。
@@ -6,7 +6,7 @@
 
 import type { FC, ReactNode } from 'react';
 import { Button } from './ui/Button';
-import { SearchCheck, Terminal, Sparkles, Download, Copy } from 'lucide-react';
+import { SearchCheck, Terminal, RefreshCw, Download, Copy } from 'lucide-react';
 import { FormatType } from '../types';
 import type { Translation } from '../types/translation';
 
@@ -118,9 +118,11 @@ export const OutputActions: FC<OutputActionsProps> = ({
   onCopy,
 }) => (
   <div className="flex flex-wrap gap-2 justify-end mt-auto" id="output-actions" role="group" aria-label={t.outputActionsAria}>
-    <Button type="button" variant={'default' as const} onClick={onGenerate} id="generate-rules-btn" className="font-semibold shadow-md">
-      <Sparkles className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
-      {t.generateBtn}
+    {/* 主「生成规则」按钮固定在输入区 #parse-btn；此处仅刷新当前格式预览，
+        避免两个同名主按钮造成主次不清（T-UI-06）。 */}
+    <Button type="button" variant={'outline' as const} onClick={onGenerate} id="generate-rules-btn">
+      <RefreshCw className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />
+      {t.refreshPreview}
     </Button>
     <Button type="button" variant={'default' as const} onClick={onDownload} id="download-btn">
       <Download className="h-4 w-4 mr-1" strokeWidth={1.8} aria-hidden="true" />

@@ -1,4 +1,4 @@
-// src/app/layout.tsx v3.18.0
+// src/app/layout.tsx v3.19.0
 // 字体策略：不使用 next/font/google。构建期它会请求 fonts.googleapis.com，
 // EdgeOne / CI 等离线构建环境取不到 CSS 时，next/font loader 会抛 TypeError
 // 导致 next build 失败；字体统一由 globals.css 的系统字体栈提供。
@@ -22,7 +22,7 @@ export { metadata, viewport };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" suppressHydrationWarning>
       <head>
         {/* icon 与 manifest 由 metadata.icons / metadata.manifest 统一输出（v3.18.0 移除手写的重复 link） */}
         <meta name="version" content={APP_VERSION} />
@@ -30,6 +30,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <GaScripts />
       </head>
       <body id="app-body">
+        {/* 首屏本地化脚本：在 DOM 解析阶段即按 localStorage 设置 <html> 的 lang / dir / .dark，
+            避免 16 语言站刷新后的语言声明错误、RTL 布局跳动与深色模式闪白（T-UI-01/02）。
+            script-src 已在 next.config.js 的 CSP 中允许 'unsafe-inline'。 */}
+        <script
+          dangerouslySetInnerHTML={{ __html: "(function(){try{var d=document.documentElement,l=localStorage.getItem('lang')||'zh-cn';d.lang=l;d.setAttribute('dir',l==='ar'?'rtl':'ltr');var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)){d.classList.add('dark');}}catch(e){}})();" }}
+        />
         {/* JSON-LD 放在 body 而非显式 <head>：React 19 会 hoist head 内的内联 script，
             hydration 后注入两份重复的结构化数据（v3.18.0 线上实测发现）。 */}
         <script

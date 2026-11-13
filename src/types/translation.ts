@@ -1,4 +1,4 @@
-// src/types/translation.ts v3.15.2
+// src/types/translation.ts v3.19.0
 // 国际化文案类型定义，从 index.ts 拆分以保持类型文件单一职责。
 // 嵌套子类型（header/whitelist/toast）已抽离至 translation.parts.ts 以控制主文件行数。
 import type { TranslationHeader, TranslationWhitelist, TranslationToast } from './translation.parts';
@@ -7,6 +7,9 @@ export interface Translation {
   subtitle: string;
   inputTitle: string;
   advanced: string;
+  urlImportToggle: string;
+  refreshPreview: string;
+  themeToggleAria: string;
   domainCount: string;
   blacklistCount: string;
   whitelistCount: string;

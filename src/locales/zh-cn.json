@@ -220,5 +220,8 @@
     "neohosts": "neoHosts",
     "stevenblack": "StevenBlack",
     "youslist": "YouSList"
-  }
+  },
+  "refreshPreview": "刷新预览",
+  "urlImportToggle": "URL 导入",
+  "themeToggleAria": "切换深浅主题"
 }
