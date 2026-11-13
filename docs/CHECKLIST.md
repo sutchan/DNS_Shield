@@ -45,6 +45,9 @@
 - [ ] 异步（Worker）结果落地前校验请求序号与输入快照，过期结果丢弃
 - [ ] Worker 卸载时结算全部挂起任务，不让调用方 `await` 永挂
 - [ ] 弹窗 Escape 仅关闭栈顶弹窗；滚动锁使用引用计数实现
+- [ ] 首屏内联脚本按 localStorage 恢复 `<html lang>` / `dir` / `.dark`，刷新无 RTL 跳动与深色闪白
+- [ ] `useTheme` 初始化不写 localStorage，仅用户显式切换时持久化（保留「跟随系统」）
+- [ ] `aria-live` 只在统计容器声明一次，不逐项播报
 
 ## shadcn/ui 组件规范
 
