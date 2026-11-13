@@ -4,304 +4,120 @@
 
 # DNS Shield - 路由器广告过滤工具
 
-> 最后审查：2026-11-12（与 package.json v3.17.4 对齐；第十八轮全量文档核查）
+> 最后审查：2026-11-13（与 package.json 版本对齐）
 
 [![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.18.0-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告和保护隐私。既支持从统一域名数据源**生成**多种格式规则，也支持将已有清单在**不同格式间互相转换**。
+基于 DNS 的广告过滤规则库，通过路由器设置即可拦截广告与追踪、保护隐私。既支持从统一域名数据源**生成**多种格式规则，也支持将已有清单在**不同格式间互相转换**。
 
 ## 功能简介
 
-- **广告拦截** - 过滤网页广告、视频广告、App 广告
-- **支付保护** - 屏蔽扫码支付跳转链接（微信、支付宝）
-- **隐私防护** - 阻止追踪器和数据采集
-- **多设备生效** - 路由器设置一次，所有连接设备自动生效
-- **多种格式支持** - Dnsmasq、Hosts、AdGuard、AdGuard 白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS、Mosdns、Clash Meta、CoreDNS 共 12 种格式（顺序同 `src/types/formats.ts` 的 `ALL_FORMATS`）
-- **格式互转** - 粘贴任意格式（hosts / dnsmasq / AdGuard / 纯域名）清单，自动解析并转换为目标格式
-- **白名单管理** - 自定义白名单，避免误拦截关键服务
-- **自定义 DNS 指向** - 支持 @domain=ip 语法，自定义域名解析
-- **URL 导入** - 从远程 URL 获取域名列表（带超时控制）
-- **预设数据源** - 内置 AdGuard、EasyList、NeoHosts 等预设
-- **规则测试器** - 输入域名即时返回命中的规则层级（白名单 / 改道 / 黑名单 / 直连）与解析行为
-- **路由器同步脚本** - 一键生成 OpenWrt / Merlin / Padavan / SmartDNS / Pi-hole 的定时更新与重载 Shell 脚本
-- **自动保存/恢复** - 每 30 秒自动保存内容到浏览器
-- **国际化支持** - 支持 16 种语言，翻译键全覆盖并带 zh-cn 兜底
-- **深色/浅色模式** - 一键切换主题配色
-- **安全加固** - CSP 安全头部、HSTS、Service Worker 安全缓存策略、文件名安全验证
-- **单元测试** - 基于 Vitest 覆盖核心纯函数（解析/校验/规则生成/国际化）
-- **多核并行解析** - 超大输入（≥20000 行）自动分片到多个 Web Worker 并行求值，失败逐级回退单 Worker → 主线程同步
-- **语言优先级** - 默认简体中文 → 繁体中文 → 英语；与 `<html lang>` / SEO `inLanguage` 保持一致
-- **设置弹窗分组** - 项目信息 2 列、格式开关等宽 3 列、选项末项整行铺满，重复分组标题已修复（v3.16.1）
-- **轻量信息层次** - Hero 大屏双栏、输入区「色点 + 纯文本」统计条、输出侧预览统计去胶囊并合并信息带（v3.16.1 ~ v3.17.4）
-- **解析任务内存护栏** - 单飞 + 内容键复用、Worker 池引用稳定，避免超大输入重复派发导致内存堆积（v3.17.4 后已合入）
-- **CI 质量门禁** - 根目录临时文件洁净度 `rootclean` 纳入 CI Gate，官方 action 已升级至最新主版本
+- **广告 / 追踪拦截** — 过滤网页、视频、App 广告与追踪器
+- **支付保护** — 屏蔽扫码支付跳转链接（微信、支付宝）
+- **多设备生效** — 路由器设置一次，全屋设备自动生效
+- **12 种输出格式** — Dnsmasq、Hosts、AdGuard（黑白名单）、纯域名、Unbound、Pi-hole、Bind RPZ、SmartDNS、Mosdns、Clash Meta、CoreDNS
+- **格式互转** — 粘贴任意格式（hosts / dnsmasq / AdGuard / 纯域名）自动识别并转换为目标格式
+- **白名单 / 自定义 DNS** — `+domain` 放行、`@domain=ip` 自定义解析
+- **URL 导入** — 从远程 URL 拉取域名列表（带超时与体积上限）
+- **预设数据源** — 内置 AdGuard、EasyList、NeoHosts 等
+- **规则测试器** — 输入域名即时返回命中层级（白名单 / 改道 / 黑名单 / 直连）与解析行为
+- **路由器同步脚本** — 一键生成 OpenWrt / Merlin / Padavan / SmartDNS / Pi-hole 定时更新与重载脚本
+- **本地自动保存** — 每 30 秒存入浏览器，刷新不丢失
+- **16 语言 / 深色浅色** — 一键切换，国际化全覆盖
+- **安全加固** — CSP / HSTS / PWA 安全缓存 / 文件名校验
+- **大输入并行解析** — ≥20000 行自动分片到 Web Worker，逐级回退单 Worker → 主线程
 
 ## 快速开始
 
-### 第一步：下载过滤规则
-
-根据你的路由器类型下载对应文件：
+### 第一步：下载规则
 
 | 路由器 | 下载文件 |
 |--------|----------|
-| 梅林/OpenWrt | [dnsmasq.conf](public/dnsmasq.conf) |
-| 小米/华硕/TP-Link | [hosts.txt](public/hosts.txt) |
+| 梅林 / OpenWrt | [dnsmasq.conf](public/dnsmasq.conf) |
+| 小米 / 华硕 / TP-Link | [hosts.txt](public/hosts.txt) |
 | AdGuard 用户 | [adguard.txt](public/adguard.txt) |
 
 ### 第二步：导入路由器
 
-**梅林固件（华硕）**
-- 路径：软件中心 → DNS 设置 → 自定义 dnsmasq
-- 将 `dnsmasq.conf` 内容复制到配置框中
+- **梅林（华硕）**：软件中心 → DNS 设置 → 自定义 dnsmasq，粘贴 `dnsmasq.conf` 内容
+- **OpenWrt**：`curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmasq.conf >> /etc/dnsmasq.conf`
+- **小米**：设置 → 广告拦截 → 自定义 hosts，导入 `hosts.txt`
 
-**OpenWrt**
-```bash
-curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmasq.conf >> /etc/dnsmasq.conf
-```
-
-**小米路由器**
-- 路径：设置 → 广告拦截 → 自定义 hosts
-- 导入 `hosts.txt`
-
-详细设置方法请查看 [部署指南](DEPLOYMENT.md)。
+更多机型与同步脚本见 [部署指南](DEPLOYMENT.md)。
 
 ## 在线工具
 
-如需自定义域名列表或生成其他格式，可使用 Web 管理工具。
-
-访问 [https://dns.ewuse.com](https://dns.ewuse.com/) 在线使用。
-
-部署方法请查看 [部署指南](DEPLOYMENT.md)。
+需要自定义域名或生成其他格式，直接访问 [https://dns.ewuse.com](https://dns.ewuse.com/) 在线使用；部署方式见 [部署指南](DEPLOYMENT.md)。
 
 ## 文件说明
+
+所有格式由 `domains.txt` 单一数据源派生，`whitelist.txt` 用于放行误拦截域名。
 
 | 文件 | 用途 |
 |------|------|
 | `dnsmasq.conf` | Dnsmasq 路由器格式 |
 | `hosts.txt` | 标准 hosts 格式 |
-| `adguard.txt` | AdGuard 格式 |
-| `whitelist.txt` | 白名单（需要放行的域名） |
-| `domains.txt` | 统一域名数据源 |
-| `unbound.conf` | Unbound 格式（local-zone refuse） |
-| `pihole.txt` | Pi-hole 格式（0.0.0.0 gravity） |
-| `rpz.db` | Bind RPZ 响应策略区格式 |
-| `smartdns.conf` | SmartDNS 格式（address /domain/#） |
-| `mosdns_domain_set.txt` | Mosdns domain-set 格式（domain: 前缀，含子域） |
-| `clash_dns.yaml` | Clash Meta DNS 格式（DOMAIN-SUFFIX + reject） |
-| `coredns_hosts.txt` | CoreDNS hosts 插件格式（0.0.0.0 域名） |
+| `adguard.txt` | AdGuard 黑白名单格式 |
+| `whitelist.txt` | 白名单（放行域名，`+domain`） |
+| `domains.txt` | 统一域名数据源（事实来源） |
+| `unbound.conf` / `pihole.txt` / `rpz.db` / `smartdns.conf` / `mosdns_domain_set.txt` / `clash_dns.yaml` / `coredns_hosts.txt` | 其余 7 种格式产物 |
 
 ## 格式转换
 
-除从统一域名数据源生成规则外，DNS Shield 也支持**将已有的域名清单在不同格式之间互相转换**。
+除从 `domains.txt` 生成外，也支持**已有清单不同格式互转**：
 
-- **输入识别**：粘贴 hosts、dnsmasq、AdGuard 或纯域名文本时，`parseDomainLine` 会自动识别每行格式，提取域名 / 白名单（`+domain`）/ 自定义 DNS（`@domain=ip`）/ 注释（`#`）。
-- **统一中间结构**：无论来源格式如何，先解析为统一的域名条目结构（是否拦截、目标 IP、白名单标记）。
-- **任意格式输出**：在输出面板切换目标格式即可生成对应清单（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS）。
+- **自动识别** — 粘贴 hosts / dnsmasq / AdGuard / 纯域名时，`parseDomainLine` 识别每行格式，提取域名 / 白名单（`+`）/ 自定义 DNS（`@`）/ 注释（`#`）
+- **统一中间结构** — 先解析为统一域名条目（是否拦截、目标 IP、白名单标记）
+- **任意输出** — 在输出面板「格式」下拉切换即可
 
-典型场景：把一份 AdGuard 规则粘贴进输入框，一键转换为 dnsmasq 或 Pi-hole 格式；或把旧 hosts 清单转为 SmartDNS / Bind RPZ。
+典型场景：把一份 AdGuard 规则粘贴进输入框，一键转成 dnsmasq 或 Pi-hole；旧 hosts 清单转 SmartDNS / Bind RPZ。
 
-## 技术特性
+## 数据流
 
-- **Swiss Modernism 设计风格** - 现代化 UI/UX，Apple 设计精度
-- **shadcn/ui 组件库** - 基于 Radix UI，可访问性强
-- **响应式布局** - 完美支持桌面端和移动端
-- **深色/浅色模式** - 支持一键主题切换
-- **PWA 支持** - 可安装到桌面，离线可用
-- **TypeScript** - 完整的类型安全
-- **SSR** - Next.js 框架支持服务端渲染
-- **16 种国际化语言** - 全球用户友好体验
-- **模块化架构** - 清晰的分层文件结构
-- **安全头部** - CSP、HSTS、COOP、CORP 等安全响应头
-- **PWA 安全** - Service Worker 仅缓存同源静态资源，扩展名白名单过滤
+```
+统一数据源（public/domains.txt、whitelist.txt）
+        │  useDomainData（远端拉取 + 超时/兜底）
+        ▼
+  域名解析（parser.ts + domainValidator.ts）
+        │  ≥20000 行 → useWorkerPool 多核分片并行（回退单 Worker → 主线程）
+        ▼
+  排序去重（sortDedupe.ts）
+        ▼
+  规则生成（rulesGenerator.ts，useRules 实时同步）
+        ▼
+  输出 12 种格式 → 复制 / 下载
+```
+
+要点：单一数据源派生所有格式；解析 / 校验 / 排序 / 生成均为纯函数并由 Vitest 覆盖；本地优先（30s 自动保存）。
 
 ## 项目结构
 
-> 以下为节选（仅列主要模块），完整文件清单见 [docs/SPEC.md](docs/SPEC.md) §2。实测：`src/hooks` 21 个、`src/utils` 24 个、`src/components` 顶层 16 个 `.tsx`、`src/components/ui` 12 个（均不含 `*.test.*`）。
+完整模块清单见 [docs/SPEC.md](docs/SPEC.md) §2。核心目录：
 
-```
-src/
-├── app/              # Next.js App Router（布局、页面、全局样式）
-├── components/       # React 组件
-│   ├── ui/           # shadcn/ui 基础组件（12 个：Badge/Button/Card/Checkbox/DropdownMenu/Input/Label/Loading/Select/Switch/Tabs/Toast；Tabs 自 v3.15.5 起已废弃，文件与依赖暂保留、勿新增引用）
-│   ├── Header.tsx    # 页头组件（主题/语言切换）
-│   ├── Footer.tsx    # 页脚组件
-│   ├── InputPanel.tsx # 输入面板
-│   ├── InputEditor.tsx # 域名编辑器子组件（行号 + 自动保存）
-│   ├── OutputPanel.tsx # 输出面板（格式切换 + 空状态）
-│   ├── OutputPanel.formatSelect.tsx # 单一「格式」下拉（v3.15.5）
-│   ├── SettingsPanel.tsx # 设置面板子组件
-│   └── UrlSection.tsx # URL 导入区域子组件
-├── context/          # 应用上下文
-│   └── AppContext.tsx # 集中提供 i18n 翻译 t（避免逐层透传）
-├── hooks/            # 自定义 Hooks
-│   ├── useTheme.ts   # 主题切换
-│   ├── useLanguage.ts # 语言切换
-│   ├── useDomainData.ts # 域名数据管理（含远端加载超时/兜底）
-│   ├── useRules.ts   # 规则生成（实时解析同步）
-│   ├── useUrlManager.ts # URL 管理
-│   ├── useSettings.ts # 设置管理
-│   ├── useWorkerPool.ts # 分片并行解析 Worker 池（v3.16.0）
-│   └── useLoading.ts # 加载状态管理
-├── workers/          # Web Worker（ruleProcessor 串行 + parseShard 分片并行）
-├── lib/              # 工具库（cn 类名合并等）
-├── locales/          # 16 种语言翻译文件（zh-cn 140 顶层键 / 209 递归键，check-locales 校验）
-├── styles/           # 设计系统样式（8 模块，由 globals.css 按职责拆分，含 seo.css）
-├── config/           # 应用配置（defaults.json 默认设置 / version.ts 版本单一来源 / site.ts 站点事实 / seo-content.ts GEO 文案）
-├── test-utils/       # 测试辅助（renderHook + jsdom 环境桩 setup.ts）
-├── types/            # TypeScript 类型定义
-├── utils/            # 工具函数（含 *.test.ts 单元测试）
-│   ├── parser.ts     # 域名解析（collectLines 逐行收集 + finalizeParsed 全局后处理，v3.16.0 起支持分片并行）
-│   ├── parseAggregate.ts # 并行度决策 / 分片聚合（v3.16.0）
-│   ├── sortDedupe.ts # 域名排序与去重（纯函数，含测试）
-│   ├── domainValidator.ts # 域名验证与行解析
-│   ├── rulesGenerator.ts  # 规则生成器（Dnsmasq/Hosts/AdGuard/白名单/Unbound/Pi-hole/纯域名/Bind RPZ/SmartDNS/Mosdns/Clash Meta/CoreDNS）
-│   ├── rulesGenerator.test.ts # 规则生成器单元测试（Vitest）
-│   ├── domainFetch.ts # 远程域名列表拉取（超时/兜底/体积上限）
-│   ├── fileUtils.ts  # 文件操作（下载/复制）
-│   ├── i18n.ts       # 国际化配置
-│   ├── analytics.ts   # GA4 衡量 ID 读取/校验与 gtag 片段生成
-│   ├── regexRules.ts / domainCategory.ts # 正则互转 / 域名分类（已接入生成链路与分类筛选 UI）
-│   ├── idb.ts / httpCache.ts / cachedFetch.ts # 存储与 HTTP 缓存层
-│   └── *.test.ts     # 与被测模块同目录的单元测试（Vitest）
-└── ...
-```
-
-`src/app/` 下还包含：
-
-- `page.tsx` / `Home.tsx` — 主页面与首页编排组件
-- `layout.tsx` — 根布局（元数据、主题 Provider、安全/SEO 基础）
-- `robots.ts` — 自动生成 `robots.txt`（含 sitemap 索引与 AI 爬虫白名单）
-- `sitemap.ts` — 自动生成 `sitemap.xml`（单页应用唯一有效 URL）
-- `llms.txt/route.ts` — 生成 `/llms.txt` 生成式引擎站点简报（构建期静态预渲染）
-- `(seo)/site-meta.ts` / `(seo)/ga-scripts.tsx` — 站点元数据、JSON-LD `@graph` 与 GA4 脚本注入（衡量 ID 取自环境变量）
-- PWA 与 Service Worker 以静态文件提供：`public/manifest.json`、`public/service-worker.js`（非 `src/app/` 下的 TS 模块，SW 当前未注册）
-- `globals.css` — 全局样式入口（Tailwind 指令 + 基础层 design tokens）；其余业务样式按职责拆分到 `src/styles/*.css`（layout / stats / input / output / footer / feedback / hero / seo 共 8 模块），由 `layout.tsx` 按级联顺序统一导入
-
-```
-prototype/            # 设计快照（已冻结，停留 v3.9.x~v3.10.x，不代表当前实现）
-├── prototype.html    # 自包含高保真可交互原型（HTML/CSS/JS）
-├── wireframes.html   # 线框与组件库规范
-├── flows.html        # 关键业务流程交互原型
-├── README.md         # 原型总览与使用说明
-└── shadcn/           # shadcn 设计规范（design-system/component-library/interaction-standards）
-```
-
-## 架构与数据流
-
-DNS Shield 为一个纯前端的 Next.js 应用，核心职责是**把统一域名数据源转换为多种路由器可识别的过滤规则**。
-
-```
-统一数据源（public/domains.txt、whitelist.txt、各格式输出文件）
-        │  useDomainData（远端拉取 + 超时/兜底）
-        ▼
-  域名解析（utils/parser.ts + domainValidator.ts）
-        │  ≥20000 行走 useWorkerPool 多核分片并行（回退单 Worker → 主线程）
-        │  单飞护栏：内容键 task+text 复用同一解析任务、作废旧结果；池引用 useMemo 稳定
-        │  提取域名 / 白名单(+) / 自定义 DNS(@) / 注释(#)
-        ▼
-  排序去重（utils/sortDedupe.ts）
-        ▼
-  规则生成（utils/rulesGenerator.ts）
-        │  useRules 实时同步解析
-        ▼
-  输出（Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS） → 复制 / 下载
-```
-
-关键设计要点：
-
-- **单一数据源**：所有格式均由 `domains.txt` 派生，`whitelist.txt` 用于放行误拦截域名。
-- **纯函数可测**：解析、校验、排序去重、规则生成均为纯函数，由 Vitest 覆盖（`*.test.ts`）。
-- **上下文复用**：`AppContext` 集中提供 i18n 翻译 `t`，避免逐层透传。
-- **本地优先**：每 30 秒自动保存编辑内容到浏览器 `localStorage`，刷新不丢失。
-- **安全边界**：远程 URL 拉取带超时与体积上限；Service Worker 仅缓存同源静态资源并做扩展名白名单过滤。
-
-## 配置项
-
-应用行为可通过以下维度配置：
-
-| 配置项 | 位置 | 说明 |
-|--------|------|------|
-| 预设数据源 | `src/config/index.ts` | AdGuard、EasyList、NeoHosts 等内置预设源 URL |
-| 输出格式 | UI 切换（单一「格式」下拉，v3.15.5） | Dnsmasq / Hosts / AdGuard / 白名单 / Unbound / Pi-hole / 纯域名 / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS |
-| 自定义 DNS 指向 | 输入语法 `@domain=ip` | 自定义域名解析目标 IP |
-| 白名单 | 输入语法 `+domain` | 放行指定域名 |
-| 自动保存间隔 | `useDomainData` 内部 | 默认 30 秒 |
-| 远程拉取超时 | `domainFetch.ts` | 远端 URL 拉取超时与体积上限 |
-| 构建版本号 | `next.config.js` → `env.version` | 注入运行时的应用版本 |
-| 隐私统计 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（构建期由环境变量注入，源码不硬编码）；留空或格式非法（须形如 `G-XXXXXXXXXX`）时不注入任何统计脚本；CSP 已放通 gtag 域名 |
-
-## SEO 与 GEO（生成式引擎优化）
-
-站点同时面向传统搜索引擎与 LLM 检索 / 引用。所有事实文本由 `src/config/seo-content.ts` 单一来源派生，页面可见正文、JSON-LD 与 `/llms.txt` 三者不会互相矛盾。
-
-| 能力 | 实现 | 要点 |
-| --- | --- | --- |
-| 站点元数据 | `src/app/(seo)/site-meta.ts` | 标题 / 描述 / canonical / Open Graph / Twitter / robots 指令；标题不嵌版本号，避免发版导致关键词漂移 |
-| 结构化数据 | `src/app/layout.tsx` 注入 JSON-LD `@graph` | Organization / WebSite / SoftwareApplication / FAQPage / HowTo；FAQ 与 HowTo 文案与页面可见文本逐字一致 |
-| 生成式引擎简报 | `src/app/llms.txt/route.ts` → `/llms.txt` | 中英双语站点说明（隐私边界、12 个规则文件、使用步骤、FAQ），构建期静态预渲染，版本号由 `APP_VERSION` 注入 |
-| 爬虫策略 | `src/app/robots.ts` | 显式 `Allow` 22 个主流 AI / 生成式引擎 UA（GPTBot、OAI-SearchBot、ClaudeBot、PerplexityBot、Google-Extended、CCBot 等）；不屏蔽 `/_next/`，保证 Googlebot 能取到 JS/CSS 完成渲染 |
-| 站点地图 | `src/app/sitemap.ts` | 单页应用只登记唯一有效 URL，不输出 fragment 伪条目与每次构建都变的时间戳 |
-| 可引用正文 | `src/components/SeoContent.tsx` | 关于、12 种导出格式清单、5 条 FAQ 在服务端预渲染即进入 HTML；`layout.tsx` 另有 `<noscript>` 兜底 |
-| 社交分享图 | `public/og-image.png` | 真实 1200×630 PNG，与 OG / Twitter 声明尺寸一致 |
-| 回归测试 | `src/config/seo.test.ts` | 15 用例覆盖上述输出，防止占位验证值、错误尺寸、虚假锚点等回潮 |
-
-补充说明：
-
-- 语言由客户端 `localStorage` 切换，无 `/en`、`/zh-TW` 独立 URL，因此**不输出 hreflang**（避免指向 404）；16 种语言仅体现在 JSON-LD `inLanguage` 与界面。
-- `verification.google` 仅在配置 `NEXT_PUBLIC_GOOGLE_VERIFICATION` 时输出，未配置时不生成任何占位验证 meta。
-- `public/manifest.json` 提供 PWA manifest；`public/service-worker.js` 目前**未注册**，不参与离线缓存，也不影响爬虫抓取。
-- 安全响应头由 `next.config.js` 的 `headers()` 统一下发（CSP / HSTS / COOP / CORP 等 8 头），`vercel.json` 另有一份 CSP 供 Vercel 部署路径使用，后者额外启用 `require-trusted-types-for 'script'`（两处差异见 SPEC §12.1；`next dev` 按 `NODE_ENV` 自动为 `script-src` 追加 `'unsafe-eval'`，生产不含，详见 DEPLOYMENT「Next.js 配置」）。
+- `src/app/` — Next.js App Router（页面、布局、SEO / PWA / llms.txt 路由）
+- `src/components/` — UI 组件（`ui/` 为 shadcn 基础组件）
+- `src/hooks/` `src/utils/` — 业务逻辑与纯函数（含 Vitest 单测）
+- `src/locales/` — 16 种语言翻译（zh-cn 为兜底）
+- `src/styles/` — 设计系统样式（按职责拆 8 模块）
+- `src/config/` — 默认设置 / 版本 / 站点事实 / SEO 文案
 
 ## 开发
 
 ```bash
-# 安装依赖
-pnpm install
-
-# 开发模式（端口 3000）
-pnpm dev
-
-# 构建生产版本
-pnpm build
-
-# 代码检查
-pnpm lint
-
-# 运行单元测试
-pnpm test
+pnpm install     # 安装依赖
+pnpm dev         # 开发模式（端口 3000）
+pnpm build       # 生产构建
+pnpm lint        # 代码检查
+pnpm test        # 单元测试（Vitest）
 ```
 
-## 项目规范
+## 文档与规范
 
-项目严格遵循 [docs/SPEC.md](docs/SPEC.md) 定义的规范，包括：
-
-- 域名格式规范（`+` 白名单、`@` 自定义 DNS、`#` 注释）
-- 输出格式规范（Dnsmasq、Hosts、AdGuard、白名单、Unbound、Pi-hole、纯域名、Bind RPZ、SmartDNS、Mosdns、Clash Meta、CoreDNS）
-- Git 提交规范（feat/fix/docs/chore/refactor）
-- 版本管理规范（SemVer 语义化版本）
-- 组件分层规范（UI 基础组件 → 业务组件 → 页面组件）
-
-## 常见问题
-
-**Q: 为什么过滤规则不起效？**
-- 清除浏览器缓存
-- 重启路由器 DNS 缓存
-- 检查路由器 DNS 设置是否生效
-
-**Q: 如何添加白名单？**
-- 使用 Web 管理工具的白名单功能
-- 或手动编辑 `whitelist.txt`，每行一个域名
-
-**Q: 规则多久更新一次？**
-- 建议定期从仓库下载最新规则
-
-## 参与贡献
-
-欢迎提交域名规则和问题反馈，请查看 [贡献指南](.github/CONTRIBUTING.md)。
-
-## 安全
-
-请查看 [安全策略](.github/SECURITY.md) 了解项目的安全最佳实践。
+- 规范与架构细节：[docs/SPEC.md](docs/SPEC.md)
+- 部署指南：[DEPLOYMENT.md](DEPLOYMENT.md)
+- 贡献指南：[.github/CONTRIBUTING.md](.github/CONTRIBUTING.md)
+- 安全策略：[.github/SECURITY.md](.github/SECURITY.md)
+- 版本历史：[CHANGELOG.md](CHANGELOG.md)
 
 ## 许可证
 
@@ -309,8 +125,4 @@ MIT License
 
 ## 版本
 
-当前版本：v3.18.0
-
-## 更新日志
-
-请查看 [CHANGELOG.md](CHANGELOG.md) 了解项目的版本历史和变更记录。
+当前版本：v3.18.0，完整变更见 [CHANGELOG.md](CHANGELOG.md)。

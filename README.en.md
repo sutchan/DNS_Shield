@@ -2,222 +2,126 @@
 
 ![DNS Shield](public/logo.svg)
 
-<!-- Last reviewed: 2026-11-12 (aligned with package.json v3.17.4; 18th full documentation audit) -->
+<!-- Last reviewed: 2026-11-13 (aligned with package.json version) -->
 
 [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.18.0-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-Router-level DNS-based ad blocking filter list with web management tool. It both **generates** rule lists from a unified domain source and **converts** existing lists between different formats.
+Router-level DNS-based ad blocking filter list with a web management tool. It both **generates** rule lists from a unified domain source and **converts** existing lists between different formats.
 
 ## Overview
 
-This project provides a dnsmasq/hosts-based ad blocking solution that includes:
-
-- **Blocked domains** - Local ad and tracking domain filter (expandable via preset sources like AdGuard, EasyList, NeoHosts)
-- **Web management tool** - Generate custom filter lists via browser
-- **Multiple output formats** - Dnsmasq, Hosts, AdGuard, Whitelist, Unbound, Pi-hole, Domains, Bind RPZ, SmartDNS, Mosdns, Clash Meta, CoreDNS
-- **Format conversion** - Paste a list in any format (hosts / dnsmasq / AdGuard / plain domains) and convert it to your target format
-- **Single source workflow** - One domain list generates all output formats
-- **Router compatible** - Works with Merlin, OpenWrt, Xiaomi, ASUS, TP-Link, and more
-- **Whitelist management** - Independent whitelist editing interface with import/export support
-- **Multi-language support** - 16 languages with priority zh-cn (default) > zh-tw > en, kept in sync with `<html lang>` and SEO `inLanguage`
-- **Next.js framework** - Modern Next.js 14 App Router with modular architecture
-- **Security hardening** - CSP headers (defined in both `next.config.js` and `vercel.json`, the latter additionally enabling `require-trusted-types-for 'script'`), HSTS, Service Worker secure caching, filename sanitization; local dev adds `unsafe-eval` via a `NODE_ENV` guard (production stays strict); see DEPLOYMENT
-- **Multi-core parsing** - Inputs of 20000+ lines are sharded across Web Workers with graceful fallback to a single worker / main thread
-- **Parse-task memory guard** - Single-flight by content key (`task + text`) plus a stable worker-pool reference prevents repeated dispatch / OOM on very large inputs
-- **Settings dialog** - 2-column project fields, equal-width 3-column format toggles, no duplicated group headings (v3.16.1)
-- **Lightweight information layers** - Two-column Hero on large screens, dot + plain-text stats bars, merged preview info band (v3.16.1 ~ v3.17.4)
-- **CI hygiene gate** - `rootclean` job in CI Gate and latest-major GitHub actions
+- **Block ads & trackers** — web, video and in-app ads plus trackers
+- **Payment protection** — blocks QR-payment redirect links (WeChat, Alipay)
+- **Whole-network coverage** — configure the router once, every device is protected
+- **12 output formats** — Dnsmasq, Hosts, AdGuard (block/allow), plain domains, Unbound, Pi-hole, Bind RPZ, SmartDNS, Mosdns, Clash Meta, CoreDNS
+- **Format conversion** — paste any format (hosts / dnsmasq / AdGuard / plain domains) and convert to your target format
+- **Whitelist / custom DNS** — `+domain` to allow, `@domain=ip` to override resolution
+- **URL import** — fetch a remote domain list (with timeout and size cap)
+- **Preset sources** — built-in AdGuard, EasyList, NeoHosts, etc.
+- **Rule tester** — enter a domain and instantly see the matched tier (allow / redirect / block / pass-through) and resolution behavior
+- **Router sync scripts** — one-click OpenWrt / Merlin / Padavan / SmartDNS / Pi-hole update & reload shell scripts
+- **Local auto-save** — saved to the browser every 30s, restored on reload
+- **16 languages / dark & light** — one-click switch, full i18n coverage
+- **Security hardening** — CSP, HSTS, secure PWA caching, filename sanitization
+- **Parallel parsing** — inputs of 20000+ lines are sharded across Web Workers with fallback to a single worker / main thread
 
 ## Usage
 
-### Method 1: Dnsmasq Format
+### Step 1: Download rules
 
-For routers that support custom dnsmasq configuration.
+| Router | File |
+|--------|------|
+| Merlin / OpenWrt | [dnsmasq.conf](public/dnsmasq.conf) |
+| Xiaomi / ASUS / TP-Link | [hosts.txt](public/hosts.txt) |
+| AdGuard users | [adguard.txt](public/adguard.txt) |
 
-#### Merlin Firmware (ASUS routers with Merlin)
+### Step 2: Import into the router
 
-**Path:** Software Center → DNS Settings → Custom dnsmasq
+- **Merlin (ASUS)** — Software Center → DNS Settings → Custom dnsmasq, paste the contents of `dnsmasq.conf`
+- **OpenWrt** — `curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmasq.conf >> /etc/dnsmasq.conf`
+- **Xiaomi** — Settings → Advertising Blocking → Custom hosts, import `hosts.txt`
 
-Copy all content from `dnsmasq.conf` and paste into the custom dnsmasq configuration.
-
-#### OpenWrt
-
-```bash
-curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmasq.conf >> /etc/dnsmasq.conf
-```
-
-### Method 2: Hosts Format
-
-For routers that support custom hosts files.
-
-#### Xiaomi Router
-
-**Path:** Settings → Advertising Blocking → Custom hosts
-
-Import `hosts.txt` into your router's ad blocking settings.
-
-#### ASUS Router (Stock Firmware)
-
-**Path:** Advanced Settings → LAN → DHCP Server → Custom hosts file
-
-#### TP-Link Router
-
-**Path:** Advanced → Network → Internet → Custom hosts
-
-#### OpenWrt
-
-```bash
-# Method 1: Via LuCI
-# Services → DNS and DHCP → Extra hosts fields
-
-# Method 2: Via CLI
-curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/hosts.txt >> /etc/hosts
-```
-
-#### Other Routers
-
-Most routers with custom hosts support can use the same method:
-
-1. Download `hosts.txt` from the repository
-2. Access your router's admin panel
-3. Navigate to DNS/hosts settings
-4. Import the hosts file
-
-## Files
-
-| File | Description |
-|------|-------------|
-| `dnsmasq.conf` | Main dnsmasq filter list (`address=/domain/0.0.0.0` format) |
-| `hosts.txt` | Hosts file for routers (`0.0.0.0 domain` format) |
-| `adguard.txt` | AdGuard browser extension/software format (`\|\|domain^`) |
-| `whitelist.txt` | Whitelist file (domains that need to be allowed, `+domain` syntax) |
-| `unbound.conf` | Unbound format (`local-zone ... refuse`) |
-| `pihole.txt` | Pi-hole gravity format (`0.0.0.0 domain`) |
-| `domains.txt` | Unified domain list (one domain per line, source of truth) |
-| `rpz.db` | Bind RPZ response policy zone format |
-| `smartdns.conf` | SmartDNS format (`address /domain/#`) |
-| `mosdns_domain_set.txt` | Mosdns domain-set format (`domain:` prefix, includes subdomains) |
-| `clash_dns.yaml` | Clash Meta DNS format (`DOMAIN-SUFFIX` + `reject`) |
-| `coredns_hosts.txt` | CoreDNS hosts plugin format (`0.0.0.0 domain`) |
-| `src/app/` | Next.js source code directory with management interface logic |
-
-## Format Conversion
-
-Besides generating rules from a unified domain source, DNS Shield also **converts existing lists between different formats**.
-
-- **Input detection** - When you paste hosts, dnsmasq, AdGuard or plain-domain text, `parseDomainLine` automatically detects each line's format and extracts domains / whitelist (`+domain`) / custom DNS (`@domain=ip`) / comments (`#`).
-- **Unified intermediate model** - Regardless of the source format, entries are parsed into a unified domain-item model (blocked or not, target IP, whitelist flag).
-- **Any-format output** - Pick the target format from the single "Format" dropdown in the output panel (`FormatSelect`, since v3.15.5; the former core-tabs + "more formats" two-level entry has been removed) to generate the corresponding list (Dnsmasq / Hosts / AdGuard / Whitelist / Unbound / Pi-hole / Domains / Bind RPZ / SmartDNS / Mosdns / Clash Meta / CoreDNS).
-
-Typical use: paste an AdGuard rule list into the input box and convert it to dnsmasq or Pi-hole in one click; or turn a legacy hosts list into SmartDNS / Bind RPZ.
-
-### Using Pre-generated Files
-
-This project provides pre-generated filter rule files that can be downloaded and used directly:
-
-| File | Use Case | Download Link |
-|------|----------|---------------|
-| [dnsmasq.conf](public/dnsmasq.conf) | Routers with dnsmasq support (Merlin/OpenWrt) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmasq.conf) |
-| [hosts.txt](public/hosts.txt) | Routers with hosts support (Xiaomi/ASUS/TP-Link) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/hosts.txt) |
-| [adguard.txt](public/adguard.txt) | AdGuard browser extension/AdGuard Home | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/adguard.txt) |
-| [whitelist.txt](public/whitelist.txt) | Whitelist (domains that need to be allowed) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/whitelist.txt) |
-| [unbound.conf](public/unbound.conf) | Unbound (local-zone refuse) | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/unbound.conf) |
-| [pihole.txt](public/pihole.txt) | Pi-hole gravity | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/pihole.txt) |
-| [rpz.db](public/rpz.db) | Bind RPZ | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/rpz.db) |
-| [smartdns.conf](public/smartdns.conf) | SmartDNS | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/smartdns.conf) |
-| [mosdns_domain_set.txt](public/mosdns_domain_set.txt) | Mosdns domain-set | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/mosdns_domain_set.txt) |
-| [clash_dns.yaml](public/clash_dns.yaml) | Clash Meta DNS | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/clash_dns.yaml) |
-| [coredns_hosts.txt](public/coredns_hosts.txt) | CoreDNS hosts | [Download](https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/coredns_hosts.txt) |
-
-### Whitelist Usage Instructions
-
-The `whitelist.txt` file contains domains that need to be allowed access, suitable for the following scenarios:
-
-1. **AdGuard Browser Extension/AdGuard Home**:
-   - Import the whitelist file into AdGuard's whitelist settings
-   - Or copy the file content into AdGuard's custom whitelist rules
-
-2. **Router Configuration**:
-   - For routers that support whitelist functionality, add whitelist domains to the corresponding settings
-   - Ensure whitelist rules have higher priority than blacklist rules
-
-3. **Custom Filtering**:
-   - When some websites cannot be accessed normally due to filtering rules, add the relevant domains to the whitelist
-   - Whitelist format is `+domain`, for example: `+api.example.com`
-
-> **Tip**: These files are updated regularly. Star or Watch this repository to get update notifications.
+More models and sync scripts: [Deployment Guide](DEPLOYMENT.md).
 
 ## Web Manager
 
-The project is now based on Next.js. You can:
+To customize domains or generate other formats, use the tool online at [https://dns.ewuse.com](https://dns.ewuse.com/); deployment details in [Deployment Guide](DEPLOYMENT.md).
 
-- Load and parse domain lists from URL (10s timeout) or local file
-- Choose preset sources (built-in data, AdGuard, EasyList, NeoHosts)
-- Generate Dnsmasq, Hosts, AdGuard, Whitelist, Unbound, Pi-hole, Domains, Bind RPZ, SmartDNS, Mosdns, Clash Meta, CoreDNS output
-- Configure IP addresses (IPv4/IPv6), header comments, dedup, wildcard stripping
-- Support custom DNS pointing (`@domain=ip`) and whitelist (`+domain`) prefixes
-- Auto save to localStorage every 30s and restore on reload
-- Auto deduplicate and sort domains
-- Independent whitelist editing interface with import/export support
-- Multi-language support, 16 languages (default Simplified Chinese > Traditional Chinese > English)
-- Multi-core sharded parsing for very large inputs (>=20000 lines)
-- Download or copy generated files to clipboard
+## Files
 
-## Single Source Workflow
+All formats are derived from the single `domains.txt` source; `whitelist.txt` releases mistakenly blocked domains.
+
+| File | Description |
+|------|-------------|
+| `dnsmasq.conf` | Dnsmasq router format (`address=/domain/0.0.0.0`) |
+| `hosts.txt` | Standard hosts format (`0.0.0.0 domain`) |
+| `adguard.txt` | AdGuard block/allow format (`\|\|domain^`) |
+| `whitelist.txt` | Whitelist (domains to allow, `+domain` syntax) |
+| `domains.txt` | Unified domain source (source of truth) |
+| `unbound.conf` / `pihole.txt` / `rpz.db` / `smartdns.conf` / `mosdns_domain_set.txt` / `clash_dns.yaml` / `coredns_hosts.txt` | The other 7 format outputs |
+
+## Format Conversion
+
+Besides generating from `domains.txt`, DNS Shield also **converts existing lists between formats**:
+
+- **Auto-detection** — when you paste hosts / dnsmasq / AdGuard / plain-domain text, `parseDomainLine` detects each line's format and extracts domains / whitelist (`+`) / custom DNS (`@`) / comments (`#`)
+- **Unified model** — entries are parsed into a unified domain-item model (blocked, target IP, whitelist flag)
+- **Any-format output** — pick the target format from the "Format" dropdown in the output panel
+
+Typical use: paste an AdGuard list and convert it to dnsmasq or Pi-hole in one click; turn a legacy hosts list into SmartDNS / Bind RPZ.
+
+## Data Flow
 
 ```
-domains.txt (Source of Truth, including + whitelist / @ custom DNS / # comment)
-        ↓
-  Next.js App (Web Tool, real-time generation)
-        ↓
-  ┌─────────────────────────────────────────────────────────────┐
-  │ 12 output formats (src/types/formats.ts → ALL_FORMATS)        │
-  │ dnsmasq · hosts · adguard · whitelist · unbound · pihole       │
-  │ domains · bind (rpz) · smartdns · mosdns · clash · coredns     │
-  └─────────────────────────────────────────────────────────────┘
-                  Output: copy / download
+Unified source (public/domains.txt, whitelist.txt)
+        │  useDomainData (remote fetch + timeout/fallback)
+        ▼
+  Parse (parser.ts + domainValidator.ts)
+        │  ≥20000 lines → useWorkerPool sharded across Web Workers
+        │  (fallback: single worker → main thread)
+        ▼
+  Sort & dedupe (sortDedupe.ts)
+        ▼
+  Generate rules (rulesGenerator.ts, useRules real-time)
+        ▼
+  Output 12 formats → copy / download
 ```
 
-## Contribution
+Key points: one source derives every format; parsing / validation / sort / generation are pure functions covered by Vitest; local-first (30s auto-save).
 
-Please refer to [Contribution Guide](.github/CONTRIBUTING.md) to learn how to contribute to the project.
+## Project Structure
 
-## Testing
+Full module list in [docs/SPEC.md](docs/SPEC.md) §2. Core directories:
 
-Run tests using:
+- `src/app/` — Next.js App Router (pages, layout, SEO / PWA / llms.txt routes)
+- `src/components/` — UI components (`ui/` are shadcn primitives)
+- `src/hooks/` `src/utils/` — business logic and pure functions (with Vitest tests)
+- `src/locales/` — 16 language translations (zh-cn fallback)
+- `src/styles/` — design-system styles (8 modules by responsibility)
+- `src/config/` — defaults / version / site facts / SEO copy
+
+## Development
 
 ```bash
-pnpm test
+pnpm install     # install dependencies
+pnpm dev         # dev mode (port 3000)
+pnpm build       # production build
+pnpm lint        # lint
+pnpm test        # unit tests (Vitest)
 ```
 
-## SEO & GEO (Generative Engine Optimization)
+## Docs & Conventions
 
-The site serves both classic search engines and LLM retrieval / citation. All factual copy comes from a single source (`src/config/seo-content.ts`), so the visible page, JSON-LD and `/llms.txt` can never drift apart.
-
-- **`/llms.txt`** — a bilingual site brief for generative engines (privacy boundary, 12 pre-generated rule files, usage steps, FAQ). Statically prerendered by `src/app/llms.txt/route.ts`; the version is injected from `APP_VERSION`.
-- **JSON-LD `@graph`** — Organization / WebSite / SoftwareApplication / FAQPage / HowTo, injected in `layout.tsx`. FAQ and HowTo text is byte-identical to the visible `#faq` section.
-- **Visible, citable copy** — `SeoContent.tsx` renders an About section, the 12-format list and 5 FAQs into the server-rendered HTML; `layout.tsx` adds a `<noscript>` fallback.
-- **`robots.txt`** — explicitly allows 22 AI / generative-engine crawlers (GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, CCBot, …) and no longer blocks `/_next/`, so Googlebot can fetch the JS/CSS needed to render the page.
-- **`sitemap.xml`** — one valid URL for the single-page app; no fragment pseudo-entries, no build-time timestamps.
-- **Metadata** — canonical, Open Graph, Twitter Card and a real 1200×630 `og-image.png`. No hreflang is emitted because language switching is client-side with no per-language URLs.
-- **Regression tests** — `src/config/seo.test.ts` (15 cases) guard all of the above.
-
-## Deployment
-
-Please refer to [Deployment Guide](DEPLOYMENT.md) to learn how to deploy the web management tool.
-
-## Security
-
-Please refer to [Security Guide](.github/SECURITY.md) to learn about the project's security best practices.
+- Spec & architecture: [docs/SPEC.md](docs/SPEC.md)
+- Deployment: [DEPLOYMENT.md](DEPLOYMENT.md)
+- Contributing: [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md)
+- Security: [.github/SECURITY.md](.github/SECURITY.md)
+- Changelog: [CHANGELOG.md](CHANGELOG.md)
 
 ## License
 
 MIT License
 
-## Changelog
+## Version
 
-Please refer to [Changelog](CHANGELOG.md) for the project's version history and changes.
-
----
-
-[中文版本](README.md)
+Current version: v3.18.0. See [CHANGELOG.md](CHANGELOG.md) for the full history.

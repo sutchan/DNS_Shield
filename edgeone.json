@@ -1,4 +1,0 @@
-{
-  "installCommand": "pnpm install --config.dangerouslyAllowAllBuilds=true",
-  "buildCommand": "pnpm build"
-}
