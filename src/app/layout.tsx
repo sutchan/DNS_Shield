@@ -1,4 +1,4 @@
-// src/app/layout.tsx v3.19.0
+// src/app/layout.tsx v3.19.1
 // 字体策略：不使用 next/font/google。构建期它会请求 fonts.googleapis.com，
 // EdgeOne / CI 等离线构建环境取不到 CSS 时，next/font loader 会抛 TypeError
 // 导致 next build 失败；字体统一由 globals.css 的系统字体栈提供。
@@ -50,7 +50,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {/* 不执行 JavaScript 的抓取器 / 浏览器仍可获得事实文本与可直接订阅的规则文件 */}
           <noscript>
             <div className="seo-noscript" lang="zh-CN">
-              <h2>DNS Shield - 路由器级广告过滤规则生成工具</h2>
+              <p><strong>DNS Shield - 路由器级广告过滤规则生成工具</strong></p>
               <p>
                 本站需要 JavaScript 才能生成规则。无需脚本也可直接下载预生成的规则文件：
                 <a href="/dnsmasq.conf">dnsmasq.conf</a>、

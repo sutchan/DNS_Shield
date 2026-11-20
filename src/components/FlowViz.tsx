@@ -1,5 +1,7 @@
-// src/components/FlowViz.tsx v3.19.0
+// src/components/FlowViz.tsx v3.19.1
 // 首屏 Hero 区：信息布局（kicker / 标题 / 描述 / CTA + 快速入门三步）。
+// v3.19.1：快速入门标题 h3 → h2（消除 h1→h3 跳级），id="howto" 对齐 JSON-LD HowTo 锚点；
+//   section 去掉与唯一 h1 重复的 aria-label。
 // v3.15.2 移除右侧「黑名单/白名单」可视化窗口，首屏回归单栏；
 // v3.15.6 UI 优化：CTA 上移至描述下方更醒目；快速入门三步改为通栏卡片并以分隔线与正文区分。
 // v3.16.1 布局优化：lg+ 改为「左文案 + 右快速入门」双栏消除大屏右侧留白，
@@ -29,7 +31,7 @@ const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ onStart, o
   const t = useT();
 
   return (
-    <section className="hero" id="hero" aria-label={t.heroTitle}>
+    <section className="hero" id="hero">
       <div className="hero-inner">
         <div className="hero-copy">
           <span className="hero-kicker" id="hero-kicker">
@@ -63,7 +65,7 @@ const FlowViz: React.FC<FlowVizProps> = React.memo(function FlowViz({ onStart, o
         </div>
 
         <div className="quickstart" id="quickstart-panel" aria-label={t.usageTitle}>
-          <h3 className="usage-guide-title">{t.usageTitle}</h3>
+          <h2 className="usage-guide-title" id="howto">{t.usageTitle}</h2>
           <div className="usage-steps">
             <a
               className="usage-step"

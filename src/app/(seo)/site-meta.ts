@@ -1,8 +1,10 @@
-// src/app/(seo)/site-meta.ts v3.18.0
+// src/app/(seo)/site-meta.ts v3.19.1
 // 站点元数据与 JSON-LD 结构常量，从 layout.tsx 拆分以保持单文件职责清晰。
 // v3.18.0：SITE_URL 等常量收敛到 src/config/site.ts；站点事实文本收敛到
 // src/config/seo-content.ts；JSON-LD 升级为 @graph（Organization / WebSite /
 // SoftwareApplication / FAQPage / HowTo），与页面可见文本同源。
+// v3.19.1：@graph 补 WebPage 节点串联各实体；FAQ/HowTo 的 @id 抽为常量并与
+//   页面锚点（#faq / #howto）一一对应；HowToStep 补 url 指向对应锚点。
 // robots.ts / sitemap.ts 属 Next 约定文件须留在 app/ 根，不在此组。
 import type { Metadata, Viewport } from 'next';
 import { APP_VERSION } from '../../config/version';
@@ -104,6 +106,10 @@ export const viewport: Viewport = {
 const ORG_ID = `${SITE_URL}/#organization`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
 const APP_ID = `${SITE_URL}/#software`;
+const WEBPAGE_ID = `${SITE_URL}/#webpage`;
+// 与页面可见锚点一一对应：#faq（SeoContent.tsx）、#howto（FlowViz.tsx 快速入门 h2）
+const FAQ_ID = `${SITE_URL}/#faq`;
+const HOWTO_ID = `${SITE_URL}/#howto`;
 
 export const jsonLd = {
   '@context': 'https://schema.org',
@@ -124,6 +130,19 @@ export const jsonLd = {
       description: DESCRIPTION,
       publisher: { '@id': ORG_ID },
       inLanguage: [...IN_LANGUAGE],
+    },
+    {
+      '@type': 'WebPage',
+      '@id': WEBPAGE_ID,
+      url: `${SITE_URL}/`,
+      name: TITLE,
+      description: DESCRIPTION,
+      isPartOf: { '@id': WEBSITE_ID },
+      about: { '@id': APP_ID },
+      primaryImageOfPage: { '@type': 'ImageObject', url: `${SITE_URL}${OG_IMAGE_PATH}` },
+      // FAQPage / HowTo 作为页面组成部分，与可见区块同源
+      hasPart: [{ '@id': FAQ_ID }, { '@id': HOWTO_ID }],
+      inLanguage: ['zh-CN'],
     },
     {
       '@type': 'SoftwareApplication',
@@ -154,7 +173,7 @@ export const jsonLd = {
     },
     {
       '@type': 'FAQPage',
-      '@id': `${SITE_URL}/#faq`,
+      '@id': FAQ_ID,
       inLanguage: 'zh-CN',
       // 问题与答案必须与页面 #faq 区块的可见文本逐字一致，避免结构化数据与正文不符。
       mainEntity: FAQ_ITEMS.map((item) => ({
@@ -165,7 +184,7 @@ export const jsonLd = {
     },
     {
       '@type': 'HowTo',
-      '@id': `${SITE_URL}/#howto`,
+      '@id': HOWTO_ID,
       inLanguage: 'zh-CN',
       name: '如何使用 DNS Shield 生成路由器广告过滤规则',
       description: '从输入域名清单到导出部署的三步流程。',
@@ -177,6 +196,8 @@ export const jsonLd = {
         position: i + 1,
         name: s.name,
         text: s.text,
+        // 指向页面可见的对应步骤区块，抓取器可将结构化数据与正文关联
+        url: `${SITE_URL}/#howto`,
       })),
     },
   ],

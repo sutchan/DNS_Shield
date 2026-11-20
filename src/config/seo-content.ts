@@ -1,7 +1,9 @@
-// src/config/seo-content.ts v3.18.0
+// src/config/seo-content.ts v3.19.1
 // GEO/SEO 事实文本单一来源：页面可见的「关于 / 格式清单 / FAQ」、JSON-LD 的
 // featureList/FAQPage/HowTo、以及 /llms.txt 全部由此派生，避免三处文案互相矛盾。
 // 事实变更时同步 src/config/site.ts 的 SITE_LAST_MODIFIED 与 CHANGELOG。
+// v3.19.1：增补 DEPLOY_GUIDES（常驻可索引的部署要点）；以 zh-cn 的 deploy* 译为
+//   事实来源，不迁移 16 语 locale 键，弹窗仍读 t.deploy*（避免动 locale 基线）。
 import {
   SITE_URL, GITHUB_URL, CHANGELOG_URL, SITE_LAST_MODIFIED, IN_LANGUAGE,
 } from './site';
