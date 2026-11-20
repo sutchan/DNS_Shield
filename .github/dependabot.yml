@@ -1,0 +1,25 @@
+# .github/dependabot.yml
+# 工作流与依赖的健康度维护：本项目刻意钉死第三方 Action 主版本（见各 workflow 注释），
+# 但仍需有人定期把钉死的版本推进到安全补丁线——dependabot 负责提出这些升级 PR，
+# 由维护者按「版本钉死」纪律审核后合入（而非自动 merge）。
+version: 2
+updates:
+  # GitHub Actions：把 checkout / setup-node / cache / upload-artifact /
+  # create-pull-request / action-gh-release 等钉死的版本推进到安全补丁线
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 6
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # 运行时依赖（pnpm）：对应 package.json / pnpm-lock.yaml
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 6
+    labels:
+      - "dependencies"

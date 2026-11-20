@@ -9,6 +9,11 @@
 
 ## [Unreleased]
 
+### Changed（CI / GitHub Actions 工作流完善）
+- `aggregate.yml`：自动聚合上游源的 PR 同步重新生成 11 个派生规则文件（`gen-format-files.mjs`）并将 `add-paths` 由 `public/domains.txt` 改为 `public/`，否则仅改数据源的 PR 会被 CI 的「生成文件漂移」硬门禁拦下、需人工补生成，违背自动聚合初衷；新增 `concurrency` 防止周任务并发重叠提交覆盖 PR
+- `release.yml`：新增 `concurrency` 串行发布保护（`release-${{ github.ref }}`），避免两次 main 推送并发触发 Release 时竞态创建同一 tag / Release（tag 存在性检查之外再加硬串行兜底）
+- 新增 `.github/dependabot.yml`：每周对 GitHub Actions 与 npm（pnpm）依赖提出安全补丁升级 PR；项目刻意钉死 Action 主版本，由维护者按「版本钉死」纪律审核后合入
+
 ## [3.19.0] - 2026-11-13
 
 按「页面布局与 UI 审查建议」实施三批改进：**合规与无障碍 → 信息架构 → 视觉规范**。设计方向定为「控制台：规则文件就是产品」，让工具台重新成为首屏主角。

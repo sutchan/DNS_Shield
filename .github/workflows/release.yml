@@ -34,6 +34,12 @@ on:
 permissions:
   contents: write
 
+# 串行发布：避免两次 main 推送并发触发 Release 时竞态创建同一个 tag / Release。
+# tag 存在性检查是软幂等，此处再加硬串行作为兜底。
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   release:
     name: Auto-publish Release on green workflows

@@ -11,8 +11,8 @@
 #
 # 说明：使用 PR 而非直接推送，保证规则更新经过审查，避免误吞上游异常条目。
 # 权限：需要 contents: write（推送 PR 分支）+ pull-requests: write（开 PR）。
-# 注意：本 PR 只改 domains.txt，12 个派生规则文件由 Release 流程统一 regenerate，
-#      CI 的「生成文件漂移」硬门禁会拦截忘记同步的情况。
+# 注意：本 PR 会同时重新生成 11 个派生规则文件（与 domains.txt 同源），
+#      否则 CI 的「生成文件漂移」硬门禁会拦下只改数据源、未同步派生的 PR。
 # ---------------------------------------------------------------------------
 name: Aggregate Upstream Lists
 
@@ -26,6 +26,11 @@ permissions:
   # 仅 pull-requests: write 会在 push 阶段报 403 而整 job 失败
   contents: write
   pull-requests: write
+
+# 避免上一轮周任务仍在跑（或并发手动触发）时重叠提交，造成 PR 内容互相覆盖
+concurrency:
+  group: aggregate-upstream
+  cancel-in-progress: false
 
 jobs:
   aggregate:
@@ -43,6 +48,13 @@ jobs:
       - name: Aggregate upstream domains
         run: node scripts/aggregate-upstream.mjs
 
+      # 同步重新生成 11 个派生规则文件：否则自动 PR 只改 domains.txt，
+      # 会被 CI 的「生成文件漂移」硬门禁拦下（派生文件未同步 → 漂移），
+      # 必须人工补生成，违背自动聚合的初衷。派生文件为纯 Node 脚本生成，
+      # 与 domains.txt 同源，无新增依赖。
+      - name: Regenerate derived rule files
+        run: node scripts/gen-format-files.mjs
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
@@ -52,10 +64,13 @@ jobs:
             本 PR 由 `aggregate.yml` 定时任务自动生成。
 
             脚本从 AdGuard / EasyList / NeoHosts / StevenBlack / YousList 提取黑名单域名，
-            与 `public/domains.txt` 合并去重后更新。
+            与 `public/domains.txt` 合并去重后更新，并同步重新生成 11 个派生格式文件，
+            使 PR 通过 CI 的「生成文件漂移」硬门禁。
 
             请审核变更后再合并。
           branch: auto/aggregate-upstream
           delete-branch: true
+          # 仅暂存发生变化的文件：domains.txt 与重新生成的 11 个派生文件；
+          # public/ 下未改动的图像等不会被纳入。
           add-paths: |
-            public/domains.txt
+            public/
