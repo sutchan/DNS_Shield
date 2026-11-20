@@ -50,12 +50,19 @@ describe('JSON-LD @graph', () => {
   const graph = (jsonLd as { '@graph': Array<Record<string, unknown>> })['@graph'];
   const byType = (type: string) => graph.find((node) => node['@type'] === type);
 
-  it('包含 5 类实体且 @id 引用闭环', () => {
+  it('包含 6 类实体且 @id 引用闭环', () => {
     expect(graph.map((n) => n['@type'])).toEqual([
-      'Organization', 'WebSite', 'SoftwareApplication', 'FAQPage', 'HowTo',
+      'Organization', 'WebSite', 'WebPage', 'SoftwareApplication', 'FAQPage', 'HowTo',
     ]);
     expect(byType('WebSite')?.publisher).toEqual({ '@id': `${SITE_URL}/#organization` });
     expect(byType('SoftwareApplication')?.publisher).toEqual({ '@id': `${SITE_URL}/#organization` });
+    // v3.19.1：WebPage 串联 WebSite / SoftwareApplication / FAQPage / HowTo
+    const webpage = byType('WebPage') as Record<string, unknown>;
+    expect(webpage.isPartOf).toEqual({ '@id': `${SITE_URL}/#website` });
+    expect(webpage.about).toEqual({ '@id': `${SITE_URL}/#software` });
+    expect(webpage.hasPart).toEqual([
+      { '@id': `${SITE_URL}/#faq` }, { '@id': `${SITE_URL}/#howto` },
+    ]);
   });
 
   it('inLanguage 覆盖全部 16 种界面语言', () => {

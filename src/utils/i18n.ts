@@ -94,8 +94,8 @@ export const loadTranslation = async (lang: string): Promise<Translation> => {
   const loader = localeLoaders[lang];
   if (!loader) return getTranslation(lang);
   try {
-    const module = await loader();
-    translations[lang] = deepMerge(translations['zh-cn'], module.default) as Translation;
+    const localeModule = await loader();
+    translations[lang] = deepMerge(translations['zh-cn'], localeModule.default) as Translation;
   } catch (error) {
     // 语言包加载失败（网络 / 分块缺失）：回退基准，不阻断界面
     if (typeof console !== 'undefined') {

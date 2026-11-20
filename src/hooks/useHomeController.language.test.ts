@@ -1,11 +1,26 @@
-// src/hooks/useHomeController.language.test.ts v3.15.0
+// src/hooks/useHomeController.language.test.ts v3.19.1
 // @vitest-environment jsdom
 // 语言与主题切换契约（html lang/dir 同步与持久化）
 // （原 useHomeController.test.ts 按关注点拆分，本文件承接其中一个分组）
+// v3.19.1：语言包异步加载后三者同步落地，语言相关断言改 waitFor。
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { act } from 'react';
 import { renderHook } from '../test-utils/renderHook';
 import { useHomeController } from './useHomeController';
+
+/** 轮询等待异步断言成立（项目未引入 @testing-library/react，避免新增依赖） */
+const waitFor = async (assert: () => void, timeout = 2000): Promise<void> => {
+  const deadline = Date.now() + timeout;
+  while (Date.now() < deadline) {
+    try {
+      assert();
+      return;
+    } catch {
+      await act(async () => { await new Promise((r) => setTimeout(r, 10)); });
+    }
+  }
+  assert();
+};
 
 const mocks = vi.hoisted(() => ({
   toast: vi.fn(),
@@ -58,20 +73,17 @@ afterEach(() => {
 });
 
 describe('useHomeController · 语言与主题', () => {
-  it('挂载时同步 <html lang> 为当前语言', () => {
+  it('挂载时同步 <html lang> 为当前语言', async () => {
     const { result, unmount } = renderHook(() => useHomeController());
+    await waitFor(() => expect(result.current.currentLang).toBe('zh-cn'));
     expect(document.documentElement.lang).toBe(result.current.currentLang);
-    expect(result.current.currentLang).toBe('zh-cn');
     unmount();
   });
 
-  it('switchLang 切换语言后同步 <html lang>', () => {
+  it('switchLang 切换语言后同步 <html lang>', async () => {
     const { result, unmount } = renderHook(() => useHomeController());
-    act(() => {
-      result.current.switchLang('en');
-    });
-
-    expect(result.current.currentLang).toBe('en');
+    await act(async () => { await result.current.switchLang('en'); });
+    await waitFor(() => expect(result.current.currentLang).toBe('en'));
     expect(document.documentElement.lang).toBe('en');
     unmount();
   });

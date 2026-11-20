@@ -1,5 +1,5 @@
 // src/hooks/useLanguage.ts v3.19.1
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supportedLanguages, getTranslation, loadTranslation } from '../utils/i18n';
 import { Translation } from '../types';
 
