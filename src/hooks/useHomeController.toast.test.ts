@@ -1,4 +1,4 @@
-// src/hooks/useHomeController.toast.test.ts v3.15.0
+// src/hooks/useHomeController.toast.test.ts v3.19.1
 // @vitest-environment jsdom
 // T-P3-05 toast 缺翻译键降级契约（绝不向用户暴露原始键名）
 // （原 useHomeController.test.ts 按关注点拆分，本文件承接其中一个分组）
@@ -68,7 +68,9 @@ afterEach(() => {
 });
 
 describe('useHomeController · T-P3-05 toast 缺键降级', () => {
-  it('16 个语言包均已补齐 toast.cleared（防止清空提示再次退化为通用文案）', () => {
+  it('16 个语言包均已补齐 toast.cleared（防止清空提示再次退化为通用文案）', async () => {
+    // v3.19.1：语言包改为按需加载，遍历前须先异步加载全部 16 语填充缓存
+    await Promise.all(i18nModule.supportedLanguages.map((l) => i18nModule.loadTranslation(l.code)));
     // 说明：scripts/check-locales.mjs 以 zh-cn 为基准做「相互一致性」比对，
     // 若 16 个语言包同时缺少同一个键，它依然会判定通过 —— 无法拦住「集体缺键」。
     // 故此处显式断言 cleared 存在，防止该缺陷（曾导致 clearAll 只显示「已完成」）复发。

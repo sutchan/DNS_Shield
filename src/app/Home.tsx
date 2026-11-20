@@ -1,14 +1,16 @@
-// src/app/Home.tsx v3.19.0
+// src/app/Home.tsx v3.19.1
 // 首页编排：仅负责组合布局与渲染，所有状态逻辑已抽离至 useHomeController（保持主文件 ≤200 行）。
 // 全局样式统一由 app/layout.tsx 导入（含拆分后的 src/styles/*.css），此处不再重复导入。
+// v3.19.1：GuideModal 改 next/dynamic 懒加载，移出首屏 bundle（默认关闭、按需下载）。
 'use client';
+import dynamic from 'next/dynamic';
 import Header from '../components/Header';
 import InputPanel from '../components/InputPanel';
 import OutputPanel from '../components/OutputPanel';
 import FlowViz from '../components/FlowViz';
 import Footer from '../components/Footer';
 import SeoContent from '../components/SeoContent';
-import GuideModal from '../components/GuideModal';
+const GuideModal = dynamic(() => import('../components/GuideModal'), { ssr: false });
 import { ToastProvider } from '../components/ui/Toast';
 import { AppProvider } from '../context/AppContext';
 import { useHomeController } from '../hooks/useHomeController';

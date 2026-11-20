@@ -7,11 +7,14 @@
 // 惰性生成（T-P1-06）：仅消费当前格式文本 currentOutput，不再持有全量 OutputContent。
 'use client';
 import * as React from 'react';
-import SettingsPanel from './SettingsPanel';
+import dynamic from 'next/dynamic';
 import { OutputPreview } from './OutputPreview';
 import { EmptyState } from './ui/EmptyState';
-import RuleTesterModal from './RuleTesterModal';
-import ScriptGeneratorModal from './ScriptGeneratorModal';
+// v3.19.1：三个弹窗改为 next/dynamic 懒加载，移出首屏 bundle（默认关闭，按需下载）。
+// ssr:false —— 弹窗本就条件挂载，不参与 SSR，无 GEO 损失。
+const SettingsPanel = dynamic(() => import('./SettingsPanel'), { ssr: false });
+const RuleTesterModal = dynamic(() => import('./RuleTesterModal'), { ssr: false });
+const ScriptGeneratorModal = dynamic(() => import('./ScriptGeneratorModal'), { ssr: false });
 import {
   FormatSelect,
   PreviewStats,

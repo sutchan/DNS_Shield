@@ -7,6 +7,18 @@
 
 > 最后审查：2026-11-13（与 package.json v3.19.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
 
+## [3.19.1] - 2026-11-20
+
+### Changed（SEO / GEO 完善，方案 A 单页强化）
+- 标题层级与语义化：首屏「快速入门」标题 `h3 → h2` 并补 `id="howto"`（消除 `h1 → h3` 跳级、对齐 JSON-LD HowTo 锚点）；Hero `section` 去掉与唯一 `h1` 重复的 `aria-label`；`<noscript>` 标题降为 `<p><strong>`（`layout.tsx` / `FlowViz.tsx`）
+- 结构化数据升级：`site-meta.ts` 的 `@graph` 新增 `WebPage` 节点（`isPartOf` / `about` / `hasPart` / `primaryImageOfPage`），FAQ/HowTo 的 `@id` 抽常量与页面 `#faq` / `#howto` 锚点一一对应，`HowToStep` 补 `url` 锚点（实体从 5 类增至 6 类）
+- 可索引正文与内链：`SeoContent.tsx` 补页内目录 `<nav>`、三步使用步骤（`HOWTO_STEPS`）、四类常见部署要点（`DEPLOY_GUIDES`），机器链接包进 `<nav aria-label="机器可读资源">`；`llms.txt` 同步补部署要点；新增 `seo.css` 对应样式。正文与 JSON-LD / llms.txt 仍由 `seo-content.ts` 单一来源派生
+- 首屏性能优化：15 个非基准语言包由全量静态 import 改为**显式动态 `import()`**（首屏 locale 从约 191KB 降至约 12KB，`getTranslation` 保持同步签名兼容 8+ 调用方）；新增 `loadTranslation(lang)` 异步加载 + 缓存，`useLanguage` 挂载/切换时 await 后一次性落地 `currentLang` / 译文 / `<html lang|dir>`，序号守卫防快速切换竞态
+- 弹窗懒加载：`SettingsPanel` / `RuleTesterModal` / `ScriptGeneratorModal` / `GuideModal` 改 `next/dynamic({ ssr: false })`，移出首屏 bundle
+- GA 脚本：`ga-scripts.tsx` 原生 `<script async>` 改 `next/script strategy="afterInteractive"`，消除渲染阻塞项
+- 测试更新：`i18n.test.ts` 补异步加载 / 缓存 / 回退契约用例；`useLanguage.test.ts` 全部断言改 `waitFor` 并补译文与语言同步用例；`useHomeController.toast.test.ts` 遍历 16 语前先 `loadTranslation`
+- 版本按 patch 升至 v3.19.1：三源 + 13 展示位 + 11 产物头部（本机无 `node_modules`，`next build` / vitest / Lighthouse 待 CI 复核）
+
 ## [Unreleased]
 
 ### Changed（CI / GitHub Actions 工作流完善）
@@ -1758,7 +1770,9 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.18.1...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.19.1...HEAD
+[3.19.1]: https://github.com/sutchan/DNS_Shield/compare/v3.19.0...v3.19.1
+[3.19.0]: https://github.com/sutchan/DNS_Shield/compare/v3.18.1...v3.19.0
 [3.18.1]: https://github.com/sutchan/DNS_Shield/compare/v3.18.0...v3.18.1
 [3.18.0]: https://github.com/sutchan/DNS_Shield/compare/v3.17.4...v3.18.0
 [3.17.4]: https://github.com/sutchan/DNS_Shield/compare/v3.17.3...v3.17.4
