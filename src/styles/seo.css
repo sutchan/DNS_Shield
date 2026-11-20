@@ -1,4 +1,4 @@
-/* src/styles/seo.css v3.19.0 — 站点事实内容（关于 / 格式清单 / FAQ）与 noscript 兜底 */
+/* src/styles/seo.css v3.19.1 — 站点事实内容（关于 / 使用步骤 / 部署要点 / 格式 / FAQ）与 noscript 兜底 */
 
 /* 视觉上刻意保持安静：位于工具区与页脚之间，不抢主操作区的注意力；
    排版密度靠字号与分栏控制，内容与 JSON-LD 同源而非为爬虫隐藏文本。
@@ -70,9 +70,29 @@
   @apply text-[0.8125rem] leading-relaxed text-muted-foreground;
 }
 
+/* v3.19.1：页内目录 nav（锚点链接，降视觉权重但保留可抓取性） */
+.seo-toc {
+  @apply flex flex-wrap gap-x-1 mb-6 text-[0.75rem] text-muted-foreground;
+}
+
+.seo-toc a {
+  @apply text-primary hover:underline;
+}
+
+/* 三步使用步骤与部署要点：紧凑列表，文本仍在 SSR HTML 中供 GEO 引用 */
+.seo-steps,
+.seo-deploy {
+  @apply flex flex-col gap-1.5 list-none p-0 m-0 text-[0.8125rem] leading-relaxed text-muted-foreground;
+}
+
+.seo-steps strong,
+.seo-deploy strong {
+  @apply text-foreground font-medium;
+}
+
 /* 机器可读链接保留在正文末尾（GEO 抓取需要可见链接），仅降低视觉权重 */
 .seo-machine {
-  @apply mt-6 pt-3 border-t border-border/70 text-[0.75rem] text-muted-foreground;
+  @apply flex flex-wrap items-center gap-x-1 mt-6 pt-3 border-t border-border/70 text-[0.75rem] text-muted-foreground;
 }
 
 .seo-machine a {

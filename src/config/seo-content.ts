@@ -74,6 +74,18 @@ export const HOWTO_STEPS = [
 ] as const;
 
 /**
+ * 常见部署要点（常驻可见，供搜索引擎 / 生成式引擎引用）。
+ * 文案以 src/locales/zh-cn.json 的 deploy* 键为事实源；引导弹窗仍读 t.deploy* 支持多语，
+ * 两处若需保持一致由测试断言兜底，不迁移 locale 键以免触发 16 语基线大批改动。
+ */
+export const DEPLOY_GUIDES = [
+  { name: 'Dnsmasq', text: '将 dnsmasq.conf 上传到路由器 / OpenWrt 的 /etc/dnsmasq.d/ 目录，重启 dnsmasq 服务后生效。' },
+  { name: 'Hosts', text: '把 hosts.txt 内容追加到系统 hosts 文件；路由器环境需确认固件支持自定义 hosts。' },
+  { name: 'AdGuard / Pi-hole', text: '在 AdGuard Home 或 Pi-hole 的「订阅 / 黑名单」中填入规则文件 URL，或上传本地文件。' },
+  { name: 'Unbound / Bind RPZ / SmartDNS', text: '按各自的配置语法引入对应规则文件，重载服务后生效；详见项目文档。' },
+] as const;
+
+/**
  * 生成 /llms.txt：给生成式引擎的站点简报。
  * 采用 llms.txt 约定格式（H1 + blockquote 摘要 + 分节链接列表），中英双语覆盖，
  * 版本号由 APP_VERSION 注入，不会随发版漂移。
@@ -108,6 +120,9 @@ ${formatLinks}
 
 ## 使用步骤
 ${steps}
+
+## 常见部署方式
+${DEPLOY_GUIDES.map((g) => `- **${g.name}**：${g.text}`).join('\n')}
 
 ## 常见问题（简体中文）
 ${faqZh}
