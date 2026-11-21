@@ -7,6 +7,13 @@
 
 > 最后审查：2026-11-13（与 package.json v3.19.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
 
+## [3.19.2] - 2026-11-21
+
+### Fixed（构建环境 Node 版本漂移）
+- `package.json` 的 `engines.node` 由无上界 `>=24.11.0` 收敛为 `>=24.11.0 <25`：Vercel 此前因无上界约束忽略 Project Settings 的 `24.x`、自动改用 Node 26.x 并告警；加上 `<25` 上界后锁定 Node 24 主版本，保留 24.11.0 最低版本要求
+- 版本按 patch 规则升至 v3.19.2：`package.json` / `src/config/version.ts` / `next.config.js` env.version / 文档展示位
+- 注：`npm warn Unknown env config "cache-dir"` 与 `npm warn install-scripts esbuild@...` 来自 Vercel 注入的 npm 配置与 npm 11 的 `allowScripts` 安全策略，属平台侧非阻断警告，仓库无法消除
+
 ## [3.19.1] - 2026-11-20
 
 ### Changed（SEO / GEO 完善，方案 A 单页强化）

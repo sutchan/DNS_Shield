@@ -6,7 +6,8 @@
 #   1. pnpm/action-setup 必须在需要 pnpm 的步骤之前执行。
 #   2. pnpm 版本不在此硬编码 —— 读取 package.json 的 packageManager 字段
 #      （pnpm@11.24.0）。若在此写死 version，会触发 ERR_PNPM_BAD_PM_VERSION。
-#   3. Node 版本对齐 package.json 的 engines.node（>=24.11.0），且 .npmrc 开启了
+#   3. Node 版本对齐 package.json 的 engines.node（>=24.11.0 <25，锁定 Node 24
+#      主版本，避免 Vercel 自动升级到 26.x），且 .npmrc 开启了
 #      engine-strict=true，版本不匹配会直接 install 失败。
 #   4. 本项目使用 pnpm-lock.yaml（非 npm/yarn）。
 #   5. pnpm-lock.yaml 必须入库：CI 一律 --frozen-lockfile。若锁文件缺失，

@@ -6,7 +6,7 @@
 
 > 最后审查：2026-11-13（与 package.json 版本对齐）
 
-[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.19.1-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.19.2-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 基于 DNS 的广告过滤规则库：在路由器或 DNS 服务上配置一次，即可为全屋设备拦截广告与追踪域名。既支持从统一域名数据源**生成** 12 种格式规则，也支持把已有清单在**常见格式之间互相转换**。
 
@@ -122,7 +122,7 @@
 
 ## 开发
 
-环境要求：Node.js ≥ 24.11.0、pnpm 11.24.0（见 `package.json` 的 `engines` / `packageManager`）。
+环境要求：Node.js ≥ 24.11.0 且 < 25（锁定 Node 24 主版本，避免 Vercel 自动升级到 26.x）、pnpm 11.24.0（见 `package.json` 的 `engines` / `packageManager`）。
 
 ```bash
 pnpm install          # 安装依赖
@@ -157,4 +157,4 @@ MIT License
 
 ## 版本
 
-当前版本：v3.19.1，完整变更见 [CHANGELOG.md](CHANGELOG.md)。
+当前版本：v3.19.2，完整变更见 [CHANGELOG.md](CHANGELOG.md)。

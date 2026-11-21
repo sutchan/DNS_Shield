@@ -2,7 +2,7 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
-> 当前版本：v3.19.1
+> 当前版本：v3.19.2
 > 最后审查：2026-11-12（第十八轮全量文档核查；权威版本源为 `package.json`）
 
 ## 部署环境
@@ -10,7 +10,7 @@
 ### 1. 系统要求
 
 - **操作系统**：Linux、macOS 或 Windows
-- **Node.js**：24.11.0 或更高版本（`package.json` 的 `engines.node` 下限，`.npmrc` 开启 `engine-strict` 后版本不满足会直接安装失败；CI 使用 Node 24）
+- **Node.js**：24.11.0 ~ 24.x（`package.json` 的 `engines.node` 为 `>=24.11.0 <25`，`engine-strict` 后版本不满足会直接安装失败；Vercel 因上界约束沿用 Project Settings 的 24.x，CI 使用 Node 24）
 - **pnpm**：11.24.0（由 `package.json` 的 `packageManager` 字段锁定，CI 走 `pnpm/action-setup` 自动安装，勿手动指定版本）
 - **Git**：用于版本控制
 
@@ -261,7 +261,7 @@ git add public && git commit -m "chore: 同步生成规则文件"
 |----------|------|--------|
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_BUILD_ID` | 页脚构建编号（`yymmddhhmm`，由 `next.config.js` 构建期生成并注入，见 SPEC §8.1） | 构建时生成 |
-| `APP_VERSION` | 应用版本单一来源（`src/config/version.ts`；权威源为 `package.json` version，文档展示位由 `sync-facts.mjs` 同步） | 3.19.1 |
+| `APP_VERSION` | 应用版本单一来源（`src/config/version.ts`；权威源为 `package.json` version，文档展示位由 `sync-facts.mjs` 同步） | 3.19.2 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（须形如 `G-XXXXXXXXXX`；留空或格式非法则不启用统计，详见 `.env.example`） | 空 |
 
 ### 2. Next.js 配置
@@ -280,7 +280,7 @@ const nextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   env: {
-    version: '3.19.1',                    // 展示位由 sync-facts.mjs 从 package.json 派生，勿另处硬编码
+    version: '3.19.2',                    // 展示位由 sync-facts.mjs 从 package.json 派生，勿另处硬编码
     NEXT_PUBLIC_BUILD_ID: buildTimeId()  // 构建期注入，页脚 build 编号（缺失时回退版本号）
   },
   devIndicators: { buildActivity: false },
