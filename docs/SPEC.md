@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-13（与 package.json v3.19.2 对齐；第十九轮 UI/布局改进：§4.4 补首屏本地化/主题、可读性、CTA 唯一性、统计口径、引导与 FAQ 折叠、工作台栅格等约定，并移除已废弃的 merge-info 描述；第十八轮全量文档核查：结构树补 `scripts/check-root-clean.mjs`、标注 Tabs 废弃、§4 补 v3.16.1~v3.17.4 UI 与内存护栏、§12.1 补双源 CSP 与开发模式 `unsafe-eval` 说明；冻结快照按声明保留）
+> 最后审查：2026-11-22（与 package.json v3.19.2 对齐；第二十轮：§1 域名计数按聚合结果实算更新、§2 结构树补审计报告、§7 补分支保留策略（仅 main/dev）、§11 登记锁文件缺失 BLOCKER；第十九轮 UI/布局改进：§4.4 补首屏本地化/主题、可读性、CTA 唯一性、统计口径、引导与 FAQ 折叠、工作台栅格等约定，并移除已废弃的 merge-info 描述；第十八轮全量文档核查：结构树补 `scripts/check-root-clean.mjs`、标注 Tabs 废弃、§4 补 v3.16.1~v3.17.4 UI 与内存护栏、§12.1 补双源 CSP 与开发模式 `unsafe-eval` 说明；冻结快照按声明保留）
 
 ## 1. 项目概述
 
@@ -14,7 +14,7 @@
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
 | 当前版本 | v3.19.2 |
-| 拦截域名 | 规则 877 条（黑名单 645 + 白名单 232；`public/domains.txt` 非空 897 行，含注释 20 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准） |
+| 拦截域名 | **127188 条**（黑名单 127188 + 白名单 0；`public/domains.txt` 非空 127188 行，全部为纯域名行、无注释/白名单/改道行——2026-11-21 合并 `auto/aggregate-upstream` 上游聚合结果后形态变化，原 877 条口径已失效；以 `node scripts/count-domains.mjs` 实算为准） |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
 | 通知组件 | sonner |
@@ -42,6 +42,7 @@ dns-shield/
 │   ├── tasks-done.md               # 已完成任务归档（含第七章开发进度全景）
 │   ├── CHECKLIST.md                # 质量检查清单
 │   ├── STRUCTURE-REVIEW.md         # 结构审查快照（v3.12.0 起冻结，不再回填）
+│   ├── AUDIT-REPORT-v3.19.0.md     # v3.19.0 三路代码审查汇总（只读快照，BLOCKER/HIGH/MEDIUM/LOW 分级）
 │   └── config.yaml                 # 规范配置
 ├── scripts/                        # 构建/校验脚本
 │   ├── check-locales.mjs           # 国际化键覆盖校验（pnpm check:locales）
@@ -345,6 +346,13 @@ chore:    更新 Web 管理工具
 refactor: 优化规则生成逻辑
 ```
 
+### 7.1 分支保留策略（2026-11-21 起）
+
+- **仅保留 `main`（主干）与 `dev`（备份）两个分支**，本地与远程均不保留其它长期分支；历史 `fix/*` / `rebuild` 与全部 `dependabot/*` 分支已清理。
+- 依赖升级（尤其 Next / TypeScript / Tailwind / ESLint 等破坏性大版本）**不在 `dev` 之外单独建长期分支**；如需评估，从 `dev` 切临时分支逐个验证后合入，验证完即删。
+- `auto/aggregate-upstream` 是自动化域名聚合分支：其提交只改 `public/domains.txt`，由 `aggregate.yml` 创建；合并后应删除远程分支（2026-11-21 已合并至 `main` 并删除）。
+- 分支合并前须区分「真更新」与「回退」：`ahead>0` 不等于可合并——`rebuild` 分支虽 ahead=1 但把版本回退到 v3.9.10 并引入已废弃的 `edgeone.json`，禁止直接合入 `main`。
+
 ## 8. 版本管理
 
 使用 [SemVer](https://semver.org/) 格式: `v1.1.2`
@@ -434,6 +442,9 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 - 部分广告域名使用 HTTPS 硬编码，需配合 Pi-hole 或广告屏蔽插件
 - 部分设备可能有 hosts 文件大小限制
 - 需要定期更新规则以应对新广告形式
+- **锁文件与 `.npmrc` 缺失（BLOCKER，v3.19.0 审计 B-01，截至 v3.19.2 未修复）**：`pnpm-lock.yaml` 与 `.npmrc` 均不在工作树与 HEAD；`.github/actions/setup/action.yml:68-70` 在 `install=true && frozen=true` 时遇缺锁文件即 `exit 1`，导致 CI 的 lint/typecheck/test/build 与部署 job 在装依赖前后失败。本地已存在的 `node_modules` 会掩盖此问题。完整分级清单见 `docs/AUDIT-REPORT-v3.19.0.md`。
+- **Service Worker 未注册**：`public/service-worker.js` 已实现同源缓存策略，但全仓无 `navigator.serviceWorker.register` 调用，PWA 离线缓存实际未启用；§12.2 描述的是 SW 自身策略而非已生效行为。
+- **`public/category-index.txt` 未入库**：由 `aggregate.yml` 生成，但 `add-paths` 未包含，线上分类筛选控件会 404 降级隐藏。
 
 ## 12. 安全规范
 

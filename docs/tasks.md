@@ -4,10 +4,10 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-13（与 package.json v3.19.2 对齐；第十九轮审计新增 11 项待办，见第二节）。
+> 最后审查：2026-11-22（与 package.json v3.19.2 对齐；第二十轮：域名计数按 2026-11-21 聚合合并结果实算更新至 127188、i18n 键数按脚本口径校正为 212、补记分支整理与三项已知限制；第十九轮审计 11 项待办仍见第二节）。
 > 维护团队：Sut / ArcesTeam
 >
-> **本轮整理（2026-11-13）**：依 SPEC §5.3 任务记录规范，将第十四~十八轮冗长的「本次更新」历史叙述统一归档至 [tasks-done.md](./tasks-done.md)，本文件仅保留未完成清单、实时指标、遗留疑问与维护清单；版本与指标经实算与代码实况对齐（v3.18.1 / 12 格式 / 16 语 140·209 键 / 51 套件 326 用例 / 17 组件 / >200 行源文件 0 个）。
+> **本轮整理（2026-11-13）**：依 SPEC §5.3 任务记录规范，将第十四~十八轮冗长的「本次更新」历史叙述统一归档至 [tasks-done.md](./tasks-done.md)，本文件仅保留未完成清单、实时指标、遗留疑问与维护清单；版本与指标经实算与代码实况对齐（v3.19.2 / 12 格式 / 16 语 212 键 / 51 套件 326 用例 / 17 组件 / >200 行源文件 0 个 / 拦截域名 127188 条）；2026-11-22 第二十轮校正键数与域名计数并补记分支整理。
 >
 > **遗留疑问 / 审计结论**（2026-11-13 第十九轮）：
 > - ~~`vercel.json` 双源 CSP 差异~~：**已解决**——`vercel.json` 文件已删除，安全响应头现为 `next.config.js` 单一来源（见 §11 与 T-DOC-01）；是否启用 `require-trusted-types-for` 转为安全增强评估项（T-SEC-01）。
@@ -22,12 +22,13 @@
 |---|---|---|
 | 应用版本 | v3.19.2 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
-| i18n 语言 / 键数 | 16 种 / 顶层 **140** 键、递归合计 **209** 键 | 脚本统计 `src/locales/zh-cn.json`（flatten 叶子口径，与 `check:locales` 输出及 `scripts/locale-baseline.json` keyCount 一致；v3.15.5 移除 `moreFormats` 死键，2026-11-07 实算） |
+| i18n 语言 / 键数 | 16 种 / 递归合计 **212** 键（`check:locales` 与 `scripts/locale-baseline.json` keyCount 口径） | `node scripts/check-locales.mjs` 2026-11-22 实跑输出「212 键」；早期记录的 209 键已过时（v3.18~v3.19 增补了 `shareTexts` 等键），禁止沿用旧值 |
 | 测试套件 / 用例 | **51 套件 / 326 用例**（2026-11-13 `vitest run` 实跑：51 个 `*.test.ts` 文件全部通过；v3.18.1 新增 `workerPoolFinalize.test.ts` / `useAsyncRuleProcessing.fallback.test.ts` 2 套件 7 用例，`useLanguage.test.ts` 追加 4 用例） | `vitest run` 为权威计数，本轮已实跑复核 |
 | 覆盖率门禁 | 已生效且为真实值；含 `src/utils` + `src/hooks`，门槛 **语句 80 / 分支 75 / 函数 85 / 行 80**；`vitest.config.ts` 显式声明 `all: false` | `vitest run --coverage`；2026-11-13 实测：语句 88.01 / 分支 86.18 / 函数 89.55 / 行 88.01，全部达标且有余量；2026-11-05 第十二轮实测为 88.85 / 85.45 / 91.74 / 88.85；曾以「临时抬阈至 99 → EXIT CODE 1」反证门禁真实生效 |
 | 组件规模 | 顶层 **17** 个 `.tsx`（含 `OutputPanel.parts.tsx` / `OutputPanel.formatSelect.tsx` / 新增 `SeoContent.tsx`）+ `OutputPanel.derived.ts` / `InputPanel.types.ts`，`ui/` 8 个（v3.18.0 清理 4 个未被引用的孤儿组件 `Card` / `Loading` / `Switch` / `Tabs`） | `src/components/` 实测（2026-11-12 实算） |
 | 源文件 >200 行 | **0** 个（v3.18.1 已将 `src/hooks/useWorkerPool.ts` 由 213 行拆分降回 200 行内；`globals.css` 已于 v3.13.6 拆为 `src/styles/*.css` 8 模块）；2026-11-13 实扫确认 | 行数扫描（2026-11-13 实算） |
-| 静态门禁 | `sync-facts.mjs --check` 13 处版本展示位与 package.json 全一致；`check-locales.mjs` 16 语 / 209 键一致；`check-root-clean.mjs` 根目录临时文件洁净度（`rootclean` job） | 2026-11-12 实跑（`sync-facts --check` / `check:locales`）；本机已安装 `node_modules`，`tsc` / `next lint` / `vitest` 待实跑复核 |
+| 静态门禁 | `sync-facts.mjs --check` 13 处版本展示位与 package.json(3.19.2) 全一致；`check-locales.mjs` 16 语 / 212 键一致；`check-root-clean.mjs` 根目录临时文件洁净度（`rootclean` job） | 2026-11-22 实跑（`sync-facts --check` / `check:locales`）；`tsc` / `next lint` / `vitest` 以 2026-11-13 实跑结果为准 |
+| 拦截域名 | **127188** 条（黑名单 127188 + 白名单 0） | `node scripts/count-domains.mjs` 2026-11-22 实跑；2026-11-21 合并 `auto/aggregate-upstream` 后由 877 条变为 127188 条，纯域名形态、无注释/白名单/改道行 |
 
 > **教训**：本文件中的数据型数字（键数 / 用例数 / 覆盖率 / 行数）历史上多次与实现脱节。修改前务必用脚本实算，禁止凭记忆书写。
 > 2026-10-19 复核再次印证：键数、用例数、覆盖率三项均曾长期偏离真实值，且偏差方向不一致，说明凭旧记录继承数字必然失真。
