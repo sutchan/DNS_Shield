@@ -207,6 +207,32 @@ dns-shield/
 └── pnpm-lock.yaml                  # pnpm 锁定文件
 ```
 
+### 2.1 目录职责与硬约束（2026-11-22 起）
+
+各目录只承载本职责内容，跨层调用视为架构违规：
+
+| 目录 | 职责 | 禁止事项 |
+|------|------|----------|
+| `src/app/` | App Router 约定层：路由、布局、SEO/PWA/llms.txt 路由 | 不得放业务逻辑；`page.tsx`/`layout.tsx` 等约定文件**不可重命名**（框架按路径加载） |
+| `src/components/` | 展示层（`.tsx`）与派生状态；`ui/` 为 shadcn 基础组件 | 不得在组件内直接 fetch 或写 localStorage（交 `hooks/`）；单文件 ≤200 行 |
+| `src/hooks/` | 状态编排层：副作用、Worker 调度、自动保存 | 不得放可独立测试的纯计算（放 `utils/`）；返回值对象须 `useMemo` 稳定 |
+| `src/utils/` | 纯函数层：解析、校验、排序去重、规则生成、fetch 护栏 | 不得依赖 React 或浏览器全局（须可在 node 环境单测） |
+| `src/workers/` | 后台线程：解析分片、进度上报 | 入口文件名不可改（`new URL(..., import.meta.url)` 需静态可分析） |
+| `src/config/` | 站点/应用事实与常量（版本、站点信息、默认设置、GEO 文案） | 不得硬编码版本号（取 `version.ts`）；格式清单等事实应集中而非多处复制 |
+| `src/locales/` | 16 语翻译 JSON，`zh-cn` 为缺失键深合并回退基准 | 键集必须与 `scripts/locale-baseline.json` 一致；不得在组件内散落硬编码文案 |
+| `src/styles/` | 设计系统样式，按职责拆分 | 仅由 `app/layout.tsx` 按序 side-effect 导入，组件内不得 `@import` |
+| `src/test-utils/` | Vitest 共享装置与 setup | 属测试辅助代码，不计入覆盖率门禁 |
+| `public/` | 静态交付物：数据源、11 个规则产物、PWA 与品牌资源 | **产物文件名即线上订阅 URL，禁止改名/移动**；产物由 `gen-format-files.mjs` 生成，不得手改 |
+| `scripts/` | 离线生成与 CI 门禁脚本 | 一次性脚本归 `.tmp/`，不得留 `_` 前缀临时文件（`check-root-clean.mjs` 拦截） |
+| `docs/` | 规范文档 | `tasks.md` 为未完成任务唯一来源，禁止在别处另建任务清单 |
+| `prototype/` | 设计快照（v3.12.0 起冻结） | 不代表当前实现，不回填 |
+
+**硬约束（改动前必查引用）**：
+
+1. `scripts/sync-facts.mjs` 硬编码读取 7 个文档（`README.md`/`README.en.md`/`DEPLOYMENT.md`/`docs/SPEC.md`/`docs/config.yaml`/`docs/tasks.md`/`docs/CHECKLIST.md`）——**这些文件不得移动或改名**，否则 CI 版本门禁直接失败。
+2. `public/` 下 11 个规则产物 + `domains.txt` 是线上订阅端点，URL 形如 `https://dns.ewuse.com/dnsmasq.conf`。
+3. 目录重构前先跑引用检索（`search_content` / `git grep`），确认无引用后再动；「搜索无 import 命中」不等于死代码——locale JSON 由 `i18n.ts` 静态 import、CSS 由 `layout.tsx` side-effect 导入、App Router 约定文件由框架按路径加载、测试装置由 `vitest.config.ts` 字符串路径引用。
+
 ## 3. 域名格式规范
 
 ### 3.1 domains.txt 格式
@@ -292,6 +318,24 @@ dns-shield/
 | 空状态 | 统一使用 `src/components/ui/EmptyState.tsx`，带语义化 `id` 与 `role="status"`，禁止各处内联空态（v3.19.0） |
 | 视觉层级与栅格 | 设计方向为「控制台：规则文件就是产品」：Hero 无边框/纯色信息带、工具面板白卡+边框、SEO 区仅一条分隔线；`≥1024px` 工作台为「输入 5 / 输出 7」非对称双栏，中等屏 1:1、窄屏单列；中文标题统一 sans 700 + `-0.02em`，等宽仅用于代码/域名（v3.19.0，详见 `prototype/shadcn/design-system.md §2.1`） |
 
+### 4.5 编码规范（2026-11-22 起）
+
+| 项 | 约定 |
+|------|------|
+| 语言与类型 | TypeScript `strict: true`；生产代码禁用 `any`（当前 0 处）、禁用游离 `console.*`（统一走 `utils/logger`）；类型导入用 `import type` |
+| 文件规模 | `src/` 下源文件（含测试）**≤200 行**，超限先拆分再提交（当前 0 个超限）；组件拆分沿用 `Xxx.parts.tsx` / `Xxx.derived.ts` / `Xxx.types.ts` 既有命名法 |
+| 纯函数优先 | 可独立测试的计算放 `src/utils/`，不得混入 React 依赖；`utils/` 代码必须能在 node 环境（Vitest 默认环境）直接单测 |
+| 单一数据源 | 版本号取 `src/config/version.ts`；默认设置取 `config/defaults.json`；格式清单、头部模板、SEO 文案等**同一事实只允许一处定义**（发现第二处即视为待重构）；生成物头部由 `scripts/` 统一派生，禁止手改 |
+| Hook 稳定性 | 返回对象/函数须 `useMemo` / `useCallback` 稳定；`Context` 的 `value` 必须 memo 化（`Home.tsx` 的 `<AppProvider value={{t}}>` 每次渲染新建对象，会使全部 `useT()` 消费者重渲染——**已知未修复**，见 `docs/AUDIT-REPORT-v3.19.0.md` M-12）；Worker 池等返回对象同样须稳定，避免触发 effect 自持循环 |
+| Worker 约定 | Worker 入口文件不可改名；`postMessage` 前必须做任务标识与内容快照校验，过期结果丢弃；卸载时结算全部挂起任务，禁止让调用方 `await` 永挂；分片收集与全局后处理必须分离（`collectLines` / `finalizeParsed`），保证并行与串行等价 |
+| 异步与竞态 | 所有异步结果落地前校验请求序号；失败必须有可见反馈（toast/错误态），禁止「返回空串当成功」导致静默清空用户数据；写盘失败（IndexedDB / localStorage）须向上传播并提示，禁止无条件弹成功 |
+| 大输入 | ≥20000 行走多核分片并行（`useWorkerPool`），失败逐级回退单 Worker → 主线程；注意 `push(...arr)` 展开上限（约 12.6 万元素即 RangeError），大数组须用 `for` 循环或 `concat` |
+| 国际化 | 全部用户可见文案走 `useT()` / locale JSON；新增键须同步 16 语并跑 `pnpm check:locales`；语言优先级固定为**简体中文 → 繁体中文 → 英语**（`supportedLanguages` 顺序即优先级） |
+| 日志与错误 | 统一 `utils/logger`；可恢复错误给用户可见提示，不可恢复错误记录上下文后上抛；禁止 `catch {}` 静默吞异常 |
+| 样式 | Tailwind 原子类为主，自定义样式进 `src/styles/`；遵循 §4.4 视觉层级与栅格约定 |
+| 注释 | 仅注释「为什么」而非「做了什么」；文件头注释须写清版本、职责与关键约束；改动文件才更新头注释版本号，禁止全仓库批量刷写 |
+| 依赖引入 | 新增依赖须评估体积与许可证，并同步 `package.json`、`docs/SPEC.md` §9 与锁文件（当前 `@radix-ui/react-{switch,tabs,toast}` 为零引用依赖，待清理） |
+
 ## 5. 维护流程
 
 ### 5.1 新增规则
@@ -352,6 +396,29 @@ refactor: 优化规则生成逻辑
 - 依赖升级（尤其 Next / TypeScript / Tailwind / ESLint 等破坏性大版本）**不在 `dev` 之外单独建长期分支**；如需评估，从 `dev` 切临时分支逐个验证后合入，验证完即删。
 - `auto/aggregate-upstream` 是自动化域名聚合分支：其提交只改 `public/domains.txt`，由 `aggregate.yml` 创建；合并后应删除远程分支（2026-11-21 已合并至 `main` 并删除）。
 - 分支合并前须区分「真更新」与「回退」：`ahead>0` 不等于可合并——`rebuild` 分支虽 ahead=1 但把版本回退到 v3.9.10 并引入已废弃的 `edgeone.json`，禁止直接合入 `main`。
+
+### 7.2 协作流程与提交前门禁（2026-11-22 起）
+
+**流程**：改动 → 本地门禁全绿 → 提交（Conventional Commits）→ 推送 → CI 自动跑 `rootclean`/lint/typecheck/test/build → 全绿后 `Deploy` 自动部署 → `Release` 自动按 `package.json` 版本打 tag 发版（无需手动打 tag）。
+
+**提交前必跑门禁**（缺一不得提交）：
+
+```bash
+node scripts/check-root-clean.mjs      # 根目录临时文件洁净度
+node scripts/sync-facts.mjs --check    # 13 处文档版本展示位
+pnpm check:locales                     # 16 语 / 212 键一致
+node scripts/count-domains.mjs         # 域名计数（改动 domains.txt 时）
+pnpm lint && pnpm exec tsc --noEmit && pnpm test
+```
+
+**发布前另需**：`node scripts/sync-facts.mjs`（写回展示位）、`pnpm build:formats`（重建 11 个产物头部）、`CHANGELOG.md` 新增对应版本小节与比较锚点（正文小节与底部链接定义区**必须成对**，缺锚点即失效链接）。
+
+**评审要点**：PR 需说明变更内容、影响的格式/语言/产物、测试情况；涉及 `public/` 产物、`docs/` 展示位、`src/locales/` 键集、Worker 入口或 `scripts/` 硬编码路径的改动，须在描述中点名，避免下游断链。
+
+**临时文件**：一次性脚本与探针统一放根目录 `.tmp/`（已 gitignore），会话结束即清理；长期证据写入 `docs/` 或固化为测试断言。
+
+**锁文件**：`pnpm-lock.yaml` 与 `.npmrc` **必须入库**（`setup/action.yml` 以 `--frozen-lockfile` 安装，缺失即 CI 失败）。当前二者缺失属 BLOCKER，见 §11 与 `docs/AUDIT-REPORT-v3.19.0.md` B-01。
+
 
 ## 8. 版本管理
 

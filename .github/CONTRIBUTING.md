@@ -1,8 +1,10 @@
-<!-- 最后审查：2026-11-12（与 package.json v3.17.4 对齐；第十八轮全量文档核查） -->
+<!-- 最后审查：2026-11-22（与 package.json v3.19.2 对齐；第二十轮：分支命名与仓库长期分支策略对齐 SPEC §7.1、代码规范指向 SPEC §4.5、新增提交前门禁清单、头注释版本修正） -->
 
 # 贡献指南
 
 欢迎参与 DNS Shield 项目的开发和维护！本指南将帮助你了解如何为项目做出贡献。
+
+> **规范以 [`docs/SPEC.md`](../docs/SPEC.md) 为准**：目录职责见 SPEC §2.1，编码规范见 §4.5，任务记录规范见 §5.3，分支策略见 §7.1，提交前门禁见 §7.2。本指南只讲协作流程，二者冲突时以 SPEC 为准。
 
 ## 贡献方式
 
@@ -50,13 +52,15 @@ git remote add upstream https://github.com/sutchan/DNS_Shield.git
 git checkout -b feature/your-feature-name
 ```
 
-分支命名规范：
+分支命名规范（贡献者分支）：
 - 功能分支：`feature/功能名称`
 - 修复分支：`fix/问题描述`
 - 文档分支：`docs/文档名称`
 - 紧急修复分支：`hotfix/问题描述`
 - 非紧急缺陷分支：`bugfix/问题描述`
 - 发布准备分支：`release/版本号`
+
+> **仓库长期分支仅 `main` 与 `dev` 两个**（SPEC §7.1）。贡献分支合并后请删除自己的远程分支；依赖升级类分支（如 dependabot 的破坏性大版本）不要直接合入 `main`，应在 `dev` 上逐个验证后再合。
 
 #### 2.4  进行修改
 
@@ -137,16 +141,30 @@ pnpm start
 
 ### 2. 代码规范
 
-- 使用 TypeScript 进行开发
-- 遵循 ESLint 规则
-- 保持代码风格一致
-- 添加必要的注释
+完整约定见 [SPEC §4.5 编码规范](../docs/SPEC.md)，要点：
+
+- 使用 TypeScript（`strict: true`），生产代码禁用 `any` 与游离 `console.*`（统一走 `utils/logger`）
+- `src/` 下源文件（含测试）≤200 行；`src/utils/` 必须是可在 node 环境单测的纯函数
+- 单一数据源：版本号、默认设置、格式清单、GEO 文案均只允许一处定义
+- Hook 返回值与 Context `value` 须 `useMemo` 稳定；Worker 须做任务标识校验并结算挂起任务
+- 所有用户可见文案走 `useT()` / locale JSON，新增键同步 16 语
+- 遵循 ESLint 规则（`next/core-web-vitals` + `next/typescript`），注释只写「为什么」
 
 ### 3. 测试规范
+
+- 提交前必跑门禁（缺一不得提交）：
+
+  ```bash
+  node scripts/check-root-clean.mjs      # 根目录临时文件洁净度
+  node scripts/sync-facts.mjs --check    # 13 处文档版本展示位
+  pnpm check:locales                     # 16 语 / 212 键一致
+  pnpm lint && pnpm exec tsc --noEmit && pnpm test
+  ```
 
 - 确保所有功能正常工作
 - 测试不同浏览器兼容性
 - 验证生成的规则文件格式正确
+- 改动 `public/domains.txt` 时另跑 `node scripts/count-domains.mjs` 核对计数
 
 ### 4. 临时文件与产物规范
 
