@@ -1,6 +1,37 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-22（与 package.json v3.19.2 对齐；第二十轮：§1 域名计数按聚合结果实算更新、§2 结构树补审计报告、§7 补分支保留策略（仅 main/dev）、§11 登记锁文件缺失 BLOCKER；第十九轮 UI/布局改进：§4.4 补首屏本地化/主题、可读性、CTA 唯一性、统计口径、引导与 FAQ 折叠、工作台栅格等约定，并移除已废弃的 merge-info 描述；第十八轮全量文档核查：结构树补 `scripts/check-root-clean.mjs`、标注 Tabs 废弃、§4 补 v3.16.1~v3.17.4 UI 与内存护栏、§12.1 补双源 CSP 与开发模式 `unsafe-eval` 说明；冻结快照按声明保留）
+> 最后审查：2026-11-22（与 package.json v3.19.2 对齐；规范总览见 §0，变更历史见 CHANGELOG.md）
+> 冻结快照（`prototype/`、`public/brand-colors.md`、`docs/STRUCTURE-REVIEW.md`、`docs/tasks-done.md`）按各自声明保留，不作当前指标。
+
+## 0. 规范总览与适用规则
+
+本文件是项目**规范定义的唯一权威源**；协作流程见 `.github/CONTRIBUTING.md`，任务状态见 `docs/tasks.md`，变更历史见 `CHANGELOG.md`。四者冲突时以本文件为准（任务与指标数字除外——数字以脚本实算为准，见 §5.3）。
+
+**约束级别**（全篇表格与条目的统一前缀）：
+
+| 级别 | 含义 | 违反后果 |
+|------|------|----------|
+| **【强制】** | 必须满足，无例外 | CI 门禁失败、构建失败或用户数据损坏 |
+| **【约定】** | 默认遵循，例外须在 PR 中说明理由 | 代码评审驳回 |
+| **【指导】** | 推荐做法，按场景取舍 | 不计入评审阻塞项 |
+
+**按模块定位规范**：
+
+| 关心的问题 | 跳至 | 主要级别 |
+|------------|------|----------|
+| 项目事实、技术栈、语言优先级 | §1 项目概述 | 强制 |
+| 目录职责、文件命名、硬编码引用 | §2.1 目录职责与硬约束 | 强制 |
+| 域名源文件与输出格式语法 | §3 域名格式规范 | 强制 |
+| 交互行为、DOM id、UI 呈现 | §4.1–§4.4 功能与交互约定 | 约定为主 |
+| 编码红线、Hook 稳定性、Worker 契约 | §4.5 编码规范 | 强制 |
+| 任务记录与数字实算 | §5.3 任务记录规范 | 强制 |
+| 分支保留、提交格式、提交前门禁 | §7 Git 提交规范 | 强制 |
+| 版本号、页脚展示、自动发版 | §8 版本管理 | 强制 |
+| 依赖清单与预设源 | §9 依赖关系 | 指导 |
+| 已知未修复问题（勿当作已生效能力） | §11 已知限制 | 强制 |
+| 安全头部与文件操作 | §12 安全规范 | 强制 |
+
+**通用约束**：① 全文「产物」专指 `public/` 下 11 个可订阅规则文件，「源文件」专指 `src/` 下 `.ts/.tsx/.css`；② 标注日期的规范自该日起生效，旧口径仅存于冻结快照；③ 数字型事实一律脚本实算（§5.3 第 5 条），禁止从记忆或其他文档抄写。
 
 ## 1. 项目概述
 
@@ -204,12 +235,12 @@ dns-shield/
 ├── tailwind.config.js              # Tailwind CSS 配置
 ├── tsconfig.json                   # TypeScript 配置
 ├── vitest.config.ts                # Vitest 单元测试配置
-└── pnpm-lock.yaml                  # pnpm 锁定文件
+└── pnpm-lock.yaml                  # pnpm 锁定文件（当前缺失＝BLOCKER，见 §11 与审计报告 B-01；必须恢复入库）
 ```
 
 ### 2.1 目录职责与硬约束（2026-11-22 起）
 
-各目录只承载本职责内容，跨层调用视为架构违规：
+> **本节全部为【强制】**：各目录只承载本职责内容，跨层调用视为架构违规。
 
 | 目录 | 职责 | 禁止事项 |
 |------|------|----------|
@@ -320,6 +351,8 @@ dns-shield/
 
 ### 4.5 编码规范（2026-11-22 起）
 
+> **本节全部为【强制】**，例外须在 PR 中明示并获得评审同意；现状与约定不符之处以 §11 已知限制为准。
+
 | 项 | 约定 |
 |------|------|
 | 语言与类型 | TypeScript `strict: true`；生产代码禁用 `any`（当前 0 处）、禁用游离 `console.*`（统一走 `utils/logger`）；类型导入用 `import type` |
@@ -339,6 +372,8 @@ dns-shield/
 ## 5. 维护流程
 
 ### 5.1 新增规则
+
+> **【约定】** 日常更新以 `aggregate.yml` 的上游聚合为准（提交落在 `auto/aggregate-upstream`，合并后删分支，见 §7.1）；手工编辑 `domains.txt` 仅用于紧急修复，且下次聚合会覆盖——手工改动须同步评估是否需要回填上游。
 
 1. 编辑 `public/domains.txt`，添加新域名
 2. 启动开发服务器：`pnpm dev`
@@ -382,13 +417,15 @@ dns-shield/
 
 ## 7. Git 提交规范
 
-```
-feat:     添加 xx 域名过滤
-fix:      修复 xx 规则
-docs:     更新文档
-chore:    更新 Web 管理工具
-refactor: 优化规则生成逻辑
-```
+**【强制】** 提交信息采用 Conventional Commits：`type: 描述`；`type` 仅限下表 9 种，与 `.github/CONTRIBUTING.md` 保持一致。
+
+| type | 用途 | type | 用途 |
+|------|------|------|------|
+| `feat` | 新功能 | `test` | 测试增删或调整 |
+| `fix` | 缺陷修复 | `perf` | 性能优化 |
+| `docs` | 文档变更 | `ci` | CI/CD 配置变更 |
+| `chore` | 构建/工具链杂项 | `revert` | 回滚先前提交 |
+| `refactor` | 不改变行为的代码重构 | `style` | 格式与样式调整（不改变逻辑） |
 
 ### 7.1 分支保留策略（2026-11-21 起）
 
@@ -441,7 +478,7 @@ V{APP_VERSION}· build {NEXT_PUBLIC_BUILD_ID}
 - **版本号**：取自 `src/config/version.ts` 的 `APP_VERSION`（单一来源，派生自 `package.json`），与 `next.config.js` 的 `env.version` 一致。
 - **构建编号（build）**：格式 **`yymmddhhmm`（2 位年 + 月日时分）**，例如 `2611061430`；由 `next.config.js` 的 `buildTimeId()` 在构建时生成并注入客户端环境变量 `NEXT_PUBLIC_BUILD_ID`。CI 可覆盖该值以反映真实构建时间。
 - **回退**：`NEXT_PUBLIC_BUILD_ID` 缺失时（如静态导出场景），页脚回退为版本号，保证始终有可识别标识。
-- **发版无需手动同步**：页脚内容由 `env.version` + 运行时 `NEXT_PUBLIC_BUILD_ID` 驱动，[tasks.md 第五章]发布清单无需单独登记页脚项；改动 `next.config.js` 的 `buildTimeId()` 或 `Footer.tsx` 展示格式时，须保持两者一致并同步本规范。
+- **发版核验**：页脚内容由 `env.version` + 运行时 `NEXT_PUBLIC_BUILD_ID` 驱动，**无需手改版本号**；但 `docs/tasks.md` 第五章「版本发布清单」**包含**页脚核验项（`V{APP_VERSION}· build {2 位年编号}`），发版时须逐项勾选。改动 `next.config.js` 的 `buildTimeId()` 或 `Footer.tsx` 展示格式时，须保持三者一致并同步本节与发布清单。
 
 ### 8.2 自动发布（CI 全绿后自动发版）
 
@@ -464,7 +501,7 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 | @radix-ui/react-slot | ^1.0.2 | Slot 组件 |
 | @radix-ui/react-switch | ^1.0.3 | Switch 组件 |
 | @radix-ui/react-tabs | ^1.0.4 | Tabs 组件（**已废弃**：v3.15.5 起由 `OutputPanel.formatSelect.tsx` 单一「格式」下拉取代；依赖与 `ui/Tabs.tsx` 暂保留，勿新增引用） |
-| @radix-ui/react-toast | ^1.1.5 | Toast 组件 |
+| @radix-ui/react-toast | ^1.1.5 | Toast 组件（**零引用**，待清理，与 `switch`/`tabs` 同批评估；通知实际走 `sonner`） |
 | lucide-react | ^0.312.0 | 图标库 |
 | tailwind-merge | ^2.2.0 | Tailwind 类合并 |
 | class-variance-authority | ^0.7.0 | 组件变体管理 |
@@ -506,6 +543,8 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 
 ## 11. 已知限制
 
+> **【强制】事实清单**：本节描述的是**当前真实状态**（截至 v3.19.2），不是目标能力。任何文档或代码若声称下列项「已生效」，即视为漂移，须以本节为准修正。
+
 - 部分广告域名使用 HTTPS 硬编码，需配合 Pi-hole 或广告屏蔽插件
 - 部分设备可能有 hosts 文件大小限制
 - 需要定期更新规则以应对新广告形式
@@ -519,7 +558,7 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 
 | 头部 | 值 | 说明 |
 |------|-----|------|
-| Content-Security-Policy | default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https: blob: https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; upgrade-insecure-requests | 内容安全策略，防止 XSS 和数据注入。`next.config.js`（自托管 / `next start`）与 `vercel.json`（Vercel 路径）各定义一份，当前**后者额外启用 `require-trusted-types-for 'script'`** 而前者未启用，两处尚未统一（统一方案待定，见 tasks.md 第十八轮遗留疑问）；CI **无**自动「安全头一致性」检查（`next.config.js` 头部注释为陈旧声明），改一处须手工核对另一处；`next.config.js` 在 dev（`NODE_ENV !== 'production'`）时为 `script-src` 追加 `'unsafe-eval'` 以放行 webpack eval，生产构建与 `vercel.json` 均不含该指令（见 DEPLOYMENT「Next.js 配置」） |
+| Content-Security-Policy | default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; img-src 'self' data: https: blob: https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https:; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; worker-src 'self' blob:; upgrade-insecure-requests | 内容安全策略，防止 XSS 和数据注入。**【强制·单一来源】** `next.config.js` 是唯一安全头定义处（`vercel.json` 已删除，双源差异不复存在）；是否启用 `require-trusted-types-for 'script'` 列为安全增强评估项（T-SEC-01），当前生产 CSP **不含**该指令。`next.config.js` 头部注释中「改一处必须同步另一处 / CI 安全头一致性检查」为失效的历史表述。**【约定】** dev（`NODE_ENV !== 'production'`）为 `script-src` 追加 `'unsafe-eval'` 以放行 webpack eval，生产构建不含该指令。 |
 | Strict-Transport-Security | max-age=63072000; includeSubDomains; preload | HSTS，强制 HTTPS |
 | Cross-Origin-Opener-Policy | same-origin | 防止跨窗口攻击 |
 | Cross-Origin-Resource-Policy | same-origin | 限制跨域资源加载 |
@@ -528,6 +567,8 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 | Referrer-Policy | strict-origin-when-cross-origin | 控制 Referrer 信息泄露 |
 
 ### 12.2 Service Worker 安全
+
+> 以下为 `public/service-worker.js` **自身策略**；截至 v3.19.2 应用未调用 `navigator.serviceWorker.register`，这些策略尚未生效（见 §11）。
 
 - 仅缓存同源 GET 请求
 - 按文件扩展名白名单过滤（.js/.css/.png/.jpg/.svg/.woff2 等）
@@ -542,6 +583,8 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 - 文件名仅允许字母、数字、点、下划线、连字符
 
 ## 13. 版本历史
+
+> 下表仅列关键节点；逐版完整变更以 `CHANGELOG.md` 为准，本节不回填近期版本，避免两处维护同一事实。
 
 | 版本 | 日期 | 变更 |
 |------|------|------|

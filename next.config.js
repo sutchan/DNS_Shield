@@ -5,7 +5,9 @@
 // 且 frame-ancestors 为 *；现由本文件的 headers() 单点维护。
 // dev 差异：next dev 的 webpack 以 eval 执行模块，浏览器 / 内嵌 WebView 预览时
 // 会被 CSP 拦截（Refused to evaluate a string as JavaScript），故仅开发模式放行
-// 'unsafe-eval'；生产构建（next build / next start）保持严格。
+// 'unsafe-eval'；内嵌 WebView / 浏览器插件还会通过 <object data="data:image/svg+xml;base64,...">
+// 注入探测资源，被 object-src 'none' 拦截产生噪音（应用自身不使用 <object>/<embed>），
+// 故仅开发模式对 object-src 放行 data:。生产构建（next build / next start）保持严格。
 const isDev = process.env.NODE_ENV !== 'production';
 
 const securityHeaders = [
@@ -20,7 +22,7 @@ const securityHeaders = [
       "connect-src 'self' https:",
       "frame-src 'none'",
       "frame-ancestors 'none'",
-      "object-src 'none'",
+      `object-src 'none'${isDev ? " data:" : ''}`,
       "base-uri 'self'",
       "form-action 'self'",
       "worker-src 'self' blob:",
