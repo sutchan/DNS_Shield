@@ -74,6 +74,8 @@ export interface Translation {
   githubLinkAria: string;
   changelogLinkAria: string;
   changelogLabel?: string;
+  /** 页脚「关于与 FAQ」入口（指向 /about/ 独立事实页） */
+  aboutLink?: string;
   // 分享按钮与文案（对齐原型 shareBtn / shareTexts）
   shareBtn: string;
   shareTitle: string;

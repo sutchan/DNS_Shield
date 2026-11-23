@@ -223,5 +223,6 @@
   },
   "refreshPreview": "重新整理預覽",
   "urlImportToggle": "URL 匯入",
-  "themeToggleAria": "切換深淺主題"
+  "themeToggleAria": "切換深淺主題",
+  "aboutLink": "關於與 FAQ"
 }

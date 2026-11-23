@@ -1,13 +1,13 @@
-// src/app/(seo)/json-ld.ts v3.19.1
-// schema.org 结构化数据 @graph：Organization / WebSite / WebPage /
-// SoftwareApplication / FAQPage / HowTo。从 site-meta.ts 按职责拆出以守住 200 行上限。
-// 所有事实文本来自 config/seo-content.ts 与 meta-content.ts，与页面可见文本同源。
+// src/app/(seo)/json-ld.ts v3.20.0
+// 站点级 schema.org @graph：Organization / WebSite / WebPage / SoftwareApplication，
+// 由 layout.tsx 全局输出。v3.20.0 将 FAQPage / HowTo 迁到 about-json-ld.ts（/about/ 页专用），
+// 使结构化数据与可见正文同页同源；所有文案仍来自 seo-content.ts 单一来源。
 import { APP_VERSION } from '../../config/version';
 import {
   SITE_URL, GITHUB_URL, SITE_NAME, OG_IMAGE_PATH, ICON_512_PATH,
   SITE_LAST_MODIFIED, IN_LANGUAGE,
 } from '../../config/site';
-import { ABOUT_ZH, FORMAT_NAMES, FAQ_ITEMS, HOWTO_STEPS } from '../../config/seo-content';
+import { ABOUT_ZH, FORMAT_NAMES } from '../../config/seo-content';
 import { TITLE, DESCRIPTION } from './meta-content';
 
 /** @graph 中复用的 @id，保证实体之间引用正确 */
@@ -15,9 +15,6 @@ const ORG_ID = `${SITE_URL}/#organization`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
 const APP_ID = `${SITE_URL}/#software`;
 const WEBPAGE_ID = `${SITE_URL}/#webpage`;
-// 与页面可见锚点一一对应：#faq（SeoContent.tsx）、#howto（FlowViz.tsx 快速入门 h2）
-const FAQ_ID = `${SITE_URL}/#faq`;
-const HOWTO_ID = `${SITE_URL}/#howto`;
 
 export const jsonLd = {
   '@context': 'https://schema.org',
@@ -48,8 +45,6 @@ export const jsonLd = {
       isPartOf: { '@id': WEBSITE_ID },
       about: { '@id': APP_ID },
       primaryImageOfPage: { '@type': 'ImageObject', url: `${SITE_URL}${OG_IMAGE_PATH}` },
-      // FAQPage / HowTo 作为页面组成部分，与可见区块同源
-      hasPart: [{ '@id': FAQ_ID }, { '@id': HOWTO_ID }],
       inLanguage: ['zh-CN'],
     },
     {
@@ -78,35 +73,6 @@ export const jsonLd = {
         '一键复制 / 下载规则文件，并提供 16 种界面语言',
       ],
       inLanguage: [...IN_LANGUAGE],
-    },
-    {
-      '@type': 'FAQPage',
-      '@id': FAQ_ID,
-      inLanguage: 'zh-CN',
-      // 问题与答案必须与页面 #faq 区块的可见文本逐字一致，避免结构化数据与正文不符。
-      mainEntity: FAQ_ITEMS.map((item) => ({
-        '@type': 'Question',
-        name: item.q,
-        acceptedAnswer: { '@type': 'Answer', text: item.a },
-      })),
-    },
-    {
-      '@type': 'HowTo',
-      '@id': HOWTO_ID,
-      inLanguage: 'zh-CN',
-      name: '如何使用 DNS Shield 生成路由器广告过滤规则',
-      description: '从输入域名清单到导出部署的三步流程。',
-      totalTime: 'PT2M',
-      tool: [{ '@type': 'HowToTool', name: 'DNS Shield 在线工具（现代浏览器）' }],
-      supply: [{ '@type': 'HowToSupply', name: '需要过滤的广告 / 追踪域名清单' }],
-      step: HOWTO_STEPS.map((s, i) => ({
-        '@type': 'HowToStep',
-        position: i + 1,
-        name: s.name,
-        text: s.text,
-        // 指向页面可见的对应步骤区块，抓取器可将结构化数据与正文关联
-        url: `${SITE_URL}/#howto`,
-      })),
     },
   ],
 };

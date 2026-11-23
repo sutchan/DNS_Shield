@@ -223,5 +223,6 @@
   },
   "refreshPreview": "Önizlemeyi yenile",
   "urlImportToggle": "URL içe aktar",
-  "themeToggleAria": "Açık/koyu temayı değiştir"
+  "themeToggleAria": "Açık/koyu temayı değiştir",
+  "aboutLink": "Hakkında ve SSS"
 }

@@ -1,7 +1,8 @@
-// src/app/Home.tsx v3.19.1
+// src/app/Home.tsx v3.20.0
 // 首页编排：仅负责组合布局与渲染，所有状态逻辑已抽离至 useHomeController（保持主文件 ≤200 行）。
 // 全局样式统一由 app/layout.tsx 导入（含拆分后的 src/styles/*.css），此处不再重复导入。
 // v3.19.1：GuideModal 改 next/dynamic 懒加载，移出首屏 bundle（默认关闭、按需下载）。
+// v3.20.0：站点事实文本（关于 / FAQ 等）迁至 /about/ 独立页，首页只保留工具本体。
 'use client';
 import dynamic from 'next/dynamic';
 import Header from '../components/Header';
@@ -9,7 +10,6 @@ import InputPanel from '../components/InputPanel';
 import OutputPanel from '../components/OutputPanel';
 import FlowViz from '../components/FlowViz';
 import Footer from '../components/Footer';
-import SeoContent from '../components/SeoContent';
 const GuideModal = dynamic(() => import('../components/GuideModal'), { ssr: false });
 import { ToastProvider } from '../components/ui/Toast';
 import { AppProvider } from '../context/AppContext';
@@ -89,9 +89,6 @@ export default function Home() {
             showToast={c.showToast}
           />
         </main>
-
-        {/* 站点事实内容：服务端预渲染即进入 HTML，供搜索引擎与生成式引擎引用 */}
-        <SeoContent />
 
         <Footer onOpenGuide={c.openGuide} />
 

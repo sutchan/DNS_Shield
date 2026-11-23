@@ -1,8 +1,9 @@
 {
-  "generatedAt": "2026-11-13T12:26:27.271Z",
+  "generatedAt": "2026-11-23T02:02:35.447Z",
   "source": "src/locales/zh-cn.json",
-  "keyCount": 212,
+  "keyCount": 213,
   "keys": [
+    "aboutLink",
     "addUrl",
     "adguard",
     "adguardFormat",

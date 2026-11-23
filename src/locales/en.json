@@ -223,5 +223,6 @@
   },
   "refreshPreview": "Refresh preview",
   "urlImportToggle": "URL import",
-  "themeToggleAria": "Toggle color theme"
+  "themeToggleAria": "Toggle color theme",
+  "aboutLink": "About & FAQ"
 }

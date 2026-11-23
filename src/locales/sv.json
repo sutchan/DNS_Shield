@@ -223,5 +223,6 @@
   },
   "refreshPreview": "Uppdatera förhandsvisning",
   "urlImportToggle": "URL-import",
-  "themeToggleAria": "Växla ljust/mörkt tema"
+  "themeToggleAria": "Växla ljust/mörkt tema",
+  "aboutLink": "Om och FAQ"
 }

@@ -1,6 +1,7 @@
-// src/config/seo.test.ts v3.18.0
+// src/config/seo.test.ts v3.20.0
 // SEO/GEO 输出回归测试：此前 metadata / JSON-LD / robots / sitemap 零测试覆盖，
 // 占位验证值、错误 OG 尺寸、虚假 sitemap 锚点等问题长期未被发现。
+// v3.20.0：FAQPage / HowTo 迁至 /about/ 页面级 graph，断言随之拆分。
 import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -8,6 +9,7 @@ import { APP_VERSION } from './version';
 import { metadata, jsonLd } from '../app/(seo)/site-meta';
 import robots from '../app/robots';
 import sitemap from '../app/sitemap';
+import { aboutJsonLd } from '../app/(seo)/about-json-ld';
 import { GET as llmsGet, dynamic as llmsDynamic } from '../app/llms.txt/route';
 import {
   SITE_URL, AI_CRAWLERS, IN_LANGUAGE, OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT,
@@ -49,45 +51,48 @@ describe('metadata', () => {
 describe('JSON-LD @graph', () => {
   const graph = (jsonLd as { '@graph': Array<Record<string, unknown>> })['@graph'];
   const byType = (type: string) => graph.find((node) => node['@type'] === type);
+  const aboutGraph = (aboutJsonLd as { '@graph': Array<Record<string, unknown>> })['@graph'];
+  const aboutByType = (type: string) => aboutGraph.find((node) => node['@type'] === type);
 
-  it('包含 6 类实体且 @id 引用闭环', () => {
+  it('站点级含 4 类实体且 @id 引用闭环，FAQ/HowTo 已迁出首页', () => {
     expect(graph.map((n) => n['@type'])).toEqual([
-      'Organization', 'WebSite', 'WebPage', 'SoftwareApplication', 'FAQPage', 'HowTo',
+      'Organization', 'WebSite', 'WebPage', 'SoftwareApplication',
     ]);
     expect(byType('WebSite')?.publisher).toEqual({ '@id': `${SITE_URL}/#organization` });
     expect(byType('SoftwareApplication')?.publisher).toEqual({ '@id': `${SITE_URL}/#organization` });
-    // v3.19.1：WebPage 串联 WebSite / SoftwareApplication / FAQPage / HowTo
     const webpage = byType('WebPage') as Record<string, unknown>;
     expect(webpage.isPartOf).toEqual({ '@id': `${SITE_URL}/#website` });
     expect(webpage.about).toEqual({ '@id': `${SITE_URL}/#software` });
-    expect(webpage.hasPart).toEqual([
-      { '@id': `${SITE_URL}/#faq` }, { '@id': `${SITE_URL}/#howto` },
-    ]);
+    expect(webpage.hasPart).toBeUndefined();
+    // /about/ 页级 graph 独立持有 FAQPage / HowTo / WebPage
+    expect(aboutGraph.map((n) => n['@type'])).toEqual(['WebPage', 'FAQPage', 'HowTo']);
   });
 
   it('inLanguage 覆盖全部 16 种界面语言', () => {
     expect(byType('SoftwareApplication')?.inLanguage).toEqual([...IN_LANGUAGE]);
     expect(byType('WebSite')?.inLanguage).toEqual([...IN_LANGUAGE]);
-    expect(byType('FAQPage')?.inLanguage).toBe('zh-CN');
-    expect(byType('HowTo')?.inLanguage).toBe('zh-CN');
+    expect(aboutByType('FAQPage')?.inLanguage).toBe('zh-CN');
+    expect(aboutByType('HowTo')?.inLanguage).toBe('zh-CN');
   });
 
-  it('FAQPage 与页面可见 FAQ 逐字一致（防止结构化数据与正文不符）', () => {
-    const mainEntity = byType('FAQPage')?.mainEntity as Array<{ name: string; acceptedAnswer: { text: string } }>;
+  it('FAQPage 与 /about/ 页可见 FAQ 逐字一致（防止结构化数据与正文不符）', () => {
+    const mainEntity = aboutByType('FAQPage')?.mainEntity as Array<{ name: string; acceptedAnswer: { text: string } }>;
     expect(mainEntity).toHaveLength(FAQ_ITEMS.length);
     mainEntity.forEach((entry, i) => {
       expect(entry.name).toBe(FAQ_ITEMS[i].q);
       expect(entry.acceptedAnswer.text).toBe(FAQ_ITEMS[i].a);
     });
+    expect(aboutByType('FAQPage')?.url).toBe(`${SITE_URL}/about/#faq`);
   });
 
-  it('HowTo 步骤与快速入门三步一致，position 从 1 递增，且含 GEO 可引用字段', () => {
-    const howto = byType('HowTo') as Record<string, unknown>;
-    const steps = howto.step as Array<{ position: number; name: string }>;
+  it('HowTo 步骤与三步一致，position 从 1 递增，url 指向 /about/ 可见区块', () => {
+    const howto = aboutByType('HowTo') as Record<string, unknown>;
+    const steps = howto.step as Array<{ position: number; name: string; url: string }>;
     expect(steps).toHaveLength(HOWTO_STEPS.length);
     steps.forEach((step, i) => {
       expect(step.position).toBe(i + 1);
       expect(step.name).toBe(HOWTO_STEPS[i].name);
+      expect(step.url).toBe(`${SITE_URL}/about/#howto-static`);
     });
     expect(howto.totalTime).toBe('PT2M');
     expect(Array.isArray(howto.tool)).toBe(true);
@@ -110,14 +115,14 @@ describe('robots / sitemap', () => {
     for (const ua of AI_CRAWLERS) expect(text).toContain(ua);
   });
 
-  it('sitemap 只含唯一有效 URL，无 fragment 伪条目，lastModified 用稳定日期', () => {
+  it('sitemap 只含真实路由（首页 + /about/），无 fragment 伪条目，lastModified 用稳定日期', () => {
     const entries = sitemap();
-    expect(entries).toHaveLength(1);
-    // 与 canonical 一致（trailingSlash: true 的规范形式带尾斜杠）
-    expect(entries[0].url).toBe(`${SITE_URL}/`);
-    expect(entries[0].url).not.toContain('#');
-    // 不用每次构建都变的 new Date()，改用手工维护的稳定日期，利于抓取调度
-    expect(entries[0].lastModified).toBe(SITE_LAST_MODIFIED);
+    expect(entries.map((e) => e.url)).toEqual([`${SITE_URL}/`, `${SITE_URL}/about/`]);
+    for (const entry of entries) {
+      expect(entry.url).not.toContain('#');
+      // 不用每次构建都变的 new Date()，改用手工维护的稳定日期，利于抓取调度
+      expect(entry.lastModified).toBe(SITE_LAST_MODIFIED);
+    }
   });
 });
 
@@ -141,10 +146,11 @@ describe('llms.txt 与可见事实文本', () => {
     }
   });
 
-  it('声明隐私边界与机器可读元数据入口', () => {
+  it('声明隐私边界、机器可读元数据入口与 /about/ 事实页', () => {
     expect(txt).toContain('无需注册');
     expect(txt).toContain(`${SITE_URL}/robots.txt`);
     expect(txt).toContain(`${SITE_URL}/sitemap.xml`);
+    expect(txt).toContain(`${SITE_URL}/about/`);
   });
 
   it('路由以纯文本静态预渲染输出，且注入当前应用版本', async () => {

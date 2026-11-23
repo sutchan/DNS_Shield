@@ -1,6 +1,8 @@
-// src/components/Footer.tsx v3.19.0
+// src/components/Footer.tsx v3.20.0
+// v3.20.0：新增「关于与 FAQ」入口，指向 /about/ 独立事实页。
 'use client';
 import React from 'react';
+import Link from 'next/link';
 import { useT } from '../context/AppContext';
 import { APP_VERSION } from '../config/version';
 
@@ -22,6 +24,9 @@ const Footer = React.memo(function Footer({
     <footer className="app-footer" id="app-footer" role="contentinfo">
       <div className="footer-content" id="footer-content">
         <div className="footer-top" id="footer-top">
+          <Link href="/about/" className="footer-link" id="about-link">
+            {t.aboutLink ?? '关于与 FAQ'}
+          </Link>
           <a 
             href="https://github.com/sutchan/DNS_Shield" 
             target="_blank" 

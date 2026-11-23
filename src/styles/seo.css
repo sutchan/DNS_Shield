@@ -1,4 +1,35 @@
-/* src/styles/seo.css v3.19.1 — 站点事实内容（关于 / 使用步骤 / 部署要点 / 格式 / FAQ）与 noscript 兜底 */
+/* src/styles/seo.css v3.20.0 — 站点事实内容（关于 / 使用步骤 / 部署要点 / 格式 / FAQ）与 noscript 兜底 */
+
+/* v3.20.0：/about/ 独立页容器 —— 事实文本不再是首页附属区块 */
+.about-page {
+  @apply py-10;
+}
+
+.about-header {
+  @apply mb-8;
+}
+
+.about-header h1 {
+  @apply text-2xl font-bold tracking-tight text-foreground mt-3;
+}
+
+.about-lead {
+  @apply text-sm text-muted-foreground mt-2 max-w-3xl;
+}
+
+.about-back,
+.about-footer a {
+  @apply text-sm font-medium text-primary hover:underline;
+}
+
+.about-footer {
+  @apply mt-10 pt-5 border-t border-border/70;
+}
+
+/* 独立页无首页专属的上分隔线，内容从页头下方直接展开 */
+.seo-content.seo-standalone {
+  @apply mt-0 border-t-0 pt-0;
+}
 
 /* 视觉上刻意保持安静：位于工具区与页脚之间，不抢主操作区的注意力；
    排版密度靠字号与分栏控制，内容与 JSON-LD 同源而非为爬虫隐藏文本。

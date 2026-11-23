@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-22（与 package.json v3.19.3 对齐；规范总览见 §0，变更历史见 CHANGELOG.md）
+> 最后审查：2026-11-22（与 package.json v3.20.0 对齐；规范总览见 §0，变更历史见 CHANGELOG.md）
 > 冻结快照（`prototype/`、`public/brand-colors.md`、`docs/STRUCTURE-REVIEW.md`、`docs/tasks-done.md`）按各自声明保留，不作当前指标。
 
 ## 0. 规范总览与适用规则
@@ -44,7 +44,7 @@
 | 项目地址（主页/治理） | https://github.com/sutchan/DNS_Shield（以 `git remote -v` 为准；`ArcesTeam` 为历史维护团队名，非仓库地址） |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.19.3 |
+| 当前版本 | v3.20.0 |
 | 拦截域名 | **127188 条**（黑名单 127188 + 白名单 0；`public/domains.txt` 非空 127188 行，全部为纯域名行、无注释/白名单/改道行——2026-11-21 合并 `auto/aggregate-upstream` 上游聚合结果后形态变化，原 877 条口径已失效；以 `node scripts/count-domains.mjs` 实算为准） |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -101,18 +101,22 @@ dns-shield/
 ├── src/                            # Next.js 源代码
 │   ├── app/                        # App Router 目录
 │   │   ├── page.tsx                # 主页面入口
+│   │   ├── about/page.tsx          # 独立「关于 / FAQ」事实页（v3.20.0，Server Component 预渲染）
 │   │   ├── Home.tsx                # 主组件（组合各业务组件与 hook）
 │   │   ├── globals.css             # 全局样式入口（Tailwind 指令 + 基础层 design tokens）
 │   │   ├── layout.tsx              # 根布局（Metadata + SEO + 安全头部接入，按序导入 src/styles/*.css）
 │   │   ├── (seo)/                  # <head> 注入类关注点（元数据、GA 脚本）
-│   │   │   ├── site-meta.ts        # 站点元数据与 JSON-LD @graph（v3.18.0 五实体）
+│   │   │   ├── site-meta.ts        # 站点元数据（re-export JSON-LD）
+│   │   │   ├── json-ld.ts          # 站点级 @graph：Organization / WebSite / WebPage / SoftwareApplication
+│   │   │   ├── about-json-ld.ts    # /about/ 页级 @graph：WebPage / FAQPage / HowTo（v3.20.0）
+│   │   │   ├── meta-content.ts     # 标题与描述单一来源
 │   │   │   └── ga-scripts.tsx      # GA4 脚本注入（衡量 ID 取自环境变量，缺失/非法则不注入）
 │   │   ├── robots.ts               # 自动生成 robots.txt（含 sitemap 索引与 AI 爬虫白名单）
-│   │   ├── sitemap.ts              # 自动生成 sitemap.xml（单页唯一有效 URL）
+│   │   ├── sitemap.ts              # 自动生成 sitemap.xml（首页 + /about/ 两条真实路由）
 │   │   └── llms.txt/route.ts       # 生成式引擎站点简报 /llms.txt（force-static 预渲染）
 │   ├── components/                 # 业务组件
 │   │   ├── ui/                     # shadcn/ui 基础组件（8 个；v3.18.0 清理未引用的 Card / Loading / Switch / Tabs）
-│   │   ├── SeoContent.tsx          # 关于 / 12 格式清单 / FAQ（SSR 可见事实文本，v3.18.0）
+│   │   ├── SeoContent.tsx          # 关于 / 12 格式清单 / FAQ（Server Component，v3.20.0 起仅在 /about/ 渲染）
 │   │   ├── Header.tsx              # 页头（Shield 图标 + 语言/主题切换）
 │   │   ├── Footer.tsx              # 页脚（链接 + 使用说明）
 │   │   ├── InputEditor.tsx         # 域名编辑器子组件
@@ -321,7 +325,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.19.3 |
+| 版本号 | 3.20.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

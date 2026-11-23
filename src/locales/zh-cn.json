@@ -223,5 +223,6 @@
   },
   "refreshPreview": "刷新预览",
   "urlImportToggle": "URL 导入",
-  "themeToggleAria": "切换深浅主题"
+  "themeToggleAria": "切换深浅主题",
+  "aboutLink": "关于与 FAQ"
 }

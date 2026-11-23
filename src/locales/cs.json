@@ -223,5 +223,6 @@
   },
   "refreshPreview": "Obnovit náhled",
   "urlImportToggle": "Import URL",
-  "themeToggleAria": "Přepnout světlý/tmavý motiv"
+  "themeToggleAria": "Přepnout světlý/tmavý motiv",
+  "aboutLink": "O projektu a FAQ"
 }

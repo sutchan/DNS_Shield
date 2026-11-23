@@ -131,7 +131,8 @@ ${faqZh}
 ${faqEn}
 
 ## 关键链接
-- [首页 / Web App](${SITE_URL}): 唯一页面，含输入区、输出区、关于与常见问题
+- [首页 / Web App](${SITE_URL}): 规则生成工具（输入区 + 输出区）
+- [关于与常见问题](${SITE_URL}/about/): 项目定义、使用步骤、部署要点、12 种格式与 FAQ（服务端预渲染的独立事实页）
 - [域名数据源](${SITE_URL}/domains.txt): 黑名单 / 白名单 / 改道的单一数据源
 - [站点地图](${SITE_URL}/sitemap.xml)
 - [爬虫规则](${SITE_URL}/robots.txt): 明确允许主流 AI / 生成式引擎爬虫

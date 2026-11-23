@@ -223,5 +223,6 @@
   },
   "refreshPreview": "Обновить предпросмотр",
   "urlImportToggle": "Импорт URL",
-  "themeToggleAria": "Переключить светлую/тёмную тему"
+  "themeToggleAria": "Переключить светлую/тёмную тему",
+  "aboutLink": "О проекте и FAQ"
 }

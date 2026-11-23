@@ -223,5 +223,6 @@
   },
   "refreshPreview": "Actualizar vista previa",
   "urlImportToggle": "Importar URL",
-  "themeToggleAria": "Alternar tema claro/oscuro"
+  "themeToggleAria": "Alternar tema claro/oscuro",
+  "aboutLink": "Acerca de y FAQ"
 }

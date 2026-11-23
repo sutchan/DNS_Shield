@@ -5,7 +5,21 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-23（与 package.json v3.19.3 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
+> 最后审查：2026-11-23（与 package.json v3.20.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
+
+## [3.20.0] - 2026-11-23
+
+### Added（独立「关于 / FAQ」页面）
+- 新增 `/about/` 独立事实页（Server Component，静态预渲染）：把原先嵌在首页 `SeoContent` 中的「三步使用步骤 / 关于 DNS Shield / 12 种导出格式 / 常见部署方式 / 常见问题」整块迁至该页；首页只保留规则生成器本体（输入区 + 输出区），首屏 JS 随之卸下 `SeoContent`（`/about` First Load JS 96.7 kB，首页 174 kB）
+- 页脚新增「关于与 FAQ」入口指向 `/about/`；16 语各新增 `aboutLink` 文案键（基准 213 键，`check:locales` 通过）
+- `sitemap.xml` 增加真实路由 `/about/`（priority 0.6，无 fragment 伪条目）；`/llms.txt` 关键链接区分「首页 = 工具」与「/about/ = 事实页」
+
+### Changed（结构化数据按页归属）
+- `json-ld.ts` 收缩为站点级 4 类实体（Organization / WebSite / WebPage / SoftwareApplication）；FAQPage / HowTo 迁至新文件 `about-json-ld.ts`，仅在 `/about/` 页输出，`@id` / `url` 指向该页锚点，消除了首页「有 FAQPage schema 却无可见 FAQ 正文」的不一致
+- `SeoContent.tsx` 移除 `'use client'` 改为 Server Component，新增 `standalone` 模式（独立页去掉首页专属分隔线）；页内目录锚点 `#howto` 修正为真实存在的 `#howto-static`
+- `seo.test.ts` 断言随之拆分：站点级 graph 4 实体、页级 graph 3 实体，FAQ 逐字一致与 HowTo url 指向 `/about/`
+- 版本按 minor 规则升至 v3.20.0（新增路由页面）：`package.json` / `src/config/version.ts` / `next.config.js` env.version / `sync-facts.mjs` 文档展示位 / `public/` 11 个规则产物头部
+- 验证：`pnpm test` 51 套件 / 332 用例全通过、`tsc --noEmit` 无错误、`pnpm lint` 0 警告、`next build` 成功（8 个静态页，`/about` 已预渲染且 HTML 含 FAQ 正文与 FAQPage/HowTo schema）
 
 ## [3.19.3] - 2026-11-23
 
@@ -1794,7 +1808,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.19.1...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.20.0...HEAD
+[3.20.0]: https://github.com/sutchan/DNS_Shield/compare/v3.19.3...v3.20.0
 [3.19.1]: https://github.com/sutchan/DNS_Shield/compare/v3.19.0...v3.19.1
 [3.19.0]: https://github.com/sutchan/DNS_Shield/compare/v3.18.1...v3.19.0
 [3.18.1]: https://github.com/sutchan/DNS_Shield/compare/v3.18.0...v3.18.1

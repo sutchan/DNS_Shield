@@ -223,5 +223,6 @@
   },
   "refreshPreview": "Odśwież podgląd",
   "urlImportToggle": "Import URL",
-  "themeToggleAria": "Przełącz motyw jasny/ciemny"
+  "themeToggleAria": "Przełącz motyw jasny/ciemny",
+  "aboutLink": "O projekcie i FAQ"
 }

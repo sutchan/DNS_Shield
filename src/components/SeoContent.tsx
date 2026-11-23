@@ -1,21 +1,18 @@
-// src/components/SeoContent.tsx v3.19.1
+// src/components/SeoContent.tsx v3.20.0
 // 站点事实内容（关于 / 使用步骤 / 部署要点 / 12 种格式 / FAQ）：GEO 的核心是可抓取、可引用的可见文本。
-// 本项目是纯客户端单页应用，此前 HTML 中只有一句 Hero 描述与三步快速入门，
-// 搜索引擎与 LLM 几乎无从引用。此区块在服务端预渲染时即进入 HTML（不依赖 localStorage），
 // 内容与 JSON-LD 的 FAQPage / HowTo 以及 /llms.txt 全部由 seo-content.ts 单一来源派生。
-// v3.19.1：补页内目录 nav、HowTo 三步可见文本、DEPLOY_GUIDES 常驻正文；
-//   机器链接包进 nav；语义化 id 保持 kebab-case。
-'use client';
+// v3.20.0：事实文本从首页迁至 /about/ 独立页；组件改为 Server Component（无交互无需 'use client'）；
+//   standalone 模式去掉首页专属的分隔线，页内目录锚点 #howto-static 与真实 id 对齐。
 import {
   ABOUT_ZH, ABOUT_EN, OUTPUT_FORMATS, FAQ_ITEMS, HOWTO_STEPS, DEPLOY_GUIDES,
 } from '../config/seo-content';
 
-export default function SeoContent() {
+export default function SeoContent({ standalone = false }: { standalone?: boolean }) {
   return (
-    <div className="seo-content" id="site-info">
+    <div className={`seo-content${standalone ? ' seo-standalone' : ''}`} id="site-info">
       {/* 页内目录：提升内链深度与可抓取层级，锚点均指向本页真实存在的区块 */}
       <nav className="seo-toc" id="seo-toc" aria-label="页面目录">
-        <a href="#howto">使用步骤</a>
+        <a href="#howto-static">使用步骤</a>
         <span aria-hidden="true"> · </span>
         <a href="#about">关于</a>
         <span aria-hidden="true"> · </span>
