@@ -1,4 +1,4 @@
-// src/components/RuleTesterModal.tsx v3.15.0
+// src/components/RuleTesterModal.tsx v3.20.1
 // 域名拦截匹配独立测试弹窗：支持实时输入任意域名或 URL 进行规则匹配分析
 'use client';
 import * as React from 'react';
@@ -8,8 +8,7 @@ import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { ParsedData } from '../types';
 import { matchDomainRule, RuleMatchResult } from '../utils/ruleMatcher';
-import { lockScroll, unlockScroll } from '../utils/scrollLock';
-import { useModalEscape } from '../hooks/useModalEscape';
+import { useModalA11y } from '../hooks/useModalA11y';
 
 interface RuleTesterModalProps {
   open: boolean;
@@ -33,15 +32,8 @@ export const RuleTesterModal: React.FC<RuleTesterModalProps> = ({ open, onClose,
     return () => clearTimeout(timer);
   }, [open]);
 
-  // 滚动锁：引用计数实现，与其他弹窗叠放时互不破坏（T-P1-17）
-  React.useEffect(() => {
-    if (!open) return;
-    lockScroll();
-    return () => unlockScroll();
-  }, [open]);
-
-  // ESC 关闭：仅栈顶弹窗响应，避免叠放弹窗被一次按键全关（T-P1-16）
-  useModalEscape(open, onClose);
+  // v3.20.1：统一无障碍 hook —— 焦点陷阱 + 关闭后焦点恢复（诊断 P1-6）
+  const { dialogRef, closeBtnRef } = useModalA11y(open, onClose);
 
   const handleTest = (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -65,6 +57,7 @@ export const RuleTesterModal: React.FC<RuleTesterModalProps> = ({ open, onClose,
         className="guide-modal max-w-lg"
         id="rule-tester-card"
         role="document"
+        ref={dialogRef}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="guide-modal-header" id="rule-tester-header">
@@ -82,6 +75,7 @@ export const RuleTesterModal: React.FC<RuleTesterModalProps> = ({ open, onClose,
             className="guide-modal-close"
             id="rule-tester-close-btn"
             aria-label={t.close}
+            ref={closeBtnRef}
           >
             <X className="w-4 h-4" aria-hidden="true" />
           </Button>

@@ -1,12 +1,11 @@
-// src/components/GuideModal.tsx v3.15.0
+// src/components/GuideModal.tsx v3.20.1
 // 使用指南独立弹窗（对齐原型 #guide-modal52：页脚 linkGuide 触发）
 'use client';
 import * as React from 'react';
 import { X } from 'lucide-react';
 import { useT } from '../context/AppContext';
 import { Button } from './ui/Button';
-import { lockScroll, unlockScroll } from '../utils/scrollLock';
-import { useModalEscape } from '../hooks/useModalEscape';
+import { useModalA11y } from '../hooks/useModalA11y';
 
 interface GuideModalProps {
   open: boolean;
@@ -27,15 +26,8 @@ const GuideModal: React.FC<GuideModalProps> = ({ open, onClose }) => {
     return () => clearTimeout(timer);
   }, [open]);
 
-  // 滚动锁：引用计数实现，与其他弹窗叠放时互不破坏（T-P1-17）
-  React.useEffect(() => {
-    if (!open) return;
-    lockScroll();
-    return () => unlockScroll();
-  }, [open]);
-
-  // ESC 关闭：仅栈顶弹窗响应，避免叠放弹窗被一次按键全关（T-P1-16）
-  useModalEscape(open, onClose);
+  // v3.20.1：统一无障碍 hook —— 滚动锁 + Esc（栈顶）+ 焦点陷阱 + 关闭后焦点恢复（诊断 P1-6）
+  const { dialogRef, closeBtnRef } = useModalA11y(open, onClose);
 
   if (!mounted) return null;
 
@@ -54,7 +46,7 @@ const GuideModal: React.FC<GuideModalProps> = ({ open, onClose }) => {
       aria-labelledby="guide-modal-title"
       onClick={onClose}
     >
-      <div className="guide-modal" id="guide-modal-card" role="document" onClick={(e) => e.stopPropagation()}>
+      <div className="guide-modal" id="guide-modal-card" role="document" ref={dialogRef} onClick={(e) => e.stopPropagation()}>
         <div className="guide-modal-header" id="guide-modal-header">
           <h2 className="guide-modal-title" id="guide-modal-title">{t.guideTitle}</h2>
           <Button
@@ -64,6 +56,7 @@ const GuideModal: React.FC<GuideModalProps> = ({ open, onClose }) => {
             aria-label={t.close ?? '关闭'}
             title={t.close ?? '关闭'}
             id="guide-modal-close"
+            ref={closeBtnRef}
           >
             <X className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
           </Button>

@@ -1,4 +1,4 @@
-// src/app/layout.tsx v3.19.1
+// src/app/layout.tsx v3.20.1
 // 字体策略：不使用 next/font/google。构建期它会请求 fonts.googleapis.com，
 // EdgeOne / CI 等离线构建环境取不到 CSS 时，next/font loader 会抛 TypeError
 // 导致 next build 失败；字体统一由 globals.css 的系统字体栈提供。
@@ -42,7 +42,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:shadow">
+        {/* v3.20.1：skip link 聚焦背景由 bg-white 改 bg-background + text-foreground，
+            避免深色模式下白底白字不可见（诊断 P1-7） */}
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:text-foreground focus:shadow focus:ring-2 focus:ring-ring">
           跳到主要内容
         </a>
         <div id="app-shell" className="flex min-h-screen flex-col">
