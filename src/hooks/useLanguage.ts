@@ -1,6 +1,6 @@
-// src/hooks/useLanguage.ts v3.19.1
+// src/hooks/useLanguage.ts v3.20.1
 import { useState, useEffect, useRef } from 'react';
-import { supportedLanguages, getTranslation, loadTranslation } from '../utils/i18n';
+import { supportedLanguages, getTranslation, loadTranslation, isLanguageLoaded } from '../utils/i18n';
 import { Translation } from '../types';
 
 /** 同步 <html> 的 lang 与 dir：16 语言站必须让屏幕阅读器与 SEO 拿到真实语言，
@@ -21,25 +21,27 @@ export const useLanguage = () => {
   const [currentLang, setCurrentLang] = useState('zh-cn');
   // v3.19.1：译文改为 state 持有；异步加载完成后与 currentLang / <html lang|dir> 一起落地
   const [t, setT] = useState<Translation>(() => getTranslation('zh-cn') as Translation);
-  // 序号守卫：快速连续切换时只让最后一次请求落地，避免旧语言包后到覆盖新语言
+  // 序号守卫：初始化与切换共用，避免 init 后到覆盖用户已切换的语言（诊断 P1-4）
   const seqRef = useRef(0);
 
   // 初始化语言：加载完成后一次性更新 currentLang / t / 文档语言声明
   useEffect(() => {
-    let cancelled = false;
+    const seq = ++seqRef.current;
     const init = async () => {
       let savedLang = '';
       try { savedLang = localStorage.getItem('lang') ?? ''; } catch { /* 隐私模式不可用 */ }
-      const lang = normalizeLang(savedLang || 'zh-cn');
-      const loaded = await loadTranslation(lang);
-      if (cancelled) return;
-      setCurrentLang(lang);
+      const requested = normalizeLang(savedLang || 'zh-cn');
+      const loaded = await loadTranslation(requested);
+      // 过期请求丢弃：用户在 init 完成前已手动切换语言
+      if (seq !== seqRef.current) return;
+      // v3.20.1：语言包加载失败时保持文档语言为简中，避免中文正文 + RTL 错配
+      const landed = isLanguageLoaded(requested) ? requested : 'zh-cn';
+      setCurrentLang(landed);
       setT(loaded as Translation);
-      // 初始化时同步语言与方向：首屏内联脚本已先行设置，此处保持一致（T-UI-01）
-      applyDocumentLocale(lang);
+      applyDocumentLocale(landed);
     };
     void init();
-    return () => { cancelled = true; };
+    // 不设置 cancelled：卸载后的 setState 在 React 18 无警告，且 seqRef 已防止过期落地
   }, []);
 
   // 切换语言：先异步加载目标语言包，加载完成后三者同步落地
@@ -47,13 +49,14 @@ export const useLanguage = () => {
     const safeLang = normalizeLang(lang);
     const seq = ++seqRef.current;
     void loadTranslation(safeLang).then((loaded) => {
-      // 过期请求丢弃：只让最后一次切换生效
       if (seq !== seqRef.current) return;
-      setCurrentLang(safeLang);
+      // 分块加载失败：正文回退中文，文档语言也须回退简中，不得留下 dir=rtl 错配
+      const landed = isLanguageLoaded(safeLang) ? safeLang : 'zh-cn';
+      setCurrentLang(landed);
       setT(loaded as Translation);
       if (typeof window !== 'undefined') {
-        try { localStorage.setItem('lang', safeLang); } catch { /* 隐私模式不可用 */ }
-        applyDocumentLocale(safeLang);
+        try { localStorage.setItem('lang', landed); } catch { /* 隐私模式不可用 */ }
+        applyDocumentLocale(landed);
       }
     });
   };

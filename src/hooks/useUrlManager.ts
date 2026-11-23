@@ -1,4 +1,4 @@
-// src/hooks/useUrlManager.ts v3.15.0
+// src/hooks/useUrlManager.ts v3.20.1
 import { useState, useCallback } from 'react';
 import { fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
 import { fetchWithCache } from '../utils/cachedFetch';
@@ -35,8 +35,7 @@ export const useUrlManager = (
 
   // 加载预设（多镜像降级：主源失败时自动尝试后续镜像）
   const loadPreset = useCallback(async (preset: string) => {
-    setActivePreset(preset);
-
+    // v3.20.1：高亮仅在加载成功后落地，避免预设失败时界面状态与实际数据源不符
     await withLoading<string>({
       fetchFn: async () => {
         const mirrors = presetMirrors[preset as PresetName];
@@ -53,6 +52,7 @@ export const useUrlManager = (
         throw new Error('All preset mirrors failed');
       },
       onSuccess: (content: string) => {
+        setActivePreset(preset);
         setSourceInput(content);
         parseSourceData(content);
         generateLineNumbers(content, lineNumbersRef);

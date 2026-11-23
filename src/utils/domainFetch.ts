@@ -1,4 +1,4 @@
-// src/utils/domainFetch.ts v3.18.1
+// src/utils/domainFetch.ts v3.20.1
 // 从指定 URL 拉取域名文本，带 10s 超时（AbortController）与体积安全上限。
 // 流式读取并按累计字节数强制截断（不信任 content-length 头，防 DoS）。
 // 支持 ETag 条件请求（If-None-Match）：命中 304 时返回 notModified，由调用方复用缓存正文。
@@ -39,9 +39,13 @@ export const fetchDomainsText = async (
   url: string,
   options: FetchOptions = {}
 ): Promise<FetchResult> => {
+  // v3.20.1：同源内置清单 /domains.txt 为合法 fetch 目标（此前相对路径被
+  // isValidHttpUrl 拒绝，导致内置 2.4MB 清单的离线兜底成为死代码）。
+  // 仅放行以单个 '/' 开头的路径；'//host' 协议相对 URL 因可能指向外网被排除。
+  const isSameOriginPath = url.startsWith('/') && !url.startsWith('//');
   // config.domainsUrl 可由环境变量覆盖，必须与 fetchFromUrl 共用协议白名单，
   // 避免 file:// 等非 http(s) 协议绕过校验直接进入 fetch。
-  if (!isValidHttpUrl(url)) return { ok: false, error: 'network' };
+  if (!isSameOriginPath && !isValidHttpUrl(url)) return { ok: false, error: 'network' };
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);

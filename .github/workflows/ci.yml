@@ -66,6 +66,9 @@ jobs:
       - name: Verify no stray temp files at repo root
         run: node scripts/check-root-clean.mjs
 
+      - name: Verify security headers parity (Next.js / EdgeOne)
+        run: node scripts/check-security-headers.mjs
+
   # ---------------------------------------------------------------- lint
   lint:
     name: ESLint

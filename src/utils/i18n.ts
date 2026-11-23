@@ -1,4 +1,4 @@
-// src/utils/i18n.ts v3.19.1
+// src/utils/i18n.ts v3.20.1
 // 国际化翻译加载与语言清单。
 // v3.19.1：15 个非基准语言改为显式动态 import()，首屏包仅含 zh-cn（约 12KB，
 //   原全量静态 import 约 191KB）；getTranslation 保持同步签名（未加载回退基准），
@@ -105,3 +105,12 @@ export const loadTranslation = async (lang: string): Promise<Translation> => {
   }
   return getTranslation(lang);
 };
+
+/**
+ * v3.20.1：目标语言包是否真正加载成功。
+ * loadTranslation 在分块加载失败时回退中文正文但不改变 translations 缓存，
+ * 调用方须用本函数判定是否可以把 <html lang|dir> 切到目标语言——
+ * 否则会出现「中文正文 + dir=rtl + lang=ar」的错配（诊断 P1-5）。
+ */
+export const isLanguageLoaded = (lang: string): boolean =>
+  lang === 'zh-cn' || Boolean(translations[lang]);
