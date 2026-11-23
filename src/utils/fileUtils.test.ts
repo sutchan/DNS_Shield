@@ -1,4 +1,4 @@
-// src/utils/fileUtils.test.ts v3.9.0
+// src/utils/fileUtils.test.ts v3.19.3
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { isValidHttpUrl, fetchFromUrl, fetchFromUrls } from './fileUtils';
 
@@ -65,6 +65,22 @@ describe('fetchFromUrl 安全与健壮性', () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(makeStreamResponse(10, false)));
     await expect(fetchFromUrl('https://example.com/missing.txt')).rejects.toThrow(/HTTP/);
   });
+
+  // v3.20.0：超时必须覆盖响应体读取阶段，此前 headers 后立即 clearTimeout，
+  // 慢速/卡死的流会让 reader.read() 无限挂起、加载态永不结束
+  it('响应体卡住时按 timeout 中止并给出超时提示', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockImplementation((_url: string, init: RequestInit) => {
+      const stream = new ReadableStream<Uint8Array>({
+        start(controller) {
+          init.signal?.addEventListener('abort', () => {
+            controller.error(new DOMException('Aborted', 'AbortError'));
+          });
+        },
+      });
+      return Promise.resolve(new Response(stream, { status: 200 }));
+    }));
+    await expect(fetchFromUrl('https://example.com/slow.txt', 20)).rejects.toThrow(/请求超时/);
+  }, 2000);
 });
 
 describe('fetchFromUrls 并发与容错', () => {

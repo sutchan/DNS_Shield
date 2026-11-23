@@ -7,7 +7,8 @@
 // 会被 CSP 拦截（Refused to evaluate a string as JavaScript），故仅开发模式放行
 // 'unsafe-eval'；内嵌 WebView / 浏览器插件还会通过 <object data="data:image/svg+xml;base64,...">
 // 注入探测资源，被 object-src 'none' 拦截产生噪音（应用自身不使用 <object>/<embed>），
-// 故仅开发模式对 object-src 放行 data:。生产构建（next build / next start）保持严格。
+// 故仅开发模式改用 data:（CSP 规范不允许 'none' 与其他源并列，否则整条指令被忽略）。
+// 生产构建（next build / next start）仍为严格的 object-src 'none'。
 const isDev = process.env.NODE_ENV !== 'production';
 
 const securityHeaders = [
@@ -22,7 +23,7 @@ const securityHeaders = [
       "connect-src 'self' https:",
       "frame-src 'none'",
       "frame-ancestors 'none'",
-      `object-src 'none'${isDev ? " data:" : ''}`,
+      isDev ? "object-src data:" : "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
       "worker-src 'self' blob:",
@@ -76,7 +77,7 @@ const nextConfig = {
     unoptimized: true
   },
   env: {
-    version: '3.19.2',
+    version: '3.19.3',
     NEXT_PUBLIC_BUILD_ID: buildTimeId()
   },
   devIndicators: {

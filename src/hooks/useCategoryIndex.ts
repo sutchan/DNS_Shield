@@ -1,4 +1,4 @@
-// src/hooks/useCategoryIndex.ts v3.12.0
+// src/hooks/useCategoryIndex.ts v3.19.3
 // 分类索引加载：从 public/category-index.txt 拉取「<source> <domain>」索引并解析。
 // 该文件由 scripts/aggregate-upstream.mjs 依据真实上游命中关系产出。
 // 索引缺失（未运行聚合）时静默降级为空索引，分类控件自动隐藏，不影响主流程。
@@ -22,8 +22,11 @@ export const useCategoryIndex = (): UseCategoryIndexResult => {
     const load = async () => {
       try {
         const res = await fetch('/category-index.txt');
+        // 索引未生成（未跑聚合脚本）是预期状态：直接降级为空索引，
+        // 不再抛错——避免浏览器控制台的 404 资源噪音（功能不受影响）。
         if (!res.ok) {
-          throw new Error(`HTTP ${res.status}`);
+          if (!cancelled) setIndex(new Map());
+          return;
         }
         const text = await res.text();
         if (cancelled) return;

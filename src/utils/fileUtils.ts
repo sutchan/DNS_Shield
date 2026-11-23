@@ -1,4 +1,4 @@
-// src/utils/fileUtils.ts v3.18.1
+// src/utils/fileUtils.ts v3.19.3
 import { logger } from './logger';
 
 const MAX_URL_LENGTH = 2048;
@@ -118,15 +118,14 @@ export const fetchFromUrl = async (url: string, timeout = 10000): Promise<string
 
   try {
     const response = await fetch(url, { signal: controller.signal });
-    clearTimeout(timeoutId);
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}${response.statusText ? ' ' + response.statusText : ''}`);
     }
+    // 超时必须覆盖响应体读取全程：慢速/卡死的流式响应若只在 headers 阶段清 timer，
+    // 后续 reader.read() 可无限等待，调用方的加载态永不结束（阻塞性缺陷）
     return await readBodyWithSizeLimit(response, MAX_RESPONSE_SIZE);
   } catch (error) {
-    clearTimeout(timeoutId);
-
     if (error instanceof Error && error.name === 'AbortError') {
       throw new Error(`请求超时（>${Math.round(timeout / 1000)}s）`);
     }
@@ -135,6 +134,8 @@ export const fetchFromUrl = async (url: string, timeout = 10000): Promise<string
       throw new Error('网络请求失败：可能是网络不可用、目标站点未开启 CORS，或被内容安全策略(CSP)拦截');
     }
     throw error;
+  } finally {
+    clearTimeout(timeoutId);
   }
 };
 

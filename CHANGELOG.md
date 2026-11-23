@@ -5,7 +5,24 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-13（与 package.json v3.19.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
+> 最后审查：2026-11-23（与 package.json v3.19.3 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
+
+## [3.19.3] - 2026-11-23
+
+### Fixed（全面审查发现的阻塞性问题）
+- **Critical / CI 必失败：`pnpm-lock.yaml` 缺失**。`.github/actions/setup/action.yml:65-72` 对 install job 显式断言锁文件存在、`:74-82` 使用 `--frozen-lockfile`，lockfile 缺失会让 lint / typecheck / test / build / data 全部失败，CI Gate、Deploy、Release 链路整体阻断。已用本机 pnpm 11.24.0 生成 `pnpm-lock.yaml`（6091 行 / 600+ 条目），并用 `pnpm install --frozen-lockfile` 实测通过
+- **Critical / CI 必失败：11 个规则产物与数据源严重漂移**。自动聚合提交 `af976b8` 只更新了 `public/domains.txt`（126,543 行新增）却未同步派生文件，CI data job 的「生成文件漂移」硬门禁必然拦截。已执行 `node scripts/gen-format-files.mjs` 重新生成全部 11 个产物（约 139 万行），产物头部版本同步为 v3.19.3。`aggregate.yml` 本身已包含重新生成步骤，无需修改配置
+- **High / 核心流程可永久挂起：`fetchFromUrl` 超时只覆盖响应头**。`src/utils/fileUtils.ts` 原在 `await fetch()` 后立即 `clearTimeout`，随后才读取响应体；慢速或卡死的流式响应让 `reader.read()` 无限等待，URL 导入的加载态永不结束。现把 `clearTimeout` 移入 `finally`，超时覆盖 header + body 全程；新增回归用例「响应体卡住时按 timeout 中止并给出超时提示」（`fileUtils.test.ts`，10 例全绿）
+
+### Verified（审查与验证过程）
+- 基线门禁：tsc 0 错、eslint 0 warning 0 error、vitest **51 套件 / 331 用例**全绿、check-locales 16 语、`sync-facts --check` 13 处版本位一致、check-root-clean 通过、`src` 下无 >200 行源文件
+- 修复后门禁：新增超时回归用例后 **51 套件 / 332 用例**全绿；`pnpm install --frozen-lockfile` 模拟 CI 安装通过；重新生成规则产物后再跑漂移检测无差异
+- 运行时冒烟：启动 `next dev` 后请求首页返回 **200**，HTML 含站点标题、`app-container` 编辑器容器与 `app-footer`
+- 生产构建：编译、类型检查、静态页面生成（7/7）全部成功；最终 standalone 产物复制阶段在本机被 IDE safe-delete shim 与 Windows 文件锁（EPERM）阻断，属本机环境限制，非代码缺陷（CI 的 Ubuntu runner 不受影响）
+
+### Security（剩余风险，未在本版本修复）
+- `pnpm audit` 报告 87 项（4 low / 37 moderate / 41 high / 5 critical）：其中 3 个 critical 为 Next.js 14.2.35 的 RCE（Image Optimization API 的 AVIF/SVG、Windows 宿主），需升级至 **Next.js 15.5.24+（推荐 15.5.29）**；2 个 critical 为 `tinypool`（vitest 测试依赖，不进生产包）。本项目 `images.unoptimized: true`、无 rewrites / Server Actions、部署在 Linux，实际暴露面有限；但升级属于 major 版本变更（涉及 `next lint` 移除、配置兼容与部署回归），建议单独排期并走完整 CI/预发验证
+- 其余高危集中在 dev/test 依赖（esbuild、undici/jsdom、brace-expansion 等），不进入生产 bundle；CI 未配置 audit 门禁，因此不阻塞当前流水线
 
 ## [3.19.2] - 2026-11-21
 

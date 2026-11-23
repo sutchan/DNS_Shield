@@ -102,3 +102,7 @@ _*.mjs
 # 项目的 Node 版本约束以 package.json engines 与 CI setup 输入为准，此文件不入库。
 # check-root-clean.mjs 对 gitignored 条目直接放行，无需登记白名单。
 .nvmdrc
+
+# playwright-cli 等浏览器调试工具会在仓库根生成会话日志；属临时产物，
+# 不入库且不得触发 check-root-clean.mjs 的散落条目拦截（v3.19.3）
+.playwright-cli/
