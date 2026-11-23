@@ -1,6 +1,7 @@
-// src/components/UrlSection.tsx v3.13.6
+// src/components/UrlSection.tsx v3.20.1
 // URL 导入区域组件 —— 从 InputPanel 拆分
 // DOM id 统一为 kebab-case 语义命名（url-input / url-list）。
+// v3.20.1：折叠时给容器加 inert，阻止 Tab 进入不可见控件（诊断 P1-8 幽灵焦点）。
 'use client';
 import * as React from 'react';
 import { X, Link, ExternalLink } from 'lucide-react';
@@ -83,6 +84,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
       className={`url-section ${isCollapsed ? 'collapsed' : ''}`}
       id="url-section"
       aria-hidden={isCollapsed}
+      {...(isCollapsed ? { inert: '' } : {})}
     >
       <div
         className={`loading-bar ${isLoading ? 'active' : ''}`}
