@@ -1,4 +1,4 @@
-// src/utils/domainFetch.test.ts v3.9.0
+// src/utils/domainFetch.test.ts v3.20.1
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { fetchDomainsText } from './domainFetch';
 
@@ -51,5 +51,23 @@ describe('fetchDomainsText', () => {
     const res = await fetchDomainsText('https://example.com/fail.txt');
     expect(res.ok).toBe(false);
     expect(res.error).toBe('network');
+  });
+
+  // v3.20.1：同源内置清单兜底修复回归测试
+  it('同源相对路径 /domains.txt 被放行并成功获取', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response('example.com', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+    const res = await fetchDomainsText('/domains.txt');
+    expect(res.ok).toBe(true);
+    expect(res.text).toBe('example.com');
+    expect(fetchMock).toHaveBeenCalledWith('/domains.txt', expect.anything());
+  });
+
+  it('协议相对 URL //evil.com 仍被拒绝', async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    const res = await fetchDomainsText('//evil.com/list.txt');
+    expect(res.ok).toBe(false);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });

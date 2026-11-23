@@ -79,8 +79,8 @@ describe('useUrlManager · 预设多镜像降级', () => {
 
     expect(setSourceInput).not.toHaveBeenCalled();
     expect(showToast).toHaveBeenCalledWith('presetFailed', undefined);
-    // 即使失败也记录当前选中的预设，保证 UI 高亮与用户操作一致
-    expect(result.current.activePreset).toBe('adguard');
+    // v3.20.1：高亮仅在成功后落地，失败时保持原预设，避免界面状态与实际数据源不符
+    expect(result.current.activePreset).toBe('builtin');
     unmount();
   });
 

@@ -5,7 +5,20 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-23（与 package.json v3.20.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
+> 最后审查：2026-11-23（与 package.json v3.20.1 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
+
+## [3.20.1] - 2026-11-23
+
+### Fixed（应用系统诊断问题修复）
+- **P0 安全头**：新增 `edgeone.json`，为 EdgeOne Pages 静态托管路径补齐 8 项安全响应头（CSP / HSTS / X-Frame-Options / COOP / CORP 等）；新增 `scripts/check-security-headers.mjs` 校验 Next.js 与 EdgeOne 两处头一致，并接入 CI `rootclean` job
+- **P0 内置清单兜底**：`domainFetch.ts` 放行同源相对路径（`/domains.txt`），此前被 `isValidHttpUrl` 当作非法 URL 拒绝，导致 2.4MB 内置清单的离线兜底成为死代码；仅放行单个 `/` 开头路径，`//host` 协议相对 URL 仍被排除
+- **P1 并发正确性**：`useLoading.withLoading` 加请求序号守卫，避免多预设/远端加载并发时旧响应覆盖新输入、先完成者提前关闭 loading；`useUrlManager.loadPreset` 的预设高亮改为成功后落地
+- **P1 语言竞态与 RTL 错配**：`useLanguage` 的 init 与 switch 共用序号守卫，避免初始化后到覆盖用户切换；语言包加载失败时文档语言回退简中，杜绝「中文正文 + dir=rtl + lang=ar」错配；新增 `isLanguageLoaded` 判定；首屏内联脚本对 localStorage 的 lang 做 16 语枚举校验
+- **P1 错误边界**：新增 `src/app/{error,global-error,not-found,loading}.tsx` 四个 Next.js 约定文件，零依赖中英文错误页与返回入口
+- **P1 无障碍**：`GuideModal` / `RuleTesterModal` / `ScriptGeneratorModal` 统一接入 `useModalA11y`（Tab 焦点陷阱 + 关闭后焦点恢复），替换各自分散的滚动锁/Esc 实现；skip link 聚焦背景由 `bg-white` 改 `bg-background + text-foreground`，修复深色模式白底白字；URL 折叠区加 `inert` 阻止 Tab 进入不可见控件
+- **P2 性能与一致性**：`countLines` 加单槽记忆化（同一文本三轮调用降为一次 O(n) 扫描）；`fetchFromUrls` 改每批 5 个的分批并发并在批间检查 50MB 总量，降低峰值内存；`OutputPanel` 统计口径改用分类过滤后数据，与规则产物一致；`globals.css` 集中补 RTL 布局覆盖（行号/编辑区镜像）
+- **P3 清理**：删除 `types/formats.ts` 中无引用的 `MASKED_FORMATS` / `WHITELIST_FORMATS` 死代码；canonical 补尾斜杠与 sitemap / trailingSlash 一致；i18n 加载失败日志改用统一 `logger`
+- **部分项未实施（架构性限制，非遗漏）**：行号槽位完全虚拟化、规则生成 Worker 化（改动跨多 hook / Worker 协议，风险高，留待专项变更）；URL 校验内网阻断（纯客户端场景受 CORS 限制、风险低，且会破坏自建源）
 
 ## [3.20.0] - 2026-11-23
 
@@ -1808,7 +1821,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.20.0...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.20.1...HEAD
+[3.20.1]: https://github.com/sutchan/DNS_Shield/compare/v3.20.0...v3.20.1
 [3.20.0]: https://github.com/sutchan/DNS_Shield/compare/v3.19.3...v3.20.0
 [3.19.1]: https://github.com/sutchan/DNS_Shield/compare/v3.19.0...v3.19.1
 [3.19.0]: https://github.com/sutchan/DNS_Shield/compare/v3.18.1...v3.19.0

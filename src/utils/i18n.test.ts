@@ -1,6 +1,6 @@
 // src/utils/i18n.test.ts v3.19.1
 import { describe, it, expect } from 'vitest';
-import { getTranslation, loadTranslation, supportedLanguages } from './i18n';
+import { getTranslation, loadTranslation, isLanguageLoaded, supportedLanguages } from './i18n';
 
 describe('getTranslation', () => {
   it('zh-cn 返回基准翻译', () => {
@@ -38,6 +38,18 @@ describe('getTranslation', () => {
   it('未知码 loadTranslation 安全回退基准', async () => {
     const fallback = await loadTranslation('not-a-lang');
     expect(fallback.inputTitle).toBe(getTranslation('zh-cn').inputTitle);
+  });
+
+  // v3.20.1：加载失败时文档语言须回退简中，用 isLanguageLoaded 判定
+  it('isLanguageLoaded 区分已加载与加载失败的语言', async () => {
+    expect(isLanguageLoaded('zh-cn')).toBe(true);
+    // 未知码永不进入缓存
+    expect(isLanguageLoaded('not-a-lang')).toBe(false);
+    // 已加载语言（前面用例已加载 en）返回 true
+    expect(isLanguageLoaded('en')).toBe(true);
+    // 加载未知码后仍为 false（回退基准不写入缓存）
+    await loadTranslation('not-a-lang');
+    expect(isLanguageLoaded('not-a-lang')).toBe(false);
   });
 
   it('16 语全部可异步加载且 toast 嵌套键完整', async () => {

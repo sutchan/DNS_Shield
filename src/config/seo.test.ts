@@ -21,7 +21,8 @@ const root = resolve(import.meta.dirname, '..', '..');
 
 describe('metadata', () => {
   it('canonical 指向唯一站点 URL，且不输出指向不存在路由的 hreflang', () => {
-    expect(metadata.alternates?.canonical).toBe(SITE_URL);
+    // v3.20.1：与 sitemap `${SITE_URL}/` 及 trailingSlash:true 一致
+    expect(metadata.alternates?.canonical).toBe(`${SITE_URL}/`);
     expect(metadata.alternates?.languages).toBeUndefined();
   });
 
