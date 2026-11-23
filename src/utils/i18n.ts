@@ -5,6 +5,7 @@
 //   新增 loadTranslation(lang) 异步加载并写入缓存，由 useLanguage 在挂载/切换时调用。
 import zhCN from '../locales/zh-cn.json';
 import { Language, Translation } from '../types';
+import { logger } from './logger';
 
 /**
  * 非基准语言的显式动态 loader 映射（Next.js 14 webpack 不支持 Vite 的 import.meta.glob）。
@@ -98,9 +99,7 @@ export const loadTranslation = async (lang: string): Promise<Translation> => {
     translations[lang] = deepMerge(translations['zh-cn'], localeModule.default) as Translation;
   } catch (error) {
     // 语言包加载失败（网络 / 分块缺失）：回退基准，不阻断界面
-    if (typeof console !== 'undefined') {
-      console.warn(`[i18n] 语言包 ${lang} 加载失败，回退简体中文:`, error);
-    }
+    logger.warn(`[i18n] 语言包 ${lang} 加载失败，回退简体中文`, error);
     return getTranslation('zh-cn');
   }
   return getTranslation(lang);

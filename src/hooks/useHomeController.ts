@@ -153,6 +153,8 @@ export function useHomeController(): UseHomeControllerReturn {
     setSettings,
     currentOutput,
     currentFormat,
+    // v3.20.1：导出过滤后数据供 OutputPanel 统计口径与产物一致
+    filteredData,
     categoryIndex,
     categoryAvailable,
     selectedCategories,

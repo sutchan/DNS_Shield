@@ -1,4 +1,4 @@
-// src/utils/fileUtils.ts v3.19.3
+// src/utils/fileUtils.ts v3.20.1
 import { logger } from './logger';
 
 const MAX_URL_LENGTH = 2048;
@@ -149,32 +149,38 @@ export interface FetchUrlsResult {
 // 仍可能耗尽标签页内存（20 个 URL × 10MB = 200MB），需设置总量上限（T-P2-06）
 const MAX_TOTAL_SIZE = 50 * 1024 * 1024;
 
+// 每批并发数：v3.20.1 将全量 Promise.allSettled 改为分批，批间检查累计体积，
+// 避免 N×10MB 内容同时驻留内存（诊断 P2：20×10MB≈200MB 峰值 OOM 风险）。
+const URL_BATCH_SIZE = 5;
+
 export const fetchFromUrls = async (urls: string[], timeout = 10000): Promise<FetchUrlsResult> => {
-  const results = await Promise.allSettled(urls.map((url) => fetchFromUrl(url, timeout)));
   const failedUrls: { url: string; error: string }[] = [];
   let allContent = '';
   let totalSize = 0;
-  results.forEach((result, index) => {
-    if (result.status === 'fulfilled') {
-      // 按 UTF-8 实际字节数累计：字符数会低估中文等多字节文本，
-      // 使 50MB 总量护栏被绕过（T-P2-06）
-      const size = new TextEncoder().encode(result.value).length;
-      if (totalSize + size > MAX_TOTAL_SIZE) {
-        failedUrls.push({
-          url: urls[index],
-          error: `累计体积超过上限（${Math.round(MAX_TOTAL_SIZE / 1024 / 1024)}MB），已跳过`,
-        });
-        return;
+  // 每批独立并发，批间检查总量；超限后剩余 URL 直接记为失败，不再发起请求
+  for (let start = 0; start < urls.length; start += URL_BATCH_SIZE) {
+    const batch = urls.slice(start, start + URL_BATCH_SIZE);
+    const results = await Promise.allSettled(batch.map((url) => fetchFromUrl(url, timeout)));
+    for (let i = 0; i < batch.length; i++) {
+      const url = batch[i];
+      const result = results[i];
+      if (totalSize >= MAX_TOTAL_SIZE) {
+        failedUrls.push({ url, error: `累计体积超过上限（${Math.round(MAX_TOTAL_SIZE / 1024 / 1024)}MB），已跳过` });
+        continue;
       }
-      totalSize += size;
-      allContent += result.value + '\n';
-    } else {
-      failedUrls.push({
-        url: urls[index],
-        error: result.reason instanceof Error ? result.reason.message : 'Unknown error',
-      });
+      if (result.status === 'fulfilled') {
+        const size = new TextEncoder().encode(result.value).length;
+        if (totalSize + size > MAX_TOTAL_SIZE) {
+          failedUrls.push({ url, error: `累计体积超过上限（${Math.round(MAX_TOTAL_SIZE / 1024 / 1024)}MB），已跳过` });
+          continue;
+        }
+        totalSize += size;
+        allContent += result.value + '\n';
+      } else {
+        failedUrls.push({ url, error: result.reason instanceof Error ? result.reason.message : 'Unknown error' });
+      }
     }
-  });
+  }
   return { content: allContent, failedUrls };
 };
 

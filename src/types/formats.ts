@@ -34,24 +34,6 @@ export const ALL_FORMATS: FormatType[] = [
   'coredns',
 ];
 
-/** 带拦截语义（黑洞/拒绝）的格式，统计时计入黑名单计数 */
-export const MASKED_FORMATS: FormatType[] = [
-  'hosts',
-  'dnsmasq',
-  'adguard',
-  'unbound',
-  'pihole',
-  'domains',
-  'bind',
-  'smartdns',
-  'mosdns',
-  'clash',
-  'coredns',
-];
-
-/** 仅用于白名单呈现的格式 */
-export const WHITELIST_FORMATS: FormatType[] = ['whitelist'];
-
 /** 核心格式：当设置「仅显示核心格式」(showAllFormats=false) 时，
  *  「格式」下拉仅展示这 4 种最常用的黑名单/白名单格式，隐藏高级格式。
  *  顺序与 ALL_FORMATS 一致。 */

@@ -34,6 +34,8 @@ interface OutputPanelProps {
   onCloseSettings: () => void;
   settings: SettingsType;
   parsedData: ParsedData;
+  /** v3.20.1：分类过滤后的数据，用于统计口径与产物一致（诊断 P2 统计口径） */
+  effectiveData?: ParsedData;
   outputPreviewRef: React.RefObject<HTMLDivElement>;
   outputLineNumbersRef: React.RefObject<HTMLDivElement>;
   setFormat: (format: FormatType) => void;
@@ -54,6 +56,7 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   onCloseSettings,
   settings,
   parsedData,
+  effectiveData,
   outputPreviewRef,
   outputLineNumbersRef,
   setFormat,
@@ -89,7 +92,9 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
 
   // 行数统计使用非分配实现并 memo 化：避免每次渲染都对完整输出 split 整块字符串（T-P2-03）
 const ruleLines = React.useMemo(() => (currentOutput ? countLines(currentOutput) : 0), [currentOutput]);
-  const domainTotal = parsedData.domains.length + parsedData.whitelist.length + parsedData.customDns.length;
+  // v3.20.1：统计口径改用过滤后的数据，与当前生成的规则产物一致
+  const statData = effectiveData ?? parsedData;
+  const domainTotal = statData.domains.length + statData.whitelist.length + statData.customDns.length;
 
   return (
     <section className="panel" id="output-panel" aria-labelledby="output-title">

@@ -62,7 +62,8 @@ export const metadata: Metadata = {
   alternates: {
     // 语言为客户端切换（单页无 /en、/zh-TW 独立路由），不输出 hreflang，
     // 避免指向不存在路径被搜索引擎判 404（2026-11-07 线上分析修正）。
-    canonical: SITE_URL,
+    // v3.20.1：与 sitemap 的 `${SITE_URL}/` 及 next.config.js trailingSlash:true 保持一致
+    canonical: `${SITE_URL}/`,
   },
   ...(googleVerification ? { verification: { google: googleVerification } } : {}),
   // 仅声明国家/地区（CN）。geo.placename 语义上应为真实地名，本项目为在线服务无实体地点，

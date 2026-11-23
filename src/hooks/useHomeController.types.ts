@@ -50,6 +50,8 @@ export interface UseHomeControllerReturn {
   // 规则生成（useRules，输入为分类过滤后数据）
   currentOutput: RulesPart['currentOutput'];
   currentFormat: RulesPart['currentFormat'];
+  /** v3.20.1：分类过滤后的数据，供 OutputPanel 统计口径与产物一致 */
+  filteredData: ParsedData;
   categoryIndex: CategoryIndex;
   categoryAvailable: boolean;
   selectedCategories: ReadonlySet<CategoryKey>;

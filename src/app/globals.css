@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   DNS Shield — Global stylesheet entry (v3.19.0)
+   DNS Shield — Global stylesheet entry (v3.20.1)
    设计系统已按职责拆分到 src/styles/*.css（见 layout.tsx 的导入清单），
    本文件仅保留 Tailwind 指令与基础层（design tokens / 全局基础样式）。
    ============================================ */
@@ -160,4 +160,24 @@
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
   }
+}
+
+/* v3.20.1 RTL 适配：文档级 dir=rtl（阿语）时镜像行号槽位与编辑区内边距，
+   避免行号压在文字上（诊断 P2）。集中在此处避免散落多个样式文件。 */
+[dir='rtl'] .line-numbers {
+  left: auto;
+  right: 0;
+  border-right: 0;
+  border-left: 1px solid hsl(var(--border));
+  text-align: left;
+}
+[dir='rtl'] .editor-textarea {
+  padding-left: 0.5rem;
+  padding-right: 3rem;
+}
+[dir='rtl'] .output-line-numbers {
+  left: auto;
+  right: 0;
+  border-right: 0;
+  border-left: 1px solid hsl(var(--border));
 }

@@ -84,7 +84,7 @@ const UrlSection: React.FC<UrlSectionProps> = ({
       className={`url-section ${isCollapsed ? 'collapsed' : ''}`}
       id="url-section"
       aria-hidden={isCollapsed}
-      {...(isCollapsed ? { inert: '' } : {})}
+      inert={isCollapsed}
     >
       <div
         className={`loading-bar ${isLoading ? 'active' : ''}`}

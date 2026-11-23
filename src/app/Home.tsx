@@ -76,6 +76,7 @@ export default function Home() {
             onCloseSettings={c.closeSettings}
             settings={c.settings}
             parsedData={c.parsedData}
+            effectiveData={c.filteredData}
             outputPreviewRef={c.outputPreviewRef}
             outputLineNumbersRef={c.outputLineNumbersRef}
             setFormat={c.setFormat}

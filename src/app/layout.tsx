@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             避免 16 语言站刷新后的语言声明错误、RTL 布局跳动与深色模式闪白（T-UI-01/02）。
             script-src 已在 next.config.js 的 CSP 中允许 'unsafe-inline'。 */}
         <script
-          dangerouslySetInnerHTML={{ __html: "(function(){try{var d=document.documentElement,l=localStorage.getItem('lang')||'zh-cn';d.lang=l;d.setAttribute('dir',l==='ar'?'rtl':'ltr');var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)){d.classList.add('dark');}}catch(e){}})();" }}
+          dangerouslySetInnerHTML={{ __html: "(function(){try{var d=document.documentElement,l=localStorage.getItem('lang')||'zh-cn';if(!/^(zh-cn|zh-tw|en|ar|cs|es|hi|id|it|nl|pl|sv|th|tr|ru|vi)$/.test(l))l='zh-cn';d.lang=l;d.setAttribute('dir',l==='ar'?'rtl':'ltr');var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)){d.classList.add('dark');}}catch(e){}})();" }}
         />
         {/* JSON-LD 放在 body 而非显式 <head>：React 19 会 hoist head 内的内联 script，
             hydration 后注入两份重复的结构化数据（v3.18.0 线上实测发现）。 */}
