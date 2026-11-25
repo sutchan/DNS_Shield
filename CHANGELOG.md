@@ -9,6 +9,12 @@
 
 ## [Unreleased]
 
+### Fixed（2026-11-25 Vercel 构建失败修复）
+- **修复 Vercel 构建报 `ERR_PNPM_OUTDATED_LOCKFILE`**：仓库同时存在 `package-lock.json`（权威锁文件，CI 以 `npm ci` 安装）与历史遗留的 `pnpm-lock.yaml`，Vercel 依据后者推断包管理器为 pnpm 并启用 `--frozen-lockfile`，而该 pnpm 锁文件早已与 `package.json` 脱节，导致安装直接失败。删除 `pnpm-lock.yaml`（`.gitignore:52` 本就忽略该文件，属历史误提交），仓库只余唯一锁文件 `package-lock.json`，Vercel 与 CI 口径统一为 npm
+- 同步清理 pnpm 残留：`.gitattributes` 移除 `pnpm-lock.yaml text eol=lf` 规则；`scripts/check-root-clean.mjs` 根目录白名单移除 `pnpm-lock.yaml`
+- 移除误提交进仓库的临时探针文件 `.probe-hash.mjs` / `.verify-docs.mjs` / `console.log('FAIL'`（根目录清洁度门禁 `check:root-clean` 此前因此失败）
+- 说明：Vercel 日志中的 `Node.js Version defined in your Project Settings ("26.x") will not apply` 属提示性警告——`package.json` 的 `engines.node: ">=24.11.0 <25"` 会让 Vercel 改用 Node 24，与 CI 的 `node-version: '24'` 一致，无需处理
+
 ### Security（2026-11-25 审计闭环）
 - `workflow_run` 投毒防护：deploy / release job 限定 `event == 'push'` 且 `head_repository.full_name == github.repository`；release 挂入受保护 `environment: production`（T-AUD-H02）
 - 部署令牌改步骤级 `env` 传递（Vercel / EdgeOne CLI 的 `--token`/`-t` 不再插值进 argv），`vars`/`inputs` 直插 shell 统一改 env 变量（T-AUD-M05 / T-AUD-L01）
