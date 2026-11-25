@@ -240,7 +240,7 @@ dns-shield/
 ├── tailwind.config.js              # Tailwind CSS 配置
 ├── tsconfig.json                   # TypeScript 配置
 ├── vitest.config.ts                # Vitest 单元测试配置
-└── package-lock.json                  # pnpm 锁定文件（当前缺失＝BLOCKER，见 §11 与审计报告 B-01；必须恢复入库）
+└── package-lock.json                  # npm 锁定文件（必须入库，CI 以 npm ci 安装；v3.22.0 起取代 pnpm-lock.yaml）
 ```
 
 ### 2.1 目录职责与硬约束（2026-11-22 起）

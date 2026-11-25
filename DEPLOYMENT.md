@@ -11,7 +11,7 @@
 
 - **操作系统**：Linux、macOS 或 Windows
 - **Node.js**：24.11.0 ~ 24.x（`package.json` 的 `engines.node` 为 `>=24.11.0 <25`，`engine-strict` 后版本不满足会直接安装失败；Vercel 因上界约束沿用 Project Settings 的 24.x，CI 使用 Node 24）
-- **pnpm**：11.24.0（由 `package.json` 的 `packageManager` 字段锁定，CI 走 `pnpm/action-setup` 自动安装，勿手动指定版本）
+- **npm**：≥ 11（由 `package.json` 的 `engines.npm` 约束，Node 24 自带；CI 走 `actions/setup-node@v6` 内置 `cache: 'npm'` 恢复依赖缓存，勿手动指定版本）
 - **Git**：用于版本控制
 
 > 依赖安装一律基于入库的 `package-lock.json`（`npm ci`）。修改依赖后请先本地 `npm install` 并提交锁文件，否则 CI 会直接失败。
@@ -46,7 +46,7 @@ cd DNS_Shield
 #### 1.2 安装依赖
 
 ```bash
-# 安装依赖（使用 pnpm，与 package-lock.json 一致）
+# 安装依赖（使用 npm，与 package-lock.json 一致）
 npm install
 ```
 
@@ -86,7 +86,7 @@ npm run dev
 #### 2.1 准备服务器
 
 - 选择云服务器或物理服务器
-- 安装 Node.js（建议启用 corepack 以使用 pnpm）
+- 安装 Node.js（npm 需 ≥ 11，Node 24 自带）
 - 配置防火墙，开放必要的端口
 
 #### 2.2 克隆仓库
@@ -184,7 +184,7 @@ certbot renew --dry-run
 CI 采用「并行 job + 聚合门禁」结构：`rootclean`、`lint`、`typecheck`、`test`、`build`、`data` 并行执行，最后由 `ci` 汇总（`needs` 含 `rootclean`）。`rootclean` 执行 `node scripts/check-root-clean.mjs`，拦截散落在根目录或 `scripts/` 下的 `_*.mjs` 临时脚本（唯一合法临时位置为根 `.tmp/`）。
 配置分支保护时**只需把 `CI Gate` 勾选为必需检查**，后续增删 job 无需再改保护规则。
 
-CI / Deploy / Release / Aggregate 四个工作流的运行时准备统一收敛到复合动作 `.github/actions/setup`（安装 pnpm + Node 24 + 显式 `actions/cache` 恢复 pnpm store），避免每处重复。当前官方 action 版本：`actions/checkout@v5`、`actions/setup-node@v6`、`actions/setup-node@v6`、`actions/cache@v5`、`actions/upload-artifact@v5`（2026-11-12 实况；升级记录见 CHANGELOG `[Unreleased]`）。
+CI / Deploy / Release / Aggregate 四个工作流的运行时准备统一收敛到复合动作 `.github/actions/setup`（安装 Node 24 + npm，依赖缓存用 setup-node 内置 `cache: 'npm'`），避免每处重复。当前官方 action 版本：`actions/checkout@v5`、`actions/setup-node@v6`、`actions/setup-node@v6`、`actions/cache@v5`、`actions/upload-artifact@v5`（2026-11-12 实况；升级记录见 CHANGELOG `[Unreleased]`）。
 
 `aggregate.yml` 不参与发布链路，仅做上游数据源聚合：每周一定时拉取各上游列表，合并去重后更新 `public/domains.txt` 并自动发起 Pull Request，需人工 review 后合并，从而保证过滤数据持续更新。
 
@@ -349,7 +349,7 @@ curl -sI https://dns.ewuse.com/og-image.png
 
 - 检查端口是否被占用：`lsof -i :3000`
 - 检查日志：`pm2 logs dns-shield`
-- 检查依赖是否正确安装（确认使用 pnpm 而非 npm，避免与 `package-lock.json` 冲突）
+- 检查依赖是否正确安装（确认使用 npm，避免与其他包管理器的锁文件冲突）
 
 ### 2. 页面加载失败
 

@@ -63,7 +63,7 @@
 | 🟡 P2 | T-A11Y-01 | 无障碍自动化回归（axe / Playwright，O-09） | QA | 2026-12-16 | 历史遗留 + 本轮 |
 | 🟡 P2 | T-PERF-01 | 大输入分片与全量 split 内存优化（O-01） | Dev Team | 2026-12-23 | 历史遗留 + 本轮 |
 | 🟡 P2 | T-PERF-02 | 行号重复生成收敛到单一派生（O-02） | Dev Team | 2026-12-16 | 本轮新增 |
-| 🟡 P2 | T-COMPAT-01 | Node 24 / pnpm 11 强约束兼容验证 | CI Owner | 2026-12-16 | 历史遗留 |
+| 🟡 P2 | T-COMPAT-01 | Node 24 / npm 11 强约束兼容验证 | CI Owner | 2026-12-16 | 历史遗留 |
 | 🟡 P2 | T-PWA-01 | 评估并启用 Service Worker 注册（O-06） | Dev Team | 2026-12-23 | 本轮文档核查 |
 | 🟡 P2 | T-REL-01 | category-index.txt 纳入发布路径（O-07） | Release Owner | 2026-12-23 | 本轮文档核查 |
 | 🟡 P2 | T-AUD-M02 | 限制出站 host 与 connect-src，防客户端请求伪造 | Dev Team | 2026-12-23 | 审计 M-02 |
@@ -114,24 +114,24 @@
   - 验收标准：新增用例落入 hooks 套件并全绿。
 - **T-CI-01 · 验证 CI→Deploy→Release 全绿与自动发版**（责任人：CI Owner；计划：2026-12-02）
   - 目标：确认最新版本已在 GitHub 产生 Release / tag，发布链路真实跑通。
-  - 验收标准：Actions 全绿、存在对应 tag 与 Release；若红则定位（重点：setup 缓存 / pnpm 11 frozen-lockfile）。
+  - 验收标准：Actions 全绿、存在对应 tag 与 Release；若红则定位（重点：setup 缓存 / npm ci 锁文件安装）。
 - **T-SEC-02 · 修复根目录清洁脚本 shell 注入**（责任人：Dev Team；计划：2026-12-02）— ✅ **已完成（2026-11-25）**
   - 目标：`scripts/check-root-clean.mjs` 的 `cp.execSync(\`git check-ignore ...\`)` 改为 `spawnSync` 参数数组；排查其他 `execSync` 拼接。
   - 验收标准：含 shell 元字符的文件名 fixture 不再执行命令；审计 H-01 闭环。
   - 完成记录：已改用 `cp.spawnSync('git', ['check-ignore', '-q', rel], …)` 不经 shell；其余 `execFileSync` 调用为固定脚本路径、无外部输入拼接；随临时文件规范（[TEMP-FILES.md](./TEMP-FILES.md)）一并落地。`docs/07-improvements.md` O-04 已标记修复。
 - **T-BUILD-01 · 恢复 `.npmrc`**（责任人：CI Owner；计划：2026-12-02）
-  - 目标：恢复 `engine-strict=true` / `package-manager-strict=true`，使 `engines.node >=24.11.0 <25` 与 `pnpm@11.24.0` 真正生效。
-  - 验收标准：Node 24 / pnpm 11 下 `npm ci` 通过；不满足约束时安装期失败；DEPLOYMENT 与 SPEC 描述同步。
+  - 目标：恢复 `engine-strict=true` / `package-manager-strict=true`，使 `engines.node >=24.11.0 <25` 与 `engines.npm >=11` 真正生效。
+  - 验收标准：Node 24 / npm 11 下 `npm ci` 通过；不满足约束时安装期失败；DEPLOYMENT 与 SPEC 描述同步。
 
 ### 🟡 P2 - 代码质量 · 文档 · 性能 · 兼容性增强
 
-- **T-VER-01 · 消除 next.config.js 硬编码版本**（责任人：Dev Team；计划：2026-12-16）：改为构建期读取 `package.json` 或纳入 `sync-facts --check`；`pnpm version` 后门禁可检出漂移。
+- **T-VER-01 · 消除 next.config.js 硬编码版本**（责任人：Dev Team；计划：2026-12-16）：改为构建期读取 `package.json` 或纳入 `sync-facts --check`；`npm version` 后门禁可检出漂移。
 - **T-VERIFY-01 · OpenAPI 3.1 定义规范校验**（责任人：Docs Team；计划：2026-12-16）：本轮新增 `docs/openapi.yaml` 尚未跑规范校验器；用 `@redocly/cli lint` 或等价工具校验并修复告警，把校验加入 CI。验收：lint 0 error，CI 增对应 job。
 - **T-SEC-01 · 评估 Trusted Types（O-08）**（责任人：Dev Team；计划：2026-12-16）：把首屏内联脚本改 nonce / hash，评估 `require-trusted-types-for 'script'` 对 3 处 `dangerouslySetInnerHTML` 的影响；先灰度再合入。验收：产出评估结论，灰度无违规。
 - **T-A11Y-01 · 无障碍自动化回归（O-09）**（责任人：QA；计划：2026-12-16）：引入 `axe-core` + Playwright，对 `/`、`/about/` 与弹窗扫描，CI 阻断 critical 违规。验收：基线修复后 critical = 0。
 - **T-PERF-01 · 大输入内存优化（O-01）**（责任人：Dev Team；计划：2026-12-23）：`parser.ts` / `sortDedupe.ts` 全量 `split` 改 `iterateLines`；`parseAggregate.ts` 分片改偏移记录、`push(...arr)` 改循环；增加 50MB 基准。验收：主线程峰值约 3× → 1×，无栈溢出。
 - **T-PERF-02 · 行号重复生成（O-02）**（责任人：Dev Team；计划：2026-12-16）：收敛 `useRules.ts:34,59` 到 `useLineNumbers` 单一派生。验收：同输入行号函数仅调用一次。
-- **T-COMPAT-01 · Node 24 / pnpm 11 兼容验证**（责任人：CI Owner；计划：2026-12-16）：在 Node 24 下验证 `frozen-lockfile`；与 T-BUILD-01 联动。
+- **T-COMPAT-01 · Node 24 / npm 11 兼容验证**（责任人：CI Owner；计划：2026-12-16）：在 Node 24 下验证 `npm ci`；与 T-BUILD-01 联动。
 - **T-PWA-01 · 评估并启用 Service Worker（O-06）**（责任人：Dev Team；计划：2026-12-23）：客户端注册 `/service-worker.js`，明确缓存白名单；验收：生产离线可打开工具外壳。
 - **T-REL-01 · category-index.txt 纳入发布路径（O-07）**（责任人：Release Owner；计划：2026-12-23）：更新聚合 / 发布工作流路径清单，增加 `GET /category-index.txt` 200 断言。
 

@@ -122,7 +122,7 @@
 
 ## 开发
 
-环境要求：Node.js ≥ 24.11.0 且 < 25（锁定 Node 24 主版本，避免 Vercel 自动升级到 26.x）、pnpm 11.24.0（见 `package.json` 的 `engines` / `packageManager`）。
+环境要求：Node.js ≥ 24.11.0 且 < 25（锁定 Node 24 主版本，避免 Vercel 自动升级到 26.x）、npm ≥ 11（见 `package.json` 的 `engines`）。
 
 ```bash
 npm install          # 安装依赖

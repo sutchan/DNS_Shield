@@ -73,16 +73,16 @@
 
 ---
 
-### O-05 恢复 `.npmrc` 使 Node/pnpm 强约束生效
+### O-05 恢复 `.npmrc` 使 Node/npm 强约束生效
 
-**问题背景**：`package.json` 声明 `engines.node >=24.11.0 <25` 与 `packageManager: pnpm@11.24.0`，但当前工作树**不存在 `.npmrc`**，因此 `engine-strict=true` / `package-manager-strict=true` 并未生效；`DEPLOYMENT.md` 与 SPEC 的描述偏向「已生效」。历史提交 `e102610` 删除了该文件，`a9eceb1` 只恢复了锁文件。
+**问题背景**：`package.json` 声明 `engines.node >=24.11.0 <25` 与 `engines.npm >=11`（v3.22.0 起移除 `packageManager` 的 pnpm 锁定），但当前工作树**不存在 `.npmrc`**，因此 `engine-strict=true` / `package-manager-strict=true` 并未生效；`DEPLOYMENT.md` 与 SPEC 的描述偏向「已生效」。历史提交 `e102610` 删除了该文件，`a9eceb1` 只恢复了锁文件。
 
 **实施方案**：
-1. 新增 `.npmrc`，内容为 `engine-strict=true` 与 `package-manager-strict=true`。
-2. 在 Node 24 / pnpm 11 下分别验证 `npm ci`、Node 26 下应失败。
+1. 新增 `.npmrc`，内容为 `engine-strict=true`（`package-manager-strict` 是 pnpm 专属选项，npm 不适用，移除 pnpm 后无需该项）。
+2. 在 Node 24 / npm 11 下分别验证 `npm ci`、Node 26 下应失败。
 3. 同步修正 `DEPLOYMENT.md` 与 SPEC 的描述为「恢复后生效」。
 
-**预期效果**：不满足 Node/pnpm 约束的安装 100% 在安装期失败；避免「本地能跑、CI 红」的环境漂移。
+**预期效果**：不满足 Node/npm 约束的安装 100% 在安装期失败；避免「本地能跑、CI 红」的环境漂移。
 
 **优先级**：P1 — 可复现构建与协作门槛。
 
