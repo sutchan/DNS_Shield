@@ -1,4 +1,4 @@
-// src/hooks/useVirtualList.ts v3.11.0
+// src/hooks/useVirtualList.ts v3.22.0
 // 轻量虚拟列表：仅渲染可视区域 + overscan 的行，配合固定行高使用。
 // 面向「等宽等高」文本场景（行号列、规则预览），显著降低超长文本的
 // DOM 节点数与首次布局/绘制成本。低于阈值的小文本直接全量渲染。
@@ -31,7 +31,20 @@ export const useVirtualList = ({
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const handleScroll = () => setScrollTop(el.scrollTop);
+    // L-12：滚动事件每帧可能触发数十次，用 rAF 合并为每帧最多一次 setState，
+    // 避免大列表滚动时 React 重渲染跟不上输入事件造成掉帧。
+    let frame = 0;
+    const handleScroll = () => {
+      if (typeof requestAnimationFrame !== 'function') {
+        setScrollTop(el.scrollTop);
+        return;
+      }
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        setScrollTop(el.scrollTop);
+      });
+    };
     const measure = () => setViewportHeight(el.clientHeight);
     measure();
     el.addEventListener('scroll', handleScroll, { passive: true });
@@ -41,10 +54,14 @@ export const useVirtualList = ({
       observer.observe(el);
       return () => {
         el.removeEventListener('scroll', handleScroll);
+        if (frame && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(frame);
         observer.disconnect();
       };
     }
-    return () => el.removeEventListener('scroll', handleScroll);
+    return () => {
+      el.removeEventListener('scroll', handleScroll);
+      if (frame && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(frame);
+    };
   }, [containerRef]);
 
   // 视口高度未测量前（首帧）不启用虚拟化，避免内容闪烁

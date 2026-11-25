@@ -120,6 +120,10 @@ describe('robots / sitemap', () => {
     const entries = sitemap();
     expect(entries.map((e) => e.url)).toEqual([`${SITE_URL}/`, `${SITE_URL}/about/`]);
     for (const entry of entries) {
+      // T-SEO-01：每条真实路由均声明 16 语 hreflang + x-default，且指向自身
+      expect(Object.keys(entry.alternates?.languages ?? {})).toHaveLength(IN_LANGUAGE.length + 1);
+      expect(entry.alternates?.languages?.['x-default']).toBe(entry.url);
+      expect(entry.alternates?.languages?.['zh-CN']).toBe(entry.url);
       expect(entry.url).not.toContain('#');
       // 不用每次构建都变的 new Date()，改用手工维护的稳定日期，利于抓取调度
       expect(entry.lastModified).toBe(SITE_LAST_MODIFIED);

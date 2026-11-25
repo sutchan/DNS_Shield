@@ -1,6 +1,15 @@
-// scripts/lib/formatRules.mjs v3.10.1
+// scripts/lib/formatRules.mjs v3.22.0
 // 各输出格式的规则行生成逻辑，与 src/utils/formatGenerators.ts 1:1 对齐。
 // 纯函数：接收统一中间结构与设置，返回规则行数组（不含头部）。
+import { readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// L-07：构建产物注释与运行时 i18n 共用 zh-cn 文案，杜绝两处措辞长期漂移。
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
+const ZH_CN = JSON.parse(readFileSync(resolve(ROOT, 'src/locales/zh-cn.json'), 'utf8'));
+const WHITELIST_TITLE = ZH_CN.whitelist.title;
+const HOSTS_NOTE = ZH_CN.whitelist.hostsNote;
 
 /** 黑名单拦截规则 */
 function blockedRules(format, domains, settings) {
@@ -82,7 +91,7 @@ function customDnsRules(format, items) {
 function whitelistSection(format, domains, settings) {
   if (domains.length === 0) return [];
   const out = [];
-  const title = '白名单 (允许这些域名)';
+  const title = WHITELIST_TITLE;
 
   switch (format) {
     case 'dnsmasq':
@@ -91,8 +100,8 @@ function whitelistSection(format, domains, settings) {
       break;
     case 'hosts':
       out.push(`\n# ${title}`);
-      out.push('# hosts 原生不支持白名单语法，仅作参考标注');
-      domains.forEach((d) => out.push(`# 白名单 ${d}`));
+      out.push(`# ${HOSTS_NOTE}`);
+      domains.forEach((d) => out.push(`# ${title} ${d}`));
       break;
     case 'adguard':
       if (settings.adguardIncludeWhitelist) {

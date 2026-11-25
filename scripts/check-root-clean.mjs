@@ -20,6 +20,8 @@ const ALLOWED = new Set([
   '.env.example', '.eslintrc.json', '.gitattributes', '.gitignore', '.npmrc',
   'CHANGELOG.md', 'DEPLOYMENT.md', 'DNS_Shield.code-workspace', 'edgeone.json',
   'LICENSE', 'next-env.d.ts', 'next.config.js', 'package.json',
+  // 包管理器锁文件属于工程配置，不是临时产物；CI 以 package-lock.json 做 npm ci
+  'package-lock.json', 'pnpm-lock.yaml',
   'postcss.config.js', 'README.en.md', 'README.md',
   'tailwind.config.js', 'tsconfig.json', 'vercel.json', 'vitest.config.ts',
   // 目录

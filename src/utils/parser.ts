@@ -1,4 +1,4 @@
-// src/utils/parser.ts v3.16.0
+// src/utils/parser.ts v3.22.0
 import { parseDomainLine, ParseStats } from './domainValidator';
 import { CustomDnsEntry, ParsedData, RegexRule } from '../types';
 
@@ -30,7 +30,8 @@ export const collectLines = (
   text: string,
   onProgress?: (processed: number, total: number) => void
 ): { raw: RawCollected; counters: RawCounters } => {
-  const lines = text.split('\n');
+  // L-06：空输入没有「一行」，totalLines 应为 0；split('') 会得到 [''] 而虚报 1 行
+  const lines = text === '' ? [] : text.split('\n');
   const total = lines.length;
 
   const domains: string[] = [];

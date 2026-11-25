@@ -1,4 +1,4 @@
-// vitest.config.ts v3.15.0
+// vitest.config.ts v3.22.0
 // 单元测试配置：覆盖纯逻辑层（src/utils）与编排层（src/hooks）。
 // Since Vitest 3.2.7 the v8 provider no longer double-counts sources on Windows
 // (the old drive-letter casing bug `e:\...` vs `E:\...` is fixed), so the reported
@@ -37,6 +37,10 @@ export default defineConfig({
         branches: 75,
         functions: 85,
         lines: 80,
+        // T-AUD-M13：按 glob 分设门禁，避免整体均值掩盖某一层退化（保留 all:false）。
+        // 2026-11-25 实跑：hooks 86.15/81.19/83.63/86.15，utils 89.23/91.63/92.15/89.23。
+        'src/hooks/**': { statements: 80, branches: 75, functions: 80, lines: 80 },
+        'src/utils/**': { statements: 85, branches: 85, functions: 85, lines: 85 },
       },
     },
   },

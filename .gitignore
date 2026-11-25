@@ -39,18 +39,12 @@ test-output/
 build
 
 # Misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 .cache
 # 临时文件统一存放于根目录 .tmp/ 子目录（一次性脚本、探针、运行日志、中间产物、
 # 缓存、下载文件、测试输出）。唯一合法位置，由 scripts/manage-tmp.mjs 自动创建，
 # CI 门禁 scripts/check-root-clean.mjs 拦截根目录散落。详见 docs/TEMP-FILES.md。
 # 注意：被忽略 ≠ 被允许——门禁对根目录临时产物即使已 ignore 仍判违规。
 .tmp/
-.tmp/**
 
 # Package manager
 # 注意：package-lock.json 必须入库（CI 用 npm ci），此处只忽略其他包管理器的锁文件
@@ -58,12 +52,9 @@ yarn.lock
 pnpm-lock.yaml
 
 # Next.js
-.next/cache/
 dist/
 dist-ssr/
 *.local
-.next/trace
-/.next
 .next/
 *.tsbuildinfo
 
@@ -86,7 +77,6 @@ __pycache__/
 # 审查/提交消息等派生文档不入库；长期证据应写入 docs/，临时稿放 .tmp/。
 review_*.md
 CODE_REVIEW_*.md
-.gitmsg.txt
 # 注意：临时产物（_*.mjs / _*.txt / *.err / *.log / *.tsbuildinfo / preview.* 等）
 # 的忽略规则已收敛至上方 .tmp/ 目录级规则。根目录散落由 check-root-clean.mjs 拦截，
 # 「被忽略」不代表「被允许」，请勿在此重新添加散落文件的兜底忽略。

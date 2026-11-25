@@ -9,6 +9,28 @@
 
 ## [Unreleased]
 
+### Security（2026-11-25 审计闭环）
+- `workflow_run` 投毒防护：deploy / release job 限定 `event == 'push'` 且 `head_repository.full_name == github.repository`；release 挂入受保护 `environment: production`（T-AUD-H02）
+- 部署令牌改步骤级 `env` 传递（Vercel / EdgeOne CLI 的 `--token`/`-t` 不再插值进 argv），`vars`/`inputs` 直插 shell 统一改 env 变量（T-AUD-M05 / T-AUD-L01）
+- 路由器同步脚本去掉 `curl -k` / `--no-check-certificate` / `uclient-fetch --no-check-certificate`，以 root 覆盖 dnsmasq 配置前强制校验服务端证书（T-AUD-H03）
+- 自动保存双通道失败显式返回并弹 `toast.autosaveFailed`（16 语齐备），不再把 >5MB 静默丢弃误报为「已保存」（T-AUD-H04）；首屏内联脚本语言白名单改由 `src/config/languages.ts` 单一来源派生（T-AUD-L03）；JSON-LD 序列化转义 `<` 防止 `</script>` 提前闭合（T-AUD-L04）
+
+### Fixed（2026-11-25）
+- `public/domains.txt` 从 `af976b8` 恢复至 127188 条（04bdd65 误回退至 644），重建 11 个派生产物；`category-index.txt` 从真实聚合分支恢复并纳入 aggregate / release / CI 清单（T-DATA-01 / T-REL-01）
+- Worker 聚合进度分母改为派发前固定的全局行数（`totalLines`），`push(...arr)` 改逐项 push 消除 126000 元素 RangeError；并行分支进入即置 `isProcessing`；单飞作废分片按 `taskId` 分代记账（T-AUD-M09 / M10 / M07 / M11）
+- IPv6 校验改按 `::` 拆组并支持内嵌 IPv4，修复 `2001:db8::8a2e:370:7334` 等合法地址误判（T-AUD-M06）；IDB 缓存读取加类型守卫 / ETag 正则 / 7 天 TTL 并在打开失败时重置连接单例（T-AUD-M03 / M08）
+- 空输入 `totalLines` 返回 0（T-AUD-L06）；AppContext value 用 `useMemo` 稳定，输出行号只派生一次；虚拟列表滚动用 rAF 合并（T-AUD-M12 / T-PERF-02 / T-AUD-L12）
+- 恢复 `.npmrc` 的 `engine-strict=true` 并生成可入库的 `package-lock.json`，移除 3 个零引用 Radix 依赖；CI 测试摘要读取路径修正为 `.tmp/logs/test.log`（T-BUILD-01 / T-AUD-M17 / T-CI-01）
+- 生产环境注册 `/service-worker.js`（dev 跳过避免 HMR 旧缓存），PWA 离线能力实际启用（T-PWA-01）
+
+### Changed（2026-11-25）
+- 产物白名单注释文案改从 `zh-cn.json` 读取，与运行时 i18n 同源（T-AUD-L07）；`.gitignore` 重复条目去重，root-clean 白名单补入锁文件；`next.config.js` 版本改构建期读取 `package.json`（T-VER-01 / T-AUD-L11）
+- `openapi.yaml` 版本同步至 3.22.0，新增离线 OpenAPI 3.1 结构校验脚本并加入 CI data job（T-VERIFY-01）；sitemap 为两条真实路由补 16 语 hreflang 与 x-default（T-SEO-01）
+- 修正 `layout.tsx` 中「React 19」的陈旧版本断言（T-VER-02）；CHANGELOG 补记 5GB 内存根因与三笔修复提交的对应关系（T-DOC-02）；SPEC 锁文件 / CSP / SW / 分类索引的状态改为当前事实（T-DOC-01）
+
+### Tests（2026-11-25）
+- 新增 3 套回归测试：写入失败提示、loadDomainData 单飞、OpenAPI / 版本 / 语言白名单 / JSON-LD 转义 / IPv6 / 130000 元素聚合 / 缓存守卫；实测 **54 套件 / 349 用例全绿**，覆盖率 87.72 / 87.15 / 89.17 / 87.72（hooks 86.01/80.37/83.63/86.01，utils 89.23/91.57/92.15/89.23），并按 glob 分设门禁
+
 ## [3.22.0] - 2026-11-25
 
 ### Changed（工具链迁移：pnpm → npm）

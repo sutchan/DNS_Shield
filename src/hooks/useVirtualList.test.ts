@@ -1,4 +1,4 @@
-// src/hooks/useVirtualList.test.ts v3.12.0
+// src/hooks/useVirtualList.test.ts v3.22.0
 // @vitest-environment jsdom
 // 虚拟列表的切片数学：阈值以下全量返回；阈值以上按行高换算可视区间并叠加 overscan。
 import { describe, it, expect, afterEach } from 'vitest';
@@ -50,7 +50,7 @@ describe('useVirtualList', () => {
     unmount();
   });
 
-  it('滚动后切片起点随 scrollTop 前移', () => {
+  it('滚动后切片起点随 scrollTop 前移（rAF 合并后一帧生效）', async () => {
     const items = Array.from({ length: 1000 }, (_, i) => 'line-' + i);
     const containerRef = makeContainer(240);
     const { result, unmount } = renderHook(() =>
@@ -59,6 +59,10 @@ describe('useVirtualList', () => {
     act(() => {
       containerRef.current.scrollTop = LINE_HEIGHT_PX * 10; // 第 10 行（行高 24px）
       containerRef.current.dispatchEvent(new Event('scroll'));
+    });
+    // L-12：滚动处理改由 rAF 合并，等待下一帧落地后再断言
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 30));
     });
     expect(result.current.startIndex).toBe(10);
     expect(result.current.slice(items)[0]).toBe('line-10');

@@ -1,8 +1,14 @@
-// src/utils/parser.test.ts v3.9.0
+// src/utils/parser.test.ts v3.22.0
 import { describe, it, expect } from 'vitest';
 import { parseSource, sortDomains, dedupeDomains } from './parser';
 
 describe('parseSource', () => {
+  // L-06：空输入不能被计为 1 行
+  it('空输入 totalLines 为 0', () => {
+    expect(parseSource('').stats.totalLines).toBe(0);
+    expect(parseSource('\n').stats.totalLines).toBe(2);
+  });
+
   it('统计黑名单/白名单/注释并去重', () => {
     const input = [
       '# header',

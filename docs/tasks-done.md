@@ -332,3 +332,52 @@
 - **目标**：具名 `@layer` / 预览样式归位 `output.css`。
 - **验收标准**：样式导入集中管理，预览样式归位。
 - **完成实证**：2026-11-25 实读 `src/app/layout.tsx:8-16`，CSS 导入统一收敛于根布局单一入口（`globals.css` + `layout/stats/input/output/footer/feedback/hero/seo.css` 共 8 个模块），`src/styles/` 实存 8 个模块化文件，预览样式已归入 `output.css`，不存在报告所述的散落与错位。本项闭环。
+---
+
+## 九、2026-11-25 批量闭环项归档（自 tasks.md §二 迁移）
+
+> 本轮按「实证优先」逐项复核代码、配置、测试与工作流，以下 33 项已闭环，自活跃清单迁出。原目标与验收标准保留于审计报告冻结快照、`docs/07-improvements.md` 与本文件上方各章；此处列出完整任务元信息与闭环证据。
+
+| 编号 | 任务 | 责任人 | 计划完成 | 来源 | 完成时间 |
+|---|---|---|---|---|---|
+| T-DOC-01 | 修正 SPEC 锁文件 / CSP 过时描述 | Docs Team | 2026-12-02 | 审计 O-03 | 2026-11-25 |
+| T-DOC-02 | CHANGELOG 补记内存 5GB 根因修复 | Docs Team | 2026-12-02 | 历史遗留 | 2026-11-25 |
+| T-TEST-01 | 内存根因端到端回归（loadDomainData 单飞） | QA / Dev Team | 2026-12-02 | 历史遗留 | 2026-11-25 |
+| T-BUILD-01 | 恢复 .npmrc 使 engine-strict 生效（O-05） | CI Owner | 2026-12-02 | 本轮文档核查 | 2026-11-25 |
+| T-DATA-01 | 核实域名数据源 127188 → 644 回退并决定是否合并聚合分支 | Sut / CI Owner | 2026-11-26 | 本轮数据核对 | 2026-11-25 |
+| T-AUD-H02 | 修复 workflow_run 投毒：限定同仓库 push 触发、密钥入受保护 environment | CI Owner | 2026-12-09 | 审计 H-02 | 2026-11-25 |
+| T-AUD-H03 | 移除路由器同步脚本的 TLS 校验降级（curl -k 等） | Dev Team | 2026-12-09 | 审计 H-03 | 2026-11-25 |
+| T-AUD-H04 | 自动保存失败显式返回与告警，消除 >5MB 静默丢数据 | Dev Team | 2026-12-09 | 审计 H-04 | 2026-11-25 |
+| T-VER-01 | 消除 next.config.js 硬编码版本 | Dev Team | 2026-12-16 | 历史遗留 | 2026-11-25 |
+| T-VERIFY-01 | OpenAPI 3.1 定义规范校验（待验证技术细节） | Docs Team | 2026-12-16 | 本轮新增 | 2026-11-25 |
+| T-PERF-02 | 行号重复生成收敛到单一派生（O-02） | Dev Team | 2026-12-16 | 本轮新增 | 2026-11-25 |
+| T-PWA-01 | 评估并启用 Service Worker 注册（O-06） | Dev Team | 2026-12-23 | 本轮文档核查 | 2026-11-25 |
+| T-REL-01 | category-index.txt 纳入发布路径（O-07） | Release Owner | 2026-12-23 | 本轮文档核查 | 2026-11-25 |
+| T-AUD-M03 | IndexedDB 缓存读取加类型守卫 / etag 正则 / TTL | Dev Team | 2026-12-23 | 审计 M-03 | 2026-11-25 |
+| T-AUD-M05 | 部署令牌改步骤级 env 传值，避免进入 argv | CI Owner | 2026-12-23 | 审计 M-05 | 2026-11-25 |
+| T-AUD-M06 | 修复 IPv6 正则拒绝大量合法地址（压缩形式 / 内嵌 IPv4） | Dev Team | 2026-12-23 | 审计 M-06 | 2026-11-25 |
+| T-AUD-M07 | 并行 Worker 入口设置 isProcessing，完成 / 失败统一复位 | Dev Team | 2026-12-23 | 审计 M-07 | 2026-11-25 |
+| T-AUD-M08 | IDB 连接失败重置 dbPromise，区分 onerror / onblocked | Dev Team | 2026-12-23 | 审计 M-08 | 2026-11-25 |
+| T-AUD-M09 | Worker 聚合进度改用固定全局 total，避免倒退 | Dev Team | 2026-12-23 | 审计 M-09 | 2026-11-25 |
+| T-AUD-M10 | push(...arr) 改循环 / concat，避免大数组静默降级 | Dev Team | 2026-12-23 | 审计 M-10 | 2026-11-25 |
+| T-AUD-M12 | AppContext value 用 useMemo 稳定，避免 13 消费者全量重渲染 | Dev Team | 2026-12-23 | 审计 M-12 | 2026-11-25 |
+| T-AUD-M13 | 补缓存层测试，按 glob 分设覆盖率 thresholds | QA | 2026-12-23 | 审计 M-13 | 2026-11-25 |
+| T-AUD-M17 | 移除 3 个零引用依赖并重生锁文件 | Dev Team | 2026-12-23 | 审计 M-17 | 2026-11-25 |
+| T-VER-02 | 修正 layout.tsx「React 19」注释漂移 | Dev Team | 2027-01-13 | 本轮代码评估 | 2026-11-25 |
+| T-SEO-01 | sitemap / robots 多语言 hreflang | SEO Owner | 2027-02-10 | 历史遗留 | 2026-11-25 |
+| T-AUD-L01 | vars/inputs 直插 shell 改走 env: | CI Owner | 2027-01-13 | 审计 L-01 | 2026-11-25 |
+| T-AUD-L03 | 首屏内联脚本 lang 共用语言白名单 | Dev Team | 2027-01-13 | 审计 L-03 | 2026-11-25 |
+| T-AUD-L04 | JSON-LD stringify 转义 `<` | Dev Team | 2027-01-13 | 审计 L-04 | 2026-11-25 |
+| T-AUD-L06 | 空输入 totalLines 返回 0 而非 1 | Dev Team | 2027-01-13 | 审计 L-06 | 2026-11-25 |
+| T-AUD-L07 | 产物白名单注释与运行时 i18n 对齐 | Docs Team | 2027-01-13 | 审计 L-07 | 2026-11-25 |
+| T-AUD-L08 | APP_VERSION 一致性纳入自动断言 | CI Owner | 2027-01-13 | 审计 L-08 | 2026-11-25 |
+| T-AUD-L11 | .gitignore 重复条目去重 | Dev Team | 2027-01-13 | 审计 L-11 | 2026-11-25 |
+| T-AUD-L12 | useVirtualList 滚动改 rAF 节流 | Dev Team | 2027-01-13 | 审计 L-12 | 2026-11-25 |
+
+### 闭环证据摘要
+
+- **构建 / CI / 数据**：`T-BUILD-01` `.npmrc` 恢复 `engine-strict=true` 并生成可入库 `package-lock.json`；`T-DOC-01` SPEC §7/§11 与工作树一致；`T-DOC-02` CHANGELOG 补记 a57f1f3 / da0f2af / dc0f4b4；`T-TEST-01` 新增 loadDomainData 单飞用例；`T-DATA-01` 从 af976b8 恢复 127188 条并重建 11 产物。
+- **安全**：`T-AUD-H02` workflow_run 同仓库 push + 受保护 environment 双门槛；`T-AUD-H03` 移除三处 TLS 降级并加回归断言；`T-AUD-H04` 写入结果显式返回 + 16 语 `autosaveFailed`；`T-AUD-L01/L03/L04` env 注入、语言白名单单一来源、JSON-LD 转义。
+- **Worker / 缓存 / 校验**：`T-AUD-M03/M06/M07/M08/M09/M10/M12/M13` 与 `T-PERF-02` 均有源码改动与新增用例；`T-AUD-M05/M17`、`T-REL-01`、`T-PWA-01` 为工作流与依赖治理。
+- **文档 / SEO / 门禁**：`T-VER-01` 配置读取 package.json；`T-VERIFY-01` 离线 OpenAPI 校验入 CI；`T-VER-02` 修正 React 版本断言；`T-SEO-01` sitemap hreflang；`T-AUD-L06/L07/L08/L11/L12` 边界、文案同源、版本断言、gitignore 去重、rAF 节流。
+- **验证**：tsc 0 错、next lint 0 告警、54 套件 / 349 用例全绿、覆盖率 87.72/87.15/89.17/87.72（按 glob 门禁 hooks 80/75/80/80、utils 85/85/85/85）、`next build` 成功、`sync-facts --check` / `check-locales` / `check-openapi` / `check-root-clean` 全通过。
