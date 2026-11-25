@@ -74,7 +74,8 @@
     "invalidUrlsFiltered": "Filtrati {count} URL non validi",
     "cleared": "Svuotato",
     "done": "Fatto",
-    "domainsLoadFailed": "Impossibile caricare l'origine dei domini, controlla la connessione"
+    "domainsLoadFailed": "Impossibile caricare l'origine dei domini, controlla la connessione",
+    "autosaveFailed": "Salvataggio automatico non riuscito. Controlla i permessi di archiviazione del browser o accorcia il contenuto e riprova"
   },
   "header": {
     "dnsmasqTitle": "Elenco Blocco Pubblicità Dnsmasq",

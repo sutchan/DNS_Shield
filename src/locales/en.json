@@ -78,7 +78,8 @@
     "invalidUrlsFiltered": "Filtered {count} invalid URLs",
     "cleared": "Cleared",
     "done": "Done",
-    "domainsLoadFailed": "Failed to load the domains source, please check your connection"
+    "domainsLoadFailed": "Failed to load the domains source, please check your connection",
+    "autosaveFailed": "Autosave failed. Check browser storage permissions or shorten the content and retry"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq Ad Block List",

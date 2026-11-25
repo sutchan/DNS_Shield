@@ -1,6 +1,8 @@
-// src/utils/scriptGenerator.ts v3.12.0
+// src/utils/scriptGenerator.ts v3.22.0
 // 路由器与 DNS 守护进程一键同步脚本生成器：
 // 支持针对 AsusWRT-Merlin / OpenWrt / SmartDNS / Pi-hole 生成自动拉取、备份与重启的 Shell 脚本。
+// v3.22.0：移除 curl -k / wget --no-check-certificate 降级（T-AUD-H03），脚本以 root 覆盖
+// dnsmasq 配置，必须校验服务端证书；OpenWrt 需预装 ca-bundle 才能拉取 HTTPS 规则源。
 
 export type RouterScriptTarget = 'openwrt' | 'merlin' | 'padavan' | 'smartdns' | 'pihole';
 
@@ -37,12 +39,13 @@ URL=${shellQuote(safeUrl)}
 mkdir -p "$CONF_DIR"
 
 echo "[DNS Shield] Downloading latest rules from $URL ..."
+# 证书校验强制开启（T-AUD-H03）：OpenWrt 需安装 ca-bundle，否则 HTTPS 拉取失败并保留旧配置
 if which curl >/dev/null 2>&1; then
-  curl -s -k -m 30 -o "$TMP_FILE" "$URL"
+  curl -fsS -m 30 -o "$TMP_FILE" "$URL"
 elif which wget >/dev/null 2>&1; then
-  wget --no-check-certificate -q -T 30 -O "$TMP_FILE" "$URL"
+  wget -q -T 30 -O "$TMP_FILE" "$URL"
 elif which uclient-fetch >/dev/null 2>&1; then
-  uclient-fetch --no-check-certificate -q -O "$TMP_FILE" "$URL"
+  uclient-fetch -q -O "$TMP_FILE" "$URL"
 else
   echo "[Error] Neither curl, wget, nor uclient-fetch is available."
   exit 1
@@ -72,7 +75,7 @@ TMP_FILE="/tmp/dnsmasq.conf.add.tmp"
 URL=${shellQuote(safeUrl)}
 
 echo "[DNS Shield] Fetching rules for Merlin..."
-curl -s -k -m 30 -o "$TMP_FILE" "$URL"
+curl -fsS -m 30 -o "$TMP_FILE" "$URL"
 
 if [ -s "$TMP_FILE" ]; then
   mv "$TMP_FILE" "$CONF_FILE"
@@ -93,7 +96,7 @@ CONF_FILE="/etc/storage/dnsmasq/dnsmasq.conf"
 TMP_FILE="/tmp/dnsmasq.tmp"
 URL=${shellQuote(safeUrl)}
 
-wget -q --no-check-certificate -O "$TMP_FILE" "$URL"
+wget -q -O "$TMP_FILE" "$URL"
 if [ -s "$TMP_FILE" ]; then
   mv "$TMP_FILE" "$CONF_FILE"
   mtd_storage.sh save
@@ -112,7 +115,7 @@ TMP_FILE="/tmp/smartdns_rules.tmp"
 URL=${shellQuote(safeUrl)}
 
 mkdir -p /etc/smartdns/conf.d
-curl -s -k -m 30 -o "$TMP_FILE" "$URL"
+curl -fsS -m 30 -o "$TMP_FILE" "$URL"
 
 if [ -s "$TMP_FILE" ]; then
   mv "$TMP_FILE" "$CONF_FILE"

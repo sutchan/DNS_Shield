@@ -1,4 +1,4 @@
-// src/hooks/autosaveStorage.ts v3.11.0
+// src/hooks/autosaveStorage.ts v3.22.0
 // 自动保存存储层：以 IndexedDB 为主（突破 LocalStorage 5MB 上限，支撑超长规则列表），
 // 不可用时（SSR / 隐私模式 / 配额超限）自动降级 localStorage，保证功能不中断。
 // 读取时若 IndexedDB 尚无数据而 localStorage 存有旧草稿，会一次性迁移到 IndexedDB。
@@ -29,11 +29,13 @@ const lsGet = (key: string): string | null => {
   }
 };
 
-const lsSet = (key: string, value: string): void => {
+/** 返回是否真正写入成功，供调用方向用户告警（T-AUD-H04） */
+const lsSet = (key: string, value: string): boolean => {
   try {
     localStorage.setItem(key, value);
+    return true;
   } catch {
-    /* 配额超限时忽略 */
+    return false;
   }
 };
 
@@ -93,19 +95,30 @@ export const readAutosaveTime = async (): Promise<number | null> => {
   return legacyTime;
 };
 
-/** 写入自动保存正文与时间戳：IndexedDB 失败时降级 localStorage */
-export const writeAutosave = async (text: string): Promise<void> => {
+/** 写入结果：失败必须显式返回，禁止静默丢数据（T-AUD-H04） */
+export interface AutosaveWriteResult {
+  ok: boolean;
+  /** oversize：内容超出 localStorage 降级通道上限；unavailable：两处存储均写入失败 */
+  reason?: 'oversize' | 'unavailable';
+}
+
+/**
+ * 写入自动保存正文与时间戳：IndexedDB 失败时降级 localStorage。
+ * 任一路径失败都返回结果而非 void，由调用方弹出用户可见告警。
+ */
+export const writeAutosave = async (text: string): Promise<AutosaveWriteResult> => {
   const now = Date.now().toString();
   const stored = await idbSet(STORE_KV, AUTOSAVE_KEY, text);
   if (stored) {
     await idbSet(STORE_KV, AUTOSAVE_TIME_KEY, now);
-    return;
+    return { ok: true };
   }
-  // 降级路径仅能承载 5MB，超长内容直接放弃以免抛错
-  if (isLegacyValid(text)) {
-    lsSet(AUTOSAVE_KEY, text);
-    lsSet(AUTOSAVE_TIME_KEY, now);
-  }
+  // 降级路径仅能承载 5MB：超长内容明确返回 oversize，不再静默丢弃
+  if (!isLegacyValid(text)) return { ok: false, reason: 'oversize' };
+  const written = lsSet(AUTOSAVE_KEY, text);
+  if (!written) return { ok: false, reason: 'unavailable' };
+  lsSet(AUTOSAVE_TIME_KEY, now);
+  return { ok: true };
 };
 
 /** 清除自动保存正文与时间戳（两处存储同时清理，避免旧内容复现） */

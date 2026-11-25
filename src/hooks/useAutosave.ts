@@ -1,4 +1,4 @@
-// src/hooks/useAutosave.ts v3.18.1
+// src/hooks/useAutosave.ts v3.22.0
 // 自动保存编排：挂载时恢复本地草稿（IndexedDB 优先，localStorage 降级），
 // 并按固定间隔持久化当前输入。存储读写细节见 autosaveStorage / utils/idb。
 
@@ -59,10 +59,15 @@ export const useAutosave = ({
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const timer = setInterval(() => {
-      if (sourceInputRef.current.trim()) {
-        void writeAutosave(sourceInputRef.current);
-      }
+      if (!sourceInputRef.current.trim()) return;
+      // 写入失败必须让用户知道：>5MB 且 IndexedDB 不可用时草稿会丢失（T-AUD-H04）
+      void writeAutosave(sourceInputRef.current).then((result) => {
+        if (!result.ok) {
+          logger.warn('Autosave failed:', result.reason);
+          showToastRef.current('autosaveFailed');
+        }
+      });
     }, AUTOSAVE_INTERVAL_MS);
     return () => clearInterval(timer);
-  }, [sourceInputRef]);
+  }, [sourceInputRef, showToastRef]);
 };

@@ -74,7 +74,8 @@
     "invalidUrlsFiltered": "已過濾 {count} 個無效 URL",
     "cleared": "已清空",
     "done": "已完成",
-    "domainsLoadFailed": "域名來源載入失敗，請檢查網路連線"
+    "domainsLoadFailed": "域名來源載入失敗，請檢查網路連線",
+    "autosaveFailed": "自動儲存失敗，請檢查瀏覽器儲存權限或縮短內容後重試"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq 廣告過濾列表",

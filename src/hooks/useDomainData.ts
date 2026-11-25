@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.ts v3.18.1
+// src/hooks/useDomainData.ts v3.22.0
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { fetchWithCache } from '../utils/cachedFetch';
 import { generateLineNumbers } from './useLineNumbers';
@@ -167,10 +167,20 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   }, [processDedupe, parseSourceData]);
 
   const saveDomains = useCallback(() => {
-    if (sourceInputRef.current.trim()) {
-      void writeAutosave(sourceInputRef.current);
+    const text = sourceInputRef.current;
+    if (!text.trim()) {
+      showToastRef.current('domainsSaved');
+      return;
     }
-    showToastRef.current('domainsSaved');
+    // 写入结果必须反馈给用户：双通道都失败时不得显示「已保存」（T-AUD-H04）
+    void writeAutosave(text).then((result) => {
+      if (result.ok) {
+        showToastRef.current('domainsSaved');
+        return;
+      }
+      logger.warn('Manual save failed:', result.reason);
+      showToastRef.current('autosaveFailed');
+    });
   }, []);
 
   const handleSourceInput = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {

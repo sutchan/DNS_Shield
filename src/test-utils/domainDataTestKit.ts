@@ -1,4 +1,4 @@
-// src/test-utils/domainDataTestKit.ts v3.15.0
+// src/test-utils/domainDataTestKit.ts v3.22.0
 // useDomainData 测试套件共享装置：mock 实例与异步辅助函数。
 // 为满足单文件 ≤200 行约束，原 useDomainData.test.ts 按关注点拆分为
 // parse / sources / actions 三个测试文件，共用本装置。
@@ -35,7 +35,7 @@ export const resetDomainDataMocks = (): void => {
   fetchWithCacheMock.mockResolvedValue(null);
   readAutosaveMock.mockResolvedValue(null);
   readAutosaveTimeMock.mockResolvedValue(null);
-  writeAutosaveMock.mockResolvedValue(undefined);
+  writeAutosaveMock.mockResolvedValue({ ok: true });
   clearAutosaveMock.mockResolvedValue(undefined);
   withValidAutosave();
 };

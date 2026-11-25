@@ -1,4 +1,4 @@
-// src/utils/scriptGenerator.test.ts v3.10.1
+// src/utils/scriptGenerator.test.ts v3.22.0
 import { describe, it, expect } from 'vitest';
 import { generateRouterScript } from './scriptGenerator';
 
@@ -34,5 +34,15 @@ describe('scriptGenerator', () => {
     const script = generateRouterScript({ ruleUrl: testUrl, target: 'pihole' });
     expect(script).toContain('/etc/pihole/custom.list');
     expect(script).toContain('pihole restartdns reload');
+  });
+
+  // T-AUD-H03：脚本以 root 覆盖 dnsmasq 配置，任何 TLS 校验降级都属高危回归
+  it('never disables TLS certificate verification (T-AUD-H03)', () => {
+    const targets = ['openwrt', 'merlin', 'padavan', 'smartdns', 'pihole'] as const;
+    for (const target of targets) {
+      const script = generateRouterScript({ ruleUrl: testUrl, target });
+      expect(script, target).not.toContain('-k ');
+      expect(script, target).not.toContain('--no-check-certificate');
+    }
   });
 });

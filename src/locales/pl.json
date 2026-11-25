@@ -74,7 +74,8 @@
     "invalidUrlsFiltered": "Filtrowano {count} nieprawidłowych URL-i",
     "cleared": "Wyczyszczono",
     "done": "Gotowe",
-    "domainsLoadFailed": "Nie udało się wczytać źródła domen, sprawdź połączenie"
+    "domainsLoadFailed": "Nie udało się wczytać źródła domen, sprawdź połączenie",
+    "autosaveFailed": "Automatyczny zapis nie powiódł się. Sprawdź uprawnienia pamięci przeglądarki lub skróć treść i spróbuj ponownie"
   },
   "header": {
     "dnsmasqTitle": "Lista blokowania reklam Dnsmasq",

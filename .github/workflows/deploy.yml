@@ -117,7 +117,13 @@ jobs:
     name: Deploy to EdgeOne Pages
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    if: ${{ vars.DEPLOY_EDGEONE == 'true' && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success') }}
+    # workflow_run 投毒防护（T-AUD-H02）：同仓库 push 才允许携带部署密钥执行检出脚本
+    if: >-
+      ${{ vars.DEPLOY_EDGEONE == 'true'
+          && (github.event_name == 'workflow_dispatch'
+              || (github.event.workflow_run.conclusion == 'success'
+                  && github.event.workflow_run.event == 'push'
+                  && github.event.workflow_run.head_repository.full_name == github.repository)) }}
     environment: production
     steps:
       - uses: actions/checkout@v5

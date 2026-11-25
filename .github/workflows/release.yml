@@ -46,9 +46,16 @@ jobs:
     runs-on: ubuntu-latest
     # 仅在 Deploy 真正成功（含全 skip）且由 main 触发时发布；Deploy 失败的
     # completed 不发布，避免「部署红了还发版」。
+    # workflow_run 投毒防护（T-AUD-H02）：fork PR 可将分支命名为 main 并通过
+    # branches 过滤；必须同时校验事件来源仓库与触发事件，否则会检出 head_sha
+    # 执行其中脚本并持有 contents: write 令牌发版。
+    # 部署密钥与发版权限统一由受保护 environment 承载（T-AUD-H02 / T-AUD-M05）。
     if: >-
       ${{ github.event.workflow_run.conclusion == 'success'
-          && github.event.workflow_run.head_branch == 'main' }}
+          && github.event.workflow_run.head_branch == 'main'
+          && github.event.workflow_run.event == 'push'
+          && github.event.workflow_run.head_repository.full_name == github.repository }}
+    environment: production
     # 挂死保护：正常 1~2 分钟内完成，超时即失败，避免空耗额度
     timeout-minutes: 15
     steps:

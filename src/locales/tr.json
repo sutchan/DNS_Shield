@@ -74,7 +74,8 @@
     "invalidUrlsFiltered": "{count} geçersiz URL filtrelendi",
     "cleared": "Temizlendi",
     "done": "Tamamlandı",
-    "domainsLoadFailed": "Alan kaynağı yüklenemedi, lütfen bağlantınızı kontrol edin"
+    "domainsLoadFailed": "Alan kaynağı yüklenemedi, lütfen bağlantınızı kontrol edin",
+    "autosaveFailed": "Otomatik kaydetme başarısız. Tarayıcı depolama izinlerini kontrol edin veya içeriği kısaltıp yeniden deneyin"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq Reklam Engelleme Listesi",

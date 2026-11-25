@@ -74,7 +74,8 @@
     "invalidUrlsFiltered": "Filtrerade {count} ogiltiga URL:er",
     "cleared": "Rensat",
     "done": "Klart",
-    "domainsLoadFailed": "Det gick inte att läsa in domänkällan, kontrollera din anslutning"
+    "domainsLoadFailed": "Det gick inte att läsa in domänkällan, kontrollera din anslutning",
+    "autosaveFailed": "Automatisk sparning misslyckades. Kontrollera webbläsarens lagringsbehörigheter eller förkorta innehållet och försök igen"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq annonsblockeringslista",

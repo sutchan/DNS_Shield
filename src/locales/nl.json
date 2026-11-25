@@ -74,7 +74,8 @@
     "invalidUrlsFiltered": "{count} ongeldige URLs gefilterd",
     "cleared": "Gewist",
     "done": "Gereed",
-    "domainsLoadFailed": "Kan domeinbron niet laden, controleer uw verbinding"
+    "domainsLoadFailed": "Kan domeinbron niet laden, controleer uw verbinding",
+    "autosaveFailed": "Automatisch opslaan mislukt. Controleer de opslagmachtigingen van de browser of verkort de inhoud en probeer het opnieuw"
   },
   "header": {
     "dnsmasqTitle": "Dnsmasq advertentieblokkeringslijst",

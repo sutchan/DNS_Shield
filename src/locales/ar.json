@@ -74,7 +74,8 @@
     "invalidUrlsFiltered": "تم تصفية {count} عناوين URL غير صالحة",
     "cleared": "تم المسح",
     "done": "تم",
-    "domainsLoadFailed": "فشل تحميل مصدر النطاقات، يرجى التحقق من اتصالك"
+    "domainsLoadFailed": "فشل تحميل مصدر النطاقات، يرجى التحقق من اتصالك",
+    "autosaveFailed": "فشل الحفظ التلقائي، تحقق من أذونات تخزين المتصفح أو قصّر المحتوى ثم أعد المحاولة"
   },
   "header": {
     "dnsmasqTitle": "قائمة فلترة Ad Block لـ Dnsmasq",

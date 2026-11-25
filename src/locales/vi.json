@@ -74,7 +74,8 @@
     "invalidUrlsFiltered": "Đã lọc {count} URL không hợp lệ",
     "cleared": "Đã xóa",
     "done": "Hoàn thành",
-    "domainsLoadFailed": "Không tải được nguồn miền, vui lòng kiểm tra kết nối"
+    "domainsLoadFailed": "Không tải được nguồn miền, vui lòng kiểm tra kết nối",
+    "autosaveFailed": "Tự động lưu không thành công. Hãy kiểm tra quyền lưu trữ của trình duyệt hoặc rút ngắn nội dung rồi thử lại"
   },
   "header": {
     "dnsmasqTitle": "Danh sách chặn quảng cáo Dnsmasq",

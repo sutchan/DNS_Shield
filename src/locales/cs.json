@@ -74,7 +74,8 @@
     "invalidUrlsFiltered": "Filtrováno {count} neplatných URL",
     "cleared": "Vymazáno",
     "done": "Hotovo",
-    "domainsLoadFailed": "Nepodařilo se načíst zdroj domén, zkontrolujte připojení"
+    "domainsLoadFailed": "Nepodařilo se načíst zdroj domén, zkontrolujte připojení",
+    "autosaveFailed": "Automatické uložení selhalo. Zkontrolujte oprávnění úložiště prohlížeče nebo zkraťte obsah a zkuste to znovu"
   },
   "header": {
     "dnsmasqTitle": "Seznam blokování reklam Dnsmasq",

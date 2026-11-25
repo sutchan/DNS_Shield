@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.autosave.test.ts v3.15.0
+// src/hooks/useDomainData.autosave.test.ts v3.22.0
 // @vitest-environment jsdom
 // 自动保存编排契约：草稿恢复、恢复提示、草稿优先于远端清单（T-P1-11）、手动保存。
 // （原 useDomainData.test.ts 按关注点拆分，本文件承接其中一个分组）
@@ -161,6 +161,26 @@ describe('自动保存编排契约：草稿恢复、恢复提示、草稿优先�
 
     expect(writeAutosaveMock).toHaveBeenCalledWith('save.example.com');
     expect(showToast).toHaveBeenCalledWith('domainsSaved');
+    unmount();
+  });
+
+  // T-AUD-H04：写入失败不得再显示「已保存」，必须以用户可见提示告知
+  it('saveDomains 写入失败时提示 autosaveFailed 而非 domainsSaved', async () => {
+    writeAutosaveMock.mockResolvedValue({ ok: false, reason: 'oversize' });
+    const showToast = vi.fn();
+    const { result, unmount } = renderHook(() => useDomainData(showToast));
+    await advance(0);
+
+    act(() => {
+      result.current.setSourceInput('large.example.com');
+    });
+    act(() => {
+      result.current.saveDomains();
+    });
+    await flush();
+
+    expect(showToast).toHaveBeenCalledWith('autosaveFailed');
+    expect(showToast).not.toHaveBeenCalledWith('domainsSaved');
     unmount();
   });
 
