@@ -78,6 +78,9 @@
 | `category-index.txt` 未纳入发布路径，分类筛选可能降级隐藏 | 待修复 | [07 O-07](./07-improvements.md) |
 | 生产 CSP `script-src` 含 `'unsafe-inline'`（首屏脚本所需） | 待评估 | [07 O-08](./07-improvements.md) |
 | 部分设备对 hosts 文件大小有限制 | 产品限制 | 建议改用 dnsmasq / AdGuard 格式 |
+| `AppProvider value={{t}}` 每次渲染新建对象，全部 `useT()` 消费者重渲染 | 待修复（M-12，2026-11-25 实查仍在） | [tasks.md](./tasks.md) M-12 |
+| `.npmrc` 缺失，`engine-strict` 未生效 | 待修复（O-05 / T-BUILD-01，2026-11-25 实查仍缺） | [tasks.md](./tasks.md) T-BUILD-01 |
+| `public/domains.txt` 当前 644 条（历史曾 127188 条），回退原因未定 | 待核实（T-DATA-01，计数以 `node scripts/count-domains.mjs` 实算为准） | [tasks.md](./tasks.md) T-DATA-01 |
 
 ## 3. 仍未解决的问题
 

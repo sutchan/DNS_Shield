@@ -3,7 +3,7 @@
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
 > 当前版本：v3.21.0
-> 最后审查：2026-11-12（第十八轮全量文档核查；权威版本源为 `package.json`）
+> 最后审查：2026-11-25（与 package.json v3.21.0 对齐；权威版本源为 `package.json`）
 
 ## 部署环境
 
@@ -15,6 +15,8 @@
 - **Git**：用于版本控制
 
 > 依赖安装一律基于入库的 `pnpm-lock.yaml`（`pnpm install --frozen-lockfile`）。修改依赖后请先本地 `pnpm install` 并提交锁文件，否则 CI 会直接失败。
+>
+> 本地开发 / 调试产生的临时文件（脚本、日志、缓存、下载、测试输出）统一放仓库根 `.tmp/`：`pnpm tmp:init` 幂等创建、`pnpm tmp:clean` 一键清理；根目录散落会被 `pnpm check:root-clean` 拦截。规范见 [docs/TEMP-FILES.md](docs/TEMP-FILES.md)。
 
 ### 2. 服务器要求
 

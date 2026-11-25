@@ -92,12 +92,14 @@ flowchart LR
 
 如需清空草稿，请在设置面板显式清空；普通刷新不会丢失编辑内容。
 
-## 7. 部署者操作要点
+## 7. 部署者与开发者操作要点
 
 1. 按 [02 安装与部署](../DEPLOYMENT.md) 准备 Node 24 / pnpm 11 环境并安装依赖。
 2. 配置 Secrets（`VERCEL_TOKEN` 等，见部署指南 §CI/CD），推送到 `main` 触发 CI → Deploy → Release。
 3. 更新数据源：`public/domains.txt` 是唯一事实来源，改动后运行 `pnpm build:formats` 派生 11 个产物并提交。
 4. 验证发布：检查 `GET /llms.txt`、`GET /sitemap.xml` 与 12 个规则文件可访问（见 [04 API](./04-api.md) §调用示例）。
+5. 本地开发：`git clone` 后 `pnpm install` → `pnpm dev`（端口 3000，实现 `standalone` 输出）；提交前按 [SPEC §7.2](./SPEC.md#72-协作流程与提交前门禁2026-11-22-起) 跑门禁（`pnpm check:root-clean` / `node scripts/sync-facts.mjs --check` / `pnpm check:locales` / `pnpm lint` / `pnpm exec tsc --noEmit` / `pnpm test`）。
+6. 临时文件：调试脚本、日志、缓存、下载文件统一放根目录 `.tmp/`（`pnpm tmp:init` 自动创建、`pnpm tmp:clean` 一键清理），禁止散落根目录；详见 [TEMP-FILES.md](./TEMP-FILES.md)。
 
 ## 8. 常见操作误区
 
