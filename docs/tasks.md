@@ -103,7 +103,7 @@
   - 影响范围：全站拦截能力（127188 → 644 是数量级下降）、文档事实数字、订阅用户。
   - 验收标准：给出回退原因与决策记录；若恢复则从确认的权威提交重建 11 个产物并重算 `count-domains`，同步 SPEC / tasks / CHANGELOG；若维持 644 则说明原因并关闭本任务。
 - **T-DOC-01 · 修正 SPEC 锁文件 / CSP 过时描述**（责任人：Docs Team；计划：2026-12-02）
-  - 目标：`docs/SPEC.md:242,461,555` 仍写「`pnpm-lock.yaml` / `.npmrc` 缺失属 BLOCKER」，但锁文件已由 `a9eceb1` 恢复；`.npmrc` 仍缺失应单列并指向 T-BUILD-01。§11 双源 CSP 描述亦需与 `next.config.js` 单一来源对齐。
+  - 目标：`docs/SPEC.md:242,461,555` 仍写「`package-lock.json` / `.npmrc` 缺失属 BLOCKER」，但锁文件已由 `a9eceb1` 恢复；`.npmrc` 仍缺失应单列并指向 T-BUILD-01。§11 双源 CSP 描述亦需与 `next.config.js` 单一来源对齐。
   - 影响范围：文档准确性、贡献者排障。
   - 验收标准：SPEC 三处与工作树一致；审计报告按冻结快照保留历史原文；`docs/07-improvements.md` O-03 标注实施结果。
 - **T-DOC-02 · CHANGELOG 补记内存 5GB 根因修复**（责任人：Docs Team；计划：2026-12-02）
@@ -121,7 +121,7 @@
   - 完成记录：已改用 `cp.spawnSync('git', ['check-ignore', '-q', rel], …)` 不经 shell；其余 `execFileSync` 调用为固定脚本路径、无外部输入拼接；随临时文件规范（[TEMP-FILES.md](./TEMP-FILES.md)）一并落地。`docs/07-improvements.md` O-04 已标记修复。
 - **T-BUILD-01 · 恢复 `.npmrc`**（责任人：CI Owner；计划：2026-12-02）
   - 目标：恢复 `engine-strict=true` / `package-manager-strict=true`，使 `engines.node >=24.11.0 <25` 与 `pnpm@11.24.0` 真正生效。
-  - 验收标准：Node 24 / pnpm 11 下 `pnpm install --frozen-lockfile` 通过；不满足约束时安装期失败；DEPLOYMENT 与 SPEC 描述同步。
+  - 验收标准：Node 24 / pnpm 11 下 `npm ci` 通过；不满足约束时安装期失败；DEPLOYMENT 与 SPEC 描述同步。
 
 ### 🟡 P2 - 代码质量 · 文档 · 性能 · 兼容性增强
 
@@ -147,7 +147,7 @@
 - [ ] 检查现有规则有效性
 - [ ] 测试新广告域名
 - [ ] 更新 `public/domains.txt` 原始域名
-- [ ] 启动开发服务器：`pnpm dev`（端口 3000，由 `package.json` 的 `next dev -p 3000 -H 0.0.0.0` 固定）
+- [ ] 启动开发服务器：`npm run dev`（端口 3000，由 `package.json` 的 `next dev -p 3000 -H 0.0.0.0` 固定）
 - [ ] 访问本地开发地址（http://localhost:3000）生成新规则
 - [ ] 更新 `public/dnsmasq.conf`（或直接运行 `node scripts/gen-format-files.mjs` 一次性重建全部格式）
 - [ ] 更新 `public/hosts.txt`
@@ -161,7 +161,7 @@
 - [ ] 优化规则匹配效率
 - [ ] 合并上游更新（AdGuard / EasyList / NeoHosts）— 现已由 `aggregate.yml` 每周自动聚合
 - [ ] 检查并更新依赖版本
-- [ ] 运行构建确保功能正常（`pnpm build`）
+- [ ] 运行构建确保功能正常（`npm run build`）
 
 ## 五、版本发布清单
 
@@ -218,5 +218,5 @@
 ### 统一验收标准（适用于本章全部条目）
 
 1. 对照当前代码核实问题是否仍存在，在条目下附证据（文件:行号或实跑输出）；
-2. 仍存在则按上述方向修复，补对应回归测试，并跑 `pnpm lint && pnpm exec tsc --noEmit && pnpm test` 全绿；
+2. 仍存在则按上述方向修复，补对应回归测试，并跑 `npm run lint && npx tsc --noEmit && npm run test` 全绿；
 3. 若已在 v3.20 / v3.21 等后续版本修复，附提交或测试证据后在本文件标记完成并移入 [`tasks-done.md`](./tasks-done.md)，**不重复实施**。

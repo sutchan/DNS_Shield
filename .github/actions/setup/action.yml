@@ -3,24 +3,20 @@
 # 复合动作（composite action）：统一 CI / Deploy / Release 四个工作流的运行时准备。
 #
 # 关键点（踩坑记录，勿随意改动顺序）：
-#   1. pnpm/action-setup 必须在需要 pnpm 的步骤之前执行。
-#   2. pnpm 版本不在此硬编码 —— 读取 package.json 的 packageManager 字段
-#      （pnpm@11.24.0）。若在此写死 version，会触发 ERR_PNPM_BAD_PM_VERSION。
-#   3. Node 版本对齐 package.json 的 engines.node（>=24.11.0 <25，锁定 Node 24
-#      主版本，避免 Vercel 自动升级到 26.x），且 .npmrc 开启了
-#      engine-strict=true，版本不匹配会直接 install 失败。
-#   4. 本项目使用 pnpm-lock.yaml（非 npm/yarn）。
-#   5. pnpm-lock.yaml 必须入库：CI 一律 --frozen-lockfile。若锁文件缺失，
-#      本步骤会在 install 前显式报错，而不是让 pnpm 静默解析出与仓库不一致的依赖树。
-#   6. 依赖缓存不使用 setup-node 内置的 cache: 'pnpm'：
-#      setup-node@v4 的 pnpm 缓存实现面向 pnpm ≤10 的 `pnpm store path` 输出，
-#      与 pnpm 11（store/全局虚拟存储路径大改，见 pnpm 11 release notes）不兼容，
-#      曾导致启用缓存的所有 job 在 setup 步骤必败（data job 因 install=false
-#      跳过缓存而幸免）。改为显式 actions/cache 缓存 `pnpm store path`，与
-#      pnpm 大版本解耦。
+#   1. 本项目使用 npm（v3.22.0 起移除 pnpm 依赖）：锁文件为 package-lock.json，
+#      CI 一律用 `npm ci`（等价于 pnpm 的 --frozen-lockfile），本地开发用
+#      `npm install`。
+#   2. package-lock.json 必须入库：若锁文件缺失，本步骤会在 install 前显式
+#      报错，而不是让 npm 静默解析出与仓库不一致的依赖树。
+#   3. 依赖缓存直接用 setup-node 内置的 cache: 'npm'（缓存 ~/.npm 缓存目录），
+#      不需要额外的 store 路径解析步骤——npm 的缓存路径是稳定的，历史上
+#      pnpm 11 的 store 路径大改曾导致缓存 job 全败。
+#   4. Node 版本对齐 package.json 的 engines.node（>=24.11.0 <25，锁定 Node 24
+#      主版本，避免 Vercel 自动升级到 26.x）；npm 版本由 Node 24 自带，
+#      要求 >=11（见 package.json engines.npm）。
 # ---------------------------------------------------------------------------
 name: 'Setup DNS Shield'
-description: '安装 pnpm + Node.js，恢复依赖缓存并按锁定文件安装依赖'
+description: '安装 Node.js（自带 npm），恢复 npm 依赖缓存并按锁定文件安装依赖'
 
 inputs:
   node-version:
@@ -32,42 +28,26 @@ inputs:
     required: false
     default: 'true'
   frozen:
-    description: '是否使用 --frozen-lockfile（CI 必须为 true）'
+    description: '是否使用 npm ci（CI 必须为 true）'
     required: false
     default: 'true'
 
 runs:
   using: 'composite'
   steps:
-    - name: Install pnpm
-      uses: pnpm/action-setup@v6
-
     - name: Setup Node.js ${{ inputs.node-version }}
       uses: actions/setup-node@v6
       with:
         node-version: ${{ inputs.node-version }}
-
-    - name: Resolve pnpm store directory
-      if: inputs.install == 'true'
-      id: pnpm-store
-      shell: bash
-      run: echo "dir=$(pnpm store path)" >> "$GITHUB_OUTPUT"
-
-    - name: Cache pnpm store
-      if: inputs.install == 'true'
-      uses: actions/cache@v5
-      with:
-        path: ${{ steps.pnpm-store.outputs.dir }}
-        key: pnpm-store-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
-        restore-keys: |
-          pnpm-store-${{ runner.os }}-
+        cache: 'npm'
+        cache-dependency-path: 'package-lock.json'
 
     - name: Assert lockfile is tracked
       if: inputs.install == 'true' && inputs.frozen == 'true'
       shell: bash
       run: |
-        if [ ! -f pnpm-lock.yaml ]; then
-          echo "::error::缺少 pnpm-lock.yaml：CI 以 --frozen-lockfile 安装，请先在本地执行 pnpm install 并提交锁文件"
+        if [ ! -f package-lock.json ]; then
+          echo "::error::缺少 package-lock.json：CI 以 npm ci 安装，请先在本地执行 npm install 并提交锁文件"
           exit 1
         fi
 
@@ -76,15 +56,15 @@ runs:
       shell: bash
       run: |
         if [ "${{ inputs.frozen }}" = "true" ]; then
-          pnpm install --frozen-lockfile
+          npm ci
         else
-          pnpm install --no-frozen-lockfile
+          npm install
         fi
 
     - name: Print toolchain
       shell: bash
       run: |
         echo "node    : $(node -v)"
-        echo "pnpm    : $(pnpm -v)"
-        echo "lockfile: $([ -f pnpm-lock.yaml ] && echo present || echo missing)"
-        echo "registry: $(pnpm config get registry)"
+        echo "npm     : $(npm -v)"
+        echo "lockfile: $([ -f package-lock.json ] && echo present || echo missing)"
+        echo "registry: $(npm config get registry)"

@@ -26,13 +26,13 @@
 ## 2. 自动创建与清理
 
 ```bash
-pnpm tmp:init     # 创建 .tmp/ 及全部约定子目录（幂等，可重复执行）
-pnpm tmp:clean    # 清空 .tmp/ 内容并重建空子目录
+npm run tmp:init     # 创建 .tmp/ 及全部约定子目录（幂等，可重复执行）
+npm run tmp:clean    # 清空 .tmp/ 内容并重建空子目录
 node scripts/check-root-clean.mjs   # 门禁自检：根目录有散落临时文件即失败
 ```
 
 - `check-root-clean.mjs` 在 CI `rootclean` job 中于 CI Gate 聚合前执行；开发者提交前应本地自检。
-- `.tmp/` 内容随时可删，不影响构建与测试；会话结束建议执行 `pnpm tmp:clean`。
+- `.tmp/` 内容随时可删，不影响构建与测试；会话结束建议执行 `npm run tmp:clean`。
 
 ## 3. 例外（不属于本规范约束范围）
 

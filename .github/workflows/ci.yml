@@ -80,7 +80,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Run ESLint
-        run: pnpm run lint
+        run: npm run lint
 
   # ----------------------------------------------------------- typecheck
   typecheck:
@@ -94,7 +94,7 @@ jobs:
 
       # 使用项目本地 TypeScript（package.json 锁定 ^5），避免 runner 预装版本漂移
       - name: Type check (no emit)
-        run: pnpm exec tsc --noEmit
+        run: npx tsc --noEmit
 
   # ---------------------------------------------------------------- test
   test:
@@ -109,10 +109,11 @@ jobs:
       - name: Run unit tests
         run: |
           set -o pipefail
+          mkdir -p .tmp/logs
           if [ "${{ github.event.inputs.skip-coverage }}" = "true" ]; then
-            pnpm run test 2>&1 | tee _test.log
+            npm run test 2>&1 | tee .tmp/logs/test.log
           else
-            pnpm run test:coverage 2>&1 | tee _test.log
+            npm run test:coverage 2>&1 | tee .tmp/logs/test.log
           fi
 
       - name: Write test summary
@@ -150,12 +151,12 @@ jobs:
         with:
           path: .next/cache
           # 显式限定目录，避免 hashFiles 遍历 node_modules 拖慢耗时
-          key: ${{ runner.os }}-next-${{ hashFiles('pnpm-lock.yaml', 'package.json', 'src/**/*.ts', 'src/**/*.tsx', 'next.config.js', 'tailwind.config.js', 'postcss.config.js') }}
+          key: ${{ runner.os }}-next-${{ hashFiles('package-lock.json', 'package.json', 'src/**/*.ts', 'src/**/*.tsx', 'next.config.js', 'tailwind.config.js', 'postcss.config.js') }}
           restore-keys: |
             ${{ runner.os }}-next-
 
       - name: Build
-        run: pnpm run build
+        run: npm run build
 
       - name: Report build size
         if: always()
@@ -199,7 +200,7 @@ jobs:
       # public/* 头部含「版本::」与「更新::」两行：
       #   - 「更新::」是生成日期，每天都会变，属噪声，从比对中剔除；
       #   - 「版本::」必须与 package.json 一致，属真实漂移，需要阻断。
-      # 修复方式：本地执行 pnpm run build:formats 后提交产物。
+      # 修复方式：本地执行 npm run build:formats 后提交产物。
       - name: Detect generated rule files drift
         id: drift
         run: |
@@ -215,7 +216,7 @@ jobs:
             echo "生成的规则文件与 public/domains.txt 一致（已忽略头部日期行）"
           else
             echo "drift=true" >> "$GITHUB_OUTPUT"
-            echo "::error::规则文件与数据源漂移，请执行 pnpm run build:formats 后提交产物"
+            echo "::error::规则文件与数据源漂移，请执行 npm run build:formats 后提交产物"
             echo "$DRIFT_LINES" | head -n 40
             echo "--- 差异统计 ---"
             git diff --stat -- public

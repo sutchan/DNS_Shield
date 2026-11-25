@@ -125,19 +125,19 @@
 环境要求：Node.js ≥ 24.11.0 且 < 25（锁定 Node 24 主版本，避免 Vercel 自动升级到 26.x）、pnpm 11.24.0（见 `package.json` 的 `engines` / `packageManager`）。
 
 ```bash
-pnpm install          # 安装依赖
-pnpm dev              # 开发模式（http://localhost:3000）
-pnpm build            # 生产构建（standalone 输出）
-pnpm lint             # ESLint 检查
-pnpm test             # Vitest 单元测试
-pnpm test:coverage    # 覆盖率报告
+npm install          # 安装依赖
+npm run dev              # 开发模式（http://localhost:3000）
+npm run build            # 生产构建（standalone 输出）
+npm run lint             # ESLint 检查
+npm run test             # Vitest 单元测试
+npm run test:coverage    # 覆盖率报告
 ```
 
 维护脚本（改版本号或域名清单后需执行）：
 
 ```bash
-pnpm check:locales                     # 16 语键一致性校验
-pnpm build:formats                     # 从 domains.txt 重建 11 个规则产物
+npm run check:locales                     # 16 语键一致性校验
+npm run build:formats                     # 从 domains.txt 重建 11 个规则产物
 node scripts/sync-facts.mjs --check   # 文档版本展示位一致性（CI 门禁）
 ```
 

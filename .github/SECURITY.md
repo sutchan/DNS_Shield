@@ -30,10 +30,10 @@
 
 ```bash
 # 检查依赖安全
-pnpm audit
+npm audit
 
 # 更新依赖
-pnpm update
+npm update
 ```
 
 ### 3. 版本控制安全
@@ -77,10 +77,10 @@ pnpm update
 
 ```bash
 # 使用 ESLint 进行代码分析
-pnpm lint
+npm run lint
 
-# 使用 pnpm audit 扫描依赖
-pnpm audit
+# 使用 npm audit 扫描依赖
+npm audit
 ```
 
 ### 2. 动态安全测试
@@ -167,7 +167,7 @@ pnpm audit
 ### 1. 安全工具
 
 - **ESLint**：代码分析工具
-- **pnpm audit**：依赖安全扫描
+- **npm audit**：依赖安全扫描
 - **OWASP ZAP**：Web 应用安全扫描器
 - **Nmap**：网络扫描工具
 

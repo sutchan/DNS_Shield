@@ -15,7 +15,7 @@ updates:
       - "dependencies"
       - "github-actions"
 
-  # 运行时依赖（pnpm）：对应 package.json / pnpm-lock.yaml
+  # 运行时依赖（npm）：对应 package.json / package-lock.json
   - package-ecosystem: "npm"
     directory: "/"
     schedule:

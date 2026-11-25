@@ -17,11 +17,11 @@ context: |
   Language priority zh-cn > zh-tw > en; <html lang> and SEO inLanguage stay in sync
   We use shadcn/ui components (Radix UI based) with Tailwind CSS
   We use sonner for toast notifications
-  Dev server runs on port 3000 (pnpm dev)
+  Dev server runs on port 3000 (npm run dev)
   Large inputs (>=20000 lines) use multi-core Web Worker shard parsing with graceful fallback
   Parse tasks are single-flighted by a content key (task + text) and the worker pool reference is stable (memory guard)
-  CI runs a root temp-file hygiene gate (scripts/check-root-clean.mjs) before the CI Gate aggregator; all temporary files must live under the repo-root .tmp/ directory (see docs/TEMP-FILES.md), auto-created by pnpm tmp:init and cleared by pnpm tmp:clean
-  GitHub actions use latest majors: checkout@v5, setup-node@v6, pnpm/action-setup@v6, cache@v5, upload-artifact@v5
+  CI runs a root temp-file hygiene gate (scripts/check-root-clean.mjs) before the CI Gate aggregator; all temporary files must live under the repo-root .tmp/ directory (see docs/TEMP-FILES.md), auto-created by npm run tmp:init and cleared by npm run tmp:clean
+  GitHub actions use latest majors: checkout@v5, setup-node@v6, actions/setup-node@v6, cache@v5, upload-artifact@v5
   ui/Tabs.tsx and @radix-ui/react-tabs are deprecated since v3.15.5 (single Format dropdown replaces them)
 
 # Per-artifact rules

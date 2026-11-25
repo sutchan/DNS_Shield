@@ -14,9 +14,9 @@
 - **pnpm**：11.24.0（由 `package.json` 的 `packageManager` 字段锁定，CI 走 `pnpm/action-setup` 自动安装，勿手动指定版本）
 - **Git**：用于版本控制
 
-> 依赖安装一律基于入库的 `pnpm-lock.yaml`（`pnpm install --frozen-lockfile`）。修改依赖后请先本地 `pnpm install` 并提交锁文件，否则 CI 会直接失败。
+> 依赖安装一律基于入库的 `package-lock.json`（`npm ci`）。修改依赖后请先本地 `npm install` 并提交锁文件，否则 CI 会直接失败。
 >
-> 本地开发 / 调试产生的临时文件（脚本、日志、缓存、下载、测试输出）统一放仓库根 `.tmp/`：`pnpm tmp:init` 幂等创建、`pnpm tmp:clean` 一键清理；根目录散落会被 `pnpm check:root-clean` 拦截。规范见 [docs/TEMP-FILES.md](docs/TEMP-FILES.md)。
+> 本地开发 / 调试产生的临时文件（脚本、日志、缓存、下载、测试输出）统一放仓库根 `.tmp/`：`npm run tmp:init` 幂等创建、`npm run tmp:clean` 一键清理；根目录散落会被 `npm run check:root-clean` 拦截。规范见 [docs/TEMP-FILES.md](docs/TEMP-FILES.md)。
 
 ### 2. 服务器要求
 
@@ -46,33 +46,33 @@ cd DNS_Shield
 #### 1.2 安装依赖
 
 ```bash
-# 安装依赖（使用 pnpm，与 pnpm-lock.yaml 一致）
-pnpm install
+# 安装依赖（使用 pnpm，与 package-lock.json 一致）
+npm install
 ```
 
 #### 1.3 构建项目
 
 ```bash
 # 构建生产版本
-pnpm build
+npm run build
 ```
 
 #### 1.4 启动服务器
 
 ```bash
 # 运行生产服务器
-pnpm start
+npm run start
 
 # 或使用 PM2 管理进程
-pnpm add -g pm2
-pm2 start pnpm --name "dns-shield" -- start
+npm install -g pm2
+pm2 start npm --name "dns-shield" -- start
 ```
 
 #### 1.5 开发模式
 
 ```bash
 # 启动开发服务器（默认端口 3000）
-pnpm dev
+npm run dev
 ```
 
 #### 1.6 访问 Web 管理工具
@@ -99,8 +99,8 @@ cd DNS_Shield
 #### 2.3 安装依赖与构建
 
 ```bash
-pnpm install
-pnpm build
+npm install
+npm run build
 ```
 
 #### 2.4 配置进程管理
@@ -109,10 +109,10 @@ pnpm build
 
 ```bash
 # 安装 PM2
-pnpm add -g pm2
+npm install -g pm2
 
 # 启动应用
-pm2 start pnpm --name "dns-shield" -- start
+pm2 start npm --name "dns-shield" -- start
 
 # 设置 PM2 开机自启
 pm2 startup
@@ -184,7 +184,7 @@ certbot renew --dry-run
 CI 采用「并行 job + 聚合门禁」结构：`rootclean`、`lint`、`typecheck`、`test`、`build`、`data` 并行执行，最后由 `ci` 汇总（`needs` 含 `rootclean`）。`rootclean` 执行 `node scripts/check-root-clean.mjs`，拦截散落在根目录或 `scripts/` 下的 `_*.mjs` 临时脚本（唯一合法临时位置为根 `.tmp/`）。
 配置分支保护时**只需把 `CI Gate` 勾选为必需检查**，后续增删 job 无需再改保护规则。
 
-CI / Deploy / Release / Aggregate 四个工作流的运行时准备统一收敛到复合动作 `.github/actions/setup`（安装 pnpm + Node 24 + 显式 `actions/cache` 恢复 pnpm store），避免每处重复。当前官方 action 版本：`actions/checkout@v5`、`actions/setup-node@v6`、`pnpm/action-setup@v6`、`actions/cache@v5`、`actions/upload-artifact@v5`（2026-11-12 实况；升级记录见 CHANGELOG `[Unreleased]`）。
+CI / Deploy / Release / Aggregate 四个工作流的运行时准备统一收敛到复合动作 `.github/actions/setup`（安装 pnpm + Node 24 + 显式 `actions/cache` 恢复 pnpm store），避免每处重复。当前官方 action 版本：`actions/checkout@v5`、`actions/setup-node@v6`、`actions/setup-node@v6`、`actions/cache@v5`、`actions/upload-artifact@v5`（2026-11-12 实况；升级记录见 CHANGELOG `[Unreleased]`）。
 
 `aggregate.yml` 不参与发布链路，仅做上游数据源聚合：每周一定时拉取各上游列表，合并去重后更新 `public/domains.txt` 并自动发起 Pull Request，需人工 review 后合并，从而保证过滤数据持续更新。
 
@@ -217,10 +217,10 @@ CI / Deploy / Release / Aggregate 四个工作流的运行时准备统一收敛�
 
 ```bash
 # 1. 跑一遍本地校验（等价于 CI 的 lint/typecheck/test）
-pnpm run lint && pnpm exec tsc --noEmit && pnpm run test
+npm run lint && npx tsc --noEmit && npm run test
 
 # 2. 升级版本（会同步修改 package.json；无需手动打 tag）
-pnpm version patch        # 或 minor / major
+npm version patch        # 或 minor / major
 
 # 3. 推送 main
 git push
@@ -250,11 +250,11 @@ node scripts/count-domains.mjs       # 核对计数
 node scripts/sync-facts.mjs --check  # 13 处文档版本展示位一致性
 node scripts/check-locales.mjs       # 16 语 / 213 键一致性
 node scripts/check-root-clean.mjs    # 根目录临时文件洁净度（CI rootclean job 同款）
-pnpm tmp:clean                       # 一键清空 .tmp/（会话收尾）
+npm run tmp:clean                       # 一键清空 .tmp/（会话收尾）
 git add public && git commit -m "chore: 同步生成规则文件"
 ```
 
-除产物漂移外，CI 首步 `rootclean` 还会拦截散落在根目录或 `scripts/` 的临时脚本、日志、缓存、构建中间产物（唯一合法临时位置为根 `.tmp/` 及约定子目录，规范见 [docs/TEMP-FILES.md](docs/TEMP-FILES.md)）。提交前可用上表命令本地自检；`pnpm tmp:init` 幂等创建目录，`pnpm tmp:clean` 一键清理。
+除产物漂移外，CI 首步 `rootclean` 还会拦截散落在根目录或 `scripts/` 的临时脚本、日志、缓存、构建中间产物（唯一合法临时位置为根 `.tmp/` 及约定子目录，规范见 [docs/TEMP-FILES.md](docs/TEMP-FILES.md)）。提交前可用上表命令本地自检；`npm run tmp:init` 幂等创建目录，`npm run tmp:clean` 一键清理。
 
 ## 配置选项
 
@@ -320,8 +320,8 @@ pm2 logs dns-shield
 ```bash
 cd DNS_Shield
 git pull origin main
-pnpm install
-pnpm build
+npm install
+npm run build
 pm2 restart dns-shield
 ```
 
@@ -341,7 +341,7 @@ curl -sI https://dns.ewuse.com/sitemap.xml
 curl -sI https://dns.ewuse.com/og-image.png
 ```
 
-`/llms.txt` 由 `src/app/llms.txt/route.ts` 以 `force-static` 在构建期预渲染，产物落在 `.next/` 内：Vercel 与 EdgeOne（部署工作流只上传 `./.next`）两条路径都能覆盖，因此**不要**改为 `public/` 静态文件。若需更新站点事实描述，改 `src/config/seo-content.ts` 单一来源并同步 `src/config/site.ts` 的 `SITE_LAST_MODIFIED`，再跑 `pnpm test src/config/seo.test.ts` 验证 JSON-LD / llms.txt / 页面文本三者一致。
+`/llms.txt` 由 `src/app/llms.txt/route.ts` 以 `force-static` 在构建期预渲染，产物落在 `.next/` 内：Vercel 与 EdgeOne（部署工作流只上传 `./.next`）两条路径都能覆盖，因此**不要**改为 `public/` 静态文件。若需更新站点事实描述，改 `src/config/seo-content.ts` 单一来源并同步 `src/config/site.ts` 的 `SITE_LAST_MODIFIED`，再跑 `npm run test src/config/seo.test.ts` 验证 JSON-LD / llms.txt / 页面文本三者一致。
 
 ## 故障排除
 
@@ -349,7 +349,7 @@ curl -sI https://dns.ewuse.com/og-image.png
 
 - 检查端口是否被占用：`lsof -i :3000`
 - 检查日志：`pm2 logs dns-shield`
-- 检查依赖是否正确安装（确认使用 pnpm 而非 npm，避免与 `pnpm-lock.yaml` 冲突）
+- 检查依赖是否正确安装（确认使用 pnpm 而非 npm，避免与 `package-lock.json` 冲突）
 
 ### 2. 页面加载失败
 
@@ -358,7 +358,7 @@ curl -sI https://dns.ewuse.com/og-image.png
 ### 3. 功能不可用
 
 - 检查浏览器控制台错误与服务器日志
-- 确认 `pnpm build` 成功、依赖完整
+- 确认 `npm run build` 成功、依赖完整
 
 ### 4. 性能问题
 

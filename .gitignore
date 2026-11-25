@@ -53,9 +53,9 @@ build
 .tmp/**
 
 # Package manager
-# 注意：pnpm-lock.yaml 必须入库（CI 用 --frozen-lockfile），此处只忽略 npm/yarn 锁文件
-package-lock.json
+# 注意：package-lock.json 必须入库（CI 用 npm ci），此处只忽略其他包管理器的锁文件
 yarn.lock
+pnpm-lock.yaml
 
 # Next.js
 .next/cache/

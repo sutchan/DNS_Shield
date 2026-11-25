@@ -103,11 +103,11 @@ Full module list in [docs/SPEC.md](docs/SPEC.md) §2. Core directories:
 ## Development
 
 ```bash
-pnpm install     # install dependencies
-pnpm dev         # dev mode (port 3000)
-pnpm build       # production build
-pnpm lint        # lint
-pnpm test        # unit tests (Vitest)
+npm install     # install dependencies
+npm run dev         # dev mode (port 3000)
+npm run build       # production build
+npm run lint        # lint
+npm run test        # unit tests (Vitest)
 ```
 
 ## Docs & Conventions

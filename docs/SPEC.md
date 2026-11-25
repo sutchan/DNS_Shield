@@ -76,12 +76,12 @@ dns-shield/
 │   ├── AUDIT-REPORT-v3.19.0.md     # v3.19.0 三路代码审查汇总（只读快照，BLOCKER/HIGH/MEDIUM/LOW 分级）
 │   └── config.yaml                 # 规范配置
 ├── scripts/                        # 构建/校验脚本
-│   ├── check-locales.mjs           # 国际化键覆盖校验（pnpm check:locales）
+│   ├── check-locales.mjs           # 国际化键覆盖校验（npm run check:locales）
 │   ├── check-root-clean.mjs        # 根目录临时文件洁净度门禁（CI rootclean job；唯一合法位置根 .tmp/）
-│   ├── manage-tmp.mjs              # 临时目录管理工具（pnpm tmp:init / tmp:clean）
+│   ├── manage-tmp.mjs              # 临时目录管理工具（npm run tmp:init / tmp:clean）
 │   ├── sync-facts.mjs              # 版本号写入 13 处文档展示位（--check 为 CI 门禁）
-│   ├── gen-format-files.mjs        # 生成 11 种格式产物文件（pnpm build:formats；domains 格式即数据源本身）
-│   ├── count-domains.mjs           # 域名计数实算（pnpm count:domains）
+│   ├── gen-format-files.mjs        # 生成 11 种格式产物文件（npm run build:formats；domains 格式即数据源本身）
+│   ├── count-domains.mjs           # 域名计数实算（npm run count:domains）
 │   ├── aggregate-upstream.mjs      # 上游规则聚合（aggregate.yml 调用）
 │   ├── gen-icons.mjs               # PWA 图标生成
 │   ├── locale-baseline.json        # i18n 独立基线清单（防「集体缺键」）
@@ -240,7 +240,7 @@ dns-shield/
 ├── tailwind.config.js              # Tailwind CSS 配置
 ├── tsconfig.json                   # TypeScript 配置
 ├── vitest.config.ts                # Vitest 单元测试配置
-└── pnpm-lock.yaml                  # pnpm 锁定文件（当前缺失＝BLOCKER，见 §11 与审计报告 B-01；必须恢复入库）
+└── package-lock.json                  # pnpm 锁定文件（当前缺失＝BLOCKER，见 §11 与审计报告 B-01；必须恢复入库）
 ```
 
 ### 2.1 目录职责与硬约束（2026-11-22 起）
@@ -368,7 +368,7 @@ dns-shield/
 | Worker 约定 | Worker 入口文件不可改名；`postMessage` 前必须做任务标识与内容快照校验，过期结果丢弃；卸载时结算全部挂起任务，禁止让调用方 `await` 永挂；分片收集与全局后处理必须分离（`collectLines` / `finalizeParsed`），保证并行与串行等价 |
 | 异步与竞态 | 所有异步结果落地前校验请求序号；失败必须有可见反馈（toast/错误态），禁止「返回空串当成功」导致静默清空用户数据；写盘失败（IndexedDB / localStorage）须向上传播并提示，禁止无条件弹成功 |
 | 大输入 | ≥20000 行走多核分片并行（`useWorkerPool`），失败逐级回退单 Worker → 主线程；注意 `push(...arr)` 展开上限（约 12.6 万元素即 RangeError），大数组须用 `for` 循环或 `concat` |
-| 国际化 | 全部用户可见文案走 `useT()` / locale JSON；新增键须同步 16 语并跑 `pnpm check:locales`；语言优先级固定为**简体中文 → 繁体中文 → 英语**（`supportedLanguages` 顺序即优先级） |
+| 国际化 | 全部用户可见文案走 `useT()` / locale JSON；新增键须同步 16 语并跑 `npm run check:locales`；语言优先级固定为**简体中文 → 繁体中文 → 英语**（`supportedLanguages` 顺序即优先级） |
 | 日志与错误 | 统一 `utils/logger`；可恢复错误给用户可见提示，不可恢复错误记录上下文后上抛；禁止 `catch {}` 静默吞异常 |
 | 样式 | Tailwind 原子类为主，自定义样式进 `src/styles/`；遵循 §4.4 视觉层级与栅格约定 |
 | 注释 | 仅注释「为什么」而非「做了什么」；文件头注释须写清版本、职责与关键约束；改动文件才更新头注释版本号，禁止全仓库批量刷写 |
@@ -381,7 +381,7 @@ dns-shield/
 > **【约定】** 日常更新以 `aggregate.yml` 的上游聚合为准（提交落在 `auto/aggregate-upstream`，合并后删分支，见 §7.1）；手工编辑 `domains.txt` 仅用于紧急修复，且下次聚合会覆盖——手工改动须同步评估是否需要回填上游。
 
 1. 编辑 `public/domains.txt`，添加新域名
-2. 启动开发服务器：`pnpm dev`
+2. 启动开发服务器：`npm run dev`
 3. 访问 http://localhost:3000（端口由 `package.json` 的 `dev` 脚本固定）
 4. 加载 `domains.txt` 或手动输入
 5. 配置输出选项
@@ -449,18 +449,18 @@ dns-shield/
 ```bash
 node scripts/check-root-clean.mjs      # 根目录临时文件洁净度
 node scripts/sync-facts.mjs --check    # 13 处文档版本展示位
-pnpm check:locales                     # 16 语 / 213 键一致
+npm run check:locales                     # 16 语 / 213 键一致
 node scripts/count-domains.mjs         # 域名计数（改动 domains.txt 时）
-pnpm lint && pnpm exec tsc --noEmit && pnpm test
+npm run lint && npx tsc --noEmit && npm run test
 ```
 
-**发布前另需**：`node scripts/sync-facts.mjs`（写回展示位）、`pnpm build:formats`（重建 11 个产物头部）、`CHANGELOG.md` 新增对应版本小节与比较锚点（正文小节与底部链接定义区**必须成对**，缺锚点即失效链接）。
+**发布前另需**：`node scripts/sync-facts.mjs`（写回展示位）、`npm run build:formats`（重建 11 个产物头部）、`CHANGELOG.md` 新增对应版本小节与比较锚点（正文小节与底部链接定义区**必须成对**，缺锚点即失效链接）。
 
 **评审要点**：PR 需说明变更内容、影响的格式/语言/产物、测试情况；涉及 `public/` 产物、`docs/` 展示位、`src/locales/` 键集、Worker 入口或 `scripts/` 硬编码路径的改动，须在描述中点名，避免下游断链。
 
-**临时文件**：完整规范见 [TEMP-FILES.md](./TEMP-FILES.md)——唯一合法位置为根目录 `.tmp/`（已 gitignore，含 `scripts/`/`logs/`/`cache/`/`downloads/`/`test-output/` 子目录，由 `pnpm tmp:init` 自动创建、`pnpm tmp:clean` 一键清理）；一次性脚本、探针、运行日志、缓存、下载文件、测试输出均归此目录，会话结束即清理；长期证据写入 `docs/` 或固化为测试断言。根目录散落由 `check-root-clean.mjs` 拦截（被 ignore 不等于被允许）。例外：`src/utils/scriptGenerator.ts` 生成的路由器 Shell 脚本中的 `/tmp/` 是目标设备运行时路径，不属仓库临时文件。
+**临时文件**：完整规范见 [TEMP-FILES.md](./TEMP-FILES.md)——唯一合法位置为根目录 `.tmp/`（已 gitignore，含 `scripts/`/`logs/`/`cache/`/`downloads/`/`test-output/` 子目录，由 `npm run tmp:init` 自动创建、`npm run tmp:clean` 一键清理）；一次性脚本、探针、运行日志、缓存、下载文件、测试输出均归此目录，会话结束即清理；长期证据写入 `docs/` 或固化为测试断言。根目录散落由 `check-root-clean.mjs` 拦截（被 ignore 不等于被允许）。例外：`src/utils/scriptGenerator.ts` 生成的路由器 Shell 脚本中的 `/tmp/` 是目标设备运行时路径，不属仓库临时文件。
 
-**锁文件**：`pnpm-lock.yaml` 与 `.npmrc` **必须入库**（`setup/action.yml` 以 `--frozen-lockfile` 安装，缺失即 CI 失败）。当前二者缺失属 BLOCKER，见 §11 与 `docs/AUDIT-REPORT-v3.19.0.md` B-01。
+**锁文件**：`package-lock.json` 与 `.npmrc` **必须入库**（`setup/action.yml` 以 `--frozen-lockfile` 安装，缺失即 CI 失败）。当前二者缺失属 BLOCKER，见 §11 与 `docs/AUDIT-REPORT-v3.19.0.md` B-01。
 
 
 ## 8. 版本管理
@@ -488,7 +488,7 @@ V{APP_VERSION}· build {NEXT_PUBLIC_BUILD_ID}
 
 ### 8.2 自动发布（CI 全绿后自动发版）
 
-GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支的 `push → CI → Deploy` 门禁链路全部成功后，`release.yml` 读取 `package.json` 版本号创建轻量 tag `vX.Y.Z` 并发布（含规则产物资产）；tag 已存在则跳过，仅版本号升级时才发版。开发者只需本地 `pnpm version patch|minor|major` 并 `git push`。
+GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支的 `push → CI → Deploy` 门禁链路全部成功后，`release.yml` 读取 `package.json` 版本号创建轻量 tag `vX.Y.Z` 并发布（含规则产物资产）；tag 已存在则跳过，仅版本号升级时才发版。开发者只需本地 `npm version patch|minor|major` 并 `git push`。
 
 ## 9. 依赖关系
 
@@ -554,7 +554,7 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 - 部分广告域名使用 HTTPS 硬编码，需配合 Pi-hole 或广告屏蔽插件
 - 部分设备可能有 hosts 文件大小限制
 - 需要定期更新规则以应对新广告形式
-- **锁文件与 `.npmrc` 缺失（BLOCKER，v3.19.0 审计 B-01，截至 v3.19.2 未修复）**：`pnpm-lock.yaml` 与 `.npmrc` 均不在工作树与 HEAD；`.github/actions/setup/action.yml:68-70` 在 `install=true && frozen=true` 时遇缺锁文件即 `exit 1`，导致 CI 的 lint/typecheck/test/build 与部署 job 在装依赖前后失败。本地已存在的 `node_modules` 会掩盖此问题。完整分级清单见 `docs/AUDIT-REPORT-v3.19.0.md`。
+- **锁文件与 `.npmrc` 缺失（BLOCKER，v3.19.0 审计 B-01，截至 v3.19.2 未修复）**：`package-lock.json` 与 `.npmrc` 均不在工作树与 HEAD；`.github/actions/setup/action.yml:68-70` 在 `install=true && frozen=true` 时遇缺锁文件即 `exit 1`，导致 CI 的 lint/typecheck/test/build 与部署 job 在装依赖前后失败。本地已存在的 `node_modules` 会掩盖此问题。完整分级清单见 `docs/AUDIT-REPORT-v3.19.0.md`。
 - **Service Worker 未注册**：`public/service-worker.js` 已实现同源缓存策略，但全仓无 `navigator.serviceWorker.register` 调用，PWA 离线缓存实际未启用；§12.2 描述的是 SW 自身策略而非已生效行为。
 - **`public/category-index.txt` 未入库**：由 `aggregate.yml` 生成，但 `add-paths` 未包含，线上分类筛选控件会 404 降级隐藏。
 

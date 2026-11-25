@@ -121,7 +121,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Build
-        run: pnpm run build
+        run: npm run build
 
       # 产物目录：next.config.js 为 output: 'standalone'，构建产物在 .next/（非 ./out）。
       # 旧默认值 ./out 属于 output: 'export' 形态，会让 EdgeOne 找不到产物而退化成

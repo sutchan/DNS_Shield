@@ -96,16 +96,16 @@ flowchart LR
 
 1. 按 [02 安装与部署](../DEPLOYMENT.md) 准备 Node 24 / pnpm 11 环境并安装依赖。
 2. 配置 Secrets（`VERCEL_TOKEN` 等，见部署指南 §CI/CD），推送到 `main` 触发 CI → Deploy → Release。
-3. 更新数据源：`public/domains.txt` 是唯一事实来源，改动后运行 `pnpm build:formats` 派生 11 个产物并提交。
+3. 更新数据源：`public/domains.txt` 是唯一事实来源，改动后运行 `npm run build:formats` 派生 11 个产物并提交。
 4. 验证发布：检查 `GET /llms.txt`、`GET /sitemap.xml` 与 12 个规则文件可访问（见 [04 API](./04-api.md) §调用示例）。
-5. 本地开发：`git clone` 后 `pnpm install` → `pnpm dev`（端口 3000，实现 `standalone` 输出）；提交前按 [SPEC §7.2](./SPEC.md#72-协作流程与提交前门禁2026-11-22-起) 跑门禁（`pnpm check:root-clean` / `node scripts/sync-facts.mjs --check` / `pnpm check:locales` / `pnpm lint` / `pnpm exec tsc --noEmit` / `pnpm test`）。
-6. 临时文件：调试脚本、日志、缓存、下载文件统一放根目录 `.tmp/`（`pnpm tmp:init` 自动创建、`pnpm tmp:clean` 一键清理），禁止散落根目录；详见 [TEMP-FILES.md](./TEMP-FILES.md)。
+5. 本地开发：`git clone` 后 `npm install` → `npm run dev`（端口 3000，实现 `standalone` 输出）；提交前按 [SPEC §7.2](./SPEC.md#72-协作流程与提交前门禁2026-11-22-起) 跑门禁（`npm run check:root-clean` / `node scripts/sync-facts.mjs --check` / `npm run check:locales` / `npm run lint` / `npx tsc --noEmit` / `npm run test`）。
+6. 临时文件：调试脚本、日志、缓存、下载文件统一放根目录 `.tmp/`（`npm run tmp:init` 自动创建、`npm run tmp:clean` 一键清理），禁止散落根目录；详见 [TEMP-FILES.md](./TEMP-FILES.md)。
 
 ## 8. 常见操作误区
 
 | 误区 | 正确做法 |
 |------|----------|
-| 直接编辑 `whitelist.txt` 等产物 | 只改 `domains.txt`，再跑 `pnpm build:formats` |
+| 直接编辑 `whitelist.txt` 等产物 | 只改 `domains.txt`，再跑 `npm run build:formats` |
 | 用 `curl ... >> /etc/hosts` 追加订阅 | 先下载到临时文件、核对后再纳入配置 |
 | 以为规则在服务器生成，提交给服务端 | 生成全在浏览器本地；没有上传接口 |
 | 切换语言后以为方向 / 主题会刷新才生效 | 首屏脚本即时恢复 `lang` / `dir` / `.dark` |

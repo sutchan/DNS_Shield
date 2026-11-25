@@ -41,7 +41,7 @@ DNS Shield 解决三个具体问题：
 | 通知 | sonner | 统一 toast，减少自研状态 | `sonner` |
 | 计算 | Web Worker + 主线程回退 | 大文本解析不阻塞 UI；Worker 不可用时功能不降级消失 | 5000 行单 Worker / 20000 行分片池 |
 | 测试 | Vitest + jsdom + v8 coverage | 纯函数与 hooks 均可测；覆盖率门禁 80/75/85/80 | 显式 `all: false` 口径 |
-| 包管理 | pnpm | `pnpm-lock.yaml` 保证可复现安装 | `pnpm@11.24.0` |
+| 包管理 | pnpm | `package-lock.json` 保证可复现安装 | `pnpm@11.24.0` |
 | 运行时 | Node 24 | 与 CI / Vercel 对齐 | `>=24.11.0 <25` |
 
 > 版本事实以 `package.json` 为准。历史注释中若出现「React 19」等与依赖不一致的表述，按 [07 优化建议 T-DOC-05](./07-improvements.md) 登记后修正，不在本文档复述。
@@ -107,7 +107,7 @@ flowchart TB
 
 以下限制经代码核实，均已登记在 [07 优化建议](./07-improvements.md) 与 [任务清单](./tasks.md)：
 
-- `.npmrc` 在当前工作树缺失，`engine-strict` 约束未实际生效；`pnpm-lock.yaml` 已恢复。
+- `.npmrc` 在当前工作树缺失，`engine-strict` 约束未实际生效；`package-lock.json` 已恢复。
 - `public/service-worker.js` 存在但全仓无 `register` 调用，PWA 离线缓存未启用。
 - `public/category-index.txt` 由聚合工作流生成但未纳入发布路径，线上分类筛选可能降级。
 - 生产 CSP 的 `script-src` 仍包含 `'unsafe-inline'`（首屏内联脚本所需），Trusted Types 未启用。

@@ -20,7 +20,7 @@
 # 无需再改本文件，杜绝「加了格式却漏发 Release 资产」的历史问题。
 #
 # 推荐发布流程（开发者侧）：
-#   pnpm version patch|minor|major   # 改 package.json 版本号
+#   npm version patch|minor|major   # 改 package.json 版本号
 #   git push                         # CI 绿 → 部署 → 本流程自动打 tag + 发布
 # ---------------------------------------------------------------------------
 name: Release

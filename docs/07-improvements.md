@@ -43,10 +43,10 @@
 
 ### O-03 修正 SPEC 中锁文件缺失的过时描述
 
-**问题背景**：`docs/SPEC.md:242,461,555` 仍写「`pnpm-lock.yaml` / `.npmrc` 缺失属 BLOCKER」，并指向 `docs/AUDIT-REPORT-v3.19.0.md` B-01。但提交 `a9eceb1` 已恢复 `pnpm-lock.yaml`（当前工作树存在），`.npmrc` 仍未恢复（见 O-05）。文档与事实不一致会误导贡献者与 CI 排障。
+**问题背景**：`docs/SPEC.md:242,461,555` 仍写「`package-lock.json` / `.npmrc` 缺失属 BLOCKER」，并指向 `docs/AUDIT-REPORT-v3.19.0.md` B-01。但提交 `a9eceb1` 已恢复 `package-lock.json`（当前工作树存在），`.npmrc` 仍未恢复（见 O-05）。文档与事实不一致会误导贡献者与 CI 排障。
 
 **实施方案**：
-1. 更新 SPEC 三处描述：`pnpm-lock.yaml` 已入库；`.npmrc` 缺失单列（引用 O-05）。
+1. 更新 SPEC 三处描述：`package-lock.json` 已入库；`.npmrc` 缺失单列（引用 O-05）。
 2. 审计报告按冻结快照约定保留历史原文，不回填。
 3. 在 `scripts/sync-facts.mjs` 增加轻量校验（若未来再出现「锁文件缺失」措辞而文件存在则告警），可选。
 
@@ -79,7 +79,7 @@
 
 **实施方案**：
 1. 新增 `.npmrc`，内容为 `engine-strict=true` 与 `package-manager-strict=true`。
-2. 在 Node 24 / pnpm 11 下分别验证 `pnpm install --frozen-lockfile`、Node 26 下应失败。
+2. 在 Node 24 / pnpm 11 下分别验证 `npm ci`、Node 26 下应失败。
 3. 同步修正 `DEPLOYMENT.md` 与 SPEC 的描述为「恢复后生效」。
 
 **预期效果**：不满足 Node/pnpm 约束的安装 100% 在安装期失败；避免「本地能跑、CI 红」的环境漂移。

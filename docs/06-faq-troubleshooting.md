@@ -58,17 +58,17 @@
 | 报错 | 原因 | 处理 |
 |------|------|------|
 | `engine-strict` / Node 版本不匹配 | 要求 `>=24.11.0 <25` | 切换 Node 24；注意当前工作树**缺失 `.npmrc`**，`engine-strict` 未实际生效（见 [07 O-05](./07-improvements.md)） |
-| `pnpm install --frozen-lockfile` 失败 | 锁文件与 `package.json` 不一致 | 先本地 `pnpm install` 更新并提交 `pnpm-lock.yaml` |
+| `npm ci` 失败 | 锁文件与 `package.json` 不一致 | 先本地 `npm install` 更新并提交 `package-lock.json` |
 | `next build` 取字体失败 | 使用 `next/font/google` 的外部字体 | 本项目已统一系统字体栈，不应出现；若出现请检查是否误引入外部字体依赖 |
 | `vitest --coverage` 清理 `coverage/` 卡死 | IDE safe-delete shim 超时（环境限制） | 改用 `--coverage.reportsDirectory=.tmp/coverage`；CI 不受影响 |
-| 根目录清洁度门禁失败 | 临时脚本 / 日志 / 缓存散落在根目录或 `scripts/` | 按类型移入 `.tmp/scripts/`、`.tmp/logs/`、`.tmp/cache/`（详见 [TEMP-FILES.md](./TEMP-FILES.md)）；`pnpm tmp:clean` 可一键清理 |
-| `.tmp/` 目录不存在 | 未被自动创建 | 执行 `pnpm tmp:init`（幂等），或运行门禁时会自动初始化 |
+| 根目录清洁度门禁失败 | 临时脚本 / 日志 / 缓存散落在根目录或 `scripts/` | 按类型移入 `.tmp/scripts/`、`.tmp/logs/`、`.tmp/cache/`（详见 [TEMP-FILES.md](./TEMP-FILES.md)）；`npm run tmp:clean` 可一键清理 |
+| `.tmp/` 目录不存在 | 未被自动创建 | 执行 `npm run tmp:init`（幂等），或运行门禁时会自动初始化 |
 
 ### 2.5 CI / 发布异常
 
-- **CI 红在 setup**：检查 `pnpm-lock.yaml` 是否入库、`setup` 复合动作缓存是否命中。历史 BLOCKER（锁文件缺失）已修复，但 `.npmrc` 仍缺失，见 [07 O-05](./07-improvements.md)。
+- **CI 红在 setup**：检查 `package-lock.json` 是否入库、`setup` 复合动作缓存是否命中。历史 BLOCKER（锁文件缺失）已修复，但 `.npmrc` 仍缺失，见 [07 O-05](./07-improvements.md)。
 - **Release 未生成**：Release 工作流由 Deploy 成功后触发；需确认 `main` 的 CI → Deploy 全绿。
-- **规则文件未更新**：改动 `domains.txt` 后必须运行 `pnpm build:formats` 并提交 11 个派生文件。
+- **规则文件未更新**：改动 `domains.txt` 后必须运行 `npm run build:formats` 并提交 11 个派生文件。
 
 ### 2.6 已知产品限制（非故障）
 
