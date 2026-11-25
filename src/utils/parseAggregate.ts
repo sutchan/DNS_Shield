@@ -1,4 +1,4 @@
-// src/utils/parseAggregate.ts v3.16.0
+// src/utils/parseAggregate.ts v3.22.0
 // 多核并行解析的纯函数层：并行度决策、按行边界分片与原始产物聚合。
 // parseSource 的逐行收集阶段（collectLines）无跨行状态，按行分片并行求值后
 // 聚合原始产物，再统一执行全局后处理（finalizeParsed），结果与单线程
@@ -44,10 +44,12 @@ export const aggregateRaw = (
   const raw: RawCollected = { domains: [], whitelist: [], customDns: [], regexRules: [] };
   const counters: RawCounters = { commentCount: 0, invalidCount: 0, totalLines: 0 };
   for (const part of parts) {
-    raw.domains.push(...part.raw.domains);
-    raw.whitelist.push(...part.raw.whitelist);
-    raw.customDns.push(...part.raw.customDns);
-    raw.regexRules.push(...part.raw.regexRules);
+    // T-AUD-M10：push(...arr) 在约 126000 元素起触发 RangeError（实参上限），
+    // 一旦发生会整片丢失并静默降级串行；逐项 push 与 concat 都不会有该上限。
+    for (const domain of part.raw.domains) raw.domains.push(domain);
+    for (const domain of part.raw.whitelist) raw.whitelist.push(domain);
+    for (const rule of part.raw.customDns) raw.customDns.push(rule);
+    for (const rule of part.raw.regexRules) raw.regexRules.push(rule);
     counters.commentCount += part.counters.commentCount;
     counters.invalidCount += part.counters.invalidCount;
     counters.totalLines += part.counters.totalLines;

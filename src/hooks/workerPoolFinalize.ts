@@ -1,4 +1,4 @@
-// src/hooks/workerPoolFinalize.ts v3.18.1
+// src/hooks/workerPoolFinalize.ts v3.22.0
 // 并行分片的聚合收尾：把「按分片序拼接 → 全局跨行后处理」收敛为可单测的纯函数，
 // 并统一承接聚合异常，避免 useWorkerPool 中先删除任务再聚合导致 Promise 永挂。
 
@@ -25,6 +25,8 @@ export interface TaskState {
   shardTotal: number;
   collected: Map<number, ShardResult>;
   shardProgress: Map<number, { processed: number; total: number }>;
+  /** 派发前算好的全局行数：进度分母固定，不受已上报分片数影响（T-AUD-M09） */
+  totalLines: number;
   failed: boolean;
   startedAt: number;
   resolve: (value: ParallelParseResult | null) => void;

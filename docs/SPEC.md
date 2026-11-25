@@ -460,7 +460,7 @@ npm run lint && npx tsc --noEmit && npm run test
 
 **临时文件**：完整规范见 [TEMP-FILES.md](./TEMP-FILES.md)——唯一合法位置为根目录 `.tmp/`（已 gitignore，含 `scripts/`/`logs/`/`cache/`/`downloads/`/`test-output/` 子目录，由 `npm run tmp:init` 自动创建、`npm run tmp:clean` 一键清理）；一次性脚本、探针、运行日志、缓存、下载文件、测试输出均归此目录，会话结束即清理；长期证据写入 `docs/` 或固化为测试断言。根目录散落由 `check-root-clean.mjs` 拦截（被 ignore 不等于被允许）。例外：`src/utils/scriptGenerator.ts` 生成的路由器 Shell 脚本中的 `/tmp/` 是目标设备运行时路径，不属仓库临时文件。
 
-**锁文件**：`package-lock.json` 与 `.npmrc` **必须入库**（`setup/action.yml` 以 `--frozen-lockfile` 安装，缺失即 CI 失败）。当前二者缺失属 BLOCKER，见 §11 与 `docs/AUDIT-REPORT-v3.19.0.md` B-01。
+**锁文件**：`package-lock.json` 与 `.npmrc` **必须入库**。`.github/actions/setup/action.yml` 在 CI 中以 `npm ci` 安装并显式断言锁文件存在，缺失即失败；`.npmrc` 的 `engine-strict=true` 使 `engines.node >=24.11.0 <25` 与 `engines.npm >=11` 在安装期生效（`package-manager-strict` 属 pnpm 选项，npm 不适用）。二者均已就位（T-BUILD-01，2026-11-25）；历史 BLOCKER 见 `docs/AUDIT-REPORT-v3.19.0.md` B-01（冻结快照，不维护当前状态）。
 
 
 ## 8. 版本管理
@@ -549,12 +549,12 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 
 ## 11. 已知限制
 
-> **【强制】事实清单**：本节描述的是**当前真实状态**（截至 v3.19.2），不是目标能力。任何文档或代码若声称下列项「已生效」，即视为漂移，须以本节为准修正。
+> **【强制】事实清单**：本节描述的是**当前真实状态**（截至 v3.22.0），不是目标能力。任何文档或代码若声称下列项「已生效」，即视为漂移，须以本节为准修正。
 
 - 部分广告域名使用 HTTPS 硬编码，需配合 Pi-hole 或广告屏蔽插件
 - 部分设备可能有 hosts 文件大小限制
 - 需要定期更新规则以应对新广告形式
-- **锁文件与 `.npmrc` 缺失（BLOCKER，v3.19.0 审计 B-01，截至 v3.19.2 未修复）**：`package-lock.json` 与 `.npmrc` 均不在工作树与 HEAD；`.github/actions/setup/action.yml:68-70` 在 `install=true && frozen=true` 时遇缺锁文件即 `exit 1`，导致 CI 的 lint/typecheck/test/build 与部署 job 在装依赖前后失败。本地已存在的 `node_modules` 会掩盖此问题。完整分级清单见 `docs/AUDIT-REPORT-v3.19.0.md`。
+- **锁文件与 `.npmrc`（原 BLOCKER，v3.19.0 审计 B-01，2026-11-25 已修复）**：`package-lock.json` 已入库；`.npmrc` 已恢复并启用 `engine-strict` / `package-manager-strict`。CI 以 `npm ci` 安装并在 setup 复合动作中显式断言锁文件存在。历史问题证据见 `docs/AUDIT-REPORT-v3.19.0.md`（冻结快照）；当前状态以本节为准。
 - **Service Worker 未注册**：`public/service-worker.js` 已实现同源缓存策略，但全仓无 `navigator.serviceWorker.register` 调用，PWA 离线缓存实际未启用；§12.2 描述的是 SW 自身策略而非已生效行为。
 - **`public/category-index.txt` 未入库**：由 `aggregate.yml` 生成，但 `add-paths` 未包含，线上分类筛选控件会 404 降级隐藏。
 

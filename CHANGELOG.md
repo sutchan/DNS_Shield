@@ -213,6 +213,7 @@
 ### Fixed（解析任务内存堆积）
 - `useRuleWorker` 引入 `inflightRef` 单飞：以内容键 `task + '\0' + text` 复用同一解析任务、作废旧输入结果；`useWorkerPool` 并行分支同样按文本单飞，并用 `useMemo` 稳定池引用，避免 `loadDomainData` 每帧重复派发导致 `postMessage` 反复克隆大文本（线上曾观测页面内存飙升至 5GB）
 - 新增 `src/hooks/useWorkerPool.singleflight.test.ts`（5 用例）覆盖单飞复用、内容键与池引用稳定性；测试实算 **48 文件 / 293 用例**（`src/**/*.test.ts` 静态计数）
+- 根因链与提交对应（T-DOC-02）：`a57f1f3` 定位「`useWorkerPool` 引用抖动 → `loadDomainData` 每帧执行 → 堆积克隆大文本」并修复调用链；`da0f2af` 按内容键单飞并作废旧任务；`dc0f4b4` 补回归测试。三笔提交均在 v3.17.4 之后合入 main，于 v3.19.x 收编（2026-11-25 以 `git log` 复核）。
 
 ### CI（质量门禁与工具链）
 - 新增根目录临时文件洁净度门禁 `scripts/check-root-clean.mjs`（根目录与 `scripts/` 下的 `_*.mjs` 一律违规，唯一合法临时位置为根 `.tmp/`），以 `rootclean` job 纳入 CI Gate 的 `needs`

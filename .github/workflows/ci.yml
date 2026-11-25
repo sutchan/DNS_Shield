@@ -122,7 +122,7 @@ jobs:
           {
             echo '### 单元测试结果'
             echo '```'
-            grep -E 'Test Files|Tests|Duration' _test.log || echo '(未解析到测试摘要)'
+            grep -E 'Test Files|Tests|Duration' .tmp/logs/test.log || echo '(未解析到测试摘要)'
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 

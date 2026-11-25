@@ -1,4 +1,4 @@
-// src/hooks/useRules.ts v3.15.0
+// src/hooks/useRules.ts v3.22.0
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { computeEffectiveStats } from '../utils/rulesGenerator';
 import { generateSingleFormat } from '../utils/formatGenerators.single';
@@ -55,9 +55,8 @@ export const useRules = (
     // 修复统计数字与实际导出结果不符的问题（#2）
     onEffectiveStats?.(computeEffectiveStats(parsedData, settings));
 
-    // 生成输出行号 - 使用当前生成的内容
-    generateLineNumbers(newOutput, outputLineNumbersRef);
-
+    // 行号只由上方监听 currentOutput 的 effect 派生一次（T-PERF-02）：
+    // 大输出下 generateLineNumbers 是 O(n) DOM 写入，重复调用会直接翻倍主线程开销。
     if (notify) showToast('rulesGenerated');
   }, [parsedData, currentFormat, settings, t, showToast, onEffectiveStats]);
 

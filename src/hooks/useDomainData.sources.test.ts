@@ -1,4 +1,4 @@
-// src/hooks/useDomainData.sources.test.ts v3.15.0
+// src/hooks/useDomainData.sources.test.ts v3.22.0
 // @vitest-environment jsdom
 // 远端/本地源加载契约：远端预设源优先、失败回退同源 /domains.txt、
 // 全源失败时给出用户可见告警（T-P1-09），且任何情况下都不写入非法内容。
@@ -53,6 +53,23 @@ describe('useDomainData · 远端/本地源加载', () => {
     expect(result.current.sourceInput).toBe('remote.example.com\nremote2.example.com');
     expect(result.current.parsedData.domains).toEqual(['remote.example.com', 'remote2.example.com']);
     // 远端成功则不再回退同源
+    expect(fetchWithCacheMock).toHaveBeenCalledTimes(1);
+    unmount();
+  });
+
+  // T-TEST-01：引用抖动曾让 useEffect([loadDomainData]) 每帧重跑，远端被反复拉取、
+  // Worker 反复克隆大文本直至内存 5GB。此用例锁定「挂载只加载一次」契约。
+  it('挂载后 loadDomainData 仅执行一次，定时器推进也不重复拉取（T-TEST-01）', async () => {
+    fetchWithCacheMock.mockImplementation(async (url: string) =>
+      url.startsWith('https://') ? 'memory.example.com' : null
+    );
+    const { unmount } = renderHook(() => useDomainData(vi.fn()));
+    await advance(0);
+    expect(fetchWithCacheMock).toHaveBeenCalledTimes(1);
+
+    for (let i = 0; i < 5; i++) {
+      await advance(30000);
+    }
     expect(fetchWithCacheMock).toHaveBeenCalledTimes(1);
     unmount();
   });

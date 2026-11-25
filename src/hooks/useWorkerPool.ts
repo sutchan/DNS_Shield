@@ -1,4 +1,4 @@
-// src/hooks/useWorkerPool.ts v3.18.1
+// src/hooks/useWorkerPool.ts v3.22.0
 // 分片解析 Worker 池的主线程控制器（多核并行求值）：
 // - 池按需扩展至分片数，分片派发采用最闲优先负载均衡（仅终态消息回收负载）；
 // - 收齐全部分片后由 workerPoolFinalize 聚合并统一执行跨行后处理，
@@ -9,6 +9,7 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { logger } from '../utils/logger';
 import { splitIntoShards } from '../utils/parseAggregate';
+import { countLines } from '../utils/lineCount';
 import type { ParseShardResponse } from '../workers/parseShard.worker';
 import { finalizeShardResults } from './workerPoolFinalize';
 import type { ParallelParseResult, TaskState } from './workerPoolFinalize';
@@ -41,13 +42,13 @@ export const useWorkerPool = () => {
     if (message.kind === 'progress') {
       if (!task) return;
       task.shardProgress.set(message.shardIndex, { processed: message.processed, total: message.total });
+      // T-AUD-M09：分母用派发前算好的全局行数，不能累加「已上报分片」的 total，
+      // 否则进度先冲到 100% 后随着迟到分片上报表再次倒退。
       let processed = 0;
-      let total = 0;
       task.shardProgress.forEach((shard) => {
         processed += shard.processed;
-        total += shard.total;
       });
-      task.onProgress?.({ processed, total });
+      task.onProgress?.({ processed, total: task.totalLines });
       return;
     }
 
@@ -137,6 +138,7 @@ export const useWorkerPool = () => {
           shardTotal: shards.length,
           collected: new Map(),
           shardProgress: new Map(),
+          totalLines: countLines(text),
           failed: false,
           startedAt: Date.now(),
           resolve,

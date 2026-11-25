@@ -45,6 +45,8 @@
 
 **问题背景**：`docs/SPEC.md:242,461,555` 仍写「`package-lock.json` / `.npmrc` 缺失属 BLOCKER」，并指向 `docs/AUDIT-REPORT-v3.19.0.md` B-01。但提交 `a9eceb1` 已恢复 `package-lock.json`（当前工作树存在），`.npmrc` 仍未恢复（见 O-05）。文档与事实不一致会误导贡献者与 CI 排障。
 
+**状态（2026-11-25 更新）**：✅ 已实施——`docs/SPEC.md` §7 锁文件段与 §11 已知限制均已更新为「锁文件已入库、`.npmrc` 已恢复并生效」，审计报告按冻结快照保留历史原文；下方实施方案保留作历史记录。
+
 **实施方案**：
 1. 更新 SPEC 三处描述：`package-lock.json` 已入库；`.npmrc` 缺失单列（引用 O-05）。
 2. 审计报告按冻结快照约定保留历史原文，不回填。
@@ -75,7 +77,9 @@
 
 ### O-05 恢复 `.npmrc` 使 Node/npm 强约束生效
 
-**问题背景**：`package.json` 声明 `engines.node >=24.11.0 <25` 与 `engines.npm >=11`（v3.22.0 起移除 `packageManager` 的 pnpm 锁定），但当前工作树**不存在 `.npmrc`**，因此 `engine-strict=true` / `package-manager-strict=true` 并未生效；`DEPLOYMENT.md` 与 SPEC 的描述偏向「已生效」。历史提交 `e102610` 删除了该文件，`a9eceb1` 只恢复了锁文件。
+**问题背景**：`package.json` 声明 `engines.node >=24.11.0 <25` 与 `engines.npm >=11`（v3.22.0 起移除 `packageManager` 的 pnpm 锁定），但当前工作树**不存在 `.npmrc`**，因此 `engine-strict=true` 并未生效；`DEPLOYMENT.md` 与 SPEC 的描述偏向「已生效」。历史提交 `e102610` 删除了该文件，`a9eceb1` 只恢复了锁文件。
+
+**状态（2026-11-25 更新）**：✅ 已实施——根目录 `.npmrc` 已恢复，仅设置 npm 支持的 `engine-strict=true`；Node 24 / npm 11 为本仓 CI 与本地开发的唯一合规组合，Node 26 下安装应失败。下方实施方案保留作历史记录。
 
 **实施方案**：
 1. 新增 `.npmrc`，内容为 `engine-strict=true`（`package-manager-strict` 是 pnpm 专属选项，npm 不适用，移除 pnpm 后无需该项）。

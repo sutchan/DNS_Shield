@@ -1,4 +1,4 @@
-// src/utils/idb.ts v3.11.0
+// src/utils/idb.ts v3.22.0
 // 轻量 IndexedDB 封装：Promise 化读写，供自动保存与远程规则源缓存使用。
 // 设计要点：
 //   - 非浏览器环境（SSR）、隐私模式或配额禁用时统一降级为 null，由调用方回退 localStorage；
@@ -20,13 +20,15 @@ const isIndexedDbAvailable = (): boolean =>
 const openDb = (): Promise<IDBDatabase | null> => {
   if (!isIndexedDbAvailable()) return Promise.resolve(null);
   if (dbPromise) return dbPromise;
-  dbPromise = new Promise<IDBDatabase | null>((resolve) => {
+  const attempt = new Promise<IDBDatabase | null>((resolve) => {
     let settled = false;
-    const settle = (db: IDBDatabase | null) => {
-      if (!settled) {
-        settled = true;
-        resolve(db);
-      }
+    // T-AUD-M08：失败时必须重置单例，否则 dbPromise 永久 resolve(null)，
+    // 后续每次读写都直接走降级路径，即使 IndexedDB 已恢复也永远不会重试。
+    const settle = (db: IDBDatabase | null, retryable = false) => {
+      if (settled) return;
+      settled = true;
+      if (retryable && dbPromise === attempt) dbPromise = null;
+      resolve(db);
     };
     try {
       const req = indexedDB.open(DB_NAME, DB_VERSION);
@@ -36,13 +38,16 @@ const openDb = (): Promise<IDBDatabase | null> => {
         if (!db.objectStoreNames.contains(STORE_HTTP)) db.createObjectStore(STORE_HTTP);
       };
       req.onsuccess = () => settle(req.result);
-      req.onerror = () => settle(null);
-      req.onblocked = () => settle(null);
+      // onerror：打开失败（配额/安全策略）；onblocked：旧连接占用导致升级阻塞。
+      // 两者都属可重试失败，均需清空单例；语义通过 reason 注释区分。
+      req.onerror = () => settle(null, true);
+      req.onblocked = () => settle(null, true);
     } catch {
-      settle(null);
+      settle(null, true);
     }
   });
-  return dbPromise;
+  dbPromise = attempt;
+  return attempt;
 };
 
 /** 读取键值；记录不存在或 IndexedDB 不可用时返回 null */

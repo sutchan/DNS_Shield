@@ -22,13 +22,13 @@
 |---|---|---|
 | 应用版本 | v3.22.0 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
-| i18n 语言 / 键数 | 16 种 / 递归合计 **213** 键（`check:locales` 与 `scripts/locale-baseline.json` keyCount 口径） | `node scripts/check-locales.mjs` 2026-11-25 实跑输出「213 键」；早期记录的 209 / 212 键已过时，禁止沿用旧值 |
+| i18n 语言 / 键数 | 16 种 / 递归合计 **214** 键（`check:locales` 与 `scripts/locale-baseline.json` keyCount 口径） | `node scripts/check-locales.mjs` 2026-11-25 实跑输出「214 键」（新增 `toast.autosaveFailed`）；早期记录的 209 / 212 / 213 键已过时，禁止沿用旧值 |
 | 测试套件 / 用例 | **51 套件 / 335 用例**（2026-11-25 `vitest run` 实跑全绿；较 2026-11-13 的 326 例增加 9 例，系 v3.20.x 诊断修复补测） | `vitest run` 为权威计数，本轮已实跑复核 |
 | 覆盖率门禁 | 已生效且为真实值；含 `src/utils` + `src/hooks`，门槛 **语句 80 / 分支 75 / 函数 85 / 行 80**；`vitest.config.ts` 显式声明 `all: false` | `vitest run --coverage`；2026-11-25 实测：语句 87.91 / 分支 87.26 / 函数 90.78 / 行 87.91，全部达标且有余量；曾以「临时抬阈至 99 → EXIT CODE 1」反证门禁真实生效 |
 | 组件规模 | 顶层 **17** 个 `.tsx`（含 `OutputPanel.parts.tsx` / `OutputPanel.formatSelect.tsx` / 新增 `SeoContent.tsx`）+ `OutputPanel.derived.ts` / `InputPanel.types.ts`，`ui/` 8 个（v3.18.0 清理 4 个未被引用的孤儿组件 `Card` / `Loading` / `Switch` / `Tabs`） | `src/components/` 实测（2026-11-12 实算） |
 | 源文件 >200 行 | **0** 个（v3.18.1 已将 `src/hooks/useWorkerPool.ts` 由 213 行拆分降回 200 行内；`globals.css` 已于 v3.13.6 拆为 `src/styles/*.css` 8 模块）；2026-11-13 实扫确认 | 行数扫描（2026-11-13 实算） |
-| 静态门禁 | `sync-facts.mjs --check` 13 处版本展示位与 package.json(3.21.0) 全一致；`check-locales.mjs` 16 语 / 213 键一致；`check-root-clean.mjs` 根目录临时文件洁净度（`rootclean` job）；文档内链断链 0 | 2026-11-25 实跑（`sync-facts --check` / `check:locales` / `check-root-clean`）；`tsc` / `eslint` / `vitest` 同日实跑全绿 |
-| 拦截域名 | **644** 条（黑名单 644 + 白名单 0），2026-11-25 实算 | `node scripts/count-domains.mjs` 实跑；历史上主线曾为 127188 条（af976b8），`origin/auto/aggregate-upstream` 上 7fac633 有 129348 条未合入；主线回退原因待查（T-DATA-01，P1） |
+| 静态门禁 | `sync-facts.mjs --check` 13 处版本展示位与 package.json(3.21.0) 全一致；`check-locales.mjs` 16 语 / 214 键一致；`check-root-clean.mjs` 根目录临时文件洁净度（`rootclean` job）；文档内链断链 0 | 2026-11-25 实跑（`sync-facts --check` / `check:locales` / `check-root-clean`）；`tsc` / `eslint` / `vitest` 同日实跑全绿 |
+| 拦截域名 | **127188** 条（黑名单 127188 + 白名单 0），2026-11-25 从 `af976b8` 恢复后实算 | `node scripts/count-domains.mjs` 实跑；回退原因与恢复决策见 T-DATA-01；`origin/auto/aggregate-upstream` 上 7fac633 的 129348 条未合入主线，不采用 |
 
 > **教训**：本文件中的数据型数字（键数 / 用例数 / 覆盖率 / 行数）历史上多次与实现脱节。修改前务必用脚本实算，禁止凭记忆书写。
 > 2026-10-19 复核再次印证：键数、用例数、覆盖率三项均曾长期偏离真实值，且偏差方向不一致，说明凭旧记录继承数字必然失真。
@@ -100,6 +100,7 @@
   - 目标：本轮文档核对发现主线 `public/domains.txt` 当前仅 644 条（888 行），而历史提交 `af976b8` 为 127188 条、`origin/auto/aggregate-upstream` 的 `7fac633` 为 129348 条且未合入主线；需定位回退发生在哪次提交 / 工作流，并决定是恢复聚合结果还是确认 644 为有意状态。
   - 影响范围：全站拦截能力（127188 → 644 是数量级下降）、文档事实数字、订阅用户。
   - 验收标准：给出回退原因与决策记录；若恢复则从确认的权威提交重建 11 个产物并重算 `count-domains`，同步 SPEC / tasks / CHANGELOG；若维持 644 则说明原因并关闭本任务。
+  - **决策记录（2026-11-25）**：`git log --follow -- public/domains.txt` 定位回退发生在 `04bdd65`（2026-11-25 15:50，提交说明为「建立标准化文档体系」，属误带入的副作用），该提交将 `domains.txt` 由 127188 行删至 888 行（244 增 / 126544 删）；`af976b8` 为主线权威聚合提交（127188 条）。逐行比对确认当前 644 条**全部包含于** `af976b8` 版本（缺失 0 条），恢复无丢失风险。`origin/auto/aggregate-upstream` 的 `7fac633`（129348 条）未合入主线，按「不擅自合并未审核数据」原则不采用。已执行：从 `af976b8` 恢复 `public/domains.txt` → `node scripts/gen-format-files.mjs` 重建 11 个产物（版本 3.22.0）→ `node scripts/count-domains.mjs` 实算黑名单 **127188** / 白名单 0 / 合计 127188。
 - **T-DOC-01 · 修正 SPEC 锁文件 / CSP 过时描述**（责任人：Docs Team；计划：2026-12-02）
   - 目标：`docs/SPEC.md:242,461,555` 仍写「`package-lock.json` / `.npmrc` 缺失属 BLOCKER」，但锁文件已由 `a9eceb1` 恢复；`.npmrc` 仍缺失应单列并指向 T-BUILD-01。§11 双源 CSP 描述亦需与 `next.config.js` 单一来源对齐。
   - 影响范围：文档准确性、贡献者排障。

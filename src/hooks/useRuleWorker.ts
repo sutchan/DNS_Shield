@@ -1,4 +1,4 @@
-// src/hooks/useRuleWorker.ts v3.16.0
+// src/hooks/useRuleWorker.ts v3.22.0
 // 规则处理 Worker 的主线程控制器：负责 Worker 生命周期、请求/响应配对、
 // 进度回调与耗时统计。不支持 Worker 的环境（SSR / 老旧浏览器）返回 null，
 // 由调用方回退主线程同步处理，保证功能不中断。
@@ -121,11 +121,21 @@ export const useRuleWorker = () => {
       if (task === 'parse' && lineCount >= PARALLEL_PARSE_THRESHOLD) {
         const cores =
           typeof navigator !== 'undefined' ? navigator.hardwareConcurrency || 1 : 1;
-        const parallel = await pool.runParallel(
-          text,
-          decideShardCount(lineCount, cores),
-          (p) => setProgress({ processed: p.processed, total: p.total, elapsed: null })
-        );
+        // T-AUD-M07：并行分支此前从不置 isProcessing(true)，≥20000 行时进度条不显示。
+        // 进入即置位；成功收敛时复位，异常时同样复位，避免进度条常驻。
+        setIsProcessing(true);
+        setProgress({ processed: 0, total: lineCount, elapsed: null });
+        let parallel: Awaited<ReturnType<typeof pool.runParallel>> = null;
+        try {
+          parallel = await pool.runParallel(
+            text,
+            decideShardCount(lineCount, cores),
+            (p) => setProgress({ processed: p.processed, total: p.total, elapsed: null })
+          );
+        } catch (error) {
+          logger.warn('Parallel parse failed unexpectedly:', error);
+          parallel = null;
+        }
         if (parallel) {
           setProgress({
             processed: parallel.stats.totalLines,
@@ -143,8 +153,11 @@ export const useRuleWorker = () => {
         // 并行失败（Worker 不可用 / 分片失败）：落回下方单 Worker 串行路径兜底
       }
       const worker = ensureWorker();
-      // Worker 不可用：返回 null，由调用方回退同步处理
-      if (!worker) return Promise.resolve(null);
+      // Worker 不可用：返回 null，由调用方回退同步处理；并行分支已置位，此处必须复位
+      if (!worker) {
+        setIsProcessing(pendingRef.current.size > 0);
+        return Promise.resolve(null);
+      }
       // 单飞：同一 (task,text) 的重复请求复用进行中的任务，避免重复 postMessage
       // 克隆整块文本；任务已变化时作废旧任务（resolve(null) 表示结果过期，
       // 调用方按序号守卫丢弃），不能让过期结果被当作新输入的结果

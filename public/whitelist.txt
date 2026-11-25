@@ -4,9 +4,9 @@
 !
 ! 兼容 AdGuard 的广告过滤规则
 !
-! 版本:: 3.21.0
+! 版本:: 3.22.0
 ! 更新:: 2026.11.25
-! 域名:: 644 个唯一域名
+! 域名:: 127188 个唯一域名
 !
 ! 项目: https://github.com/sutchan/DNS_Shield
 ! 演示: https://dns.ewuse.com/

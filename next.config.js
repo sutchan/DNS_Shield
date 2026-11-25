@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 
+// 版本号权威源为 package.json（T-VER-01）：构建期读取，禁止在配置里再写一份字面量，
+// 否则 npm version 后需手工同步多处，sync-facts --check 又覆盖不到本文件。
+const { version: appVersion } = require('./package.json');
+
 // 统一安全响应头：生产环境的唯一来源（原 vercel.json 双写已移除，不再需要跨文件同步）。
 // 历史上两处各写一份且不一致——此处曾缺 HSTS/COOP/CORP/X-Frame-Options，
 // 且 frame-ancestors 为 *；现由本文件的 headers() 单点维护。
@@ -77,7 +81,7 @@ const nextConfig = {
     unoptimized: true
   },
   env: {
-    version: '3.22.0',
+    version: appVersion,
     NEXT_PUBLIC_BUILD_ID: buildTimeId()
   },
   devIndicators: {

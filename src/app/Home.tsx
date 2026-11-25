@@ -1,9 +1,10 @@
-// src/app/Home.tsx v3.20.0
+// src/app/Home.tsx v3.22.0
 // 首页编排：仅负责组合布局与渲染，所有状态逻辑已抽离至 useHomeController（保持主文件 ≤200 行）。
 // 全局样式统一由 app/layout.tsx 导入（含拆分后的 src/styles/*.css），此处不再重复导入。
 // v3.19.1：GuideModal 改 next/dynamic 懒加载，移出首屏 bundle（默认关闭、按需下载）。
 // v3.20.0：站点事实文本（关于 / FAQ 等）迁至 /about/ 独立页，首页只保留工具本体。
 'use client';
+import { useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import Header from '../components/Header';
 import InputPanel from '../components/InputPanel';
@@ -17,9 +18,11 @@ import { useHomeController } from '../hooks/useHomeController';
 
 export default function Home() {
   const c = useHomeController();
+  // T-AUD-M12：每次渲染新建 value 会让 13 个 useT() 消费者全量重渲染
+  const appValue = useMemo(() => ({ t: c.t }), [c.t]);
 
   return (
-    <AppProvider value={{ t: c.t }}>
+    <AppProvider value={appValue}>
       <div className="container" id="app-container">
         <Header
           currentLang={c.currentLang}

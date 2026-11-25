@@ -1,4 +1,4 @@
-// src/utils/parseAggregate.test.ts v3.16.0
+// src/utils/parseAggregate.test.ts v3.22.0
 // 多核并行解析纯函数层的测试：分片不丢行、并行度决策钳位、
 // 以及核心契约——「分片收集 + 聚合 + 全局后处理」与单线程整段
 // parseSource 的结果完全等价（含跨分片白名单剔除与去重场景）。
@@ -65,6 +65,20 @@ describe('splitIntoShards', () => {
   it('结尾换行的文本分片后仍保持行数语义（空行也算一行）', () => {
     const shards = splitIntoShards('a\nb\n', 2);
     expect(shards.join('\n')).toBe('a\nb\n');
+  });
+});
+
+describe('aggregateRaw 大数组边界（T-AUD-M10）', () => {
+  it('单分片超过 126000 元素时不再因 push(...arr) 触发 RangeError', () => {
+    const domains = Array.from({ length: 130000 }, (_, i) => `d${i}.example.com`);
+    const { raw } = aggregateRaw([
+      {
+        raw: { domains, whitelist: [], customDns: [], regexRules: [] },
+        counters: { commentCount: 0, invalidCount: 0, totalLines: domains.length },
+      },
+    ]);
+    expect(raw.domains).toHaveLength(130000);
+    expect(raw.domains[129999]).toBe('d129999.example.com');
   });
 });
 
