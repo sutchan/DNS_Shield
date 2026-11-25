@@ -1,6 +1,7 @@
 // src/utils/parser.ts v3.22.0
 import { parseDomainLine, ParseStats } from './domainValidator';
 import { CustomDnsEntry, ParsedData, RegexRule } from '../types';
+import { forEachLine, countIterableLines } from './iterateLines';
 
 // 进度回调触发间隔：每 N 行上报一次，避免高频回调拖慢解析（Worker 内 postMessage 有开销）
 const PROGRESS_INTERVAL = 2000;
@@ -30,9 +31,9 @@ export const collectLines = (
   text: string,
   onProgress?: (processed: number, total: number) => void
 ): { raw: RawCollected; counters: RawCounters } => {
-  // L-06：空输入没有「一行」，totalLines 应为 0；split('') 会得到 [''] 而虚报 1 行
-  const lines = text === '' ? [] : text.split('\n');
-  const total = lines.length;
+  // L-06：空输入没有「一行」，totalLines 应为 0（countIterableLines 契约）。
+  // T-PERF-01：改用 indexOf 切片迭代，不再 split 出整块行数组，降低大输入峰值内存。
+  const total = countIterableLines(text);
 
   const domains: string[] = [];
   const whitelist: string[] = [];
@@ -41,22 +42,23 @@ export const collectLines = (
   let commentCount = 0;
   let invalidCount = 0;
 
-  for (let i = 0; i < lines.length; i++) {
-    // 在各 continue 分支之前统一上报进度，确保跳过的行也被计入
+  // T-PERF-01：逐行迭代替代 for + lines[i]，避免 split 整块数组驻留内存。
+  // 原 for 循环的 continue 在 forEach 回调中统一改为 return（仅结束本次回调）。
+  forEachLine(text, (line, i) => {
+    // 在各跳过分支之前统一上报进度，确保跳过的行也被计入
     if (onProgress && (i + 1) % PROGRESS_INTERVAL === 0) {
       onProgress(i + 1, total);
     }
-    const line = lines[i];
     const parsed = parseDomainLine(line);
 
     if (parsed.type === 'empty') {
       // 空行不计入注释统计，避免统计面板数字失真
-      continue;
+      return;
     }
 
     if (parsed.type === 'comment') {
       commentCount++;
-      continue;
+      return;
     }
 
     if (parsed.type === 'whitelist') {
@@ -66,7 +68,7 @@ export const collectLines = (
         // 格式无效的白名单（如 @@||not a domain）计入无效行，而非真实注释
         invalidCount++;
       }
-      continue;
+      return;
     }
 
     if (parsed.type === 'customDns') {
@@ -75,7 +77,7 @@ export const collectLines = (
       } else {
         invalidCount++;
       }
-      continue;
+      return;
     }
 
     // 正则规则：保留原始 pattern 与来源语法，供生成阶段按目标格式转换
@@ -90,7 +92,7 @@ export const collectLines = (
       } else {
         invalidCount++;
       }
-      continue;
+      return;
     }
 
     if (parsed.type === 'hosts' || parsed.type === 'dnsmasq' || parsed.type === 'adguard' || parsed.type === 'domain') {
@@ -99,12 +101,12 @@ export const collectLines = (
       } else {
         invalidCount++;
       }
-      continue;
+      return;
     }
 
     // 其余无法识别的行同样计入无效行
     invalidCount++;
-  }
+  });
 
   // 尾段不足 PROGRESS_INTERVAL 行时补报 100%，避免进度条停在 <100%（T-P3-05）
   if (onProgress && total > 0) {
@@ -113,7 +115,7 @@ export const collectLines = (
 
   return {
     raw: { domains, whitelist, customDns, regexRules },
-    counters: { commentCount, invalidCount, totalLines: lines.length }
+    counters: { commentCount, invalidCount, totalLines: total }
   };
 };
 
