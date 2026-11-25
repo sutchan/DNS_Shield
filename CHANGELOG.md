@@ -5,9 +5,19 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-25（与 package.json v3.21.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
+> 最后审查：2026-11-25（与 package.json v3.22.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
 
 ## [Unreleased]
+
+## [3.22.0] - 2026-11-25
+
+### Changed（工具链迁移：pnpm → npm）
+- 移除全部 pnpm 依赖，统一到 npm：删除 `package.json` 的 `packageManager` 字段，新增 `engines.npm >=11`；锁文件由 `pnpm-lock.yaml` 换为 `package-lock.json`（CI 以 `npm ci` 安装，本地用 `npm install`）
+- CI 复合动作 `.github/actions/setup/action.yml` 重写：移除 `pnpm/action-setup` 与 pnpm store 缓存，改用 `actions/setup-node@v6` 内置 `cache: 'npm'`；保留「锁文件必须入库」的显式断言
+- 工作流命令全量替换：`pnpm run x` → `npm run x`、`pnpm exec tsc --noEmit` → `npx tsc --noEmit`；CI 测试日志由根目录 `_test.log` 改写入 `.tmp/logs/test.log`（同时满足临时文件规范）
+- `.gitignore` 调整：`package-lock.json` 不再被忽略（必须入库），`pnpm-lock.yaml` 转为忽略以防误提交
+- 文档与配置同步：README（中/英）、DEPLOYMENT、SPEC、01-overview、04-api、05-user-guide、06-faq、07-improvements、CHECKLIST、config.yaml、TEMP-FILES、CONTRIBUTING、PULL_REQUEST_TEMPLATE、SECURITY、SUPPORT 的命令与工具链表述统一改为 npm；`docs/tasks.md` 的 T-BUILD-01 / T-COMPAT-01 措辞同步
+- 版本按 minor 规则升至 v3.22.0（工具链迁移影响所有协作者的工作流）
 
 ### Docs（使用说明与项目记忆同步，2026-11-25）
 - `DEPLOYMENT.md` 审查日期同步至 2026-11-25；`docs/05-user-guide.md` 补开发者本地安装 / 提交前门禁 / 临时文件目录要点；`docs/06-faq-troubleshooting.md` 已知限制表补入实跑确认的 M-12（AppContext 未 memo）、O-05（`.npmrc` 缺失）、T-DATA-01（域名 644 条回退待核实），并统一指向 `tasks.md` 唯一来源
@@ -1863,6 +1873,8 @@
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
 [Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.20.1...HEAD
+[3.22.0]: https://github.com/sutchan/DNS_Shield/compare/v3.21.0...v3.22.0
+[3.21.0]: https://github.com/sutchan/DNS_Shield/compare/v3.20.1...v3.21.0
 [3.20.1]: https://github.com/sutchan/DNS_Shield/compare/v3.20.0...v3.20.1
 [3.20.0]: https://github.com/sutchan/DNS_Shield/compare/v3.19.3...v3.20.0
 [3.19.1]: https://github.com/sutchan/DNS_Shield/compare/v3.19.0...v3.19.1

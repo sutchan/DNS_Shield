@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-22（与 package.json v3.21.0 对齐；规范总览见 §0，变更历史见 CHANGELOG.md）
+> 最后审查：2026-11-22（与 package.json v3.22.0 对齐；规范总览见 §0，变更历史见 CHANGELOG.md）
 > 冻结快照（`prototype/`、`public/brand-colors.md`、`docs/STRUCTURE-REVIEW.md`、`docs/tasks-done.md`）按各自声明保留，不作当前指标。
 
 ## 0. 规范总览与适用规则
@@ -44,7 +44,7 @@
 | 项目地址（主页/治理） | https://github.com/sutchan/DNS_Shield（以 `git remote -v` 为准；`ArcesTeam` 为历史维护团队名，非仓库地址） |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.21.0 |
+| 当前版本 | v3.22.0 |
 | 拦截域名 | **644 条**（黑名单 644 + 白名单 0），2026-11-25 实算；历史主线曾为 127188 条（af976b8），`origin/auto/aggregate-upstream` 上 7fac633 有 129348 条未合入，主线回退原因待查（T-DATA-01，P1）。永远以 `node scripts/count-domains.mjs` 实算为准，禁止手写数字 |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -326,7 +326,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.21.0 |
+| 版本号 | 3.22.0 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |

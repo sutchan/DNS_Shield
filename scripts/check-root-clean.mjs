@@ -19,8 +19,8 @@ const ALLOWED = new Set([
   // 文件
   '.env.example', '.eslintrc.json', '.gitattributes', '.gitignore', '.npmrc',
   'CHANGELOG.md', 'DEPLOYMENT.md', 'DNS_Shield.code-workspace', 'edgeone.json',
-  'LICENSE', 'next-env.d.ts', 'next.config.js', 'package.json', 'pnpm-lock.yaml',
-  'pnpm-workspace.yaml', 'postcss.config.js', 'README.en.md', 'README.md',
+  'LICENSE', 'next-env.d.ts', 'next.config.js', 'package.json',
+  'postcss.config.js', 'README.en.md', 'README.md',
   'tailwind.config.js', 'tsconfig.json', 'vercel.json', 'vitest.config.ts',
   // 目录
   '.github', 'docs', 'openwrt-package', 'prototype', 'public', 'scripts', 'src',
