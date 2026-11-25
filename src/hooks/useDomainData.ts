@@ -42,6 +42,9 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   // 标记挂载阶段是否已恢复本地自动保存内容：远端加载完成后不应再用远端内容
   // 覆盖用户本地草稿（否则异步返回的远端数据会覆盖刚恢复的 autosave）。
   const autosaveRestoredRef = useRef(false);
+  // T-AUD-L05：标记「用户真实编辑」而非被动填充（远端加载也走 setSourceInput，
+  // 不能用 sourceInputRef 是否非空判断，否则远端先落地时草稿无法优先恢复）。
+  const userEditedRef = useRef(false);
 
   // 大文本经 Web Worker 解析，小文本走主线程同步路径（阈值见 useAsyncRuleProcessing）
   const parseSourceData = useCallback((text?: string) => {
@@ -117,7 +120,8 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     parseSourceData,
     lineNumbersRef,
     showToastRef,
-    restoredRef: autosaveRestoredRef
+    restoredRef: autosaveRestoredRef,
+    userEditedRef,
   });
 
   // 防抖解析：小文本（低于 Worker 阈值）立即解析以保持预览实时性；
@@ -184,6 +188,7 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
   }, []);
 
   const handleSourceInput = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    userEditedRef.current = true;
     setSourceInput(e.target.value);
     generateLineNumbers(e.target.value, lineNumbersRef);
   }, []);

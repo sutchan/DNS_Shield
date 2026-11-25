@@ -15,9 +15,10 @@ export const AUTOSAVE_TIME_KEY = 'dnsShield_autosave_time';
 /** 迁移标记：确保旧 localStorage 草稿只迁移一次，避免每次挂载重复搬运 */
 const MIGRATED_KEY = 'dnsShield_autosave_migrated';
 
-// 校验自动保存内容是否为合法字符串且长度合理，拒绝脏数据
+// 校验自动保存内容是否为合法字符串且长度合理，拒绝脏数据。
+// T-AUD-L05：纯空白草稿（"  \n"）无恢复价值，且会在网络往返期间覆盖用户输入，故一并拒绝。
 export const isValidAutosave = (value: unknown): value is string => {
-  return typeof value === 'string' && value.length > 0 && value.length <= AUTOSAVE_MAX_LENGTH;
+  return typeof value === 'string' && value.trim().length > 0 && value.length <= AUTOSAVE_MAX_LENGTH;
 };
 
 // localStorage 安全读写（降级路径与迁移来源，隐私模式下静默失败）

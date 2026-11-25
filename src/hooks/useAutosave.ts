@@ -20,6 +20,8 @@ interface UseAutosaveParams {
   lineNumbersRef: RefObject<HTMLDivElement>;
   showToastRef: MutableRefObject<ToastFn>;
   restoredRef: MutableRefObject<boolean>;
+  /** 用户真实编辑标记（远端自动填充也走 setSourceInput，不能据 ref 内容判占用） */
+  userEditedRef: MutableRefObject<boolean>;
 }
 
 export const useAutosave = ({
@@ -28,7 +30,8 @@ export const useAutosave = ({
   parseSourceData,
   lineNumbersRef,
   showToastRef,
-  restoredRef
+  restoredRef,
+  userEditedRef,
 }: UseAutosaveParams) => {
   // 恢复自动保存内容：仅在挂载时执行一次，避免清空后又被覆盖
   useEffect(() => {
@@ -36,7 +39,11 @@ export const useAutosave = ({
     if (restoredRef.current) return; // 严格单次守卫（StrictMode 双调用亦只执行一次）
     void (async () => {
       const autosave = await readAutosave();
-      if (!autosave) return;
+      if (!autosave || !autosave.trim()) return;
+      // T-AUD-L05：await readAutosave() 期间用户可能已开始输入。二次检查仅看
+      // userEditedRef（真实编辑），不能用 sourceInputRef 内容——远端先落地也会
+      // 填充它，那样会破坏「草稿优先于远端」（T-P1-11）契约。
+      if (restoredRef.current || userEditedRef.current) return;
       // 草稿优先：本地自动保存始终优先于远端默认清单。
       // 旧逻辑在「远端先落地」时直接放弃草稿，会造成用户编辑丢失；
       // 现改为无条件恢复草稿，远端加载完成后再由 restoredRef 判定放弃远端内容。

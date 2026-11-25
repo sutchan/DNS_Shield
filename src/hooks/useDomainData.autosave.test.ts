@@ -196,4 +196,34 @@ describe('自动保存编排契约：草稿恢复、恢复提示、草稿优先�
     expect(writeAutosaveMock).not.toHaveBeenCalled();
     unmount();
   });
+
+  // T-AUD-L05：await readAutosave() 期间用户输入被占用时不得覆盖
+  it('异步恢复期间用户已输入时草稿不覆盖（T-AUD-L05）', async () => {
+    const pending = deferred<string | null>();
+    readAutosaveMock.mockReturnValue(pending.promise);
+    const { result, unmount } = renderHook(() => useDomainData(vi.fn()));
+    await flush();
+
+    // 恢复尚未兑现，用户抢先输入（走 handleSourceInput 才会置位 userEditedRef）
+    act(() => {
+      result.current.handleSourceInput({ target: { value: 'typed-first.example.com' } } as never);
+    });
+    await flush();
+    pending.resolve('draft.example.com');
+    await flush();
+
+    expect(result.current.sourceInput).toBe('typed-first.example.com');
+    unmount();
+  });
+
+  // T-AUD-L05：纯空白草稿即使被存储层放过也不得恢复
+  it('纯空白草稿被跳过，不覆盖空输入（T-AUD-L05）', async () => {
+    readAutosaveMock.mockResolvedValue('  \n  ');
+    const { result, unmount } = renderHook(() => useDomainData(vi.fn()));
+    await advance(0);
+    await flush();
+
+    expect(result.current.sourceInput).toBe('');
+    unmount();
+  });
 });
