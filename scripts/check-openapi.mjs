@@ -7,7 +7,7 @@ import { join } from 'node:path';
 
 const root = join(import.meta.dirname, '..');
 const file = join(root, 'docs', 'openapi.yaml');
-const text = readFileSync(file, 'utf8');
+const text = readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
 const version = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')).version;
 const errors = [];
 

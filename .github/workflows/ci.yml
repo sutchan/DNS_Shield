@@ -205,6 +205,10 @@ jobs:
       - name: Verify version facts are synced
         run: node scripts/sync-facts.mjs --check
 
+      # T-VERIFY-01：OpenAPI 3.1 定义的结构与版本一致性（离线可跑）
+      - name: Validate OpenAPI 3.1 definition
+        run: node scripts/check-openapi.mjs
+
       # 硬门禁：重新生成 11 个格式产物文件并与仓库内容比对。
       # public/* 头部含「版本::」与「更新::」两行：
       #   - 「更新::」是生成日期，每天都会变，属噪声，从比对中剔除；

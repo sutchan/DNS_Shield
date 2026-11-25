@@ -1,4 +1,4 @@
-// src/utils/httpCache.ts v3.11.0
+// src/utils/httpCache.ts v3.22.0
 // 远程规则源的增量缓存：记录正文 + ETag + 抓取时间，
 // 供条件请求（If-None-Match）复用与离线兜底，避免重复下载大体量规则文件。
 
@@ -12,9 +12,26 @@ export interface HttpCacheRecord {
   fetchedAt: number;
 }
 
-/** 读取指定 URL 的缓存记录；无缓存或不可用时返回 null */
-export const getCachedResponse = (url: string): Promise<HttpCacheRecord | null> =>
-  idbGet<HttpCacheRecord>(STORE_HTTP, url);
+/** 缓存有效期：超过 7 天视为陈旧，避免离线时无限期使用过期规则源（T-AUD-M03） */
+export const CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const ETAG_PATTERN = /^(W\/)?"[^"]*"$/;
+
+/** IDB 数据来自用户浏览器，必须运行时校验，不能直接 `as HttpCacheRecord`（T-AUD-M03） */
+export const isHttpCacheRecord = (value: unknown): value is HttpCacheRecord => {
+  if (!value || typeof value !== 'object') return false;
+  const record = value as Partial<HttpCacheRecord>;
+  if (typeof record.text !== 'string' || !record.text.trim()) return false;
+  if (record.etag !== null && (typeof record.etag !== 'string' || !ETAG_PATTERN.test(record.etag))) return false;
+  if (typeof record.fetchedAt !== 'number' || !Number.isFinite(record.fetchedAt)) return false;
+  const age = Date.now() - record.fetchedAt;
+  return age >= 0 && age <= CACHE_TTL_MS;
+};
+
+/** 读取指定 URL 的缓存记录；无缓存、结构非法或已过期时返回 null */
+export const getCachedResponse = async (url: string): Promise<HttpCacheRecord | null> => {
+  const raw = await idbGet<unknown>(STORE_HTTP, url);
+  return isHttpCacheRecord(raw) ? raw : null;
+};
 
 /** 写入缓存记录（仅在成功拿到新正文时调用） */
 export const putCachedResponse = async (
