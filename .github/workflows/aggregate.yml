@@ -73,4 +73,16 @@ jobs:
           # 仅暂存发生变化的文件：domains.txt 与重新生成的 11 个派生文件；
           # public/ 下未改动的图像等不会被纳入。
           add-paths: |
-            public/
+            public/domains.txt
+            public/category-index.txt
+            public/dnsmasq.conf
+            public/hosts.txt
+            public/adguard.txt
+            public/whitelist.txt
+            public/unbound.conf
+            public/pihole.txt
+            public/rpz.db
+            public/smartdns.conf
+            public/mosdns_domain_set.txt
+            public/clash_dns.yaml
+            public/coredns_hosts.txt

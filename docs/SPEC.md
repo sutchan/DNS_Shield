@@ -555,8 +555,8 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 - 部分设备可能有 hosts 文件大小限制
 - 需要定期更新规则以应对新广告形式
 - **锁文件与 `.npmrc`（原 BLOCKER，v3.19.0 审计 B-01，2026-11-25 已修复）**：`package-lock.json` 已入库；`.npmrc` 已恢复并启用 `engine-strict` / `package-manager-strict`。CI 以 `npm ci` 安装并在 setup 复合动作中显式断言锁文件存在。历史问题证据见 `docs/AUDIT-REPORT-v3.19.0.md`（冻结快照）；当前状态以本节为准。
-- **Service Worker 未注册**：`public/service-worker.js` 已实现同源缓存策略，但全仓无 `navigator.serviceWorker.register` 调用，PWA 离线缓存实际未启用；§12.2 描述的是 SW 自身策略而非已生效行为。
-- **`public/category-index.txt` 未入库**：由 `aggregate.yml` 生成，但 `add-paths` 未包含，线上分类筛选控件会 404 降级隐藏。
+- **Service Worker 注册（原未启用，2026-11-25 已修复）**：`src/components/ServiceWorkerRegistrar.tsx` 在生产环境注册 `/service-worker.js`（dev 跳过以免 HMR 命中旧缓存），缓存白名单仍由 SW 自管；§12.2 的策略现为已生效行为。
+- **`public/category-index.txt`（原未入库，2026-11-25 已修复）**：已从真实聚合分支恢复该文件，`aggregate.yml` 的 `add-paths` 显式列出、`release.yml` 资产清单与 zip 均包含，CI data job 增非空断言；线上分类筛选不再 404。
 
 ## 12. 安全规范
 

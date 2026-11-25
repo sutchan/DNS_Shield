@@ -1,4 +1,4 @@
-// src/app/layout.tsx v3.20.1
+// src/app/layout.tsx v3.22.0
 // 字体策略：不使用 next/font/google。构建期它会请求 fonts.googleapis.com，
 // EdgeOne / CI 等离线构建环境取不到 CSS 时，next/font loader 会抛 TypeError
 // 导致 next build 失败；字体统一由 globals.css 的系统字体栈提供。
@@ -17,6 +17,8 @@ import '../styles/seo.css';
 import { metadata, viewport, jsonLd } from './(seo)/site-meta';
 import GaScripts from './(seo)/ga-scripts';
 import { APP_VERSION } from '../config/version';
+import { LANGUAGE_CODE_PATTERN } from '../config/languages';
+import { serializeJsonLd } from '../config/jsonld';
 
 export { metadata, viewport };
 
@@ -34,13 +36,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             避免 16 语言站刷新后的语言声明错误、RTL 布局跳动与深色模式闪白（T-UI-01/02）。
             script-src 已在 next.config.js 的 CSP 中允许 'unsafe-inline'。 */}
         <script
-          dangerouslySetInnerHTML={{ __html: "(function(){try{var d=document.documentElement,l=localStorage.getItem('lang')||'zh-cn';if(!/^(zh-cn|zh-tw|en|ar|cs|es|hi|id|it|nl|pl|sv|th|tr|ru|vi)$/.test(l))l='zh-cn';d.lang=l;d.setAttribute('dir',l==='ar'?'rtl':'ltr');var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)){d.classList.add('dark');}}catch(e){}})();" }}
+          dangerouslySetInnerHTML={{ __html: `(function(){try{var d=document.documentElement,l=localStorage.getItem('lang')||'zh-cn';if(!/${LANGUAGE_CODE_PATTERN}.test(l))l='zh-cn';d.lang=l;d.setAttribute('dir',l==='ar'?'rtl':'ltr');var t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)){d.classList.add('dark');}}catch(e){}})();` }}
         />
-        {/* JSON-LD 放在 body 而非显式 <head>：React 19 会 hoist head 内的内联 script，
-            hydration 后注入两份重复的结构化数据（v3.18.0 线上实测发现）。 */}
+        {/* JSON-LD 放在 body 而非显式 <head>：历史上曾观测到 head 内内联 script 被框架
+            hoist 后注入两份结构化数据（当时记为 React 19 行为，当前依赖实际为 React 18 /
+            Next 14，见 package.json）。保留 body 位置以维持单一实例，避免陈旧版本断言。T-VER-02 */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
         />
         {/* v3.20.1：skip link 聚焦背景由 bg-white 改 bg-background + text-foreground，
             避免深色模式下白底白字不可见（诊断 P1-7） */}

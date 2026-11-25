@@ -106,6 +106,14 @@ jobs:
         id: artifacts
         run: |
           mapfile -t FILES < <(node scripts/gen-format-files.mjs --list-files)
+          # T-REL-01：分类索引由 aggregate.yml 产出，不在 gen-format-files 的 11 项内，
+          # 需显式加入发布清单，否则订阅用户拿到的分类筛选数据始终 404。
+          if [ -f public/category-index.txt ]; then
+            FILES+=(public/category-index.txt)
+          else
+            echo "::error::缺少 public/category-index.txt，分类筛选不可用"
+            exit 1
+          fi
           if [ "${#FILES[@]}" -eq 0 ]; then
             echo "::error::产物清单为空，请检查 scripts/gen-format-files.mjs"
             exit 1
@@ -123,6 +131,7 @@ jobs:
         id: package
         run: |
           mapfile -t FILES < <(node scripts/gen-format-files.mjs --list-files)
+          FILES+=(public/category-index.txt) # T-REL-01：与资产清单保持一致
           ZIP="dns-shield-rules-${{ steps.ver.outputs.version }}.zip"
           # 用 zip 保持目录结构；runner 自带 zip。-j 压平目录，规则文件均在 public/ 根级
           zip -j "$ZIP" "${FILES[@]}"

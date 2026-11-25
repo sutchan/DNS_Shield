@@ -15,6 +15,7 @@ const GuideModal = dynamic(() => import('../components/GuideModal'), { ssr: fals
 import { ToastProvider } from '../components/ui/Toast';
 import { AppProvider } from '../context/AppContext';
 import { useHomeController } from '../hooks/useHomeController';
+import ServiceWorkerRegistrar from '../components/ServiceWorkerRegistrar';
 
 export default function Home() {
   const c = useHomeController();
@@ -23,6 +24,7 @@ export default function Home() {
 
   return (
     <AppProvider value={appValue}>
+      <ServiceWorkerRegistrar />
       <div className="container" id="app-container">
         <Header
           currentLang={c.currentLang}

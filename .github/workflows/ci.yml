@@ -190,6 +190,15 @@ jobs:
       - name: Count domains
         run: node scripts/count-domains.mjs
 
+      # T-REL-01：分类索引必须随仓库发布，否则线上 /category-index.txt 返回 404
+      - name: Assert category index is shipped
+        run: |
+          if [ ! -s public/category-index.txt ]; then
+            echo "::error::public/category-index.txt 缺失或为空，分类筛选会 404"
+            exit 1
+          fi
+          echo "分类索引已入库：$(wc -l < public/category-index.txt) 行"
+
       # 文档版本展示位与 package.json 一致性（硬门禁）。
       # 版本号曾分散在 40+ 处手工维护，prototype/ 一度停在 3.9.3、DEPLOYMENT 停在 3.8.8。
       # 修复方式：本地执行 node scripts/sync-facts.mjs 后提交。
