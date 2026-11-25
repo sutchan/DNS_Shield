@@ -1,4 +1,4 @@
-# .github/actions/setup/action.yml
+﻿# .github/actions/setup/action.yml
 # ---------------------------------------------------------------------------
 # 复合动作（composite action）：统一 CI / Deploy / Release 四个工作流的运行时准备。
 #
@@ -36,7 +36,7 @@ runs:
   using: 'composite'
   steps:
     - name: Setup Node.js ${{ inputs.node-version }}
-      uses: actions/setup-node@v6
+      uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
       with:
         node-version: ${{ inputs.node-version }}
         cache: 'npm'

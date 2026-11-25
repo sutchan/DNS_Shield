@@ -1,4 +1,4 @@
-# .github/workflows/release.yml
+﻿# .github/workflows/release.yml
 # ---------------------------------------------------------------------------
 # Release —— 自动发布（无需手动打 tag）
 #
@@ -59,7 +59,7 @@ jobs:
     # 挂死保护：正常 1~2 分钟内完成，超时即失败，避免空耗额度
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           # 检出「触发 CI 的那个 commit」，保证发布内容与被验证代码一致
           ref: ${{ github.event.workflow_run.head_sha }}
@@ -148,7 +148,7 @@ jobs:
 
       - name: Create GitHub Release
         if: ${{ steps.ver.outputs.exists != 'true' }}
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
         with:
           tag_name: ${{ steps.ver.outputs.version }}
           name: DNS Shield ${{ steps.ver.outputs.version }}

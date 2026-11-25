@@ -391,6 +391,8 @@
 | 编号 | 任务 | 责任人 | 完成时间 | 结论 |
 |---|---|---|---|---|
 | T-AUD-L05 | autosave 恢复竞态检查 ref 非空并跳过空白草稿 | Dev Team | 2026-11-25 | 审计 L-05 闭环 |
+| T-AUD-L02 | 聚合 fetch 加体积上限与重定向校验 | Dev Team | 2026-11-25 | 审计 L-02 闭环，护栏纯函数与脚本共用单一来源 |
+| T-AUD-M04 | 第三方 Action 固定到 commit SHA | CI Owner | 2026-11-25 | 审计 M-04 闭环，25 处引用全部固定，SHA 经 ls-remote 实测 |
 
 ### T-AUD-L05 · autosave 恢复竞态检查 ref 非空并跳过空白草稿
 
@@ -403,3 +405,21 @@
   - `src/hooks/useDomainData.ts` 新增 `userEditedRef`，仅 `handleSourceInput`（UI 真实编辑）置位，传给 `useAutosave`；`handleSourceInput` 之外（远端加载、clearAll）不置位。
   - 新增 `src/hooks/autosaveStorage.test.ts`（3 例：合法串/非法值/纯空白拒绝）；`src/hooks/useDomainData.autosave.test.ts` 增 2 例（异步恢复期间用户抢先输入、纯空白草稿跳过）。
   - 2026-11-25 `vitest run` 两文件 14 例全绿（初版守卫据 ref 内容判断导致 1 例回归，已按上述修正）。
+### T-AUD-L02 · 聚合 fetch 加体积上限与重定向校验
+
+- **来源**：审计报告 L-02（冻结快照）；原任务计划 2027-01-13 / P3。
+- **目标**：聚合上游的 fetch 加体积上限与重定向 host 校验，防恶意源 redirect 到任意 host 或无限响应体耗尽内存。
+- **验收标准**：非 https / 非白名单 host 的跳转被拒；超体积响应被拒；已有单测覆盖；真实源仍能正常聚合。
+- **完成实证**：
+  - 新增 `src/utils/fetchGuards.ts`（`isAllowedFetchUrl` / `parseContentLength` / `exceedsSizeLimit` / `isAllowedRedirect`，32MB 上限 / 5 跳上限）+ 6 例单测全绿。
+  - `scripts/aggregate-upstream.mjs` 直接 import 共用模块（单一来源，Node 24+ 类型剥离支持），`fetchTextGuarded` 改 `redirect: 'manual'` 逐跳校验白名单 host、Content-Length 预检 + 流式累计双保险，超限 cancel reader。
+  - 2026-11-25 实测 `easylist.to/easylist/easylist.txt` 直连 200、无跳转，护栏不误拦；`node --check` 语法通过。
+### T-AUD-M04 · 第三方 Action 固定到 commit SHA
+
+- **来源**：审计报告 M-04（冻结快照）；原任务计划 2026-12-23 / P2。
+- **目标**：把 checkout / setup-node / cache / upload-artifact / create-pull-request / action-gh-release 从可变 major tag 固定到 40 位 commit SHA，防止供应链投毒；dependabot 负责推进 SHA。
+- **验收标准**：无 `uses: owner/action@vN` 形式残留；SHA 经 git ls-remote 实测；dependabot 覆盖 github-actions。
+- **完成实证**：
+  - 2026-11-25 通过 `git ls-remote`（经代理）实测 6 个 tag 的 commit SHA：checkout v5=fbc6f39、setup-node v6=2499707、cache v5=caa2961、upload-artifact v5=330a01c、action-gh-release v2=3bb1273、create-pull-request v6=c5a7806（均为 40 位完整 SHA）。
+  - 5 个文件（`.github/actions/setup/action.yml` 与 ci/deploy/release/aggregate 4 个 workflow）共 25 处引用全部替换为 `owner/action@<40位SHA> # vN`（保留版本注释便于审阅），本地 action `./.github/actions/setup` 无需 SHA。
+  - 复核正则扫描 `uses: owner/action@vN` 残留为 0；`.github/dependabot.yml` 已有 `github-actions` ecosystem（weekly，limit 6），可自动提出 SHA 升级 PR。
