@@ -9,6 +9,13 @@
 
 ## [Unreleased]
 
+### Changed（任务记录统一到唯一来源）
+- 全项目任务记录收敛到 [`docs/tasks.md`](./docs/tasks.md)：将 `docs/AUDIT-REPORT-v3.19.0.md` 中 29 条带「修：」建议且未登记过的未闭环审计发现（HIGH 3 / MEDIUM 14 / LOW 12）统一迁移登记为该文档 §二 条目与 §六 详情（H-01 / B-01 / M-01 / M-14 / M-16 / O-01~O-10 等已登记项不重复迁移）；任务总数由 19 项更新为 48 项，并附唯一来源纪律说明
+- 修正三处过时口径：`tasks.md` 头部「18 项」指向实时声明、`docs/tasks-done.md` 的「待办区 0 项」改为指向 `tasks.md` 实时状态、审计报告 §九第 4 条改为指向任务清单（冻结快照不维护状态）
+- `docs/SPEC.md` §5.3 强化为永久规则：禁止写死任务项数；新增第 8 条「任务型表述回流」——任何文档出现「修：/待评估/待验证/TODO/未实施/未闭环」等表述必须先在 `tasks.md` 登记，原位置只留证据与方案并指向任务清单；第 6 条明确迁移后删除冗余任务文档
+- 冗余任务文档核查结论：历史 `TASKS.md` / `REMAINING_TASKS.md` 早已删除；`docs/tasks-done.md` 为已完成归档（非冗余）、`docs/CHECKLIST.md` 为 SPEC 豁免的验收清单、其余文件均为方案/证据/叙述，无第二份未完成任务清单可删；同步清理根目录两个误提交的垃圾文件（`console.log(e.name))` / `console.log(f))`）
+- 版本随本批次 Unreleased 统一发布（本项不单独 bump）；`sync-facts --check` 与 `check-locales` 静态门禁实跑通过
+
 ### Added（临时文件管理规范）
 - 新增 `docs/TEMP-FILES.md` 权威规范：仓库根 `.tmp/` 为唯一合法临时目录（含 `scripts/`/`logs/`/`cache/`/`downloads/`/`test-output/` 子目录），禁止根目录及 `scripts/` 等正式目录散落临时文件；明确 `src/utils/scriptGenerator.ts` 生成的路由器 Shell 脚本中 `/tmp/` 为目标设备运行时路径，属例外
 - 新增 `scripts/manage-tmp.mjs` 与 `pnpm tmp:init`（幂等创建）/ `pnpm tmp:clean`（一键清空重建）脚本；新增 `pnpm check:root-clean` 别名
