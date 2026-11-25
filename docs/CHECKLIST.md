@@ -88,7 +88,7 @@
 - [ ] `public/` 静态产出（domains.txt / whitelist.txt / hosts.txt / dnsmasq.conf / adguard.txt / manifest.json / service-worker.js）存在且格式正确
 - [ ] `src/app/` 路由文件（page.tsx / Home.tsx / globals.css / layout.tsx / robots.ts / sitemap.ts）存在且功能完整
 - [ ] `src/components/`、`src/hooks/`、`src/utils/`、`src/types/`、`src/config/`、`src/locales/`、`src/workers/` 模块齐全；重点存在性抽查：`OutputPanel.formatSelect.tsx` / `useWorkerPool.ts` / `parseAggregate.ts` / `parseShard.worker.ts` / `useWorkerPool.singleflight.test.ts`
-- [ ] `scripts/check-root-clean.mjs` 与 `.github/actions/setup/action.yml` 存在，且 `ci.yml` 的 `CI Gate` `needs` 含 `rootclean`
+- [ ] `scripts/check-root-clean.mjs` 与 `.github/actions/setup/action.yml` 存在，且 `ci.yml` 的 `CI Gate` `needs` 含 `rootclean`；根目录无散落临时文件（规范见 [TEMP-FILES.md](./TEMP-FILES.md)，`pnpm check:root-clean` 自检通过）
 - [ ] `prototype/` 目录及 `prototype/shadcn/` 设计规范完整
 - [ ] 根配置文件（`package.json` / `next.config.js` / `tsconfig.json` / `tailwind.config.js` / `postcss.config.js`）正确且依赖完整
 

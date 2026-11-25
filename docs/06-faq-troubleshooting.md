@@ -61,7 +61,8 @@
 | `pnpm install --frozen-lockfile` 失败 | 锁文件与 `package.json` 不一致 | 先本地 `pnpm install` 更新并提交 `pnpm-lock.yaml` |
 | `next build` 取字体失败 | 使用 `next/font/google` 的外部字体 | 本项目已统一系统字体栈，不应出现；若出现请检查是否误引入外部字体依赖 |
 | `vitest --coverage` 清理 `coverage/` 卡死 | IDE safe-delete shim 超时（环境限制） | 改用 `--coverage.reportsDirectory=.tmp/coverage`；CI 不受影响 |
-| 根目录清洁度门禁失败 | `_*.mjs` 临时脚本散落在 `scripts/` 或根目录 | 移入根目录 `.tmp/`（已 gitignore） |
+| 根目录清洁度门禁失败 | 临时脚本 / 日志 / 缓存散落在根目录或 `scripts/` | 按类型移入 `.tmp/scripts/`、`.tmp/logs/`、`.tmp/cache/`（详见 [TEMP-FILES.md](./TEMP-FILES.md)）；`pnpm tmp:clean` 可一键清理 |
+| `.tmp/` 目录不存在 | 未被自动创建 | 执行 `pnpm tmp:init`（幂等），或运行门禁时会自动初始化 |
 
 ### 2.5 CI / 发布异常
 

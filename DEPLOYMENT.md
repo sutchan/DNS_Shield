@@ -246,12 +246,13 @@ CI 中的漂移检测是**硬门禁**（产物与数据源不一致即 `exit 1` 
 node scripts/gen-format-files.mjs   # 重新生成（版本号取自 package.json，禁止硬编码）
 node scripts/count-domains.mjs       # 核对计数
 node scripts/sync-facts.mjs --check  # 13 处文档版本展示位一致性
-node scripts/check-locales.mjs       # 16 语 / 209 键一致性
+node scripts/check-locales.mjs       # 16 语 / 213 键一致性
 node scripts/check-root-clean.mjs    # 根目录临时文件洁净度（CI rootclean job 同款）
+pnpm tmp:clean                       # 一键清空 .tmp/（会话收尾）
 git add public && git commit -m "chore: 同步生成规则文件"
 ```
 
-除产物漂移外，CI 首步 `rootclean` 还会拦截散落在根目录或 `scripts/` 的 `_*.mjs` 临时脚本（唯一合法临时位置为根 `.tmp/`），提交前可用上表最后一条命令本地自检。
+除产物漂移外，CI 首步 `rootclean` 还会拦截散落在根目录或 `scripts/` 的临时脚本、日志、缓存、构建中间产物（唯一合法临时位置为根 `.tmp/` 及约定子目录，规范见 [docs/TEMP-FILES.md](docs/TEMP-FILES.md)）。提交前可用上表命令本地自检；`pnpm tmp:init` 幂等创建目录，`pnpm tmp:clean` 一键清理。
 
 ## 配置选项
 

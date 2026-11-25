@@ -77,7 +77,8 @@ dns-shield/
 │   └── config.yaml                 # 规范配置
 ├── scripts/                        # 构建/校验脚本
 │   ├── check-locales.mjs           # 国际化键覆盖校验（pnpm check:locales）
-│   ├── check-root-clean.mjs        # 根目录临时文件洁净度门禁（CI rootclean job；唯一合法临时位置根 .tmp/）
+│   ├── check-root-clean.mjs        # 根目录临时文件洁净度门禁（CI rootclean job；唯一合法位置根 .tmp/）
+│   ├── manage-tmp.mjs              # 临时目录管理工具（pnpm tmp:init / tmp:clean）
 │   ├── sync-facts.mjs              # 版本号写入 13 处文档展示位（--check 为 CI 门禁）
 │   ├── gen-format-files.mjs        # 生成 11 种格式产物文件（pnpm build:formats；domains 格式即数据源本身）
 │   ├── count-domains.mjs           # 域名计数实算（pnpm count:domains）
@@ -258,8 +259,8 @@ dns-shield/
 | `src/styles/` | 设计系统样式，按职责拆分 | 仅由 `app/layout.tsx` 按序 side-effect 导入，组件内不得 `@import` |
 | `src/test-utils/` | Vitest 共享装置与 setup | 属测试辅助代码，不计入覆盖率门禁 |
 | `public/` | 静态交付物：数据源、11 个规则产物、PWA 与品牌资源 | **产物文件名即线上订阅 URL，禁止改名/移动**；产物由 `gen-format-files.mjs` 生成，不得手改 |
-| `scripts/` | 离线生成与 CI 门禁脚本 | 一次性脚本归 `.tmp/`，不得留 `_` 前缀临时文件（`check-root-clean.mjs` 拦截） |
-| `docs/` | 规范文档 | `tasks.md` 为未完成任务唯一来源，禁止在别处另建任务清单 |
+| `scripts/` | 离线生成与 CI 门禁脚本 | 一次性脚本归 `.tmp/scripts/`，不得留 `_` 前缀临时文件（`check-root-clean.mjs` 拦截）；完整规范见 `docs/TEMP-FILES.md` |
+| `docs/` | 规范文档 | `tasks.md` 为未完成任务唯一来源，禁止在别处另建任务清单；`TEMP-FILES.md` 为临时文件权威规范 |
 | `prototype/` | 设计快照（v3.12.0 起冻结） | 不代表当前实现，不回填 |
 
 **硬约束（改动前必查引用）**：
@@ -456,7 +457,7 @@ pnpm lint && pnpm exec tsc --noEmit && pnpm test
 
 **评审要点**：PR 需说明变更内容、影响的格式/语言/产物、测试情况；涉及 `public/` 产物、`docs/` 展示位、`src/locales/` 键集、Worker 入口或 `scripts/` 硬编码路径的改动，须在描述中点名，避免下游断链。
 
-**临时文件**：一次性脚本与探针统一放根目录 `.tmp/`（已 gitignore），会话结束即清理；长期证据写入 `docs/` 或固化为测试断言。
+**临时文件**：完整规范见 [TEMP-FILES.md](./TEMP-FILES.md)——唯一合法位置为根目录 `.tmp/`（已 gitignore，含 `scripts/`/`logs/`/`cache/`/`downloads/`/`test-output/` 子目录，由 `pnpm tmp:init` 自动创建、`pnpm tmp:clean` 一键清理）；一次性脚本、探针、运行日志、缓存、下载文件、测试输出均归此目录，会话结束即清理；长期证据写入 `docs/` 或固化为测试断言。根目录散落由 `check-root-clean.mjs` 拦截（被 ignore 不等于被允许）。例外：`src/utils/scriptGenerator.ts` 生成的路由器 Shell 脚本中的 `/tmp/` 是目标设备运行时路径，不属仓库临时文件。
 
 **锁文件**：`pnpm-lock.yaml` 与 `.npmrc` **必须入库**（`setup/action.yml` 以 `--frozen-lockfile` 安装，缺失即 CI 失败）。当前二者缺失属 BLOCKER，见 §11 与 `docs/AUDIT-REPORT-v3.19.0.md` B-01。
 

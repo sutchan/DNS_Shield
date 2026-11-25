@@ -85,9 +85,10 @@
 - **T-CI-01 · 验证 CI→Deploy→Release 全绿与自动发版**（责任人：CI Owner；计划：2026-12-02）
   - 目标：确认最新版本已在 GitHub 产生 Release / tag，发布链路真实跑通。
   - 验收标准：Actions 全绿、存在对应 tag 与 Release；若红则定位（重点：setup 缓存 / pnpm 11 frozen-lockfile）。
-- **T-SEC-02 · 修复根目录清洁脚本 shell 注入**（责任人：Dev Team；计划：2026-12-02）
-  - 目标：`scripts/check-root-clean.mjs:41` 的 `cp.execSync(`git check-ignore ...`)` 改为 `spawnSync` 参数数组；排查其他 `execSync` 拼接。
+- **T-SEC-02 · 修复根目录清洁脚本 shell 注入**（责任人：Dev Team；计划：2026-12-02）— ✅ **已完成（2026-11-25）**
+  - 目标：`scripts/check-root-clean.mjs` 的 `cp.execSync(\`git check-ignore ...\`)` 改为 `spawnSync` 参数数组；排查其他 `execSync` 拼接。
   - 验收标准：含 shell 元字符的文件名 fixture 不再执行命令；审计 H-01 闭环。
+  - 完成记录：已改用 `cp.spawnSync('git', ['check-ignore', '-q', rel], …)` 不经 shell；其余 `execFileSync` 调用为固定脚本路径、无外部输入拼接；随临时文件规范（[TEMP-FILES.md](./TEMP-FILES.md)）一并落地。`docs/07-improvements.md` O-04 已标记修复。
 - **T-BUILD-01 · 恢复 `.npmrc`**（责任人：CI Owner；计划：2026-12-02）
   - 目标：恢复 `engine-strict=true` / `package-manager-strict=true`，使 `engines.node >=24.11.0 <25` 与 `pnpm@11.24.0` 真正生效。
   - 验收标准：Node 24 / pnpm 11 下 `pnpm install --frozen-lockfile` 通过；不满足约束时安装期失败；DEPLOYMENT 与 SPEC 描述同步。

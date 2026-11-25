@@ -7,6 +7,18 @@
 
 > 最后审查：2026-11-25（与 package.json v3.21.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
 
+## [Unreleased]
+
+### Added（临时文件管理规范）
+- 新增 `docs/TEMP-FILES.md` 权威规范：仓库根 `.tmp/` 为唯一合法临时目录（含 `scripts/`/`logs/`/`cache/`/`downloads/`/`test-output/` 子目录），禁止根目录及 `scripts/` 等正式目录散落临时文件；明确 `src/utils/scriptGenerator.ts` 生成的路由器 Shell 脚本中 `/tmp/` 为目标设备运行时路径，属例外
+- 新增 `scripts/manage-tmp.mjs` 与 `pnpm tmp:init`（幂等创建）/ `pnpm tmp:clean`（一键清空重建）脚本；新增 `pnpm check:root-clean` 别名
+
+### Changed（临时文件门禁强化）
+- `scripts/check-root-clean.mjs`：① 拦截范围由仅 `_*.mjs` 扩展至 `_*.mjs/_*.txt`、`preview.log/err`、`*.tsbuildinfo`、`*.tmp/temp` 等，且「被 gitignore 忽略」不再豁免临时产物；② 修复已知的 `execSync` shell 命令拼接注入隐患（改用 `spawnSync` 参数数组，`docs/07-improvements.md` O-04 标记已修复）；③ 运行即自动调用 `manage-tmp.mjs --init` 创建 `.tmp/`；④ 活跃预览日志已归档且原文件清空时给提示而非永久红灯，按类型给出精确归位目录
+- `.gitignore`：删除散落的 `*.tmp`/`tmp/`/`cache/`/`*err.txt`/`*out.txt`/`_build.txt` 等兜底忽略，临时文件规则集中为 `.tmp/` + `.tmp/**`；`tsconfig.json` 设 `tsBuildInfoFile: .tmp/cache/tsconfig.tsbuildinfo`
+- 根目录现存 `preview.log` / `preview.err` 归档至 `.tmp/logs/`，`tsconfig.tsbuildinfo` 迁至 `.tmp/cache/`
+- 文档同步：`docs/README.md` 导航、`docs/SPEC.md` §2/§7.2、`docs/06-faq-troubleshooting.md`、`docs/CHECKLIST.md`、`DEPLOYMENT.md` 均指向新规范与脚本
+
 ## [3.21.0] - 2026-11-25
 
 ### Added（文档体系标准化）

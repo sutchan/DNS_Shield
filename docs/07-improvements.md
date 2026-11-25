@@ -58,7 +58,9 @@
 
 ### O-04 根目录清洁度脚本的命令注入风险
 
-**问题背景**：`scripts/check-root-clean.mjs:41` 使用 `cp.execSync(\`git check-ignore -q ${JSON.stringify(rel)}\`)` 拼接 shell 命令。文件名若包含 shell 元字符（如反引号、`$(...)`），在双引号内仍可能被解释。审计 `docs/AUDIT-REPORT-v3.19.0.md` H-01 已记录，当前代码仍为此写法。
+**问题背景**：`scripts/check-root-clean.mjs` 曾使用 `cp.execSync(\`git check-ignore -q ${JSON.stringify(rel)}\`)` 拼接 shell 命令。文件名若包含 shell 元字符（如反引号、`$(...)`），在双引号内仍可能被解释。审计 `docs/AUDIT-REPORT-v3.19.0.md` H-01 已记录。
+
+**状态（2026-11-25 更新）**：✅ 已修复——现改用 `cp.spawnSync('git', ['check-ignore', '-q', rel], …)` 参数数组传递，不经 shell；本轮同时扩展临时文件拦截范围并新增 `scripts/manage-tmp.mjs` 管理工具（规范见 [TEMP-FILES.md](./TEMP-FILES.md)）。下方实施方案保留作历史记录。
 
 **实施方案**：
 1. 技术选型：改用 `spawnSync('git', ['check-ignore', '-q', rel], { cwd: ROOT, stdio: 'ignore' })`，参数数组传递，不经 shell。

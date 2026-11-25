@@ -86,7 +86,22 @@ for (const e of entries) {
   if (ENV_IGNORED.has(name)) continue; // 环境类忽略文件，非临时产物
   const reason = tempReason(name);
   if (reason) {
-    const target = /\.tsbuildinfo$/.test(name) ? '.tmp/cache/' : /^\./.test(name) ? '.tmp/' : '.tmp/logs/';
+    // 活跃进程（如 IDE 预览服务）持有句柄的日志：已归档归档到 .tmp/logs/ 且原文件清空时，
+    // 给出提示但不阻断——否则句柄释放前门禁将永久红灯。仍建议服务停止后删除空壳。
+    if (/^preview\.(log|err|out|txt)$/.test(name)) {
+      try {
+        const stat = fs.statSync(path.join(ROOT, name));
+        const archived = fs.existsSync(path.join(ROOT, '.tmp', 'logs', name));
+        if (stat.size === 0 && archived) {
+          console.warn(`⚠ 根目录 "${name}" 为空壳且已归档至 .tmp/logs/，服务停止后请删除原文件`);
+          continue;
+        }
+      } catch { /* 读取失败则按违规处理 */ }
+    }
+    let target = '.tmp/logs/';
+    if (/^_.*\.(mjs|cjs|js|mts|ts|tsx)$/.test(name)) target = '.tmp/scripts/';
+    else if (/\.tsbuildinfo$/.test(name)) target = '.tmp/cache/';
+    else if (/^\./.test(name)) target = '.tmp/';
     violations.push(`${reason} "${name}" 必须移入根目录 ${target}（详见 docs/TEMP-FILES.md）`);
     continue;
   }
