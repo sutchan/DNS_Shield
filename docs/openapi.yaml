@@ -1,0 +1,160 @@
+openapi: 3.1.0
+info:
+  title: DNS Shield HTTP Endpoints
+  version: 3.20.1
+  summary: 纯前端 DNS 过滤规则工具的公开 HTTP 端点
+  description: |
+    本项目没有业务 REST API：域名清单在浏览器本地解析与生成，不上传用户输入，
+    也没有账号、数据库或 /api/* 业务路由。本规范仅描述真实存在的页面路由、
+    元数据端点与静态规则文件。业务错误码不存在，失败均为 HTTP 标准状态码。
+    详见 docs/04-api.md。
+  license:
+    name: MIT
+    url: https://github.com/sutchan/DNS_Shield/blob/main/LICENSE
+servers:
+  - url: https://dns.ewuse.com
+    description: 生产站点
+  - url: http://localhost:3000
+    description: 本地开发 / 生产预览（端口 3000）
+tags:
+  - name: Pages
+    description: 服务端预渲染页面
+  - name: Metadata
+    description: 爬虫与生成式引擎元数据端点
+  - name: RuleFiles
+    description: 由 public/domains.txt 派生的静态规则产物
+paths:
+  /:
+    get:
+      tags: [Pages]
+      summary: 主工具页
+      operationId: getHomePage
+      description: DNS Shield 单页应用；解析、生成、导出均在浏览器本地完成。
+      responses:
+        '200':
+          description: HTML 页面
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Html'
+  /about/:
+    get:
+      tags: [Pages]
+      summary: 事实页（关于 / 使用步骤 / 12 格式 / FAQ）
+      operationId: getAboutPage
+      description: v3.20.0 起独立于主页，正文服务端预渲染，结构化数据按页归属。
+      responses:
+        '200':
+          description: HTML 页面
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Html'
+  /robots.txt:
+    get:
+      tags: [Metadata]
+      summary: 爬虫规则
+      operationId: getRobotsTxt
+      description: 由 src/app/robots.ts 生成；允许主流生成式引擎 UA，声明 sitemap。
+      responses:
+        '200':
+          description: robots.txt 文本
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/PlainText'
+              example: |
+                User-agent: *
+                Allow: /
+                Disallow: /api/
+                Disallow: /admin/
+                Sitemap: https://dns.ewuse.com/sitemap.xml
+  /sitemap.xml:
+    get:
+      tags: [Metadata]
+      summary: 站点地图
+      operationId: getSitemapXml
+      description: 仅含 / 与 /about/；lastModified 取手工维护的 SITE_LAST_MODIFIED。
+      responses:
+        '200':
+          description: XML 站点地图
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Xml'
+  /llms.txt:
+    get:
+      tags: [Metadata]
+      summary: 生成式引擎站点简报
+      operationId: getLlmsTxt
+      description: |
+        src/app/llms.txt/route.ts 以 force-static 构建期预渲染，不依赖运行时 Node。
+        无参数、无请求体。CDN 缓存 1 天，浏览器不缓存。
+      responses:
+        '200':
+          description: 纯文本简报
+          headers:
+            Cache-Control:
+              description: public, max-age=0, s-maxage=86400
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/PlainText'
+  /{ruleFile}:
+    get:
+      tags: [RuleFiles]
+      summary: 下载规则产物
+      operationId: getRuleFile
+      description: |
+        12 个文件由 scripts/gen-format-files.mjs 从 public/domains.txt 派生。
+        可作为订阅 URL；实际 Content-Type 依托管平台对扩展名的处理而定。
+      parameters:
+        - name: ruleFile
+          in: path
+          required: true
+          description: 规则文件名
+          schema:
+            type: string
+            enum:
+              - domains.txt
+              - dnsmasq.conf
+              - hosts.txt
+              - adguard.txt
+              - whitelist.txt
+              - unbound.conf
+              - pihole.txt
+              - rpz.db
+              - smartdns.conf
+              - mosdns_domain_set.txt
+              - clash_dns.yaml
+              - coredns_hosts.txt
+      responses:
+        '200':
+          description: 规则文件文本
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: 规则内容；头部每行均带该格式的注释符
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    PlainText:
+      type: string
+      description: UTF-8 纯文本
+    Xml:
+      type: string
+      description: XML 文档
+    Html:
+      type: string
+      description: HTML 文档
+  responses:
+    NotFound:
+      description: 资源不存在（文件名错误或产物未生成）
+      content:
+        text/plain:
+          schema:
+            type: string
