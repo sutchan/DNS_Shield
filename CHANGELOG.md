@@ -5,7 +5,24 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-23（与 package.json v3.20.1 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md`。
+> 最后审查：2026-11-25（与 package.json v3.21.0 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
+
+## [3.21.0] - 2026-11-25
+
+### Added（文档体系标准化）
+- 新增 `docs/README.md` 文档中心：目录 / 索引、术语表（12 格式、黑白名单、改道、单飞、草稿等）、版本控制约定与文档维护规则；建立「SPEC 约束 > 模块文档 > 冻结原型」的权威层级
+- 新增 6 份模块化文档：`docs/01-overview.md`（背景 / 目标 / 技术栈选型 / 分层架构与 Mermaid 数据流）、`docs/03-modules.md`（M1~M9 模块说明与流程图 / 关键逻辑）、`docs/04-api.md` + `docs/openapi.yaml`（OpenAPI 3.1.0）、`docs/05-user-guide.md`（角色权限 / 操作流程图 / 详细步骤）、`docs/06-faq-troubleshooting.md`（FAQ + 故障排除）、`docs/07-improvements.md`（优化建议与未来展望）
+- **API 文档据实编写**：本项目是纯前端工具，HTTP 层仅有页面路由、`robots.txt` / `sitemap.xml` / `llms.txt` 与 12 个静态规则文件；没有业务 REST API、没有账号 / 数据库、没有自定义业务错误码。OpenAPI 定义只覆盖真实端点，并在浏览器中模块 API 一节明确标注「非 HTTP」，不虚构接口或错误码
+- 优化建议统一格式：`docs/07-improvements.md` 的每条建议含问题背景、实施方案（技术选型 + 步骤）、预期效果（量化优先）与实施优先级，共 10 条（O-01 ~ O-10）
+
+### Changed（任务管理与事实核查）
+- `docs/tasks.md` 第二节重排为 **18 项**未完成任务，全部补齐责任人（Docs Team / Dev Team / QA / CI Owner 等）与计划完成时间（绝对日期 2026-12-02 ~ 2027-02-10），按 P1/P2/P3/P4 排序；新增本轮发现的 7 项（OpenAPI 校验、CI shell 注入、`.npmrc` 缺失、行号重复生成、SW 未注册、`category-index.txt` 发布路径、React 19 注释漂移）
+- 代码 / 架构 / 性能 / 安全 / UX 评估结论写入优化建议：大输入约 3× 内存峰值与 `push(...arr)` 栈溢出风险（O-01）、行号重复生成（O-02）、SPEC 锁文件描述漂移（O-03）、根目录清洁脚本命令注入（O-04）、`.npmrc` 缺失导致 `engine-strict` 未生效（O-05）、Service Worker 未注册（O-06）、`category-index.txt` 未入库（O-07）、CSP `unsafe-inline`（O-08）、a11y 自动化缺失（O-09）、路由器兼容列表不足（O-10）
+- 版本同步 bump 至 v3.21.0（`package.json` / `src/config/version.ts` / `next.config.js` + 13 处文档展示位 + `public/` 11 个规则产物头部）；新增文档头部统一标注文档集版本与适用产品版本
+
+### Verified（事实性核对）
+- 实查确认：`pnpm-lock.yaml` 已由 `a9eceb1` 恢复、`.npmrc` 确实缺失（历史提交 `e102610` 删除后未恢复）；`package.json` 为 Next 14 / React 18，而 `layout.tsx:39` 注释写「React 19」属漂移；`public/service-worker.js` 存在但全仓无 `register` 调用
+- 门禁实跑：`tsc --noEmit` 0 错、`eslint src` 0 warning 0 error、`vitest run` 全绿、`check-locales` 16 语 / 213 键、`sync-facts --check` 13 处一致、`check-root-clean` 通过
 
 ## [3.20.1] - 2026-11-23
 

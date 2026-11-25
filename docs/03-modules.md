@@ -1,6 +1,6 @@
 # 03 功能模块说明
 
-> 文档集版本：v3.20.1 · 最后审查：2026-11-25 · 适用产品版本：v3.20.1
+> 文档集版本：v3.21.0 · 最后审查：2026-11-25 · 适用产品版本：v3.21.0
 > 实现为准：本文描述的行为均可在 `src/` 对应文件中复核；约束级规则见 [SPEC](./SPEC.md)。
 
 ## 1. 模块总览
@@ -123,7 +123,7 @@ flowchart LR
 ```bash
 node scripts/gen-format-files.mjs   # 从 domains.txt 派生 11 个格式文件
 node scripts/count-domains.mjs      # 实算域名数（当前 127188）
-node scripts/check-locales.mjs      # 16 语键一致性（212 键）
+node scripts/check-locales.mjs      # 16 语键一致性（213 键）
 node scripts/sync-facts.mjs --check # 版本展示位（13 处）
 node scripts/check-root-clean.mjs   # 根目录洁净度
 ```

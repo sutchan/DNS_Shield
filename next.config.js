@@ -77,7 +77,7 @@ const nextConfig = {
     unoptimized: true
   },
   env: {
-    version: '3.20.1',
+    version: '3.21.0',
     NEXT_PUBLIC_BUILD_ID: buildTimeId()
   },
   devIndicators: {
