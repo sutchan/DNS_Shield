@@ -381,3 +381,25 @@
 - **Worker / 缓存 / 校验**：`T-AUD-M03/M06/M07/M08/M09/M10/M12/M13` 与 `T-PERF-02` 均有源码改动与新增用例；`T-AUD-M05/M17`、`T-REL-01`、`T-PWA-01` 为工作流与依赖治理。
 - **文档 / SEO / 门禁**：`T-VER-01` 配置读取 package.json；`T-VERIFY-01` 离线 OpenAPI 校验入 CI；`T-VER-02` 修正 React 版本断言；`T-SEO-01` sitemap hreflang；`T-AUD-L06/L07/L08/L11/L12` 边界、文案同源、版本断言、gitignore 去重、rAF 节流。
 - **验证**：tsc 0 错、next lint 0 告警、54 套件 / 349 用例全绿、覆盖率 87.72/87.15/89.17/87.72（按 glob 门禁 hooks 80/75/80/80、utils 85/85/85/85）、`next build` 成功、`sync-facts --check` / `check-locales` / `check-openapi` / `check-root-clean` 全通过。
+
+---
+
+## 十、2026-11-25 任务闭环归档（逐项实施）
+
+> 本轮依用户指令对 `docs/tasks.md` 活跃清单逐项取证、实施与回归，已完成项在此保留完整元信息、目标、验收标准与实证依据，并自活跃清单迁出。
+
+| 编号 | 任务 | 责任人 | 完成时间 | 结论 |
+|---|---|---|---|---|
+| T-AUD-L05 | autosave 恢复竞态检查 ref 非空并跳过空白草稿 | Dev Team | 2026-11-25 | 审计 L-05 闭环 |
+
+### T-AUD-L05 · autosave 恢复竞态检查 ref 非空并跳过空白草稿
+
+- **来源**：审计报告 L-05（冻结快照）；原任务计划 2027-01-13 / P3。
+- **目标**：autosave 恢复在 await 后检查 ref 是否被占用；跳过纯空白草稿，避免异步恢复覆盖用户输入。
+- **验收标准**：await 期间用户真实输入不被草稿覆盖；纯空白草稿不恢复；草稿优先于远端默认清单（T-P1-11）契约不回归。
+- **完成实证**：
+  - `src/hooks/autosaveStorage.ts` `isValidAutosave` 增加 `value.trim().length > 0`，拒绝纯空白草稿。
+  - `src/hooks/useAutosave.ts` 新增 `userEditedRef` 参数；`await readAutosave()` 后二次检查 `restoredRef.current || userEditedRef.current` 才跳过恢复——**仅看「用户真实编辑」标记而非 `sourceInputRef` 内容**，因远端先落地也走 `setSourceInput` 填充 ref，若据内容判断会破坏「草稿优先于远端」契约（实测回归后修正）。
+  - `src/hooks/useDomainData.ts` 新增 `userEditedRef`，仅 `handleSourceInput`（UI 真实编辑）置位，传给 `useAutosave`；`handleSourceInput` 之外（远端加载、clearAll）不置位。
+  - 新增 `src/hooks/autosaveStorage.test.ts`（3 例：合法串/非法值/纯空白拒绝）；`src/hooks/useDomainData.autosave.test.ts` 增 2 例（异步恢复期间用户抢先输入、纯空白草稿跳过）。
+  - 2026-11-25 `vitest run` 两文件 14 例全绿（初版守卫据 ref 内容判断导致 1 例回归，已按上述修正）。
