@@ -291,3 +291,44 @@
 | **超大规模数据性能 (Web Worker)** | 55% | 🔵 后续增强（非阻断） | T-P1-08 已消除主线程行数统计的 O(n) 数组分配（3 处调用点统一为非分配计数），50,000+ 级输入的按键响应卡顿明显缓解；**剩余分片并行化（多核并行求值）未实施**，仍按需排期，不影响当前功能可用性 |
 
 > **未完成任务**：见 [tasks.md](./tasks.md)「二、待办任务」（数量、状态与排期以该文件实时声明为准，本归档不维护任务状态）。截至 2026-11-06 当时的编号任务已全部完成；此后新增任务（含 Web Worker 分片并行化、审计迁移项等）均在 `tasks.md` 登记，不在本文件重复。已完成任务结构化明细见上方第一、二、四、五、六、七章。
+
+---
+
+## 八、2026-11-25 审计闭环项归档（自 tasks.md 迁移）
+
+> 本轮依 [SPEC.md §5.3](./SPEC.md) 任务唯一来源纪律，对 `docs/tasks.md` 全部 48 项逐条复核源码、配置与测试实证，确认 4 项已闭环，自活跃清单迁出并完整保留原始目标、验收标准与实证依据。`T-AUD-L05` 仅部分完成，继续保留在活跃清单。
+
+| 编号 | 任务 | 责任人 | 完成时间 | 结论 |
+|---|---|---|---|---|
+| T-SEC-02 | 修复根目录清洁脚本 shell 注入 | Dev Team | 2026-11-25 | 审计 H-01 闭环 |
+| T-AUD-M11 | 单飞作废已派发分片并按 taskId 分代记账 | Dev Team | 2026-11-25 | 审计 M-11 闭环 |
+| T-AUD-L09 | 非 src 配置版本头陈旧值校正 | Docs Team | 2026-11-25 | 按项目头注释规则核实为「最后改动版本」而非漂移，无需改值 |
+| T-AUD-L10 | CSS import 分层与预览样式归位 | Dev Team | 2026-11-25 | 样式已归位且导入顺序由 `layout.tsx` 单一入口管理 |
+
+### T-SEC-02 · 修复根目录清洁脚本 shell 注入
+
+- **来源**：审计 H-01 / 优化方案 O-04；原任务计划 2026-12-02。
+- **目标**：`scripts/check-root-clean.mjs` 的 `cp.execSync(\`git check-ignore ...\`)` 改为 `spawnSync` 参数数组；排查其他 `execSync` 拼接。
+- **验收标准**：含 shell 元字符的文件名 fixture 不再执行命令。
+- **完成实证**：`scripts/check-root-clean.mjs:42-45` 已改为 `cp.spawnSync('git', ['check-ignore', '-q', rel], { cwd: ROOT, stdio: 'ignore' })`，不经 shell；其余 `execFileSync` 均为固定脚本路径、无外部输入拼接。2026-11-25 `read_file` 复核通过。`docs/07-improvements.md` O-04 已标记修复。
+
+### T-AUD-M11 · 单飞作废已派发分片并按 taskId 分代记账
+
+- **来源**：审计报告 M-11（bug #11）；原任务计划 2026-12-23。
+- **目标**：单飞不取消已派发分片、迟到终态误扣新任务 load → 按 taskId 分代记账 + 作废早退（或 terminate 重建池）。
+- **验收标准**：旧任务作废后其结果不进入新任务聚合，负载计数不被迟到消息扣减。
+- **完成实证**：`src/hooks/useWorkerPool.ts:26-30` 单飞记录 `taskId`；`:119-129` 文本变化时按 `taskId` 定位旧任务并 `failed=true` + `tasksRef.delete` + `resolve(null)`；`:154-156` 派发消息携带 `taskId`；`:40-57` 响应路由按 `taskId` 查任务，未知任务在扣减负载前早退。2026-11-25 `read_file` 复核通过。
+
+### T-AUD-L09 · 非 src 配置版本头陈旧值校正
+
+- **来源**：审计报告 L-09（`vitest.config.ts:1`、`sync-facts.mjs:1` 等）；原任务计划 2027-01-13。
+- **目标**：校正非 src 配置文件头部陈旧版本号。
+- **验收标准**：头注释版本与实际最后改动版本一致。
+- **完成结论**：项目规则为「文件头部标注路径与版本号，**仅被改动的文件**更新」（见 `git-workflow` 规则），因此 `vitest.config.ts v3.15.0`、`scripts/sync-facts.mjs v3.18.1` 等是文件最后改动版本的如实记录，不构成版本漂移；权威版本由 `package.json` / `src/config/version.ts` / `next.config.js` 三源与 `sync-facts --check` 13 处展示位保证。本项按「核实后无需改动」闭环，2026-11-25 实读确认。
+
+### T-AUD-L10 · CSS import 分层与预览样式归位
+
+- **来源**：审计报告 L-10（9 个 CSS import 靠顺序即级联 + 预览样式错位在 input.css）；原任务计划 2027-01-13。
+- **目标**：具名 `@layer` / 预览样式归位 `output.css`。
+- **验收标准**：样式导入集中管理，预览样式归位。
+- **完成实证**：2026-11-25 实读 `src/app/layout.tsx:8-16`，CSS 导入统一收敛于根布局单一入口（`globals.css` + `layout/stats/input/output/footer/feedback/hero/seo.css` 共 8 个模块），`src/styles/` 实存 8 个模块化文件，预览样式已归入 `output.css`，不存在报告所述的散落与错位。本项闭环。

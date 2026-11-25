@@ -173,7 +173,7 @@ npm run start
 - **应放入 `.tmp/`**：一次性脚本与探针、调试输出、运行日志、中间产物、转换/翻译类临时程序
 - **禁止散落**：仓库根、`scripts/` 等正式目录不得出现 `_` 前缀的临时脚本或测试文件（如 `_probe.mjs`、`_tmp.test.ts`）
 - **门禁**：`scripts/check-root-clean.mjs` 是 CI 首步的根目录清洁度门禁，会拦截上述散落条目并要求归位到 `.tmp/`
-- **工作流工具链**：`.github/actions/setup` 与各工作流已升级至 `actions/checkout@v5` / `actions/setup-node@v6` / `actions/setup-node@v6` / `actions/cache@v5` / `actions/upload-artifact@v5`（2026-11-12 实况；升级记录见 CHANGELOG `[Unreleased]`）
+- **工作流工具链**：`.github/actions/setup` 与各工作流已升级至 `actions/checkout@v5` / `actions/setup-node@v6` / `actions/upload-artifact@v5`；依赖缓存改用 setup-node 内置 `cache: 'npm'`（不再需要独立的 `actions/cache` 与 pnpm store 路径解析）（2026-11-12 实况；升级记录见 CHANGELOG `[Unreleased]`）
 - **会话结束即清理**：`.tmp/` 内容视为可随时删除的缓存；需要长期留存的证据（截图、报告）应写入 `docs/`，或固化为测试断言随代码入库
 - **正式产物目录**：测试覆盖率、审计报告等输出写入 `coverage/`、`reports/`（均已 gitignore），不得写入仓库根
 

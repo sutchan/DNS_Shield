@@ -4,7 +4,7 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-25（与 package.json v3.22.0 对齐；第二十一轮：建立文档中心与 01/03/04/05/06/07 六大模块文档、OpenAPI 3.1 定义，任务清单补齐责任人与计划完成时间并重排为 18 项（后增 T-DATA-01 与 2026-11-25 审计迁移项，当前合计以 §二 声明为准）；第二十轮：域名计数曾实算 127188、i18n 键数校正（当前 213）；本轮发现主线数据源回退至 644 条，已登记 T-DATA-01 待核实；第十九轮审计 11 项已并入第二节）
+> 最后审查：2026-11-25（与 package.json v3.22.0 对齐；**第二十二轮 2026-11-25 15:00**：逐条复核 48 项任务实证，T-SEC-02 / T-AUD-M11 / T-AUD-L09 / T-AUD-L10 已闭环并迁入 tasks-done.md，剩余 44 项按优先级重排；第二十一轮：建立文档中心与 01/03/04/05/06/07 六大模块文档、OpenAPI 3.1 定义，任务清单补齐责任人与计划完成时间并重排为 18 项（后增 T-DATA-01 与 2026-11-25 审计迁移项，当前合计以 §二 声明为准）；第二十轮：域名计数曾实算 127188、i18n 键数校正（当前 213）；本轮发现主线数据源回退至 644 条，已登记 T-DATA-01 待核实；第十九轮审计 11 项已并入第二节）
 > 维护团队：Sut / ArcesTeam
 >
 > **本轮整理（2026-11-13）**：依 SPEC §5.3 任务记录规范，将第十四~十八轮冗长的「本次更新」历史叙述统一归档至 [tasks-done.md](./tasks-done.md)，本文件仅保留未完成清单、实时指标、遗留疑问与维护清单；版本与指标经实算与代码实况对齐（v3.19.2 / 12 格式 / 16 语 212 键 / 51 套件 326 用例 / 17 组件 / >200 行源文件 0 个 / 拦截域名 127188 条）；2026-11-22 第二十轮校正键数与域名计数并补记分支整理。
@@ -37,11 +37,13 @@
 
 ## 二、待办任务（未完成，按优先级排序）
 
-> **任务合计：48 项**（2026-11-25：原 19 项 + 从 `docs/AUDIT-REPORT-v3.19.0.md` 迁移的 29 项未闭环审计发现；其中 T-SEC-02 已标记完成待归档，实际未完成 47 项）。
+> **任务合计：44 项**（2026-11-25 15:00 复核：原 48 项＝19 项 + 审计报告迁移 29 项，已归档 4 项闭环任务 T-SEC-02 / T-AUD-M11 / T-AUD-L09 / T-AUD-L10 至 [tasks-done.md](./tasks-done.md) §八，当前 44 项均未完成）。
 > 每条均含「目标 / 责任人 / 计划完成时间（绝对日期）/ 影响范围 / 验收标准」（审计迁移项的详细问题与统一验收标准见 §六）。
 > **唯一来源纪律**：任何位置的任务型表述（审计报告「修：」、优化方案 O-xx、FAQ「待评估/待验证」、源码 TODO 等）必须在本文件登记；原位置只保留证据与方案，不维护第二份状态（见 SPEC §5.3）。
 > 本轮已完成的文档完善工作（文档索引 + 01/03/04/05/06/07 + OpenAPI）见 [CHANGELOG](../CHANGELOG.md) 对应版本小节，不在此重复。
 > 历史 T-P0~P4 编号任务已归档至 [tasks-done.md](./tasks-done.md)。
+>
+> **状态重评（2026-11-25 15:00 实查）**：① 已闭环并归档 4 项（T-SEC-02 / T-AUD-M11 / T-AUD-L09 / T-AUD-L10）；② 部分完成待收尾 12 项：T-DOC-01 / T-DOC-02 / T-TEST-01 / T-CI-01 / T-DATA-01 / T-VERIFY-01 / T-PERF-02 / T-COMPAT-01 / T-REL-01 / T-AUD-M05 / T-AUD-M15 / T-AUD-L05；③ 其余 32 项未启动。优先级维持 P1/P2/P3/P4 原分级：安全投毒（H02）、TLS 降级（H03）、静默丢数据（H04）与域名数据回退（T-DATA-01）为最高处理批次；T-DATA-01 因影响全站拦截能力，计划提前至 2026-11-26 前给出决策记录。
 
 ### 优先级 / 责任人 / 计划完成时间总表
 
@@ -51,7 +53,6 @@
 | 🔴 P1 | T-DOC-02 | CHANGELOG 补记内存 5GB 根因修复 | Docs Team | 2026-12-02 | 历史遗留 |
 | 🔴 P1 | T-TEST-01 | 内存根因端到端回归（loadDomainData 单飞） | QA / Dev Team | 2026-12-02 | 历史遗留 |
 | 🔴 P1 | T-CI-01 | 验证 CI→Deploy→Release 全绿与自动发版 | CI Owner | 2026-12-02 | 历史遗留 |
-| 🔴 P1 | T-SEC-02 | 修复根目录清洁脚本 shell 注入（O-04） | Dev Team | 2026-12-02 | 审计 H-01 |
 | 🔴 P1 | T-BUILD-01 | 恢复 .npmrc 使 engine-strict 生效（O-05） | CI Owner | 2026-12-02 | 本轮文档核查 |
 | 🔴 P1 | T-DATA-01 | 核实域名数据源 127188 → 644 回退并决定是否合并聚合分支 | Sut / CI Owner | 2026-11-26 | 本轮数据核对 |
 | 🔴 P1 | T-AUD-H02 | 修复 workflow_run 投毒：限定同仓库 push 触发、密钥入受保护 environment | CI Owner | 2026-12-09 | 审计 H-02 |
@@ -75,7 +76,6 @@
 | 🟡 P2 | T-AUD-M08 | IDB 连接失败重置 dbPromise，区分 onerror / onblocked | Dev Team | 2026-12-23 | 审计 M-08 |
 | 🟡 P2 | T-AUD-M09 | Worker 聚合进度改用固定全局 total，避免倒退 | Dev Team | 2026-12-23 | 审计 M-09 |
 | 🟡 P2 | T-AUD-M10 | push(...arr) 改循环 / concat，避免大数组静默降级 | Dev Team | 2026-12-23 | 审计 M-10 |
-| 🟡 P2 | T-AUD-M11 | 单飞作废已派发分片并按 taskId 分代记账 | Dev Team | 2026-12-23 | 审计 M-11 |
 | 🟡 P2 | T-AUD-M12 | AppContext value 用 useMemo 稳定，避免 13 消费者全量重渲染 | Dev Team | 2026-12-23 | 审计 M-12 |
 | 🟡 P2 | T-AUD-M13 | 补缓存层测试，按 glob 分设覆盖率 thresholds | QA | 2026-12-23 | 审计 M-13 |
 | 🟡 P2 | T-AUD-M15 | 规则行 / 头部重复实现抽为框架无关共用模块 | Dev Team | 2026-12-23 | 审计 M-15 |
@@ -91,8 +91,6 @@
 | ⚪ P3 | T-AUD-L06 | 空输入 totalLines 返回 0 而非 1 | Dev Team | 2027-01-13 | 审计 L-06 |
 | ⚪ P3 | T-AUD-L07 | 产物白名单注释与运行时 i18n 对齐 | Docs Team | 2027-01-13 | 审计 L-07 |
 | ⚪ P3 | T-AUD-L08 | APP_VERSION 一致性纳入自动断言 | CI Owner | 2027-01-13 | 审计 L-08 |
-| ⚪ P3 | T-AUD-L09 | 非 src 配置版本头陈旧值校正 | Docs Team | 2027-01-13 | 审计 L-09 |
-| ⚪ P3 | T-AUD-L10 | CSS import 分层与预览样式归位 | Dev Team | 2027-01-13 | 审计 L-10 |
 | ⚪ P3 | T-AUD-L11 | .gitignore 重复条目去重 | Dev Team | 2027-01-13 | 审计 L-11 |
 | ⚪ P3 | T-AUD-L12 | useVirtualList 滚动改 rAF 节流 | Dev Team | 2027-01-13 | 审计 L-12 |
 
@@ -115,10 +113,6 @@
 - **T-CI-01 · 验证 CI→Deploy→Release 全绿与自动发版**（责任人：CI Owner；计划：2026-12-02）
   - 目标：确认最新版本已在 GitHub 产生 Release / tag，发布链路真实跑通。
   - 验收标准：Actions 全绿、存在对应 tag 与 Release；若红则定位（重点：setup 缓存 / npm ci 锁文件安装）。
-- **T-SEC-02 · 修复根目录清洁脚本 shell 注入**（责任人：Dev Team；计划：2026-12-02）— ✅ **已完成（2026-11-25）**
-  - 目标：`scripts/check-root-clean.mjs` 的 `cp.execSync(\`git check-ignore ...\`)` 改为 `spawnSync` 参数数组；排查其他 `execSync` 拼接。
-  - 验收标准：含 shell 元字符的文件名 fixture 不再执行命令；审计 H-01 闭环。
-  - 完成记录：已改用 `cp.spawnSync('git', ['check-ignore', '-q', rel], …)` 不经 shell；其余 `execFileSync` 调用为固定脚本路径、无外部输入拼接；随临时文件规范（[TEMP-FILES.md](./TEMP-FILES.md)）一并落地。`docs/07-improvements.md` O-04 已标记修复。
 - **T-BUILD-01 · 恢复 `.npmrc`**（责任人：CI Owner；计划：2026-12-02）
   - 目标：恢复 `engine-strict=true` / `package-manager-strict=true`，使 `engines.node >=24.11.0 <25` 与 `engines.npm >=11` 真正生效。
   - 验收标准：Node 24 / npm 11 下 `npm ci` 通过；不满足约束时安装期失败；DEPLOYMENT 与 SPEC 描述同步。
@@ -185,7 +179,7 @@
 
 ## 六、审计报告未闭环项详情（2026-11-25 迁移）
 
-> 来源：[`docs/AUDIT-REPORT-v3.19.0.md`](./AUDIT-REPORT-v3.19.0.md)（v3.19.0 冻结快照，2026-11-18）。该报告 `:141` 明确「当前待办未含本轮深层发现」；本章将其中带「修：」建议、且未在 §二 其他任务中登记的 29 条统一迁移到本文件，使任务状态只有一个维护位置。
+> 来源：[`docs/AUDIT-REPORT-v3.19.0.md`](./AUDIT-REPORT-v3.19.0.md)（v3.19.0 冻结快照，2026-11-18）。该报告 `:141` 明确「当前待办未含本轮深层发现」；本章将其中带「修：」建议、且未在 §二 其他任务中登记的 29 条统一迁移到本文件，使任务状态只有一个维护位置。2026-11-25 复核后已闭环 3 条（M-11 / L-09 / L-10）迁出，现余 26 条。
 > **原报告为历史证据快照，不再维护任务状态**；状态、责任人与完成情况只看本文件。已登记映射（不在本章重复）：H-01 → T-SEC-02、B-01 / H-05 的 `.npmrc` 部分 → T-BUILD-01（锁文件已恢复）、M-01 → T-SEC-01 / T-DOC-01、M-14 / L-08 → T-VER-01、M-16 的重复行号部分 → T-PERF-02、O-01~O-10 → 对应 T-PERF-01 / T-PERF-02 / T-DOC-01 / T-SEC-02 / T-BUILD-01 / T-PWA-01 / T-REL-01 / T-SEC-01 / T-A11Y-01 / T-FEAT-01。
 
 ### HIGH（3 项）
@@ -194,7 +188,7 @@
 - **T-AUD-H03 · 路由器同步脚本关闭 TLS**：`src/utils/scriptGenerator.ts` 的 curl `-k` / wget `--no-check-certificate` 以 root 下载并覆盖 dnsmasq 配置。修：去掉校验降级，依赖系统 CA（`ca-bundle`）。
 - **T-AUD-H04 · 自动保存静默丢数据**：`autosaveStorage.ts` 在 IDB 写失败且草稿 >5MB 时既不写 IDB 也不写 localStorage，且不返回失败；`useDomainData` 无条件弹成功 toast。修：返回写入结果，失败向上传播并弹失败提示。
 
-### MEDIUM（14 项）
+### MEDIUM（13 项）
 
 - **T-AUD-M02** 出站 host 仅校验协议、CSP `connect-src https:` 全放开 → 强制 https + 内置源白名单 + 自定义源显式确认。
 - **T-AUD-M03** IDB 缓存零运行时校验（`as T`）→ 读取时类型守卫 + etag 正则 + TTL。
@@ -205,15 +199,14 @@
 - **T-AUD-M08** IDB `onerror` / `onblocked` 后 `dbPromise` 永久 resolve(null) → 失败时重置并区分原因。
 - **T-AUD-M09** 聚合进度 `total += shard.total` 用已上报分片之和 → 可到 100% 后倒退；派发前算固定全局 total。
 - **T-AUD-M10** `push(...arr)` 在 126000 元素起 RangeError → 静默降级串行且内存翻倍；改循环 / concat。
-- **T-AUD-M11** 单飞不取消已派发分片、迟到终态误扣新任务 load → 按 taskId 分代记账 + 作废早退（或 terminate 重建池）。
 - **T-AUD-M12** `<AppProvider value={{t:c.t}}>` 每次渲染新 value → 13 个 `useT()` 消费者全量重渲染；用 useMemo。
 - **T-AUD-M13** 覆盖率门禁仅覆盖 utils/hooks，functions 余量 3.23 → 补缓存层测试 + 按 glob 分设 thresholds（保留 `all:false`）。
 - **T-AUD-M15** 规则行 / 头部 3+2 份重复实现（运行时 + 构建脚本）→ 抽框架无关纯 TS 模块共用。
 - **T-AUD-M17** `@radix-ui/react-{switch,tabs,toast}` 零引用 → 移除并重生锁文件。
 
-### LOW（12 项）
+### LOW（10 项）
 
-`T-AUD-L01` shell 变量改 `env:` ｜ `T-AUD-L02` 聚合 fetch 体积上限 + 重定向校验 ｜ `T-AUD-L03` 内联脚本 `lang` 共用白名单 ｜ `T-AUD-L04` JSON-LD 转义 `<` ｜ `T-AUD-L05` autosave 恢复竞态 ｜ `T-AUD-L06` 空输入 `totalLines=0` ｜ `T-AUD-L07` 产物注释与 i18n 对齐 ｜ `T-AUD-L08` 版本一致性断言 ｜ `T-AUD-L09` 非 src 配置版本头校正 ｜ `T-AUD-L10` CSS import 分层与预览样式归位 ｜ `T-AUD-L11` `.gitignore` 去重 ｜ `T-AUD-L12` 虚拟列表 rAF 节流。详细位置与修复方向见审计报告 §五（冻结快照），本文件只维护状态。
+`T-AUD-L01` shell 变量改 `env:` ｜ `T-AUD-L02` 聚合 fetch 体积上限 + 重定向校验 ｜ `T-AUD-L03` 内联脚本 `lang` 共用白名单 ｜ `T-AUD-L04` JSON-LD 转义 `<` ｜ `T-AUD-L05` autosave 恢复竞态 ｜ `T-AUD-L06` 空输入 `totalLines=0` ｜ `T-AUD-L07` 产物注释与 i18n 对齐 ｜ `T-AUD-L08` 版本一致性断言 ｜ `T-AUD-L11` `.gitignore` 去重 ｜ `T-AUD-L12` 虚拟列表 rAF 节流。详细位置与修复方向见审计报告 §五（冻结快照），本文件只维护状态。
 
 ### 统一验收标准（适用于本章全部条目）
 
