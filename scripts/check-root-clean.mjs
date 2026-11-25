@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 // scripts/check-root-clean.mjs — 根目录清洁度门禁（白名单制）
 //
-// 规范：所有临时文件（一次性脚本、探针、运行日志、中间产物）统一存放于仓库根的
-// .tmp/ 子目录（已被 .gitignore 忽略），禁止在仓库根或其他顶层位置散落。
-// 本脚本用于 CI 首步拦截：任何「未被 gitignore 且不在白名单」的根级条目均视为
-// 违规散落，门禁失败并给出修正指引。
+// 规范：所有临时文件（一次性脚本、探针、运行日志、中间产物、缓存、下载文件）
+// 统一存放于仓库根的 .tmp/ 子目录（已被 .gitignore 忽略），禁止在仓库根或
+// 其他顶层位置散落。完整规范见 docs/TEMP-FILES.md。
+// 本脚本在 CI 首步拦截：任何「未被白名单列举」的根级条目均视为违规。
 import fs from 'node:fs';
 import cp from 'node:child_process';
 import path from 'node:path';
@@ -12,8 +12,9 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(fileURLToPath(import.meta.url), '..', '..');
 
-// 根目录合法条目白名单：被 .gitignore 忽略的条目无需列入（脚本已跳过），
-// 此集合仅覆盖「未被忽略」的根级条目；新增合法根文件时在此补登记。
+// 根目录合法条目白名单：
+// 此集合覆盖「允许出现在根目录」的条目；被 .gitignore 忽略的环境文件
+// （.env.local / .nvmdrc / .workbuddy）与临时产物不同，需单独按类型判定。
 const ALLOWED = new Set([
   // 文件
   '.env.example', '.eslintrc.json', '.gitattributes', '.gitignore', '.npmrc',
@@ -30,33 +31,51 @@ function isAllowedPattern(name) {
   return /^README(\.[a-z]{2})?\.md$/.test(name) || /^tsconfig\..*\.json$/.test(name);
 }
 
-// git 内部目录永远跳过
+// git 内部目录与环境类忽略文件（非「临时产物」，属开发环境状态）
 const GIT_INTERNAL = new Set(['.git']);
+const ENV_IGNORED = new Set(['.env.local', '.nvmdrc', '.workbuddy']);
 
 function isIgnored(name) {
   try {
     // 统一为 POSIX 风格相对路径：Windows 下 path.join 产生反斜杠，
-    // 会让 git check-ignore 的规则匹配不可靠（已忽略文件被误判为未忽略而误报）
+    // 会让 git check-ignore 的规则匹配不可靠。
+    // 使用 spawnSync 参数数组（不经 shell），消除文件名含 shell 元字符时的注入风险，
+    // 修复 docs/AUDIT-REPORT-v3.19.0.md H-01 / docs/07-improvements.md O-04。
     const rel = name.split(path.sep).join('/');
-    cp.execSync(`git check-ignore -q ${JSON.stringify(rel)}`, {
-      cwd: ROOT,
-      stdio: 'ignore',
-    });
-    return true;
+    const r = cp.spawnSync('git', ['check-ignore', '-q', rel], { cwd: ROOT, stdio: 'ignore' });
+    return r.status === 0;
   } catch {
     return false;
   }
 }
 
-// 临时文件特征判定（优先于 gitignore 跳过逻辑）：
-// ① 脚本/测试类（_ 前缀 + .mjs/.cjs/.js/.ts/.tsx）——一次性脚本、探针、临时测试，
-//    只允许存在于根 .tmp/ 子目录；出现在根目录或 scripts/ 即为违规散落。
-//    此类文件即使被 .gitignore 兜底忽略（不会入库），也必须归位——否则「忽略」会
-//    掩盖散落事实，门禁形同虚设。
-// ② 日志类（_ 前缀 + .txt/.log/.out/.err）——运行日志，可能是仍在写入的活跃产物
-//    （如外部会话的 vitest 输出重定向），不阻断门禁。
-const TEMP_SCRIPT_RE = /^_.*\.(mjs|cjs|js|mts|ts|tsx)$/;
+// 根目录临时产物特征（优先于 gitignore 跳过逻辑）：
+// 这些文件即使被 .gitignore 兜底忽略（不会入库），也必须归位——
+// 否则「忽略」会掩盖散落事实，门禁形同虚设。
+const TEMP_PATTERNS = [
+  /^_.*\.(mjs|cjs|js|mts|ts|tsx|txt|log|out|err)$/, // 临时脚本/日志（_ 前缀）
+  /^preview\.(log|err|out|txt)$/,                   // 预览服务输出
+  /^.*\.tsbuildinfo$/,                              // TypeScript 增量缓存
+  /^.*\.(tmp|temp|swp|swo)$/,                       // 临时/编辑器交换文件
+];
 const TEMP_LOG_RE = /^_.*\.(txt|log|out|err)$/;
+
+function tempReason(name) {
+  if (/^_.*\.(mjs|cjs|js|mts|ts|tsx)$/.test(name)) return '临时脚本';
+  if (TEMP_PATTERNS.some((re) => re.test(name))) return '临时产物';
+  return null;
+}
+
+// 自动创建 .tmp/ 与约定子目录（幂等），确保临时文件有处可去。
+try {
+  cp.execFileSync(process.execPath, [path.join(ROOT, 'scripts', 'manage-tmp.mjs'), '--init'], {
+    cwd: ROOT,
+    stdio: 'ignore',
+  });
+} catch (e) {
+  console.error('✗ 无法初始化 .tmp/ 目录：', e.message);
+  process.exit(1);
+}
 
 const entries = fs.readdirSync(ROOT, { withFileTypes: true });
 const violations = [];
@@ -64,12 +83,14 @@ for (const e of entries) {
   const name = e.name;
   if (GIT_INTERNAL.has(name)) continue;
   if (name === '.tmp') continue; // 唯一合法的临时文件存放子目录
-  // 临时脚本优先判定：不受 gitignore 兜底影响，必须已归位到 .tmp/
-  if (TEMP_SCRIPT_RE.test(name)) {
-    violations.push(`文件 "${name}" 是临时脚本，应移入根目录 .tmp/ 子目录`);
+  if (ENV_IGNORED.has(name)) continue; // 环境类忽略文件，非临时产物
+  const reason = tempReason(name);
+  if (reason) {
+    const target = /\.tsbuildinfo$/.test(name) ? '.tmp/cache/' : /^\./.test(name) ? '.tmp/' : '.tmp/logs/';
+    violations.push(`${reason} "${name}" 必须移入根目录 ${target}（详见 docs/TEMP-FILES.md）`);
     continue;
   }
-  if (isIgnored(name)) continue; // .tmp/、*out.txt、coverage/ 等已忽略
+  if (isIgnored(name)) continue;
   if (ALLOWED.has(name) || isAllowedPattern(name)) continue;
   violations.push(`${e.isDirectory() ? '目录' : '文件'} "${name}" 不应出现在仓库根目录`);
 }
@@ -79,9 +100,9 @@ const scriptsDir = path.join(ROOT, 'scripts');
 if (fs.existsSync(scriptsDir)) {
   for (const e of fs.readdirSync(scriptsDir, { withFileTypes: true })) {
     if (e.isDirectory()) continue; // lib/ 等正式子目录放行
-    if (TEMP_LOG_RE.test(e.name)) continue; // 日志类：可能是仍在写入的活跃产物，放行
-    if (!TEMP_SCRIPT_RE.test(e.name)) continue;
-    violations.push(`文件 "scripts/${e.name}" 是临时脚本，不应占用正式工具目录（请移入根目录 .tmp/ 子目录）`);
+    if (TEMP_LOG_RE.test(e.name)) continue; // 日志类：可能是活跃产物，放行
+    if (!/^_.*\.(mjs|cjs|js|mts|ts|tsx)$/.test(e.name)) continue;
+    violations.push(`文件 scripts/${e.name} 是临时脚本，应移入根目录 .tmp/scripts/（详见 docs/TEMP-FILES.md）`);
   }
 }
 

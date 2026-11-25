@@ -45,7 +45,7 @@
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
 | 当前版本 | v3.21.0 |
-| 拦截域名 | **127188 条**（黑名单 127188 + 白名单 0；`public/domains.txt` 非空 127188 行，全部为纯域名行、无注释/白名单/改道行——2026-11-21 合并 `auto/aggregate-upstream` 上游聚合结果后形态变化，原 877 条口径已失效；以 `node scripts/count-domains.mjs` 实算为准） |
+| 拦截域名 | **644 条**（黑名单 644 + 白名单 0），2026-11-25 实算；历史主线曾为 127188 条（af976b8），`origin/auto/aggregate-upstream` 上 7fac633 有 129348 条未合入，主线回退原因待查（T-DATA-01，P1）。永远以 `node scripts/count-domains.mjs` 实算为准，禁止手写数字 |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
 | 通知组件 | sonner |

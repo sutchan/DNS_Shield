@@ -122,7 +122,7 @@ flowchart LR
 
 ```bash
 node scripts/gen-format-files.mjs   # 从 domains.txt 派生 11 个格式文件
-node scripts/count-domains.mjs      # 实算域名数（当前 127188）
+node scripts/count-domains.mjs      # 实算域名数（当前 644，以脚本输出为准）
 node scripts/check-locales.mjs      # 16 语键一致性（213 键）
 node scripts/sync-facts.mjs --check # 版本展示位（13 处）
 node scripts/check-root-clean.mjs   # 根目录洁净度

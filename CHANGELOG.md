@@ -21,6 +21,7 @@
 - 版本同步 bump 至 v3.21.0（`package.json` / `src/config/version.ts` / `next.config.js` + 13 处文档展示位 + `public/` 11 个规则产物头部）；新增文档头部统一标注文档集版本与适用产品版本
 
 ### Verified（事实性核对）
+- **域名数据源回退（已登记 T-DATA-01，P1）**：实查发现主线 `public/domains.txt` 当前仅 **644 条**，而历史 `af976b8` 为 127188 条、`origin/auto/aggregate-upstream` 的 `7fac633` 为 129348 条且未合入；本轮未擅自合并数据，已按 644 条重建 11 个规则产物并把文档数字改为脚本实算值，回退原因与决策待责任人核实
 - 实查确认：`pnpm-lock.yaml` 已由 `a9eceb1` 恢复、`.npmrc` 确实缺失（历史提交 `e102610` 删除后未恢复）；`package.json` 为 Next 14 / React 18，而 `layout.tsx:39` 注释写「React 19」属漂移；`public/service-worker.js` 存在但全仓无 `register` 调用
 - 门禁实跑：`tsc --noEmit` 0 错、`eslint src` 0 warning 0 error、`vitest run` 全绿、`check-locales` 16 语 / 213 键、`sync-facts --check` 13 处一致、`check-root-clean` 通过
 

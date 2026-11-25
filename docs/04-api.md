@@ -114,7 +114,7 @@ head -n 20 /tmp/dnsmasq-ads.conf
 | `utils/lineCount.ts` | `countLines` | `(text: string) → number` | 非分配计数，语义等同 `split('\n').length` |
 | `utils/fileUtils.ts` | `sanitizeFileName` | `(name: string) → string` | 去除路径分隔符，防路径穿越 |
 | `utils/domainFetch.ts` | `fetchFromUrls` | `(urls: string[]) → Promise<string>` | 10MB/响应、50MB/批、5 URL/批 |
-| `scripts/count-domains.mjs` | CLI | 无参 | 实算域名数（当前 127188），禁止手写数字 |
+| `scripts/count-domains.mjs` | CLI | 无参 | 实算域名数（当前 644，2026-11-25 实算），禁止手写数字 |
 
 ## 7. 规范符合性说明
 
