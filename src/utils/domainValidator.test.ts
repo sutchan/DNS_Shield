@@ -1,4 +1,4 @@
-// src/utils/domainValidator.test.ts v3.9.0
+// src/utils/domainValidator.test.ts v3.22.0
 import { describe, it, expect } from 'vitest';
 import {
   isValidDomain,
@@ -40,6 +40,21 @@ describe('isValidIp', () => {
   it('接受合法 IPv6', () => {
     expect(isValidIp('2001:0db8:85a3:0000:0000:8a2e:0370:7334')).toBe(true);
     expect(isValidIp('::1')).toBe(true);
+  });
+
+  // T-AUD-M06：压缩形式与内嵌 IPv4 曾被正则误判为非法
+  it('接受 :: 压缩与内嵌 IPv4 的合法 IPv6（T-AUD-M06）', () => {
+    expect(isValidIp('2001:db8::8a2e:370:7334')).toBe(true);
+    expect(isValidIp('2001:db8::')).toBe(true);
+    expect(isValidIp('::ffff:192.0.2.1')).toBe(true);
+    expect(isValidIp('::')).toBe(true);
+  });
+
+  it('拒绝组数超限、多个 :: 与非法内嵌 IPv4', () => {
+    expect(isValidIp('1:2:3:4:5:6:7:8:9')).toBe(false);
+    expect(isValidIp('1::2::3')).toBe(false);
+    expect(isValidIp('::ffff:256.0.2.1')).toBe(false);
+    expect(isValidIp('1:2:3:4:5:6:7:gggg')).toBe(false);
   });
 });
 
