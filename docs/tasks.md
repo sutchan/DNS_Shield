@@ -3,6 +3,7 @@
 > **本文件是项目「未完成任务」与「实时指标」的唯一来源（Single Source of Truth）**。
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
+> **本次同步时间戳：2026-11-26T16:23:19+08:00**。迁移核查结果：`tasks.md` 当前无已勾选 / 已完成条目，本轮迁往 `tasks-done.md` 的任务为 0 项；两份文档均已标注本次更新时间戳。
 
 > 最后审查：2026-11-26（与 package.json v3.22.3 对齐；**第二十五轮 2026-11-26 文档系统性标准化：01/03/04/05/06/07 与 DEPLOYMENT 补齐目录与流程图，修正测试数 59 套件/376 用例、版本展示位 12 处、`.npmrc`/主题入口/AppContext/分类索引等过时描述；OpenAPI 新增 `/category-index.txt` 与 403/429/5XX 响应；页脚格式对齐 SPEC §8.1；新增 O-11/O-12/O-13 优化建议并登记 T-DOC-03 / T-DOC-04 / T-REFACTOR-01（实扫发现 5 个源文件超 200 行，纠正旧值 0）。**；**第二十四轮 2026-11-26 全量文档核查：以代码实况核对全部活跃文档，修正 README.en 版本/操作路径、DEPLOYMENT 的 npm/CSP/域名数、SPEC 的已删依赖与目录树、CHECKLIST/config.yaml 的已删组件、04-api 的六个函数签名、openapi.yaml 版本、05/07 的过时数字与失效 id、CHANGELOG 头部版本；冻结快照按声明保留。**；**第二十三轮 2026-11-25 任务闭环专项：闭环 T-AUD-L05 / T-AUD-L02 / T-AUD-M04 并归档，T-SEC-01 产出评估结论、T-PERF-01 parser 迭代落地，活跃任务 8 项；实测 57 套件 / 364 用例、tsc / lint / sync-facts / check-locales 全绿**；第二十二轮：两轮复核共闭环 37 项，活跃任务 11 项；实测 54 套件 / 349 用例、覆盖率 87.72/87.15/89.17/87.72、构建与全部静态门禁通过；第二十一轮：建立文档中心与 01/03/04/05/06/07 六大模块文档、OpenAPI 3.1 定义，任务清单补齐责任人与计划完成时间并重排为 18 项（后增 T-DATA-01 与 2026-11-25 审计迁移项，当前合计以 §二 声明为准）；第二十轮：域名计数曾实算 127188、i18n 键数校正；随后主线数据源回退至 644 条并登记 T-DATA-01，本轮已从 af976b8 恢复至 127188 条、i18n 键数实算 214；第十九轮审计 11 项已并入第二节）
 > 维护团队：Sut / ArcesTeam
@@ -37,13 +38,13 @@
 
 ## 二、待办任务（未完成，按优先级排序）
 
-> **任务合计：11 项**（2026-11-26 本轮新增 T-DOC-03 / T-DOC-04 / T-REFACTOR-01；此前 8 项＝原 48 项经多轮归档后的未完成条目，均未完成）。
+> **任务合计：10 项**（2026-11-26T16:23:19+08:00 重评后：T-SEC-01 评估闭环归档；T-COMPAT-01 / T-AUD-M02 / T-PERF-01 升级 P1；其余保持原优先级）。
 > 每条均含「目标 / 责任人 / 计划完成时间（绝对日期）/ 影响范围 / 验收标准」（审计迁移项的详细问题与统一验收标准见 §六）。
 > **唯一来源纪律**：任何位置的任务型表述（审计报告「修：」、优化方案 O-xx、FAQ「待评估/待验证」、源码 TODO 等）必须在本文件登记；原位置只保留证据与方案，不维护第二份状态（见 SPEC §5.3）。
 > 本轮已完成的文档完善工作（文档索引 + 01/03/04/05/06/07 + OpenAPI）见 [CHANGELOG](../CHANGELOG.md) 对应版本小节，不在此重复。
 > 历史 T-P0~P4 编号任务已归档至 [tasks-done.md](./tasks-done.md)。
 >
-> **状态重评（2026-11-26 文档标准化后）**：2026-11-25 闭环 3 项（T-AUD-L05 / T-AUD-L02 / T-AUD-M04 迁入 tasks-done.md §十）、产出 1 项评估结论（T-SEC-01，见 `docs/05-security-assessment-csp.md`）、1 项部分完成（T-PERF-01 parser 迭代落地）。当前 11 项未完成：T-CI-01（取证：远端 tag 止于 v3.7.31，发布链路未跑通）/ **T-DOC-03（新增，文档数字自动化门禁）** / **T-REFACTOR-01（新增，5 个源文件超 200 行）** / T-SEC-01（结论已产出，灰度待条件）/ T-A11Y-01（需 axe 依赖 + CI 门禁）/ T-PERF-01（部分完成，剩 sortDedupe + 基准）/ T-COMPAT-01（静态就绪，Node 24 实机因磁盘不足转 CI）/ T-AUD-M02（出站白名单需 UI 确认机制）/ T-AUD-M15（规则模块去重重构）/ T-FEAT-01（需官方文档核实）/ **T-DOC-04（新增，OpenAPI 语义校验增强）**。
+> **状态重评（2026-11-26T16:23:19+08:00，本次任务全面治理）**：依据规划审查实证调整优先级与状态，变更如下——① **升级 P1**：T-COMPAT-01（本机实跑 Node 26.13.1 超出 `engines <25`，验证结论失效）、T-AUD-M02（客户端出站 host 未收敛）、T-PERF-01（大输入为核心目标且 50MB 基准缺失）；② **关闭并归档**：T-SEC-01 的评估结论已于 2026-11-25 产出（暂不启用 Trusted Types，等待 staging + Report-Only），本轮按「评估完成」闭环，后续若启用另立新任务；③ **保持 P1**：T-CI-01（远端 tag 实测止于 v3.7.31）、T-DOC-03；④ **保持 P2/P3**：T-A11Y-01、T-REFACTOR-01、T-AUD-M15、T-FEAT-01、T-DOC-04。剩余 10 项按新优先级逐项推进。
 
 ### 优先级 / 责任人 / 计划完成时间总表
 
@@ -51,12 +52,11 @@
 |:------:|------|------|--------|----------|------|
 | 🔴 P1 | T-CI-01 | 验证 CI→Deploy→Release 全绿与自动发版 | CI Owner | 2026-12-02 | 历史遗留 |
 | 🔴 P1 | T-DOC-03 | 文档数字与代码事实自动化门禁（O-11） | Dev Team | 2026-12-09 | 本轮文档标准化 |
-| 🟡 P2 | T-SEC-01 | 评估启用 Trusted Types / 收敛 unsafe-inline（O-08） | Dev Team | 2026-12-16 | 历史遗留 + 本轮 |
+| 🔴 P1 | T-COMPAT-01 | Node 24 / npm 11 强约束兼容验证 | CI Owner | 2026-12-16 | **本次重评升级 P2→P1** |
+| 🔴 P1 | T-PERF-01 | 大输入分片与全量 split 内存优化（O-01） | Dev Team | 2026-12-23 | **本次重评升级 P2→P1** |
+| 🔴 P1 | T-AUD-M02 | 限制出站 host 与 connect-src，防客户端请求伪造 | Dev Team | 2026-12-23 | **本次重评升级 P2→P1** |
 | 🟡 P2 | T-A11Y-01 | 无障碍自动化回归（axe / Playwright，O-09） | QA | 2026-12-16 | 历史遗留 + 本轮 |
-| 🟡 P2 | T-PERF-01 | 大输入分片与全量 split 内存优化（O-01） | Dev Team | 2026-12-23 | 历史遗留 + 本轮 |
-| 🟡 P2 | T-COMPAT-01 | Node 24 / npm 11 强约束兼容验证 | CI Owner | 2026-12-16 | 历史遗留 |
 | 🟡 P2 | T-REFACTOR-01 | 拆分 5 个超 200 行源文件（O-13） | Dev Team | 2026-12-23 | 本轮实扫 |
-| 🟡 P2 | T-AUD-M02 | 限制出站 host 与 connect-src，防客户端请求伪造 | Dev Team | 2026-12-23 | 审计 M-02 |
 | 🟡 P2 | T-AUD-M15 | 规则行 / 头部重复实现抽为框架无关共用模块 | Dev Team | 2026-12-23 | 审计 M-15 |
 | ⚪ P3 | T-FEAT-01 | 扩展路由器兼容列表（O-10） | Docs Team | 2027-01-13 | 历史遗留 + 本轮 |
 | ⚪ P3 | T-DOC-04 | OpenAPI 语义校验与示例覆盖增强（O-12） | Dev Team | 2027-01-13 | 本轮文档标准化 |
@@ -68,15 +68,15 @@
   - 验收标准：Actions 全绿、存在对应 tag 与 Release；若红则定位（重点：setup 缓存 / npm ci 锁文件安装）。
   - 本轮取证：`git ls-remote --tags origin` 显示远端最新 tag 为 **v3.7.31**，与当前 `package.json` v3.22.3 严重脱节；本地 tag 同样止于 v3.7.31。说明 `release.yml` 自动打 tag/Release 未真实生效。根因需 GitHub Actions 运行日志与权限配置（本机不可达），故保持未完成并升级证据。
 - **T-DOC-03 · 文档数字与代码事实自动化门禁（O-11）**（责任人：Dev Team；计划：2026-12-09）：目标是把测试套件/用例数、语言/键数、域名数、版本展示位数、DOM id 等从脚本权威源自动核对活跃文档。影响范围：`scripts/`、`docs/tasks.md`、CI `data` job。验收标准：新增 `npm run check:doc-facts`，CI 对活跃文档数字漂移返回非零；冻结快照豁免；2026-11-26 已存在的 59/376、12 处等数字可被脚本复现。
+- **T-COMPAT-01 · Node 24 / npm 11 强约束兼容验证**（责任人：CI Owner；计划：2026-12-16）**【本次重评升级 P2→P1】**：`package.json` engines（node >=24.11.0 <25、npm >=11）、`.npmrc` engine-strict=true、`package-lock.json`、setup action 的 Node 版本输入四者已一致。2026-11-26 取证发现本机实跑为 **Node 26.13.1**，超出声明范围，所有测试结论仅能作为参考；必须在 Node 24 环境重跑 `npm ci` + lint + tsc + test + build。验收标准：Node 24 下全链路通过并记录版本输出。
+- **T-PERF-01 · 大输入内存优化（O-01）**（责任人：Dev Team；计划：2026-12-23）**【本次重评升级 P2→P1；部分完成】**：已完成 `parser.ts` 使用 `iterateLines.ts`、`parseAggregate.ts` 逐项 push；剩余 `sortDedupe.ts` 的 `split('\n')`、`parseAggregate.ts` 的 `splitIntoShards` 全量数组、50MB 基准缺失。验收标准：流式排序与行偏移分片落地；50MB 输入主线程峰值 ≤1.5× 文本、无栈溢出，解析耗时不回退。
+- **T-AUD-M02 · 限制出站 host 与 connect-src（审计 M-02）**（责任人：Dev Team；计划：2026-12-23）**【本次重评升级 P2→P1】**：服务端聚合已使用 `fetchGuards.ts` 白名单，客户端 `useUrlManager.ts` 仍只做 `isValidHttpUrl`，CSP `connect-src 'self' https:` 全放行。验收标准：客户端自定义 URL 复用 host 白名单、UI 显式确认、CSP 收敛到允许 host 集合或保持自源；补回归测试。
 
-### 🟡 P2 - 安全 / 无障碍 / 性能 / 兼容 / 审计
+### 🟡 P2 - 无障碍 / 架构 / 审计
 
-- **T-SEC-01 · 评估 Trusted Types（O-08）**（责任人：Dev Team；计划：2026-12-16）**【评估结论已产出，灰度待条件】**：结论见 [`docs/05-security-assessment-csp.md`](./05-security-assessment-csp.md)（2026-11-25）：动态 JSON-LD 不适合 hash、首屏脚本 hash 需同步机制、Trusted Types 缺 staging 灰度，故本轮不移除 `'unsafe-inline'`；再评估触发条件为具备 staging + CSP Report-Only 上报。验收剩余项：灰度无违规（需外部条件）。
 - **T-A11Y-01 · 无障碍自动化回归（O-09）**（责任人：QA；计划：2026-12-16）：引入 `axe-core` + Playwright，对 `/`、`/about/` 与弹窗扫描，CI 阻断 critical 违规。验收：基线修复后 critical = 0。
-- **T-PERF-01 · 大输入内存优化（O-01）**（责任人：Dev Team；计划：2026-12-23）**【部分完成 2026-11-25】**：已完成 `parser.ts` 的 `collectLines` 改用 `src/utils/iterateLines.ts`（`forEachLine` + `countIterableLines`，不再 split 出整块行数组；新增 4 例契约测试，10 万行迭代无栈溢出）；`parseAggregate.ts` 的 `push(...arr)` 已由 T-AUD-M10 修复为逐项 push。剩余：`sortDedupe.ts` 流式排序、`parseAggregate` 分片改偏移记录、50MB 基准。验收剩余项：主线程峰值 3× → 1× 的基准实测。
-- **T-COMPAT-01 · Node 24 / npm 11 兼容验证**（责任人：CI Owner；计划：2026-12-16）**【静态配置就绪，实机待环境】**：`package.json` engines（node >=24.11.0 <25、npm >=11）、`.npmrc` engine-strict=true、`package-lock.json`、setup action 的 Node 版本输入四者已一致（2026-11-25 实读）。本轮尝试安装 Node 24.11.0 做 `npm ci` 实证失败（本机磁盘余 82MB < 所需 162MB），故实机验证转由 CI 环境执行。
 - **T-REFACTOR-01 · 拆分超 200 行源文件（O-13）**（责任人：Dev Team；计划：2026-12-23）：2026-11-26 实扫 5 个超限文件（`OutputPanel.tsx` 203 / `useDomainData.ts` 214 / `useRuleWorker.ts` 208 / `useDomainData.autosave.test.ts` 229 / `scripts/aggregate-upstream.mjs` 202）。影响范围：组件与 hooks 的公开导出、测试装置、聚合脚本。验收标准：按 `Xxx.parts.tsx` / `Xxx.derived.ts` / `Xxx.types.ts` 命名法拆分后单文件 ≤200 行，对外 API 与行为不变，lint / tsc / test 全绿，并把行数扫描加入 CI。
-- **T-AUD-M02 / T-AUD-M15**（责任人：Dev Team；计划：2026-12-23）：审计出海/host 白名单确认机制与规则行去重重构，详情见 §六。
+- **T-AUD-M15 · 规则行 / 头部重复实现抽为框架无关共用模块**（责任人：Dev Team；计划：2026-12-23）：运行时 `formatGenerators.ts` / `formatGenerators.single.ts` 与构建期 `scripts/lib/formatRules.mjs` / `formatHeaders.mjs` 共 4 份实现并存；详情见 §六。验收标准：共用模块单一来源，运行时与构建期逐字节一致测试通过。
 
 ### ⚪ P3 - 兼容性与文档规范
 

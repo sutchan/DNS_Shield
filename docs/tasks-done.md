@@ -3,6 +3,7 @@
 > 本文件归档 DNS Shield 项目**已完成**的任务条目。
 > 活跃任务清单见 [tasks.md](./tasks.md)（唯一来源，仅保留未完成任务与实时指标）。
 > 归档时间：2026-10-19 20:30（自 tasks.md「五、已完成任务」迁出）
+> **本次同步时间戳：2026-11-26T16:23:19+08:00**。本轮从 `tasks.md` 迁入的已完成任务为 0 项（源清单无已勾选条目）；后续逐项完成的任务按完成时间追加归档。
 > 维护团队：Sut / ArcesTeam
 
 ---
@@ -423,3 +424,29 @@
   - 2026-11-25 通过 `git ls-remote`（经代理）实测 6 个 tag 的 commit SHA：checkout v5=fbc6f39、setup-node v6=2499707、cache v5=caa2961、upload-artifact v5=330a01c、action-gh-release v2=3bb1273、create-pull-request v6=c5a7806（均为 40 位完整 SHA）。
   - 5 个文件（`.github/actions/setup/action.yml` 与 ci/deploy/release/aggregate 4 个 workflow）共 25 处引用全部替换为 `owner/action@<40位SHA> # vN`（保留版本注释便于审阅），本地 action `./.github/actions/setup` 无需 SHA。
   - 复核正则扫描 `uses: owner/action@vN` 残留为 0；`.github/dependabot.yml` 已有 `github-actions` ecosystem（weekly，limit 6），可自动提出 SHA 升级 PR。
+
+## 十一、2026-11-26 冗余清理归档（v3.22.3）
+
+| 项目 | 结论 | 实证 / 理由 |
+|------|------|-------------|
+| 未引用源码 / 脚本文件 | 0 个 | 轻量导入图扫描 172 个 TS/TSX + 13 个 mjs：60 个「未引用」均为测试文件与 `vitest.config.ts` 的 `setupFiles`；脚本全部被 `package.json` / workflow / 其他脚本引用 |
+| 内容重复文件 | 0 组 | 全仓（除 `.tmp/`）SHA-256 逐文件比对无同内容副本；`formatGenerators.ts` 与 `.single.ts` 为性能分工，且有逐字节一致性测试，不合并 |
+| 未使用导入 / 变量 / 参数 | 0 处 | `tsc --noEmit --noUnusedLocals --noUnusedParameters` 与 `npm run lint` 全绿 |
+| 注释掉的代码块 | 0 处 | 全仓正则扫描无结果 |
+| 临时文件 | 已清理 | `.tmp/` 根层一次性脚本 / 日志 / 缓存 / 备份全部清除并重建标准空子目录；两个被活动进程占用的 `dev-preview.*.log` 按规范保留 |
+| 空目录 | 已清理 | 删除未跟踪的 `openwrt-package/po/`（其下的 `zh_Hans/` 此前已清） |
+| 重复逻辑 | 已合并 | `lineCount.ts` 复用 `iterateLines.ts` 的 `countIterableLines`；`domainFetch.ts` 复用 `fetchGuards.ts` 的 `parseContentLength` / `exceedsSizeLimit` |
+| 版本漂移 | 已修复 | `package-lock.json` 3.22.0 → 3.22.3；`src/config/version.ts`、`docs/openapi.yaml`、文档头同步；纠正「运行时版本常量构建期派生」的失实表述 |
+
+预防门禁已写入 `docs/CHECKLIST.md`「冗余预防」小节；后续发现的新增冗余项按 `docs/SPEC.md` §5.3 回流到 `docs/tasks.md`。
+
+## 十二、2026-11-26 任务重评闭环归档
+
+### T-SEC-01 · 评估启用 Trusted Types / 收敛 unsafe-inline（O-08）
+
+- **来源 / 优先级**：历史遗留 + 本轮优化建议 O-08；原 P2，责任人 Dev Team，原计划 2026-12-16。
+- **完整描述**：评估生产 CSP `script-src` 中 `'unsafe-inline'` 是否可移除、是否启用 Trusted Types；动态 JSON-LD、首屏语言/主题脚本与 hash 机制的兼容性；灰度条件。
+- **状态**：✅ 已完成（评估型任务，结论为「暂不启用」）。
+- **结论与上下文**：2026-11-25 已产出 `docs/05-security-assessment-csp.md`：动态 JSON-LD 不适合静态 hash；首屏脚本 hash 需与内联脚本同步机制；Trusted Types 缺少 staging + CSP Report-Only 灰度。故本轮不移除 `'unsafe-inline'`，保持现有安全头。若将来具备 staging 与上报条件，应另立新任务推进，不在本任务下继续挂起。
+- **验收**：评估文档已入库；`next.config.js` / `edgeone.json` 的 8 项安全头仍由 `check-security-headers.mjs` 保持一致，门禁通过。
+- **归档时间**：2026-11-26T16:23:19+08:00（任务重评批次）。
