@@ -66,15 +66,15 @@
 
 ### 2.5 CI / 发布异常
 
-- **CI 红在 setup**：检查 `package-lock.json` 是否入库、`setup` 复合动作缓存是否命中。历史 BLOCKER（锁文件缺失）已修复，但 `.npmrc` 仍缺失，见 [07 O-05](./07-improvements.md)。
-- **Release 未生成**：Release 工作流由 Deploy 成功后触发；需确认 `main` 的 CI → Deploy 全绿。
-- **规则文件未更新**：改动 `domains.txt` 后必须运行 `npm run build:formats` 并提交 11 个派生文件。
+- **CI 红在 setup**：检查 `package-lock.json` 是否入库、`setup` 复合动作缓存是否命中；Node 须满足 `>=24.11.0 <25`、npm `>=11`（`.npmrc` 已恢复并启用 `engine-strict=true`）。
+- **Release 未生成**：Release 工作流由 Deploy 成功后触发；需确认 `main` 的 CI → Deploy 全绿；远端 tag 与 `package.json` 版本脱节的排查项见 [tasks T-REL-01](./tasks.md)。
+- **规则文件未更新**：改动 `public/domains.txt`（源数据）后必须运行 `npm run build:formats` 并提交全部派生规则文件（`dnsmasq.conf`、`hosts.txt`、`adguard.txt`、`whitelist.txt`、`unbound.conf`、`pihole.txt`、`smartdns.conf`、`mosdns_domain_set.txt`、`clash_dns.yaml`、`coredns_hosts.txt`、`rpz.db`、`category-index.txt`；具体以 `scripts/gen-format-files.mjs` 为准）。
 
 ### 2.6 已知产品限制（非故障）
 
 | 限制 | 状态 | 跟踪 |
 |------|------|------|
-| PWA 离线缓存未启用：`public/service-worker.js` 存在但无 `register` 调用 | 待评估 | [07 O-06](./07-improvements.md) |
+| PWA 离线缓存：生产环境由 `ServiceWorkerRegistrar` 注册（dev 跳过），离线回归待实测 | 部分完成 | [07 O-06](./07-improvements.md) |
 | `category-index.txt` 未纳入发布路径，分类筛选可能降级隐藏 | 待修复 | [07 O-07](./07-improvements.md) |
 | 生产 CSP `script-src` 含 `'unsafe-inline'`（首屏脚本所需） | 待评估 | [07 O-08](./07-improvements.md) |
 | 部分设备对 hosts 文件大小有限制 | 产品限制 | 建议改用 dnsmasq / AdGuard 格式 |

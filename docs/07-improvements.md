@@ -110,6 +110,8 @@
 
 **问题背景**：`public/service-worker.js` 已实现同源缓存策略，但全仓无 `navigator.serviceWorker.register` 调用，实际离线能力未启用；README 的「PWA 离线缓存」表述与事实有落差。
 
+**状态（2026-11-26 更新）**：✅ 已实施——`ServiceWorkerRegistrar` 在生产环境注册同源 SW（dev 跳过），下方实施方案保留作历史记录；待补离线回归实测。
+
 **实施方案**：
 1. 技术选型：保留现有 SW，不引入 Workbox（避免新增依赖与构建复杂度）。
 2. 在 `layout.tsx` 客户端 effect 中按 `process.env.NODE_ENV === 'production'` 注册 `/service-worker.js`，失败静默并记录到 `logger`。

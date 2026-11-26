@@ -21,7 +21,8 @@ const RULES = [
   ['README.en.md', /(\[![^\]]*Version\]\(https:\/\/img\.shields\.io\/badge\/version-)[0-9.]+(-green\))/g, `$1${version}$2`],
   ['DEPLOYMENT.md', /(> 当前版本：v)[0-9.]+/g, `$1${version}`],
   ['DEPLOYMENT.md', /(\| `APP_VERSION` \|[^\n]*\| )[0-9.]+( \|)/g, `$1${version}$2`],
-  ['DEPLOYMENT.md', /(version: ')[0-9.]+(')/g, `$1${version}$2`],
+  // next.config.js 自 v3.22.x 起改为构建期从 package.json 派生 env.version；
+  // DEPLOYMENT 示例同步改为 `version: appVersion,`，不再存在版本字面量展示位。
   ['docs/SPEC.md', /(> 最后审查：[^\n]*与 package\.json v)[0-9.]+( 对齐)/g, `$1${version}$2`],
   ['docs/SPEC.md', /(\| 当前版本 \| v)[0-9.]+( \|)/g, `$1${version}$2`],
   ['docs/SPEC.md', /(\| 版本号 \| )[0-9.]+( \|)/g, `$1${version}$2`],
