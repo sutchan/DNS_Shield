@@ -1,9 +1,11 @@
-// src/hooks/useUrlManager.ts v3.20.1
+// src/hooks/useUrlManager.ts v3.22.4
 import { useState, useCallback } from 'react';
-import { fetchFromUrls, isValidHttpUrl, type FetchUrlsResult } from '../utils/fileUtils';
+import { fetchFromUrls, type FetchUrlsResult } from '../utils/fileUtils';
 import { fetchWithCache } from '../utils/cachedFetch';
 import { generateLineNumbers } from './useLineNumbers';
 import { config, presetMirrors, type PresetName } from '../config/index';
+import { ALLOWED_FETCH_HOSTS } from '../config/fetchHosts';
+import { isAllowedFetchUrl } from '../utils/fetchGuards';
 import { useLoading } from './useLoading';
 
 export const useUrlManager = (
@@ -26,7 +28,9 @@ export const useUrlManager = (
       showToast('urlEnter');
       return { isValid: false };
     }
-    if (!isValidHttpUrl(url)) {
+    // T-AUD-M02：自定义 URL 复用服务端聚合脚本同一套 host 白名单判定，
+    // 非 https 或不在白名单内的 host 一律拒绝，并复用既有 invalidUrl 提示。
+    if (!isAllowedFetchUrl(url, ALLOWED_FETCH_HOSTS)) {
       showToast('invalidUrl');
       return { isValid: false };
     }
@@ -114,7 +118,7 @@ export const useUrlManager = (
 
   // 获取全部 URLs（仅处理有效的 HTTP/HTTPS URLs）
   const fetchAllUrls = useCallback(async () => {
-    const validUrls = urls.filter(url => isValidHttpUrl(url));
+    const validUrls = urls.filter(url => isAllowedFetchUrl(url, ALLOWED_FETCH_HOSTS));
 
     if (validUrls.length === 0) {
       showToast('invalidUrl');

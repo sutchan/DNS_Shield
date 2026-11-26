@@ -46,6 +46,19 @@ if (!fs.existsSync(edgeonePath)) {
     if (!edgeoneCsp.includes(directive)) errors.push(`edgeone.json CSP 缺少 ${directive}`);
     if (!nextConfig.includes(directive)) errors.push(`next.config.js CSP 缺少 ${directive}`);
   }
+  // T-AUD-M02：connect-src 禁止 https: 通配，必须枚举真实出站 host
+  if (/connect-src\s+'self'\s+https:\s*(;|$)/.test(edgeoneCsp)) {
+    errors.push('edgeone.json CSP connect-src 仍使用 https: 通配');
+  }
+  if (!nextConfig.includes('const connectSrc') || !nextConfig.includes('defaultFetchHosts')) {
+    errors.push('next.config.js 未使用枚举式 connectSrc');
+  }
+  for (const host of [
+    'raw.githubusercontent.com', 'cdn.jsdelivr.net', 'easylist-downloads.adblockplus.org',
+  ]) {
+    if (!nextConfig.includes(host)) errors.push(`next.config.js 缺少出站 host ${host}`);
+    if (!edgeoneCsp.includes(host)) errors.push(`edgeone.json CSP 缺少出站 host ${host}`);
+  }
 }
 
 if (errors.length) {

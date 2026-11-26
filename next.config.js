@@ -15,6 +15,29 @@ const { version: appVersion } = require('./package.json');
 // 生产构建（next build / next start）仍为严格的 object-src 'none'。
 const isDev = process.env.NODE_ENV !== 'production';
 
+// T-AUD-M02：connect-src 不再使用宽泛的 https: 通配；只枚举应用真实会请求的 host。
+// 默认预设与 src/config/fetchHosts.ts 保持一致；环境变量自定义预设时同步加入。
+const defaultFetchHosts = [
+  'raw.githubusercontent.com',
+  'cdn.jsdelivr.net',
+  'easylist-downloads.adblockplus.org',
+];
+const envFetchHosts = [
+  process.env.NEXT_PUBLIC_DOMAINS_URL,
+  process.env.NEXT_PUBLIC_PRESET_BUILTIN,
+  process.env.NEXT_PUBLIC_PRESET_ADGUARD,
+  process.env.NEXT_PUBLIC_PRESET_EASYLIST,
+  process.env.NEXT_PUBLIC_PRESET_NEOHOSTS,
+].map((value) => {
+  if (!value) return null;
+  try { return new URL(value).host.toLowerCase(); } catch { return null; }
+}).filter(Boolean);
+const connectSrc = [
+  "'self'",
+  ...[...new Set([...defaultFetchHosts, ...envFetchHosts])].map((host) => `https://${host}`),
+  'https://www.google-analytics.com',
+].join(' ');
+
 const securityHeaders = [
   {
     key: 'Content-Security-Policy',
@@ -24,7 +47,7 @@ const securityHeaders = [
       "img-src 'self' data: https: blob: https://www.google-analytics.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      "connect-src 'self' https:",
+      `connect-src ${connectSrc}`,
       "frame-src 'none'",
       "frame-ancestors 'none'",
       isDev ? "object-src data:" : "object-src 'none'",

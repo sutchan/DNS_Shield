@@ -1,4 +1,4 @@
-// src/hooks/useUrlManager.validate.test.ts v3.15.0
+// src/hooks/useUrlManager.validate.test.ts v3.22.4
 // @vitest-environment jsdom
 // URL 校验与增删契约（无效 URL 过滤、添加去重、排序与删除）。
 // （原 useUrlManager.test.ts 按关注点拆分，本文件承接「URL 校验与增删」分组）
@@ -62,18 +62,32 @@ describe('useUrlManager · URL 校验与增删', () => {
     unmount();
   });
 
-  it('合法 URL 去除首尾空格后入列，并清空输入框', () => {
+  it('白名单内的合法 URL 去除首尾空格后入列，并清空输入框', () => {
     const { result, showToast, unmount } = setup();
     act(() => {
-      result.current.setUrlInput('  https://example.com/a.txt  ');
+      result.current.setUrlInput('  https://raw.githubusercontent.com/a.txt  ');
     });
     act(() => {
       result.current.addUrl();
     });
 
-    expect(result.current.urls).toEqual(['https://example.com/a.txt']);
+    expect(result.current.urls).toEqual(['https://raw.githubusercontent.com/a.txt']);
     expect(result.current.urlInput).toBe('');
     expect(showToast).toHaveBeenCalledWith('urlAdded');
+    unmount();
+  });
+
+  it('非白名单 host 即使协议合法也提示 invalidUrl 且不入列（T-AUD-M02）', () => {
+    const { result, showToast, unmount } = setup();
+    act(() => {
+      result.current.setUrlInput('https://evil.example.com/list.txt');
+    });
+    act(() => {
+      result.current.addUrl();
+    });
+
+    expect(showToast).toHaveBeenCalledWith('invalidUrl');
+    expect(result.current.urls).toEqual([]);
     unmount();
   });
 

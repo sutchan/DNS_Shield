@@ -470,3 +470,12 @@
 - **验收实证（Node v24.15.0 / npm 11.12.1）**：`npm ci` 安装 543 包退出码 0；`npm run lint` 通过；`tsc --noEmit` 退出码 0；Vitest **59 套件 / 376 用例全绿**；`npm run build` 退出码 0（生成 6 条静态路由）。日志见本轮验证记录。
 - **上下文**：本机 IDE 的 safe-delete shim 会拦截 `npm ci` 清理 `node_modules` 与 `next build` 清理 `.next`；验证时临时清空 `NODE_OPTIONS` 后全链路通过，属工具链环境限制，非项目缺陷。CI 无该 shim，无需改动 workflow。
 - **归档时间**：2026-11-26（任务治理批次）。
+
+### T-PERF-01 · 大输入分片与全量 split 内存优化（O-01）
+
+- **来源 / 优先级**：历史遗留 + 优化建议 O-01；本次重评由 P2 升级 P1，责任人 Dev Team，原计划 2026-12-23。
+- **完整描述**：消除 50MB 级输入解析时的全量 `split('\n')` 行数组，`sortDedupe.ts` 排序/去重改流式，`parseAggregate.ts` 分片改边界扫描，并建立 50MB 基准防回归。
+- **状态**：✅ 已完成（2026-11-26 提前完成）。
+- **实现与上下文**：`parser.ts` 早前已使用 `iterateLines.ts`；本轮 `sortDedupe.ts` 的 `sortDomains` / `dedupeDomains` 改用 `forEachLine`，`parseAggregate.ts` 的 `splitIntoShards` 改为扫描换行符定位分片边界（不再 `split('\n')` 全量数组），`push(...arr)` 早前已改逐项 push。新增 `src/utils/largeInput.bench.ts` 与 `vitest.bench.config.ts`，独立命令 `npm run benchmark:large` 不进入默认套件计数。
+- **验收实证（Node 24.15.0）**：相关单测 3 文件 / 25 用例全绿；50MB 基准 49.0MB 文本，峰值增量 **49.2MB（约 1.0×，阈值 1.5×）**，count 103ms / shard 365ms / dedupe 5900ms，`forEachLine` 与 `split` 在 10 万行样本逐行一致。
+- **归档时间**：2026-11-26（任务治理批次）。

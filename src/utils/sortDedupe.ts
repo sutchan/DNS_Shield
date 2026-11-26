@@ -66,17 +66,17 @@ export const dedupeDomains = (sourceInput: string): { content: string; removedCo
 
     if (parsed.type === 'empty') {
       uniqueLines.push(line);
-      continue;
+      return;
     }
 
     if (parsed.type === 'comment') {
       uniqueLines.push(line);
-      continue;
+      return;
     }
 
     if (!parsed.isValid) {
       uniqueLines.push(line);
-      continue;
+      return;
     }
 
     let key: string;
