@@ -1,4 +1,4 @@
-// src/hooks/useRuleWorker.ts v3.22.0
+// src/hooks/useRuleWorker.ts v3.22.4
 // 规则处理 Worker 的主线程控制器：负责 Worker 生命周期、请求/响应配对、
 // 进度回调与耗时统计。不支持 Worker 的环境（SSR / 老旧浏览器）返回 null，
 // 由调用方回退主线程同步处理，保证功能不中断。
@@ -9,11 +9,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { logger } from '../utils/logger';
 import { countLines } from '../utils/lineCount';
-import { decideShardCount, PARALLEL_PARSE_THRESHOLD } from '../utils/parseAggregate';
 import type { ParsedData } from '../types';
 import type { ParseStats } from '../types/formats';
 import type { RuleWorkerResponse, RuleWorkerTask } from '../workers/ruleProcessor.worker';
 import { useWorkerPool } from './useWorkerPool';
+import { runParallelParse, shouldUseParallelParse } from './useRuleWorker.parallel';
 
 /** 超过该行数才移交 Worker：低于此规模同步解析更快，避免 Worker 启动开销 */
 export const WORKER_LINE_THRESHOLD = 5000;
@@ -113,25 +113,16 @@ export const useRuleWorker = () => {
 
   const run = useCallback(
     async (task: RuleWorkerTask, text: string): Promise<RuleWorkerResult | null> => {
-      // 多核并行分支（v3.16.0）：超大文本按行分片派发多个 Worker 求值，
-      // 各分片仅执行无跨行状态的逐行收集，主线程聚合后统一执行跨行
-      // 去重 / 白名单剔除（finalizeParsed），结果与串行路径等价。
+      // 多核并行分支（v3.16.0）：调度逻辑已拆至 useRuleWorker.parallel，
+      // 本 hook 只负责状态置位、失败兜底与结果消费。
       // 行数只统计一次：大文本扫描本身有成本，避免同一请求内重复扫描
       const lineCount = countLines(text);
-      if (task === 'parse' && lineCount >= PARALLEL_PARSE_THRESHOLD) {
-        const cores =
-          typeof navigator !== 'undefined' ? navigator.hardwareConcurrency || 1 : 1;
-        // T-AUD-M07：并行分支此前从不置 isProcessing(true)，≥20000 行时进度条不显示。
-        // 进入即置位；成功收敛时复位，异常时同样复位，避免进度条常驻。
+      if (shouldUseParallelParse(task, lineCount)) {
         setIsProcessing(true);
         setProgress({ processed: 0, total: lineCount, elapsed: null });
         let parallel: Awaited<ReturnType<typeof pool.runParallel>> = null;
         try {
-          parallel = await pool.runParallel(
-            text,
-            decideShardCount(lineCount, cores),
-            (p) => setProgress({ processed: p.processed, total: p.total, elapsed: null })
-          );
+          parallel = await runParallelParse(pool, text, lineCount, setProgress);
         } catch (error) {
           logger.warn('Parallel parse failed unexpectedly:', error);
           parallel = null;
