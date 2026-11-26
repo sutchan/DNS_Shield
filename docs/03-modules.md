@@ -3,6 +3,19 @@
 > 文档集版本：v3.22.2 · 最后审查：2026-11-26 · 适用产品版本：v3.22.2
 > 实现为准：本文描述的行为均可在 `src/` 对应文件中复核；约束级规则见 [SPEC](./SPEC.md)。
 
+## 目录
+
+- [1. 模块总览](#1-模块总览)
+- [2. M1 数据源与导入](#2-m1-数据源与导入)
+- [3. M2 解析引擎](#3-m2-解析引擎)
+- [4. M3 并行调度](#4-m3-并行调度)
+- [5. M4 规则生成](#5-m4-规则生成)
+- [6. M5 输出与交付](#6-m5-输出与交付)
+- [7. M6 设置与持久化](#7-m6-设置与持久化)
+- [8. M7 规则测试器](#8-m7-规则测试器)
+- [9. M8 多语言与 SEO](#9-m8-多语言与-seo)
+- [10. M9 产物构建与门禁](#10-m9-产物构建与门禁)
+
 ## 1. 模块总览
 
 | 编号 | 模块 | 用户价值 | 主要实现 |
@@ -11,7 +24,7 @@
 | M2 | 解析引擎 | 任意格式 → 统一域名条目 | `parser.ts`、`domainValidator.ts`、`domainPrimitives.ts` |
 | M3 | 并行调度 | 大清单快速解析且不卡 UI | `useRuleWorker.ts`、`useWorkerPool.ts`、`workerPoolFinalize.ts`、`parseAggregate.ts` |
 | M4 | 规则生成 | 12 种目标格式与头部注释 | `rulesGenerator.ts`、`headerConfigs.ts`、`formatGenerators.ts` |
-| M5 | 输出与交付 | 预览、复制、下载、脚本生成 | `OutputPanel.tsx`、`OutputPreview.tsx`、`scriptGenerators.ts` |
+| M5 | 输出与交付 | 预览、复制、下载、脚本生成 | `OutputPanel.tsx`、`OutputPreview.tsx`、`scriptGenerator.ts` |
 | M6 | 设置与持久化 | 项目信息、IP、外观、草稿恢复 | `useSettings.ts`、`useAutosave.ts`、`autosaveStorage.ts` |
 | M7 | 规则测试器 | 输入域名即时看命中层级 | `RuleTesterModal.tsx`、`ruleMatcher.ts` |
 | M8 | 多语言与 SEO | 16 语界面、结构化数据、`llms.txt`、`about` 事实页 | `useLanguage.ts`、`SettingsLanguage.tsx`、`SeoContent.tsx`、`locales/`、`(seo)/about-json-ld.ts`、`config/seo-content.ts` |
@@ -92,12 +105,31 @@ flowchart LR
 - **白名单生效**：黑名单生成时剔除白名单域名；AdGuard 白名单另写 `whitelist.txt`（`@@||domain^`）。
 - **设置联动**：IP、项目名、去通配 / 去重开关、界面语言变更后重新生成预览与导出，避免口径不一致。
 
+```mermaid
+flowchart LR
+    E["统一条目 + 设置"] --> H["generateHeader<br/>格式注释符头部"]
+    E --> R["generateRules<br/>单格式规则行"]
+    H --> O["拼接输出"]
+    R --> O
+    O --> V["预览 / 统计"]
+```
+
 ## 6. M5 输出与交付
 
 - **预览**：`OutputPreview` 使用虚拟列表（阈值 500 行，行高 24px），避免大清单渲染数千 DOM 节点。
 - **行数统计**：`countLines` 非分配计数；行数未变化时跳过行号重绘（WeakMap 缓存）。
 - **复制 / 下载**：`fileUtils` 生成 Blob 与净化后的文件名；下载名包含格式与版本。
-- **路由同步脚本**：`scriptGenerators.ts` 生成 OpenWrt / Merlin / Padavan / SmartDNS / Pi-hole 定时更新脚本。
+- **路由同步脚本**：`src/utils/scriptGenerator.ts` 生成 OpenWrt / Merlin / Padavan / SmartDNS / Pi-hole 定时更新脚本。
+
+```mermaid
+flowchart TD
+    O["当前格式输出"] --> P["OutputPreview 虚拟列表"]
+    O --> S["统计：行数 / 黑白名单"]
+    P --> C["复制"]
+    P --> D["下载（净化文件名）"]
+    O --> G["生成路由器同步脚本"]
+    G --> D
+```
 
 ## 7. M6 设置与持久化
 
@@ -108,9 +140,33 @@ flowchart LR
 | 去通配 / 去重开关 | localStorage | 影响生成结果 |
 | 草稿 | IndexedDB（50MB）→ localStorage（5MB） | 30 秒自动保存；用户显式清空才删除 |
 
+```mermaid
+flowchart LR
+    U["用户修改设置或输入"] --> D["30s 防抖自动保存"]
+    D --> I{"IndexedDB 可用?"}
+    I -- 是 --> A["写入 IndexedDB"]
+    I -- 否 --> L["写入 localStorage"]
+    A --> R["刷新后恢复草稿"]
+    L --> R
+    R --> G["覆盖远端预设清单"]
+```
+
 ## 8. M7 规则测试器
 
-输入域名后按「白名单 → 改道 → 黑名单 → 直连」顺序返回命中层级与最终解析行为；用于验证复杂规则优先级。详细操作步骤见 [05 用户操作指南](./05-user-guide.md) §6。
+输入域名后按「白名单 → 改道 → 黑名单 → 直连」顺序返回命中层级与最终解析行为；用于验证复杂规则优先级。
+
+```mermaid
+flowchart TD
+    Q["输入域名"] --> W{"命中白名单?"}
+    W -- 是 --> A["放行 / 直连"]
+    W -- 否 --> C{"命中自定义改道?"}
+    C -- 是 --> B["指向配置 IP"]
+    C -- 否 --> K{"命中黑名单?"}
+    K -- 是 --> X["拦截 0.0.0.0"]
+    K -- 否 --> A
+```
+
+详细操作步骤见 [05 用户操作指南](./05-user-guide.md) §5。
 
 ## 9. M8 多语言与 SEO
 
@@ -118,14 +174,34 @@ flowchart LR
 - `<html lang>` 与 `dir` 在首屏脚本与运行时双重同步；阿拉伯语为 RTL。
 - SEO 端点：`robots.txt`、`sitemap.xml`、`llms.txt`，结构化数据按页面归属注入（主页 / 关于页分离）。
 
+```mermaid
+flowchart LR
+    L["用户选择语言"] --> I["首屏脚本同步 lang/dir"]
+    L --> J["懒加载非基准语种"]
+    J --> T["deepMerge 回退 zh-cn"]
+    I --> S["SSR 输出 FAQ/HowTo JSON-LD"]
+    S --> E["robots / sitemap / llms.txt"]
+```
+
 ## 10. M9 产物构建与门禁
 
 ```bash
 node scripts/gen-format-files.mjs   # 从 domains.txt 派生 11 个格式文件
 node scripts/count-domains.mjs      # 实算域名数（2026-11-26 实算 127188，以脚本输出为准）
 node scripts/check-locales.mjs      # 16 语键一致性（214 递归点分键，zh-cn 顶层 144 键）
-node scripts/sync-facts.mjs --check # 版本展示位（13 处）
+node scripts/sync-facts.mjs --check # 版本展示位（12 处）
 node scripts/check-root-clean.mjs   # 根目录洁净度
+```
+
+```mermaid
+flowchart LR
+    S["public/domains.txt<br/>唯一数据源"] --> F["gen-format-files.mjs<br/>派生 11 个格式"]
+    S --> C["count-domains.mjs<br/>回写头部计数"]
+    A["aggregate-upstream.mjs<br/>每周聚合 5 源"] --> S
+    A --> K["category-index.txt"]
+    F --> G["CI data job 门禁"]
+    K --> G
+    G --> R["release.yml 发布规则资产"]
 ```
 
 以上脚本均由 CI 调用；任一失败阻断合入。详细说明见 [02 安装与部署](../DEPLOYMENT.md) §CI/CD。

@@ -5,6 +5,17 @@
 > 当前版本：v3.22.2
 > 最后审查：2026-11-26（与 package.json v3.22.2 对齐；权威版本源为 `package.json`）
 
+## 目录
+
+- [部署环境](#部署环境)
+- [部署方法](#部署方法)
+- [CI/CD 自动化](#cicd-自动化)
+- [配置选项](#配置选项)
+- [部署后操作](#部署后操作)
+- [故障排除](#故障排除)
+- [最佳实践](#最佳实践)
+- [结论](#结论)
+
 ## 部署环境
 
 ### 1. 系统要求
@@ -29,6 +40,17 @@
 
 ## 部署方法
 
+### 环境对照
+
+| 环境 | 触发方式 | 安装命令 | 访问地址 | 主要验证 |
+|------|----------|----------|----------|----------|
+| 本地开发 | `npm run dev` | `npm ci` | `http://localhost:3000` | 页面可打开、生成规则可用、无控制台报错 |
+| 本地生产预览 | `npm run build && npm run start` | `npm ci` | `http://localhost:3000` | 页脚 `V{version}· build {yymmddhhmm}`、Service Worker 已注册 |
+| 自托管服务器 | PM2 / systemd | `npm ci` | 自定义域名（HTTPS） | 健康检查 200、SEO 端点 200 |
+| Vercel / EdgeOne | `main` 推送经 CI → Deploy | 平台按锁文件安装 | `https://dns.ewuse.com` | 工作流全绿、`/llms.txt` 与规则文件可访问 |
+
+> 生产环境必须启用 HTTPS；安全响应头在 `next.config.js` 单点维护，EdgeOne 侧由 `edgeone.json` 对齐，`node scripts/check-security-headers.mjs` 做一致性门禁。
+
 ### 1. 本地部署
 
 适用于个人使用或测试环境。
@@ -46,7 +68,10 @@ cd DNS_Shield
 #### 1.2 安装依赖
 
 ```bash
-# 安装依赖（使用 npm，与 package-lock.json 一致）
+# 干净安装 / CI：严格按 package-lock.json 还原（推荐）
+npm ci
+
+# 仅在新增或升级依赖、需要回写锁文件时使用
 npm install
 ```
 
@@ -99,7 +124,7 @@ cd DNS_Shield
 #### 2.3 安装依赖与构建
 
 ```bash
-npm install
+npm ci
 npm run build
 ```
 
@@ -323,7 +348,7 @@ pm2 logs dns-shield
 ```bash
 cd DNS_Shield
 git pull origin main
-npm install
+npm ci
 npm run build
 pm2 restart dns-shield
 ```

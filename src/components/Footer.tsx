@@ -99,7 +99,7 @@ const Footer = React.memo(function Footer({
 
         {/* 构建元信息独立成行，与导航链接分开 */}
         <div className="footer-meta" id="footer-meta">
-          <span className="footer-version" id="version-display" aria-label={`${t.versionLabel} v${version} · build ${buildId}`}>v{version} · build {buildId}</span>
+          <span className="footer-version" id="version-display" aria-label={`${t.versionLabel} V${version}· build ${buildId}`}>V{version}· build {buildId}</span>
         </div>
       </div>
     </footer>

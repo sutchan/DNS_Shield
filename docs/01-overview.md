@@ -3,6 +3,14 @@
 > 文档集版本：v3.22.2 · 最后审查：2026-11-26 · 适用产品版本：v3.22.2
 > 权威来源：`package.json`、`src/config/version.ts`、`docs/SPEC.md`；事实性数字见 [文档中心 §4](./README.md#4-版本控制)。
 
+## 目录
+
+- [1. 背景与问题](#1-背景与问题)
+- [2. 产品目标与非目标](#2-产品目标与非目标)
+- [3. 技术栈与选型理由](#3-技术栈与选型理由)
+- [4. 架构设计](#4-架构设计)
+- [5. 当前已知限制](#5-当前已知限制)
+
 ## 1. 背景与问题
 
 网页、视频与 App 广告依赖域名解析完成资源加载。在单台设备上装插件只能保护该设备，且移动端与 IoT 设备往往无法安装。DNS 层拦截在**域名解析阶段**切断请求，路由器配置一次即可覆盖全屋设备。
@@ -44,7 +52,7 @@ DNS Shield 解决三个具体问题：
 | 包管理 | npm | `package-lock.json` 保证可复现安装 | npm ≥ 11 |
 | 运行时 | Node 24 | 与 CI / Vercel 对齐 | `>=24.11.0 <25` |
 
-> 版本事实以 `package.json` 为准。历史注释中若出现「React 19」等与依赖不一致的表述，按 [07 优化建议 T-DOC-05](./07-improvements.md) 登记后修正，不在本文档复述。
+> 版本事实以 `package.json` 为准。历史冻结文档（如 `CHANGELOG.md` 旧小节、`docs/AUDIT-REPORT-v3.19.0.md`）中的旧依赖表述按冻结约定保留；活跃文档若出现与依赖不一致的措辞，须先在 [任务清单](./tasks.md) 登记再修正，不在本文档复述。
 
 ## 4. 架构设计
 
@@ -105,10 +113,11 @@ flowchart TB
 
 ## 5. 当前已知限制
 
-以下限制经代码核实，均已登记在 [07 优化建议](./07-improvements.md) 与 [任务清单](./tasks.md)：
+以下限制经代码核实；状态看 [任务清单](./tasks.md)，方案看 [07 优化建议](./07-improvements.md)，历史冻结文档不在此复述：
 
-- `.npmrc` 已恢复并启用 `engine-strict=true`；`package-lock.json` 为唯一锁文件（`pnpm-lock.yaml` 已删除，统一 npm 管理）。
-- 生产环境由 `ServiceWorkerRegistrar` 注册同源 Service Worker（dev 不注册）；离线缓存白名单与回归测试待验证。
-- `public/category-index.txt` 由聚合工作流生成但未纳入发布路径，线上分类筛选可能降级。
-- 生产 CSP 的 `script-src` 仍包含 `'unsafe-inline'`（首屏内联脚本所需），Trusted Types 未启用。
-- `parser.ts` 已改用 `iterateLines.ts` 逐行迭代、无全量 `split`；`sortDedupe.ts` 仍有 2 处 `split('\n')` 待优化。
+- `.npmrc` 已恢复并启用 `engine-strict=true`；`package-lock.json` 为唯一锁文件（`pnpm-lock.yaml` 已删除，统一 npm 管理）。Node 24 / npm 11 的实机安装验证仍待 CI 执行（T-COMPAT-01）。
+- 生产环境由 `ServiceWorkerRegistrar` 注册同源 Service Worker（dev 不注册）；离线缓存白名单与回归测试待实测（O-06）。
+- `public/category-index.txt` 已纳入 aggregate / release / CI 清单，线上分类筛选的 404 降级风险已消除（T-REL-01 已归档）。
+- 生产 CSP 的 `script-src` 仍包含 `'unsafe-inline'`（首屏内联脚本所需），Trusted Types 未启用；灰度需 staging + Report-Only 条件（T-SEC-01 / O-08）。
+- `parser.ts` 已改用 `iterateLines.ts` 逐行迭代、无全量 `split`；`parseAggregate.ts` 的 `push(...arr)` 已改逐项 push；`sortDedupe.ts` 仍有 `split('\n')` 待流式化，50MB 基准未跑（T-PERF-01 / O-01）。
+- 测试实测 **59 套件 / 376 用例全绿**（2026-11-26 `npm test` 实跑），旧记录 57/364、54/349 均为历史快照。

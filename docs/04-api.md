@@ -1,7 +1,17 @@
 # 04 API 接口文档
 
 > 文档集版本：v3.22.2 · 最后审查：2026-11-26 · 适用产品版本：v3.22.2
-> 机器可读定义：[openapi.yaml](./openapi.yaml)（OpenAPI 3.1.0）
+> 机器可读定义：[openapi.yaml](./openapi.yaml)（OpenAPI 3.1.0），离线校验 `node scripts/check-openapi.mjs`
+
+## 目录
+
+- [1. 适用范围与重要事实](#1-适用范围与重要事实)
+- [2. HTTP 端点总览](#2-http-端点总览)
+- [3. 端点详情](#3-端点详情)
+- [4. 参数与返回格式约定](#4-参数与返回格式约定)
+- [5. 错误码定义](#5-错误码定义)
+- [6. 浏览器内模块 API（非 HTTP）](#6-浏览器内模块-api非-http)
+- [7. 规范符合性说明](#7-规范符合性说明)
 
 ## 1. 适用范围与重要事实
 
@@ -23,6 +33,7 @@
 | `/robots.txt` | GET | `src/app/robots.ts` | `text/plain` | 爬虫规则，声明 sitemap 与生成式引擎准入 |
 | `/sitemap.xml` | GET | `src/app/sitemap.ts` | `application/xml` | 站点地图，仅含 `/` 与 `/about/`（锚点 URL 已移除） |
 | `/llms.txt` | GET | `src/app/llms.txt/route.ts` | `text/plain; charset=utf-8` | 面向生成式引擎的站点简报，构建期静态预渲染 |
+| `/category-index.txt` | GET | `public/` 静态文件 | `text/plain` | 域名分类索引（`<source> <domain>`），供分类筛选使用，已纳入 aggregate / release / CI 清单 |
 | `/domains.txt` 等 12 个规则文件 | GET | `public/` 静态文件 | `text/plain` / `application/octet-stream` | 规则产物，可作为订阅 URL 使用 |
 
 ## 3. 端点详情
@@ -79,6 +90,24 @@ curl -fsSL https://dns.ewuse.com/dnsmasq.conf -o /tmp/dnsmasq-ads.conf
 head -n 20 /tmp/dnsmasq-ads.conf
 ```
 
+### 3.5 其他端点调用示例
+
+```bash
+# 页面：返回 HTML（HEAD 即可验证可达性）
+curl -fsSI https://dns.ewuse.com/
+curl -fsSI https://dns.ewuse.com/about/
+
+# 元数据端点
+curl -fsSL https://dns.ewuse.com/robots.txt
+curl -fsSL https://dns.ewuse.com/sitemap.xml
+curl -fsSL https://dns.ewuse.com/llms.txt | head -n 20
+
+# 分类索引（每行 = 上游来源 + 域名，供前端分类筛选）
+curl -fsSL https://dns.ewuse.com/category-index.txt | head -n 5
+```
+
+所有端点均为匿名只读 GET，无请求体、无认证头。本地开发将域名替换为 `http://localhost:3000` 即可。
+
 ## 4. 参数与返回格式约定
 
 | 项 | 约定 |
@@ -118,4 +147,4 @@ head -n 20 /tmp/dnsmasq-ads.conf
 
 ## 7. 规范符合性说明
 
-[openapi.yaml](./openapi.yaml) 遵循 OpenAPI 3.1.0：包含 `info`（版本与许可）、`servers`（生产 / 本地）、`paths`（上述全部真实端点）、`components.schemas`（纯文本 / XML / HTML 响应体）与标准错误响应。由于无业务 API，文档中**没有** `requestBody`、认证 scheme 或业务错误码 schema；这是有意为之，不是遗漏。
+[openapi.yaml](./openapi.yaml) 遵循 OpenAPI 3.1.0：包含 `info`（版本与许可）、`servers`（生产 / 本地）、`paths`（7 条真实端点：2 页面 + 3 元数据 + 分类索引 + 规则文件模板）、`components.schemas`（纯文本 / XML / HTML 响应体）与 `components.responses`（404 / 403 / 429 / 5XX 标准错误）。`node scripts/check-openapi.mjs` 已纳入 CI data job，校验版本一致性、`operationId` 唯一与本地 `$ref` 可解析。由于无业务 API，文档中**没有** `requestBody`、认证 scheme 或业务错误码 schema；这是有意为之，不是遗漏。

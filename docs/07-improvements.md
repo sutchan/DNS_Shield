@@ -5,6 +5,14 @@
 > 每条建议统一包含：**问题背景 → 实施方案（技术选型 + 步骤）→ 预期效果（量化优先）→ 实施优先级**。
 > 所有条目的执行状态与责任安排见 [任务清单](./tasks.md)；本文只描述方案，不维护任务状态。
 
+## 目录
+
+- [1. 建议总览](#1-建议总览)
+- [2. P1 建议](#2-p1-建议)
+- [3. P2 建议](#3-p2-建议)
+- [4. P3 建议](#4-p3-建议)
+- [5. 未来展望（非排期项）](#5-未来展望非排期项)
+
 ## 1. 建议总览
 
 | 编号 | 领域 | 一句话问题 | 优先级 |
@@ -15,10 +23,13 @@
 | O-04 | 安全 | 根目录清洁度脚本用字符串拼接执行 shell | P1 |
 | O-05 | 工程 | `.npmrc` 缺失，`engine-strict` 未生效 | P1 |
 | O-06 | PWA | Service Worker 文件存在但未注册 | P2 |
-| O-07 | 发布 | `category-index.txt` 未纳入发布路径 | P2 |
+| O-07 | 发布 | `category-index.txt` 曾未纳入发布路径（已闭环） | P2 |
 | O-08 | 安全 | 生产 CSP 含 `'unsafe-inline'`，无 Trusted Types | P2 |
 | O-09 | 可访问性 | 无自动化 a11y 回归 | P2 |
 | O-10 | 兼容性 | 路由器兼容列表覆盖不足 | P3 |
+| O-11 | 文档工程 | 文档数字与代码事实靠人工核查，反复漂移 | P1 |
+| O-12 | API 文档 | OpenAPI 离线校验仅覆盖结构，缺语义与示例校验 | P3 |
+| O-13 | 架构 | 5 个源文件超过 200 行规则，历史「0 个超限」指标已失真 | P2 |
 
 ---
 
@@ -26,13 +37,13 @@
 
 ### O-01 超大输入解析的主线程内存峰值
 
-**问题背景**：`src/utils/parser.ts:33`、`src/utils/parseAggregate.ts:30`、`src/utils/sortDedupe.ts:7,56` 仍用 `text.split('\n')` 生成完整行数组；`parseAggregate.ts:47-50` 的 `aggregateRaw` 使用 `push(...arr)` 展开数组。20000 行 / 约 10MB 输入在分片阶段会同时存在原文 + 行数组 + N 份 shard 字符串，峰值约 3×；极端情况下 `push(...arr)` 还可能触发 `Maximum call stack size exceeded`。这与项目「大清单可用」目标存在张力。
+**问题背景（2026-11-26 复核）**：`parser.ts` 已改用 `iterateLines.ts` 逐行迭代，`parseAggregate.ts` 的 `push(...arr)` 已改逐项 push，两处高风险点已闭环；**剩余** `src/utils/sortDedupe.ts` 仍以 `split('\n')` 物化完整行数组（排序算法依赖随机访问），分片仍生成 N 份 shard 字符串。20000 行 / 约 10MB 输入峰值仍可达约 2×；50MB 基准尚未实测。这与项目「大清单可用」目标存在张力。
 
 **实施方案**：
 1. 技术选型：复用已有 `countLines`（`src/utils/lineCount.ts`）的迭代思路，新增 `iterateLines(text, cb)` 零分配迭代器；不引入新依赖。
-2. 把 `parser.ts` / `sortDedupe.ts` 的 `split('\n')` 改为迭代处理；需要随机访问时再局部材料化。
+2. 把 `sortDedupe.ts` 的 `split('\n')` 改为可流式排序（外部排序 / 分块归并），需要随机访问时再局部材料化。
 3. `splitIntoShards` 改为「记录字节/行偏移」而不是生成 N 份字符串，由 Worker 内部按偏移读取。
-4. `aggregateRaw` 的 `push(...arr)` 改为 `for` 循环或 `concat`，消除展开上限。
+4. 已完成项保留回归测试（`iterateLines` 契约 + 130000 元素聚合），不再重复实施。
 5. 增加基准测试：50MB 输入下主线程峰值分配与解析耗时，作为回归门禁。
 
 **预期效果**：主线程峰值内存由约 3× 文本降至约 1×；50MB 输入不再因 `push(...arr)` 抛栈溢出；解析耗时保持现有水平（不回退）。
@@ -77,7 +88,7 @@
 
 ### O-05 恢复 `.npmrc` 使 Node/npm 强约束生效
 
-**问题背景**：`package.json` 声明 `engines.node >=24.11.0 <25` 与 `engines.npm >=11`（v3.22.0 起移除 `packageManager` 的 pnpm 锁定），但当前工作树**不存在 `.npmrc`**，因此 `engine-strict=true` 并未生效；`DEPLOYMENT.md` 与 SPEC 的描述偏向「已生效」。历史提交 `e102610` 删除了该文件，`a9eceb1` 只恢复了锁文件。
+**问题背景（历史）**：`package.json` 声明 `engines.node >=24.11.0 <25` 与 `engines.npm >=11`，但历史工作树曾**不存在 `.npmrc`**，`engine-strict=true` 未生效；`DEPLOYMENT.md` 与 SPEC 的描述一度偏向「已生效」。历史提交 `e102610` 删除了该文件，`a9eceb1` 只恢复了锁文件。
 
 **状态（2026-11-25 更新）**：✅ 已实施——根目录 `.npmrc` 已恢复，仅设置 npm 支持的 `engine-strict=true`；Node 24 / npm 11 为本仓 CI 与本地开发的唯一合规组合，Node 26 下安装应失败。下方实施方案保留作历史记录。
 
@@ -92,6 +103,23 @@
 
 ---
 
+### O-11 文档数字与代码事实的自动化门禁
+
+**问题背景**：2026-11-26 全量核查发现，同一事实在活跃文档中存在多套数字：测试套件 / 用例在 `CHANGELOG.md` 为 59/376、`docs/tasks.md` 为 57/364（实跑为 59/376）；版本同步展示位文档写 13 处、脚本实为 12 处；`.npmrc` 与主题入口状态在 FAQ / SPEC 中仍保留已修复前的描述。这类漂移依赖人工逐轮发现，成本高且必然复发。
+
+**实施方案**：
+1. 技术选型：不引入新依赖，扩展现有 `scripts/sync-facts.mjs --check` 或新增 `scripts/check-doc-facts.mjs`，以 Node 内置 `fs`/`child_process` 读取权威源。
+2. 权威源映射：套件 / 用例数取 `vitest run --json` 输出（CI 产物），语言 / 键数取 `check-locales.mjs` 输出，域名数取 `count-domains.mjs`，展示位数取 `sync-facts.mjs` 的 `RULES.length`，文件路径 / DOM id 取源码搜索断言。
+3. 在 `docs/tasks.md` 实时指标表与活跃文档中只保留由脚本生成的数字块，人工叙述不得硬编码数字。
+4. 新增 CI job（可并入现有 `data` job）执行断言，失败即阻断合入；历史冻结快照按声明豁免。
+5. 为文档维护者提供 `npm run check:doc-facts` 本地命令，输出「文件:行号 + 期望值 + 实际值」。
+
+**预期效果**：活跃文档数字漂移从「每轮人工发现 3~5 处」降为 0（CI 阻断）；版本 bump 后的文档同步核查耗时下降约 50%（定性估计，以实际 PR 返工次数复测）。
+
+**优先级**：P1 — 文档准确性是本次系统性完善的核心目标，且漂移已经反复发生。
+
+---
+
 ## 3. P2 建议
 
 ### O-02 行号重复生成
@@ -103,6 +131,22 @@
 **预期效果**：大输入生成路径减少 1 次 O(n) 遍历；重复渲染时行号计算次数由 2 降为 1。
 
 **优先级**：P2。
+
+---
+
+### O-13 拆分超过 200 行的源文件
+
+**问题背景**：2026-11-26 按真实换行数实扫 `src/` 与 `scripts/`，发现 5 个超限文件：`src/components/OutputPanel.tsx`（203）、`src/hooks/useDomainData.ts`（214）、`src/hooks/useRuleWorker.ts`（208）、`src/hooks/useDomainData.autosave.test.ts`（229）、`scripts/aggregate-upstream.mjs`（202）。`docs/tasks.md` 与 `docs/SPEC.md` 中「当前 0 个超限」为 2026-11-13 的历史快照；规则要求代码文件单文件 ≤200 行，文档不拆分。
+
+**实施方案**：
+1. 按职责拆分：`OutputPanel.tsx` 抽出统计 / 格式选择派生逻辑到 `OutputPanel.derived.ts`；`useDomainData.ts` 把自动保存与远端加载编排拆为 `useDomainData.autosave.ts`；`useRuleWorker.ts` 抽出 Worker 生命周期管理；聚合脚本把上游解析与去重写入拆到 `scripts/lib/`。
+2. 测试文件按关注点拆为多套，共享装置移入 `src/test-utils/`，不降低用例数（当前 376）。
+3. 公开导出契约保持不变，拆分后逐一跑 `npm run lint`、`node node_modules/typescript/bin/tsc --noEmit`、`npm test` 与 `npm run build`。
+4. 在 CI `data` job 增加行数扫描门禁（含 `scripts/`），超限直接失败，防止再次漂移。
+
+**预期效果**：5 个超限文件全部降至 ≤200 行，门禁长期保持 0 超限；单文件认知负荷下降，Code Review 定位时间预计减少（定性目标，以 PR 评论往返次数复测）；测试套件数可能由 59 增至 60+，用例数不低于 376。
+
+**优先级**：P2 — 不阻塞功能，但直接影响长期可维护性与规范可信度。
 
 ---
 
@@ -126,7 +170,9 @@
 
 ### O-07 将 `category-index.txt` 纳入发布路径
 
-**问题背景**：`public/category-index.txt` 由 `.github/workflows/aggregate.yml` 生成，但发布工作流的 `add-paths` 未包含该文件，线上分类筛选控件可能 404 后降级隐藏。
+**问题背景（历史）**：`public/category-index.txt` 由 `.github/workflows/aggregate.yml` 生成，但发布工作流的 `add-paths` 曾未包含该文件，线上分类筛选控件可能 404 后降级隐藏。
+
+**状态（2026-11-26 更新）**：✅ 已闭环——该文件已纳入 `aggregate.yml` 的 `add-paths`、`release.yml` 的资产 / ZIP 清单与 `ci.yml` 的硬门禁断言；下方实施方案保留作历史记录。
 
 **实施方案**：检查 `aggregate.yml` 的 PR 路径与 `deploy.yml` 的上传清单，把 `category-index.txt` 加入；同时在 `scripts/gen-format-files.mjs` 生成清单中登记，避免遗漏。增加端点可达性断言（`GET /category-index.txt` 返回 200）。
 
@@ -174,6 +220,22 @@
 **预期效果**：常见设备查询命中率提升；因格式选错导致的 issue 减少（定性目标）。
 
 **优先级**：P3。
+
+---
+
+### O-12 OpenAPI 语义校验与示例覆盖增强
+
+**问题背景**：`scripts/check-openapi.mjs` 为无依赖轻量校验，仅检查 OpenAPI 版本、版本一致性、`operationId` 唯一与本地 `$ref` 可解析；不校验 `parameters` 与路径模板匹配、`example` 与 `schema` 一致、响应 `Content-Type` 与静态文件实际类型一致。本轮虽补齐 `/category-index.txt`、403/429/5XX 响应与全部端点 `curl` 示例，后续仍可能无声漂移。
+
+**实施方案**：
+1. 短期：在现有脚本内追加规则——每个 `parameters.in: path` 名必须在路径模板中出现；每个 `$ref` 目标必须存在；`servers` 与 `docs/04-api.md` 示例域名一致。
+2. 中期：CI 可选引入 `redocly lint docs/openapi.yaml`（作为独立 job，离线缓存依赖），启用 `operation-operationId` / `no-unused-components` / `spec` 规则集。
+3. 增加契约冒烟测试：对 `paths` 中每个真实端点发本地请求，断言状态码 200 且 `Content-Type` 与规范一致（页面、元数据与静态规则文件）。
+4. 示例统一由 `docs/04-api.md` 维护，`openapi.yaml` 的 `example` 通过脚本核对，禁止两处手写不同域名。
+
+**预期效果**：OpenAPI 语义缺陷检出从 0 提升到覆盖 path 参数 / $ref / 示例一致性三类；端点契约回归可在 CI 首次失败时拦截，避免线上 404 类问题。
+
+**优先级**：P3 — 当前轻量校验已满足基本合规，语义增强可在发布链路稳定后实施。
 
 ---
 

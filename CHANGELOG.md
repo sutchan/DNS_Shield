@@ -17,6 +17,13 @@
 - `README.en.md` 版本正文 v3.18.0 → v3.22.2；`docs/README.md` 文档集版本 v3.21.0 → v3.22.2、键数 213 → 214；`docs/SPEC.md` §1 域名数 644 → 127188（实算值，与 tasks.md 一致）
 - 清理 `openwrt-package/po/zh_Hans/` 空目录（无 po 安装、无引用）
 
+### Changed（文档系统性标准化，2026-11-26）
+- 01/03/04/05/06/07 + 部署指南补齐目录；03 为 M4~M9 每个模块补充 Mermaid 业务流程图，05 补设置流程图，06 补故障排查决策树；04 补齐全部端点 `curl` 调用示例
+- 修正活跃文档事实漂移：测试数统一为实跑 **59 套件 / 376 用例**、版本展示位 12 处；`.npmrc`、主题入口、AppContext、分类索引、发布任务编号等已闭环项不再以「待修复」口径出现；SPEC 头部审查日期与 Hook 稳定性条目同步
+- `docs/openapi.yaml` 新增 `/category-index.txt` 与 403/429/5XX 标准错误响应，`docs/04-api.md` 同步更新规范符合性说明；`node scripts/check-openapi.mjs` 通过（7 路径 / 7 操作）
+- 页脚展示对齐 SPEC §8.1：`Footer.tsx` 输出 `V{version}· build {buildId}`，aria-label 同步
+- `docs/07-improvements.md` 新增 O-11（文档数字自动化门禁，P1）/ O-12（OpenAPI 语义校验，P3）/ O-13（拆分 5 个超 200 行源文件，P2）；`docs/tasks.md` 登记 T-DOC-03 / T-DOC-04 / T-REFACTOR-01，未完成任务 11 项并按 P1/P2/P3 重排详情；实扫纠正「0 个超行源文件」的失真指标
+
 ### Changed（工作台双栏等宽，2026-11-26）
 - `.main-content` 取消 `lg` 断点「输入 5 / 输出 7」非对称栅格（`lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]`），改为 `md` 起两栏等宽 `minmax(0,1fr)_minmax(0,1fr)`：左右面板同宽、长域名/预览内容不撑破栅格；`docs/SPEC.md` §4.4 栅格描述同步
 
