@@ -1,9 +1,11 @@
-// scripts/lib/formatRules.mjs v3.22.0
+// scripts/lib/formatRules.mjs v3.22.4
 // 各输出格式的规则行生成逻辑，与 src/utils/formatGenerators.ts 1:1 对齐。
 // 纯函数：接收统一中间结构与设置，返回规则行数组（不含头部）。
 import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+// T-AUD-M15：黑名单/自定义 DNS 规则行与运行时共用单一实现，杜绝两份 switch 漂移。
+import { blockedRuleLines, customDnsRuleLine } from '../../src/utils/ruleLines.ts';
 
 // L-07：构建产物注释与运行时 i18n 共用 zh-cn 文案，杜绝两处措辞长期漂移。
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -11,78 +13,21 @@ const ZH_CN = JSON.parse(readFileSync(resolve(ROOT, 'src/locales/zh-cn.json'), '
 const WHITELIST_TITLE = ZH_CN.whitelist.title;
 const HOSTS_NOTE = ZH_CN.whitelist.hostsNote;
 
-/** 黑名单拦截规则 */
+const linesOf = (text) => (text ? text.slice(0, -1).split('\n') : []);
+
+/** 黑名单拦截规则（共享实现） */
 function blockedRules(format, domains, settings) {
   const out = [];
-  for (const domain of domains) {
-    switch (format) {
-      case 'dnsmasq':
-        out.push(`address=/${domain}/${settings.ipv4}`);
-        if (settings.blockIPv6) out.push(`address=/${domain}/${settings.ipv6}`);
-        break;
-      case 'hosts':
-        out.push(`${settings.ipv4} ${domain}`);
-        if (settings.blockIPv6) out.push(`${settings.ipv6} ${domain}`);
-        break;
-      case 'adguard':
-        out.push(`||${domain}^`);
-        break;
-      case 'unbound':
-        out.push(`local-zone: "${domain}" refuse`);
-        break;
-      case 'pihole':
-        out.push(`0.0.0.0 ${domain}`);
-        break;
-      case 'bind':
-        out.push(`${domain} CNAME .`);
-        out.push(`*.${domain} CNAME .`);
-        break;
-      case 'smartdns':
-        out.push(`address /${domain}/#`);
-        break;
-      case 'mosdns':
-        out.push(`domain:${domain}`);
-        break;
-      case 'clash':
-        out.push(`DOMAIN-SUFFIX,${domain},reject`);
-        break;
-      case 'coredns':
-        out.push(`0.0.0.0 ${domain}`);
-        if (settings.blockIPv6) out.push(`${settings.ipv6} ${domain}`);
-        break;
-      default:
-        break;
-    }
-  }
+  for (const domain of domains) out.push(...linesOf(blockedRuleLines(format, domain, settings)));
   return out;
 }
 
-/** 自定义 DNS 规则（仅部分格式具有改道语义；unbound/bind/mosdns/clash 无对应语法故跳过） */
+/** 自定义 DNS 规则（共享实现；无对应语法的格式返回空数组） */
 function customDnsRules(format, items) {
   const out = [];
   for (const { domain, ip } of items) {
-    switch (format) {
-      case 'dnsmasq':
-        out.push(`address=/${domain}/${ip}`);
-        break;
-      case 'hosts':
-        out.push(`${ip} ${domain}`);
-        break;
-      case 'adguard':
-        out.push(`||${domain}^`);
-        break;
-      case 'pihole':
-        out.push(`${ip} ${domain}`);
-        break;
-      case 'smartdns':
-        out.push(`server /${domain}/${ip}`);
-        break;
-      case 'coredns':
-        out.push(`${ip} ${domain}`);
-        break;
-      default:
-        break;
-    }
+    const line = customDnsRuleLine(format, domain, ip);
+    if (line) out.push(line.slice(0, -1));
   }
   return out;
 }

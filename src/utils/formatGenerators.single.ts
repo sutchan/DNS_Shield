@@ -1,4 +1,4 @@
-// src/utils/formatGenerators.single.ts v3.13.1
+// src/utils/formatGenerators.single.ts v3.22.4
 // 单格式规则生成：与 formatGenerators.ts 的全量生成语义 1:1 对齐，
 // 但只拼接目标格式的字符串，避免超大输入（10 万行 × 12 格式）下生成其余 11 种
 // 格式的冗余字符串开销（T-P1-06：runGenerate 按当前格式惰性生成）。
@@ -6,71 +6,7 @@
 import type { Settings, CustomDnsEntry, Translation, RegexRule, FormatType } from '../types';
 import { prepareRuleData, generateHeader } from './rulesGenerator';
 import { toAdGuardRegex, toPiHoleRegex } from './regexRules';
-
-/** 黑名单域名在指定格式下的单行规则（与 buildBlockedRules 逐格式一致） */
-function blockedRuleLine(format: FormatType, domain: string, settings: Settings): string {
-  switch (format) {
-    case 'dnsmasq':
-      return `address=/${domain}/${settings.ipv4}\n`;
-    case 'hosts':
-      return `${settings.ipv4} ${domain}\n`;
-    case 'adguard':
-      return `||${domain}^\n`;
-    case 'unbound':
-      // refuse 同时拒绝 A 与 AAAA（协议无关），无需单独处理 IPv6
-      return `local-zone: "${domain}" refuse\n`;
-    case 'pihole':
-      return `0.0.0.0 ${domain}\n`;
-    case 'domains':
-      return `${domain}\n`;
-    case 'bind':
-      return `${domain} CNAME .\n*.${domain} CNAME .\n`;
-    case 'smartdns':
-      return `address /${domain}/#\n`;
-    case 'mosdns':
-      return `domain:${domain}\n`;
-    case 'clash':
-      return `DOMAIN-SUFFIX,${domain},reject\n`;
-    case 'coredns':
-      return `0.0.0.0 ${domain}\n`;
-    case 'whitelist':
-      return '';
-  }
-}
-
-/** 黑名单域名的 IPv6 附加行（仅 dnsmasq/hosts/coredns，与 buildBlockedRules 一致） */
-function blockedIPv6Line(format: FormatType, domain: string, settings: Settings): string {
-  switch (format) {
-    case 'dnsmasq':
-      return `address=/${domain}/${settings.ipv6}\n`;
-    case 'hosts':
-      return `${settings.ipv6} ${domain}\n`;
-    case 'coredns':
-      return `${settings.ipv6} ${domain}\n`;
-    default:
-      return '';
-  }
-}
-
-/** 自定义 DNS 在指定格式下的单行规则（与 buildCustomDnsRules 一致） */
-function customDnsRuleLine(format: FormatType, item: CustomDnsEntry): string {
-  switch (format) {
-    case 'dnsmasq':
-      return `address=/${item.domain}/${item.ip}\n`;
-    case 'hosts':
-      return `${item.ip} ${item.domain}\n`;
-    case 'adguard':
-      return `||${item.domain}^\n`;
-    case 'pihole':
-      return `${item.ip} ${item.domain}\n`;
-    case 'smartdns':
-      return `server /${item.domain}/${item.ip}\n`;
-    case 'coredns':
-      return `${item.ip} ${item.domain}\n`;
-    default:
-      return '';
-  }
-}
+import { blockedRuleLines, customDnsRuleLine } from './ruleLines';
 
 /** 白名单段标题注释（仅 addHeader 为真时生成，与 buildWhitelistRules 一致） */
 function whitelistHeader(format: FormatType, settings: Settings, t: Translation): string {
@@ -169,14 +105,11 @@ export function generateSingleFormat(
   }
 
   blockedDomains.forEach((domain) => {
-    out += blockedRuleLine(format, domain, settings);
-    if (settings.blockIPv6) {
-      out += blockedIPv6Line(format, domain, settings);
-    }
+    out += blockedRuleLines(format, domain, settings);
   });
 
   filteredCustomDns.forEach((item) => {
-    out += customDnsRuleLine(format, item);
+    out += customDnsRuleLine(format, item.domain, item.ip);
   });
 
   if (regexRules.length > 0) {

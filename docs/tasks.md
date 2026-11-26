@@ -38,13 +38,13 @@
 
 ## 二、待办任务（未完成，按优先级排序）
 
-> **任务合计：4 项**（2026-11-26 任务治理进行中：T-SEC-01 / T-DOC-03 / T-COMPAT-01 / T-PERF-01 / T-AUD-M02 / T-DOC-04 / T-REFACTOR-01 已完成归档；其余保持原优先级）。
+> **任务合计：3 项**（2026-11-26 任务治理进行中：T-SEC-01 / T-DOC-03 / T-COMPAT-01 / T-PERF-01 / T-AUD-M02 / T-DOC-04 / T-REFACTOR-01 / T-AUD-M15 已完成归档；其余保持原优先级）。
 > 每条均含「目标 / 责任人 / 计划完成时间（绝对日期）/ 影响范围 / 验收标准」（审计迁移项的详细问题与统一验收标准见 §六）。
 > **唯一来源纪律**：任何位置的任务型表述（审计报告「修：」、优化方案 O-xx、FAQ「待评估/待验证」、源码 TODO 等）必须在本文件登记；原位置只保留证据与方案，不维护第二份状态（见 SPEC §5.3）。
 > 本轮已完成的文档完善工作（文档索引 + 01/03/04/05/06/07 + OpenAPI）见 [CHANGELOG](../CHANGELOG.md) 对应版本小节，不在此重复。
 > 历史 T-P0~P4 编号任务已归档至 [tasks-done.md](./tasks-done.md)。
 >
-> **状态重评（2026-11-26T16:23:19+08:00，本次任务全面治理）**：依据规划审查实证调整优先级与状态，变更如下——① **升级 P1**：T-COMPAT-01（本机实跑 Node 26.13.1 超出 `engines <25`，验证结论失效）、T-AUD-M02（客户端出站 host 未收敛）、T-PERF-01（大输入为核心目标且 50MB 基准缺失）；② **关闭并归档**：T-SEC-01 的评估结论已于 2026-11-25 产出（暂不启用 Trusted Types，等待 staging + Report-Only），本轮按「评估完成」闭环，后续若启用另立新任务；③ **保持 P1**：T-CI-01（远端 tag 实测止于 v3.7.31）、T-DOC-03；④ **保持 P2/P3**：T-A11Y-01、T-REFACTOR-01、T-AUD-M15、T-FEAT-01、T-DOC-04。剩余 10 项按新优先级逐项推进。**即时进展（2026-11-26）**：T-DOC-03 已完成（`check:doc-facts` 落地并发现/修正 DEPLOYMENT 13→12 漂移）；T-COMPAT-01 已完成（Node 24.15.0 + npm 11.12.1 下 `npm ci` / lint / tsc / 59-376 测试 / build 全绿，并据实把 engines.node 收紧为 `>=24.15.0 <25`）。两项均已迁入 `tasks-done.md`。**即时进展（2026-11-26）**：T-PERF-01 已完成——`sortDedupe.ts` 改逐行迭代、`parseAggregate.ts` 分片改换行边界扫描，新增独立 `npm run benchmark:large`（49MB 文本峰值增量 49.2MB，约 1.0×，count 103ms / shard 365ms / dedupe 5900ms）。剩余 7 项。**即时进展（2026-11-26）**：T-AUD-M02 已完成——客户端 URL 校验复用 `fetchGuards.isAllowedFetchUrl` 与 `src/config/fetchHosts.ts` 白名单，CSP `connect-src` 由 `https:` 通配改为枚举 3 个预设 host + GA，`check-security-headers.mjs` 增加收敛断言，新增非白名单 host 拒绝用例。剩余 6 项。**即时进展（2026-11-26）**：T-DOC-04 已完成——OpenAPI 校验抽出 `scripts/lib/validateOpenApi.mjs`，新增 path 参数 / `$ref` / 示例域名语义断言与 4 条注入测试；新增 `npm run check:api-contract`，构建后 7 条真实端点冒烟全绿。剩余 5 项。**即时进展（2026-11-26）**：T-REFACTOR-01 已完成——5 个超 200 行文件全部拆分（`OutputPanel.types.ts`、`useDomainData.sources.ts`、`useRuleWorker.parallel.ts`、自动保存测试拆为两组、`lib/aggregateFetch.mjs`），实扫 0 个超限文件，tsc 0 错、相关测试全绿。剩余 4 项。
+> **状态重评（2026-11-26T16:23:19+08:00，本次任务全面治理）**：依据规划审查实证调整优先级与状态，变更如下——① **升级 P1**：T-COMPAT-01（本机实跑 Node 26.13.1 超出 `engines <25`，验证结论失效）、T-AUD-M02（客户端出站 host 未收敛）、T-PERF-01（大输入为核心目标且 50MB 基准缺失）；② **关闭并归档**：T-SEC-01 的评估结论已于 2026-11-25 产出（暂不启用 Trusted Types，等待 staging + Report-Only），本轮按「评估完成」闭环，后续若启用另立新任务；③ **保持 P1**：T-CI-01（远端 tag 实测止于 v3.7.31）、T-DOC-03；④ **保持 P2/P3**：T-A11Y-01、T-REFACTOR-01、T-AUD-M15、T-FEAT-01、T-DOC-04。剩余 10 项按新优先级逐项推进。**即时进展（2026-11-26）**：T-DOC-03 已完成（`check:doc-facts` 落地并发现/修正 DEPLOYMENT 13→12 漂移）；T-COMPAT-01 已完成（Node 24.15.0 + npm 11.12.1 下 `npm ci` / lint / tsc / 59-376 测试 / build 全绿，并据实把 engines.node 收紧为 `>=24.15.0 <25`）。两项均已迁入 `tasks-done.md`。**即时进展（2026-11-26）**：T-PERF-01 已完成——`sortDedupe.ts` 改逐行迭代、`parseAggregate.ts` 分片改换行边界扫描，新增独立 `npm run benchmark:large`（49MB 文本峰值增量 49.2MB，约 1.0×，count 103ms / shard 365ms / dedupe 5900ms）。剩余 7 项。**即时进展（2026-11-26）**：T-AUD-M02 已完成——客户端 URL 校验复用 `fetchGuards.isAllowedFetchUrl` 与 `src/config/fetchHosts.ts` 白名单，CSP `connect-src` 由 `https:` 通配改为枚举 3 个预设 host + GA，`check-security-headers.mjs` 增加收敛断言，新增非白名单 host 拒绝用例。剩余 6 项。**即时进展（2026-11-26）**：T-DOC-04 已完成——OpenAPI 校验抽出 `scripts/lib/validateOpenApi.mjs`，新增 path 参数 / `$ref` / 示例域名语义断言与 4 条注入测试；新增 `npm run check:api-contract`，构建后 7 条真实端点冒烟全绿。剩余 5 项。**即时进展（2026-11-26）**：T-REFACTOR-01 已完成——5 个超 200 行文件全部拆分（`OutputPanel.types.ts`、`useDomainData.sources.ts`、`useRuleWorker.parallel.ts`、自动保存测试拆为两组、`lib/aggregateFetch.mjs`），实扫 0 个超限文件，tsc 0 错、相关测试全绿。剩余 4 项。**即时进展（2026-11-26）**：T-AUD-M15 已完成——新增 `src/utils/ruleLines.ts` 作为黑名单/自定义 DNS 规则行的单一实现，运行时 `formatGenerators.single.ts` 与构建期 `scripts/lib/formatRules.mjs` 均复用；白名单注释因发布产物兼容保留各侧适配层并注明。产物重生成仅更新版本头 3.22.2→3.22.3，无规则行变化；一致性测试 7 用例全绿。剩余 3 项。
 
 ### 优先级 / 责任人 / 计划完成时间总表
 
@@ -52,7 +52,6 @@
 |:------:|------|------|--------|----------|------|
 | 🔴 P1 | T-CI-01 | 验证 CI→Deploy→Release 全绿与自动发版 | CI Owner | 2026-12-02 | 历史遗留 |
 | 🟡 P2 | T-A11Y-01 | 无障碍自动化回归（axe / Playwright，O-09） | QA | 2026-12-16 | 历史遗留 + 本轮 |
-| 🟡 P2 | T-AUD-M15 | 规则行 / 头部重复实现抽为框架无关共用模块 | Dev Team | 2026-12-23 | 审计 M-15 |
 | ⚪ P3 | T-FEAT-01 | 扩展路由器兼容列表（O-10） | Docs Team | 2027-01-13 | 历史遗留 + 本轮 |
 
 ### 🔴 P1 - 正确性与发布链路
@@ -65,7 +64,6 @@
 ### 🟡 P2 - 无障碍 / 架构 / 审计
 
 - **T-A11Y-01 · 无障碍自动化回归（O-09）**（责任人：QA；计划：2026-12-16）：引入 `axe-core` + Playwright，对 `/`、`/about/` 与弹窗扫描，CI 阻断 critical 违规。验收：基线修复后 critical = 0。
-- **T-AUD-M15 · 规则行 / 头部重复实现抽为框架无关共用模块**（责任人：Dev Team；计划：2026-12-23）：运行时 `formatGenerators.ts` / `formatGenerators.single.ts` 与构建期 `scripts/lib/formatRules.mjs` / `formatHeaders.mjs` 共 4 份实现并存；详情见 §六。验收标准：共用模块单一来源，运行时与构建期逐字节一致测试通过。
 
 ### ⚪ P3 - 兼容性与文档规范
 

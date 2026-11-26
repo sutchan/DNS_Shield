@@ -489,6 +489,15 @@
 - **验收实证**：`check-openapi` 通过（7 路径 / 7 操作）；注入测试 4 用例全绿；构建后契约冒烟 7 条端点均 200 且 Content-Type 匹配。
 - **归档时间**：2026-11-26（任务治理批次）。
 
+### T-AUD-M15 · 规则行 / 头部重复实现抽为框架无关共用模块
+
+- **来源 / 优先级**：审计报告 M-15；P2，责任人 Dev Team，原计划 2026-12-23。
+- **完整描述**：运行时 `formatGenerators.single.ts` 与构建期 `scripts/lib/formatRules.mjs` 各维护一套黑名单/自定义 DNS 的 switch 规则，存在行为漂移风险；要求抽为单一实现并保持字节一致。
+- **状态**：✅ 已完成（2026-11-26 提前完成）。
+- **实现与边界**：新增 `src/utils/ruleLines.ts`，导出 `blockedRuleLines` / `customDnsRuleLine` 两个纯函数；两侧均改为调用该模块。白名单段因发布产物兼容（pihole/bind 等格式的注释行与运行时不同）保留各侧适配层，并在共享模块头部明确边界，避免擅自改变已发布规则字节。
+- **验收实证**：`formatGenerators.single.test.ts` 7 用例全绿；重跑 `node scripts/gen-format-files.mjs` 后 11 个产物仅版本头从 3.22.2 更新为 3.22.3，规则行无差异。
+- **归档时间**：2026-11-26（任务治理批次）。
+
 ### T-REFACTOR-01 · 拆分 5 个超 200 行源文件（O-13）
 
 - **来源 / 优先级**：本轮实扫新增；P2，责任人 Dev Team，原计划 2026-12-23。
