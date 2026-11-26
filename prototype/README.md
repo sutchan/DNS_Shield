@@ -1,17 +1,18 @@
-<!-- 设计快照（v3.12.0 冻结）：本目录内容停留在 v3.9.x ~ v3.10.x，是设计决策留档，不代表当前实现。
-     当前实现以 docs/SPEC.md 为准，版本号以 package.json 为准；新增格式/功能不再回填本目录。
-     例外：DOM id 命名已按 v3.15.0 规范（kebab-case 语义 id）与实现同步，便于调试定位与端到端选择器。 -->
-# DNS Shield — 项目原型 (Prototype) v3.9.3
+<!-- 双轨说明：dashboard.html 是当前版本（v3.22.0）高保真原型，与实现同步；
+     prototype.html / wireframes.html / flows.html 为 v3.9.x~v3.10.x 设计快照（冻结留档），不再回填版本与指标。
+     当前实现以 docs/SPEC.md 为准，版本号以 package.json 为准。 -->
+# DNS Shield — 项目原型 (Prototype)
 
-> 高保真、可交互、内联真实数据的产品原型，与真实引擎 `src/` 及 OpenSpec 规范保持最小颗粒度对齐。
+> 当前高保真原型：**`dashboard.html`（v3.22.2）**——覆盖桌面等宽双栏、移动单列、关于/FAQ、加载/错误/404 状态页与设置/格式/规则测试/同步脚本四类弹窗；顶栏仅 Share/Settings，语言与主题在设置弹窗内。DOM id 与实现及 `docs/SPEC.md` §4.4 一一对应。下方历史文件为设计决策留档。
 
 ## 目录结构
 
 ```
 prototype/
-├── prototype.html             # 高保真可交互原型（主页：极简风格 / 真实数据 / 响应式 PC+移动）
-├── wireframes.html            # 组件库规范：基础 / 复合 / 业务组件 + 设计令牌 + 使用规则
-├── flows.html                 # 关键业务流程交互原型（URL导入 / 格式切换 / 设置 / 主题语言，带动效）
+├── dashboard.html             # 【当前 v3.22.2】高保真原型：桌面/移动/FAQ/状态页/四类弹窗，token 与 DOM id 对齐实现
+├── prototype.html             # 【冻结快照 v3.9.7】早期高保真交互原型
+├── wireframes.html            # 【冻结快照 v3.10.1】组件库规范：基础 / 复合 / 业务组件 + 设计令牌 + 使用规则
+├── flows.html                 # 【冻结快照 v3.10.1】关键业务流程交互原型（URL导入 / 格式切换 / 设置 / 主题语言）
 ├── README.md                  # 本文件：原型说明与索引
 └── shadcn/
     ├── design-system.md       # 设计系统：色彩 / 字体 / 间距 / 图标 / 动效（token 单一来源）
@@ -98,8 +99,8 @@ prototype/
 
 ## 使用方式
 
-直接用浏览器打开 `prototype/prototype.html` 即可预览；无需构建。所有交互在纯前端（vanilla JS）实现，数据内联，零外部运行时依赖。`wireframes.html` / `flows.html` 同理。
+直接用浏览器打开 `prototype/dashboard.html` 预览**当前 v3.22.2 原型**（顶部界面切换器可切换桌面 / 移动 / FAQ / 状态页）；无需构建。交互为纯前端 vanilla JS，数据内联、零外部依赖。`prototype.html` / `wireframes.html` / `flows.html` 为冻结快照，同理可直接打开，但仅作设计留档。
 
 ## 版本
 
-原型快照版本 **v3.9.3**（冻结于 v3.12.0 结构审查，此后不再随实现回填）；当前实现版本以 `package.json` / `src/config/version.ts` 为准，勿以本节版本号核对主工程。
+当前原型 `dashboard.html` 版本 **v3.22.2**（与实现同步）；历史快照 `prototype.html`(v3.9.7) / `wireframes.html`(v3.10.1) / `flows.html`(v3.10.1) 冻结于 v3.12.0 结构审查，不再回填版本与指标。当前实现版本以 `package.json` / `src/config/version.ts` 为准。

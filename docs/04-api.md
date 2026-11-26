@@ -1,6 +1,6 @@
 # 04 API 接口文档
 
-> 文档集版本：v3.21.0 · 最后审查：2026-11-25 · 适用产品版本：v3.21.0
+> 文档集版本：v3.22.2 · 最后审查：2026-11-26 · 适用产品版本：v3.22.2
 > 机器可读定义：[openapi.yaml](./openapi.yaml)（OpenAPI 3.1.0）
 
 ## 1. 适用范围与重要事实
@@ -108,13 +108,13 @@ head -n 20 /tmp/dnsmasq-ads.conf
 
 | 模块 | 导出 | 入参 → 返回 | 关键契约 |
 |------|------|-------------|----------|
-| `utils/parser.ts` | `parseDomainLine` | `(line: string) → ParsedLine` | 识别 `+` / `@` / `#` 与 AdGuard `\|\|`，正则识别先于注释剥离 |
+| `utils/parseLine.ts` | `parseDomainLine` | `(line: string) → ParseResult` | 识别 `+` / `@` / `#` 与 AdGuard `\|\|`，正则识别先于注释剥离 |
 | `utils/rulesGenerator.ts` | `generateHeader` | `(format, counts, date, settings, t) → string` | 头部每行必须以格式注释符开头 |
 | `utils/rulesGenerator.ts` | `generateRules` | `(format, entries, settings, t) → string` | 只生成单一目标格式 |
 | `utils/lineCount.ts` | `countLines` | `(text: string) → number` | 非分配计数，语义等同 `split('\n').length` |
-| `utils/fileUtils.ts` | `sanitizeFileName` | `(name: string) → string` | 去除路径分隔符，防路径穿越 |
-| `utils/domainFetch.ts` | `fetchFromUrls` | `(urls: string[]) → Promise<string>` | 10MB/响应、50MB/批、5 URL/批 |
-| `scripts/count-domains.mjs` | CLI | 无参 | 实算域名数（当前 644，2026-11-25 实算），禁止手写数字 |
+| `utils/fileUtils.ts` | `downloadOutput` | `(content: string, filename: string) → void` | 内部经 `sanitizeFilename` 净化文件名，去路径分隔符防穿越 |
+| `utils/fileUtils.ts` | `fetchFromUrls` | `(urls: string[], timeout?: number) → Promise<FetchUrlsResult>` | 10MB/响应、50MB/批、5 URL/批；失败 URL 随 `failedUrls` 返回 |
+| `scripts/count-domains.mjs` | CLI | 无参 | 实算域名数（2026-11-26 实算 127188），禁止手写数字 |
 
 ## 7. 规范符合性说明
 

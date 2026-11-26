@@ -1,6 +1,6 @@
 # 06 FAQ 与故障排除
 
-> 文档集版本：v3.21.0 · 最后审查：2026-11-25 · 适用产品版本：v3.21.0
+> 文档集版本：v3.22.2 · 最后审查：2026-11-26 · 适用产品版本：v3.22.2
 > FAQ 事实源：`src/config/seo-content.ts` 的 `FAQ_ITEMS`（页面可见文本 / JSON-LD / `llms.txt` 共用）。本文与之保持一致，新增技术问题解答。
 
 ## 1. 常见问题（FAQ）
@@ -80,7 +80,7 @@
 | 部分设备对 hosts 文件大小有限制 | 产品限制 | 建议改用 dnsmasq / AdGuard 格式 |
 | `AppProvider value={{t}}` 每次渲染新建对象，全部 `useT()` 消费者重渲染 | 待修复（M-12，2026-11-25 实查仍在） | [tasks.md](./tasks.md) M-12 |
 | `.npmrc` 缺失，`engine-strict` 未生效 | 待修复（O-05 / T-BUILD-01，2026-11-25 实查仍缺） | [tasks.md](./tasks.md) T-BUILD-01 |
-| `public/domains.txt` 当前 644 条（历史曾 127188 条），回退原因未定 | 待核实（T-DATA-01，计数以 `node scripts/count-domains.mjs` 实算为准） | [tasks.md](./tasks.md) T-DATA-01 |
+| `public/domains.txt` 当前 127188 条（2026-11-25 从 `af976b8` 恢复后实算）；旧值 644 已失效 | 事实见实时指标；计数以 `node scripts/count-domains.mjs` 实算为准 | [tasks.md](./tasks.md) |
 
 ## 3. 仍未解决的问题
 

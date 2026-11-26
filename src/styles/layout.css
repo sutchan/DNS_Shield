@@ -1,4 +1,4 @@
-/* src/styles/layout.css v3.19.0 — 布局骨架与面板容器（原 globals.css Layout/Panel 段） */
+/* src/styles/layout.css v3.22.1 — 布局骨架与面板容器（原 globals.css Layout/Panel 段） */
 
 /* ============================================
    Layout
@@ -8,10 +8,10 @@
   @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 py-5 sm:py-8;
 }
 
-/* v3.19.0：大屏改为「输入 5 / 输出 7」非对称工作台，把更多宽度留给规则预览；
-   中等屏仍保持 1:1 便于逐行对照，窄屏单列。 */
+/* 工作台左右两栏等宽：md 起 1:1（此前 lg 为 5:7 非对称，按需求统一回等宽）；窄屏单列。
+   两列均用 minmax(0,1fr) 防止长域名/预览内容撑破栅格。 */
 .main-content {
-  @apply grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)];
+  @apply grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)];
 }
 
 .app-header {

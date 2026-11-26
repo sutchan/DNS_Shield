@@ -9,6 +9,9 @@
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  // v3.22.1：组件测试用 react-dom/server 渲染 .tsx，需自动 JSX runtime，
+  // 否则 classic runtime 下组件文件（无 import React）会报 React is not defined。
+  esbuild: { jsx: 'automatic' },
   test: {
     environment: 'node',
     // 补齐 jsdom 缺失的 localStorage / matchMedia 桩（见 src/test-utils/setup.ts）

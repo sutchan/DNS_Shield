@@ -1,6 +1,6 @@
 # 03 功能模块说明
 
-> 文档集版本：v3.21.0 · 最后审查：2026-11-25 · 适用产品版本：v3.21.0
+> 文档集版本：v3.22.2 · 最后审查：2026-11-26 · 适用产品版本：v3.22.2
 > 实现为准：本文描述的行为均可在 `src/` 对应文件中复核；约束级规则见 [SPEC](./SPEC.md)。
 
 ## 1. 模块总览
@@ -71,7 +71,7 @@ flowchart LR
     N --> O["统一条目<br/>{domain, action, ip}"]
 ```
 
-关键实现：`parseDomainLine` 先识别正则前缀再剥离内联注释，避免 `/\d+#/` 被截断；AdGuard 的 `||` 边界需避免空数组 `Math.min` 造成 `Infinity` 切片。
+关键实现：`src/utils/parseLine.ts` 的 `parseDomainLine` 先识别正则前缀再剥离内联注释，避免 `/\d+#/` 被截断；AdGuard 的 `||` 边界需避免空数组 `Math.min` 造成 `Infinity` 切片。
 
 ## 4. M3 并行调度
 
@@ -122,8 +122,8 @@ flowchart LR
 
 ```bash
 node scripts/gen-format-files.mjs   # 从 domains.txt 派生 11 个格式文件
-node scripts/count-domains.mjs      # 实算域名数（当前 644，以脚本输出为准）
-node scripts/check-locales.mjs      # 16 语键一致性（213 键）
+node scripts/count-domains.mjs      # 实算域名数（2026-11-26 实算 127188，以脚本输出为准）
+node scripts/check-locales.mjs      # 16 语键一致性（214 键）
 node scripts/sync-facts.mjs --check # 版本展示位（13 处）
 node scripts/check-root-clean.mjs   # 根目录洁净度
 ```

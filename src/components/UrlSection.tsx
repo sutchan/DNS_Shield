@@ -2,6 +2,9 @@
 // URL 导入区域组件 —— 从 InputPanel 拆分
 // DOM id 统一为 kebab-case 语义命名（url-input / url-list）。
 // v3.20.1：折叠时给容器加 inert，阻止 Tab 进入不可见控件（诊断 P1-8 幽灵焦点）。
+// v3.20.2：React 18 运行时不把 inert 当布尔属性（类型仅存在于 experimental.d.ts），
+// 传 true 触发 "Received `true` for a non-boolean attribute" 警告；改传空字符串
+// （HTML 语义等价、React 18/19 均正确渲染为 inert=""），并用局部类型声明保持 tsc 通过。
 'use client';
 import * as React from 'react';
 import { X, Link, ExternalLink } from 'lucide-react';
@@ -10,6 +13,10 @@ import { Input } from './ui/Input';
 import { Badge } from './ui/Badge';
 import { Translation } from '../types';
 import { useT } from '../context/AppContext';
+
+// React 18 的 HTMLAttributes 未声明 inert（只有 experimental.d.ts 有且为 boolean，
+// 与运行时冲突）；此处按 DOM 语义声明为可选字符串，'' = 生效，undefined = 未设置。
+type InertDivProps = React.HTMLAttributes<HTMLDivElement> & { inert?: string };
 
 interface UrlSectionProps {
   isCollapsed: boolean;
@@ -79,12 +86,14 @@ const UrlSection: React.FC<UrlSectionProps> = ({
   isLoading,
 }) => {
   const t = useT();
+  // React 18：inert="" 等价于原生 inert 布尔属性生效；false 时传 undefined 移除属性。
+  const inertProps = { inert: isCollapsed ? '' : undefined } as InertDivProps;
   return (
     <div
+      {...inertProps}
       className={`url-section ${isCollapsed ? 'collapsed' : ''}`}
       id="url-section"
       aria-hidden={isCollapsed}
-      inert={isCollapsed}
     >
       <div
         className={`loading-bar ${isLoading ? 'active' : ''}`}
