@@ -419,13 +419,32 @@ dns-shield/
 
 ## 6. 路由器兼容列表
 
-| 路由器/固件 | 支持格式 | 说明 |
-|-------------|----------|------|
-| Merlin (华硕) | Dnsmasq | 软件中心 → DNS 设置 |
-| OpenWrt | Dnsmasq | 服务 → DHCP 和 DNS |
-| 小米路由器 | Hosts | 广告拦截设置 |
-| 华硕路由器 | Hosts | 自定义 hosts |
-| TP-Link | Hosts | 自定义 hosts |
+> 兼容声明分三级：**原生脚本**（`src/utils/scriptGenerator.ts` 提供一键 Shell 脚本）＞ **规则导入**（手动把产物贴入设备或 DNS 软件配置）＞ **间接方案**（设备把 DNS 指向局域网内解析服务）。下表只收录有代码或公开文档支撑的映射；未证实的能力不写作「兼容」。
+
+### 6.1 原生一键脚本（代码已实现）
+
+| 路由器 / 固件 | 推荐产物 | 接入方式 | 依据 |
+|---------------|----------|----------|------|
+| OpenWrt | `dnsmasq.conf` | `openwrt` 脚本写入 `/etc/dnsmasq.d/dns-shield.conf`，重启 dnsmasq | `src/utils/scriptGenerator.ts` |
+| AsusWRT-Merlin | `dnsmasq.conf` | `merlin` 脚本写入 `/jffs/configs/dnsmasq.conf.add` | 同上 |
+| Padavan | `dnsmasq.conf` | `padavan` 脚本写入 `/etc/storage/dnsmasq/dnsmasq.conf` | 同上 |
+| SmartDNS | `smartdns.conf` | `smartdns` 脚本写入 `/etc/smartdns/conf.d/` | 同上 |
+| Pi-hole | `pihole.txt` | `pihole` 脚本写入 `/etc/pihole/custom.list` | 同上 |
+
+### 6.2 规则文件导入（无原生一键脚本）
+
+| 目标 | 推荐产物 | 接入方式 | 边界与依据 |
+|------|----------|----------|------------|
+| OpenClash（OpenWrt 插件） | `dnsmasq.conf` | 「插件设置 → 开发者选项」配置自定义 dnsmasq 规则文件，由插件加载本产物 | 依据社区文档 `github.com/Aethersailor/Custom_OpenClash_Rules/wiki`，菜单路径随版本变化，**不声明为官方支持** |
+| mihomo / Clash Meta | `clash_dns.yaml` | 将文件内 `DOMAIN-SUFFIX,...,REJECT` 规则段追加到配置 | 官方文档 [Routing Rules](https://wiki.metacubex.one/en/config/rules/) 定义该语法；本产物是规则段，不是完整配置 |
+| AdGuard / AdGuard Home | `adguard.txt` | 作为过滤器列表导入；白名单另取 `whitelist.txt` | 产物头部与 [04 API](./04-api.md) |
+| 小米 / 华硕 / TP-Link 家用固件 | `hosts.txt` | 粘贴到「自定义 hosts / 广告拦截」 | 固件界面因型号而异，不保证全部型号可用 |
+
+### 6.3 无原生导入能力
+
+华为、中兴等家用路由器固件通常只提供「自定义 DNS 服务器地址」或网址过滤，未查到公开的 Dnsmasq 配置文件 / Shell 脚本导入接口，因此**不声明原生兼容**。可行方案是把设备 DNS 指向局域网内运行 SmartDNS 或 AdGuard Home 的主机，由该主机加载 `smartdns.conf` / `adguard.txt`。
+
+> mihomo / Clash Meta 的 `rule-providers`（`type: http` + `format: yaml`）要求远端文件为 `payload:` 规则集格式；本项目 `clash_dns.yaml` 是规则段，**不是**可直接订阅的 rule-provider 源。
 
 ## 7. Git 提交规范
 

@@ -48,9 +48,13 @@ flowchart TD
 
 1. 打开主页的「快速入门」，点击第 1 步可直接定位到输入区（锚点可聚焦）。
 2. 若无需自定义，直接到 [文件说明](../README.md#文件说明) 选择对应格式：
-   - 梅林 / OpenWrt → `dnsmasq.conf`
+   - 梅林 / OpenWrt / Padavan → `dnsmasq.conf`（也可在应用「路由器脚本」弹窗生成一键同步脚本）
+   - SmartDNS → `smartdns.conf`；Pi-hole → `pihole.txt`
+   - OpenClash（OpenWrt 插件）→ `dnsmasq.conf`，经「插件设置 → 开发者选项」自定义规则文件加载；路径随插件版本变化，详见 [SPEC §6.2](./SPEC.md#62-规则文件导入无原生一键脚本)
+   - mihomo / Clash Meta → `clash_dns.yaml`，把规则段追加到配置；该文件不是 rule-provider 订阅源，详见 [SPEC §6.2](./SPEC.md#62-规则文件导入无原生一键脚本)
    - 小米 / 华硕 / TP-Link → `hosts.txt`
    - AdGuard / AdGuard Home → `adguard.txt`（白名单另取 `whitelist.txt`）
+   - 华为 / 中兴家用固件通常无原生规则导入能力，可把设备 DNS 指向局域网内 SmartDNS / AdGuard Home 主机，详见 [SPEC §6.3](./SPEC.md#63-无原生导入能力)
 3. 下载后**先核对内容再导入**，不要使用会反复 `>>` 追加的命令。
 4. 按设备导入（详见 [部署指南 §本地部署](../DEPLOYMENT.md#1-本地部署)）；导入后重启对应服务。
 5. 验证：访问一个已知广告域名应解析到 `0.0.0.0` 或被 DNS 软件拦截（见 [06 故障排除](./06-faq-troubleshooting.md) §2）。
