@@ -19,9 +19,27 @@ const activeDocs = [
   'docs/CHECKLIST.md', 'docs/config.yaml', 'docs/openapi.yaml',
 ];
 
-// 测试指标以 Vitest JSON 报告为权威源；报告缺失时现场生成一次。
+const walk = (dir, cb) => {
+  for (const e of readdirSync(join(root, dir), { withFileTypes: true })) {
+    if (['node_modules', '.next', '.tmp', 'coverage', '.git'].includes(e.name)) continue;
+    const p = join(dir, e.name);
+    if (e.isDirectory()) walk(p, cb);
+    else cb(p);
+  }
+};
+const codeFiles = [];
+for (const dir of ['src', 'scripts']) {
+  walk(dir, (p) => { if (['.ts', '.tsx', '.js', '.mjs'].includes(extname(p))) codeFiles.push(p); });
+}
+const testFiles = codeFiles.filter((p) => /\.test\.(ts|tsx)$/.test(p));
+const testSuites = testFiles.length;
+
+// 测试指标以 Vitest JSON 报告为权威源；报告缺失或早于任一测试文件时重新生成。
 const vitestJson = '.tmp/vitest.json';
-if (!existsSync(join(root, vitestJson))) {
+const vitestPath = join(root, vitestJson);
+const newestTest = Math.max(...testFiles.map((p) => statSync(join(root, p)).mtimeMs), 0);
+const stale = !existsSync(vitestPath) || statSync(vitestPath).mtimeMs < newestTest;
+if (stale) {
   mkdirSync(join(root, '.tmp'), { recursive: true });
   const r = spawnSync(process.execPath, [
     'node_modules/vitest/vitest.mjs', 'run',
@@ -29,7 +47,7 @@ if (!existsSync(join(root, vitestJson))) {
   ], { cwd: root, encoding: 'utf8' });
   if (r.status !== 0) errors.push(`Vitest JSON 采集失败：${(r.stderr || '').slice(-300)}`);
 }
-const vitest = existsSync(join(root, vitestJson)) ? JSON.parse(read(vitestJson)) : {};
+const vitest = existsSync(vitestPath) ? JSON.parse(read(vitestJson)) : {};
 const testCases = Number(vitest.numTotalTests) || 0;
 
 // 其余指标全部由仓库现有事实源推导，禁止手写期望值。
@@ -53,20 +71,6 @@ const flatten = (obj, prefix = '', out = {}) => {
 };
 const localeKeys = Object.keys(flatten(JSON.parse(read('src/locales/zh-cn.json')))).length;
 
-const walk = (dir, cb) => {
-  for (const e of readdirSync(join(root, dir), { withFileTypes: true })) {
-    if (['node_modules', '.next', '.tmp', 'coverage', '.git'].includes(e.name)) continue;
-    const p = join(dir, e.name);
-    if (e.isDirectory()) walk(p, cb);
-    else cb(p);
-  }
-};
-const codeFiles = [];
-for (const dir of ['src', 'scripts']) {
-  walk(dir, (p) => { if (['.ts', '.tsx', '.js', '.mjs'].includes(extname(p))) codeFiles.push(p); });
-}
-const testFiles = codeFiles.filter((p) => /\.test\.(ts|tsx)$/.test(p));
-const testSuites = testFiles.length;
 const overLimit = codeFiles.filter((p) => {
   const text = read(p);
   const lines = (text.match(/\n/g) || []).length + (text.endsWith('\n') ? 0 : 1);

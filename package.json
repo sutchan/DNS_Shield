@@ -13,6 +13,7 @@
     "test:coverage": "vitest run --coverage",
     "check:locales": "node scripts/check-locales.mjs",
     "check:doc-facts": "node scripts/check-doc-facts.mjs",
+    "check:api-contract": "node scripts/smoke-openapi.mjs",
     "locales:baseline": "node scripts/check-locales.mjs --update-baseline",
     "count:domains": "node scripts/count-domains.mjs",
     "icons:gen": "node scripts/gen-icons.mjs",

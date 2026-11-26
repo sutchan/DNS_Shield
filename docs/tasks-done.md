@@ -479,3 +479,21 @@
 - **实现与上下文**：`parser.ts` 早前已使用 `iterateLines.ts`；本轮 `sortDedupe.ts` 的 `sortDomains` / `dedupeDomains` 改用 `forEachLine`，`parseAggregate.ts` 的 `splitIntoShards` 改为扫描换行符定位分片边界（不再 `split('\n')` 全量数组），`push(...arr)` 早前已改逐项 push。新增 `src/utils/largeInput.bench.ts` 与 `vitest.bench.config.ts`，独立命令 `npm run benchmark:large` 不进入默认套件计数。
 - **验收实证（Node 24.15.0）**：相关单测 3 文件 / 25 用例全绿；50MB 基准 49.0MB 文本，峰值增量 **49.2MB（约 1.0×，阈值 1.5×）**，count 103ms / shard 365ms / dedupe 5900ms，`forEachLine` 与 `split` 在 10 万行样本逐行一致。
 - **归档时间**：2026-11-26（任务治理批次）。
+
+### T-DOC-04 · OpenAPI 语义校验与示例覆盖增强（O-12）
+
+- **来源 / 优先级**：本轮文档标准化新增；P3，责任人 Dev Team，原计划 2027-01-13。
+- **完整描述**：把 path 参数与路径模板匹配、`$ref` 存在性、示例域名一致性纳入校验，并用注入测试证明门禁有效；对规范声明的 7 条真实端点做契约冒烟。
+- **状态**：✅ 已完成（2026-11-26 提前完成）。
+- **实现与上下文**：校验逻辑抽到 `scripts/lib/validateOpenApi.mjs`，CLI `scripts/check-openapi.mjs` 复用；新增 `src/utils/openapiContract.test.ts` 对错误版本、错误 path 参数、缺失 `$ref` 三类注入断言；新增 `scripts/smoke-openapi.mjs` 与 `npm run check:api-contract`，CI build job 在构建后调用。
+- **验收实证**：`check-openapi` 通过（7 路径 / 7 操作）；注入测试 4 用例全绿；构建后契约冒烟 7 条端点均 200 且 Content-Type 匹配。
+- **归档时间**：2026-11-26（任务治理批次）。
+
+### T-AUD-M02 · 限制出站 host 与 connect-src（审计 M-02）
+
+- **来源 / 优先级**：审计报告 M-02，本次重评由 P2 升级 P1；责任人 Dev Team，原计划 2026-12-23。
+- **完整描述**：服务端聚合已有 host 白名单，但客户端 `useUrlManager.ts` 仅做协议校验且 CSP `connect-src 'self' https:` 全放行，存在客户端请求伪造面；要求客户端复用白名单、显式提示、CSP 收敛并补回归测试。
+- **状态**：✅ 已完成（2026-11-26 提前完成）。
+- **实现与上下文**：新增 `src/config/fetchHosts.ts`（默认 3 个预设 host + 5 个环境变量预设 host 派生），`useUrlManager.ts` 的 URL 校验与批量过滤改用 `fetchGuards.isAllowedFetchUrl`；非白名单 host 复用既有 `invalidUrl` toast 显式拒绝，不静默丢弃。`next.config.js` 使用 `connectSrc` 变量枚举 host，`edgeone.json` 同步；`check-security-headers.mjs` 增加「禁止 `https:` 通配 + 两处必须含默认 host」断言。
+- **验收实证**：`check-security-headers.mjs` 通过；`useUrlManager.validate.test.ts` 5 用例全绿，含新增「非白名单 host 拒绝」用例；原 `example.com` 样例改为白名单 host。
+- **归档时间**：2026-11-26（任务治理批次）。

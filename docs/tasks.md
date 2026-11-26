@@ -38,13 +38,13 @@
 
 ## 二、待办任务（未完成，按优先级排序）
 
-> **任务合计：6 项**（2026-11-26 任务治理进行中：T-SEC-01 / T-DOC-03 / T-COMPAT-01 / T-PERF-01 / T-AUD-M02 已完成归档；其余保持原优先级）。
+> **任务合计：5 项**（2026-11-26 任务治理进行中：T-SEC-01 / T-DOC-03 / T-COMPAT-01 / T-PERF-01 / T-AUD-M02 / T-DOC-04 已完成归档；其余保持原优先级）。
 > 每条均含「目标 / 责任人 / 计划完成时间（绝对日期）/ 影响范围 / 验收标准」（审计迁移项的详细问题与统一验收标准见 §六）。
 > **唯一来源纪律**：任何位置的任务型表述（审计报告「修：」、优化方案 O-xx、FAQ「待评估/待验证」、源码 TODO 等）必须在本文件登记；原位置只保留证据与方案，不维护第二份状态（见 SPEC §5.3）。
 > 本轮已完成的文档完善工作（文档索引 + 01/03/04/05/06/07 + OpenAPI）见 [CHANGELOG](../CHANGELOG.md) 对应版本小节，不在此重复。
 > 历史 T-P0~P4 编号任务已归档至 [tasks-done.md](./tasks-done.md)。
 >
-> **状态重评（2026-11-26T16:23:19+08:00，本次任务全面治理）**：依据规划审查实证调整优先级与状态，变更如下——① **升级 P1**：T-COMPAT-01（本机实跑 Node 26.13.1 超出 `engines <25`，验证结论失效）、T-AUD-M02（客户端出站 host 未收敛）、T-PERF-01（大输入为核心目标且 50MB 基准缺失）；② **关闭并归档**：T-SEC-01 的评估结论已于 2026-11-25 产出（暂不启用 Trusted Types，等待 staging + Report-Only），本轮按「评估完成」闭环，后续若启用另立新任务；③ **保持 P1**：T-CI-01（远端 tag 实测止于 v3.7.31）、T-DOC-03；④ **保持 P2/P3**：T-A11Y-01、T-REFACTOR-01、T-AUD-M15、T-FEAT-01、T-DOC-04。剩余 10 项按新优先级逐项推进。**即时进展（2026-11-26）**：T-DOC-03 已完成（`check:doc-facts` 落地并发现/修正 DEPLOYMENT 13→12 漂移）；T-COMPAT-01 已完成（Node 24.15.0 + npm 11.12.1 下 `npm ci` / lint / tsc / 59-376 测试 / build 全绿，并据实把 engines.node 收紧为 `>=24.15.0 <25`）。两项均已迁入 `tasks-done.md`。**即时进展（2026-11-26）**：T-PERF-01 已完成——`sortDedupe.ts` 改逐行迭代、`parseAggregate.ts` 分片改换行边界扫描，新增独立 `npm run benchmark:large`（49MB 文本峰值增量 49.2MB，约 1.0×，count 103ms / shard 365ms / dedupe 5900ms）。剩余 7 项。**即时进展（2026-11-26）**：T-AUD-M02 已完成——客户端 URL 校验复用 `fetchGuards.isAllowedFetchUrl` 与 `src/config/fetchHosts.ts` 白名单，CSP `connect-src` 由 `https:` 通配改为枚举 3 个预设 host + GA，`check-security-headers.mjs` 增加收敛断言，新增非白名单 host 拒绝用例。剩余 6 项。
+> **状态重评（2026-11-26T16:23:19+08:00，本次任务全面治理）**：依据规划审查实证调整优先级与状态，变更如下——① **升级 P1**：T-COMPAT-01（本机实跑 Node 26.13.1 超出 `engines <25`，验证结论失效）、T-AUD-M02（客户端出站 host 未收敛）、T-PERF-01（大输入为核心目标且 50MB 基准缺失）；② **关闭并归档**：T-SEC-01 的评估结论已于 2026-11-25 产出（暂不启用 Trusted Types，等待 staging + Report-Only），本轮按「评估完成」闭环，后续若启用另立新任务；③ **保持 P1**：T-CI-01（远端 tag 实测止于 v3.7.31）、T-DOC-03；④ **保持 P2/P3**：T-A11Y-01、T-REFACTOR-01、T-AUD-M15、T-FEAT-01、T-DOC-04。剩余 10 项按新优先级逐项推进。**即时进展（2026-11-26）**：T-DOC-03 已完成（`check:doc-facts` 落地并发现/修正 DEPLOYMENT 13→12 漂移）；T-COMPAT-01 已完成（Node 24.15.0 + npm 11.12.1 下 `npm ci` / lint / tsc / 59-376 测试 / build 全绿，并据实把 engines.node 收紧为 `>=24.15.0 <25`）。两项均已迁入 `tasks-done.md`。**即时进展（2026-11-26）**：T-PERF-01 已完成——`sortDedupe.ts` 改逐行迭代、`parseAggregate.ts` 分片改换行边界扫描，新增独立 `npm run benchmark:large`（49MB 文本峰值增量 49.2MB，约 1.0×，count 103ms / shard 365ms / dedupe 5900ms）。剩余 7 项。**即时进展（2026-11-26）**：T-AUD-M02 已完成——客户端 URL 校验复用 `fetchGuards.isAllowedFetchUrl` 与 `src/config/fetchHosts.ts` 白名单，CSP `connect-src` 由 `https:` 通配改为枚举 3 个预设 host + GA，`check-security-headers.mjs` 增加收敛断言，新增非白名单 host 拒绝用例。剩余 6 项。**即时进展（2026-11-26）**：T-DOC-04 已完成——OpenAPI 校验抽出 `scripts/lib/validateOpenApi.mjs`，新增 path 参数 / `$ref` / 示例域名语义断言与 4 条注入测试；新增 `npm run check:api-contract`，构建后 7 条真实端点冒烟全绿。剩余 5 项。
 
 ### 优先级 / 责任人 / 计划完成时间总表
 
@@ -55,7 +55,6 @@
 | 🟡 P2 | T-REFACTOR-01 | 拆分 5 个超 200 行源文件（O-13） | Dev Team | 2026-12-23 | 本轮实扫 |
 | 🟡 P2 | T-AUD-M15 | 规则行 / 头部重复实现抽为框架无关共用模块 | Dev Team | 2026-12-23 | 审计 M-15 |
 | ⚪ P3 | T-FEAT-01 | 扩展路由器兼容列表（O-10） | Docs Team | 2027-01-13 | 历史遗留 + 本轮 |
-| ⚪ P3 | T-DOC-04 | OpenAPI 语义校验与示例覆盖增强（O-12） | Dev Team | 2027-01-13 | 本轮文档标准化 |
 
 ### 🔴 P1 - 正确性与发布链路
 
@@ -63,7 +62,6 @@
   - 目标：确认最新版本已在 GitHub 产生 Release / tag，发布链路真实跑通。
   - 验收标准：Actions 全绿、存在对应 tag 与 Release；若红则定位（重点：setup 缓存 / npm ci 锁文件安装）。
   - 本轮取证：`git ls-remote --tags origin` 显示远端最新 tag 为 **v3.7.31**，与当前 `package.json` v3.22.3 严重脱节；本地 tag 同样止于 v3.7.31。说明 `release.yml` 自动打 tag/Release 未真实生效。根因需 GitHub Actions 运行日志与权限配置（本机不可达），故保持未完成并升级证据。
-- **T-AUD-M02 · 限制出站 host 与 connect-src（审计 M-02）**（责任人：Dev Team；计划：2026-12-23）**【本次重评升级 P2→P1】**：服务端聚合已使用 `fetchGuards.ts` 白名单，客户端 `useUrlManager.ts` 仍只做 `isValidHttpUrl`，CSP `connect-src 'self' https:` 全放行。验收标准：客户端自定义 URL 复用 host 白名单、UI 显式确认、CSP 收敛到允许 host 集合或保持自源；补回归测试。
 
 ### 🟡 P2 - 无障碍 / 架构 / 审计
 
@@ -74,7 +72,6 @@
 ### ⚪ P3 - 兼容性与文档规范
 
 - **T-FEAT-01 · 扩展路由器兼容列表（O-10）**（责任人：Docs Team；计划：2027-01-13）：基于官方文档补充 OpenClash / mihomo / 华为 / 中兴的映射，不写未经证实的兼容性声明。
-- **T-DOC-04 · OpenAPI 语义校验与示例覆盖增强（O-12）**（责任人：Dev Team；计划：2027-01-13）：目标是把 path 参数与路径模板匹配、`$ref` 存在性、示例域名一致性纳入 `scripts/check-openapi.mjs`，并评估 CI 可选 `redocly lint`。验收标准：注入一处故意错误能阻断 CI；7 条路径的契约冒烟测试返回 200 且 Content-Type 与规范一致。
 
 ---
 

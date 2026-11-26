@@ -158,6 +158,11 @@ jobs:
       - name: Build
         run: npm run build
 
+      # T-DOC-04：构建后立即对 OpenAPI 声明的真实端点做契约冒烟，
+      # 避免规范与线上路由/静态产物漂移。
+      - name: API contract smoke
+        run: npm run check:api-contract
+
       - name: Report build size
         if: always()
         run: |
