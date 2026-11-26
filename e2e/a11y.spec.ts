@@ -10,6 +10,13 @@ const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
 
 type AxeViolation = { id: string; impact: string | null; help: string };
 
+// 等待主内容可见即可扫描；networkidle 在 dev/CI 下会因长连接资源超时，属环境噪声。
+async function gotoPage(page: Page, path: string): Promise<void> {
+  await page.goto(path, { waitUntil: 'domcontentloaded' });
+  await page.locator('#main-content').waitFor({ state: 'visible' });
+  await page.waitForLoadState('load');
+}
+
 async function expectNoCriticalViolations(page: Page, label: string): Promise<void> {
   await page.addScriptTag({ content: axeSource });
   const result = await page.evaluate(async (tags) => {
@@ -33,24 +40,24 @@ async function expectNoCriticalViolations(page: Page, label: string): Promise<vo
 }
 
 test('首页无 critical 无障碍违规', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'networkidle' });
+  await gotoPage(page, '/');
   await expectNoCriticalViolations(page, '首页');
 });
 
 test('关于页无 critical 无障碍违规', async ({ page }) => {
-  await page.goto('/about', { waitUntil: 'networkidle' });
+  await gotoPage(page, '/about');
   await expectNoCriticalViolations(page, '关于页');
 });
 
 test('设置弹窗无 critical 无障碍违规', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'networkidle' });
+  await gotoPage(page, '/');
   await page.locator('#settings-btn').click();
   await expect(page.locator('#settings-panel')).toBeVisible();
   await expectNoCriticalViolations(page, '设置弹窗');
 });
 
 test('路由器脚本弹窗无 critical 无障碍违规', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'networkidle' });
+  await gotoPage(page, '/');
   await page.locator('#router-script-toggle-btn').click();
   await expect(page.locator('#script-generator-modal')).toBeVisible();
   await expectNoCriticalViolations(page, '路由器脚本弹窗');

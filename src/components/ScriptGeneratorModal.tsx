@@ -1,4 +1,4 @@
-// src/components/ScriptGeneratorModal.tsx v3.20.1
+// src/components/ScriptGeneratorModal.tsx v3.22.4
 // 路由器与 DNS 守护进程同步脚本生成弹窗
 'use client';
 import * as React from 'react';
@@ -96,7 +96,7 @@ export const ScriptGeneratorModal: React.FC<ScriptGeneratorModalProps> = ({ open
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium shrink-0">{t.routerScriptTargetLabel}:</span>
             <Select value={target} onValueChange={(v) => setTarget(v as RouterScriptTarget)}>
-              <SelectTrigger className="w-[180px]" id="script-target-select">
+              <SelectTrigger className="w-[180px]" id="script-target-select" aria-label={t.routerScriptTargetLabel}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

@@ -20,6 +20,7 @@
 - 版本漂移收口：`package.json`（权威源）/ `package-lock.json` / `src/config/version.ts` / 12 处文档展示位 / 11 个规则产物头统一至 **v3.22.4**（此前 25 个源码头注释已标 v3.22.4 但权威源停在 v3.22.3）
 - 文档数字权威化：`docs/tasks.md` 与 `docs/06-faq-troubleshooting.md` 的测试数同步为 61/381，超行源文件数同步为实扫 0 个
 - v3.22.4 发版链路修复：`src/config/version.ts` 的 `APP_VERSION` 同步至 3.22.4；CI `data` job 改为安装依赖，避免 `check-doc-facts` 在无本地 vitest 时假红；`build` job 固定 `ubuntu-24.04` 以兼容 Playwright 1.56（26.04 无对应浏览器依赖定义）；`deploy.yml` 的 `summary` job 增加「CI 成功 + 同仓库 main push」前置；`release.yml` 修正事件判定——其上游 Deploy 的 `event` 是 `workflow_run` 而非 `push`
+- 无障碍门禁实证修复：`#script-target-select` 补 `aria-label`，消除 `button-name` critical 违规；`e2e/a11y.spec.ts` 改用 `domcontentloaded` + 主内容可见等待，避免 `networkidle` 在 dev/CI 下超时；本地 4 例全绿
 
 ### Changed
 - `docs/tasks.md` / `docs/tasks-done.md` 集中化：归档 T-FEAT-01、T-A11Y-01 与 T-AUD-M02 回归修复实证，两文件标注同步时间戳；T-CI-01 保留为唯一未完成任务并写入远端取证链（远端 main 停在 `446aa19`、Deploy/Release 全部 skipped、根因为远端 `deploy.yml` 尚无 `summary` job 且本地修复未推送）
