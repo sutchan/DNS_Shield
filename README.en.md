@@ -2,7 +2,7 @@
 
 ![DNS Shield](public/logo.svg)
 
-<!-- Last reviewed: 2026-11-13 (aligned with package.json version) -->
+<!-- Last reviewed: 2026-11-26 (aligned with package.json v3.22.2) -->
 
 [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.22.2-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
@@ -21,7 +21,7 @@ Router-level DNS-based ad blocking filter list with a web management tool. It bo
 - **Rule tester** — enter a domain and instantly see the matched tier (allow / redirect / block / pass-through) and resolution behavior
 - **Router sync scripts** — one-click OpenWrt / Merlin / Padavan / SmartDNS / Pi-hole update & reload shell scripts
 - **Local auto-save** — saved to the browser every 30s, restored on reload
-- **16 languages / dark & light** — one-click switch, full i18n coverage
+- **16 languages / dark & light** — switch in the Settings dialog, full i18n coverage
 - **Security hardening** — CSP, HSTS, secure PWA caching, filename sanitization
 - **Parallel parsing** — inputs of 20000+ lines are sharded across Web Workers with fallback to a single worker / main thread
 
@@ -38,7 +38,7 @@ Router-level DNS-based ad blocking filter list with a web management tool. It bo
 ### Step 2: Import into the router
 
 - **Merlin (ASUS)** — Software Center → DNS Settings → Custom dnsmasq, paste the contents of `dnsmasq.conf`
-- **OpenWrt** — `curl -sL https://raw.githubusercontent.com/sutchan/DNS_Shield/main/public/dnsmasq.conf >> /etc/dnsmasq.conf`
+- **OpenWrt** — download first and review, then install: `curl -fsSL https://dns.ewuse.com/dnsmasq.conf -o /tmp/dnsmasq-ads.conf`; place it under `/etc/dnsmasq.d/` (or reference it via UCI) and restart dnsmasq. Do not append with `>>` repeatedly.
 - **Xiaomi** — Settings → Advertising Blocking → Custom hosts, import `hosts.txt`
 
 More models and sync scripts: [Deployment Guide](DEPLOYMENT.md).
@@ -56,7 +56,7 @@ All formats are derived from the single `domains.txt` source; `whitelist.txt` re
 | `dnsmasq.conf` | Dnsmasq router format (`address=/domain/0.0.0.0`) |
 | `hosts.txt` | Standard hosts format (`0.0.0.0 domain`) |
 | `adguard.txt` | AdGuard block/allow format (`\|\|domain^`) |
-| `whitelist.txt` | Whitelist (domains to allow, `+domain` syntax) |
+| `whitelist.txt` | Whitelist output (`@@\|\|domain^` syntax; input uses `+domain`) |
 | `domains.txt` | Unified domain source (source of truth) |
 | `unbound.conf` / `pihole.txt` / `rpz.db` / `smartdns.conf` / `mosdns_domain_set.txt` / `clash_dns.yaml` / `coredns_hosts.txt` | The other 7 format outputs |
 
@@ -73,7 +73,7 @@ Typical use: paste an AdGuard list and convert it to dnsmasq or Pi-hole in one c
 ## Data Flow
 
 ```
-Unified source (public/domains.txt, whitelist.txt)
+Unified source (public/domains.txt)
         │  useDomainData (remote fetch + timeout/fallback)
         ▼
   Parse (parser.ts + domainValidator.ts)
@@ -124,4 +124,4 @@ MIT License
 
 ## Version
 
-Current version: v3.22.0. See [CHANGELOG.md](CHANGELOG.md) for the full history.
+Current version: v3.22.2. See [CHANGELOG.md](CHANGELOG.md) for the full history.

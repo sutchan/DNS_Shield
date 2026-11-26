@@ -1,7 +1,7 @@
 # DNS Shield 文档中心
 
 > 文档集版本：v3.22.2 · 最后审查：2026-11-26 · 适用产品版本：v3.22.2
-> 权威版本源：`package.json` 的 `version` 字段（`src/config/version.ts` 的 `APP_VERSION` 与 `next.config.js` 的 `env.version` 须同步）。
+> 权威版本源：`package.json` 的 `version` 字段；`src/config/version.ts` 的 `APP_VERSION` 与 `next.config.js` 的 `env.version` 均在构建期由 `package.json` 派生，无独立字面量。
 > 本文档集随产品版本演进；每次变更按 [§4 版本控制](#4-版本控制) 更新头部信息。
 
 ## 1. 文档导航
@@ -54,10 +54,10 @@
 
 | 项 | 约定 |
 |----|------|
-| 产品版本 | SemVer，权威源 `package.json`；`src/config/version.ts`、`next.config.js` 与 13 处文档展示位由 `scripts/sync-facts.mjs` 同步 |
+| 产品版本 | SemVer，唯一权威源 `package.json`；`src/config/version.ts` 与 `next.config.js` 的 `env.version` 在构建期由其派生，`sync-facts.mjs` 仅同步 13 处文档展示位（不覆盖这两个源码文件） |
 | 文档版本 | 每篇文档头部标注「文档集版本 / 最后审查 / 适用产品版本」；产品 bump 时只更新头部与展示位，历史小节不回填 |
 | 变更记录 | 用户可见变更写入 `CHANGELOG.md`；规范约束变更写入 `SPEC.md`；未完成工作写入 `tasks.md` |
-| 校验门禁 | `node scripts/sync-facts.mjs --check`（版本展示位一致）、`node scripts/check-locales.mjs`（16 语 / 214 键）、`node scripts/check-root-clean.mjs`（根目录洁净） |
+| 校验门禁 | `node scripts/sync-facts.mjs --check`（版本展示位一致）、`node scripts/check-locales.mjs`（16 语 / 214 递归键，zh-cn 顶层 144 键）、`node scripts/check-root-clean.mjs`（根目录洁净） |
 | 冻结快照 | `prototype/` 为设计留档，除语义化 id 外不回填功能；`docs/AUDIT-REPORT-v3.19.0.md` 等审计报告按当时状态保留 |
 
 ## 5. 文档维护规则

@@ -52,14 +52,14 @@ DNS Shield 解决三个具体问题：
 
 | 目录 | 职责 | 关键入口 |
 |------|------|----------|
-| `src/app/` | 路由、布局、SEO / 静态资源端点 | `layout.tsx`（首屏 lang/dir/theme 脚本）、`page.tsx` → `Home.tsx`、`llms.txt/route.ts` |
-| `src/components/` | 业务组件与 `ui/` 基础组件 | `InputPanel.tsx`、`OutputPanel.tsx`、`Header.tsx`、`SeoContent.tsx` |
+| `src/app/` | 路由、布局、SEO / 静态资源端点 | `layout.tsx`（首屏 lang/dir/theme 脚本）、`page.tsx` → `Home.tsx`、`about/page.tsx`、`llms.txt/route.ts`、`(seo)/site-meta.ts` |
+| `src/components/` | 业务组件与 `ui/` 基础组件 | `InputPanel.tsx`、`OutputPanel.tsx`、`Header.tsx`、`SeoContent.tsx`、`ServiceWorkerRegistrar.tsx`、`SettingsLanguage.tsx` |
 | `src/hooks/` | 状态编排与副作用 | `useHomeController.ts`、`useDomainData.ts`、`useRules.ts`、`useWorkerPool.ts`、`useAutosave.ts` |
-| `src/utils/` | 纯函数与边界处理 | `parser.ts`、`rulesGenerator.ts`、`sortDedupe.ts`、`fileUtils.ts`、`domainFetch.ts` |
+| `src/utils/` | 纯函数与边界处理 | `parser.ts`、`rulesGenerator.ts`、`sortDedupe.ts`、`fileUtils.ts`、`domainFetch.ts`、`fetchGuards.ts`、`iterateLines.ts` |
 | `src/workers/` | 后台解析 | `parseShard.worker.ts`、`ruleProcessor.worker.ts` |
-| `src/config/` `src/types/` | 配置、站点事实与类型契约 | `config/index.ts`、`seo-content.ts`、`types/formats.ts` |
+| `src/config/` `src/types/` | 配置、站点事实与类型契约 | `config/index.ts`、`seo-content.ts`、`site.ts`、`languages.ts`、`types/formats.ts` |
 | `src/context/` `src/locales/` | 全局 Context 与 16 语翻译 | `AppContext.tsx`、`locales/zh-cn.json`（回退基准） |
-| `src/styles/` | 设计系统样式（按职责拆分） | `globals.css`、`layout.css`、`hero.css`、`output.css` 等 |
+| `src/app/globals.css` / `src/styles/` | 全局样式入口与按职责拆分的 8 个样式模块 | `src/app/globals.css`（Tailwind 指令与 design tokens）、`src/styles/layout.css`、`hero.css`、`output.css`、`seo.css` 等 |
 | `src/test-utils/` | 测试装置 | `renderHook.ts`、`domainDataTestKit.ts` 等 |
 | `scripts/` | 数据派生与文档校验 | `gen-format-files.mjs`、`sync-facts.mjs`、`check-locales.mjs` |
 
@@ -107,8 +107,8 @@ flowchart TB
 
 以下限制经代码核实，均已登记在 [07 优化建议](./07-improvements.md) 与 [任务清单](./tasks.md)：
 
-- `.npmrc` 在当前工作树缺失，`engine-strict` 约束未实际生效；`package-lock.json` 已恢复。
-- `public/service-worker.js` 存在但全仓无 `register` 调用，PWA 离线缓存未启用。
+- `.npmrc` 已恢复并启用 `engine-strict=true`；`package-lock.json` 为唯一锁文件（`pnpm-lock.yaml` 已删除，统一 npm 管理）。
+- 生产环境由 `ServiceWorkerRegistrar` 注册同源 Service Worker（dev 不注册）；离线缓存白名单与回归测试待验证。
 - `public/category-index.txt` 由聚合工作流生成但未纳入发布路径，线上分类筛选可能降级。
 - 生产 CSP 的 `script-src` 仍包含 `'unsafe-inline'`（首屏内联脚本所需），Trusted Types 未启用。
-- `parser.ts` / `sortDedupe.ts` 等仍有全量 `split`，超大输入存在约 3× 文本的内存峰值。
+- `parser.ts` 已改用 `iterateLines.ts` 逐行迭代、无全量 `split`；`sortDedupe.ts` 仍有 2 处 `split('\n')` 待优化。

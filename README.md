@@ -4,7 +4,7 @@
 
 # DNS Shield - 路由器广告过滤工具
 
-> 最后审查：2026-11-13（与 package.json 版本对齐）
+> 最后审查：2026-11-26（与 package.json v3.22.2 对齐）
 
 [![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.22.2-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 

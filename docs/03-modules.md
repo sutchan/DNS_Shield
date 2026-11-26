@@ -9,12 +9,12 @@
 |------|------|----------|----------|
 | M1 | 数据源与导入 | 预设清单、URL、粘贴三种输入 | `useDomainData.ts`、`domainFetch.ts`、`fileUtils.ts` |
 | M2 | 解析引擎 | 任意格式 → 统一域名条目 | `parser.ts`、`domainValidator.ts`、`domainPrimitives.ts` |
-| M3 | 并行调度 | 大清单快速解析且不卡 UI | `useRuleWorker.ts`、`useWorkerPool.ts`、`parseAggregate.ts` |
+| M3 | 并行调度 | 大清单快速解析且不卡 UI | `useRuleWorker.ts`、`useWorkerPool.ts`、`workerPoolFinalize.ts`、`parseAggregate.ts` |
 | M4 | 规则生成 | 12 种目标格式与头部注释 | `rulesGenerator.ts`、`headerConfigs.ts`、`formatGenerators.ts` |
 | M5 | 输出与交付 | 预览、复制、下载、脚本生成 | `OutputPanel.tsx`、`OutputPreview.tsx`、`scriptGenerators.ts` |
 | M6 | 设置与持久化 | 项目信息、IP、外观、草稿恢复 | `useSettings.ts`、`useAutosave.ts`、`autosaveStorage.ts` |
 | M7 | 规则测试器 | 输入域名即时看命中层级 | `RuleTesterModal.tsx`、`ruleMatcher.ts` |
-| M8 | 多语言与 SEO | 16 语界面、结构化数据、`llms.txt` | `useLanguage.ts`、`locales/`、`json-ld.ts`、`seo-content.ts` |
+| M8 | 多语言与 SEO | 16 语界面、结构化数据、`llms.txt`、`about` 事实页 | `useLanguage.ts`、`SettingsLanguage.tsx`、`SeoContent.tsx`、`locales/`、`(seo)/about-json-ld.ts`、`config/seo-content.ts` |
 | M9 | 产物构建与门禁 | 单一数据源派生 11 文件、CI 校验 | `scripts/gen-format-files.mjs`、`scripts/check-locales.mjs` |
 
 ## 2. M1 数据源与导入
@@ -123,7 +123,7 @@ flowchart LR
 ```bash
 node scripts/gen-format-files.mjs   # 从 domains.txt 派生 11 个格式文件
 node scripts/count-domains.mjs      # 实算域名数（2026-11-26 实算 127188，以脚本输出为准）
-node scripts/check-locales.mjs      # 16 语键一致性（214 键）
+node scripts/check-locales.mjs      # 16 语键一致性（214 递归点分键，zh-cn 顶层 144 键）
 node scripts/sync-facts.mjs --check # 版本展示位（13 处）
 node scripts/check-root-clean.mjs   # 根目录洁净度
 ```

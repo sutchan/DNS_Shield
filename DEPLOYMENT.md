@@ -3,7 +3,7 @@
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
 > 当前版本：v3.22.2
-> 最后审查：2026-11-25（与 package.json v3.21.0 对齐；权威版本源为 `package.json`）
+> 最后审查：2026-11-26（与 package.json v3.22.2 对齐；权威版本源为 `package.json`）
 
 ## 部署环境
 
@@ -184,7 +184,7 @@ certbot renew --dry-run
 CI 采用「并行 job + 聚合门禁」结构：`rootclean`、`lint`、`typecheck`、`test`、`build`、`data` 并行执行，最后由 `ci` 汇总（`needs` 含 `rootclean`）。`rootclean` 执行 `node scripts/check-root-clean.mjs`，拦截散落在根目录或 `scripts/` 下的 `_*.mjs` 临时脚本（唯一合法临时位置为根 `.tmp/`）。
 配置分支保护时**只需把 `CI Gate` 勾选为必需检查**，后续增删 job 无需再改保护规则。
 
-CI / Deploy / Release / Aggregate 四个工作流的运行时准备统一收敛到复合动作 `.github/actions/setup`（安装 Node 24 + npm，依赖缓存用 setup-node 内置 `cache: 'npm'`），避免每处重复。当前官方 action 版本：`actions/checkout@v5`、`actions/setup-node@v6`、`actions/setup-node@v6`、`actions/cache@v5`、`actions/upload-artifact@v5`（2026-11-12 实况；升级记录见 CHANGELOG `[Unreleased]`）。
+CI / Deploy / Release / Aggregate 四个工作流的运行时准备统一收敛到复合动作 `.github/actions/setup`（安装 Node 24 + npm，依赖缓存用 setup-node 内置 `cache: 'npm'`），避免每处重复。第三方 Action 已全部固定到 commit SHA（见各 workflow 的 `uses:` 行及行尾 `# vX` 注释；2026-11-26 实况），例如 `actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6`；升级记录见 CHANGELOG 与 `docs/tasks.md`。
 
 `aggregate.yml` 不参与发布链路，仅做上游数据源聚合：每周一定时拉取各上游列表，合并去重后更新 `public/domains.txt` 并自动发起 Pull Request，需人工 review 后合并，从而保证过滤数据持续更新。
 
@@ -239,7 +239,7 @@ git push
 ### 5. 规则文件漂移（硬门禁）
 
 `public/*.txt|conf|db` 由 `scripts/gen-format-files.mjs` 从 `public/domains.txt` 生成，文件头带版本号与生成日期。
-规则产物的头部版本与域名计数由生成脚本写入（当前**规则 877 条 = 黑名单 645 + 白名单 232**；`public/domains.txt` 非空 **897 行**，含注释 20 行、改道 0 行，以 `node scripts/count-domains.mjs` 实算为准；`package.json` 为版本单一来源（由 `sync-facts.mjs` / `gen-format-files.mjs` 自动派生，勿在此硬编码））。改动数据源后须运行 `node scripts/gen-format-files.mjs` 重建产物。
+规则产物的头部版本与域名计数由生成脚本写入（当前 **127188 条规则**，以 `node scripts/count-domains.mjs` 实算为准；`package.json` 为版本单一来源（由 `sync-facts.mjs` / `gen-format-files.mjs` 自动派生，勿在此硬编码））。改动数据源后须运行 `node scripts/gen-format-files.mjs` 重建产物。
 
 CI 中的漂移检测是**硬门禁**（产物与数据源不一致即 `exit 1` 阻断流水线）；比对时自动剔除产物头部的
 「更新::」日期行（每天变化，属噪声），仅对「版本::」与实际内容漂移拦截。补齐方式：
@@ -248,7 +248,7 @@ CI 中的漂移检测是**硬门禁**（产物与数据源不一致即 `exit 1` 
 node scripts/gen-format-files.mjs   # 重新生成（版本号取自 package.json，禁止硬编码）
 node scripts/count-domains.mjs       # 核对计数
 node scripts/sync-facts.mjs --check  # 13 处文档版本展示位一致性
-node scripts/check-locales.mjs       # 16 语 / 213 键一致性
+node scripts/check-locales.mjs       # 16 语 / 214 递归键一致性
 node scripts/check-root-clean.mjs    # 根目录临时文件洁净度（CI rootclean job 同款）
 npm run tmp:clean                       # 一键清空 .tmp/（会话收尾）
 git add public && git commit -m "chore: 同步生成规则文件"
@@ -283,7 +283,7 @@ const nextConfig = {
   trailingSlash: true,
   images: { unoptimized: true },
   env: {
-    version: '3.22.2',                    // 展示位由 sync-facts.mjs 从 package.json 派生，勿另处硬编码
+    version: appVersion,                  // 构建期从 package.json 解构，禁止另写版本字面量
     NEXT_PUBLIC_BUILD_ID: buildTimeId()  // 构建期注入，页脚 build 编号（缺失时回退版本号）
   },
   devIndicators: { buildActivity: false },
