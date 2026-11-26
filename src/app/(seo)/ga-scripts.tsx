@@ -14,6 +14,9 @@ import {
 } from '../../utils/analytics';
 
 export default function GaScripts() {
+  // 仅生产环境注入：开发环境（next dev / 本地预览）不加载跨域 gtag.js，
+  // 避免内嵌浏览器/代理环境下 "Script error." 噪音，也防止本地访问污染统计数据。
+  if (process.env.NODE_ENV !== 'production') return null;
   const { enabled, measurementId } = readGaMeasurementIdFromEnv();
   if (!enabled || !measurementId) return null;
 
