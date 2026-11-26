@@ -9,6 +9,17 @@
 
 ## [Unreleased]
 
+### Added（当前高保真原型 v3.22.2，2026-11-26）
+- 新增 `prototype/dashboard.html`：当前版本高保真原型，覆盖桌面等宽双栏 / 移动单列 / 关于 FAQ / 加载·错误·404 状态页与设置·格式·规则测试·同步脚本四类弹窗；CSS 令牌与 `globals.css` 完全一致（HSL 通道）、系统字体栈（无 Google Fonts）、DOM id 与实现及 SPEC §4.4 对齐；顶部界面切换器便于逐屏评审。`prototype/README.md` 改为「当前原型 + 冻结快照」双轨索引
+- 新增 `src/app/pages.contract.test.ts`：页面/状态页与 SeoContent 的 DOM 契约测试（语义 id、锚点无死链、标题层级、FAQ 语义、可见正文字体量），补齐「页面/组件零测试」盲区；`vitest.config.ts` 配 `esbuild.jsx='automatic'` 以支持组件静态渲染（59 套件 / 376 用例全绿）
+
+### Fixed（文档一致性，2026-11-26）
+- `README.en.md` 版本正文 v3.18.0 → v3.22.2；`docs/README.md` 文档集版本 v3.21.0 → v3.22.2、键数 213 → 214；`docs/SPEC.md` §1 域名数 644 → 127188（实算值，与 tasks.md 一致）
+- 清理 `openwrt-package/po/zh_Hans/` 空目录（无 po 安装、无引用）
+
+### Changed（工作台双栏等宽，2026-11-26）
+- `.main-content` 取消 `lg` 断点「输入 5 / 输出 7」非对称栅格（`lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]`），改为 `md` 起两栏等宽 `minmax(0,1fr)_minmax(0,1fr)`：左右面板同宽、长域名/预览内容不撑破栅格；`docs/SPEC.md` §4.4 栅格描述同步
+
 ### Changed（设置项整合，2026-11-26）
 - 顶栏移除主题切换按钮（`#theme-toggle-btn`）与语言下拉（`#lang-selector-btn`），只保留「分享 / 设置」两个入口，减少视觉噪音
 - 语言切换迁入设置弹窗：新增独立组件 `SettingsLanguage`（原生 `select`，16 语言，避免 Radix 弹窗焦点陷阱与 portal 冲突），置于「输出规则类型」与「外观」之间；主题三态切换原本就在设置弹窗「外观」分组内，无需重复添加
@@ -43,6 +54,14 @@
 
 ### Tests（2026-11-25）
 - 新增 3 套回归测试：写入失败提示、loadDomainData 单飞、OpenAPI / 版本 / 语言白名单 / JSON-LD 转义 / IPv6 / 130000 元素聚合 / 缓存守卫；实测 **54 套件 / 349 用例全绿**，覆盖率 87.72 / 87.15 / 89.17 / 87.72（hooks 86.01/80.37/83.63/86.01，utils 89.23/91.57/92.15/89.23），并按 glob 分设门禁
+
+## [3.22.2] - 2026-11-26
+
+### Changed（页脚排版重构）
+- 页脚由「6 个链接与版本串挤在同一行」改为两层结构：上层链接按「站内帮助（关于与 FAQ / 使用指南）」与「项目社区（GitHub / 更新日志 / Star）」分组，宽屏两端对齐、窄屏上下堆叠；下层 `v{版本} · build {构建号}` 独立成行，构建元信息不再与导航链接混排
+- 页脚内容区补顶部分隔线（`border-t` + `pt-5`），与上方工作台形成明确边界；`footer-content` 改为纵向两层、`footer-meta` 独立容器
+- Star 由主色描边胶囊降级为纯文本 + 主色星形图标（保留 hover 底色），安静的工具页脚里不再有唯一亮块抢注意力；所有链接 id（`about-link` / `guide-link` / `github-link` / `changelog-link` / `github-star-link` / `version-display`）保持不变
+- 版本按 patch 规则升至 v3.22.2：`package.json`（权威源）/ `src/config/version.ts` / `sync-facts.mjs` 文档展示位 / `public/` 11 个规则产物头部
 
 ## [3.22.0] - 2026-11-25
 

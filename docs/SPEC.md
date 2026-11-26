@@ -1,6 +1,6 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-22（与 package.json v3.22.1 对齐；规范总览见 §0，变更历史见 CHANGELOG.md）
+> 最后审查：2026-11-22（与 package.json v3.22.2 对齐；规范总览见 §0，变更历史见 CHANGELOG.md）
 > 冻结快照（`prototype/`、`public/brand-colors.md`、`docs/STRUCTURE-REVIEW.md`、`docs/tasks-done.md`）按各自声明保留，不作当前指标。
 
 ## 0. 规范总览与适用规则
@@ -44,7 +44,7 @@
 | 项目地址（主页/治理） | https://github.com/sutchan/DNS_Shield（以 `git remote -v` 为准；`ArcesTeam` 为历史维护团队名，非仓库地址） |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.22.1 |
+| 当前版本 | v3.22.2 |
 | 拦截域名 | **127188 条**（黑名单 127188 + 白名单 0），2026-11-26 `node scripts/count-domains.mjs` 实算；2026-11-25 曾记录 644 条（回退态），已从 `af976b8` 恢复，`origin/auto/aggregate-upstream` 上 7fac633 的 129348 条未合入（T-DATA-01）。永远以实算为准，禁止手写数字 |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -326,7 +326,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.22.1 |
+| 版本号 | 3.22.2 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -352,7 +352,7 @@ dns-shield/
 | 引导与折叠 | Hero 快速入门三步必须是可聚焦锚点（分别定位 `#source-editor` / `#output-format-select-btn` / `#download-btn`）；FAQ 用 `details/summary` 折叠且答案保留在 SSR HTML；折叠控件用 Lucide 图标而非字符（v3.19.0） |
 | 主题入口 | Header 常驻 `#theme-toggle-btn` 一键明暗切换；设置弹窗内保留主题分段控件作为扩展入口（v3.19.0） |
 | 空状态 | 统一使用 `src/components/ui/EmptyState.tsx`，带语义化 `id` 与 `role="status"`，禁止各处内联空态（v3.19.0） |
-| 视觉层级与栅格 | 设计方向为「控制台：规则文件就是产品」：Hero 无边框/纯色信息带、工具面板白卡+边框、SEO 区仅一条分隔线；`≥1024px` 工作台为「输入 5 / 输出 7」非对称双栏，中等屏 1:1、窄屏单列；中文标题统一 sans 700 + `-0.02em`，等宽仅用于代码/域名（v3.19.0，详见 `prototype/shadcn/design-system.md §2.1`） |
+| 视觉层级与栅格 | 设计方向为「控制台：规则文件就是产品」：Hero 无边框/纯色信息带、工具面板白卡+边框、SEO 区仅一条分隔线；工作台双栏等宽（`md` 起 1:1，两列 `minmax(0,1fr)` 防内容撑破），窄屏单列；中文标题统一 sans 700 + `-0.02em`，等宽仅用于代码/域名（v3.19.0，详见 `prototype/shadcn/design-system.md §2.1`） |
 
 ### 4.5 编码规范（2026-11-22 起）
 
@@ -449,7 +449,7 @@ dns-shield/
 ```bash
 node scripts/check-root-clean.mjs      # 根目录临时文件洁净度
 node scripts/sync-facts.mjs --check    # 13 处文档版本展示位
-npm run check:locales                     # 16 语 / 213 键一致
+npm run check:locales                     # 16 语 / 214 键一致
 node scripts/count-domains.mjs         # 域名计数（改动 domains.txt 时）
 npm run lint && npx tsc --noEmit && npm run test
 ```

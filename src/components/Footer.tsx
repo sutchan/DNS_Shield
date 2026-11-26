@@ -1,5 +1,6 @@
-// src/components/Footer.tsx v3.20.0
+// src/components/Footer.tsx v3.22.2
 // v3.20.0：新增「关于与 FAQ」入口，指向 /about/ 独立事实页。
+// v3.22.2：页脚排版重构——链接按「站内帮助 / 项目社区」分组，版本与构建号独立第二行。
 'use client';
 import React from 'react';
 import Link from 'next/link';
@@ -23,70 +24,81 @@ const Footer = React.memo(function Footer({
   return (
     <footer className="app-footer" id="app-footer" role="contentinfo">
       <div className="footer-content" id="footer-content">
-        <div className="footer-top" id="footer-top">
-          <Link href="/about/" className="footer-link" id="about-link">
-            {t.aboutLink ?? '关于与 FAQ'}
-          </Link>
-          <a 
-            href="https://github.com/sutchan/DNS_Shield" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="footer-link" 
-            id="github-link"
-            aria-label={t.githubLinkAria}
-            title={t.starPrompt}
-          >
-            GitHub
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-              <polyline points="15 3 21 3 21 9"></polyline>
-              <line x1="10" y1="14" x2="21" y2="3"></line>
-            </svg>
-          </a>
-          <a
-            href="https://github.com/sutchan/DNS_Shield"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer-star-link"
-            id="github-star-link"
-            aria-label={t.starLinkAria ?? t.githubLinkAria}
-            title={t.starPrompt}
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-            </svg>
-            <span>{t.starLink ?? 'Star'}</span>
-          </a>
-          <a
-            href="https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="footer-link"
-            id="changelog-link"
-            aria-label={t.changelogLinkAria}
-          >
-            {t.changelogLabel ?? '更新日志'}
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-              <polyline points="15 3 21 3 21 9"></polyline>
-              <line x1="10" y1="14" x2="21" y2="3"></line>
-            </svg>
-          </a>
-          <button
-            type="button"
-            className="footer-link footer-guide-link"
-            id="guide-link"
-            onClick={onOpenGuide}
-            aria-label={t.guideTitle}
-            title={t.guideTitle}
-          >
-            {t.guideTitle}
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-              <line x1="12" y1="17" x2="12.01" y2="17"></line>
-            </svg>
-          </button>
+        <nav className="footer-top" id="footer-top">
+          {/* 站内帮助 */}
+          <div className="footer-group" id="footer-group-help">
+            <Link href="/about/" className="footer-link" id="about-link">
+              {t.aboutLink ?? '关于与 FAQ'}
+            </Link>
+            <button
+              type="button"
+              className="footer-link footer-guide-link"
+              id="guide-link"
+              onClick={onOpenGuide}
+              aria-label={t.guideTitle}
+              title={t.guideTitle}
+            >
+              {t.guideTitle}
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </button>
+          </div>
+
+          {/* 项目社区（外部链接） */}
+          <div className="footer-group" id="footer-group-project">
+            <a
+              href="https://github.com/sutchan/DNS_Shield"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-link"
+              id="github-link"
+              aria-label={t.githubLinkAria}
+              title={t.starPrompt}
+            >
+              GitHub
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+            <a
+              href="https://github.com/sutchan/DNS_Shield/blob/main/CHANGELOG.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-link"
+              id="changelog-link"
+              aria-label={t.changelogLinkAria}
+            >
+              {t.changelogLabel ?? '更新日志'}
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+            <a
+              href="https://github.com/sutchan/DNS_Shield"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-star-link"
+              id="github-star-link"
+              aria-label={t.starLinkAria ?? t.githubLinkAria}
+              title={t.starPrompt}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <span>{t.starLink ?? 'Star'}</span>
+            </a>
+          </div>
+        </nav>
+
+        {/* 构建元信息独立成行，与导航链接分开 */}
+        <div className="footer-meta" id="footer-meta">
           <span className="footer-version" id="version-display" aria-label={`${t.versionLabel} v${version} · build ${buildId}`}>v{version} · build {buildId}</span>
         </div>
       </div>

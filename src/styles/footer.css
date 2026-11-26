@@ -1,34 +1,40 @@
-/* src/styles/footer.css v3.19.0 — 页脚与使用指南（原 globals.css 相应段） */
+/* src/styles/footer.css v3.22.2 — 页脚与使用指南（原 globals.css 相应段） */
 
 /* ============================================
-   Footer
+   Footer（v3.22.2 两层结构：站内帮助 / 项目社区 + 构建元信息独立行）
    ============================================ */
 .app-footer {
   @apply mt-10 text-center;
 }
 
 .footer-content {
-  @apply flex flex-col items-center gap-3;
+  @apply flex flex-col items-center gap-4 border-t border-border/70 pt-5 pb-1;
 }
 
+/* 宽屏两侧分组排开；窄屏上下堆叠，每组内部自然换行 */
 .footer-top {
-  @apply flex items-center justify-center flex-wrap gap-5;
+  @apply flex w-full flex-col items-center gap-3 sm:flex-row sm:justify-between sm:gap-6;
 }
 
-.footer-links {
-  @apply flex items-center justify-center gap-5 mb-2;
+.footer-group {
+  @apply flex flex-wrap items-center justify-center gap-x-4 gap-y-1;
 }
 
 .footer-link {
-  @apply inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-lg px-2 py-1 -mx-2 transition-all duration-150;
+  @apply inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-lg px-2 py-1 transition-all duration-150;
 }
 
+/* 星标由主色胶囊降为纯文本 + 主色图标，避免安静的工具页脚里唯一的亮块抢走注意力 */
 .footer-star-link {
-  @apply inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 hover:bg-primary/10 transition-all duration-150 px-2.5 py-1 rounded-full border border-primary/30 bg-primary/5;
+  @apply inline-flex items-center gap-1.5 text-sm text-primary hover:text-primary/80 hover:bg-primary/10 transition-all duration-150 px-2 py-1 rounded-lg;
+}
+
+.footer-meta {
+  @apply flex items-center justify-center;
 }
 
 .footer-version {
-  @apply text-[0.75rem] text-muted-foreground font-mono;
+  @apply text-[0.75rem] tracking-wide text-muted-foreground/80 font-mono;
 }
 
 /* Usage guide — 使用指南（可折叠） */
