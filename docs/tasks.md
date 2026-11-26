@@ -3,7 +3,7 @@
 > **本文件是项目「未完成任务」与「实时指标」的唯一来源（Single Source of Truth）**。
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
-> **本次同步时间戳：2026-11-26T22:42:14+08:00**。迁移核查结果：源清单无遗留已勾选条目；T-FEAT-01、T-A11Y-01 已完成并归档至 `tasks-done.md`；T-CI-01 因远端 CI 失败与 Release 事件判定缺陷仍未闭环，保留为唯一未完成任务。两份文档均已标注本次更新时间戳。
+> **本次同步时间戳：2026-11-26T22:51:23+08:00**。迁移核查结果：源清单无遗留已勾选条目；T-FEAT-01、T-A11Y-01 已完成并归档至 `tasks-done.md`；T-CI-01 因远端 CI 失败与 Release 事件判定缺陷仍未闭环，保留为唯一未完成任务。两份文档均已标注本次更新时间戳。
 
 > 最后审查：2026-11-26（与 package.json v3.22.4 对齐；**第二十七轮 2026-11-26 发版链路取证与修复**：定位 CI 三项失败、Deploy「假成功」与 Release 事件判定缺陷并落地修复；**第二十六轮 2026-11-26 任务治理与门禁收口**：修复出站 host 白名单引入的 7 个遗留测试失败（全量 61 套件 / 381 用例全绿），扩展路由器兼容映射（三级分级 + 产品边界），新增 axe + Playwright 无障碍门禁，版本三源与 11 个产物统一至 v3.22.4；**第二十五轮**文档系统性标准化、OpenAPI 语义校验与 `/category-index.txt` 端点、任务台账集中化；**第二十四轮**全量文档核查；**第二十三轮**任务闭环专项；历史轮次摘要见 [tasks-done.md](./tasks-done.md)）
 > 维护团队：Sut / ArcesTeam
@@ -41,7 +41,7 @@
 > 每条均含「目标 / 责任人 / 计划完成时间（绝对日期）/ 影响范围 / 验收标准」。
 > **唯一来源纪律**：任何位置的任务型表述（审计报告「修：」、优化方案 O-xx、FAQ「待评估/待验证」、源码 TODO 等）必须在本文件登记；原位置只保留证据与方案，不维护第二份状态（见 SPEC §5.3）。
 
-> **状态重评（2026-11-26T22:42:14+08:00）**：依据本轮实证调整——① **T-FEAT-01 / T-A11Y-01 已完成并归档**（见 `tasks-done.md`）；② **T-CI-01 保持 P1 且仍未闭环**：本地已与 `origin/main` 同步，但远端 CI 三项失败、Deploy 因 `summary` job 无条件运行而「假成功」、Release 因事件判定错误持续 skipped；根因修复已落地本地，尚需推送后由 GitHub Actions 复验。
+> **状态重评（2026-11-26T22:51:23+08:00）**：依据本轮实证调整——① **T-FEAT-01 / T-A11Y-01 已完成并归档**（见 `tasks-done.md`）；② **T-CI-01 保持 P1 且仍未闭环**：远端 HEAD `2e66f3e` 的 CI 三项失败、Deploy 因 `summary` job 无条件运行而「假成功」、Release 因事件判定错误持续 skipped；根因修复已落地并提交为 `37b6db4`（本地 ahead 1），尚需推送后由 GitHub Actions 复验。
 
 ### 优先级 / 责任人 / 计划完成时间总表
 
@@ -54,11 +54,11 @@
 - **T-CI-01 · 验证 CI→Deploy→Release 全绿与自动发版**（责任人：CI Owner；计划：2026-12-02）**【根因与修复已落地 2026-11-26 22:42；待推送复验】**
   - 目标：确认最新版本已在 GitHub 产生 Release / tag，发布链路真实跑通。
   - 验收标准：Actions 全绿、存在对应 tag 与 Release；若红则定位。
-  - **当前远端实证（2026-11-26T22:42:14+08:00）**：本地 HEAD `2e66f3e` 与 `origin/main` 完全一致（`git status -sb` 无 ahead/behind），远端最新 tag 仍为 `v3.7.31`，不存在 `v3.22.4` tag 与 Release。
+  - **当前远端实证（2026-11-26T22:51:23+08:00）**：远端 `main` 停在 `2e66f3e`，本地修复已提交为 `37b6db4` 且 **ahead 1**（尚未推送）；远端最新 tag 仍为 `v3.7.31`，不存在 `v3.22.4` tag 与 Release。
   - **CI 失败（run [45837582281](https://github.com/sutchan/DNS_Shield/actions/runs/45837582281)）**：`Data Integrity` 的 `Verify document facts match code` 失败（data job 以 `install:false` 跳过依赖，`check-doc-facts` 无法采集 Vitest JSON）；`Vitest` 的 `version.test.ts:13` 失败（`APP_VERSION` 为 `3.22.3`，`package.json` 为 `3.22.4`）；`Next.js Build` 的 `Install Chromium for accessibility scan` 失败（runner 的 `ubuntu-latest` 已迁至 Ubuntu 26.04，Playwright 1.56 无该发行版的浏览器依赖定义）。
   - **Deploy「假成功」（run [45837763588](https://github.com/sutchan/DNS_Shield/actions/runs/45837763588)）**：仅无条件的 `summary` job 成功，Vercel / EdgeOne 两个 job 均 skipped；上游 CI 实为 failure，Deploy 仍报 success。
   - **Release 跳过（run [45837792992](https://github.com/sutchan/DNS_Shield/actions/runs/45837792992)）**：条件要求 `github.event.workflow_run.event == 'push'`，但 Release 的上游 Deploy 事件是 `workflow_run`，条件恒假。
-  - **本地已修复**：`src/config/version.ts` 的 `APP_VERSION` 同步至 `3.22.4`；CI `data` job 改为安装依赖、`build` job 固定 `ubuntu-24.04`；`deploy.yml` 的 `summary` job 增加「CI success + 同仓库 main push」前置；`release.yml` 改为判定上游 `event == 'workflow_run'` 并保留同仓库校验。
+  - **本地已修复并提交（37b6db4）**：`src/config/version.ts` 的 `APP_VERSION` 同步至 `3.22.4`；CI `data` job 改为安装依赖、`build` job 固定 `ubuntu-24.04`；`deploy.yml` 的 `summary` job 增加「CI success + 同仓库 main push」前置；`release.yml` 改为判定上游 `event == 'workflow_run'` 并保留同仓库校验。
   - **剩余动作（需仓库写权限）**：推送本地提交 → 复跑并确认 CI / Deploy / Release 三次 workflow_run 均 success → 确认产生 `v3.22.4` tag 与 Release 资产。本机未获 push 授权，不代执行；故本项不标记完成。
 
 ---
