@@ -4,7 +4,7 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-26（与 package.json v3.22.2 对齐；**第二十五轮 2026-11-26 文档系统性标准化：01/03/04/05/06/07 与 DEPLOYMENT 补齐目录与流程图，修正测试数 59 套件/376 用例、版本展示位 12 处、`.npmrc`/主题入口/AppContext/分类索引等过时描述；OpenAPI 新增 `/category-index.txt` 与 403/429/5XX 响应；页脚格式对齐 SPEC §8.1；新增 O-11/O-12/O-13 优化建议并登记 T-DOC-03 / T-DOC-04 / T-REFACTOR-01（实扫发现 5 个源文件超 200 行，纠正旧值 0）。**；**第二十四轮 2026-11-26 全量文档核查：以代码实况核对全部活跃文档，修正 README.en 版本/操作路径、DEPLOYMENT 的 npm/CSP/域名数、SPEC 的已删依赖与目录树、CHECKLIST/config.yaml 的已删组件、04-api 的六个函数签名、openapi.yaml 版本、05/07 的过时数字与失效 id、CHANGELOG 头部版本；冻结快照按声明保留。**；**第二十三轮 2026-11-25 任务闭环专项：闭环 T-AUD-L05 / T-AUD-L02 / T-AUD-M04 并归档，T-SEC-01 产出评估结论、T-PERF-01 parser 迭代落地，活跃任务 8 项；实测 57 套件 / 364 用例、tsc / lint / sync-facts / check-locales 全绿**；第二十二轮：两轮复核共闭环 37 项，活跃任务 11 项；实测 54 套件 / 349 用例、覆盖率 87.72/87.15/89.17/87.72、构建与全部静态门禁通过；第二十一轮：建立文档中心与 01/03/04/05/06/07 六大模块文档、OpenAPI 3.1 定义，任务清单补齐责任人与计划完成时间并重排为 18 项（后增 T-DATA-01 与 2026-11-25 审计迁移项，当前合计以 §二 声明为准）；第二十轮：域名计数曾实算 127188、i18n 键数校正；随后主线数据源回退至 644 条并登记 T-DATA-01，本轮已从 af976b8 恢复至 127188 条、i18n 键数实算 214；第十九轮审计 11 项已并入第二节）
+> 最后审查：2026-11-26（与 package.json v3.22.3 对齐；**第二十五轮 2026-11-26 文档系统性标准化：01/03/04/05/06/07 与 DEPLOYMENT 补齐目录与流程图，修正测试数 59 套件/376 用例、版本展示位 12 处、`.npmrc`/主题入口/AppContext/分类索引等过时描述；OpenAPI 新增 `/category-index.txt` 与 403/429/5XX 响应；页脚格式对齐 SPEC §8.1；新增 O-11/O-12/O-13 优化建议并登记 T-DOC-03 / T-DOC-04 / T-REFACTOR-01（实扫发现 5 个源文件超 200 行，纠正旧值 0）。**；**第二十四轮 2026-11-26 全量文档核查：以代码实况核对全部活跃文档，修正 README.en 版本/操作路径、DEPLOYMENT 的 npm/CSP/域名数、SPEC 的已删依赖与目录树、CHECKLIST/config.yaml 的已删组件、04-api 的六个函数签名、openapi.yaml 版本、05/07 的过时数字与失效 id、CHANGELOG 头部版本；冻结快照按声明保留。**；**第二十三轮 2026-11-25 任务闭环专项：闭环 T-AUD-L05 / T-AUD-L02 / T-AUD-M04 并归档，T-SEC-01 产出评估结论、T-PERF-01 parser 迭代落地，活跃任务 8 项；实测 57 套件 / 364 用例、tsc / lint / sync-facts / check-locales 全绿**；第二十二轮：两轮复核共闭环 37 项，活跃任务 11 项；实测 54 套件 / 349 用例、覆盖率 87.72/87.15/89.17/87.72、构建与全部静态门禁通过；第二十一轮：建立文档中心与 01/03/04/05/06/07 六大模块文档、OpenAPI 3.1 定义，任务清单补齐责任人与计划完成时间并重排为 18 项（后增 T-DATA-01 与 2026-11-25 审计迁移项，当前合计以 §二 声明为准）；第二十轮：域名计数曾实算 127188、i18n 键数校正；随后主线数据源回退至 644 条并登记 T-DATA-01，本轮已从 af976b8 恢复至 127188 条、i18n 键数实算 214；第十九轮审计 11 项已并入第二节）
 > 维护团队：Sut / ArcesTeam
 >
 > **本轮整理（2026-11-13）**：依 SPEC §5.3 任务记录规范，将第十四~十八轮冗长的「本次更新」历史叙述统一归档至 [tasks-done.md](./tasks-done.md)，本文件仅保留未完成清单、实时指标、遗留疑问与维护清单；版本与指标经实算与代码实况对齐（v3.19.2 / 12 格式 / 16 语 212 键 / 51 套件 326 用例 / 17 组件 / >200 行源文件 0 个 / 拦截域名 127188 条）；2026-11-22 第二十轮校正键数与域名计数并补记分支整理。
@@ -20,14 +20,14 @@
 
 | 指标 | 实测值 | 取得方式 |
 |---|---|---|
-| 应用版本 | v3.22.2 | `package.json` version（权威源） |
+| 应用版本 | v3.22.3 | `package.json` version（权威源） |
 | 输出格式数 | 12 种 | `src/types/formats.ts` 的 `ALL_FORMATS` |
 | i18n 语言 / 键数 | 16 种 / 递归合计 **214** 键（`check:locales` 与 `scripts/locale-baseline.json` keyCount 口径） | `node scripts/check-locales.mjs` 2026-11-25 实跑输出「214 键」（新增 `toast.autosaveFailed`）；早期记录的 209 / 212 / 213 键已过时，禁止沿用旧值 |
 | 测试套件 / 用例 | **59 套件 / 376 用例**（2026-11-26 `npm test -- --reporter=dot` 实跑全绿；较 57/364 增加 2 套件 12 例，含 `pages.contract.test.ts`） | `vitest run` 为权威计数，2026-11-26 已实跑复核；57/364、54/349 为历史快照 |
 | 覆盖率门禁 | 已生效且为真实值；含 `src/utils` + `src/hooks`，全局门槛 **语句 80 / 分支 75 / 函数 85 / 行 80**，并按 glob 加设 hooks 80/75/80/80、utils 85/85/85/85；`vitest.config.ts` 显式声明 `all: false` | `vitest run --coverage`；2026-11-25 实测：语句 87.72 / 分支 87.15 / 函数 89.17 / 行 87.72（hooks 86.01/80.37/83.63/86.01，utils 89.23/91.57/92.15/89.23），全部达标 |
 | 组件规模 | 顶层 **17** 个 `.tsx`（含 `OutputPanel.parts.tsx` / `OutputPanel.formatSelect.tsx` / 新增 `SeoContent.tsx`）+ `OutputPanel.derived.ts` / `InputPanel.types.ts`，`ui/` 8 个（v3.18.0 清理 4 个未被引用的孤儿组件 `Card` / `Loading` / `Switch` / `Tabs`） | `src/components/` 实测（2026-11-12 实算） |
 | 源文件 >200 行 | **5 个**（2026-11-26 按真实换行数实扫）：`src/components/OutputPanel.tsx` 203、`src/hooks/useDomainData.ts` 214、`src/hooks/useRuleWorker.ts` 208、`src/hooks/useDomainData.autosave.test.ts` 229、`scripts/aggregate-upstream.mjs` 202；旧值 0 为 2026-11-13 快照 | Node 脚本实扫（2026-11-26），已登记 T-REFACTOR-01 / O-13 |
-| 静态门禁 | `sync-facts.mjs --check` **12 处**版本展示位与 package.json(3.22.2) 全一致；`check-locales.mjs` 16 语 / 214 递归键一致；`check-openapi.mjs` 7 路径 / 7 操作通过；`check-root-clean.mjs` 根目录洁净；文档内链断链 0 | 2026-11-26 实跑（`sync-facts --check` / `check:locales` / `check-openapi` / `check-root-clean`）；`tsc` / `eslint` / `vitest` 于 2026-11-25~26 实跑全绿 |
+| 静态门禁 | `sync-facts.mjs --check` **12 处**版本展示位与 package.json(3.22.3) 全一致；`check-locales.mjs` 16 语 / 214 递归键一致；`check-openapi.mjs` 7 路径 / 7 操作通过；`check-root-clean.mjs` 根目录洁净；文档内链断链 0 | 2026-11-26 实跑（`sync-facts --check` / `check:locales` / `check-openapi` / `check-root-clean`）；`tsc` / `eslint` / `vitest` 于 2026-11-25~26 实跑全绿 |
 | 拦截域名 | **127188** 条（黑名单 127188 + 白名单 0），2026-11-25 从 `af976b8` 恢复后实算 | `node scripts/count-domains.mjs` 实跑；回退原因与恢复决策见 T-DATA-01；`origin/auto/aggregate-upstream` 上 7fac633 的 129348 条未合入主线，不采用 |
 
 > **教训**：本文件中的数据型数字（键数 / 用例数 / 覆盖率 / 行数）历史上多次与实现脱节。修改前务必用脚本实算，禁止凭记忆书写。
@@ -66,7 +66,7 @@
 - **T-CI-01 · 验证 CI→Deploy→Release 全绿与自动发版**（责任人：CI Owner；计划：2026-12-02）**【取证 2026-11-25：链路未跑通】**
   - 目标：确认最新版本已在 GitHub 产生 Release / tag，发布链路真实跑通。
   - 验收标准：Actions 全绿、存在对应 tag 与 Release；若红则定位（重点：setup 缓存 / npm ci 锁文件安装）。
-  - 本轮取证：`git ls-remote --tags origin` 显示远端最新 tag 为 **v3.7.31**，与当前 `package.json` v3.22.2 严重脱节；本地 tag 同样止于 v3.7.31。说明 `release.yml` 自动打 tag/Release 未真实生效。根因需 GitHub Actions 运行日志与权限配置（本机不可达），故保持未完成并升级证据。
+  - 本轮取证：`git ls-remote --tags origin` 显示远端最新 tag 为 **v3.7.31**，与当前 `package.json` v3.22.3 严重脱节；本地 tag 同样止于 v3.7.31。说明 `release.yml` 自动打 tag/Release 未真实生效。根因需 GitHub Actions 运行日志与权限配置（本机不可达），故保持未完成并升级证据。
 - **T-DOC-03 · 文档数字与代码事实自动化门禁（O-11）**（责任人：Dev Team；计划：2026-12-09）：目标是把测试套件/用例数、语言/键数、域名数、版本展示位数、DOM id 等从脚本权威源自动核对活跃文档。影响范围：`scripts/`、`docs/tasks.md`、CI `data` job。验收标准：新增 `npm run check:doc-facts`，CI 对活跃文档数字漂移返回非零；冻结快照豁免；2026-11-26 已存在的 59/376、12 处等数字可被脚本复现。
 
 ### 🟡 P2 - 安全 / 无障碍 / 性能 / 兼容 / 审计

@@ -1,7 +1,7 @@
 # DNS Shield 文档中心
 
-> 文档集版本：v3.22.2 · 最后审查：2026-11-26 · 适用产品版本：v3.22.2
-> 权威版本源：`package.json` 的 `version` 字段；`src/config/version.ts` 的 `APP_VERSION` 与 `next.config.js` 的 `env.version` 均在构建期由 `package.json` 派生，无独立字面量。
+> 文档集版本：v3.22.3 · 最后审查：2026-11-26 · 适用产品版本：v3.22.3
+> 权威版本源：`package.json` 的 `version` 字段；`next.config.js` 的 `env.version` 在构建期由它派生；`src/config/version.ts` 的 `APP_VERSION` 为运行时展示常量，由 `src/config/version.test.ts` 断言与权威源一致。
 > 本文档集随产品版本演进；每次变更按 [§4 版本控制](#4-版本控制) 更新头部信息。
 
 ## 目录

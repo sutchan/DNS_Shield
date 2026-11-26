@@ -1,9 +1,11 @@
-// src/utils/iterateLines.ts v3.22.0
+// src/utils/iterateLines.ts v3.22.3
 // 逐行迭代工具（T-PERF-01）：用 indexOf 切片替代 text.split('\n') 的整块数组分配，
 // 10 万行级输入可显著降低主线程峰值内存。契约与 split('\n') 完全一致：
 //   空串 → 0 行；"a\nb" → 2 行；"a\n" → 2 行；"\n" → 2 行。
+// v3.22.3：countIterableLines 成为行数扫描的唯一实现；lineCount.ts 的
+// countLines 在本函数上叠加单槽记忆化，二者不再各自维护一份循环。
 
-/** 统计行数（与 countLines 同契约，独立实现以避免循环依赖） */
+/** 统计行数（countLines 的记忆化实现复用本函数，契约一致） */
 export const countIterableLines = (text: string): number => {
   if (text === '') return 0;
   let count = 1;

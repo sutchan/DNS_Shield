@@ -2,9 +2,9 @@
 
 ![DNS Shield](public/logo.svg)
 
-<!-- Last reviewed: 2026-11-26 (aligned with package.json v3.22.2) -->
+<!-- Last reviewed: 2026-11-26 (aligned with package.json v3.22.3) -->
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.22.2-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.22.3-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Router-level DNS-based ad blocking filter list with a web management tool. It both **generates** rule lists from a unified domain source and **converts** existing lists between different formats.
 
@@ -124,4 +124,4 @@ MIT License
 
 ## Version
 
-Current version: v3.22.2. See [CHANGELOG.md](CHANGELOG.md) for the full history.
+Current version: v3.22.3. See [CHANGELOG.md](CHANGELOG.md) for the full history.

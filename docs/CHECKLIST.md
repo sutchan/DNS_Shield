@@ -1,6 +1,6 @@
 # 质量检查清单
 
-> 最后审查：2026-11-26（与 package.json v3.22.2 对齐；第十九轮 UI 改进新增可读性与对比度、CTA 与统计口径、引导与 FAQ 折叠等验收项；第十八轮全量文档核查同步组件/依赖删除与 CI npm 门禁、语言/主题切换位置；冻结快照按声明保留）
+> 最后审查：2026-11-26（与 package.json v3.22.3 对齐；第十九轮 UI 改进新增可读性与对比度、CTA 与统计口径、引导与 FAQ 折叠等验收项；第十八轮全量文档核查同步组件/依赖删除与 CI npm 门禁、语言/主题切换位置；冻结快照按声明保留）
 
 ## UI/UX 设计规范
 
@@ -31,6 +31,15 @@
 - [ ] 文件头注释版本格式正确
 - [ ] 单个源文件不超过 200 行（代码文件强制，文档不拆分）
 - [ ] 所有可定位元素使用 kebab-case 语义 id，且无重复 id
+
+## 冗余预防（每次提交前）
+
+- [ ] `node node_modules/typescript/bin/tsc --noEmit --noUnusedLocals --noUnusedParameters`：0 处未使用导入 / 变量 / 参数
+- [ ] `npm run lint`：无未使用变量、无死代码告警；禁止保留注释掉的代码块
+- [ ] 新增工具函数前先搜 `src/utils/`：同契约实现只保留一份，包装函数复用底层实现而非复制循环或判定逻辑
+- [ ] 新增静态资源前比对内容哈希，避免重复文件；一次性脚本 / 日志 / 截图只放 `.tmp/`
+- [ ] 会话结束运行 `npm run tmp:clean`，再跑 `npm run check:root-clean` 确认根目录无散落临时产物
+- [ ] 版本只改 `package.json` 权威源，随后 `node scripts/sync-facts.mjs`；`src/config/version.ts` 由 `version.test.ts` 守护，`package-lock.json` 不得残留旧版本
 
 ## 导出产物正确性
 

@@ -5,9 +5,11 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-26（与 package.json v3.22.2 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
+> 最后审查：2026-11-26（与 package.json v3.22.3 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
 
 ## [Unreleased]
+
+## [3.22.3] - 2026-11-26
 
 ### Added（当前高保真原型 v3.22.2，2026-11-26）
 - 新增 `prototype/dashboard.html`：当前版本高保真原型，覆盖桌面等宽双栏 / 移动单列 / 关于 FAQ / 加载·错误·404 状态页与设置·格式·规则测试·同步脚本四类弹窗；CSS 令牌与 `globals.css` 完全一致（HSL 通道）、系统字体栈（无 Google Fonts）、DOM id 与实现及 SPEC §4.4 对齐；顶部界面切换器便于逐屏评审。`prototype/README.md` 改为「当前原型 + 冻结快照」双轨索引
@@ -23,6 +25,12 @@
 - `docs/openapi.yaml` 新增 `/category-index.txt` 与 403/429/5XX 标准错误响应，`docs/04-api.md` 同步更新规范符合性说明；`node scripts/check-openapi.mjs` 通过（7 路径 / 7 操作）
 - 页脚展示对齐 SPEC §8.1：`Footer.tsx` 输出 `V{version}· build {buildId}`，aria-label 同步
 - `docs/07-improvements.md` 新增 O-11（文档数字自动化门禁，P1）/ O-12（OpenAPI 语义校验，P3）/ O-13（拆分 5 个超 200 行源文件，P2）；`docs/tasks.md` 登记 T-DOC-03 / T-DOC-04 / T-REFACTOR-01，未完成任务 11 项并按 P1/P2/P3 重排详情；实扫纠正「0 个超行源文件」的失真指标
+
+### Changed（冗余清理，v3.22.3）
+- 按项目规范清空 `.tmp/` 一次并重建标准子目录；删除未跟踪空目录 `openwrt-package/po/`；未发现未被引用的源码/脚本文件、重复文件或注释掉的代码块
+- 合并重复逻辑：`src/utils/lineCount.ts` 的 `countLines` 改为复用 `iterateLines.ts` 的 `countIterableLines`，只保留单槽记忆化；`src/utils/domainFetch.ts` 的 Content-Length 解析与体积判定改用 `fetchGuards.ts` 共享纯函数，浏览器上限仍为 10MB
+- 修复版本漂移：`package-lock.json` 由 3.22.0 同步至 3.22.3；`src/config/version.ts`、`docs/openapi.yaml` 与文档头版本同步；纠正文档中「运行时版本常量构建期派生」的失实表述
+- 版本按 patch 规则升至 v3.22.3（`package.json` 权威源）
 
 ### Changed（工作台双栏等宽，2026-11-26）
 - `.main-content` 取消 `lg` 断点「输入 5 / 输出 7」非对称栅格（`lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]`），改为 `md` 起两栏等宽 `minmax(0,1fr)_minmax(0,1fr)`：左右面板同宽、长域名/预览内容不撑破栅格；`docs/SPEC.md` §4.4 栅格描述同步
@@ -1934,7 +1942,9 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.20.1...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.22.3...HEAD
+[3.22.3]: https://github.com/sutchan/DNS_Shield/compare/v3.22.2...v3.22.3
+[3.22.2]: https://github.com/sutchan/DNS_Shield/compare/v3.22.0...v3.22.2
 [3.22.0]: https://github.com/sutchan/DNS_Shield/compare/v3.21.0...v3.22.0
 [3.21.0]: https://github.com/sutchan/DNS_Shield/compare/v3.20.1...v3.21.0
 [3.20.1]: https://github.com/sutchan/DNS_Shield/compare/v3.20.0...v3.20.1
