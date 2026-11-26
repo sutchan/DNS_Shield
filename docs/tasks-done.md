@@ -489,6 +489,15 @@
 - **验收实证**：`check-openapi` 通过（7 路径 / 7 操作）；注入测试 4 用例全绿；构建后契约冒烟 7 条端点均 200 且 Content-Type 匹配。
 - **归档时间**：2026-11-26（任务治理批次）。
 
+### T-REFACTOR-01 · 拆分 5 个超 200 行源文件（O-13）
+
+- **来源 / 优先级**：本轮实扫新增；P2，责任人 Dev Team，原计划 2026-12-23。
+- **完整描述**：将 5 个超 200 行代码文件按职责拆分，对外 API 与行为保持不变，并把行数扫描纳入 CI 防回归。
+- **状态**：✅ 已完成（2026-11-26 提前完成）。
+- **拆分明细**：`OutputPanel.tsx` → 新增 `OutputPanel.types.ts`；`useDomainData.ts` → 新增 `useDomainData.sources.ts`（远端/本地源加载与草稿保护）；`useRuleWorker.ts` → 新增 `useRuleWorker.parallel.ts`（多核分片调度）；`useDomainData.autosave.test.ts` → 拆为恢复/提示与草稿优先/手动保存两组；`scripts/aggregate-upstream.mjs` → 新增 `scripts/lib/aggregateFetch.mjs`（抓取与域名提取）。
+- **验收实证**：按真实换行数实扫 `src/` + `scripts/` 为 **0 个 >200 行文件**；`tsc --noEmit` 退出码 0；相关测试文件全绿。`check-doc-facts.mjs` 已把超行数作为权威指标纳入 CI data job。
+- **归档时间**：2026-11-26（任务治理批次）。
+
 ### T-AUD-M02 · 限制出站 host 与 connect-src（审计 M-02）
 
 - **来源 / 优先级**：审计报告 M-02，本次重评由 P2 升级 P1；责任人 Dev Team，原计划 2026-12-23。

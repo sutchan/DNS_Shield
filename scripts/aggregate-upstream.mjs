@@ -1,4 +1,4 @@
-// scripts/aggregate-upstream.mjs
+// scripts/aggregate-upstream.mjs v3.22.4
 // 定时聚合上游广告/追踪拦截规则源，提取域名并与 public/domains.txt 合并去重。
 // 设计原则：
 //   - 多源容错：任一源失败不影响整体（跳过并继续）。
@@ -8,11 +8,9 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-// 出站护栏（T-AUD-L02 / T-AUD-M02）：与 src/utils/fetchGuards.ts 共用同一份纯函数判定，
-// 杜绝两份实现漂移。Node 24+ 默认支持 TypeScript 类型剥离，可直接 import .ts（T-COMPAT-01）。
-import {
-  MAX_FETCH_BYTES, MAX_REDIRECTS, isAllowedFetchUrl, parseContentLength, exceedsSizeLimit, isAllowedRedirect,
-} from '../src/utils/fetchGuards.ts';
+// 抓取与提取逻辑已拆至 lib/aggregateFetch.mjs（T-REFACTOR-01）；
+// 该文件仍复用 src/utils/fetchGuards.ts 的同一份护栏判定，不维护第二套实现。
+import { extractDomain, fetchDomains } from './lib/aggregateFetch.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -34,108 +32,8 @@ const SOURCE_ORDER = SOURCES.map((s) => s.key);
 
 const FETCH_TIMEOUT_MS = 30_000;
 
-/** 从单行规则提取域名（兼容 hosts / adblock / 纯域名 多种格式） */
-function extractDomain(line) {
-  const raw = line.trim();
-  if (!raw || raw.startsWith('#') || raw.startsWith('!') || raw.startsWith('//')) return null;
-  // 白名单例外跳过
-  if (raw.startsWith('@@')) return null;
-
-  let candidate = raw;
-  // AdGuard / Adblock Plus: ||domain^ 或 ||domain^$opt
-  const abMatch = candidate.match(/\|\|([a-z0-9-*_.-]+)\^/i);
-  if (abMatch) candidate = abMatch[1];
-  // hosts 格式: 0.0.0.0 domain 或 127.0.0.1 domain
-  const hostsMatch = candidate.match(/^\d{1,3}(\.\d{1,3}){3}\s+([a-z0-9-*_.-]+)/i);
-  if (hostsMatch) candidate = hostsMatch[2];
-  // 去除行内注释
-  candidate = candidate.split('#')[0].split('!')[0].trim();
-  // 仅保留合法域名（含点、字母数字、连字符、可选前导 *. 通配）
-  const domain = candidate.replace(/^\*\./, '').toLowerCase();
-  if (/^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/.test(domain)) {
-    return domain;
-  }
-  return null;
-}
-
 // 允许出站 host：仅 SOURCES 白名单，防止被聚合源重定向到任意 host（T-AUD-M02）
 const ALLOWED_HOSTS = new Set(SOURCES.map((s) => new URL(s.url).host.toLowerCase()));
-
-/** 带护栏的文本抓取：逐跳校验 https + host 白名单，流式累计限制体积（T-AUD-L02） */
-async function fetchTextGuarded(url) {
-  let current = url;
-  for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
-    if (!isAllowedFetchUrl(current, ALLOWED_HOSTS)) {
-      throw new Error(`出站 URL 不合法: ${current}`);
-    }
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-    let res;
-    try {
-      // 手动跟随：自动 follow 会绕过 host 校验，必须先逐跳判定
-      res = await fetch(current, { signal: controller.signal, redirect: 'manual' });
-    } finally {
-      clearTimeout(timer);
-    }
-
-    if (res.status >= 300 && res.status < 400 && res.headers.get('location')) {
-      const location = new URL(res.headers.get('location'), current).toString();
-      if (!isAllowedRedirect(hop, location, ALLOWED_HOSTS)) {
-        throw new Error(`重定向被拒绝: ${location}`);
-      }
-      current = location;
-      continue;
-    }
-
-    if (!res.ok) {
-      const err = new Error(`HTTP ${res.status}`);
-      err.status = res.status;
-      throw err;
-    }
-
-    const declared = parseContentLength(res.headers.get('content-length'));
-    if (exceedsSizeLimit(declared, 0)) {
-      throw new Error(`响应体超过 ${MAX_FETCH_BYTES} 字节上限（Content-Length=${declared}）`);
-    }
-    // 流式累计兜底：即使 Content-Length 缺失/伪造也不会无限读取
-    if (!res.body) return await res.text();
-    const reader = res.body.getReader();
-    const chunks = [];
-    let total = 0;
-    try {
-      for (;;) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        total += value.byteLength;
-        if (exceedsSizeLimit(null, total)) {
-          reader.cancel().catch(() => {});
-          throw new Error(`响应体超过 ${MAX_FETCH_BYTES} 字节上限（已读 ${total}）`);
-        }
-        chunks.push(value);
-      }
-    } finally {
-      reader.releaseLock();
-    }
-    return Buffer.concat(chunks).toString('utf8');
-  }
-  throw new Error(`重定向次数超过 ${MAX_REDIRECTS}`);
-}
-
-async function fetchDomains(url) {
-  try {
-    const text = await fetchTextGuarded(url);
-    const set = new Set();
-    for (const line of text.split('\n')) {
-      const d = extractDomain(line);
-      if (d) set.add(d);
-    }
-    console.log(`  ✓ 提取 ${set.size} 个候选域名: ${url}`);
-    return set;
-  } catch (err) {
-    console.warn(`  ✗ 跳过（${err.message || err.name}）: ${url}`);
-    return new Set();
-  }
-}
 
 async function main() {
   console.log('开始聚合上游拦截规则源…');
@@ -164,7 +62,7 @@ async function main() {
   };
 
   for (const source of SOURCES) {
-    const set = await fetchDomains(source.url);
+    const set = await fetchDomains(source.url, ALLOWED_HOSTS, FETCH_TIMEOUT_MS);
     recordCategory(source.key, set);
     for (const d of set) merged.add(d);
   }
