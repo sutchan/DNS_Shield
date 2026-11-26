@@ -266,6 +266,9 @@ git add public && git commit -m "chore: 同步生成规则文件"
 | `NEXT_PUBLIC_BUILD_ID` | 页脚构建编号（`yymmddhhmm`，由 `next.config.js` 构建期生成并注入，见 SPEC §8.1） | 构建时生成 |
 | `APP_VERSION` | 应用版本单一来源（`src/config/version.ts`；权威源为 `package.json` version，文档展示位由 `sync-facts.mjs` 同步） | 3.22.2 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（须形如 `G-XXXXXXXXXX`；留空或格式非法则不启用统计，详见 `.env.example`） | 空 |
+| `NEXT_PUBLIC_GOOGLE_VERIFICATION` | Google Search Console 站点验证 meta 值（见 `.env.example`） | 空 |
+| `NEXT_PUBLIC_DOMAINS_URL` | 运行时统一域名数据源地址（留空用 `src/config/index.ts` 内置默认） | 空 |
+| `NEXT_PUBLIC_PRESET_BUILTIN` / `NEXT_PUBLIC_PRESET_ADGUARD` / `NEXT_PUBLIC_PRESET_EASYLIST` / `NEXT_PUBLIC_PRESET_NEOHOSTS` | 四个预设源 URL 覆写（留空用 `src/config/index.ts` 内置默认，见 `.env.example`） | 空 |
 
 ### 2. Next.js 配置
 
@@ -297,8 +300,8 @@ const nextConfig = {
 module.exports = nextConfig;
 ```
 
-> **CSP 双源**：`vercel.json` 另有一份逐字相同的 CSP，末尾额外启用 `require-trusted-types-for 'script'`；两处尚未统一（见 SPEC §12.1）。CI 目前**没有**自动一致性检查，修改一处须手工核对另一处。
-> **本地开发提示（已内置修复）**：`next dev` 的 webpack 需以 `eval` 执行模块，若 CSP 不含 `'unsafe-eval'`，带 CSP 的浏览器 / 内嵌 WebView 预览会被拦截并报 `Refused to evaluate a string as JavaScript`。现 `next.config.js` 的 `headers()` 按 `NODE_ENV` 分支：dev 自动为 `script-src` 追加 `'unsafe-eval'`，生产（`next build` / `next start`）保持严格不含该指令；`vercel.json` 属生产部署路径，同样不含。无需临时手工改配置或更换预览方式。
+> **CSP 单一来源**：安全响应头（CSP / HSTS / COOP / CORP / X-Frame-Options）由 `next.config.js` 的 `headers()` 唯一维护；`vercel.json` 已删除，不存在双源差异（见 SPEC §12.1）。
+> **本地开发提示（已内置修复）**：`next dev` 的 webpack 需以 `eval` 执行模块，若 CSP 不含 `'unsafe-eval'`，带 CSP 的浏览器 / 内嵌 WebView 预览会被拦截并报 `Refused to evaluate a string as JavaScript`。现 `next.config.js` 的 `headers()` 按 `NODE_ENV` 分支：dev 自动为 `script-src` 追加 `'unsafe-eval'`、对 `object-src` 放行 `data:`；生产（`next build` / `next start`）保持严格（`object-src 'none'`、`frame-src 'none'`）。无需临时手工改配置或更换预览方式。
 
 ## 部署后操作
 

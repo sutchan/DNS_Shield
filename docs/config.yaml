@@ -1,5 +1,5 @@
 schema: spec-driven
-lastReviewed: "2026-11-12"
+lastReviewed: "2026-11-26"
 
 # Project context
 context: |
@@ -21,8 +21,9 @@ context: |
   Large inputs (>=20000 lines) use multi-core Web Worker shard parsing with graceful fallback
   Parse tasks are single-flighted by a content key (task + text) and the worker pool reference is stable (memory guard)
   CI runs a root temp-file hygiene gate (scripts/check-root-clean.mjs) before the CI Gate aggregator; all temporary files must live under the repo-root .tmp/ directory (see docs/TEMP-FILES.md), auto-created by npm run tmp:init and cleared by npm run tmp:clean
-  GitHub actions use latest majors: checkout@v5, setup-node@v6, actions/setup-node@v6, cache@v5, upload-artifact@v5
-  ui/Tabs.tsx and @radix-ui/react-tabs are deprecated since v3.15.5 (single Format dropdown replaces them)
+  Third-party GitHub Actions are pinned to commit SHAs (e.g. actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6); upgrade only via Dependabot PR
+  Package manager is npm (package-lock.json only); pnpm-lock.yaml was removed. engines: node >=24.11.0 <25, npm >=11
+  Format switching uses OutputPanel.formatSelect.tsx (single dropdown); ui/Tabs.tsx, Card.tsx, Loading.tsx and Switch.tsx were removed along with their Radix packages
 
 # Per-artifact rules
 rules:
@@ -52,9 +53,6 @@ components:
     - name: "Button"
       file: "src/components/ui/Button.tsx"
       parts: ["Button", "buttonVariants"]
-    - name: "Card"
-      file: "src/components/ui/Card.tsx"
-      parts: ["Card", "CardHeader", "CardTitle", "CardDescription", "CardContent", "CardFooter"]
     - name: "Checkbox"
       file: "src/components/ui/Checkbox.tsx"
       parts: ["Checkbox"]
@@ -67,20 +65,12 @@ components:
     - name: "Label"
       file: "src/components/ui/Label.tsx"
       parts: ["Label"]
-    - name: "Loading"
-      file: "src/components/ui/Loading.tsx"
-      parts: ["Loading"]
+    - name: "EmptyState"
+      file: "src/components/ui/EmptyState.tsx"
+      parts: ["EmptyState"]
     - name: "Select"
       file: "src/components/ui/Select.tsx"
       parts: ["Select", "SelectTrigger", "SelectValue", "SelectContent", "SelectItem"]
-    - name: "Switch"
-      file: "src/components/ui/Switch.tsx"
-      parts: ["Switch"]
-    - name: "Tabs"
-      deprecated: true
-      note: "Deprecated since v3.15.5; replaced by OutputPanel.formatSelect.tsx (single Format dropdown). File and @radix-ui/react-tabs kept temporarily - do not add new references."
-      file: "src/components/ui/Tabs.tsx"
-      parts: ["Tabs", "TabsList", "TabsTrigger", "TabsContent"]
     - name: "Toast"
       file: "src/components/ui/Toast.tsx"
       parts: ["Toast", "toast"]

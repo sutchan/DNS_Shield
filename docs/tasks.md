@@ -4,7 +4,7 @@
 > 已完成任务条目、历轮变更详情与开发进度全景已归档至 [tasks-done.md](./tasks-done.md)（含全部 T-P0/P1/P2/P3/P4 结构化任务、专项整改、验收标准与诊断证据、完成度快照），本文件不再重复维护已完成条目与历史叙述，避免两处口径漂移。
 > 规则固化见 [SPEC.md §5.3 任务记录规范](./SPEC.md)。
 
-> 最后审查：2026-11-25（与 package.json v3.22.2 对齐；**第二十三轮 2026-11-25 任务闭环专项：闭环 T-AUD-L05 / T-AUD-L02 / T-AUD-M04 并归档，T-SEC-01 产出评估结论、T-PERF-01 parser 迭代落地，活跃任务 8 项；实测 57 套件 / 364 用例、tsc / lint / sync-facts / check-locales 全绿**；第二十二轮：两轮复核共闭环 37 项，活跃任务 11 项；实测 54 套件 / 349 用例、覆盖率 87.72/87.15/89.17/87.72、构建与全部静态门禁通过；第二十一轮：建立文档中心与 01/03/04/05/06/07 六大模块文档、OpenAPI 3.1 定义，任务清单补齐责任人与计划完成时间并重排为 18 项（后增 T-DATA-01 与 2026-11-25 审计迁移项，当前合计以 §二 声明为准）；第二十轮：域名计数曾实算 127188、i18n 键数校正；随后主线数据源回退至 644 条并登记 T-DATA-01，本轮已从 af976b8 恢复至 127188 条、i18n 键数实算 214；第十九轮审计 11 项已并入第二节）
+> 最后审查：2026-11-26（与 package.json v3.22.2 对齐；**第二十四轮 2026-11-26 全量文档核查：以代码实况核对全部活跃文档，修正 README.en 版本/操作路径、DEPLOYMENT 的 npm/CSP/域名数、SPEC 的已删依赖与目录树、CHECKLIST/config.yaml 的已删组件、04-api 的六个函数签名、openapi.yaml 版本、05/07 的过时数字与失效 id、CHANGELOG 头部版本；冻结快照按声明保留。**；**第二十三轮 2026-11-25 任务闭环专项：闭环 T-AUD-L05 / T-AUD-L02 / T-AUD-M04 并归档，T-SEC-01 产出评估结论、T-PERF-01 parser 迭代落地，活跃任务 8 项；实测 57 套件 / 364 用例、tsc / lint / sync-facts / check-locales 全绿**；第二十二轮：两轮复核共闭环 37 项，活跃任务 11 项；实测 54 套件 / 349 用例、覆盖率 87.72/87.15/89.17/87.72、构建与全部静态门禁通过；第二十一轮：建立文档中心与 01/03/04/05/06/07 六大模块文档、OpenAPI 3.1 定义，任务清单补齐责任人与计划完成时间并重排为 18 项（后增 T-DATA-01 与 2026-11-25 审计迁移项，当前合计以 §二 声明为准）；第二十轮：域名计数曾实算 127188、i18n 键数校正；随后主线数据源回退至 644 条并登记 T-DATA-01，本轮已从 af976b8 恢复至 127188 条、i18n 键数实算 214；第十九轮审计 11 项已并入第二节）
 > 维护团队：Sut / ArcesTeam
 >
 > **本轮整理（2026-11-13）**：依 SPEC §5.3 任务记录规范，将第十四~十八轮冗长的「本次更新」历史叙述统一归档至 [tasks-done.md](./tasks-done.md)，本文件仅保留未完成清单、实时指标、遗留疑问与维护清单；版本与指标经实算与代码实况对齐（v3.19.2 / 12 格式 / 16 语 212 键 / 51 套件 326 用例 / 17 组件 / >200 行源文件 0 个 / 拦截域名 127188 条）；2026-11-22 第二十轮校正键数与域名计数并补记分支整理。
@@ -27,7 +27,7 @@
 | 覆盖率门禁 | 已生效且为真实值；含 `src/utils` + `src/hooks`，全局门槛 **语句 80 / 分支 75 / 函数 85 / 行 80**，并按 glob 加设 hooks 80/75/80/80、utils 85/85/85/85；`vitest.config.ts` 显式声明 `all: false` | `vitest run --coverage`；2026-11-25 实测：语句 87.72 / 分支 87.15 / 函数 89.17 / 行 87.72（hooks 86.01/80.37/83.63/86.01，utils 89.23/91.57/92.15/89.23），全部达标 |
 | 组件规模 | 顶层 **17** 个 `.tsx`（含 `OutputPanel.parts.tsx` / `OutputPanel.formatSelect.tsx` / 新增 `SeoContent.tsx`）+ `OutputPanel.derived.ts` / `InputPanel.types.ts`，`ui/` 8 个（v3.18.0 清理 4 个未被引用的孤儿组件 `Card` / `Loading` / `Switch` / `Tabs`） | `src/components/` 实测（2026-11-12 实算） |
 | 源文件 >200 行 | **0** 个（v3.18.1 已将 `src/hooks/useWorkerPool.ts` 由 213 行拆分降回 200 行内；`globals.css` 已于 v3.13.6 拆为 `src/styles/*.css` 8 模块）；2026-11-13 实扫确认 | 行数扫描（2026-11-13 实算） |
-| 静态门禁 | `sync-facts.mjs --check` 13 处版本展示位与 package.json(3.21.0) 全一致；`check-locales.mjs` 16 语 / 214 键一致；`check-root-clean.mjs` 根目录临时文件洁净度（`rootclean` job）；文档内链断链 0 | 2026-11-25 实跑（`sync-facts --check` / `check:locales` / `check-root-clean`）；`tsc` / `eslint` / `vitest` 同日实跑全绿 |
+| 静态门禁 | `sync-facts.mjs --check` 13 处版本展示位与 package.json(3.22.2) 全一致；`check-locales.mjs` 16 语 / 214 递归键一致；`check-root-clean.mjs` 根目录临时文件洁净度（`rootclean` job）；文档内链断链 0 | 2026-11-26 实跑（`sync-facts --check` / `check:locales` / `check-root-clean`）；`tsc` / `eslint` / `vitest` 于 2026-11-25 实跑全绿 |
 | 拦截域名 | **127188** 条（黑名单 127188 + 白名单 0），2026-11-25 从 `af976b8` 恢复后实算 | `node scripts/count-domains.mjs` 实跑；回退原因与恢复决策见 T-DATA-01；`origin/auto/aggregate-upstream` 上 7fac633 的 129348 条未合入主线，不采用 |
 
 > **教训**：本文件中的数据型数字（键数 / 用例数 / 覆盖率 / 行数）历史上多次与实现脱节。修改前务必用脚本实算，禁止凭记忆书写。
@@ -63,7 +63,7 @@
 - **T-CI-01 · 验证 CI→Deploy→Release 全绿与自动发版**（责任人：CI Owner；计划：2026-12-02）**【取证 2026-11-25：链路未跑通】**
   - 目标：确认最新版本已在 GitHub 产生 Release / tag，发布链路真实跑通。
   - 验收标准：Actions 全绿、存在对应 tag 与 Release；若红则定位（重点：setup 缓存 / npm ci 锁文件安装）。
-  - 本轮取证：`git ls-remote --tags origin` 显示远端最新 tag 为 **v3.7.31**，与当前 `package.json` v3.22.0 严重脱节；本地 tag 同样止于 v3.7.31。说明 `release.yml` 自动打 tag/Release 未真实生效。根因需 GitHub Actions 运行日志与权限配置（本机不可达），故保持未完成并升级证据。
+  - 本轮取证：`git ls-remote --tags origin` 显示远端最新 tag 为 **v3.7.31**，与当前 `package.json` v3.22.2 严重脱节；本地 tag 同样止于 v3.7.31。说明 `release.yml` 自动打 tag/Release 未真实生效。根因需 GitHub Actions 运行日志与权限配置（本机不可达），故保持未完成并升级证据。
 - **T-SEC-01 · 评估 Trusted Types（O-08）**（责任人：Dev Team；计划：2026-12-16）**【评估结论已产出，灰度待条件】**：结论见 [`docs/05-security-assessment-csp.md`](./05-security-assessment-csp.md)（2026-11-25）：动态 JSON-LD 不适合 hash、首屏脚本 hash 需同步机制、Trusted Types 缺 staging 灰度，故本轮不移除 `'unsafe-inline'`；再评估触发条件为具备 staging + CSP Report-Only 上报。验收剩余项：灰度无违规（需外部条件）。
 - **T-A11Y-01 · 无障碍自动化回归（O-09）**（责任人：QA；计划：2026-12-16）：引入 `axe-core` + Playwright，对 `/`、`/about/` 与弹窗扫描，CI 阻断 critical 违规。验收：基线修复后 critical = 0。
 - **T-PERF-01 · 大输入内存优化（O-01）**（责任人：Dev Team；计划：2026-12-23）**【部分完成 2026-11-25】**：已完成 `parser.ts` 的 `collectLines` 改用 `src/utils/iterateLines.ts`（`forEachLine` + `countIterableLines`，不再 split 出整块行数组；新增 4 例契约测试，10 万行迭代无栈溢出）；`parseAggregate.ts` 的 `push(...arr)` 已由 T-AUD-M10 修复为逐项 push。剩余：`sortDedupe.ts` 的 `split`（排序算法依赖数组，需另行设计流式排序）、`parseAggregate` 分片改偏移记录、50MB 基准。验收剩余项：主线程峰值 3× → 1× 的基准实测。

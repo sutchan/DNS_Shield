@@ -116,9 +116,11 @@ dns-shield/
 │   │   ├── sitemap.ts              # 自动生成 sitemap.xml（首页 + /about/ 两条真实路由）
 │   │   └── llms.txt/route.ts       # 生成式引擎站点简报 /llms.txt（force-static 预渲染）
 │   ├── components/                 # 业务组件
-│   │   ├── ui/                     # shadcn/ui 基础组件（8 个；v3.18.0 清理未引用的 Card / Loading / Switch / Tabs）
+│   │   ├── ui/                     # shadcn/ui 基础组件（9 个：Badge/Button/Checkbox/DropdownMenu/EmptyState/Input/Label/Select/Toast；v3.18.0 清理 Card / Loading / Switch / Tabs）
 │   │   ├── SeoContent.tsx          # 关于 / 12 格式清单 / FAQ（Server Component，v3.20.0 起仅在 /about/ 渲染）
-│   │   ├── Header.tsx              # 页头（Shield 图标 + 语言/主题切换）
+│   │   ├── ServiceWorkerRegistrar.tsx # 生产环境注册同源 Service Worker（dev 跳过）
+│   │   ├── SettingsLanguage.tsx    # 设置弹窗内的语言选择控件（v3.22.1）
+│   │   ├── Header.tsx              # 页头（Shield 图标 + 分享/设置入口；语言/主题切换已移入设置弹窗）
 │   │   ├── Footer.tsx              # 页脚（链接 + 使用说明）
 │   │   ├── InputEditor.tsx         # 域名编辑器子组件
 │   │   ├── InputPanel.tsx          # 输入面板（域名编辑 + URL 导入）
@@ -141,6 +143,8 @@ dns-shield/
 │   │   ├── index.ts                # 应用配置（预设源 URL、多镜像）
 │   │   ├── version.ts              # 版本号单一来源（APP_VERSION，派生自 package.json）
 │   │   ├── site.ts                 # 站点事实常量（URL / OG 图 / 16 语 / AI 爬虫 UA）
+│   │   ├── languages.ts            # 语言优先级与 BCP 47 标签映射
+│   │   ├── jsonld.ts               # JSON-LD @graph 常量
 │   │   ├── seo-content.ts          # GEO 文案单一来源（关于 / 12 格式 / FAQ / HowTo / llms.txt）
 │   │   └── seo.test.ts             # SEO/GEO 输出回归测试（15 用例）
 │   ├── workers/
@@ -201,6 +205,8 @@ dns-shield/
 │       ├── analytics.ts            # GA4 衡量 ID 读取/校验与 gtag 片段生成（纯逻辑）
 │       ├── domainValidator.ts       # 域名验证与行解析
 │       ├── domainFetch.ts          # 远程域名列表拉取（超时/兜底/体积上限）
+│       ├── fetchGuards.ts          # fetch 响应体积/超时护栏（v3.22.x）
+│       ├── iterateLines.ts         # 逐行迭代（替代全量 split('\n')，v3.22.x）
 │       ├── parser.ts               # 域名解析器（collectLines 逐行收集 + finalizeParsed 全局后处理，v3.16.0 拆分支持分片并行）
 │       ├── parseAggregate.ts       # 并行度决策 / 行边界分片 / 原始产物聚合（v3.16.0）
 │       ├── sortDedupe.ts           # 域名排序与去重（纯函数）
@@ -372,7 +378,7 @@ dns-shield/
 | 日志与错误 | 统一 `utils/logger`；可恢复错误给用户可见提示，不可恢复错误记录上下文后上抛；禁止 `catch {}` 静默吞异常 |
 | 样式 | Tailwind 原子类为主，自定义样式进 `src/styles/`；遵循 §4.4 视觉层级与栅格约定 |
 | 注释 | 仅注释「为什么」而非「做了什么」；文件头注释须写清版本、职责与关键约束；改动文件才更新头注释版本号，禁止全仓库批量刷写 |
-| 依赖引入 | 新增依赖须评估体积与许可证，并同步 `package.json`、`docs/SPEC.md` §9 与锁文件（当前 `@radix-ui/react-{switch,tabs,toast}` 为零引用依赖，待清理） |
+| 依赖引入 | 新增依赖须评估体积与许可证，并同步 `package.json`、`docs/SPEC.md` §9 与 `package-lock.json`（原零引用依赖 `@radix-ui/react-{switch,tabs,toast}` 已于 v3.22.x 移除） |
 
 ## 5. 维护流程
 
@@ -505,9 +511,6 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 | @radix-ui/react-label | ^2.0.2 | Label 组件 |
 | @radix-ui/react-select | ^2.0.0 | Select 组件 |
 | @radix-ui/react-slot | ^1.0.2 | Slot 组件 |
-| @radix-ui/react-switch | ^1.0.3 | Switch 组件 |
-| @radix-ui/react-tabs | ^1.0.4 | Tabs 组件（**已废弃**：v3.15.5 起由 `OutputPanel.formatSelect.tsx` 单一「格式」下拉取代；依赖与 `ui/Tabs.tsx` 暂保留，勿新增引用） |
-| @radix-ui/react-toast | ^1.1.5 | Toast 组件（**零引用**，待清理，与 `switch`/`tabs` 同批评估；通知实际走 `sonner`） |
 | lucide-react | ^0.312.0 | 图标库 |
 | tailwind-merge | ^2.2.0 | Tailwind 类合并 |
 | class-variance-authority | ^0.7.0 | 组件变体管理 |
@@ -549,12 +552,12 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 
 ## 11. 已知限制
 
-> **【强制】事实清单**：本节描述的是**当前真实状态**（截至 v3.22.0），不是目标能力。任何文档或代码若声称下列项「已生效」，即视为漂移，须以本节为准修正。
+> **【强制】事实清单**：本节描述的是**当前真实状态**（截至 v3.22.2），不是目标能力。任何文档或代码若声称下列项「已生效」，即视为漂移，须以本节为准修正。
 
 - 部分广告域名使用 HTTPS 硬编码，需配合 Pi-hole 或广告屏蔽插件
 - 部分设备可能有 hosts 文件大小限制
 - 需要定期更新规则以应对新广告形式
-- **锁文件与 `.npmrc`（原 BLOCKER，v3.19.0 审计 B-01，2026-11-25 已修复）**：`package-lock.json` 已入库；`.npmrc` 已恢复并启用 `engine-strict` / `package-manager-strict`。CI 以 `npm ci` 安装并在 setup 复合动作中显式断言锁文件存在。历史问题证据见 `docs/AUDIT-REPORT-v3.19.0.md`（冻结快照）；当前状态以本节为准。
+- **锁文件与 `.npmrc`（原 BLOCKER，v3.19.0 审计 B-01，2026-11-25 已修复）**：`package-lock.json` 为唯一锁文件（`pnpm-lock.yaml` 已删除，统一 npm）；`.npmrc` 已恢复并启用 `engine-strict=true`（npm 场景不适用 `package-manager-strict`）。CI 以 `npm ci` 安装并在 setup 复合动作中显式断言锁文件存在。历史问题证据见 `docs/AUDIT-REPORT-v3.19.0.md`（冻结快照）；当前状态以本节为准。
 - **Service Worker 注册（原未启用，2026-11-25 已修复）**：`src/components/ServiceWorkerRegistrar.tsx` 在生产环境注册 `/service-worker.js`（dev 跳过以免 HMR 命中旧缓存），缓存白名单仍由 SW 自管；§12.2 的策略现为已生效行为。
 - **`public/category-index.txt`（原未入库，2026-11-25 已修复）**：已从真实聚合分支恢复该文件，`aggregate.yml` 的 `add-paths` 显式列出、`release.yml` 资产清单与 zip 均包含，CI data job 增非空断言；线上分类筛选不再 404。
 
@@ -574,7 +577,7 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 
 ### 12.2 Service Worker 安全
 
-> 以下为 `public/service-worker.js` **自身策略**；截至 v3.19.2 应用未调用 `navigator.serviceWorker.register`，这些策略尚未生效（见 §11）。
+> 以下为 `public/service-worker.js` **自身策略**；生产环境已由 `ServiceWorkerRegistrar` 注册（dev 跳过，见 §11），这些策略在生产环境生效。
 
 - 仅缓存同源 GET 请求
 - 按文件扩展名白名单过滤（.js/.css/.png/.jpg/.svg/.woff2 等）

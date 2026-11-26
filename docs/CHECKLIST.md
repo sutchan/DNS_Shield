@@ -1,6 +1,6 @@
 # 质量检查清单
 
-> 最后审查：2026-11-13（与 package.json v3.22.2 对齐；第十九轮 UI 改进新增可读性与对比度、首屏本地化/主题、CTA 与统计口径、引导与 FAQ 折叠等验收项；第十八轮全量文档核查：Tabs 验收项标注废弃、结构抽查补新模块与 CI 门禁、术语与 build 编号占位符统一；冻结快照按声明保留）
+> 最后审查：2026-11-26（与 package.json v3.22.2 对齐；第十九轮 UI 改进新增可读性与对比度、CTA 与统计口径、引导与 FAQ 折叠等验收项；第十八轮全量文档核查同步组件/依赖删除与 CI npm 门禁、语言/主题切换位置；冻结快照按声明保留）
 
 ## UI/UX 设计规范
 
@@ -20,7 +20,7 @@
 - [ ] 主 CTA 唯一：输入区 `#parse-btn` 为主按钮，输出区仅「刷新预览」次级变体
 - [ ] 统计口径不重复：输入区只显示输入解析结果，输出区只显示产物统计，行数标签写明口径
 - [ ] Hero 快速入门三步为可聚焦锚点；FAQ 用 `details/summary` 折叠且答案保留在 SSR HTML
-- [ ] Header 常驻 `#theme-toggle-btn` 一键明暗切换
+- [ ] 设置弹窗内可一键明暗切换（v3.22.1 起由 Header 移入设置弹窗）
 
 ## 代码质量
 
@@ -53,9 +53,9 @@
 
 - [ ] `src/components/ui/Button.tsx` 使用 cva 管理变体
 - [ ] `src/components/ui/Button.tsx` 支持 isLoading 状态
-- [ ] `src/components/ui/Card.tsx` 使用圆角 2xl
 - [ ] `src/components/ui/Badge.tsx` 支持 success/warning/error 变体
-- [ ] `src/components/ui/Tabs.tsx` 使用圆角 lg — **已废弃（v3.15.5 起）**：由 `OutputPanel.formatSelect.tsx` 单一「格式」下拉取代，组件与 `@radix-ui/react-tabs` 依赖仅暂保留、勿新增引用；验收改查下拉触发器 `output-format-select-btn` 与菜单项 `format-item-{fmt}`
+- [ ] 格式切换由 `OutputPanel.formatSelect.tsx` 单一「格式」下拉承担（v3.15.5 起）；验收查触发器 `output-format-select-btn` 与菜单项 `format-item-{fmt}`；`Tabs.tsx` 组件与 `@radix-ui/react-tabs` 依赖已删除
+- [ ] `src/components/ui/EmptyState.tsx` 空状态文案与图标语义一致（v3.22.x 新增）
 - [ ] `src/components/ui/Input.tsx` 支持 ref 传递
 - [ ] 所有组件使用 `cn()` 合并类名
 - [ ] 所有组件使用 `forwardRef`
