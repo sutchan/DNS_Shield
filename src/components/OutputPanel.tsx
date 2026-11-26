@@ -1,4 +1,4 @@
-// src/components/OutputPanel.tsx v3.22.1
+// src/components/OutputPanel.tsx v3.22.4
 // 输出面板：编排格式切换 / 设置弹窗 / 规则测试 / 路由器脚本 / 预览 / 操作按钮。
 // v3.15.5：格式切换控件改为单一「格式」下拉（FormatSelect），覆盖全部可见格式。
 // v3.17.2：工具栏移除设置按钮（保留 Header 入口 #settings-btn），onOpenSettings 随之移除。
@@ -23,35 +23,9 @@ import {
   OutputActions,
 } from './OutputPanel.parts';
 import { buildFormatLabel, useVisibleFormats } from './OutputPanel.derived';
-import { Language, Settings as SettingsType, FormatType, ParsedData } from '../types';
 import { useT } from '../context/AppContext';
 import { countLines } from '../utils/lineCount';
-
-interface OutputPanelProps {
-  /** 当前格式的规则文本（惰性生成，T-P1-06） */
-  currentOutput: string;
-  currentFormat: FormatType;
-  isSettingsOpen: boolean;
-  onCloseSettings: () => void;
-  settings: SettingsType;
-  parsedData: ParsedData;
-  /** v3.20.1：分类过滤后的数据，用于统计口径与产物一致（诊断 P2 统计口径） */
-  effectiveData?: ParsedData;
-  outputPreviewRef: React.RefObject<HTMLDivElement>;
-  outputLineNumbersRef: React.RefObject<HTMLDivElement>;
-  setFormat: (format: FormatType) => void;
-  generateRules: () => void;
-  downloadOutput: () => void;
-  copyOutput: () => void;
-  syncOutputScroll: () => void;
-  setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
-  theme: 'light' | 'dark';
-  toggleTheme: () => void;
-  currentLang: string;
-  supportedLanguages: Language[];
-  switchLang: (lang: string) => void;
-  showToast?: (key: string) => void;
-}
+import type { OutputPanelProps } from './OutputPanel.types';
 
 const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   currentOutput,

@@ -1,15 +1,14 @@
-// src/hooks/useDomainData.ts v3.22.0
+// src/hooks/useDomainData.ts v3.22.4
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { fetchWithCache } from '../utils/cachedFetch';
 import { generateLineNumbers } from './useLineNumbers';
 import { ParsedData, Stats } from '../types';
-import { config } from '../config';
 import { logger } from '../utils/logger';
-import { isValidAutosave, writeAutosave, clearAutosave } from './autosaveStorage';
+import { writeAutosave, clearAutosave } from './autosaveStorage';
 import { useAsyncRuleProcessing } from './useAsyncRuleProcessing';
 import { WORKER_LINE_THRESHOLD } from './useRuleWorker';
 import { countLines } from '../utils/lineCount';
 import { useAutosave } from './useAutosave';
+import { useDomainSources } from './useDomainData.sources';
 
 export const useDomainData = (showToast: (key: string, params?: { [key: string]: string | number }) => void) => {
   const [sourceInput, setSourceInput] = useState('');
@@ -29,7 +28,6 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
     totalLines: 0,
     invalidCount: 0
   });
-  const [isLoading, setIsLoading] = useState(false);
   // 规则处理：超过阈值的解析/排序/去重移交 Web Worker，避免阻塞主线程
   const { processParse, processSort, processDedupe, progress, isProcessing } =
     useAsyncRuleProcessing();
@@ -63,55 +61,15 @@ export const useDomainData = (showToast: (key: string, params?: { [key: string]:
       });
   }, [processParse]);
 
-  const loadLocalDomains = useCallback(async (text: string) => {
-    if (!isValidAutosave(text)) {
-      return false;
-    }
-    if (text.trim()) {
-      setSourceInput(text);
-      parseSourceData(text);
-      generateLineNumbers(text, lineNumbersRef);
-      return true;
-    }
-    return false;
-  }, [parseSourceData]);
-
-  // fetchDomainsText 已抽离至 src/utils/domainFetch.ts（流式读取 + 10MB 字节上限，防 DoS）
-  const loadDomainData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      // 优先远端预设源，失败则回退同源 /domains.txt；
-      // fetchWithCache 内置 ETag 条件请求（304 复用）与离线缓存兜底
-      const remote = await fetchWithCache(config.domainsUrl);
-      // 网络往返期间本地草稿可能已恢复（IndexedDB 异步读取）：此时必须放弃
-      // 远端内容，否则用户草稿会被内置清单静默覆盖（数据丢失，T-P1-11）。
-      if (autosaveRestoredRef.current && sourceInputRef.current.trim()) {
-        return;
-      }
-      if (remote && remote.trim()) {
-        await loadLocalDomains(remote);
-        return;
-      }
-      const local = await fetchWithCache('/domains.txt');
-      if (local && local.trim()) {
-        await loadLocalDomains(local);
-        return;
-      }
-      // 所有源均失败且无内容：保留空状态（loadAll 的 finally 会统一处理 UI）
-      logger.warn('Could not load any domains source (remote and local both empty).');
-      // 用户可见告警：远端域名源不可用时不能只写日志（T-P1-09）
-      showToastRef.current('domainsLoadFailed');
-    } catch (error) {
-      logger.warn('Could not load domains.txt:', error);
-      showToastRef.current('domainsLoadFailed');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [loadLocalDomains]);
-
-  useEffect(() => {
-    loadDomainData();
-  }, [loadDomainData]);
+  // 源加载编排（远端优先 + 本地回退 + 草稿保护）已拆至 useDomainData.sources
+  const { isLoading } = useDomainSources({
+    setSourceInput,
+    parseSourceData,
+    lineNumbersRef,
+    sourceInputRef,
+    autosaveRestoredRef,
+    showToastRef,
+  });
 
   // 自动保存编排：草稿恢复 + 定时持久化（已抽离至 useAutosave）
   useAutosave({
