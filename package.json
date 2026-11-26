@@ -8,9 +8,11 @@
     "start": "next start -p 3000 -H 0.0.0.0",
     "lint": "next lint",
     "test": "vitest run",
+    "benchmark:large": "vitest run src/utils/largeInput.bench.ts --reporter=verbose",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "check:locales": "node scripts/check-locales.mjs",
+    "check:doc-facts": "node scripts/check-doc-facts.mjs",
     "locales:baseline": "node scripts/check-locales.mjs --update-baseline",
     "count:domains": "node scripts/count-domains.mjs",
     "icons:gen": "node scripts/gen-icons.mjs",
@@ -50,7 +52,7 @@
     "vitest": "^3.2.7"
   },
   "engines": {
-    "node": ">=24.11.0 <25",
+    "node": ">=24.15.0 <25",
     "npm": ">=11"
   }
 }

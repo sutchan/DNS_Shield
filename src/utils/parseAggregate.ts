@@ -1,10 +1,11 @@
-// src/utils/parseAggregate.ts v3.22.0
+// src/utils/parseAggregate.ts v3.22.4
 // 多核并行解析的纯函数层：并行度决策、按行边界分片与原始产物聚合。
 // parseSource 的逐行收集阶段（collectLines）无跨行状态，按行分片并行求值后
 // 聚合原始产物，再统一执行全局后处理（finalizeParsed），结果与单线程
 // 整段解析等价（等价契约由 parseAggregate.test.ts 逐字段断言）。
 
 import type { RawCollected, RawCounters } from './parser';
+import { countIterableLines } from './iterateLines';
 
 /** 并行解析的行数下限：低于此值单线程更快，不值得池化分发 */
 export const PARALLEL_PARSE_THRESHOLD = 20000;
@@ -27,12 +28,31 @@ export const decideShardCount = (totalLines: number, hardwareConcurrency: number
 // shardCount <= 1 时原样返回；以 '\n' 重新拼接全部分片可还原原文。
 export const splitIntoShards = (text: string, shardCount: number): string[] => {
   if (shardCount <= 1) return [text];
-  const lines = text.split('\n');
-  const per = Math.ceil(lines.length / shardCount);
-  const shards: string[] = [];
-  for (let i = 0; i < lines.length; i += per) {
-    shards.push(lines.slice(i, i + per).join('\n'));
+  // T-PERF-01：不再 split 出完整行数组，只扫描换行符记录分片边界。
+  // 空串与 split('\n') 同口径按 1 行处理，保证边界行为不变。
+  const totalLines = Math.max(1, countIterableLines(text));
+  const per = Math.ceil(totalLines / shardCount);
+  const cutAfterLine = new Set<number>();
+  for (let k = 1; k < shardCount; k++) {
+    const boundary = k * per;
+    if (boundary > 0 && boundary < totalLines) cutAfterLine.add(boundary - 1);
   }
+  if (cutAfterLine.size === 0) return [text];
+
+  const ends: number[] = [];
+  let lineIndex = 0;
+  for (let i = 0; i < text.length; i++) {
+    if (text.charCodeAt(i) !== 10) continue;
+    if (cutAfterLine.has(lineIndex)) ends.push(i);
+    lineIndex++;
+  }
+  const shards: string[] = [];
+  let start = 0;
+  for (const end of ends) {
+    shards.push(text.slice(start, end));
+    start = end + 1;
+  }
+  shards.push(text.slice(start));
   return shards;
 };
 

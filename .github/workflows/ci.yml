@@ -205,6 +205,11 @@ jobs:
       - name: Verify version facts are synced
         run: node scripts/sync-facts.mjs --check
 
+      # T-DOC-03：文档中的测试数/键数/域名数/展示位数/超行数必须由权威源推导，
+      # 历史多次人工维护导致同一事实出现多套数字，此处按脚本实算结果阻断漂移。
+      - name: Verify document facts match code
+        run: npm run check:doc-facts
+
       # T-VERIFY-01：OpenAPI 3.1 定义的结构与版本一致性（离线可跑）
       - name: Validate OpenAPI 3.1 definition
         run: node scripts/check-openapi.mjs

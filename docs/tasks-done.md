@@ -450,3 +450,23 @@
 - **结论与上下文**：2026-11-25 已产出 `docs/05-security-assessment-csp.md`：动态 JSON-LD 不适合静态 hash；首屏脚本 hash 需与内联脚本同步机制；Trusted Types 缺少 staging + CSP Report-Only 灰度。故本轮不移除 `'unsafe-inline'`，保持现有安全头。若将来具备 staging 与上报条件，应另立新任务推进，不在本任务下继续挂起。
 - **验收**：评估文档已入库；`next.config.js` / `edgeone.json` 的 8 项安全头仍由 `check-security-headers.mjs` 保持一致，门禁通过。
 - **归档时间**：2026-11-26T16:23:19+08:00（任务重评批次）。
+
+### T-DOC-03 · 文档数字与代码事实自动化门禁（O-11）
+
+- **来源 / 优先级**：本轮文档标准化新增；P1，责任人 Dev Team，原计划 2026-12-09。
+- **完整描述**：把测试套件/用例数、语言/键数、域名数、版本展示位数、超行源文件数、输出格式数从脚本权威源自动核对活跃文档，阻止人工维护造成的数字漂移；冻结快照与历史版本行豁免。
+- **状态**：✅ 已完成（2026-11-26 提前完成）。
+- **实现与上下文**：新增 `scripts/check-doc-facts.mjs` 与 `npm run check:doc-facts`；套件数取测试文件数，用例数取 Vitest JSON 报告（`numTotalTests`），语言键取 `zh-cn.json` 展平键与 `scripts/locale-baseline.json` 比对，域名取 `count-domains` 同口径，展示位取 `sync-facts.mjs` 规则数，超行数取 `src/` + `scripts/` 代码文件实扫，格式数取 `ALL_FORMATS`。CI `data` job 已在 `sync-facts --check` 后加入该门禁。
+- **即时收益**：门禁首次运行即发现并修正 `DEPLOYMENT.md:275` 的「13 处」漂移；当前输出为 `59 套件 / 376 用例，214 键，127188 域名，12 处展示位，5 个超行源文件，12 格式`。
+- **验收**：`npm run check:doc-facts` 在 Node 24.15.0 下退出码 0；CI 步骤已登记；历史数字行（旧值/回退/版本历史表）不误报。
+- **归档时间**：2026-11-26（任务治理批次）。
+
+### T-COMPAT-01 · Node 24 / npm 11 强约束兼容验证
+
+- **来源 / 优先级**：历史遗留，本次重评由 P2 升级 P1；责任人 CI Owner，原计划 2026-12-16。
+- **完整描述**：核实 `engines.node >=24.11.0 <25`、`engines.npm >=11`、`.npmrc engine-strict=true`、`package-lock.json` 与 setup action 版本输入一致，并在真实 Node 24 环境验证 `npm ci` + lint + tsc + test + build。
+- **状态**：✅ 已完成（2026-11-26 提前完成）。
+- **问题与修复**：本机默认 Node 26.13.1 超出 `<25`，历史结论不可采信；改用 Node 24.14.0 时发现传递依赖 `@asamuzakjp/css-color@7.2.0` 要求 `^24.15.0`，故把 `package.json` 的 `engines.node` 收紧为 `>=24.15.0 <25`（仍保持 npm >=11），避免声明与实际依赖冲突。
+- **验收实证（Node v24.15.0 / npm 11.12.1）**：`npm ci` 安装 543 包退出码 0；`npm run lint` 通过；`tsc --noEmit` 退出码 0；Vitest **59 套件 / 376 用例全绿**；`npm run build` 退出码 0（生成 6 条静态路由）。日志见本轮验证记录。
+- **上下文**：本机 IDE 的 safe-delete shim 会拦截 `npm ci` 清理 `node_modules` 与 `next build` 清理 `.next`；验证时临时清空 `NODE_OPTIONS` 后全链路通过，属工具链环境限制，非项目缺陷。CI 无该 shim，无需改动 workflow。
+- **归档时间**：2026-11-26（任务治理批次）。

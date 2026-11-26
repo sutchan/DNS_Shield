@@ -58,6 +58,19 @@ env:
   EDGEONE_CLI_VERSION: '1.6.41'
 
 jobs:
+  # 总是运行：若两个部署目标开关都关闭，GitHub 会把整个 workflow_run 标记为
+  # skipped，导致下游 release.yml 的 `conclusion == 'success'` 永不成立，Release
+  # 从未自动发布（T-CI-01 实测根因）。此 job 无 if，保证 Deploy 始终有成功结论；
+  # 真实部署失败仍由对应 job 的 failure 让 workflow 变红，不会误触发发布。
+  summary:
+    name: Deployment summary
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report enabled targets
+        run: |
+          echo "DEPLOY_VERCEL=${{ vars.DEPLOY_VERCEL || 'false' }}"
+          echo "DEPLOY_EDGEONE=${{ vars.DEPLOY_EDGEONE || 'false' }}"
+
   # ---------------------------------------------------------------- Vercel
   vercel:
     name: Deploy to Vercel

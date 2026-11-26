@@ -4,8 +4,9 @@
 #
 # 触发：Deploy 工作流（deploy.yml）在 main 分支「完成后」自动触发。
 #   - deploy.yml 本身已在 ci.yml 全部门禁（lint/typecheck/test/build/data）
-#     成功后才运行，因此本流程实际前置 = CI 全绿 → 部署尝试完成（Deploy 全 skip
-#     仍算 success，故开关未开也不会阻塞发布）。
+#     成功后才运行，因此本流程实际前置 = CI 全绿 → 部署尝试完成（deploy.yml 的
+#     summary job 无 if 常驻，确保两个部署目标都关闭时 workflow 仍是 success，
+#     不会因全 skip 阻断发布）。
 #   - 即发布链路：push → CI → Deploy → Release，每一步绿才继续。
 #
 # 行为：

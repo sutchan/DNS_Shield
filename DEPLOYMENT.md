@@ -272,7 +272,7 @@ CI 中的漂移检测是**硬门禁**（产物与数据源不一致即 `exit 1` 
 ```bash
 node scripts/gen-format-files.mjs   # 重新生成（版本号取自 package.json，禁止硬编码）
 node scripts/count-domains.mjs       # 核对计数
-node scripts/sync-facts.mjs --check  # 13 处文档版本展示位一致性
+node scripts/sync-facts.mjs --check  # 12 处文档版本展示位一致性
 node scripts/check-locales.mjs       # 16 语 / 214 递归键一致性
 node scripts/check-root-clean.mjs    # 根目录临时文件洁净度（CI rootclean job 同款）
 npm run tmp:clean                       # 一键清空 .tmp/（会话收尾）
