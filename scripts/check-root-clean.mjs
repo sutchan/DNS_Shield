@@ -22,10 +22,10 @@ const ALLOWED = new Set([
   'LICENSE', 'next-env.d.ts', 'next.config.js', 'package.json',
   // 包管理器锁文件属于工程配置，不是临时产物；CI 以 package-lock.json 做 npm ci
   'package-lock.json',
-  'postcss.config.js', 'README.en.md', 'README.md',
-  'tailwind.config.js', 'tsconfig.json', 'vercel.json', 'vitest.config.ts',
+  'playwright.config.ts', 'postcss.config.js', 'README.en.md', 'README.md',
+  'tailwind.config.js', 'tsconfig.json', 'vercel.json', 'vitest.bench.config.ts', 'vitest.config.ts',
   // 目录
-  '.github', 'docs', 'openwrt-package', 'prototype', 'public', 'scripts', 'src',
+  '.github', 'docs', 'e2e', 'openwrt-package', 'prototype', 'public', 'scripts', 'src',
 ]);
 
 // 额外允许的模式（如 README.zh.md、tsconfig.app.json）

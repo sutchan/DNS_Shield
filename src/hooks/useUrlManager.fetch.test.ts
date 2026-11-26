@@ -1,7 +1,8 @@
-// src/hooks/useUrlManager.fetch.test.ts v3.15.0
+// src/hooks/useUrlManager.fetch.test.ts v3.22.4
 // @vitest-environment jsdom
 // 单 URL 抓取契约（超时、失败提示、成功写回）
 // （原 useUrlManager.test.ts 按关注点拆分，本文件承接其中一个分组）
+// v3.22.4：T-AUD-M02 出站 host 白名单生效后，样例 URL 改用默认白名单 host。
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { act } from 'react';
 import { setup } from '../test-utils/urlManagerTestKit';
@@ -56,13 +57,13 @@ describe('useUrlManager · 单 URL 抓取', () => {
     const { result, setSourceInput, parseSourceData, showToast, unmount } = setup();
 
     act(() => {
-      result.current.setUrlInput('https://example.com/list.txt');
+      result.current.setUrlInput('https://raw.githubusercontent.com/list.txt');
     });
     await act(async () => {
       await result.current.fetchFromUrl();
     });
 
-    expect(mocks.fetchWithCache).toHaveBeenCalledWith('https://example.com/list.txt');
+    expect(mocks.fetchWithCache).toHaveBeenCalledWith('https://raw.githubusercontent.com/list.txt');
     expect(setSourceInput).toHaveBeenCalledWith('a.example.com\nb.example.com');
     expect(parseSourceData).toHaveBeenCalledWith('a.example.com\nb.example.com');
     // withLoading 以 showToast(key, params) 调用，无参时第二参为 undefined
@@ -75,7 +76,7 @@ describe('useUrlManager · 单 URL 抓取', () => {
     const { result, setSourceInput, showToast, unmount } = setup();
 
     act(() => {
-      result.current.setUrlInput('https://example.com/list.txt');
+      result.current.setUrlInput('https://raw.githubusercontent.com/list.txt');
     });
     await act(async () => {
       await result.current.fetchFromUrl();
@@ -97,7 +98,7 @@ describe('useUrlManager · 单 URL 抓取', () => {
     const { result, unmount } = setup();
 
     act(() => {
-      result.current.setUrlInput('https://example.com/list.txt');
+      result.current.setUrlInput('https://raw.githubusercontent.com/list.txt');
     });
 
     // 第一段 act 让 fetchFromUrl 跑到 await 处并提交 isLoading=true

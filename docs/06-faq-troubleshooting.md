@@ -1,6 +1,6 @@
 # 06 FAQ 与故障排除
 
-> 文档集版本：v3.22.3 · 最后审查：2026-11-26 · 适用产品版本：v3.22.3
+> 文档集版本：v3.22.4 · 最后审查：2026-11-26 · 适用产品版本：v3.22.4
 > FAQ 事实源：`src/config/seo-content.ts` 的 `FAQ_ITEMS`（页面可见文本 / JSON-LD / `llms.txt` 共用）。本文与之保持一致，新增技术问题解答。
 
 ## 目录
@@ -120,7 +120,7 @@ flowchart TD
 | `AppProvider value` 已用 `useMemo` 稳定，消费者不再全量重渲染 | 已闭环 | `CHANGELOG.md` T-AUD-M12 |
 | `.npmrc` 已恢复并启用 `engine-strict=true`；Node 24 / npm 11 实机验证待 CI | 部分完成 | [07 O-05](./07-improvements.md) / [T-COMPAT-01](./tasks.md) |
 | `public/domains.txt` 当前 127188 条（2026-11-25 从 `af976b8` 恢复后实算）；旧值 644 已失效 | 事实见实时指标；计数以 `node scripts/count-domains.mjs` 实算为准 | [tasks.md](./tasks.md) |
-| 测试实测 59 套件 / 376 用例全绿（2026-11-26 `npm test`） | 当前事实 | [tasks.md](./tasks.md) 实时指标 |
+| 测试实测 61 套件 / 381 用例全绿（2026-11-26 `npm test`） | 当前事实 | [tasks.md](./tasks.md) 实时指标 |
 
 ## 3. 仍未解决的问题
 

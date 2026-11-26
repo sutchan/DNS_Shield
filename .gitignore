@@ -34,6 +34,8 @@ reports/
 *.lcov
 .pytest_cache/
 test-output/
+playwright-report/
+test-results/
 
 # Production
 build

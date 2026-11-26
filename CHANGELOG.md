@@ -5,9 +5,23 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-26（与 package.json v3.22.3 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
+> 最后审查：2026-11-26（与 package.json v3.22.4 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
 
 ## [Unreleased]
+
+## [3.22.4] - 2026-11-26
+
+### Added
+- 无障碍自动化回归门禁（T-A11Y-01 / O-09）：新增 `playwright.config.ts`、`e2e/a11y.spec.ts` 与 `npm run check:a11y`，以 axe-core 扫描首页 / 关于页 / 设置弹窗 / 路由器脚本弹窗，CI 阻断 critical 违规；配套更新根目录白名单与 `.gitignore` 产物目录
+- 路由器兼容映射扩展（T-FEAT-01 / O-10）：`docs/SPEC.md §6` 改为「原生脚本 / 规则导入 / 无原生导入」三级声明，补齐 OpenClash、mihomo / Clash Meta、华为、中兴；`docs/05-user-guide.md §3` 同步，并明确 `clash_dns.yaml` 不是 rule-provider 订阅源
+
+### Fixed
+- 修复出站 host 白名单引入的 7 个遗留测试失败：`useUrlManager.fetch.test.ts` / `useUrlManager.batch.test.ts` 的样例 URL 改用默认白名单 host，保留「非法 URL」与「抓取失败」的语义区分；全量实测 **61 套件 / 381 用例全绿**
+- 版本漂移收口：`package.json`（权威源）/ `package-lock.json` / `src/config/version.ts` / 12 处文档展示位 / 11 个规则产物头统一至 **v3.22.4**（此前 25 个源码头注释已标 v3.22.4 但权威源停在 v3.22.3）
+- 文档数字权威化：`docs/tasks.md` 与 `docs/06-faq-troubleshooting.md` 的测试数同步为 61/381，超行源文件数同步为实扫 0 个
+
+### Changed
+- `docs/tasks.md` / `docs/tasks-done.md` 集中化：归档 T-FEAT-01、T-A11Y-01 与 T-AUD-M02 回归修复实证，两文件标注同步时间戳；T-CI-01 保留为唯一未完成任务并写入远端取证链（远端 main 停在 `446aa19`、Deploy/Release 全部 skipped、根因为远端 `deploy.yml` 尚无 `summary` job 且本地修复未推送）
 
 ## [3.22.3] - 2026-11-26
 
@@ -1943,6 +1957,7 @@
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
 [Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.22.3...HEAD
+[3.22.4]: https://github.com/sutchan/DNS_Shield/compare/v3.22.3...v3.22.4
 [3.22.3]: https://github.com/sutchan/DNS_Shield/compare/v3.22.2...v3.22.3
 [3.22.2]: https://github.com/sutchan/DNS_Shield/compare/v3.22.0...v3.22.2
 [3.22.0]: https://github.com/sutchan/DNS_Shield/compare/v3.21.0...v3.22.0

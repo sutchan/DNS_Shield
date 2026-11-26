@@ -163,6 +163,14 @@ jobs:
       - name: API contract smoke
         run: npm run check:api-contract
 
+      # T-A11Y-01：复用本 job 的 .next 产物启动独立端口，axe 扫描首页/关于页/弹窗，
+      # 仅阻断 critical 违规，其余等级输出到日志供人工评估。
+      - name: Install Chromium for accessibility scan
+        run: npx playwright install --with-deps chromium
+
+      - name: Accessibility smoke (axe + Playwright)
+        run: npm run check:a11y
+
       - name: Report build size
         if: always()
         run: |

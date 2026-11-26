@@ -3,7 +3,7 @@
 > 本文件归档 DNS Shield 项目**已完成**的任务条目。
 > 活跃任务清单见 [tasks.md](./tasks.md)（唯一来源，仅保留未完成任务与实时指标）。
 > 归档时间：2026-10-19 20:30（自 tasks.md「五、已完成任务」迁出）
-> **本次同步时间戳：2026-11-26T16:23:19+08:00**。本轮从 `tasks.md` 迁入的已完成任务为 0 项（源清单无已勾选条目）；后续逐项完成的任务按完成时间追加归档。
+> **本次同步时间戳：2026-11-26T17:47:53+08:00**。本轮归档 T-FEAT-01 / T-A11Y-01，并补充 T-AUD-M02 的遗留测试回归修复实证；`tasks.md` 仅保留 1 项未完成任务（T-CI-01）。
 > 维护团队：Sut / ArcesTeam
 
 ---
@@ -513,5 +513,23 @@
 - **完整描述**：服务端聚合已有 host 白名单，但客户端 `useUrlManager.ts` 仅做协议校验且 CSP `connect-src 'self' https:` 全放行，存在客户端请求伪造面；要求客户端复用白名单、显式提示、CSP 收敛并补回归测试。
 - **状态**：✅ 已完成（2026-11-26 提前完成）。
 - **实现与上下文**：新增 `src/config/fetchHosts.ts`（默认 3 个预设 host + 5 个环境变量预设 host 派生），`useUrlManager.ts` 的 URL 校验与批量过滤改用 `fetchGuards.isAllowedFetchUrl`；非白名单 host 复用既有 `invalidUrl` toast 显式拒绝，不静默丢弃。`next.config.js` 使用 `connectSrc` 变量枚举 host，`edgeone.json` 同步；`check-security-headers.mjs` 增加「禁止 `https:` 通配 + 两处必须含默认 host」断言。
-- **验收实证**：`check-security-headers.mjs` 通过；`useUrlManager.validate.test.ts` 5 用例全绿，含新增「非白名单 host 拒绝」用例；原 `example.com` 样例改为白名单 host。
+- **验收实证**：`check-security-headers.mjs` 通过；`useUrlManager.validate.test.ts` 5 用例全绿，含新增「非白名单 host 拒绝」用例；原 `example.com` 样例改为白名单 host。**回归修复（2026-11-26）**：白名单生效后 `useUrlManager.fetch.test.ts` / `useUrlManager.batch.test.ts` 仍有 7 例沿用 `example.com` 而失败，已改用默认白名单 host（`raw.githubusercontent.com` / `cdn.jsdelivr.net`）并保留「非法 URL」与「抓取失败」语义区分；两文件 10 用例复验全绿，全量 61 套件 / 381 用例全绿。
+- **归档时间**：2026-11-26（任务治理批次）。
+
+### T-FEAT-01 · 扩展路由器兼容列表（O-10）
+
+- **来源 / 优先级**：优化建议 O-10；P3，责任人 Docs Team，原计划 2027-01-13。
+- **完整描述**：基于官方文档补充 OpenClash / mihomo / 华为 / 中兴的映射，不写未经证实的兼容性声明；此前 `SPEC.md §6` 仅列 5 条设备条目。
+- **状态**：✅ 已完成（2026-11-26 提前完成）。
+- **实现与上下文**：`docs/SPEC.md §6` 重构为三级声明——§6.1 原生一键脚本（OpenWrt / Merlin / Padavan / SmartDNS / Pi-hole，逐项标注脚本写入路径）、§6.2 规则文件导入（OpenClash 经「插件设置 → 开发者选项」加载 `dnsmasq.conf`；mihomo / Clash Meta 把 `clash_dns.yaml` 的 `DOMAIN-SUFFIX,...` 规则段追加到配置；AdGuard Home；小米 / 华硕 / TP-Link）、§6.3 无原生导入能力（华为 / 中兴只提供自定义 DNS 地址，改指向局域网 SmartDNS / AdGuard Home）。明确边界：`clash_dns.yaml` 是规则段而非 `payload:` 规则集，不能作为 rule-provider 订阅 URL。`docs/05-user-guide.md §3` 同步映射与锚点。
+- **验收实证**：OpenClash 依据社区文档 `Aethersailor/Custom_OpenClash_Rules/wiki` 并显式标注「非官方支持」；mihomo 语法依据官方文档 `wiki.metacubex.one/en/config/rules/`；改动随提交 `19da3c0` 入库，`SPEC.md` §6 与用户指南链接均落地。
+- **归档时间**：2026-11-26（任务治理批次）。
+
+### T-A11Y-01 · 无障碍自动化回归（O-09）
+
+- **来源 / 优先级**：历史遗留 + 优化建议 O-09；P2，责任人 QA，原计划 2026-12-16。
+- **完整描述**：引入 axe-core + Playwright，对 `/`、`/about/` 与弹窗扫描，CI 阻断 critical 违规；验收为基线 critical = 0。
+- **状态**：✅ 已完成（2026-11-26 提前完成；CI 为实跑的权威验证位）。
+- **实现与上下文**：新增 `playwright.config.ts`（`testDir: ./e2e`、3101 独立端口复用 build job 的 `.next`、`reuseExistingServer: !CI`），新增 `e2e/a11y.spec.ts` 以 `page.addScriptTag` 注入 `axe-core/axe.min.js`（避开 `@axe-core/playwright` 与 `@playwright/test` 的 `Page` 类型版本冲突），按 `wcag2a/2aa/21a/21aa` 扫描首页、关于页、设置弹窗、路由器脚本弹窗，仅对 `impact === 'critical'` 断言为空。`package.json` 新增 `check:a11y`；`.github/workflows/ci.yml` build job 在 API 契约冒烟后新增 `playwright install --with-deps chromium` 与扫描步骤。配套治理：`check-root-clean.mjs` 白名单补 `playwright.config.ts` / `e2e` 与既有 `vitest.bench.config.ts`；`.gitignore` 补 `playwright-report/` / `test-results/`。
+- **验收实证**：`tsc --noEmit` 退出码 0、`npm run lint` 0 warning、`node scripts/check-root-clean.mjs` 通过、`playwright test --list` 发现 4 例。本机因 `chromium_headless_shell-1194` 未就绪导致 4 例未能实跑，属环境限制；CI 以固定版本安装浏览器后执行，阻断 critical 违规。
 - **归档时间**：2026-11-26（任务治理批次）。

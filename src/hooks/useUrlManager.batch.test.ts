@@ -1,7 +1,8 @@
-// src/hooks/useUrlManager.batch.test.ts v3.15.0
+// src/hooks/useUrlManager.batch.test.ts v3.22.4
 // @vitest-environment jsdom
 // 批量抓取契约（无效项过滤、失败保护与提示）
 // （原 useUrlManager.test.ts 按关注点拆分，本文件承接其中一个分组）
+// v3.22.4：T-AUD-M02 出站 host 白名单生效后，合法样例改用默认白名单 host。
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import { act } from 'react';
 import { setup } from '../test-utils/urlManagerTestKit';
@@ -55,7 +56,7 @@ describe('useUrlManager · 批量抓取', () => {
     mocks.fetchFromUrls.mockResolvedValue({ content: 'a.example.com\n', failedUrls: [] });
     const { result, showToast, unmount } = setup();
     act(() => {
-      result.current.setUrls(['https://ok.example.com', 'bad-url']);
+      result.current.setUrls(['https://raw.githubusercontent.com/ok.txt', 'bad-url']);
     });
     await act(async () => {
       await result.current.fetchAllUrls();
@@ -63,7 +64,7 @@ describe('useUrlManager · 批量抓取', () => {
 
     expect(showToast).toHaveBeenCalledWith('invalidUrlsFiltered', { count: 1 });
     // 仅把合法 URL 交给抓取器
-    expect(mocks.fetchFromUrls).toHaveBeenCalledWith(['https://ok.example.com']);
+    expect(mocks.fetchFromUrls).toHaveBeenCalledWith(['https://raw.githubusercontent.com/ok.txt']);
     expect(showToast).toHaveBeenCalledWith('loading', undefined);
     unmount();
   });
@@ -71,11 +72,11 @@ describe('useUrlManager · 批量抓取', () => {
   it('存在失败 URL 时提示失败数，且仍写入成功部分内容', async () => {
     mocks.fetchFromUrls.mockResolvedValue({
       content: 'a.example.com\n',
-      failedUrls: [{ url: 'https://bad.example.com', error: 'HTTP 500' }]
+      failedUrls: [{ url: 'https://cdn.jsdelivr.net/bad.txt', error: 'HTTP 500' }]
     });
     const { result, setSourceInput, showToast, unmount } = setup();
     act(() => {
-      result.current.setUrls(['https://ok.example.com', 'https://bad.example.com']);
+      result.current.setUrls(['https://raw.githubusercontent.com/ok.txt', 'https://cdn.jsdelivr.net/bad.txt']);
     });
     await act(async () => {
       await result.current.fetchAllUrls();
@@ -90,11 +91,11 @@ describe('useUrlManager · 批量抓取', () => {
   it('全部 URL 失败时不覆盖用户已有输入（防数据丢失）', async () => {
     mocks.fetchFromUrls.mockResolvedValue({
       content: '',
-      failedUrls: [{ url: 'https://a.example.com', error: 'boom' }]
+      failedUrls: [{ url: 'https://raw.githubusercontent.com/a.txt', error: 'boom' }]
     });
     const { result, setSourceInput, parseSourceData, unmount } = setup();
     act(() => {
-      result.current.setUrls(['https://a.example.com']);
+      result.current.setUrls(['https://raw.githubusercontent.com/a.txt']);
     });
     await act(async () => {
       await result.current.fetchAllUrls();
@@ -111,7 +112,7 @@ describe('useUrlManager · 批量抓取', () => {
     );
     const { result, showToast, unmount } = setup();
     act(() => {
-      result.current.setUrls(['https://a.example.com']);
+      result.current.setUrls(['https://raw.githubusercontent.com/a.txt']);
     });
     await act(async () => {
       await result.current.fetchAllUrls();
@@ -134,7 +135,7 @@ describe('useUrlManager · 批量抓取', () => {
     lineNumbersRef.current = el;
 
     act(() => {
-      result.current.setUrls(['https://ok.example.com']);
+      result.current.setUrls(['https://raw.githubusercontent.com/ok.txt']);
     });
     await act(async () => {
       await result.current.fetchAllUrls();
