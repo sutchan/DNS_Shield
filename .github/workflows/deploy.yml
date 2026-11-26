@@ -58,13 +58,21 @@ env:
   EDGEONE_CLI_VERSION: '1.6.41'
 
 jobs:
-  # 总是运行：若两个部署目标开关都关闭，GitHub 会把整个 workflow_run 标记为
-  # skipped，导致下游 release.yml 的 `conclusion == 'success'` 永不成立，Release
-  # 从未自动发布（T-CI-01 实测根因）。此 job 无 if，保证 Deploy 始终有成功结论；
-  # 真实部署失败仍由对应 job 的 failure 让 workflow 变红，不会误触发发布。
+  # 由 main push 且 CI 成功时运行：若两个部署目标开关都关闭，GitHub 会把整个
+  # workflow_run 标记为 skipped，导致下游 release.yml 的 `conclusion == 'success'`
+  # 永不成立（T-CI-01 实测根因）。此 job 在合法 push 上常驻成功，保证 Deploy 有
+  # 成功结论；CI 失败 / fork PR 则不运行，避免误触发发布。真实部署失败仍由对应
+  # job 的 failure 让 workflow 变红。
   summary:
     name: Deployment summary
     runs-on: ubuntu-latest
+    # 不跑「CI 失败 / fork PR / 非 push」的 Deploy：否则 summary 仍会给出 success，
+    # 让下游 Release 把未通过 CI 的提交当成可发布版本。手动触发不受此限。
+    if: >-
+      ${{ github.event_name == 'workflow_dispatch'
+          || (github.event.workflow_run.conclusion == 'success'
+              && github.event.workflow_run.event == 'push'
+              && github.event.workflow_run.head_repository.full_name == github.repository) }}
     steps:
       - name: Report enabled targets
         run: |

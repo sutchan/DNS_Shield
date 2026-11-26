@@ -138,7 +138,10 @@ jobs:
   # --------------------------------------------------------------- build
   build:
     name: Next.js Build
-    runs-on: ubuntu-latest
+    # T-A11Y-01：ubuntu-latest 已迁移至 26.04，而 Playwright 1.56 尚无该发行版的
+    # 浏览器依赖定义（install --with-deps 直接失败）。固定到受支持的 24.04，
+    # 待 Playwright 升级到支持 26.04 的版本后再恢复 latest。
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -189,10 +192,9 @@ jobs:
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
-      # 这些脚本是纯 Node，无第三方依赖，跳过安装可省 30s+
+      # check-doc-facts 在缺少 Vitest JSON 报告时会调用本地 vitest 采集用例数，
+      # 因此必须安装依赖；此前 install:false 导致 CI 的文档事实门禁假红。
       - uses: ./.github/actions/setup
-        with:
-          install: 'false'
 
       # 16 种语言的缺键 / 多键校验。运行时有 deepMerge 兜底，问题不会暴露到 UI，
       # 因此必须在 CI 阶段拦住漏翻。

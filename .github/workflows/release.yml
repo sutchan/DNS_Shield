@@ -5,8 +5,8 @@
 # 触发：Deploy 工作流（deploy.yml）在 main 分支「完成后」自动触发。
 #   - deploy.yml 本身已在 ci.yml 全部门禁（lint/typecheck/test/build/data）
 #     成功后才运行，因此本流程实际前置 = CI 全绿 → 部署尝试完成（deploy.yml 的
-#     summary job 无 if 常驻，确保两个部署目标都关闭时 workflow 仍是 success，
-#     不会因全 skip 阻断发布）。
+#     summary job 在合法 main push 上常驻成功，确保两个部署目标都关闭时 workflow
+#     仍是 success，不会因全 skip 阻断发布；CI 失败时则不成功）。
 #   - 即发布链路：push → CI → Deploy → Release，每一步绿才继续。
 #
 # 行为：
@@ -50,11 +50,14 @@ jobs:
     # workflow_run 投毒防护（T-AUD-H02）：fork PR 可将分支命名为 main 并通过
     # branches 过滤；必须同时校验事件来源仓库与触发事件，否则会检出 head_sha
     # 执行其中脚本并持有 contents: write 令牌发版。
+    # 这里的 workflow_run 是 Deploy（其 event 为 workflow_run，而非原始 push）；
+    # 原始 push / CI 成功 / 同仓库校验由 deploy.yml 的 summary job 条件保证，
+    # Deploy 只有在该条件成立时才会产出 success。
     # 部署密钥与发版权限统一由受保护 environment 承载（T-AUD-H02 / T-AUD-M05）。
     if: >-
       ${{ github.event.workflow_run.conclusion == 'success'
           && github.event.workflow_run.head_branch == 'main'
-          && github.event.workflow_run.event == 'push'
+          && github.event.workflow_run.event == 'workflow_run'
           && github.event.workflow_run.head_repository.full_name == github.repository }}
     environment: production
     # 挂死保护：正常 1~2 分钟内完成，超时即失败，避免空耗额度
