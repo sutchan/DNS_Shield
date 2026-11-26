@@ -1,16 +1,18 @@
-// src/components/SettingsForm.tsx v3.16.1
-// 设置面板内部的表单内容（项目信息 / 生成选项 / 输出格式开关 / 外观主题）。
+// src/components/SettingsForm.tsx v3.22.1
+// 设置面板内部的表单内容（项目信息 / 生成选项 / 输出格式开关 / 语言 / 外观主题）。
 // 从 SettingsPanel 抽离以保持主文件 ≤200 行，公开渲染契约不变。
 // v3.16.1：修正重复的「输出规则类型」空分组（仅剩真实标题一处）、
 // 项目信息字段改为 2 列避免 560px 弹窗内挤压截断、选项卡片末项跨列、
 // 格式开关改为等宽 3 列网格（原 auto-fill 导致按钮宽度不一、文字换行）。
+// v3.22.1：语言切换由 Header 迁入，独立组件 SettingsLanguage 保持本文件 ≤200 行。
 'use client';
 import * as React from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { Input } from './ui/Input';
 import { Label } from './ui/Label';
 import { Checkbox } from './ui/Checkbox';
-import { Settings as SettingsType, FormatType } from '../types';
+import SettingsLanguage from './SettingsLanguage';
+import { Language, Settings as SettingsType, FormatType } from '../types';
 import { ALL_FORMATS } from '../types/formats';
 import type { Translation } from '../types/translation';
 
@@ -20,9 +22,14 @@ interface SettingsFormProps {
   t: Translation;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
+  currentLang: string;
+  supportedLanguages: Language[];
+  switchLang: (lang: string) => void;
 }
 
-const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, theme, toggleTheme }) => {
+const SettingsForm: React.FC<SettingsFormProps> = ({
+  settings, setSettings, t, theme, toggleTheme, currentLang, supportedLanguages, switchLang,
+}) => {
   return (
     <div className="settings-inner" id="settings-inner">
       {/* 项目信息字段（独立分组，原型无独立标题，仅视觉分隔；2 列避免 IPv6 等长值被截断） */}
@@ -151,6 +158,14 @@ const SettingsForm: React.FC<SettingsFormProps> = ({ settings, setSettings, t, t
           })}
         </div>
       </div>
+
+      {/* 语言分组（v3.22.1 由顶栏迁入；明暗切换已在下方外观分组内，顶栏不再重复） */}
+      <SettingsLanguage
+        currentLang={currentLang}
+        supportedLanguages={supportedLanguages}
+        switchLang={switchLang}
+        t={t}
+      />
 
       {/* 外观分组（对齐原型 appearanceGroup + 主题分段切换） */}
       <div className="settings-group" id="settings-group-appearance">

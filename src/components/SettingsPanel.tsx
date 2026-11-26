@@ -1,11 +1,12 @@
-// src/components/SettingsPanel.tsx v3.11.1
+// src/components/SettingsPanel.tsx v3.22.1
 // 设置面板组件 —— 模态外壳 + 无障碍 Hook（useModalA11y）+ 内部表单（SettingsForm）。
 // 从 OutputPanel 拆分；无障碍逻辑与表单内容已抽离以保持主文件 ≤200 行。
+// v3.22.1：透传语言切换 props（由 Header 迁入设置弹窗）。
 'use client';
 import * as React from 'react';
 import SettingsForm from './SettingsForm';
 import { useModalA11y } from '../hooks/useModalA11y';
-import { Settings as SettingsType } from '../types';
+import { Language, Settings as SettingsType } from '../types';
 import { useT } from '../context/AppContext';
 
 interface SettingsPanelProps {
@@ -15,6 +16,9 @@ interface SettingsPanelProps {
   theme: 'light' | 'dark';
   toggleTheme: () => void;
   setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
+  currentLang: string;
+  supportedLanguages: Language[];
+  switchLang: (lang: string) => void;
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({
@@ -24,6 +28,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   theme,
   toggleTheme,
   setSettings,
+  currentLang,
+  supportedLanguages,
+  switchLang,
 }) => {
   const t = useT();
   const { dialogRef, closeBtnRef } = useModalA11y(isOpen, onClose);
@@ -64,6 +71,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           t={t}
           theme={theme}
           toggleTheme={toggleTheme}
+          currentLang={currentLang}
+          supportedLanguages={supportedLanguages}
+          switchLang={switchLang}
         />
       </div>
     </div>

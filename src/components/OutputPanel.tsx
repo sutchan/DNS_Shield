@@ -1,7 +1,8 @@
-// src/components/OutputPanel.tsx v3.19.0
+// src/components/OutputPanel.tsx v3.22.1
 // 输出面板：编排格式切换 / 设置弹窗 / 规则测试 / 路由器脚本 / 预览 / 操作按钮。
 // v3.15.5：格式切换控件改为单一「格式」下拉（FormatSelect），覆盖全部可见格式。
 // v3.17.2：工具栏移除设置按钮（保留 Header 入口 #settings-btn），onOpenSettings 随之移除。
+// v3.22.1：语言切换由 Header 迁入设置弹窗，本组件透传语言 props。
 // DOM id 统一为 kebab-case 语义命名（output-line-numbers / output-preview）。
 // 纯展示子组件与派生逻辑已抽离至 OutputPanel.parts.tsx 以保持主文件 ≤200 行。
 // 惰性生成（T-P1-06）：仅消费当前格式文本 currentOutput，不再持有全量 OutputContent。
@@ -22,7 +23,7 @@ import {
   OutputActions,
 } from './OutputPanel.parts';
 import { buildFormatLabel, useVisibleFormats } from './OutputPanel.derived';
-import { Settings as SettingsType, FormatType, ParsedData } from '../types';
+import { Language, Settings as SettingsType, FormatType, ParsedData } from '../types';
 import { useT } from '../context/AppContext';
 import { countLines } from '../utils/lineCount';
 
@@ -46,6 +47,9 @@ interface OutputPanelProps {
   setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
+  currentLang: string;
+  supportedLanguages: Language[];
+  switchLang: (lang: string) => void;
   showToast?: (key: string) => void;
 }
 
@@ -67,6 +71,9 @@ const OutputPanel: React.FC<OutputPanelProps> = React.memo(({
   setSettings,
   theme,
   toggleTheme,
+  currentLang,
+  supportedLanguages,
+  switchLang,
   showToast = () => {},
 }) => {
   const t = useT();
@@ -126,6 +133,9 @@ const ruleLines = React.useMemo(() => (currentOutput ? countLines(currentOutput)
           theme={theme}
           toggleTheme={toggleTheme}
           setSettings={setSettings}
+          currentLang={currentLang}
+          supportedLanguages={supportedLanguages}
+          switchLang={switchLang}
         />
 
         {/* 规则测试器弹窗 */}

@@ -26,14 +26,7 @@ export default function Home() {
     <AppProvider value={appValue}>
       <ServiceWorkerRegistrar />
       <div className="container" id="app-container">
-        <Header
-          currentLang={c.currentLang}
-          supportedLanguages={c.supportedLanguages}
-          switchLang={c.switchLang}
-          onOpenSettings={c.openSettings}
-          theme={c.theme}
-          onToggleTheme={c.toggleTheme}
-        />
+        <Header onOpenSettings={c.openSettings} />
 
         <FlowViz
           onStart={c.scrollToInput}
@@ -92,6 +85,9 @@ export default function Home() {
             setSettings={c.setSettings}
             theme={c.theme}
             toggleTheme={c.toggleTheme}
+            currentLang={c.currentLang}
+            supportedLanguages={c.supportedLanguages}
+            switchLang={c.switchLang}
             showToast={c.showToast}
           />
         </main>

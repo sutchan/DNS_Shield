@@ -137,6 +137,11 @@
   @apply bg-primary text-primary-foreground border-primary;
 }
 
+/* v3.22.1：设置弹窗语言选择（由顶栏迁入），与项目信息输入框同视觉语言 */
+.settings-language-select {
+  @apply w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground transition-colors hover:bg-accent;
+}
+
 /* C：设置生成选项卡片 checkbox 网格（对齐原型 .opt-row + .box 视觉，2 列） */
 .opt-grid {
   @apply grid grid-cols-2 gap-2.5 mt-2;

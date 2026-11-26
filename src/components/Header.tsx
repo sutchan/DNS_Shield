@@ -1,40 +1,20 @@
-// src/components/Header.tsx v3.19.0
+// src/components/Header.tsx v3.22.1
+// 顶栏：品牌 / 分享 / 设置入口。
+// v3.22.1：语言切换与明暗切换移入设置弹窗，顶栏只保留分享与设置（减少视觉噪音）。
 'use client';
 
 import * as React from 'react';
 import Image from 'next/image';
-import { Globe, Check, Sun, Moon } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './ui/Button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from './ui/DropdownMenu';
-import { Language } from '../types';
 import { useT } from '../context/AppContext';
 
 interface HeaderProps {
-  currentLang: string;
-  supportedLanguages: Language[];
-  switchLang: (lang: string) => void;
   onOpenSettings: () => void;
-  theme: 'light' | 'dark';
-  onToggleTheme: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  currentLang,
-  supportedLanguages,
-  switchLang,
-  onOpenSettings,
-  theme,
-  onToggleTheme,
-}) => {
+const Header: React.FC<HeaderProps> = ({ onOpenSettings }) => {
   const t = useT();
-  const current = supportedLanguages.find((lang) => lang.code === currentLang);
-  const currentName = current?.name || currentLang;
 
   // 分享：随机取一条分享文案 + 项目链接，复制到剪贴板（对齐原型 shareBtn / shareTexts）
   const handleShare = () => {
@@ -75,54 +55,6 @@ const Header: React.FC<HeaderProps> = ({
         </div>
 
         <div className="flex items-center gap-2" id="header-actions">
-          {/* 主题：一键明暗切换（v3.19.0 由设置弹窗上移至顶栏，设置内保留三态） */}
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={onToggleTheme}
-            aria-label={t.themeToggleAria}
-            title={theme === 'dark' ? t.themeLight : t.themeDark}
-            id="theme-toggle-btn"
-          >
-            {theme === 'dark' ? (
-              <Sun className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-            ) : (
-              <Moon className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-            )}
-          </Button>
-
-          {/* Language Selector */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-1.5"
-                aria-label={t.languageSelectorAria}
-                id="lang-selector-btn"
-              >
-                <Globe className="h-3.5 w-3.5" strokeWidth={1.8} aria-hidden="true" />
-                <span className="text-sm">{currentName}</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-40">
-              {supportedLanguages.map((lang) => (
-                <DropdownMenuItem
-                  key={lang.code}
-                  onSelect={() => switchLang(lang.code)}
-                  className={`flex items-center gap-2 ${currentLang === lang.code ? 'text-primary font-medium' : ''}`}
-                  role="option"
-                  aria-selected={currentLang === lang.code}
-                >
-                  <span className="flex-1">{lang.name}</span>
-                  {currentLang === lang.code && (
-                    <Check className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" />
-                  )}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-
           {/* Share */}
           <Button
             variant="outline"

@@ -9,6 +9,13 @@
 
 ## [Unreleased]
 
+### Changed（设置项整合，2026-11-26）
+- 顶栏移除主题切换按钮（`#theme-toggle-btn`）与语言下拉（`#lang-selector-btn`），只保留「分享 / 设置」两个入口，减少视觉噪音
+- 语言切换迁入设置弹窗：新增独立组件 `SettingsLanguage`（原生 `select`，16 语言，避免 Radix 弹窗焦点陷阱与 portal 冲突），置于「输出规则类型」与「外观」之间；主题三态切换原本就在设置弹窗「外观」分组内，无需重复添加
+- props 链路 `Home → OutputPanel → SettingsPanel → SettingsForm → SettingsLanguage` 接通，`html lang` / RTL 方向随选择同步；`next.config.js` 已由 `package.json` 派生版本，无需手动同步
+- 本地 dev server（3100）实测：顶栏仅 Share / Settings；设置弹窗内 select 16 项，切换到 English 后 `html lang=en`、弹窗标题变 `Settings`，明暗分段控件仍可用
+- 版本按 patch 规则升至 v3.22.1：`package.json`（权威源）/ `src/config/version.ts` / `sync-facts.mjs` 文档展示位 / `public/` 11 个规则产物头部
+
 ### Fixed（2026-11-25 Vercel 构建失败修复）
 - **修复 Vercel 构建报 `ERR_PNPM_OUTDATED_LOCKFILE`**：仓库同时存在 `package-lock.json`（权威锁文件，CI 以 `npm ci` 安装）与历史遗留的 `pnpm-lock.yaml`，Vercel 依据后者推断包管理器为 pnpm 并启用 `--frozen-lockfile`，而该 pnpm 锁文件早已与 `package.json` 脱节，导致安装直接失败。删除 `pnpm-lock.yaml`（`.gitignore:52` 本就忽略该文件，属历史误提交），仓库只余唯一锁文件 `package-lock.json`，Vercel 与 CI 口径统一为 npm
 - 同步清理 pnpm 残留：`.gitattributes` 移除 `pnpm-lock.yaml text eol=lf` 规则；`scripts/check-root-clean.mjs` 根目录白名单移除 `pnpm-lock.yaml`
