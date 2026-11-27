@@ -52,7 +52,8 @@ env:
   DEPLOY_ENV: ${{ github.event.inputs.environment || 'production' }}
   EDGEONE_BUILD_PATH: ${{ vars.EDGEONE_BUILD_PATH || './.next' }}
   EDGEONE_PROJECT_NAME: ${{ vars.EDGEONE_PROJECT_NAME || 'dns-shield' }}
-  NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
+  # GA4 衡量 ID 不作为 workflow 全局 env：Vercel 走 vercel pull 拉取的项目环境变量，
+  # EdgeOne 走下方 build 步骤的 Secret 注入，避免两处配置互相覆盖。
   # CLI 版本钉死：禁止使用 @latest，避免上游发版即改变部署行为
   VERCEL_CLI_VERSION: '62.2.0'
   EDGEONE_CLI_VERSION: '1.6.41'
@@ -104,20 +105,21 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Pull Vercel environment
-        # T-AUD-M05：令牌经步骤级 env 传递，绝不进入 argv（/proc/<pid>/cmdline 可读）
-        run: npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} pull --yes --environment="$DEPLOY_ENV" --token="$VERCEL_TOKEN"
+        # T-AUD-M05：令牌只经步骤级 env 提供；Vercel CLI 读取 VERCEL_TOKEN，不进入 argv。
+        run: npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} pull --yes --environment="$DEPLOY_ENV"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-      # --prebuilt：在本机构建后上传产物，复用 vercel.json 的 buildCommand
+      # --prebuilt：上传 .vercel/output，构建命令由 vercel pull 拉取的项目设置决定；
+      # 不再依赖已删除的 vercel.json。
       - name: Build with Vercel
         run: |
           if [ "$DEPLOY_ENV" = "preview" ]; then
-            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} build --token="$VERCEL_TOKEN"
+            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} build
           else
-            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} build --prod --token="$VERCEL_TOKEN"
+            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} build --prod
           fi
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -128,11 +130,12 @@ jobs:
         id: deploy
         run: |
           if [ "$DEPLOY_ENV" = "preview" ]; then
-            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} deploy --prebuilt --token="$VERCEL_TOKEN" | tee _deploy-url.txt
+            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} deploy --prebuilt | tee "$RUNNER_TEMP/deploy-url.txt"
           else
-            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} deploy --prebuilt --prod --token="$VERCEL_TOKEN" | tee _deploy-url.txt
+            npx --yes vercel@${{ env.VERCEL_CLI_VERSION }} deploy --prebuilt --prod | tee "$RUNNER_TEMP/deploy-url.txt"
           fi
-          echo "url=$(tail -1 _deploy-url.txt)" >> "$GITHUB_OUTPUT"
+          deployed_url=$(tail -n 1 "$RUNNER_TEMP/deploy-url.txt")
+          echo "url=$deployed_url" >> "$GITHUB_OUTPUT"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -164,6 +167,9 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # EdgeOne 在本机构建，不走 vercel pull；GA4 ID 仅在此处由 GitHub Secret 注入。
+          NEXT_PUBLIC_GA_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}
 
       # 产物目录：next.config.js 为 output: 'standalone'，构建产物在 .next/（非 ./out）。
       # 旧默认值 ./out 属于 output: 'export' 形态，会让 EdgeOne 找不到产物而退化成

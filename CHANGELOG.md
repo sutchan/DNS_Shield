@@ -5,7 +5,7 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-27（与 package.json v3.22.5 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
+> 最后审查：2026-11-27（与 package.json v3.22.6 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
 
 ## [Unreleased]
 
@@ -13,6 +13,16 @@
 - 文档体系全面整理（版本保持 v3.22.4）：统一 `docs/` 各文档头部元数据（最后审查 / 文档集版本 / 权威级别）、目录与导航索引，补齐 OpenAPI、CSP 评估、规范配置入口；术语表明确「12 种格式 = 1 个数据源 + 11 个派生产物」与「改道（自定义 DNS 解析）」口径
 - 纠正活跃文档事实漂移：Node 引擎约束统一为 `>=24.15.0 <25`、测试规模统一为 61 套件 / 381 用例、超行源文件为 0、Release tag 已闭环至 v3.22.4；README / README.en / DEPLOYMENT 版本声明对齐
 - `docs/07-improvements.md` 13 项建议补齐归档状态与实测证据；`docs/SPEC.md` §2 结构树补全实际文件、§12.1 CSP 对齐 `next.config.js` / `edgeone.json`；`docs/CHECKLIST.md` 新增门禁命令清单与完整文档完整性检查项；冻结快照补「冻结快照声明」并指向当前权威
+
+## [3.22.6] - 2026-11-27
+
+### Fixed
+- Vercel 部署安全：移除 `deploy.yml` 中 `pull` / `build` / `deploy` 命令的 `--token="$VERCEL_TOKEN"`，令牌只经步骤级 `VERCEL_TOKEN` 环境变量注入；Vercel 官方明确推荐该方式，避免令牌出现在进程列表与日志中
+- 环境变量分源：GA4 衡量 ID 不再作为 workflow 全局 env；Vercel 走 `vercel pull` 的项目环境变量，EdgeOne 仅在其本机构建步骤由 GitHub Secret 注入，避免两处配置互相覆盖
+- 配置卫生：`.vercel/` 纳入 `.gitignore`；部署 URL 临时文件改写入 `$RUNNER_TEMP`；清理 `deploy.yml` 陈旧 `vercel.json` 注释、`check-root-clean.mjs` 过期白名单与 `.npmrc` 节点约束描述；`DEPLOYMENT.md` 修正 Vercel Node 覆盖规则与 `APP_VERSION` 环境变量误述
+
+### Changed
+- 版本同步：`package.json`（权威源）/ `package-lock.json` / `src/config/version.ts` / 12 处文档展示位 / 11 个规则产物头统一至 v3.22.6；历史 `v3.22.4` tag 与 Release（14 资产）实证不改写
 
 ## [3.22.5] - 2026-11-27
 
@@ -1969,7 +1979,8 @@
 - 项目文档（README.md, README_CN.md）
 - OpenSpec 文档（SPEC.md, TASKS.md, CHECKLIST.md）
 
-[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.22.5...HEAD
+[Unreleased]: https://github.com/sutchan/DNS_Shield/compare/v3.22.6...HEAD
+[3.22.6]: https://github.com/sutchan/DNS_Shield/compare/v3.22.5...v3.22.6
 [3.22.5]: https://github.com/sutchan/DNS_Shield/compare/v3.22.4...v3.22.5
 [3.22.4]: https://github.com/sutchan/DNS_Shield/compare/v3.22.3...v3.22.4
 [3.22.3]: https://github.com/sutchan/DNS_Shield/compare/v3.22.2...v3.22.3

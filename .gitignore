@@ -53,7 +53,10 @@ build
 yarn.lock
 pnpm-lock.yaml
 
-# Next.js
+# Next.js / Vercel CLI
+# .vercel/ 由 `vercel pull` 生成（project.json 与 .env.*.local），非源码也不入库；
+# Vercel CLI 上传时本就忽略该目录，这里补 gitignore 避免触发根目录洁净度门禁。
+.vercel/
 dist/
 dist-ssr/
 *.local

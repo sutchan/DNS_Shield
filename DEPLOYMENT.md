@@ -21,7 +21,7 @@
 ### 1. 系统要求
 
 - **操作系统**：Linux、macOS 或 Windows
-- **Node.js**：24.15.0 ~ 24.x（`package.json` 的 `engines.node` 为 `>=24.15.0 <25`，`engine-strict` 后版本不满足会直接安装失败；Vercel 因上界约束沿用 Project Settings 的 24.x，CI 使用 Node 24）
+- **Node.js**：24.15.0 ~ 24.x（`package.json` 的 `engines.node` 为 `>=24.15.0 <25`，`engine-strict` 后版本不满足会直接安装失败；Vercel 的 `engines.node` 会覆盖 Project Settings，该范围映射到最新 24.x，建议 Project Settings 也设为 24.x 保持一致，CI 使用 Node 24）
 - **npm**：≥ 11（由 `package.json` 的 `engines.npm` 约束，Node 24 自带；CI 走 `actions/setup-node@v6` 内置 `cache: 'npm'` 恢复依赖缓存，勿手动指定版本）
 - **Git**：用于版本控制
 
@@ -223,7 +223,7 @@ CI / Deploy / Release / Aggregate 四个工作流的运行时准备统一收敛�
 | `VERCEL_ORG_ID` | Vercel 组织 ID | 同上 |
 | `VERCEL_PROJECT_ID` | Vercel 项目 ID | 同上 |
 | `EDGEONE_API_TOKEN` | EdgeOne Pages API Token | EdgeOne job 跳过 |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 衡量 ID（构建期内联，源码不硬编码） | 留空或格式非法则不注入统计脚本 |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | EdgeOne 本机构建时注入的 GA4 衡量 ID；Vercel 使用 `vercel pull` 拉取的项目环境变量，不使用此 Secret | 留空或格式非法则不注入统计脚本 |
 
 ### 3. 需要配置的 Variables（部署开关）
 
@@ -289,11 +289,13 @@ git add public && git commit -m "chore: 同步生成规则文件"
 |----------|------|--------|
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_BUILD_ID` | 页脚构建编号（`yymmddhhmm`，由 `next.config.js` 构建期生成并注入，见 SPEC §8.1） | 构建时生成 |
-| `APP_VERSION` | 应用版本单一来源（`src/config/version.ts`；权威源为 `package.json` version，文档展示位由 `sync-facts.mjs` 同步） | 3.22.5 |
+| `version` | 构建期注入的展示版本（`next.config.js` 从 `package.json` 派生到 `env.version`；应用内版本常量以 `src/config/version.ts` 为准，均非外部可配环境变量） | 3.22.5 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（须形如 `G-XXXXXXXXXX`；留空或格式非法则不启用统计，详见 `.env.example`） | 空 |
 | `NEXT_PUBLIC_GOOGLE_VERIFICATION` | Google Search Console 站点验证 meta 值（见 `.env.example`） | 空 |
 | `NEXT_PUBLIC_DOMAINS_URL` | 运行时统一域名数据源地址（留空用 `src/config/index.ts` 内置默认） | 空 |
 | `NEXT_PUBLIC_PRESET_BUILTIN` / `NEXT_PUBLIC_PRESET_ADGUARD` / `NEXT_PUBLIC_PRESET_EASYLIST` / `NEXT_PUBLIC_PRESET_NEOHOSTS` | 四个预设源 URL 覆写（留空用 `src/config/index.ts` 内置默认，见 `.env.example`） | 空 |
+
+> **变量来源纪律**：Vercel 构建由 `vercel pull` 拉取项目环境变量，生产/预览值以 Vercel 项目设置为准；EdgeOne 在 GitHub Actions 本机构建，GA4 衡量 ID 由上表 GitHub Secret 注入。两处不要同时配置不同值。
 
 ### 2. Next.js 配置
 

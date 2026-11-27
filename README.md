@@ -145,11 +145,12 @@ node scripts/sync-facts.mjs --check   # 文档版本展示位一致性（CI 门�
 
 ### 最新功能变更
 
+- **v3.22.6 Vercel 配置治理**：部署令牌不再进入命令行参数，GA4 变量按 Vercel / EdgeOne 分源，`.vercel/` 纳入忽略，清理陈旧注释与白名单残留。
 - **v3.22.5 任务台账复核**：未完成任务 0 项、归档条目完整，无待迁移项；两本任务文档补记同步时间戳，版本展示位与规则产物头同步校准。
 - **v3.22.4 发版链路闭环**：CI → Deploy → Release 全绿，`v3.22.4` tag 与 Release（14 资产）自动生成；无障碍自动化门禁（axe-core + Playwright）接入 CI。
 - **路由器兼容映射扩展**：按「原生脚本 / 规则导入 / 无原生导入」三级声明，补齐 OpenClash、mihomo / Clash Meta、华为 / 中兴；`clash_dns.yaml` 明确为规则段、非 rule-provider 订阅源。
 - **工程与文档**：Node 约束收紧为 `>=24.15.0 <25`；出站 host 白名单收敛 `connect-src`；文档数字由 `npm run check:doc-facts` 自动校验；13 项优化建议全部归档。
-- 逐版完整记录见 [CHANGELOG.md](CHANGELOG.md)（`v3.22.5` 段记录本轮任务台账同步）。
+- 逐版完整记录见 [CHANGELOG.md](CHANGELOG.md)（`v3.22.6` 段记录本轮 Vercel 配置治理）。
 
 ### 已知问题 / 边界
 

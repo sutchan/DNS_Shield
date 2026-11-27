@@ -23,7 +23,7 @@ const ALLOWED = new Set([
   // 包管理器锁文件属于工程配置，不是临时产物；CI 以 package-lock.json 做 npm ci
   'package-lock.json',
   'playwright.config.ts', 'postcss.config.js', 'README.en.md', 'README.md',
-  'tailwind.config.js', 'tsconfig.json', 'vercel.json', 'vitest.bench.config.ts', 'vitest.config.ts',
+  'tailwind.config.js', 'tsconfig.json', 'vitest.bench.config.ts', 'vitest.config.ts',
   // 目录
   '.github', 'docs', 'e2e', 'openwrt-package', 'prototype', 'public', 'scripts', 'src',
 ]);
