@@ -1,10 +1,12 @@
+# DNS Shield OpenAPI 3.1 端点契约 · 文档集版本 v3.22.4 · 最后审查 2026-11-27
+# 权威源：docs/04-api.md（文字说明）；版本由 scripts/sync-facts.mjs 守护
 openapi: 3.1.0
 info:
   title: DNS Shield HTTP Endpoints
   version: 3.22.4
   summary: 纯前端 DNS 过滤规则工具的公开 HTTP 端点
   description: |
-    本    项目没有业务 REST API：域名清单在浏览器本地解析与生成，不上传用户输入，
+    本项目没有业务 REST API：域名清单在浏览器本地解析与生成，不上传用户输入，
     也没有账号、数据库或 /api/* 业务路由。本规范仅描述真实存在的页面路由、
     元数据端点与静态规则文件（12 个规则产物 + 分类索引 category-index.txt）。
     业务错误码不存在，失败均为 HTTP 标准状态码，定义见 components.responses。

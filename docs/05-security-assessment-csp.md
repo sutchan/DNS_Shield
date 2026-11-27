@@ -6,7 +6,7 @@
 
 ## 现状取证
 
-1. 生产 `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com`（`next.config.js:23`）。
+1. 生产 `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com`（`next.config.js` 的 `securityHeaders`，约 `:43`；dev 额外追加 `'unsafe-eval'`）。
 2. 共 3 处 `dangerouslySetInnerHTML`：
    - `src/app/layout.tsx:39`：首屏 lang/dir/主题初始化脚本，必须同步内联以避免 FOUC 与 RTL 跳动。
    - `src/app/layout.tsx:46`：站点级 JSON-LD（`<script type="application/ld+json">`）。
@@ -36,8 +36,8 @@
 ## 最终结论
 
 - **不在本轮移除 `'unsafe-inline'`**：动态 JSON-LD 是硬约束，首屏脚本 hash 需配套同步机制，Trusted Types 缺灰度环境。
-- 已落地的安全面收敛（与本评估同属 CSP 强化）：出站聚合 fetch 加 host 白名单与体积上限（T-AUD-L02，已闭环）；`frame-src/frame-ancestors 'none'`、`object-src 'none'`（生产）、HSTS/COOP/CORP（既有）。客户端 `connect-src 'https:'` 的收敛属 T-AUD-M02，仍为独立待办。
-- **再评估触发条件**：(1) 具备 staging 灰度；(2) 引入 CSP Report-Only 违规上报；(3) 语言清单稳定且可接受 hash 同步成本。满足后再开子任务实施，不在此任务内反复讨论。
+- 已落地的安全面收敛（与本评估同属 CSP 强化）：出站聚合 fetch 加 host 白名单与体积上限（T-AUD-L02，已闭环）；`frame-src/frame-ancestors 'none'`、`object-src 'none'`（生产）、HSTS/COOP/CORP（既有）；客户端 `connect-src` 已由 `'https:'` 通配收敛为枚举 host，与 `edgeone.json` 由 `check-security-headers.mjs` 保持一致（T-AUD-M02，已归档）。
+- **再评估触发条件**：(1) 具备 staging 灰度；(2) 引入 CSP Report-Only 违规上报；(3) 语言清单稳定且可接受 hash 同步成本。满足后按 [SPEC §5.3](./SPEC.md#53-任务记录规范强制) 登记新任务，不在已归档的 T-SEC-01 下继续挂起。
 
 ## 复用资源
 

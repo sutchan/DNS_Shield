@@ -60,7 +60,7 @@
 
 **问题背景**：`docs/SPEC.md:242,461,555` 仍写「`package-lock.json` / `.npmrc` 缺失属 BLOCKER」，并指向 `docs/AUDIT-REPORT-v3.19.0.md` B-01。但提交 `a9eceb1` 已恢复 `package-lock.json`（当前工作树存在），`.npmrc` 仍未恢复（见 O-05）。文档与事实不一致会误导贡献者与 CI 排障。
 
-**状态（2026-11-25 更新）**：✅ 已实施——`docs/SPEC.md` §7 锁文件段与 §11 已知限制均已更新为「锁文件已入库、`.npmrc` 已恢复并生效」，审计报告按冻结快照保留历史原文；下方实施方案保留作历史记录。
+**状态（2026-11-25 更新）**：✅ 已实施——`docs/SPEC.md` §7 锁文件段与 §11 已知限制均已更新为「锁文件已入库、`.npmrc` 已恢复并生效」，审计报告按冻结快照保留历史原文；下方实施方案保留作历史记录。归档见 [tasks-done T-DOC-01](./tasks-done.md)。
 
 **实施方案**：
 1. 更新 SPEC 三处描述：`package-lock.json` 已入库；`.npmrc` 缺失单列（引用 O-05）。
@@ -77,7 +77,7 @@
 
 **问题背景**：`scripts/check-root-clean.mjs` 曾使用 `cp.execSync(\`git check-ignore -q ${JSON.stringify(rel)}\`)` 拼接 shell 命令。文件名若包含 shell 元字符（如反引号、`$(...)`），在双引号内仍可能被解释。审计 `docs/AUDIT-REPORT-v3.19.0.md` H-01 已记录。
 
-**状态（2026-11-25 更新）**：✅ 已修复——现改用 `cp.spawnSync('git', ['check-ignore', '-q', rel], …)` 参数数组传递，不经 shell；本轮同时扩展临时文件拦截范围并新增 `scripts/manage-tmp.mjs` 管理工具（规范见 [TEMP-FILES.md](./TEMP-FILES.md)）。下方实施方案保留作历史记录。
+**状态（2026-11-25 更新）**：✅ 已修复——现改用 `cp.spawnSync('git', ['check-ignore', '-q', rel], …)` 参数数组传递，不经 shell；本轮同时扩展临时文件拦截范围并新增 `scripts/manage-tmp.mjs` 管理工具（规范见 [TEMP-FILES.md](./TEMP-FILES.md)）。下方实施方案保留作历史记录。归档见 [tasks-done T-SEC-02](./tasks-done.md)。
 
 **实施方案**：
 1. 技术选型：改用 `spawnSync('git', ['check-ignore', '-q', rel], { cwd: ROOT, stdio: 'ignore' })`，参数数组传递，不经 shell。
@@ -94,7 +94,7 @@
 
 **问题背景（历史）**：`package.json` 声明 `engines.node >=24.11.0 <25` 与 `engines.npm >=11`，但历史工作树曾**不存在 `.npmrc`**，`engine-strict=true` 未生效；`DEPLOYMENT.md` 与 SPEC 的描述一度偏向「已生效」。历史提交 `e102610` 删除了该文件，`a9eceb1` 只恢复了锁文件。
 
-**状态（2026-11-25 更新）**：✅ 已实施——根目录 `.npmrc` 已恢复，仅设置 npm 支持的 `engine-strict=true`；Node 24 / npm 11 为本仓 CI 与本地开发的唯一合规组合，Node 26 下安装应失败。下方实施方案保留作历史记录。
+**状态（2026-11-26 更新）**：✅ 已实施——根目录 `.npmrc` 已恢复，仅设置 npm 支持的 `engine-strict=true`；Node ≥24.15.0 / npm ≥11 为本仓 CI 与本地开发的唯一合规组合（Node 26 下安装应失败），实机验证见 [tasks-done T-COMPAT-01](./tasks-done.md)。下方实施方案保留作历史记录。归档见 [tasks-done T-BUILD-01](./tasks-done.md)。
 
 **实施方案**：
 1. 新增 `.npmrc`，内容为 `engine-strict=true`（`package-manager-strict` 是 pnpm 专属选项，npm 不适用，移除 pnpm 后无需该项）。
@@ -164,7 +164,7 @@
 
 **问题背景（提出时）**：`public/service-worker.js` 已实现同源缓存策略，但全仓无 `navigator.serviceWorker.register` 调用，实际离线能力未启用；README 的「PWA 离线缓存」表述与事实有落差。
 
-**状态（2026-11-26 更新）**：✅ 已实施——`ServiceWorkerRegistrar` 在生产环境注册同源 SW（dev 跳过）；缓存策略见 [SPEC §12.2](./SPEC.md#122-service-worker-安全)，下方实施方案保留作历史记录。
+**状态（2026-11-26 更新）**：✅ 已实施——`ServiceWorkerRegistrar` 在生产环境注册同源 SW（dev 跳过）；缓存策略见 [SPEC §12.2](./SPEC.md#122-service-worker-安全)，下方实施方案保留作历史记录。归档见 [tasks-done T-PWA-01](./tasks-done.md)。
 
 **实施方案**：
 1. 技术选型：保留现有 SW，不引入 Workbox（避免新增依赖与构建复杂度）。
@@ -182,7 +182,7 @@
 
 **问题背景（历史）**：`public/category-index.txt` 由 `.github/workflows/aggregate.yml` 生成，但发布工作流的 `add-paths` 曾未包含该文件，线上分类筛选控件可能 404 后降级隐藏。
 
-**状态（2026-11-26 更新）**：✅ 已闭环——该文件已纳入 `aggregate.yml` 的 `add-paths`、`release.yml` 的资产 / ZIP 清单与 `ci.yml` 的硬门禁断言；下方实施方案保留作历史记录。
+**状态（2026-11-26 更新）**：✅ 已闭环——该文件已纳入 `aggregate.yml` 的 `add-paths`、`release.yml` 的资产 / ZIP 清单与 `ci.yml` 的硬门禁断言；下方实施方案保留作历史记录。归档见 [tasks-done T-REL-01](./tasks-done.md)。
 
 **实施方案**：检查 `aggregate.yml` 的 PR 路径与 `deploy.yml` 的上传清单，把 `category-index.txt` 加入；同时在 `scripts/gen-format-files.mjs` 生成清单中登记，避免遗漏。增加端点可达性断言（`GET /category-index.txt` 返回 200）。
 
@@ -194,16 +194,18 @@
 
 ### O-08 CSP Trusted Types 评估
 
-**问题背景**：`next.config.js:19` 的生产 `script-src` 含 `'unsafe-inline'`，用于 `layout.tsx:37` 的首屏 lang/dir/主题内联脚本；Trusted Types 未启用。历史 `vercel.json` 曾有 `require-trusted-types-for` 但已随文件删除。
+**问题背景（提出时）**：生产 `script-src` 含 `'unsafe-inline'`，用于 `layout.tsx` 的首屏 lang/dir/主题内联脚本；Trusted Types 未启用。历史 `vercel.json` 曾有 `require-trusted-types-for` 但已随文件删除。逐项取证见 [CSP 评估](./05-security-assessment-csp.md)。
 
 **实施方案**：
 1. 把首屏内联脚本改为 nonce 或 hash（Next.js 中间件注入 nonce 更稳妥），CSP 移除 `'unsafe-inline'`。
 2. 评估 `require-trusted-types-for 'script'` 对现有 3 处 `dangerouslySetInnerHTML`（均为静态 / 受控内容）的影响。
 3. 先在上游（staging）灰度，确认无控制台违规后再合入。
 
-**预期效果**：CSP 严格度提升；XSS 面收敛；若误报导致功能异常则回滚并保留评估结论。
+**评估结论**：动态 JSON-LD 无法静态 hash；首屏脚本 hash 需配套同步机制；Trusted Types 缺 staging 与 Report-Only 灰度，故本轮不移除 `'unsafe-inline'`。若将来具备条件应另立任务，不在本条下继续挂起。
 
-**优先级**：P2 — 需谨慎验证，不能为合规牺牲功能。
+**优先级**：P2 — 需谨慎验证，不能为合规牺牲功能（评估已闭环）。
+
+**归档状态**：✅ [tasks-done T-SEC-01](./tasks-done.md)；证据见 [CSP 评估](./05-security-assessment-csp.md)。
 
 ---
 
@@ -213,9 +215,11 @@
 
 **实施方案**：技术选型可选 `axe-core` + Playwright（或 `@axe-core/playwright`）；对 `/`、`/about/` 与主要弹窗执行扫描，CI 中禁止 critical 违规。先把现有已知可访问问题修复为基线，再开启门禁。
 
-**预期效果**：关键页面 critical 违规数 = 0；每次 PR 自动拦截回归。
+**实测效果**：`e2e/a11y.spec.ts` 以 axe-core 按 `wcag2a/2aa/21a/21aa` 扫描首页、关于页、设置弹窗与路由器脚本弹窗，critical 违规数 = 0；CI run 45852491146 实跑 4/4 通过，命令 `npm run check:a11y`。
 
-**优先级**：P2。
+**优先级**：P2（已闭环）。
+
+**归档状态**：✅ [tasks-done T-A11Y-01](./tasks-done.md)（2026-11-26 提前完成）。
 
 ---
 
@@ -227,9 +231,11 @@
 
 **实施方案**：先确认各设备实际支持的语法（优先官方文档），再补充 `SPEC.md §6` 与 [05 用户指南](./05-user-guide.md) 的映射表；不扩写未经证实的兼容性声明。
 
-**预期效果**：常见设备查询命中率提升；因格式选错导致的 issue 减少（定性目标）。
+**实测效果**：`SPEC.md §6` 已重构为「原生脚本 / 规则导入 / 无原生导入」三级声明，补齐 OpenClash、mihomo / Clash Meta、华为、中兴；`05-user-guide.md §3` 同步。明确 `clash_dns.yaml` 是规则段而非 rule-provider 订阅源。
 
-**优先级**：P3。
+**优先级**：P3（已闭环）。
+
+**归档状态**：✅ [tasks-done T-FEAT-01](./tasks-done.md)（2026-11-26 提前完成）。
 
 ---
 
@@ -243,9 +249,11 @@
 3. 增加契约冒烟测试：对 `paths` 中每个真实端点发本地请求，断言状态码 200 且 `Content-Type` 与规范一致（页面、元数据与静态规则文件）。
 4. 示例统一由 `docs/04-api.md` 维护，`openapi.yaml` 的 `example` 通过脚本核对，禁止两处手写不同域名。
 
-**预期效果**：OpenAPI 语义缺陷检出从 0 提升到覆盖 path 参数 / $ref / 示例一致性三类；端点契约回归可在 CI 首次失败时拦截，避免线上 404 类问题。
+**实测效果**：校验逻辑抽到 `scripts/lib/validateOpenApi.mjs`；`check-openapi` 通过 7 路径 / 7 操作；注入测试 4 用例全绿；新增 `npm run check:api-contract` 对 7 条端点做构建后冒烟（状态码 200 + Content-Type 匹配），已接入 CI build job。
 
-**优先级**：P3 — 当前轻量校验已满足基本合规，语义增强可在发布链路稳定后实施。
+**优先级**：P3（已闭环）。
+
+**归档状态**：✅ [tasks-done T-DOC-04](./tasks-done.md)（2026-11-26 提前完成）。
 
 ---
 

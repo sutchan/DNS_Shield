@@ -34,7 +34,7 @@
 | `/sitemap.xml` | GET | `src/app/sitemap.ts` | `application/xml` | 站点地图，仅含 `/` 与 `/about/`（锚点 URL 已移除） |
 | `/llms.txt` | GET | `src/app/llms.txt/route.ts` | `text/plain; charset=utf-8` | 面向生成式引擎的站点简报，构建期静态预渲染 |
 | `/category-index.txt` | GET | `public/` 静态文件 | `text/plain` | 域名分类索引（`<source> <domain>`），供分类筛选使用，已纳入 aggregate / release / CI 清单 |
-| `/domains.txt` 等 12 个规则文件 | GET | `public/` 静态文件 | `text/plain` / `application/octet-stream` | 规则产物，可作为订阅 URL 使用 |
+| `/domains.txt` 等 12 个规则文件 | GET | `public/` 静态文件 | `text/plain` / `application/octet-stream` | 1 个数据源 + 11 个派生产物，均可作为订阅 URL 使用；`domains.txt` 为唯一事实来源 |
 
 ## 3. 端点详情
 
@@ -72,7 +72,7 @@ Sitemap: https://dns.ewuse.com/sitemap.xml
 
 ### 3.4 `GET /{rule-file}`
 
-12 个规则文件由 `scripts/gen-format-files.mjs` 从 `public/domains.txt` 派生，均可通过站点根路径直接下载：
+12 个规则文件 = 唯一数据源 `public/domains.txt` 本身 + 由 `scripts/gen-format-files.mjs` 派生的 11 个产物，均可通过站点根路径直接下载：
 
 | 文件 | 目标系统 |
 |------|----------|

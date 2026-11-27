@@ -9,6 +9,11 @@
 
 ## [Unreleased]
 
+### Changed
+- 文档体系全面整理（版本保持 v3.22.4）：统一 `docs/` 各文档头部元数据（最后审查 / 文档集版本 / 权威级别）、目录与导航索引，补齐 OpenAPI、CSP 评估、规范配置入口；术语表明确「12 种格式 = 1 个数据源 + 11 个派生产物」与「改道（自定义 DNS 解析）」口径
+- 纠正活跃文档事实漂移：Node 引擎约束统一为 `>=24.15.0 <25`、测试规模统一为 61 套件 / 381 用例、超行源文件为 0、Release tag 已闭环至 v3.22.4；README / README.en / DEPLOYMENT 版本声明对齐
+- `docs/07-improvements.md` 13 项建议补齐归档状态与实测证据；`docs/SPEC.md` §2 结构树补全实际文件、§12.1 CSP 对齐 `next.config.js` / `edgeone.json`；`docs/CHECKLIST.md` 新增门禁命令清单与完整文档完整性检查项；冻结快照补「冻结快照声明」并指向当前权威
+
 ## [3.22.4] - 2026-11-26
 
 ### Added
