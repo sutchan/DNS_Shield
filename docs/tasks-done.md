@@ -3,7 +3,7 @@
 > 本文件归档 DNS Shield 项目**已完成**的任务条目。
 > 活跃任务清单见 [tasks.md](./tasks.md)（唯一来源，仅保留未完成任务与实时指标）。
 > 归档时间：2026-10-19 20:30（自 tasks.md「五、已完成任务」迁出）
-> **本次同步时间戳：2026-11-26T22:51:23+08:00**。本轮无新增归档任务；T-FEAT-01 / T-A11Y-01 与 T-AUD-M02 回归修复实证保持归档状态，`tasks.md` 仅保留 1 项未完成任务（T-CI-01，已更新远端取证链与本地修复记录）。
+> **本次同步时间戳：2026-11-27T09:09:31+08:00**。本轮归档 T-CI-01（CI→Deploy→Release 全绿，`v3.22.4` tag 与 Release 已生成），并更新 T-A11Y-01 的 CI 实跑实证；`tasks.md` 未完成任务归零。
 > 维护团队：Sut / ArcesTeam
 
 ---
@@ -531,5 +531,19 @@
 - **完整描述**：引入 axe-core + Playwright，对 `/`、`/about/` 与弹窗扫描，CI 阻断 critical 违规；验收为基线 critical = 0。
 - **状态**：✅ 已完成（2026-11-26 提前完成；CI 为实跑的权威验证位）。
 - **实现与上下文**：新增 `playwright.config.ts`（`testDir: ./e2e`、3101 独立端口复用 build job 的 `.next`、`reuseExistingServer: !CI`），新增 `e2e/a11y.spec.ts` 以 `page.addScriptTag` 注入 `axe-core/axe.min.js`（避开 `@axe-core/playwright` 与 `@playwright/test` 的 `Page` 类型版本冲突），按 `wcag2a/2aa/21a/21aa` 扫描首页、关于页、设置弹窗、路由器脚本弹窗，仅对 `impact === 'critical'` 断言为空。`package.json` 新增 `check:a11y`；`.github/workflows/ci.yml` build job 在 API 契约冒烟后新增 `playwright install --with-deps chromium` 与扫描步骤。配套治理：`check-root-clean.mjs` 白名单补 `playwright.config.ts` / `e2e` 与既有 `vitest.bench.config.ts`；`.gitignore` 补 `playwright-report/` / `test-results/`。
-- **验收实证**：`tsc --noEmit` 退出码 0、`npm run lint` 0 warning、`node scripts/check-root-clean.mjs` 通过、`playwright test --list` 发现 4 例。本机因 `chromium_headless_shell-1194` 未就绪导致 4 例未能实跑，属环境限制；CI 以固定版本安装浏览器后执行，阻断 critical 违规。
+- **验收实证**：`tsc --noEmit` 退出码 0、`npm run lint` 0 warning、`node scripts/check-root-clean.mjs` 通过、`playwright test --list` 发现 4 例。CI run 45852491146 实跑 4/4 通过；本机使用 Chrome channel + `.tmp/a11y-chrome.config.ts` 复验 4/4 通过，确认 `networkidle` 超时与 `#script-target-select` 的 `button-name` critical 违规已修复。
 - **归档时间**：2026-11-26（任务治理批次）。
+
+### T-CI-01 · 验证 CI→Deploy→Release 全绿与自动发版
+
+- **来源 / 优先级**：历史遗留；P1，责任人 CI Owner，原计划 2026-12-02。
+- **完整描述**：确认 `main` 的 `push → CI → Deploy → Release` 链路真实跑通，产生与 `package.json` 对应的 tag 与 Release 资产；任一环节红则定位并修复。
+- **状态**：✅ 已完成（2026-11-26 23:50 +08:00 实测闭环，提前完成）。
+- **失败取证链**：
+  - CI run 45837582281：`Data Integrity` 因 `install:false` 无法采集 Vitest JSON；`Vitest` 因 `APP_VERSION=3.22.3` 与 `package.json=3.22.4` 不一致失败；`Next.js Build` 的 `playwright install --with-deps chromium` 在 `ubuntu-latest`（26.04）上失败。
+  - Deploy run 45837763588：仅无 `if` 的 `summary` job 成功，Vercel / EdgeOne 均 skipped；上游 CI 实为 failure，Deploy 仍报 success。
+  - Release run 45837792992：条件要求 `github.event.workflow_run.event == 'push'`，但 Release 的上游 Deploy 事件是 `workflow_run`，条件恒假。
+  - 补充推送后 CI run 45843824743：`Install Chromium` 已在 `ubuntu-24.04` 成功，但 `Accessibility smoke` 失败——关于页 `networkidle` 等待超时，且 `#script-target-select` 触发 `button-name` critical 违规；Deploy run 45844203861 与 Release run 45844218741 随之 skipped。
+- **修复**：`37b6db4` 同步 `APP_VERSION`、CI `data` job 安装依赖、`build` job 固定 `ubuntu-24.04`、`summary` job 增加「CI success + 同仓库 main push」前置、`release.yml` 改判上游 `event == 'workflow_run'`；`18d1887` 给 `#script-target-select` 补 `aria-label`，并将 a11y 导航改为 `domcontentloaded` + 主内容可见等待。
+- **验收实证**：CI run [45852491146](https://github.com/sutchan/DNS_Shield/actions/runs/45852491146) = success；Deploy run [45852865912](https://github.com/sutchan/DNS_Shield/actions/runs/45852865912) = success；Release run [45852893336](https://github.com/sutchan/DNS_Shield/actions/runs/45852893336) = success。`git ls-remote origin refs/tags/v3.22.4` 指向 `18d1887`；[Release v3.22.4](https://github.com/sutchan/DNS_Shield/releases/tag/v3.22.4) 已发布，含 14 个资产（zip + 13 个规则产物）。本地复跑 61 套件 / 381 用例全绿、lint / tsc / doc-facts / locales / openapi / root-clean / security-headers 全通过。
+- **归档时间**：2026-11-27（任务治理批次）。
