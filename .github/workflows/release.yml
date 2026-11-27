@@ -1,4 +1,4 @@
-﻿# .github/workflows/release.yml
+# .github/workflows/release.yml
 # ---------------------------------------------------------------------------
 # Release —— 自动发布（无需手动打 tag）
 #
@@ -63,7 +63,7 @@ jobs:
     # 挂死保护：正常 1~2 分钟内完成，超时即失败，避免空耗额度
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # 检出「触发 CI 的那个 commit」，保证发布内容与被验证代码一致
           ref: ${{ github.event.workflow_run.head_sha }}
