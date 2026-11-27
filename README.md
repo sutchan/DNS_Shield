@@ -4,9 +4,9 @@
 
 # DNS Shield - 路由器广告过滤工具
 
-> 最后审查：2026-11-27（与 package.json v3.22.5 对齐）
+> 最后审查：2026-11-27（与 package.json v3.22.6 对齐）
 
-[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.22.5-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.22.6-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 基于 DNS 的广告过滤规则库：在路由器或 DNS 服务上配置一次，即可为全屋设备拦截广告与追踪域名。既支持从统一域名数据源**生成** 12 种格式规则，也支持把已有清单在**常见格式之间互相转换**。
 
@@ -141,7 +141,7 @@ npm run build:formats                     # 从 domains.txt 重建 11 个规则�
 node scripts/sync-facts.mjs --check   # 文档版本展示位一致性（CI 门禁）
 ```
 
-## 项目状态（v3.22.5 · 2026-11-27）
+## 项目状态（v3.22.6 · 2026-11-27）
 
 ### 最新功能变更
 
@@ -192,4 +192,4 @@ MIT License
 
 ## 版本
 
-当前版本：v3.22.5，完整变更见 [CHANGELOG.md](CHANGELOG.md)。
+当前版本：v3.22.6，完整变更见 [CHANGELOG.md](CHANGELOG.md)。

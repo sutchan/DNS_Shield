@@ -1,4 +1,4 @@
-// scripts/sync-facts.mjs v3.18.1
+// scripts/sync-facts.mjs v3.22.6
 // 事实同步脚本：把 package.json 的 version 写入所有文档展示位。
 // 存在理由：版本号曾分散在 40+ 处手工维护（README 徽章、DEPLOYMENT、SPEC、config.yaml 等），
 // 每次 bump 都要手工逐处改，极易漏改（历史上 prototype/ 停在 3.9.3、DEPLOYMENT 停在 3.8.8）。
@@ -20,9 +20,9 @@ const RULES = [
   ['README.md', /(当前版本：v)[0-9.]+/g, `$1${version}`],
   ['README.en.md', /(\[![^\]]*Version\]\(https:\/\/img\.shields\.io\/badge\/version-)[0-9.]+(-green\))/g, `$1${version}$2`],
   ['DEPLOYMENT.md', /(> 当前版本：v)[0-9.]+/g, `$1${version}`],
-  ['DEPLOYMENT.md', /(\| `APP_VERSION` \|[^\n]*\| )[0-9.]+( \|)/g, `$1${version}$2`],
-  // next.config.js 自 v3.22.x 起改为构建期从 package.json 派生 env.version；
-  // DEPLOYMENT 示例同步改为 `version: appVersion,`，不再存在版本字面量展示位。
+  ['DEPLOYMENT.md', /(\| `version` \|[^\n]*\| )[0-9.]+( \|)/g, `$1${version}$2`],
+  // next.config.js 自 v3.22.x 起构建期从 package.json 派生 env.version；
+  // DEPLOYMENT 环境变量表改用 `version` 行表达派生值，APP_VERSION 已非外部可配变量。
   ['docs/SPEC.md', /(> 最后审查：[^\n]*与 package\.json v)[0-9.]+( 对齐)/g, `$1${version}$2`],
   ['docs/SPEC.md', /(\| 当前版本 \| v)[0-9.]+( \|)/g, `$1${version}$2`],
   ['docs/SPEC.md', /(\| 版本号 \| )[0-9.]+( \|)/g, `$1${version}$2`],
