@@ -5,7 +5,7 @@
 格式基于 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.0.0/)，
 版本号遵循 [Semantic Versioning](https://semver.org/lang/zh-CN/)。
 
-> 最后审查：2026-11-26（与 package.json v3.22.4 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
+> 最后审查：2026-11-27（与 package.json v3.22.4 对齐）。**冻结快照约定**：带版本号的历史小节按当时状态保留，不回填后续数字或配置；当前权威实况见 `docs/SPEC.md` / `docs/tasks.md` / `docs/README.md`。
 
 ## [Unreleased]
 
@@ -23,7 +23,7 @@
 - 无障碍门禁实证修复：`#script-target-select` 补 `aria-label`，消除 `button-name` critical 违规；`e2e/a11y.spec.ts` 改用 `domcontentloaded` + 主内容可见等待，避免 `networkidle` 在 dev/CI 下超时；本地 4 例全绿
 
 ### Changed
-- `docs/tasks.md` / `docs/tasks-done.md` 集中化：归档 T-FEAT-01、T-A11Y-01 与 T-AUD-M02 回归修复实证，两文件标注同步时间戳；T-CI-01 保留为唯一未完成任务并写入远端取证链（远端 main 停在 `446aa19`、Deploy/Release 全部 skipped、根因为远端 `deploy.yml` 尚无 `summary` job 且本地修复未推送）
+- `docs/tasks.md` / `docs/tasks-done.md` 集中化：归档 T-FEAT-01、T-A11Y-01、T-AUD-M02 与 T-CI-01 的完整取证链及闭环实证，两文件标注同步时间戳；T-CI-01 实测 CI / Deploy / Release 全绿并生成 `v3.22.4` tag 与 Release（14 资产），`tasks.md` 未完成任务归零
 
 ## [3.22.3] - 2026-11-26
 
