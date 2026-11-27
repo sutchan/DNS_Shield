@@ -141,10 +141,43 @@ npm run build:formats                     # 从 domains.txt 重建 11 个规则�
 node scripts/sync-facts.mjs --check   # 文档版本展示位一致性（CI 门禁）
 ```
 
+## 项目状态（v3.22.4 · 2026-11-27）
+
+### 最新功能变更
+
+- **v3.22.4 发版链路闭环**：CI → Deploy → Release 全绿，`v3.22.4` tag 与 Release（14 资产）自动生成；无障碍自动化门禁（axe-core + Playwright）接入 CI。
+- **路由器兼容映射扩展**：按「原生脚本 / 规则导入 / 无原生导入」三级声明，补齐 OpenClash、mihomo / Clash Meta、华为 / 中兴；`clash_dns.yaml` 明确为规则段、非 rule-provider 订阅源。
+- **工程与文档**：Node 约束收紧为 `>=24.15.0 <25`；出站 host 白名单收敛 `connect-src`；文档数字由 `npm run check:doc-facts` 自动校验；13 项优化建议全部归档。
+- 逐版完整记录见 [CHANGELOG.md](CHANGELOG.md)（`[Unreleased]` 段记录本轮文档整理）。
+
+### 已知问题 / 边界
+
+- 生产 CSP 的 `script-src` 保留 `'unsafe-inline'`（首屏脚本所需），Trusted Types 评估结论为「暂不启用」；见 [CSP 评估](docs/05-security-assessment-csp.md) 与 [SPEC §11](docs/SPEC.md#11-已知限制)。
+- 部分广告域名使用 HTTPS 硬编码、部分设备对 hosts 文件大小有限制；规则需定期更新（上游聚合 `aggregate.yml` 每周执行）。
+- 生产 Service Worker 已注册，但断网回归尚无自动化实测；`docs/04-api.md` 声明的 `/api/` 为 robots 声明性路径，**项目无业务 REST API**。
+- 本机 `next build` 受 IDE safe-delete 护栏拦截属环境限制，CI Ubuntu runner 不受影响。
+
+### 待办事项
+
+未完成任务为 **0 项**（2026-11-27 实查）；唯一来源为 [docs/tasks.md](docs/tasks.md) §二，已完成项归档于 [docs/tasks-done.md](docs/tasks-done.md)。日常维护、定期任务与版本发布清单见 `docs/tasks.md` §三~§五；本文档不维护第二份任务状态。
+
+### 关键决策记录
+
+| 决策 | 结论 | 依据 |
+|------|------|------|
+| 架构形态 | 纯前端、无业务后端；域名不上传 | [docs/01-overview.md §4](docs/01-overview.md#4-架构设计) / [SPEC §0](docs/SPEC.md#0-规范总览与适用规则) |
+| 数据模型 | `domains.txt` 单一事实源；12 格式 = 1 数据源 + 11 派生产物 | [docs/README.md §3](docs/README.md#3-术语表全文统一用词) |
+| 大输入 | ≥20000 行分片并行，失败逐级回退；50MB 基准峰值约 1.0× | [docs/01-overview.md §4.2](docs/01-overview.md#42-总体数据流) |
+| 安全头 | `next.config.js` 单一来源，`connect-src` 枚举 host | [SPEC §12.1](docs/SPEC.md#121-http-安全头部) |
+| 优化项闭环 | O-01~O-13 全部归档，实测证据见任务归档 | [docs/07-improvements.md](docs/07-improvements.md) / [tasks-done.md](docs/tasks-done.md) |
+
 ## 文档与规范
 
 - 规范与架构细节：[docs/SPEC.md](docs/SPEC.md)
 - 部署指南：[DEPLOYMENT.md](DEPLOYMENT.md)
+- 文档中心（索引 / 术语 / 版本控制）：[docs/README.md](docs/README.md)
+- 架构与模块：[docs/01-overview.md](docs/01-overview.md) · [docs/03-modules.md](docs/03-modules.md)
+- API：[docs/04-api.md](docs/04-api.md) · [docs/openapi.yaml](docs/openapi.yaml)
 - 任务与进度：[docs/tasks.md](docs/tasks.md) · [docs/tasks-done.md](docs/tasks-done.md)
 - 发布检查清单：[docs/CHECKLIST.md](docs/CHECKLIST.md)
 - 贡献指南：[.github/CONTRIBUTING.md](.github/CONTRIBUTING.md)

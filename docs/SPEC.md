@@ -3,6 +3,7 @@
 > 最后审查：2026-11-27（与 package.json v3.22.4 对齐） · 文档集版本：v3.22.4
 > 权威级别：规范（约束定义唯一权威） · 事实源：代码与脚本实算；任务状态见 `docs/tasks.md`，变更历史见 `CHANGELOG.md`。
 > 冻结快照（`prototype/`、`public/brand-colors.md`、`docs/STRUCTURE-REVIEW.md`、`docs/tasks-done.md`）按各自声明保留，不作当前指标。
+> 本轮同步（2026-11-27，v3.22.4）：README / README.en 新增「项目状态」聚合节（最新变更 / 已知边界 / 待办入口 / 关键决策）；`04-api.md` §7.1 补端点验证状态；`01-overview.md` §5 标注状态基线。任务唯一来源仍为 `docs/tasks.md`（当前 0 项），本文件不新增任务状态。
 
 ## 0. 规范总览与适用规则
 

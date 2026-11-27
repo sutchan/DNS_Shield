@@ -113,6 +113,8 @@ flowchart TB
 
 ## 5. 当前已知限制
 
+> 状态基线：v3.22.4 · 2026-11-27；未完成任务 **0 项**（唯一来源 [docs/tasks.md](./tasks.md) §二）。本节只列当前真实边界，不维护任务状态。
+
 以下限制经代码核实；状态看 [任务清单](./tasks.md)，方案看 [07 优化建议](./07-improvements.md)，历史冻结文档不在此复述：
 
 - `.npmrc` 已恢复并启用 `engine-strict=true`；`package-lock.json` 为唯一锁文件（`pnpm-lock.yaml` 已删除，统一 npm 管理）。Node ≥24.15.0 / npm ≥11 已完成实机安装与全链路验证（T-COMPAT-01 已归档，详见 [tasks-done.md §十二](./tasks-done.md)）。

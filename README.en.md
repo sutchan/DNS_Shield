@@ -110,9 +110,20 @@ npm run lint        # lint
 npm run test        # unit tests (Vitest)
 ```
 
+## Project Status (v3.22.4 · 2026-11-27)
+
+- **Latest changes** — CI → Deploy → Release green with automatic `v3.22.4` tag / Release (14 assets); axe-core + Playwright a11y gate in CI; three-tier router compatibility mapping (OpenClash / mihomo / Huawei / ZTE); Node constraint tightened to `>=24.15.0 <25`; all 13 optimization items archived. Full history: [CHANGELOG.md](CHANGELOG.md).
+- **Known boundaries** — production CSP keeps `'unsafe-inline'` for the first-paint script (Trusted Types assessment: not enabling, see [CSP assessment](docs/05-security-assessment-csp.md)); some ad domains hardcode HTTPS and some devices cap hosts-file size; production Service Worker is registered but offline regression is not automated yet; `/api/` in `robots.txt` is declarative only — there is **no business REST API**.
+- **Open tasks** — 0 as of 2026-11-27. Single source of truth: [docs/tasks.md](docs/tasks.md) §2; completed work archived in [docs/tasks-done.md](docs/tasks-done.md). This document does not maintain a second task list.
+- **Key decisions** — pure front-end with no backend; `domains.txt` as the single source (12 formats = 1 source + 11 derived files); ≥20000-line sharded Worker parsing with fallback; `next.config.js` as the single security-header source. Details: [docs/01-overview.md §4](docs/01-overview.md#4-架构设计) and [docs/SPEC.md §0](docs/SPEC.md#0-规范总览与适用规则).
+
 ## Docs & Conventions
 
-- Spec & architecture: [docs/SPEC.md](docs/SPEC.md)
+- Docs hub (index / glossary / versioning): [docs/README.md](docs/README.md)
+- Spec & architecture: [docs/SPEC.md](docs/SPEC.md) · [docs/01-overview.md](docs/01-overview.md) · [docs/03-modules.md](docs/03-modules.md)
+- API: [docs/04-api.md](docs/04-api.md) · [docs/openapi.yaml](docs/openapi.yaml)
+- Tasks & progress: [docs/tasks.md](docs/tasks.md) · [docs/tasks-done.md](docs/tasks-done.md)
+- Release checklist: [docs/CHECKLIST.md](docs/CHECKLIST.md)
 - Deployment: [DEPLOYMENT.md](DEPLOYMENT.md)
 - Contributing: [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md)
 - Security: [.github/SECURITY.md](.github/SECURITY.md)
