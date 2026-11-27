@@ -1,6 +1,7 @@
 # DNS Shield 目录结构与可维护性审查报告
 
-> **冻结快照声明**：本报告停留在 v3.12.0（2026-10-05），文中目录计数、CSP 结论与结构清单**不代表当前实现**，按既有规范不回填。当前权威实况见 [SPEC.md](SPEC.md) §2 与 [tasks.md](tasks.md) 实时指标，版本号以 `package.json` 为准。已知过时结论：`§5` 的「CSP 两处已统一」已被后续修订推翻（`vercel.json` 额外启用 `require-trusted-types-for 'script'`）；`workers/` 现为 2 个、`scripts/` 新增 `check-root-clean.mjs`。
+> **冻结快照声明**：本报告停留在 v3.12.0（2026-10-05），文中目录计数、CSP 结论与结构清单**不代表当前实现**，按 SPEC §5.3 不回填。当前权威实况见 [SPEC.md](./SPEC.md) §2 / §12 与 [tasks.md](./tasks.md) 实时指标，版本号以 `package.json` 为准。
+> 已知过时结论：§5/§6 的「CSP 两处已统一」先被 `vercel.json` 的 `require-trusted-types-for 'script'` 推翻，随后 `vercel.json` 删除，安全响应头现为 `next.config.js` 单一来源（见 [SPEC §12.1](./SPEC.md#121-http-安全头部)）；`workers/` 现为 2 个；`scripts/` 已扩展至 13 个脚本 + `lib/`；`public/` 为 11 个派生产物 + 数据源。
 >
 > 审查日期：2026-10-05 ｜ 审查版本：v3.12.0 ｜ 审查范围：全仓（219 文件 / 39594 行）
 > 方法：脚本实测（目录树 + 行数 + 引用关系 grep）+ 子代理交叉核验，结论均以实际文件为证据。

@@ -4,7 +4,7 @@
 
 # DNS Shield - 路由器广告过滤工具
 
-> 最后审查：2026-11-26（与 package.json v3.22.3 对齐）
+> 最后审查：2026-11-27（与 package.json v3.22.4 对齐）
 
 [![中文](https://img.shields.io/badge/语言-中文-red)](README.md) [![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![Version](https://img.shields.io/badge/version-3.22.4-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
@@ -122,7 +122,7 @@
 
 ## 开发
 
-环境要求：Node.js ≥ 24.11.0 且 < 25（锁定 Node 24 主版本，避免 Vercel 自动升级到 26.x）、npm ≥ 11（见 `package.json` 的 `engines`）。
+环境要求：Node.js ≥ 24.15.0 且 < 25（锁定 Node 24 主版本，避免 Vercel 自动升级到 26.x）、npm ≥ 11（见 `package.json` 的 `engines`）。
 
 ```bash
 npm install          # 安装依赖

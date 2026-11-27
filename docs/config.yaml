@@ -1,5 +1,7 @@
+# DNS Shield 文档事实配置 · 文档集版本 v3.22.4 · 最后审查 2026-11-27
+# 版本权威源：package.json；本文件 version 字段由 scripts/sync-facts.mjs 守护
 schema: spec-driven
-lastReviewed: "2026-11-26"
+lastReviewed: "2026-11-27"
 
 # Project context
 context: |
@@ -22,7 +24,7 @@ context: |
   Parse tasks are single-flighted by a content key (task + text) and the worker pool reference is stable (memory guard)
   CI runs a root temp-file hygiene gate (scripts/check-root-clean.mjs) before the CI Gate aggregator; all temporary files must live under the repo-root .tmp/ directory (see docs/TEMP-FILES.md), auto-created by npm run tmp:init and cleared by npm run tmp:clean
   Third-party GitHub Actions are pinned to commit SHAs (e.g. actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6); upgrade only via Dependabot PR
-  Package manager is npm (package-lock.json only); pnpm-lock.yaml was removed. engines: node >=24.11.0 <25, npm >=11
+  Package manager is npm (package-lock.json only); pnpm-lock.yaml was removed. engines: node >=24.15.0 <25, npm >=11
   Format switching uses OutputPanel.formatSelect.tsx (single dropdown); ui/Tabs.tsx, Card.tsx, Loading.tsx and Switch.tsx were removed along with their Radix packages
 
 # Per-artifact rules

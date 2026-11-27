@@ -1,7 +1,7 @@
 # 01 项目概述
 
-> 文档集版本：v3.22.4 · 最后审查：2026-11-26 · 适用产品版本：v3.22.4
-> 权威来源：`package.json`、`src/config/version.ts`、`docs/SPEC.md`；事实性数字见 [文档中心 §4](./README.md#4-版本控制)。
+> 最后审查：2026-11-27（与 package.json v3.22.4 对齐） · 文档集版本：v3.22.4
+> 权威级别：权威说明 · 事实源：`package.json`、`src/config/version.ts`、`docs/SPEC.md`；数字以脚本实算为准（见 [文档中心 §4](./README.md#4-版本控制)）。
 
 ## 目录
 
@@ -50,7 +50,7 @@ DNS Shield 解决三个具体问题：
 | 计算 | Web Worker + 主线程回退 | 大文本解析不阻塞 UI；Worker 不可用时功能不降级消失 | 5000 行单 Worker / 20000 行分片池 |
 | 测试 | Vitest + jsdom + v8 coverage | 纯函数与 hooks 均可测；覆盖率门禁 80/75/85/80 | 显式 `all: false` 口径 |
 | 包管理 | npm | `package-lock.json` 保证可复现安装 | npm ≥ 11 |
-| 运行时 | Node 24 | 与 CI / Vercel 对齐 | `>=24.11.0 <25` |
+| 运行时 | Node 24 | 与 CI / Vercel 对齐，传递依赖要求 ≥24.15.0 | `>=24.15.0 <25` |
 
 > 版本事实以 `package.json` 为准。历史冻结文档（如 `CHANGELOG.md` 旧小节、`docs/AUDIT-REPORT-v3.19.0.md`）中的旧依赖表述按冻结约定保留；活跃文档若出现与依赖不一致的措辞，须先在 [任务清单](./tasks.md) 登记再修正，不在本文档复述。
 
@@ -115,9 +115,9 @@ flowchart TB
 
 以下限制经代码核实；状态看 [任务清单](./tasks.md)，方案看 [07 优化建议](./07-improvements.md)，历史冻结文档不在此复述：
 
-- `.npmrc` 已恢复并启用 `engine-strict=true`；`package-lock.json` 为唯一锁文件（`pnpm-lock.yaml` 已删除，统一 npm 管理）。Node 24 / npm 11 的实机安装验证仍待 CI 执行（T-COMPAT-01）。
-- 生产环境由 `ServiceWorkerRegistrar` 注册同源 Service Worker（dev 不注册）；离线缓存白名单与回归测试待实测（O-06）。
+- `.npmrc` 已恢复并启用 `engine-strict=true`；`package-lock.json` 为唯一锁文件（`pnpm-lock.yaml` 已删除，统一 npm 管理）。Node ≥24.15.0 / npm ≥11 已完成实机安装与全链路验证（T-COMPAT-01 已归档，详见 [tasks-done.md §十二](./tasks-done.md)）。
+- 生产环境由 `ServiceWorkerRegistrar` 注册同源 Service Worker（dev 不注册）；离线缓存白名单已实现，断网回归实测仍待执行（原 O-06 注册项已归档）。
 - `public/category-index.txt` 已纳入 aggregate / release / CI 清单，线上分类筛选的 404 降级风险已消除（T-REL-01 已归档）。
-- 生产 CSP 的 `script-src` 仍包含 `'unsafe-inline'`（首屏内联脚本所需），Trusted Types 未启用；灰度需 staging + Report-Only 条件（T-SEC-01 / O-08）。
-- `parser.ts` 已改用 `iterateLines.ts` 逐行迭代、无全量 `split`；`parseAggregate.ts` 的 `push(...arr)` 已改逐项 push；`sortDedupe.ts` 仍有 `split('\n')` 待流式化，50MB 基准未跑（T-PERF-01 / O-01）。
-- 测试实测 **59 套件 / 376 用例全绿**（2026-11-26 `npm test` 实跑），旧记录 57/364、54/349 均为历史快照。
+- 生产 CSP 的 `script-src` 仍包含 `'unsafe-inline'`（首屏内联脚本所需），Trusted Types 未启用；评估结论为「暂不启用，待 staging + Report-Only 条件」，证据见 [CSP 评估](./05-security-assessment-csp.md)（T-SEC-01 / O-08 已归档）。
+- `parser.ts` / `sortDedupe.ts` 均已改用 `iterateLines.ts` 逐行迭代，`parseAggregate.ts` 的分片改为换行边界扫描且 `push(...arr)` 已改逐项 push；50MB 基准实测峰值约 1.0× 文本（阈值 1.5×），已纳入 `npm run benchmark:large`（T-PERF-01 / O-01 已归档）。
+- 测试实测 **61 套件 / 381 用例全绿**（2026-11-26 `npm test` 实跑），旧记录 59/376、57/364、54/349 均为历史快照。

@@ -1,7 +1,8 @@
 # CSP / Trusted Types 启用评估结论（T-SEC-01 / O-08）
 
-> 评估日期：2026-11-25；评估对象：`next.config.js` 生产 CSP、`src/app/layout.tsx` 与 `src/app/about/page.tsx` 的内联脚本。
-> 本文是 **T-SEC-01 的交付物**（任务为「评估启用」而非强制启用）；结论保持为待办状态则按 SPEC §5.3 在 `docs/tasks.md` 维护。
+> 最后审查：2026-11-27（与 package.json v3.22.4 对齐） · 文档集版本：v3.22.4
+> 权威级别：评估结论交付物 · 评估日期：2026-11-25 · 评估对象：`next.config.js` 生产 CSP、`src/app/layout.tsx` 与 `src/app/about/page.tsx` 的内联脚本。
+> 本文是 **T-SEC-01 的交付物**（任务为「评估启用」而非强制启用）；任务已归档至 [tasks-done T-SEC-01](./tasks-done.md)，本文只保留结论与证据，不维护状态。
 
 ## 现状取证
 

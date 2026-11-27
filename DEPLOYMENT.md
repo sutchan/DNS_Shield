@@ -3,7 +3,7 @@
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
 > 当前版本：v3.22.4
-> 最后审查：2026-11-26（与 package.json v3.22.3 对齐；权威版本源为 `package.json`）
+> 最后审查：2026-11-27（与 package.json v3.22.4 对齐；权威版本源为 `package.json`）
 
 ## 目录
 
@@ -21,7 +21,7 @@
 ### 1. 系统要求
 
 - **操作系统**：Linux、macOS 或 Windows
-- **Node.js**：24.11.0 ~ 24.x（`package.json` 的 `engines.node` 为 `>=24.11.0 <25`，`engine-strict` 后版本不满足会直接安装失败；Vercel 因上界约束沿用 Project Settings 的 24.x，CI 使用 Node 24）
+- **Node.js**：24.15.0 ~ 24.x（`package.json` 的 `engines.node` 为 `>=24.15.0 <25`，`engine-strict` 后版本不满足会直接安装失败；Vercel 因上界约束沿用 Project Settings 的 24.x，CI 使用 Node 24）
 - **npm**：≥ 11（由 `package.json` 的 `engines.npm` 约束，Node 24 自带；CI 走 `actions/setup-node@v6` 内置 `cache: 'npm'` 恢复依赖缓存，勿手动指定版本）
 - **Git**：用于版本控制
 

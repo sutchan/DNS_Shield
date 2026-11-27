@@ -1,6 +1,7 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-26（与 package.json v3.22.4 对齐；规范总览见 §0，变更历史见 CHANGELOG.md）
+> 最后审查：2026-11-27（与 package.json v3.22.4 对齐） · 文档集版本：v3.22.4
+> 权威级别：规范（约束定义唯一权威） · 事实源：代码与脚本实算；任务状态见 `docs/tasks.md`，变更历史见 `CHANGELOG.md`。
 > 冻结快照（`prototype/`、`public/brand-colors.md`、`docs/STRUCTURE-REVIEW.md`、`docs/tasks-done.md`）按各自声明保留，不作当前指标。
 
 ## 0. 规范总览与适用规则
@@ -367,7 +368,7 @@ dns-shield/
 | 项 | 约定 |
 |------|------|
 | 语言与类型 | TypeScript `strict: true`；生产代码禁用 `any`（当前 0 处）、禁用游离 `console.*`（统一走 `utils/logger`）；类型导入用 `import type` |
-| 文件规模 | `src/` 下源文件（含测试）**≤200 行**，超限先拆分再提交（2026-11-26 实扫 5 个超限，见 `docs/tasks.md` T-REFACTOR-01 / `docs/07-improvements.md` O-13）；组件拆分沿用 `Xxx.parts.tsx` / `Xxx.derived.ts` / `Xxx.types.ts` 既有命名法 |
+| 文件规模 | `src/` 与 `scripts/` 下代码文件（含测试）**≤200 行**，超限先拆分再提交（2026-11-26 实扫 0 个超限，由 `npm run check:doc-facts` 持续守护，见 `docs/tasks-done.md` T-REFACTOR-01 / `docs/07-improvements.md` O-13）；组件拆分沿用 `Xxx.parts.tsx` / `Xxx.derived.ts` / `Xxx.types.ts` 既有命名法 |
 | 纯函数优先 | 可独立测试的计算放 `src/utils/`，不得混入 React 依赖；`utils/` 代码必须能在 node 环境（Vitest 默认环境）直接单测 |
 | 单一数据源 | 版本号取 `src/config/version.ts`；默认设置取 `config/defaults.json`；格式清单、头部模板、SEO 文案等**同一事实只允许一处定义**（发现第二处即视为待重构）；生成物头部由 `scripts/` 统一派生，禁止手改 |
 | Hook 稳定性 | 返回对象/函数须 `useMemo` / `useCallback` 稳定；`Context` 的 `value` 必须 memo 化（`Home.tsx` 已用 `useMemo(() => ({ t: c.t }), [c.t])` 稳定 `AppProvider` 的 value，2026-11-25 已闭环 M-12）；Worker 池等返回对象同样须稳定，避免触发 effect 自持循环 |
@@ -485,7 +486,7 @@ npm run lint && npx tsc --noEmit && npm run test
 
 **临时文件**：完整规范见 [TEMP-FILES.md](./TEMP-FILES.md)——唯一合法位置为根目录 `.tmp/`（已 gitignore，含 `scripts/`/`logs/`/`cache/`/`downloads/`/`test-output/` 子目录，由 `npm run tmp:init` 自动创建、`npm run tmp:clean` 一键清理）；一次性脚本、探针、运行日志、缓存、下载文件、测试输出均归此目录，会话结束即清理；长期证据写入 `docs/` 或固化为测试断言。根目录散落由 `check-root-clean.mjs` 拦截（被 ignore 不等于被允许）。例外：`src/utils/scriptGenerator.ts` 生成的路由器 Shell 脚本中的 `/tmp/` 是目标设备运行时路径，不属仓库临时文件。
 
-**锁文件**：`package-lock.json` 与 `.npmrc` **必须入库**。`.github/actions/setup/action.yml` 在 CI 中以 `npm ci` 安装并显式断言锁文件存在，缺失即失败；`.npmrc` 的 `engine-strict=true` 使 `engines.node >=24.11.0 <25` 与 `engines.npm >=11` 在安装期生效（`package-manager-strict` 属 pnpm 选项，npm 不适用）。二者均已就位（T-BUILD-01，2026-11-25）；历史 BLOCKER 见 `docs/AUDIT-REPORT-v3.19.0.md` B-01（冻结快照，不维护当前状态）。
+**锁文件**：`package-lock.json` 与 `.npmrc` **必须入库**。`.github/actions/setup/action.yml` 在 CI 中以 `npm ci` 安装并显式断言锁文件存在，缺失即失败；`.npmrc` 的 `engine-strict=true` 使 `engines.node >=24.15.0 <25` 与 `engines.npm >=11` 在安装期生效（`package-manager-strict` 属 pnpm 选项，npm 不适用）。二者均已就位并通过 Node 24.15+ / npm 11 实机验证（T-BUILD-01 / T-COMPAT-01，2026-11-26 归档）；历史 BLOCKER 见 `docs/AUDIT-REPORT-v3.19.0.md` B-01（冻结快照，不维护当前状态）。
 
 
 ## 8. 版本管理

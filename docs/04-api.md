@@ -1,7 +1,7 @@
 # 04 API 接口文档
 
-> 文档集版本：v3.22.4 · 最后审查：2026-11-26 · 适用产品版本：v3.22.4
-> 机器可读定义：[openapi.yaml](./openapi.yaml)（OpenAPI 3.1.0），离线校验 `node scripts/check-openapi.mjs`
+> 最后审查：2026-11-27（与 package.json v3.22.4 对齐） · 文档集版本：v3.22.4
+> 权威级别：权威说明 · 事实源：`src/app/` 路由与 `public/` 产物；机器可读定义见 [openapi.yaml](./openapi.yaml)（OpenAPI 3.1.0），离线校验 `node scripts/check-openapi.mjs`。
 
 ## 目录
 
