@@ -1,9 +1,10 @@
 # DNS Shield 项目规范
 
-> 最后审查：2026-11-27（与 package.json v3.22.4 对齐） · 文档集版本：v3.22.4
+> 最后审查：2026-11-27（与 package.json v3.22.5 对齐） · 文档集版本：v3.22.5
 > 权威级别：规范（约束定义唯一权威） · 事实源：代码与脚本实算；任务状态见 `docs/tasks.md`，变更历史见 `CHANGELOG.md`。
 > 冻结快照（`prototype/`、`public/brand-colors.md`、`docs/STRUCTURE-REVIEW.md`、`docs/tasks-done.md`）按各自声明保留，不作当前指标。
-> 本轮同步（2026-11-27，v3.22.4）：README / README.en 新增「项目状态」聚合节（最新变更 / 已知边界 / 待办入口 / 关键决策）；`04-api.md` §7.1 补端点验证状态；`01-overview.md` §5 标注状态基线。任务唯一来源仍为 `docs/tasks.md`（当前 0 项），本文件不新增任务状态。
+> 本轮同步（2026-11-27，v3.22.5）：任务台账复核完成，`docs/tasks.md` 未完成任务 0 项、`docs/tasks-done.md` 归档完整；版本因文档同步升至 v3.22.5，活跃文档展示位与规则产物头同步校准。
+> 前轮同步（2026-11-27，v3.22.4）：README / README.en 新增「项目状态」聚合节（最新变更 / 已知边界 / 待办入口 / 关键决策）；`04-api.md` §7.1 补端点验证状态；`01-overview.md` §5 标注状态基线。任务唯一来源仍为 `docs/tasks.md`（当前 0 项），本文件不新增任务状态。
 
 ## 0. 规范总览与适用规则
 
@@ -46,7 +47,7 @@
 | 项目地址（主页/治理） | https://github.com/sutchan/DNS_Shield（以 `git remote -v` 为准；`ArcesTeam` 为历史维护团队名，非仓库地址） |
 | 运行时数据源（历史 fork 托管） | https://github.com/sutchan/DNS_Shield（raw 预设源，见 §9.3，勿改） |
 | 演示地址 | https://dns.ewuse.com/ |
-| 当前版本 | v3.22.4 |
+| 当前版本 | v3.22.5 |
 | 拦截域名 | **127188 条**（黑名单 127188 + 白名单 0），2026-11-26 `node scripts/count-domains.mjs` 实算；2026-11-25 曾记录 644 条（回退态），已从 `af976b8` 恢复，`origin/auto/aggregate-upstream` 上 7fac633 的 129348 条未合入（T-DATA-01）。永远以实算为准，禁止手写数字 |
 | 技术栈 | Next.js 14 + React 18 + TypeScript 5 + Tailwind CSS 3.4 |
 | UI 框架 | shadcn/ui + Radix UI + Lucide Icons |
@@ -357,7 +358,7 @@ dns-shield/
 | 设置项 | 默认值 |
 |--------|--------|
 | 项目名称 | DNS Shield |
-| 版本号 | 3.22.4 |
+| 版本号 | 3.22.5 |
 | IPv4 目标 IP | 127.0.0.1 |
 | IPv6 目标 IP | :: |
 | 添加头部注释 | 开启 |
@@ -596,7 +597,7 @@ GitHub Release 由 CI 自动发布，不要求手动打 tag。当 `main` 分支�
 
 ## 11. 已知限制
 
-> **【强制】事实清单**：本节描述的是**当前真实状态**（截至 v3.22.4），不是目标能力。任何文档或代码若声称下列项「已生效」，即视为漂移，须以本节为准修正。
+> **【强制】事实清单**：本节描述的是**当前真实状态**（截至 v3.22.5），不是目标能力。任何文档或代码若声称下列项「已生效」，即视为漂移，须以本节为准修正。
 
 - 部分广告域名使用 HTTPS 硬编码，需配合 Pi-hole 或广告屏蔽插件
 - 部分设备可能有 hosts 文件大小限制

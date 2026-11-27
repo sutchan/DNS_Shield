@@ -4,8 +4,8 @@
 #
 # Clash Meta DNS 规则（DOMAIN-SUFFIX 命中后 reject）
 #
-# 版本:: 3.22.4
-# 更新:: 2026.11.26
+# 版本:: 3.22.5
+# 更新:: 2026.11.27
 # 域名:: 127188 个唯一域名
 #
 # 用法：追加到 Clash Meta DNS ruleset

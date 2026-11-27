@@ -1,6 +1,6 @@
 # 06 FAQ 与故障排除
 
-> 最后审查：2026-11-27（与 package.json v3.22.4 对齐） · 文档集版本：v3.22.4
+> 最后审查：2026-11-27（与 package.json v3.22.5 对齐） · 文档集版本：v3.22.5
 > 权威级别：权威说明 · 事实源：`src/config/seo-content.ts` 的 `FAQ_ITEMS`（页面可见文本 / JSON-LD / `llms.txt` 共用）；本文补充技术类问答。
 
 ## 目录

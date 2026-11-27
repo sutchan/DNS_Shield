@@ -1,6 +1,6 @@
 # 临时文件管理规范
 
-> 最后审查：2026-11-27（与 package.json v3.22.4 对齐） · 文档集版本：v3.22.4
+> 最后审查：2026-11-27（与 package.json v3.22.5 对齐） · 文档集版本：v3.22.5
 > 权威级别：规范 · 适用版本：v3.21.0 起 · 门禁实现：`scripts/check-root-clean.mjs`（CI `rootclean` job） · 管理工具：`scripts/manage-tmp.mjs`
 
 ## 1. 唯一合法临时目录

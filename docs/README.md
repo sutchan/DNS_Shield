@@ -1,6 +1,6 @@
 # DNS Shield 文档中心
 
-> 最后审查：2026-11-27（与 package.json v3.22.4 对齐） · 文档集版本：v3.22.4
+> 最后审查：2026-11-27（与 package.json v3.22.5 对齐） · 文档集版本：v3.22.5
 > 权威级别：索引 · 事实源：`package.json` 为版本权威源，`next.config.js` 的 `env.version` 在构建期由其派生，`src/config/version.ts` 的 `APP_VERSION` 为运行时展示常量（由 `src/config/version.test.ts` 守护）。
 > 本文档集随产品版本演进；每次变更按 [§4 版本控制](#4-版本控制) 更新头部信息。
 

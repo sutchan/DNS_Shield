@@ -1,6 +1,6 @@
 # 04 API 接口文档
 
-> 最后审查：2026-11-27（与 package.json v3.22.4 对齐） · 文档集版本：v3.22.4
+> 最后审查：2026-11-27（与 package.json v3.22.5 对齐） · 文档集版本：v3.22.5
 > 权威级别：权威说明 · 事实源：`src/app/` 路由与 `public/` 产物；机器可读定义见 [openapi.yaml](./openapi.yaml)（OpenAPI 3.1.0），离线校验 `node scripts/check-openapi.mjs`。
 
 ## 目录
@@ -149,11 +149,11 @@ curl -fsSL https://dns.ewuse.com/category-index.txt | head -n 5
 
 [openapi.yaml](./openapi.yaml) 遵循 OpenAPI 3.1.0：包含 `info`（版本与许可）、`servers`（生产 / 本地）、`paths`（7 条真实端点：2 页面 + 3 元数据 + 分类索引 + 规则文件模板）、`components.schemas`（纯文本 / XML / HTML 响应体）与 `components.responses`（404 / 403 / 429 / 5XX 标准错误）。`node scripts/check-openapi.mjs` 已纳入 CI data job，校验版本一致性、`operationId` 唯一与本地 `$ref` 可解析。由于无业务 API，文档中**没有** `requestBody`、认证 scheme 或业务错误码 schema；这是有意为之，不是遗漏。
 
-### 7.1 验证状态与边界（v3.22.4 · 2026-11-27）
+### 7.1 验证状态与边界（v3.22.5 · 2026-11-27）
 
 | 项 | 当前状态 |
 |----|----------|
-| 规范校验 | `node scripts/check-openapi.mjs` 实跑：7 路径 / 7 操作，版本 3.22.4，通过 |
+| 规范校验 | `node scripts/check-openapi.mjs` 实跑：7 路径 / 7 操作，版本 3.22.5，通过 |
 | 契约冒烟 | `npm run check:api-contract` 对 7 端点发本地请求，断言状态码 200 与 `Content-Type`，已接入 CI build job |
 | 已实现能力 | `/category-index.txt` 域名分类索引（`<source> <domain>`）已纳入 aggregate / release / CI 清单，缺失时前端控件降级隐藏 |
 | 已知边界 | 无业务 REST API、无认证与自定义错误码；`robots.txt` 的 `Disallow: /api/` 是声明性路径，不代表存在该接口；规则文件内容由浏览器本地生成，服务端只提供静态文件 |

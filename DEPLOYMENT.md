@@ -2,8 +2,8 @@
 
 本指南将帮助你了解如何部署 DNS Shield 项目的 Web 管理工具，使其可以在生产环境中使用。
 
-> 当前版本：v3.22.4
-> 最后审查：2026-11-27（与 package.json v3.22.4 对齐；权威版本源为 `package.json`）
+> 当前版本：v3.22.5
+> 最后审查：2026-11-27（与 package.json v3.22.5 对齐；权威版本源为 `package.json`）
 
 ## 目录
 
@@ -289,7 +289,7 @@ git add public && git commit -m "chore: 同步生成规则文件"
 |----------|------|--------|
 | `NODE_ENV` | 运行环境 | production |
 | `NEXT_PUBLIC_BUILD_ID` | 页脚构建编号（`yymmddhhmm`，由 `next.config.js` 构建期生成并注入，见 SPEC §8.1） | 构建时生成 |
-| `APP_VERSION` | 应用版本单一来源（`src/config/version.ts`；权威源为 `package.json` version，文档展示位由 `sync-facts.mjs` 同步） | 3.22.4 |
+| `APP_VERSION` | 应用版本单一来源（`src/config/version.ts`；权威源为 `package.json` version，文档展示位由 `sync-facts.mjs` 同步） | 3.22.5 |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 衡量 ID（须形如 `G-XXXXXXXXXX`；留空或格式非法则不启用统计，详见 `.env.example`） | 空 |
 | `NEXT_PUBLIC_GOOGLE_VERIFICATION` | Google Search Console 站点验证 meta 值（见 `.env.example`） | 空 |
 | `NEXT_PUBLIC_DOMAINS_URL` | 运行时统一域名数据源地址（留空用 `src/config/index.ts` 内置默认） | 空 |

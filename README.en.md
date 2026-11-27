@@ -2,9 +2,9 @@
 
 ![DNS Shield](public/logo.svg)
 
-<!-- Last reviewed: 2026-11-27 (aligned with package.json v3.22.4) -->
+<!-- Last reviewed: 2026-11-27 (aligned with package.json v3.22.5) -->
 
-[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.22.4-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![English](https://img.shields.io/badge/language-English-blue)](README.en.md) [![中文](https://img.shields.io/badge/language-中文-red)](README.md) [![Version](https://img.shields.io/badge/version-3.22.5-green)](https://github.com/sutchan/DNS_Shield) [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org) [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Router-level DNS-based ad blocking filter list with a web management tool. It both **generates** rule lists from a unified domain source and **converts** existing lists between different formats.
 
@@ -110,9 +110,9 @@ npm run lint        # lint
 npm run test        # unit tests (Vitest)
 ```
 
-## Project Status (v3.22.4 · 2026-11-27)
+## Project Status (v3.22.5 · 2026-11-27)
 
-- **Latest changes** — CI → Deploy → Release green with automatic `v3.22.4` tag / Release (14 assets); axe-core + Playwright a11y gate in CI; three-tier router compatibility mapping (OpenClash / mihomo / Huawei / ZTE); Node constraint tightened to `>=24.15.0 <25`; all 13 optimization items archived. Full history: [CHANGELOG.md](CHANGELOG.md).
+- **Latest changes** — Task ledger review at v3.22.5: 0 open tasks, complete archive, no migration needed, with timestamps and version display positions synchronized. Previously: CI → Deploy → Release green with automatic `v3.22.4` tag / Release (14 assets); axe-core + Playwright a11y gate in CI; three-tier router compatibility mapping (OpenClash / mihomo / Huawei / ZTE); Node constraint tightened to `>=24.15.0 <25`; all 13 optimization items archived. Full history: [CHANGELOG.md](CHANGELOG.md).
 - **Known boundaries** — production CSP keeps `'unsafe-inline'` for the first-paint script (Trusted Types assessment: not enabling, see [CSP assessment](docs/05-security-assessment-csp.md)); some ad domains hardcode HTTPS and some devices cap hosts-file size; production Service Worker is registered but offline regression is not automated yet; `/api/` in `robots.txt` is declarative only — there is **no business REST API**.
 - **Open tasks** — 0 as of 2026-11-27. Single source of truth: [docs/tasks.md](docs/tasks.md) §2; completed work archived in [docs/tasks-done.md](docs/tasks-done.md). This document does not maintain a second task list.
 - **Key decisions** — pure front-end with no backend; `domains.txt` as the single source (12 formats = 1 source + 11 derived files); ≥20000-line sharded Worker parsing with fallback; `next.config.js` as the single security-header source. Details: [docs/01-overview.md §4](docs/01-overview.md#4-架构设计) and [docs/SPEC.md §0](docs/SPEC.md#0-规范总览与适用规则).
@@ -135,4 +135,4 @@ MIT License
 
 ## Version
 
-Current version: v3.22.4. See [CHANGELOG.md](CHANGELOG.md) for the full history.
+Current version: v3.22.5. See [CHANGELOG.md](CHANGELOG.md) for the full history.
