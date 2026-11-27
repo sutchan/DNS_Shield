@@ -68,20 +68,34 @@ dns-shield/
 │   ├── PULL_REQUEST_TEMPLATE.md    # PR 模板
 │   ├── FUNDING.yml                 # 赞助配置
 │   └── ISSUE_TEMPLATE/             # Issue 模板（bug_report / feature_request）
-├── docs/                            # 项目规范文档
-│   ├── SPEC.md                     # 项目规范（本文件）
+├── docs/                            # 项目文档（00 索引；02 为根目录 DEPLOYMENT.md）
+│   ├── README.md                   # 文档中心：导航、术语表、版本控制、维护规则
+│   ├── 01-overview.md              # 项目概述：背景、目标、技术栈、架构
+│   ├── 03-modules.md               # 功能模块 M1~M9 与业务流程图
+│   ├── 04-api.md                   # HTTP 端点与浏览器内模块 API
+│   ├── 05-user-guide.md            # 用户操作指南
+│   ├── 05-security-assessment-csp.md # T-SEC-01 CSP / Trusted Types 评估结论
+│   ├── 06-faq-troubleshooting.md   # FAQ 与故障排除
+│   ├── 07-improvements.md          # 优化建议方案与闭环实证
+│   ├── SPEC.md                     # 项目规范（本文件，约束唯一权威）
 │   ├── tasks.md                    # 未完成任务清单（唯一来源）+ 实时指标
-│   ├── tasks-done.md               # 已完成任务归档（含第七章开发进度全景）
-│   ├── CHECKLIST.md                # 质量检查清单
-│   ├── STRUCTURE-REVIEW.md         # 结构审查快照（v3.12.0 起冻结，不再回填）
-│   ├── AUDIT-REPORT-v3.19.0.md     # v3.19.0 三路代码审查汇总（只读快照，BLOCKER/HIGH/MEDIUM/LOW 分级）
-│   └── config.yaml                 # 规范配置
+│   ├── tasks-done.md               # 已完成任务归档（含开发进度全景）
+│   ├── CHECKLIST.md                # 发布质量检查清单
+│   ├── TEMP-FILES.md               # 临时文件管理规范（.tmp/ 唯一合法位置）
+│   ├── config.yaml                 # 规范配置（上下文、组件注册表、版本）
+│   ├── openapi.yaml                # OpenAPI 3.1 端点契约（7 路径）
+│   ├── STRUCTURE-REVIEW.md         # 结构审查快照（v3.12.0 起冻结）
+│   └── AUDIT-REPORT-v3.19.0.md     # 三路代码审查汇总（v3.19.0 冻结快照）
 ├── scripts/                        # 构建/校验脚本
 │   ├── check-locales.mjs           # 国际化键覆盖校验（npm run check:locales）
-│   ├── check-root-clean.mjs        # 根目录临时文件洁净度门禁（CI rootclean job；唯一合法位置根 .tmp/）
+│   ├── check-doc-facts.mjs         # 文档数字权威化门禁（npm run check:doc-facts）
+│   ├── check-openapi.mjs           # OpenAPI 结构 / 版本 / path / $ref 校验
+│   ├── check-root-clean.mjs        # 根目录洁净度门禁（CI rootclean job；唯一合法位置根 .tmp/）
+│   ├── check-security-headers.mjs  # next.config.js 与 edgeone.json 安全头一致性
+│   ├── smoke-openapi.mjs           # 7 条端点契约冒烟（npm run check:api-contract）
 │   ├── manage-tmp.mjs              # 临时目录管理工具（npm run tmp:init / tmp:clean）
 │   ├── sync-facts.mjs              # 版本号写入 12 处文档展示位（--check 为 CI 门禁）
-│   ├── gen-format-files.mjs        # 生成 11 种格式产物文件（npm run build:formats；domains 格式即数据源本身）
+│   ├── gen-format-files.mjs        # 生成 11 个派生产物（npm run build:formats；domains 为数据源本身）
 │   ├── count-domains.mjs           # 域名计数实算（npm run count:domains）
 │   ├── aggregate-upstream.mjs      # 上游规则聚合（aggregate.yml 调用）
 │   ├── gen-icons.mjs               # PWA 图标生成
@@ -89,7 +103,9 @@ dns-shield/
 │   └── lib/                        # 共享脚本模块
 │       ├── domainSource.mjs        # 域名源读取
 │       ├── formatHeaders.mjs       # 各格式头部（与运行时对齐）
-│       └── formatRules.mjs         # 规则文本生成
+│       ├── formatRules.mjs         # 规则文本生成
+│       ├── validateOpenApi.mjs     # OpenAPI 语义校验（check-openapi 复用）
+│       └── aggregateFetch.mjs      # 聚合抓取与域名提取（T-REFACTOR-01 拆分）
 ├── public/                         # 静态资源
 │   ├── assets/icons/               # PWA 图标（72x72 ~ 512x512）
 │   ├── domains.txt                 # 域名单一来源（含 + 白名单 / @ 改道 / # 注释）
@@ -237,17 +253,24 @@ dns-shield/
 │       ├── design-system.md          # 设计系统（色彩/字体/间距/图标/动效）
 │       ├── component-library.md      # 组件库（基础/复合/业务组件）
 │       └── interaction-standards.md  # 交互标准（模式/反馈/错误/空状态）
+├── e2e/                            # Playwright 无障碍回归（a11y.spec.ts，npm run check:a11y）
+├── .env.example                    # 环境变量样例（GA / 预设源等，不含真实密钥）
 ├── .eslintrc.json                  # ESLint 配置
-├── .gitignore                      # Git 忽略配置
-├── components.json                 # shadcn/ui 配置
-├── next.config.js                  # Next.js 配置（安全头部）
+├── .gitattributes                  # Git 行尾与属性配置
+├── .gitignore                      # Git 忽略配置（含 .tmp/、playwright-report/ 等产物目录）
+├── .npmrc                          # engine-strict=true（必须入库）
+├── DNS_Shield.code-workspace       # 工作区配置（唯一，禁止删除）
+├── edgeone.json                    # EdgeOne Pages 配置（安全头与 next.config.js 对齐）
+├── next.config.js                  # Next.js 配置（安全头部单一来源）
 ├── next-env.d.ts                   # Next.js 环境类型定义
-├── package.json                    # 项目配置和依赖
+├── package.json                    # 项目配置和依赖（版本唯一权威源）
+├── package-lock.json               # npm 锁定文件（必须入库，CI 以 npm ci 安装）
+├── playwright.config.ts            # Playwright 配置（testDir: ./e2e）
 ├── postcss.config.js               # PostCSS 配置
 ├── tailwind.config.js              # Tailwind CSS 配置
 ├── tsconfig.json                   # TypeScript 配置
 ├── vitest.config.ts                # Vitest 单元测试配置
-└── package-lock.json                  # npm 锁定文件（必须入库，CI 以 npm ci 安装；v3.22.0 起取代 pnpm-lock.yaml）
+└── vitest.bench.config.ts          # 50MB 大输入基准（npm run benchmark:large，不进入默认套件）
 ```
 
 ### 2.1 目录职责与硬约束（2026-11-22 起）

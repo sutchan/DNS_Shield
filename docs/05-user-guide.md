@@ -124,7 +124,7 @@ flowchart TD
 2. 配置 Secrets（`VERCEL_TOKEN` 等，见部署指南 §CI/CD），推送到 `main` 触发 CI → Deploy → Release。
 3. 更新数据源：`public/domains.txt` 是唯一事实来源，改动后运行 `npm run build:formats` 派生 11 个产物并提交。
 4. 验证发布：检查 `GET /llms.txt`、`GET /sitemap.xml` 与 12 个规则文件可访问（见 [04 API](./04-api.md) §调用示例）。
-5. 本地开发：`git clone` 后 `npm install` → `npm run dev`（端口 3000，实现 `standalone` 输出）；提交前按 [SPEC §7.2](./SPEC.md#72-协作流程与提交前门禁2026-11-22-起) 跑门禁（`npm run check:root-clean` / `node scripts/sync-facts.mjs --check` / `npm run check:locales` / `npm run lint` / `npx tsc --noEmit` / `npm run test`）。
+5. 本地开发：`git clone` 后 `npm ci` → `npm run dev`（端口 3000，实现 `standalone` 输出）；提交前按 [SPEC §7.2](./SPEC.md#72-协作流程与提交前门禁2026-11-22-起) 跑全部门禁：`npm run check:root-clean` / `node scripts/sync-facts.mjs --check` / `npm run check:doc-facts` / `npm run check:locales` / `node scripts/check-openapi.mjs` / `npm run check:api-contract` / `npm run check:a11y` / `npm run lint` / `npx tsc --noEmit` / `npm run test`。逐项含义见 [CHECKLIST §门禁命令](./CHECKLIST.md#门禁命令提交前必跑)。
 6. 临时文件：调试脚本、日志、缓存、下载文件统一放根目录 `.tmp/`（`npm run tmp:init` 自动创建、`npm run tmp:clean` 一键清理），禁止散落根目录；详见 [TEMP-FILES.md](./TEMP-FILES.md)。
 
 ## 8. 常见操作误区

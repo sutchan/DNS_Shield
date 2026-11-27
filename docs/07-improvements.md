@@ -15,21 +15,23 @@
 
 ## 1. 建议总览
 
-| 编号 | 领域 | 一句话问题 | 优先级 |
-|------|------|-----------|:------:|
-| O-01 | 性能 | 超大输入解析存在约 3× 文本内存峰值 | P1 |
-| O-02 | 性能 | 行号在生成路径中被重复计算 | P2 |
-| O-03 | 文档 | SPEC 仍称锁文件缺失，与实际不符 | P1 |
-| O-04 | 安全 | 根目录清洁度脚本用字符串拼接执行 shell | P1 |
-| O-05 | 工程 | `.npmrc` 缺失，`engine-strict` 未生效 | P1 |
-| O-06 | PWA | Service Worker 文件存在但未注册 | P2 |
-| O-07 | 发布 | `category-index.txt` 曾未纳入发布路径（已闭环） | P2 |
-| O-08 | 安全 | 生产 CSP 含 `'unsafe-inline'`，无 Trusted Types | P2 |
-| O-09 | 可访问性 | 无自动化 a11y 回归 | P2 |
-| O-10 | 兼容性 | 路由器兼容列表覆盖不足 | P3 |
-| O-11 | 文档工程 | 文档数字与代码事实靠人工核查，反复漂移 | P1 |
-| O-12 | API 文档 | OpenAPI 离线校验仅覆盖结构，缺语义与示例校验 | P3 |
-| O-13 | 架构 | 5 个源文件超过 200 行规则，历史「0 个超限」指标已失真 | P2 |
+> 总览中的「发现问题」为提出建议时的历史背景；全部 13 项已闭环归档，逐项证据见 [tasks-done §十二](./tasks-done.md) 与文末各项「归档状态」。
+
+| 编号 | 领域 | 发现问题（历史） | 优先级 | 归档状态 |
+|------|------|------------------|:------:|----------|
+| O-01 | 性能 | 超大输入解析约 3× 文本内存峰值 | P1 | ✅ T-PERF-01 |
+| O-02 | 性能 | 行号在生成路径中重复计算 | P2 | ✅ T-PERF-02 |
+| O-03 | 文档 | SPEC 曾称锁文件缺失 | P1 | ✅ T-DOC-01 |
+| O-04 | 安全 | 根目录清洁度脚本曾拼接 shell 命令 | P1 | ✅ T-SEC-02 |
+| O-05 | 工程 | `.npmrc` 曾缺失，`engine-strict` 未生效 | P1 | ✅ T-BUILD-01 |
+| O-06 | PWA | Service Worker 曾未注册 | P2 | ✅ T-PWA-01 |
+| O-07 | 发布 | `category-index.txt` 曾未纳入发布路径 | P2 | ✅ T-REL-01 |
+| O-08 | 安全 | 生产 CSP 含 `'unsafe-inline'`，无 Trusted Types | P2 | ✅ T-SEC-01（评估结论：暂不启用） |
+| O-09 | 可访问性 | 无自动化 a11y 回归 | P2 | ✅ T-A11Y-01 |
+| O-10 | 兼容性 | 路由器兼容列表覆盖不足 | P3 | ✅ T-FEAT-01 |
+| O-11 | 文档工程 | 文档数字与代码事实靠人工核查，反复漂移 | P1 | ✅ T-DOC-03 |
+| O-12 | API 文档 | OpenAPI 校验缺语义与示例覆盖 | P3 | ✅ T-DOC-04 |
+| O-13 | 架构 | 曾有 5 个源文件超过 200 行 | P2 | ✅ T-REFACTOR-01 |
 
 ---
 
@@ -37,7 +39,7 @@
 
 ### O-01 超大输入解析的主线程内存峰值
 
-**问题背景（2026-11-26 复核）**：`parser.ts` 已改用 `iterateLines.ts` 逐行迭代，`parseAggregate.ts` 的 `push(...arr)` 已改逐项 push，两处高风险点已闭环；**剩余** `src/utils/sortDedupe.ts` 仍以 `split('\n')` 物化完整行数组（排序算法依赖随机访问），分片仍生成 N 份 shard 字符串。20000 行 / 约 10MB 输入峰值仍可达约 2×；50MB 基准尚未实测。这与项目「大清单可用」目标存在张力。
+**问题背景（提出时，2026-11-26）**：超大输入下 `split('\n')` 物化完整行数组、`push(...arr)` 展开上限与多份分片字符串叠加，峰值内存约 3× 文本，50MB 输入有栈溢出与卡顿风险。以下实施方案保留作历史记录，代码已全部落地。
 
 **实施方案**：
 1. 技术选型：复用已有 `countLines`（`src/utils/lineCount.ts`）的迭代思路，新增 `iterateLines(text, cb)` 零分配迭代器；不引入新依赖。
@@ -46,9 +48,11 @@
 4. 已完成项保留回归测试（`iterateLines` 契约 + 130000 元素聚合），不再重复实施。
 5. 增加基准测试：50MB 输入下主线程峰值分配与解析耗时，作为回归门禁。
 
-**预期效果**：主线程峰值内存由约 3× 文本降至约 1×；50MB 输入不再因 `push(...arr)` 抛栈溢出；解析耗时保持现有水平（不回退）。
+**实测效果**：50MB 基准（49.0MB 文本）峰值增量 **49.2MB（约 1.0× 文本，门禁阈值 1.5×）**；`count` 103ms / `shard` 365ms / `dedupe` 5900ms；`forEachLine` 与 `split` 在 10 万行样本逐行一致。`sortDedupe.ts` 现用 `forEachLine` 分块排序，`parseAggregate.ts` 的分片改为换行边界扫描，`push(...arr)` 已改逐项 push。基准命令 `npm run benchmark:large`（不进入默认套件计数）。
 
-**优先级**：P1 — 直接影响大清单可用性与崩溃风险。
+**优先级**：P1 — 直接影响大清单可用性与崩溃风险（已闭环）。
+
+**归档状态**：✅ [tasks-done T-PERF-01](./tasks-done.md)（2026-11-26 提前完成）。
 
 ---
 
@@ -105,7 +109,7 @@
 
 ### O-11 文档数字与代码事实的自动化门禁
 
-**问题背景**：2026-11-26 全量核查发现，同一事实在活跃文档中存在多套数字：测试套件 / 用例在 `CHANGELOG.md` 为 59/376、`docs/tasks.md` 为 57/364（实跑为 59/376）；版本同步展示位文档写 13 处、脚本实为 12 处；`.npmrc` 与主题入口状态在 FAQ / SPEC 中仍保留已修复前的描述。这类漂移依赖人工逐轮发现，成本高且必然复发。
+**问题背景（提出时，2026-11-26）**：同一事实在活跃文档中存在多套数字：测试套件 / 用例曾出现 59/376 与 57/364 并存（当时实跑 59/376，现为 61/381）；版本同步展示位文档写 13 处、脚本实为 12 处；`.npmrc` 与主题入口状态在 FAQ / SPEC 中仍保留已修复前的描述。这类漂移依赖人工逐轮发现，成本高且必然复发。
 
 **实施方案**：
 1. 技术选型：不引入新依赖，扩展现有 `scripts/sync-facts.mjs --check` 或新增 `scripts/check-doc-facts.mjs`，以 Node 内置 `fs`/`child_process` 读取权威源。
@@ -116,7 +120,9 @@
 
 **预期效果**：活跃文档数字漂移从「每轮人工发现 3~5 处」降为 0（CI 阻断）；版本 bump 后的文档同步核查耗时下降约 50%（定性估计，以实际 PR 返工次数复测）。
 
-**优先级**：P1 — 文档准确性是本次系统性完善的核心目标，且漂移已经反复发生。
+**优先级**：P1 — 文档准确性是本次系统性完善的核心目标，且漂移已经反复发生（已闭环）。
+
+**归档状态**：✅ [tasks-done T-DOC-03](./tasks-done.md)（2026-11-26 提前完成）；门禁实现见 `scripts/check-doc-facts.mjs`，当前权威输出为 61 套件 / 381 用例、214 键、127188 域名、12 处展示位、0 个超行源文件、12 格式。
 
 ---
 
@@ -130,31 +136,35 @@
 
 **预期效果**：大输入生成路径减少 1 次 O(n) 遍历；重复渲染时行号计算次数由 2 降为 1。
 
-**优先级**：P2。
+**优先级**：P2（已闭环）。
+
+**归档状态**：✅ [tasks-done T-PERF-02](./tasks-done.md)（2026-11-25 完成，行号派生收敛到单一 memo）。
 
 ---
 
 ### O-13 拆分超过 200 行的源文件
 
-**问题背景**：2026-11-26 按真实换行数实扫 `src/` 与 `scripts/`，发现 5 个超限文件：`src/components/OutputPanel.tsx`（203）、`src/hooks/useDomainData.ts`（214）、`src/hooks/useRuleWorker.ts`（208）、`src/hooks/useDomainData.autosave.test.ts`（229）、`scripts/aggregate-upstream.mjs`（202）。`docs/tasks.md` 与 `docs/SPEC.md` 中「当前 0 个超限」为 2026-11-13 的历史快照；规则要求代码文件单文件 ≤200 行，文档不拆分。
+**问题背景（提出时，2026-11-26）**：按真实换行数实扫 `src/` 与 `scripts/`，发现 5 个超限文件：`src/components/OutputPanel.tsx`（203）、`src/hooks/useDomainData.ts`（214）、`src/hooks/useRuleWorker.ts`（208）、`src/hooks/useDomainData.autosave.test.ts`（229）、`scripts/aggregate-upstream.mjs`（202）。规则要求代码文件单文件 ≤200 行，文档不拆分；以下实施方案保留作历史记录，现已全部拆分。
 
-**实施方案**：
-1. 按职责拆分：`OutputPanel.tsx` 抽出统计 / 格式选择派生逻辑到 `OutputPanel.derived.ts`；`useDomainData.ts` 把自动保存与远端加载编排拆为 `useDomainData.autosave.ts`；`useRuleWorker.ts` 抽出 Worker 生命周期管理；聚合脚本把上游解析与去重写入拆到 `scripts/lib/`。
-2. 测试文件按关注点拆为多套，共享装置移入 `src/test-utils/`，不降低用例数（当前 376）。
-3. 公开导出契约保持不变，拆分后逐一跑 `npm run lint`、`node node_modules/typescript/bin/tsc --noEmit`、`npm test` 与 `npm run build`。
+**实施方案（历史方案，实际拆分以归档为准）**：
+1. 按职责拆分：`OutputPanel.tsx` → `OutputPanel.types.ts`；`useDomainData.ts` → `useDomainData.sources.ts`（远端/本地源加载与草稿保护）；`useRuleWorker.ts` → `useRuleWorker.parallel.ts`（多核分片调度）；`scripts/aggregate-upstream.mjs` → `scripts/lib/aggregateFetch.mjs`（抓取与域名提取）。
+2. 测试文件按关注点拆为恢复/提示与草稿优先/手动保存两组，公开导出契约不变。
+3. 拆分后逐一跑 `npm run lint`、`node node_modules/typescript/bin/tsc --noEmit`、`npm test` 与 `npm run build`。
 4. 在 CI `data` job 增加行数扫描门禁（含 `scripts/`），超限直接失败，防止再次漂移。
 
-**预期效果**：5 个超限文件全部降至 ≤200 行，门禁长期保持 0 超限；单文件认知负荷下降，Code Review 定位时间预计减少（定性目标，以 PR 评论往返次数复测）；测试套件数可能由 59 增至 60+，用例数不低于 376。
+**实测效果**：按真实换行数实扫 `src/` + `scripts/` 为 **0 个 >200 行文件**；`npm run check:doc-facts` 已把超行数作为权威指标纳入 CI data job；全量测试 61 套件 / 381 用例全绿。
 
-**优先级**：P2 — 不阻塞功能，但直接影响长期可维护性与规范可信度。
+**优先级**：P2 — 不阻塞功能，但直接影响长期可维护性与规范可信度（已闭环）。
+
+**归档状态**：✅ [tasks-done T-REFACTOR-01](./tasks-done.md)（2026-11-26 提前完成）。
 
 ---
 
 ### O-06 启用 PWA 离线缓存
 
-**问题背景**：`public/service-worker.js` 已实现同源缓存策略，但全仓无 `navigator.serviceWorker.register` 调用，实际离线能力未启用；README 的「PWA 离线缓存」表述与事实有落差。
+**问题背景（提出时）**：`public/service-worker.js` 已实现同源缓存策略，但全仓无 `navigator.serviceWorker.register` 调用，实际离线能力未启用；README 的「PWA 离线缓存」表述与事实有落差。
 
-**状态（2026-11-26 更新）**：✅ 已实施——`ServiceWorkerRegistrar` 在生产环境注册同源 SW（dev 跳过），下方实施方案保留作历史记录；待补离线回归实测。
+**状态（2026-11-26 更新）**：✅ 已实施——`ServiceWorkerRegistrar` 在生产环境注册同源 SW（dev 跳过）；缓存策略见 [SPEC §12.2](./SPEC.md#122-service-worker-安全)，下方实施方案保留作历史记录。
 
 **实施方案**：
 1. 技术选型：保留现有 SW，不引入 Workbox（避免新增依赖与构建复杂度）。
@@ -162,9 +172,9 @@
 3. 增加离线回归：首次加载后断网刷新，页面外壳与规则文件可访问。
 4. 明确缓存白名单（同源 + 扩展名白名单），避免缓存用户输入。
 
-**预期效果**：生产环境离线可打开工具外壳；首次加载后重复访问静态资源请求下降（具体数值待 Lighthouse 实测）。
+**预期效果**：生产环境离线可打开工具外壳；首次加载后重复访问静态资源由 SW 缓存命中（具体收益随设备与网络而异）。
 
-**优先级**：P2。
+**优先级**：P2（已闭环）。
 
 ---
 
@@ -178,7 +188,7 @@
 
 **预期效果**：分类筛选控件 404 率降为 0；聚合结果可被线上使用。
 
-**优先级**：P2。
+**优先级**：P2（已闭环）。
 
 ---
 

@@ -3,6 +3,39 @@
 > 最后审查：2026-11-27（与 package.json v3.22.4 对齐；第十九轮 UI 改进新增可读性与对比度、CTA 与统计口径、引导与 FAQ 折叠等验收项；第十八轮全量文档核查同步组件/依赖删除与 CI npm 门禁、语言/主题切换位置；冻结快照按声明保留） · 文档集版本：v3.22.4
 > 权威级别：发布验收规范 · 任务状态见 `docs/tasks.md`，本文只作逐项核验、不维护任务条目。
 
+## 目录
+
+- [门禁命令（提交前必跑）](#门禁命令提交前必跑)
+- [UI/UX 设计规范](#uiux-设计规范)
+- [代码质量](#代码质量)
+- [冗余预防（每次提交前）](#冗余预防每次提交前)
+- [导出产物正确性](#导出产物正确性)
+- [状态与竞态](#状态与竞态)
+- [shadcn/ui 组件规范](#shadcnui-组件规范)
+- [文档完整性](#文档完整性)
+- [文件结构](#文件结构)
+- [功能验证](#功能验证)
+- [Web 管理工具](#web-管理工具)
+- [路由器兼容性](#路由器兼容性)
+- [Git 规范](#git-规范)
+- [维护检查](#维护检查)
+
+## 门禁命令（提交前必跑）
+
+```bash
+node scripts/check-root-clean.mjs      # 根目录洁净度
+node scripts/sync-facts.mjs --check    # 12 处版本展示位
+npm run check:doc-facts                # 套件/用例、键数、域名数、展示位、超行数、格式数
+npm run check:locales                  # 16 语 / 214 递归键
+node scripts/check-openapi.mjs         # OpenAPI 7 路径
+node scripts/check-security-headers.mjs # next.config.js 与 edgeone.json 安全头一致
+npm run check:api-contract             # 端点契约冒烟
+npm run check:a11y                     # axe 无障碍扫描（CI build job）
+npm run lint && npx tsc --noEmit && npm run test
+```
+
+完整门禁与发布流程见 [SPEC §7.2](./SPEC.md#72-协作流程与提交前门禁2026-11-22-起)；任一失败不得提交。
+
 ## UI/UX 设计规范
 
 - [ ] 无 emoji 作为 UI 图标（使用 Lucide SVG）
@@ -72,6 +105,12 @@
 
 ## 文档完整性
 
+- [ ] `docs/README.md` 索引完整：导航覆盖全部文档，术语表与版本控制口径与正文一致
+- [ ] `docs/01-overview.md` / `docs/03-modules.md` / `docs/04-api.md` / `docs/05-user-guide.md` / `docs/06-faq-troubleshooting.md` / `docs/07-improvements.md` 头部格式、章节目录与事实数字一致
+- [ ] `docs/05-security-assessment-csp.md` 评估结论与 SPEC §12.1 当前 CSP 一致
+- [ ] `docs/openapi.yaml` 与 `docs/04-api.md` 端点、版本、示例一致（`check-openapi` 通过）
+- [ ] `docs/TEMP-FILES.md` 与 `scripts/check-root-clean.mjs` 白名单一致
+- [ ] 冻结快照（`docs/AUDIT-REPORT-v3.19.0.md`、`docs/STRUCTURE-REVIEW.md`、`prototype/`）保留「冻结快照声明」，不回填当前状态
 - [ ] `README.md` 存在且内容完整
 - [ ] `README.en.md` 存在且英文内容完整
 - [ ] `CHANGELOG.md` 变更记录完整

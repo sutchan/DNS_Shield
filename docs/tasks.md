@@ -84,6 +84,7 @@
 - [ ] `public/*.txt` / `*.conf` / `*.yaml` 静态样例头部版本号（`# 版本::` / `! 版本::`）— 运行 `node scripts/gen-format-files.mjs`
 - [ ] 页脚版本号/build 编号展示正确（`Footer.tsx` 输出 `V{APP_VERSION}· build {NEXT_PUBLIC_BUILD_ID}`，2 位年，规范见 SPEC §8.1）
 - [ ] 更新 `CHANGELOG.md` 变更记录（新增 `## [x.y.z]` 小节，分类 feat/fix/docs/...）
+- [ ] 跑全量门禁：`node scripts/sync-facts.mjs --check` / `npm run check:doc-facts` / `npm run check:locales` / `node scripts/check-openapi.mjs` / `npm run check:api-contract` / `node scripts/check-security-headers.mjs` / `npm run check:a11y` / `npm run check:root-clean`（逐项见 [CHECKLIST §门禁命令](./CHECKLIST.md#门禁命令提交前必跑)）
 - [ ] 推送后由 `release.yml` 自动发布 GitHub Release：CI→Deploy 全绿后按 `package.json` 版本打 `vX.Y.Z` tag 并发布（tag 已存在则跳过，无需手动打 tag）
 
 ---
